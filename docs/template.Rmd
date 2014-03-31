@@ -1,0 +1,149 @@
+```{r developer_info, echo=FALSE}
+# This template should be called by knit_reports.R 
+#
+# INPUT: data frames provided by knit_reports.R 
+# OUTPUT: html report concerning a particular forest product
+# Author: Paul Rougieux, European Forest Institute
+
+```
+
+```{r setup}
+# See source for more details on input, output from the author
+library(ggplot2)
+library(reshape2)
+library(plyr)
+options(width=80)
+dtf <- product.data$entity
+agg <- product.data$eu_aggregates
+trade <- product.data$trade
+```
+ 
+Explore `r product.data$metadata$title`
+==========================
+$$\beta_1$$
+Consumption, production, trade and net trade in the European Union
+-------------------------------------------------------------------
+In the following file, we explore a data table containing `r product.data$metadata$title` consumption data for __`r length(unique(dtf$Country))`__ countries 
+from `r min(dtf$Year)` to `r max(dtf$Year)`.
+__In `r max(dtf$Year)`__, the overall EU consumption, production and trade 
+in million `r product.data$metadata$unit` per item was:
+```{r summarylastyear, echo=FALSE}
+aggLast = subset(agg, Year==max(agg$Year)&
+                       !Element%in%c("Import_Value", "Export_Value","Price"))
+aggLast$Value = round(aggLast$Value/1e6)
+aggLast = reshape(aggLast, drop=c("Year", "Deflator"),
+                idvar="Item", timevar="Element",direction="wide")
+# names(aggLast) = sub("Value.","",names(aggLast)) 
+names(aggLast) = c("Item", "Consumption", "Production",
+                     "Net_Trade", "Import", "Export")
+print(aggLast) # This will be displaid on the HTML page
+```
+
+```{r consumptionTotalEU, fig.width=13, fig.height=6}
+#summary(agg)
+ggplot(data=subset(agg, !Element%in%c("Import_Value", "Export_Value","Price"))) +  
+    geom_line(aes(x=Year, y=Value/1e6, colour=Item),size=1) +
+    facet_wrap(~Element) +
+    ylab(paste("Million",product.data$metadata$unit)) + theme_bw()
+```
+
+
+Consumption at the country level
+--------------------------------
+Apparent consumption of `r product.data$metadata$title` by country 
+```{r consumptionbyCountry, fig.width=13, fig.height=8}
+ggplot(data=dtf) +
+    geom_line(aes(x=Year, y=Consumption/1e+06, colour=Item), size=1) + 
+    facet_wrap(~Country, scales = "free_y") +
+    xlab("Year") +
+    ylab(paste("Million",product.data$metadata$unit)) + 
+    theme_bw() +  theme(legend.position="bottom")
+```
+
+
+Prices
+------
+### EU prices
+Average trade price of `r product.data$metadata$title` in the European Union
+```{r priceEU, fig.width=10, fig.height=6}
+# Rename Price to Price USD (Use level because Element is a factor)
+levels(agg$Element)[levels(agg$Element)=="Price"] <- "Price_real_USD"
+ggplot(data=subset(agg, Element=="Price_real_USD")) +
+    geom_line(aes(x=Year, y=Value, color=Item)) +
+    ylab(paste("Price in (2010) constant USD /", product.data$metadata$unit))
+```
+
+Comparison of nominal price in USD and real price in USD and EUR.
+```{r priceComparison, fig.width=10, fig.height=12}
+p <- dcast(agg, Year + Item ~ Element, value.var="Value")
+# Add US and EUR deflator in the plot for information
+p <- merge(p, EUR[c("Year", "DeflEUR")])
+p <- merge(p, US[c("Year", "DeflUS")])
+p <- mutate(p, 
+            Price_Nominal_USD =  (Import_Value + Export_Value)/
+                (Import_Quantity + Export_Quantity) *1000,
+            Price_USD_2 = Price_EUR /ExchR)
+p <- p[c("Year", "Item", "Price_Nominal_USD", "DeflUS", 
+         "Price_real_USD", "DeflEUR", "ExchR", "Price_EUR")]
+p <- melt(p, id=c("Year","Item"), variable.name="Element", value.name="Value")
+ggplot(data=p) +
+    geom_line(aes(x=Year, y=Value, color=Item)) +
+        facet_wrap(~ Element, ncol=1, scales = "free_y")
+```
+
+### Trade prices by country
+Prices expressed in constant US dollars of 2010 per `r product.data$metadata$unit`.
+```
+Import_Price = Import_Value / Import_Quantity / DeflUS*1000
+Export_Price = Export_Value / Export_Quantity / DeflUS*1000
+```
+Trade prices for the 9 countries which have the highest trade volume in `r max(dtf$Year)` (volumes are in `r product.data$metadata$unit`).
+```{r tradePrices9countries, echo=FALSE, warning=FALSE, results='asis'}
+trade_last <- trade[grepl("Total", trade$Item) & trade$Year==max(dtf$Year),]
+#order
+trade_last <- trade_last[order(-trade_last$Quantity),]
+# Remove duplicates (have to do this because germany is both a major exporter and importer)
+# and select 9 highest trade volumes
+countries <- unique(head(trade_last[!duplicated(trade_last$Country),]$Country, n=9))
+trade_last <- reshape(subset(trade_last, Country%in%countries),
+                      drop=c("Year", "FAOST_CODE", "Consumption", "GDPconstantUSD", "Item"),
+                      idvar=c("Country", "Net_Trade"),
+                      timevar="Trade",direction="wide")
+print(xtable(arrange(trade_last, Net_Trade)), type = "html") 
+```
+
+```{r tradePricesByCountry, fig.width=12, fig.height=10, warning=FALSE, results='asis'}
+ggplot(data=subset(trade, Country %in% countries)) +
+    geom_line(aes(x=Year, y=Price_Trade, color=Item, linetype = Trade))+
+    facet_wrap( ~ Country, ncol = 3) + 
+    ylab(paste("Price in (2010) constant USD /", product.data$metadata$unit))
+```
+
+
+Plot log of the estimation data 
+-------------------------------
+We will estimate the model
+$$ log(Consumption) = \beta_0 + \beta_1 log(GDP) + \beta_2 log(Price) +
+\beta_3 log(Consumption_{t-1}) $$
+
+Lets look at the relationship between log(Consumption) and log(GDP) first.
+### Total `r product.data$metadata$title`
+```{r, warning=FALSE}
+plot(log(Consumption) ~ log(GDPconstantUSD),
+     data=dtf[grep("Total", dtf$Item),])
+points(log(Consumption) ~ log(GDPconstantUSD), 
+     data=dtf[grepl("Total", dtf$Item) & dtf$Year>2011,], col="red")
+```
+
+
+### Explore the influence of Year and Net_Trade by country
+Sort countries by Net_Trade, then display a color for each country
+```{r warning=FALSE, fig.width=12, fig.height=8}
+dtf_last = dtf[grepl("Total", dtf$Item) & dtf$Year==max(dtf$Year),]
+dtf_last = dtf_last[order(dtf_last$Net_Trade),]
+dtf$Country = factor(dtf$Country, levels= dtf_last$Country, ordered=TRUE)
+p = ggplot(dtf, aes(x=log(GDPconstantUSD), y=log(Consumption))) + facet_wrap(~Item)
+p + geom_point(aes(alpha=Year, color=Country))  
+```
+
+
