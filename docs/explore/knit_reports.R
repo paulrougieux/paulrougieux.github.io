@@ -4,6 +4,7 @@
 # Inspired by 
 # http://botthoughts.wordpress.com/2012/05/17/generating-reports-for-different-data-sets-using-brew-and-knitr/
 # I first used brew + knitr, but then used knitr only
+# See before commit 078bb6f99d4cc8 for brew versions.
 
 library(knitr)
 library(markdown)
