@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Lyx Commands</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Paul's lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Tools
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="git.html">Git</a>
+    </li>
+    <li>
+      <a href="lyx.html">Lyx</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Lyx Commands</h1>
+
+</div>
+
+
+<p>The Lyx “What You See is What You Mean” editor is available at Lyx and from your package manager. Citations</p>
+<p>Lyx nicely integrates with a bibtex bibliography. You can create a shortcut such as CTRL+SHIFT+C to insert a reference. A small menu will pop-up to choose from the references.</p>
+<p>Unfortunately “BibTeX does not support files encoded in UTF-8”. To get characters such as “é” encoded correctly latin1 has to be used.This can be set as the database property in Jabref. Shortcuts</p>
+<p>Under Tools / preferences / Editing / Shortcuts / Stackoverflow question on how to find the command name for a shortcut. I mapped:</p>
+<pre><code>citation-insert to Ctrl+Alt+C 
+href-insert to Ctrl+K
+label-insert to Ctrl+Alt+L
+statistics to Ctrl+Alt+T</code></pre>
+<p>See also the Lyx wiki page on shortcuts. Merge and filter bibliographies</p>
+<p>Answers to a question on merging 2 bibtex file recommend using Jabref file / import into current database.</p>
+<p>Create a shorter bibliography with only cited documents from another bibliography Extracting only the BibTex records relevant to the paper. Answers recommend using bibtool or bibexport.</p>
+<p>I have written an article in Lyx which cites 2 bibliographies and a colleague asked to have a .tex version of this article. Here is my recipe:</p>
+<pre><code>Use Jabref to merge two bibliographies. 
+Export Lyx file to LaTeX (PDFLaTeX).
+Edit the .tex file to insert a link to the merged bibliographies. 
+    \phantomsection\addcontentsline{toc}{section}{\refname}\bibliography{long.bib} 
+Compile the .tex with TeXstudio. 
+Used bibexport to extract a short bibliography corresponding only to the citations used in one article.
+
+bibexport -o short.bib article.aux 
+
+Replace long.bib by short.bib in the .tex file.</code></pre>
+<p>I have done it 3 times already. Could I create a script that does all this automatically? Spell checker</p>
+<p>A spell checker can be activated under Tools / preferences / language settings / spellchecker. On my system the only spell check engine available is Enchant, “a wrapper that provides automatic access to many spell checking libraries (ispell, aspell, hspell, hunspell, etc.)”.</p>
+<p>The button displaying a red-underlined A can be activated to spell check continuously. Language of document</p>
+<p>Under Document / Settings / Language, it’s possible to change the document language, which will have an impact on the language used for spell checking. In my system compiling a document in French returned an error:</p>
+<p>“Package babel Error: Unknown option `french’.”</p>
+<p>This stackexchange post suggest installing the texlive-lang-french Debian package. This fixed the error. Math mode</p>
+<p>Press CTRL+M at the cursor or on highlighted text to enter math mode. Latex syntax “”, “x_t” can be used to enter equations and is displayed directly as math symbols. Change input encoding</p>
+<p>This question on “how do I prevent Lyx from loading inputenc?” explains where this part of the Latex preamble is defined.</p>
+<p>In Document &gt; Settings…, under Language &gt; Encoding, choose “Other” and select “Language Default (no inputenc)”.</p>
+<p>Instead I replaced Latin1 by utf8 as input encoding. This works for the moment. Encoding issues and Greek symbols used outside math mode</p>
+<p>“Encoding file ‘lgrenc.def’ not found” was fixed by installing the debian package texlive-lang-greek (as explained here on stackoverflow). Other errors appeared related to the use of beta signs outside math mode. As one user explained on stackoverflow, placing signs in math mode usually fixes the issue. Hyperlinks in PDF</p>
+<p>How to change hyperlink colors in Lyx</p>
+<pre><code>Document &amp;gt; Settings &amp;gt; PDF Properties under the Additional options field. For example, a custom set of instructions may be the following: linkcolor=black, urlcolor=blue, citecolor=green, pdfstartview={FitH}, hyperfootnotes=false, unicode=true  </code></pre>
+<p>I changed marineblue to blue, as my system complained that marineblue was not available.</p>
+<p>The lyx function that creates hyperlinks is called href-insert. You can create a CTRL+K shortcut that inserts hyperlink under Tools / preferences / Editing / Shortcuts / “Cursor, Mouse and Editing functions” by inserting the function name: href-insert. Presentation template, called beamer</p>
+<p>The beamer theme and color theme can be changed by inserting this in Document / Seetings / Latex preamble:</p>
+<pre><code>\usetheme{Boadilla}
+
+\usecolortheme{orchid}</code></pre>
+<p>An overview of themes is available in the beamer theme matrix.</p>
+<p>Here is an explanation on how to change to any other RGB colour. Beware the definition of RGB colours are unusual in Latex, divide values by 255.</p>
+<pre><code>\definecolor{darkgreen}{rgb}{.2,.4,.2}
+
+\usecolortheme[named=darkgreen]{structure}</code></pre>
+<p>Slide numbering can be added to the beamer template. By inserting this code block in Document / Settings / latex preamble:</p>
+<pre><code>\addtobeamertemplate{navigation symbols}{}{%
+    \usebeamerfont{footline}%
+    \usebeamercolor[fg]{footline}%
+    \hspace{1em}%
+    \insertframenumber/\inserttotalframenumber
+}</code></pre>
+<p>Tables too wide for a slide can be resized by placing the table between the following ERT. If there is a table float, this instruction has to be placed inside the table float.</p>
+<pre><code>\resizebox{\linewidth}{!}{%
+
+} </code></pre>
+<p>Elsevier article template</p>
+<p>Elsevier provides a latex template for articles called elsarticle which is usable in Lyx. However compiling with this template doesn’t seem to work when using the hyperref package with the general option “automatically fill header”. After deactivating this option, compilation works again.</p>
+<p>The elsarticle template uses numerical references by default. it is possible to activate author year reference according to this stack exchange answer. Tips</p>
+<pre><code>CTRL+D uses yap, a faster (on windows) previewer than the default PDF one. There is no noticeable difference on Linux.</code></pre>
+<p>To produce a meeting report with a wider template than the default article.</p>
+<pre><code>I would have liked to find an overview of the templates with screenshots of PDF results. But I couldn&#39;t find such overview online. LyX wiki has a list of examples and a list of layouts. 
+In fact all that was needed was to edit the Document \ Settings \ Page margins, I set the inner and out margins to 2 cm and was happy with the result.</code></pre>
+<p>knitr and Lyx</p>
+<pre><code>Yihui Xie: Using knitr and Lyx
+ Krishna Devulapalli: Creation of research papers with embedded R results using LyX</code></pre>
+<p>Export to Microsoft Word compatible format RTF</p>
+<p>Under File / Export / Rich Text Format, it’s possible to export Lyx files to a format compatible with Microsoft Word.</p>
+<p>My Lyx file uses many packages and formatting options. Export to RTF didn’t work and returned the error:</p>
+<pre><code>&quot;An error occurred while running: latex2rtf&quot; </code></pre>
+<p>I made a copy in a temporary directory (/tmp) and removed external packages and options in the latex preamble, before performing the conversion. Then the conversion to RTF worked.</p>
+<p>Compare different versions of a document</p>
+<p>Use Tools/Compare to highlight differences between a new and an old document. Then show changes in output to show changes in red and blue in the PDF output.</p>
+<p>Alternatively, you can export the Lyx files to Latex and use Latexdiff as such:</p>
+<pre><code>latexdiff draft.tex revision.tex &gt; diff.tex</code></pre>
+<p>Avoid complex tables or figures in the diff, as they can cause issues. I had to create a fake old documents with final figures and table for latexdiff to return a usable output.</p>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

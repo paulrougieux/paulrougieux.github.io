@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Git Commands</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Paul's lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Tools
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="git.html">Git</a>
+    </li>
+    <li>
+      <a href="lyx.html">Lyx</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Git Commands</h1>
+
+</div>
+
+<div id="TOC">
+<ul>
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#basic-git-commands-to-start-working-asap">Basic git commands to start working asap</a></li>
+<li><a href="#uploading-content-to-online-git-platforms">Uploading content to online git platforms</a></li>
+<li><a href="#going-back-in-time">Going back in time</a><ul>
+<li><a href="#log">Log</a></li>
+<li><a href="#reset-whole-folder">Reset whole folder</a></li>
+<li><a href="#reset-only-one-file">Reset only one file</a></li>
+</ul></li>
+<li><a href="#help">Help</a></li>
+<li><a href="#configuring-user-name-and-email">Configuring user name and email</a></li>
+<li><a href="#branching">Branching</a></li>
+<li><a href="#tagging">Tagging</a></li>
+<li><a href="#working-with-files">Working with files</a><ul>
+<li><a href="#searching-text">Searching text</a></li>
+<li><a href="#replacing-strings">Replacing strings</a></li>
+</ul></li>
+<li><a href="#gitignore">.gitignore</a></li>
+<li><a href="#remote">Remote</a></li>
+<li><a href="#publishing-project-documentation-on-github">Publishing project documentation on github</a></li>
+<li><a href="#references">References</a></li>
+</ul>
+</div>
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog post on git commands</a>.</p>
+<p>My typicall git use consist in archiving file modifications for personnal projects. I never work in the master branch, always in a development branch called <code>develop</code>. I merge <code>develop</code> in <code>master</code>, only before pushing modifications back to my remote archive. This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.</p>
+</div>
+<div id="basic-git-commands-to-start-working-asap" class="section level1">
+<h1>Basic git commands to start working asap</h1>
+<p>Initialise a new repository</p>
+<pre><code>git init</code></pre>
+<p>Change to the development branch</p>
+<pre><code># If the branch doesn&#39;t exist, create it first.
+git branch develop
+git checkout develop</code></pre>
+<p>Work and modify files in the folder. At some point, when your work has reached a certain status, you might want to archive it before you move on to something else. The few commands below tell git to archive the work. All file modifications will be archived with a commit hash which is a unique key describing your changes. The most important part is entering a commit message, it should be sufficiently general to describe your changes with a high level of abstraction and sufficiently specific to be understood amoung all other changes later.</p>
+<p>First show which files have been modified in the folder under git control:</p>
+<pre><code>git status</code></pre>
+<p>Add a file to be committed</p>
+<pre><code>git add filename
+# Add all files
+git add --all</code></pre>
+<p>Commit and describe changes</p>
+<pre><code>git commit -m &quot;describe changes made to those files&quot;</code></pre>
+<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m &quot;describe changes&quot;</code> each time your reach a consistant change status.</p>
+<p>At some point you will be ready to upload your content to a remote archive. Merge to the master branch</p>
+<pre><code>git checkout master
+git merge develop</code></pre>
+<p>Push contents to the remote repository</p>
+<pre><code>git push</code></pre>
+<p>See below how to set-up the remote repository with <code>git remote add origin ssh:repositoryurl</code> and pushing content for the first time with <code>git push -u origin master</code>.</p>
+<p>Check status again</p>
+<pre><code>git status</code></pre>
+<p>Go back to the development branch</p>
+<pre><code>git checkout develop</code></pre>
+<p>Continue to modify files in the repository.</p>
+</div>
+<div id="uploading-content-to-online-git-platforms" class="section level1">
+<h1>Uploading content to online git platforms</h1>
+<p>Git is useful as a version management on its own. But it’s even more usefull when code can be back-up online. Free public git storage is availble on Github. Free public and private git storage are available on Bitbucket, with up to 5 collaborators on one project.</p>
+<p>Commands I’ve used to upload content to github.com/paul4forest/forestproductsdemand are:</p>
+<pre><code>    git remote add origin https://github.com/paul4forest/forestproductsdemand
+    git pull origin master
+    git add
+    git commit -m &quot;Explanatory message&quot;
+    git push origin master</code></pre>
+<p>Commands to upload content to a fresh repository from bitbucket :</p>
+<pre><code>    mkdir /path/to/your/project
+    cd /path/to/your/project
+    git init
+    git remote add origin ssh://git@bitbucket.org/username/bbreponame.git
+    # Upload and set the local changes as upstream
+    git push -u origin master</code></pre>
+<p>See also this discussion on <a href="http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time">why do I need to set upstream</a>?</p>
+<p>Commands to copy an existing repository from bitbucket :</p>
+<pre><code> git clone git@bitbucket.org/username/bbreponame.git</code></pre>
+</div>
+<div id="going-back-in-time" class="section level1">
+<h1>Going back in time</h1>
+<div id="log" class="section level2">
+<h2>Log</h2>
+<p>Display the modification log</p>
+<pre><code>git log </code></pre>
+<p>In the log, you can copy the begining of a commit hash for use as <code>commit_sha</code> in the reset commands below.</p>
+<p>Display the log of a particular branch (after a fetch for example)</p>
+<pre><code>git log origin/master </code></pre>
+<p>Display a compact log for one file or one directory only</p>
+<pre><code>git log --abbrev-commit --pretty=oneline path_to_file</code></pre>
+</div>
+<div id="reset-whole-folder" class="section level2">
+<h2>Reset whole folder</h2>
+<p>Identify the commit identity in the log and copy its sha number. Then to go back to this state for the whole folder:</p>
+<pre><code>git reset --hard commit_sha</code></pre>
+<p>Use the begining of a <code>commit_sha</code> copied from the log.</p>
+</div>
+<div id="reset-only-one-file" class="section level2">
+<h2>Reset only one file</h2>
+<p>To go back to this state for only one file, see git checkout</p>
+<pre><code>git checkout commit_hash  path_to_file/file_name</code></pre>
+<p>No commit hash to get to get the file back to the latest commit.</p>
+<p>Chekout the older revision of a file under a new name</p>
+<pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
+<p>See also alias and git grep below.</p>
+</div>
+</div>
+<div id="help" class="section level1">
+<h1>Help</h1>
+<p>Get help on a command (will start a web browser):</p>
+<pre><code>git init --help</code></pre>
+</div>
+<div id="configuring-user-name-and-email" class="section level1">
+<h1>Configuring user name and email</h1>
+<p>Display your user name, email and remote repositories</p>
+<pre><code>git config -l</code></pre>
+<p>To change username and email</p>
+<pre><code>git config --global user.name &quot;Your Name&quot; 
+
+git config --global user.email you@example.com</code></pre>
+<p>Setting your email in git explains how to change the email for the current repository only.</p>
+</div>
+<div id="branching" class="section level1">
+<h1>Branching</h1>
+<p>To start work in a new branch:</p>
+<pre><code>git branch new_branch_name
+git checkout new_branch_name</code></pre>
+<p>To compare a file between 2 branches:</p>
+<pre><code>git diff branch1 branch2 file_name</code></pre>
+<p>To merge changes back to the master branch:</p>
+<pre><code>git checkout master
+
+git merge branch1</code></pre>
+<p>If there were conflicts, they will be presented in this way:</p>
+<pre><code>&quot;The area where a pair of conflicting changes happened is marked with markers &amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;, =======, and &amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;. The part before the ======= is typically your side, and the part afterwards is typically their side.&quot;</code></pre>
+<p>I might need to delete a branch at some point:</p>
+<pre><code>git branch -d branchname </code></pre>
+<p>Delete a remote branch (stackoverflow question)</p>
+<pre><code>git push --delete origin temp</code></pre>
+<p>Deleting your master branch.</p>
+<p>If I am on a detached head, it is recommended to create a temporary branch (stackoverflow).</p>
+<pre><code>git branch temp
+
+git checkout temp
+
+git add -a
+
+git  commit -m &quot;description of changes&quot;
+
+git checkout master
+
+git merge temp</code></pre>
+<p>Delete uncommitted changes in current working directory:</p>
+<pre><code>git checkout branch_name .</code></pre>
+<p>See also below git clean.</p>
+<p>Add minor change to the previous commit (git commit –amend):</p>
+<pre><code>git commit --amend</code></pre>
+</div>
+<div id="tagging" class="section level1">
+<h1>Tagging</h1>
+<p>Creating an annotated tag</p>
+<pre><code>git tag -a v1.4 -m &#39;my version 1.4&#39;</code></pre>
+<p>You can add a tag after the fact. To tag an earlier commit, specify the commit checksum or part of it:</p>
+<pre><code>git log --pretty=oneline
+
+git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
+<p>Delete a tag</p>
+<pre><code>git tag -d tag_name</code></pre>
+<p>A regular push command won’t push a tag (bitbucket), to push all your tags :</p>
+<pre><code>git push origin --tags</code></pre>
+<p>Display changes</p>
+<p>To view modified files that have not been committed and to view commit history you can use:</p>
+<pre><code>git status
+git log
+
+git log --pretty=oneline </code></pre>
+<p>Shows the changes between the working directory and the index.</p>
+<pre><code>git diff</code></pre>
+<p>Shows the changes between the index and the HEAD</p>
+<pre><code>git diff --cached</code></pre>
+<p>Shows all the changes between the working directory and HEAD</p>
+<pre><code>git diff HEAD</code></pre>
+<p>The 3 lines above were copied from this question on git diff.</p>
+<p>Show when the tip of branches have been updated</p>
+<pre><code>git reflog</code></pre>
+<p>Alternatively, call the repository browser with:</p>
+<pre><code>gitk</code></pre>
+<p>To view a shorter version of the log file, and get an idea at where I am in the history:</p>
+<pre><code>git log --graph --decorate --all --pretty=oneline</code></pre>
+<p>You can define an alias for git log as explained be Fred here:</p>
+<pre><code>git config --global alias.lg &quot;log --color --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit&quot; </code></pre>
+<p>The new alias can then be used with</p>
+<pre><code>git lg </code></pre>
+<p>Use tags to specify important points in history, such as software versions.</p>
+</div>
+<div id="working-with-files" class="section level1">
+<h1>Working with files</h1>
+<p>Get back a file to the last commit</p>
+<pre><code>git checkout path_to_file/file_name</code></pre>
+<p>Get back a file to a previous commit, using the commit hash</p>
+<pre><code>git checkout 4fb987f175210c09daaa4d0240070ffc9641120b path_to_file/file_name</code></pre>
+<p>Rename a file</p>
+<pre><code>git mv file_name file_name_new</code></pre>
+<p>Change the case of a file on a windows FAT 32 system:</p>
+<pre><code>git mv load.r load2.R
+git mv load2.R load.R</code></pre>
+<p>Sometimes the vi editor starts. To exit the vi editor:</p>
+<pre><code>ESC:q!</code></pre>
+<p>If a file or folder has been renamed outside of git, I get this warning:</p>
+<pre><code>$ git add .
+warning: You ran &#39;git add&#39; with neither &#39;-A (--all)&#39; or &#39;--ignore-remo
+whose behaviour will change in Git 2.0 with respect to paths you removed
+Paths like &#39;docs/efi/efi_logo_rgb_small_siw.jpg&#39; that are
+removed from your working tree are ignored with this version of Git.
+
+* &#39;git add --ignore-removal &#39;, which is the current default,
+  ignores paths you removed from your working tree.
+
+* &#39;git add --all &#39; will let you also record the removals.</code></pre>
+<p>Therefore I think I should always run “git add –all”</p>
+<p>Remove local (untracked) files from my current Git branch</p>
+<p>Show what will be deleted with the -n option:</p>
+<pre><code>git clean -f -n</code></pre>
+<p>Then - beware: this will delete files - run:</p>
+<pre><code>git clean -f </code></pre>
+<p>Alternatively clean in interactive mode:</p>
+<pre><code>git clean -i</code></pre>
+<div id="searching-text" class="section level2">
+<h2>Searching text</h2>
+<p>Search all files in the subdirectory “subdir” for lines containing the words “factor” and “item”. Show 2 lines of context (2 leading and 2 trailing lines).</p>
+<pre><code>git grep -e item --and -e factor -C 2 -- subdir/</code></pre>
+<p>Stackoverflow: How to search committed code in the git history?</p>
+</div>
+<div id="replacing-strings" class="section level2">
+<h2>Replacing strings</h2>
+<p>Use git grep to replace strings in many files in the directory :</p>
+<pre><code>git grep -l &#39;original_text&#39; | xargs sed -i &#39;s/original_text/new_text/g&#39;</code></pre>
+</div>
+</div>
+<div id="gitignore" class="section level1">
+<h1>.gitignore</h1>
+<p>To ignore all files in a folder but not the folder itself. Put this .gitignore into the folder, then git add .gitignore</p>
+<pre><code>*
+!.gitignore</code></pre>
+<p>To exclude everything except a specific directory foo/bar (note the /* - without the slash, the wildcard would also exclude everything within foo/bar):</p>
+<pre><code>/*
+!/foo
+/foo/*
+!/foo/bar</code></pre>
+</div>
+<div id="remote" class="section level1">
+<h1>Remote</h1>
+<p>When a repository is connected to several remote repositories, to change the default git remote, push with :</p>
+<pre><code>git push -u origin master</code></pre>
+<p>Then later push of that branch to that remote can be made simply with:</p>
+<pre><code>git push</code></pre>
+<p>Another command without specifying the remote and the branch</p>
+<pre><code>$ git push -u
+
+fatal: The current branch master has no upstream branch.
+
+To push the current branch and set the remote as upstream, use
+
+
+    git push --set-upstream origin master</code></pre>
+<p>After I run this set upstream flag, I can push to the remote server. Then I get this message</p>
+<pre><code>[...]
+ * [new branch]      master -&amp;gt; masterBranch master set up to track remote branch master from origin. </code></pre>
+<p>I’ll have to figure out what this does.</p>
+</div>
+<div id="publishing-project-documentation-on-github" class="section level1">
+<h1>Publishing project documentation on github</h1>
+<p>SO Answer to the question “How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)”: An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.</p>
+<p>In fact I didn’t use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).</p>
+<p>Then within the inst folder, I cloned only the gh-branch. To clone only one branch:</p>
+<pre><code>git clone -b mybranch --single-branch git://sub.domain.com/repo.git</code></pre>
+<p>Then I renamed the folder to “web”, so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.</p>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<p>Presentations:</p>
+<pre><code>Power Your Workflow With Git (towards 43 minutes, an animation of branches and merging) A recommendation if you work in a team, don&#39;t use pull, but use fetch + merge.
+Getting Started with GitHub + Git</code></pre>
+<p>Workflow:</p>
+<pre><code>Mixing private and public repository in Git workflow</code></pre>
+<p>Turorial:</p>
+<pre><code>Git foundations</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
