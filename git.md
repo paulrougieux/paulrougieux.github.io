@@ -3,6 +3,7 @@ title: "Git Commands"
 output: 
   html_document: 
     toc: yes
+    toc_float: true
 ---
 
 # Introduction
@@ -402,6 +403,9 @@ After I run this set upstream flag, I can push to the remote server. Then I get 
 
 I'll have to figure out what this does.
 
+[Changing remote repository url](https://help.github.com/articles/changing-a-remote-s-url/)
+
+    git remote set-url origin git@github.com:paulrougieux/paulrougieux.github.io.git
 
 # Publishing project documentation on github
 

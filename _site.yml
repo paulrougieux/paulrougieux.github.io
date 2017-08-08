@@ -13,6 +13,16 @@ navbar:
           href: git.html
         - text: "Lyx"
           href: lyx.html
+        - text: "MySQL"
+          href: mysql.html
+    - text: "Data"
+      menu:
+        - text: "Sources"
+          href: datasources.html
+        - text: "Explore"
+          href: explore.html
 output:
   html_document:
     toc: true
+    toc_float: true
+    css: styles.css

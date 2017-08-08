@@ -3,6 +3,7 @@ title: "Lyx Commands"
 output: 
   html_document: 
     toc: yes
+    toc_float: true
 ---
 
 
@@ -13,7 +14,8 @@ Lyx nicely integrates with a bibtex bibliography. You can create a shortcut such
 
 
 Unfortunately  "BibTeX does not support files encoded in UTF-8". To get characters such as "é" encoded correctly latin1 has to be used.This can be set as the database property in Jabref.
-Shortcuts
+
+# Shortcuts
 
 Under Tools / preferences / Editing / Shortcuts /  Stackoverflow question on how to find the command name for a shortcut. I mapped:
 
@@ -23,7 +25,8 @@ Under Tools / preferences / Editing / Shortcuts /  Stackoverflow question on how
     statistics to Ctrl+Alt+T
 
 See also the Lyx wiki page on shortcuts.
-Merge and filter bibliographies 
+
+# Merge and filter bibliographies 
 
 Answers to a question on merging 2 bibtex file recommend using Jabref file / import into current database.
 
@@ -69,12 +72,14 @@ In Document &gt; Settings..., under Language &gt; Encoding, choose "Other" and s
 
 
 Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
-Encoding issues and Greek symbols used outside math mode
+
+# Encoding issues and Greek symbols used outside math mode
 
 "Encoding file 'lgrenc.def' not found"  was fixed by installing the debian package texlive-lang-greek (as explained here on stackoverflow). Other errors appeared related to the use of beta signs outside math mode. As one user explained on stackoverflow, placing \beta signs in math mode usually fixes the issue.
 Hyperlinks in PDF
 
-How to change hyperlink colors in Lyx
+
+# How to change hyperlink colors in Lyx
 
     Document &gt; Settings &gt; PDF Properties under the Additional options field. For example, a custom set of instructions may be the following: linkcolor=black, urlcolor=blue, citecolor=green, pdfstartview={FitH}, hyperfootnotes=false, unicode=true  
 
@@ -114,7 +119,8 @@ Tables too wide for a slide can be resized by placing the table between the foll
 
     } 
 
- Elsevier article template
+
+# Elsevier article template
 
 Elsevier provides a latex template for articles called elsarticle which is usable in Lyx. However compiling with this template doesn't seem to work when using the hyperref package with the general option "automatically fill header". After deactivating this option, compilation works again.
 

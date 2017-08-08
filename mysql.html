@@ -11,7 +11,7 @@
 
 
 
-<title></title>
+<title>MySQL Commands</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -324,14 +324,83 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">MySQL Commands</h1>
 
 </div>
 
 
-<p>This repository contains usefull tools and data related to my work on forest products.</p>
-<p>Content is listed in <a href="index.html" class="uri">index.html</a>, generated from <a href="index.md" class="uri">index.md</a>.</p>
-<p>Site built with <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">rmarkdown websites</a>, using the command:</p>
-<pre><code>rmarkdown::render_site()</code></pre>
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/12/mysql-commands.html">my blog post on MySQL commands</a></p>
+<div id="mysql-setup-user-and-db-creation" class="section level1">
+<h1>MySQL Setup, user and db creation</h1>
+<p>As root, create a database and grant permissions to a new user To connect to the mysql client as root</p>
+<pre><code>mysql -u root -p </code></pre>
+<p>You’ll be prompted for the password.</p>
+<p>How to create a new user</p>
+<pre><code>CREATE USER &#39;newuser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;</code></pre>
+<p>Create a database</p>
+<pre><code>create database databasename </code></pre>
+<p>Connect to a database</p>
+<pre><code>connect databasename</code></pre>
+<p>Grant permissions to a user</p>
+<pre><code>GRANT ALL PRIVILEGES ON * . * TO &#39;newuser&#39;@&#39;localhost&#39;;</code></pre>
+<p>Then you can log out of mysql</p>
+<pre><code>quit </code></pre>
+</div>
+<div id="as-a-user" class="section level1">
+<h1>As a user</h1>
+<p>To connect to the mysql client as a user</p>
+<pre><code>mysql -u username -p </code></pre>
+<p>If you have the correct privileges, you can also create a database with a pipe. How to create a database</p>
+<pre><code>echo &quot;create database databasename&quot; | mysql -u username -p </code></pre>
+<p>Load a dump</p>
+<pre><code>cat file.sql | mysql -u username -p databasename</code></pre>
+</div>
+<div id="graphical-client" class="section level1">
+<h1>Graphical client</h1>
+<p>On Ubuntu, I used mysql navigator by shi bok jang. On Debian, I used mysql workbench</p>
+</div>
+<div id="more-on-users" class="section level1">
+<h1>More on users</h1>
+<p>Change password, as the user itself or as root:</p>
+<pre><code>SET PASSWORD FOR &#39;Karl&#39;@&#39;localhost&#39; = PASSWORD(&#39;cleartext password&#39;);</code></pre>
+<p>As root , list all users</p>
+<pre><code>SELECT User FROM mysql.user;</code></pre>
+<p>As root , delete a user</p>
+<pre><code>drop user Rasdfas@localhost;</code></pre>
+<p>MySQL documentation on adding user accounts.</p>
+</div>
+<div id="more-on-databases" class="section level1">
+<h1>More on databases</h1>
+<p>Commands below work if your shell user name is the same as your mysql user name. If it’s dufferent add -u username to the command.</p>
+<p>List all databases (in mysql client)</p>
+<pre><code>show databases </code></pre>
+<p>Delete a database (in the mysql client)</p>
+<pre><code>DROP database databasename;</code></pre>
+<p>Rename a database (in the shell)</p>
+<pre><code>mysqladmin -p create new_database
+mysqldump -p old_database | mysql -p new_database</code></pre>
+<p>After you have verified that everything is in order</p>
+<pre><code>drop database old_database</code></pre>
+<p>Move a table from one database to another</p>
+<pre><code>mysqldump -p database_1 table_name | mysql -p database_2 </code></pre>
+<p>Back up only part of a database with the where option</p>
+<pre><code>mysqldump -p -w&quot;productcode=440799&quot; tradeflows raw_flow_yearly &gt; sawnwood99raw.sql</code></pre>
+<p>Back up only the structure of a database (not the data)</p>
+<pre><code>mysqldump -p -d tradeflows &gt; tradeflows.sql</code></pre>
+<p>Load a dump into a database :</p>
+<pre><code>cat file.sql | mysql -u username -p databasename</code></pre>
+</div>
+<div id="configuration-file-my.cnf" class="section level1">
+<h1>Configuration file my.cnf</h1>
+<p>It’s not desirable to share user name and password in software disseminated over the internet. User name, password and database names can be placed under groups in the configuration file. For example for a given project enter this group in ~/.my.cnf</p>
+<pre><code>[project_name]
+
+user = user
+password = password
+host = localhost
+database = dbname</code></pre>
+<p>Then simply specify group=project_name to the client that accesses the database.</p>
+</div>
 
 
 

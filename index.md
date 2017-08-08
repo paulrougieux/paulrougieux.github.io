@@ -2,26 +2,15 @@
 title: "Paul's Lab"
 output: 
   html_document: 
-    toc: yes
+    toc: no
 ---
-
-This repository contains usefull tools and data about the forest sector.
-
-# Tools
-
-* [Git](docs/tools/git.html)
-* [Lyx](docs/tools/lyx.html)
+<img src="https://avatars0.githubusercontent.com/u/5647397?v=4&s=460" alt="Profile picture" class="profilepicture" style="width: 200px;"/>
 
 
-# Data
+My name is Paul Rougieux, I am a wood products engineer and forest economist.
 
-## Sources
+This site contains useful tools and data to analyse the forest sector.
 
-* Eurostat [forestry statistics](http://ec.europa.eu/eurostat/statistics-explained/index.php/Forestry_statistics)
-* FAO [forestry production and trade](http://www.fao.org/faostat/en/#data/FO), [forest products trade flows](http://www.fao.org/faostat/en/#data/FT)
 
-## Explore Forest Products Consumption
 
-* [Roundwood](docs/explore/Roundwood.html)
-* [Sawnwood](docs/explore/Sawnwood.html)
-* [Paper and Paperboard](docs/explore/Paper%20and%20Paperboard.html)
+
