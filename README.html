@@ -295,6 +295,9 @@ div.tocify {
     <li>
       <a href="mysql.html">MySQL</a>
     </li>
+    <li>
+      <a href="vim.html">Vim</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -329,9 +332,12 @@ div.tocify {
 
 
 <p>This repository contains usefull tools and data related to my work on forest products.</p>
-<p>Content is listed in <a href="index.html" class="uri">index.html</a>, generated from <a href="index.md" class="uri">index.md</a>.</p>
-<p>Site built with <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">rmarkdown websites</a>, using the command:</p>
+<p>Content is listed in <a href="index.html">index.html</a>, generated from <a href="index.md">index.md</a>.</p>
+<p>Site built with <a href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">rmarkdown websites</a>, using the R command:</p>
 <pre><code>rmarkdown::render_site()</code></pre>
+<p>or using the shell command:</p>
+<pre><code>cd ~/R/paulrougieux.github.io &amp;&amp; Rscript -e &quot;rmarkdown::render_site()&quot;</code></pre>
+<p>Previous command can be pasted as a bang! shell comamnd in vim with <code>CTRL + R + &quot;</code>.</p>
 
 
 

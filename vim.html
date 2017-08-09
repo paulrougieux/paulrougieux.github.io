@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Vim Commands</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Paul's lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Tools
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="git.html">Git</a>
+    </li>
+    <li>
+      <a href="lyx.html">Lyx</a>
+    </li>
+    <li>
+      <a href="mysql.html">MySQL</a>
+    </li>
+    <li>
+      <a href="vim.html">Vim</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datasources.html">Sources</a>
+    </li>
+    <li>
+      <a href="explore.html">Explore</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Vim Commands</h1>
+
+</div>
+
+
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my blog post on Vim commands</a></p>
+<div id="help" class="section level1">
+<h1>Help</h1>
+<pre><code>:help  -  vim help
+:help commandname - help on a particular command
+CTRL+] - jump to a highlighted topic
+CTRL+T - jump backwards</code></pre>
+</div>
+<div id="navigating" class="section level1">
+<h1>Navigating</h1>
+<div id="motion" class="section level2">
+<h2>Motion</h2>
+<pre><code>:help left-right-motion
+j,k move up down
+h,l move left right
+b,w move previous or next word
+ctrl+b, ctrl+d move page up or page down</code></pre>
+</div>
+<div id="search" class="section level2">
+<h2>Search</h2>
+<pre><code>&quot;/&quot; to search, then n forward and N backwards
+&quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</code></pre>
+<div id="markdown" class="section level3">
+<h3>Markdown</h3>
+<p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
+<pre><code>:g/^# /#</code></pre>
+<p>Then enter the line number to jump to that line.</p>
+</div>
+</div>
+<div id="line-numbers" class="section level2">
+<h2>Line numbers</h2>
+<p>Display line numbers</p>
+<pre><code>:set nu</code></pre>
+<p>Disable line numbers</p>
+<pre><code>:set nonu</code></pre>
+</div>
+<div id="working-directory" class="section level2">
+<h2>Working directory</h2>
+<p>Display the present working directory</p>
+<pre><code>:pwd</code></pre>
+<p><a href="http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file">Set working directory to the current file</a> (for all windows):</p>
+<pre><code>:cd %:p:h</code></pre>
+<p>Set working directory to the current file, for the current window only</p>
+<pre><code>:lcd %:p:h</code></pre>
+<p>In these commands, % gives the name of the current file, %:p gives its full path, and %:p:h gives its directory (the “head” of the full path).</p>
+<p>Automatically change the working directory to the file currently edited</p>
+<pre><code>set autochdir</code></pre>
+</div>
+</div>
+<div id="editing" class="section level1">
+<h1>Editing</h1>
+<div id="undo-redo" class="section level2">
+<h2>Undo redo</h2>
+<pre><code>u: undo last change (can be repeated to undo preceding commands)
+Ctrl-R: Redo changes which were undone (undo the undos). 
+Compare to &#39;.&#39; to repeat a previous change, at the current cursor position. Ctrl-R will redo a previously undone change, wherever the change occurred. </code></pre>
+</div>
+<div id="switch-between-navigation-and-editing-mode" class="section level2">
+<h2>Switch between navigation and editing mode</h2>
+<pre><code>A - move to the end of the line and switch to editing mode 
+I - switch to editing mode at the current place
+Escape - switch to navigation mode
+alt+h alt+j alt+k alt+l - switch to navigation mode and move
+alt+: - switch to navigation mode and send a command</code></pre>
+</div>
+<div id="replace-characters" class="section level2">
+<h2>Replace characters</h2>
+<p>Vim wiki on search and replace</p>
+<pre><code>:s/foo/bar/g Find each occurrence of &#39;foo&#39; (in the current line only), and replace it with &#39;bar&#39;. 
+
+:%s/foo/bar/g Find each occurrence of &#39;foo&#39; (in all lines), and replace it with &#39;bar&#39;.
+
+%s/option value=&quot;.*&quot;//g remove all beginnings of line. :%s/\option\n/, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</code></pre>
+</div>
+<div id="editing-a-whole-line" class="section level2">
+<h2>Editing a whole line</h2>
+<pre><code>dd to delete a whole line
+yy to copy a whole line
+p to paste the copied or deleted text after the current line or 
+P to paste the copied or deleted text before the current line </code></pre>
+</div>
+<div id="copy-cut-and-paste" class="section level2">
+<h2>Copy, cut and paste</h2>
+<pre><code>Position the cursor where you want to begin cutting.
+Press v (or upper case V if you want to cut whole lines).
+Move the cursor to the end of what you want to cut.
+Press d to cut or y to copy.
+Move to where you would like to paste.
+Press P to paste before the cursor, or p to paste after. </code></pre>
+</div>
+<div id="indentation" class="section level2">
+<h2>Indentation</h2>
+<p>Indentation replaced by spaces, add this to the ~/.vimrc file</p>
+<pre><code>set tabstop=4
+set expandtab
+set softtabstop=4
+set shiftwidth=4
+filetype indent on </code></pre>
+<p>More details on vim indentation in the python wiki.</p>
+</div>
+</div>
+<div id="multiple-files-and-windows" class="section level1">
+<h1>Multiple files and windows</h1>
+<pre><code>:e filename - edit another file 
+:ls         - show current buffers
+:b 2        - open buffer #2 in this window
+:b filename - open buffer #filename in this window
+:bd         - close the current buffer (! to forget changes)
+:bd filename -close a buffer by name </code></pre>
+<div id="window-split" class="section level2">
+<h2>Window split</h2>
+<pre><code>:sp[lit] filename  - split window and load another file
+:vs[plit] - same but split vertically  
+ctrl-w up arrow - move cursor up a window
+ctrl-w ctrl-w   - move cursor to another window (cycle)
+ctrl-w_         - maximize current window
+ctrl-w=         - make all equal size
+CTRL+z - suspend the process and get back to the shell
+fg - get back to vim</code></pre>
+<p><a href="https://robots.thoughtbot.com/vim-splits-move-faster-and-more-naturally#easier-split-navigations">Easier split navigations</a></p>
+<pre><code>nnoremap &lt;C-J&gt; &lt;C-W&gt;&lt;C-J&gt;
+nnoremap &lt;C-K&gt; &lt;C-W&gt;&lt;C-K&gt;
+nnoremap &lt;C-L&gt; &lt;C-W&gt;&lt;C-L&gt;
+nnoremap &lt;C-H&gt; &lt;C-W&gt;&lt;C-H&gt; </code></pre>
+<p>Natural split opening</p>
+<pre><code>set splitbelow
+set splitright</code></pre>
+</div>
+</div>
+<div id="tools" class="section level1">
+<h1>Tools</h1>
+<div id="shell" class="section level2">
+<h2>Shell</h2>
+<p><a href="https://www.linux.com/learn/vim-tips-working-external-commands">working with external commands</a> Start a shell</p>
+<pre><code>:shell</code></pre>
+<p>Then exit the shell normaly with <code>exit</code>.</p>
+<p>Use a Bang! to run a command directly, for example to see how many words are in the file, run:</p>
+<pre><code>:! wc %</code></pre>
+<p>You can paste a command from a file open in vim with <code>CTRL + R + &quot;</code>.</p>
+</div>
+<div id="vimdiff" class="section level2">
+<h2>Vimdiff</h2>
+<p>View differences between file1 and file2 (vim documentation)</p>
+<pre><code>vimdiff file1 file2</code></pre>
+</div>
+<div id="spell-check" class="section level2">
+<h2>spell check</h2>
+<p>Set spell check only in the local buffer:</p>
+<pre><code>:setlocal spell spelllang=en_gb   </code></pre>
+<p>Turn spell check off</p>
+<pre><code>:set nospell </code></pre>
+<p>Mark word as correct, this creates a spell file under /home/user/.vim/spell:</p>
+<pre><code>zg </code></pre>
+<p>Mark word as incorrect</p>
+<pre><code>zw</code></pre>
+</div>
+<div id="plugins-for-programming-languages" class="section level2">
+<h2>Plugins for programming languages</h2>
+<pre><code>Vim R
+Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)</code></pre>
+</div>
+</div>
+<div id="vimrc" class="section level1">
+<h1>.vimrc</h1>
+<p>Text colour. Add syntax highlight to your .vimrc</p>
+<pre><code>syntax enable</code></pre>
+<p>How to add a file extension to vim syntax highlight</p>
+<pre><code>au BufNewFile,BufRead *.dump set filetype=sql</code></pre>
+<p>I used it to display markdown files as text files:</p>
+<pre><code>au BufNewFile,BufRead *.md set filetype=txt</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
