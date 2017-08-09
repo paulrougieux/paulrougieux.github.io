@@ -9,13 +9,13 @@ output:
 # Introduction
 This page is the continuation of [my blog post on git commands](https://paulremote.blogspot.de/2013/10/git-commands.html).
 
-My typicall git use consist in archiving file modifications for personnal projects.
+My typicall git use consists in archiving file modifications for personnal projects.
 I never work in the master branch, always in a development branch called `develop`. 
 I merge `develop` in `master`, only before pushing modifications back to my remote archive.
 This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.
 
 
-# Basic git commands to start working asap
+# Basic git workflow 
 Initialise a new repository
     
     git init
@@ -71,13 +71,15 @@ Go back to the development branch
 
 Continue to modify files in the repository.
 
+
 # Uploading content to online git platforms
+
 Git is useful as a version management on its own. 
 But it's even more usefull when code can be back-up online. 
 Free public git storage is availble on Github. 
 Free public and private git storage are available on Bitbucket, with up to 5 collaborators on one project.
 
-Commands I've used to upload content to github.com/paul4forest/forestproductsdemand are:
+Commands I've used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:
 ```
     git remote add origin https://github.com/paul4forest/forestproductsdemand
     git pull origin master
@@ -118,6 +120,9 @@ Display a compact log for one file or one directory only
 
     git log --abbrev-commit --pretty=oneline path_to_file
 
+In case you entered a wrong commit message, you can edit the last commit message with:
+
+    git commit --amend 
 
 ## Reset whole folder
 Identify the commit identity in the log and copy its sha number. Then to go back to this state for the whole folder: 

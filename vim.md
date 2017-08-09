@@ -6,7 +6,7 @@ output:
     toc_float: true
 ---
 
-This page is the continuation of [my blog post on Vim commands](https://paulremote.blogspot.de/2014/07/vim-commands.html)
+This page is the continuation of [my blog post on Vim commands](https://paulremote.blogspot.de/2014/07/vim-commands.html).
 
 
 # Help
@@ -154,8 +154,8 @@ Natural split opening
 
 ## Shell
 
-[working with external commands](https://www.linux.com/learn/vim-tips-working-external-commands)
-Start a shell
+[Working with external commands](https://www.linux.com/learn/vim-tips-working-external-commands)
+explains how to start a shell:
 
     :shell
 
@@ -166,7 +166,15 @@ see how many words are in the file, run:
 
     :! wc %
 
-You can paste a command from a file open in vim with `CTRL + R + "`.
+You can copy (`y $`) and paste a command in the vim command line with `CTRL + R + "`.
+
+Insert text from a specified file into the current buffer:
+
+    :r textfile
+
+You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:
+
+    :r ! ls -1 /home/user/directory
 
 ## Vimdiff
 View differences between file1 and file2 (vim documentation)

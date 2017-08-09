@@ -2,8 +2,7 @@
 title: "Data Sources"
 output: 
   html_document: 
-    toc: yes
-    toc_float: true
+    toc: no 
 ---
 
 

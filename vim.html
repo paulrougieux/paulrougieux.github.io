@@ -332,7 +332,7 @@ div.tocify {
 </div>
 
 
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my blog post on Vim commands</a></p>
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my blog post on Vim commands</a>.</p>
 <div id="help" class="section level1">
 <h1>Help</h1>
 <pre><code>:help  -  vim help
@@ -465,12 +465,16 @@ set splitright</code></pre>
 <h1>Tools</h1>
 <div id="shell" class="section level2">
 <h2>Shell</h2>
-<p><a href="https://www.linux.com/learn/vim-tips-working-external-commands">working with external commands</a> Start a shell</p>
+<p><a href="https://www.linux.com/learn/vim-tips-working-external-commands">Working with external commands</a> explains how to start a shell:</p>
 <pre><code>:shell</code></pre>
 <p>Then exit the shell normaly with <code>exit</code>.</p>
 <p>Use a Bang! to run a command directly, for example to see how many words are in the file, run:</p>
 <pre><code>:! wc %</code></pre>
-<p>You can paste a command from a file open in vim with <code>CTRL + R + &quot;</code>.</p>
+<p>You can copy (<code>y $</code>) and paste a command in the vim command line with <code>CTRL + R + &quot;</code>.</p>
+<p>Insert text from a specified file into the current buffer:</p>
+<pre><code>:r textfile</code></pre>
+<p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:</p>
+<pre><code>:r ! ls -1 /home/user/directory</code></pre>
 </div>
 <div id="vimdiff" class="section level2">
 <h2>Vimdiff</h2>
