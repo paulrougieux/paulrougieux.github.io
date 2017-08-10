@@ -206,6 +206,8 @@ Mark word as incorrect
     Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)
 
 # .vimrc
+See also [setup/.vimrc](setup/.vimrc).
+
 Text colour.
 Add syntax highlight to your .vimrc
 

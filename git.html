@@ -335,10 +335,10 @@ div.tocify {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog post on git commands</a>.</p>
-<p>My typicall git use consist in archiving file modifications for personnal projects. I never work in the master branch, always in a development branch called <code>develop</code>. I merge <code>develop</code> in <code>master</code>, only before pushing modifications back to my remote archive. This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.</p>
+<p>My typicall git use consists in archiving file modifications for personnal projects. I never work in the master branch, always in a development branch called <code>develop</code>. I merge <code>develop</code> in <code>master</code>, only before pushing modifications back to my remote archive. This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.</p>
 </div>
-<div id="basic-git-commands-to-start-working-asap" class="section level1">
-<h1>Basic git commands to start working asap</h1>
+<div id="basic-git-workflow" class="section level1">
+<h1>Basic git workflow</h1>
 <p>Initialise a new repository</p>
 <pre><code>git init</code></pre>
 <p>Change to the development branch</p>
@@ -370,7 +370,7 @@ git merge develop</code></pre>
 <div id="uploading-content-to-online-git-platforms" class="section level1">
 <h1>Uploading content to online git platforms</h1>
 <p>Git is useful as a version management on its own. But it’s even more usefull when code can be back-up online. Free public git storage is availble on Github. Free public and private git storage are available on Bitbucket, with up to 5 collaborators on one project.</p>
-<p>Commands I’ve used to upload content to github.com/paul4forest/forestproductsdemand are:</p>
+<p>Commands I’ve used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:</p>
 <pre><code>    git remote add origin https://github.com/paul4forest/forestproductsdemand
     git pull origin master
     git add
@@ -398,6 +398,8 @@ git merge develop</code></pre>
 <pre><code>git log origin/master </code></pre>
 <p>Display a compact log for one file or one directory only</p>
 <pre><code>git log --abbrev-commit --pretty=oneline path_to_file</code></pre>
+<p>In case you entered a wrong commit message, you can edit the last commit message with:</p>
+<pre><code>git commit --amend </code></pre>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>
