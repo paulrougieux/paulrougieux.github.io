@@ -9,6 +9,8 @@ navbar:
     - text: "Tools"
       icon: fa-gear
       menu:
+        - text: "Bash"
+          href: bash.html
         - text: "Git"
           href: git.html
         - text: "Lyx"

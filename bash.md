@@ -1,0 +1,360 @@
+---
+title: "Bash Commands"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+# Introduction
+This page is the continuation of [my blog post on GNU-Linux bash shell commands](https://paulremote.blogspot.de/2014/01/linux-shell-commands.html).
+
+
+Linux is the kernel of the operating system on top of which other programs are built. A detailed list of GNU core utilities is available under the command :
+
+    info coreutils 
+
+The page below also contains many commands from external tools 
+that are not part of the GNU project.
+
+# Files 
+
+
+## Get information about a file
+determine file type and encoding
+
+    file filename
+
+list a directory
+
+    ls
+    ls -R #list subdirectories recursively
+    ls -lh #sizes in human readable format
+
+Display the [last modification date of a file](https://stackoverflow.com/questions/16391208/print-a-files-last-modified-date-in-bash)
+
+    date -r <filename>
+    ls -l <filename>
+    
+More file information
+
+    stat <filename>
+    
+## Find files
+Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).
+
+    find . -name "*.pdf" 
+
+    find . -mtime 0 # modified in the last 24 hours
+
+Find files in the whole system
+
+    locate filename
+
+## File and folder compression
+Decompress a file
+
+     gunzip file.gz
+
+How do I compress a whole directory?
+
+    tar -zcvf archive-name.tar.gz directory-name 
+
+Where
+
+    -z: Compress archive using gzip program
+    -c: Create archive
+    -v: Verbose i.e display progress while creating archive
+    -f: Archive File name
+
+To extract content from the archive in the current directory
+
+    tar -zxvf archive-name.tar.gz 
+
+## Rename files
+For example to rename all upper-case .JPG extension into lower-case .jpg extension.
+
+    rename 's/\.JPG$/\.jpg/' *.JPG
+
+Change file permission:
+
+    chmod a=rwx filename
+    chmod 777 filename 
+
+Change file permissions recursively:
+
+    chmod 755 directoryname
+
+Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.
+
+    Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as "rwxr-xr-x" in ls -l. 
+    The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
+
+# Text files
+Count the number of lines in a file
+
+    wc -l filename.txt 
+
+Count occurrences of a word in a file
+
+    grep -roh word filename.txt  | wc -w
+
+Remove duplicated lines from a file
+
+    awk '!a[$0]++' input.txt 
+
+Search with Grep
+
+     grep "text" file.txt
+
+Awk tutorial, for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
+
+    awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
+
+Regexp match begining of and end of line with ^ and $.
+
+Follow the end of a log file as it is written 
+
+    tail -f
+
+See tab and end of line characters in a text file
+
+    cat -te filename |less 
+
+## Manipulate strings in text files
+Replace strings
+
+    first="I love Suzy and Mary"
+    second="Sara"
+    first=${first/Suzy/$second}
+
+Replace strings with sed
+
+    sed -i  's/pattern/replacement/g' bli.txt 
+
+    sed -i  's/^.*\://g' input_file.txt # edit file in place
+    grep EMAIL input_file.txt |sed  's/^.*\://g' > output_file.txt 
+
+Replace strings with perl in a git repository
+
+    git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
+
+# PDF files
+Commands based on the poppler library for PDF manipulation.
+Search a text pattern in all PDF files present in a directory:
+
+    pdfgrep pattern *.pdf
+
+ Merge multiple PDF into one:
+
+    pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf
+
+Alternatively, pdftk can be used to merge PDF files
+
+    pdftk input1.pdf input2.pdf cat output output.pdf
+
+# Videos and audio
+Install youtube-dl using pip:
+
+     sudo pip install --upgrade youtube_dl
+
+Download a video from youtube :
+
+    youtube-dl video_url
+
+Download only the audio in an .mp3 format
+
+    youtube-dl --extract-audio --audio-format mp3 video_url
+
+# Users
+Check your user id
+
+    id 
+
+What group do you belong to as a user
+
+    groups
+
+Add a new user
+
+    useradd username
+
+Set a password for the new user
+
+    passwd username 
+
+Delete a user
+
+    userdel username
+
+Temporary log in as a given user
+
+    su username
+
+Add a user to the super users
+
+    adduser username sudo
+
+That user needs to re-log into the shell for the change to take effect.
+
+Show all users
+
+    getent passwd
+
+Show all groups
+
+    getent group 
+
+
+# System
+OS release
+
+    less /etc/os-release 
+
+Disk usage
+
+    du -h 
+
+Display available space on drives
+
+    df -h
+
+Display available RAM memory
+
+    less /proc/meminfo
+
+
+Install a program
+
+    sudo apt-get install 
+
+ System name
+
+    uname -a
+
+    file /sbin/init
+
+    hostname -f 
+
+Start and quit a super user session
+
+    su
+    exit 
+
+Last time the system was started
+
+    last reboot 
+    last
+
+Show environment variables
+
+    printenv 
+
+# Job handling
+List
+
+    jobs
+
+Bring a job to the foreground
+
+    fg job_number
+
+Run a job in the background. A command followed by an & will run in the background.
+
+Stop a job
+
+    CTRL ^ Z
+
+Quit a job
+
+     CTRL ^ C
+
+Kill a malfunctionning program:
+
+    kill process_id
+
+Find a program id with:
+
+    ps aux
+
+Kill a graphical program, by clicking on it:
+
+     xkill
+
+
+# Secure shell
+log into a remote machine
+
+    ssh user@remote_machine
+
+Copy a local file to a file on the remote machine
+
+    scp local_file_name user@remote_machine:path_to_file/file_name
+
+Copy a file from the remote machine to a local file
+
+    scp user@remote_machine:path_to_file/file_name  local_file_name
+
+Copy a full directory (dmouraty) from the remote machine:
+
+     scp -rp user@dest:/path destdirectory
+
+# Alias
+
+    alias ll="ls -lh" 
+
+
+Based on how can i sort du-h output by size
+
+    alias du='du -hd1 | sort -h -r'
+
+
+You can place those commands in your ~/.bashrc to create a permanent alias.
+bashrc:
+
+>    "You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly."
+
+# .bash_profile and .bashrc
+These are places where a user can turn of the system BEEP :
+
+    setterm -blength 0
+
+.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.
+
+Debian Dotfiles
+
+    "Now, since bash is being invoked as a login shell (with name "-bash", a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that."
+
+    [...] "You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  "
+
+In .bashrc a user can set environment variables, define alias (see above).
+
+# Keyboard
+bash french blogger recommended a simple shell command to change keyboard layout :
+
+    sudo loadkeys fr
+
+fr-keyboard on Debian wiki for a more permanent system configuration and use in GUI apps. Switching between keyboads can then be done with:
+
+    setxkbmap de
+    setxkbmap fr
+
+Information about the system
+Debian-Admin Finding out basic information about your Hardware:
+
+    cat /proc/meminfo
+    cat /proc/cpuinfo
+
+Find your Debian version
+
+    cat /etc/debian_version
+    lsb_release -a
+
+Shortcuts
+Keyboard shortcuts for bash  for example Ctrl+A to go to the beginning of a line.
+Documentation
+
+    Creating and running bash scripts
+    Unofficial Ubuntu starter guide.
+
+

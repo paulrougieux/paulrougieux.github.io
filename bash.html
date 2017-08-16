@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>Bash Commands</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-1.1/highlight.js"></script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs && document.readyState && document.readyState === "complete") {
+   window.setTimeout(function() {
+      hljs.initHighlighting();
+   }, 0);
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Paul's lab</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    <span class="fa fa-gear"></span>
+     
+    Tools
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="bash.html">Bash</a>
+    </li>
+    <li>
+      <a href="git.html">Git</a>
+    </li>
+    <li>
+      <a href="lyx.html">Lyx</a>
+    </li>
+    <li>
+      <a href="mysql.html">MySQL</a>
+    </li>
+    <li>
+      <a href="vim.html">Vim</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Data
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="datasources.html">Sources</a>
+    </li>
+    <li>
+      <a href="explore.html">Explore</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">Bash Commands</h1>
+
+</div>
+
+
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/01/linux-shell-commands.html">my blog post on GNU-Linux bash shell commands</a>.</p>
+<p>Linux is the kernel of the operating system on top of which other programs are built. A detailed list of GNU core utilities is available under the command :</p>
+<pre><code>info coreutils </code></pre>
+<p>The page below also contains many commands from external tools that are not part of the GNU project.</p>
+</div>
+<div id="files" class="section level1">
+<h1>Files</h1>
+<div id="get-information-about-a-file" class="section level2">
+<h2>Get information about a file</h2>
+<p>determine file type and encoding</p>
+<pre><code>file filename</code></pre>
+<p>list a directory</p>
+<pre><code>ls
+ls -R #list subdirectories recursively
+ls -lh #sizes in human readable format</code></pre>
+<p>Display the <a href="https://stackoverflow.com/questions/16391208/print-a-files-last-modified-date-in-bash">last modification date of a file</a></p>
+<pre><code>date -r &lt;filename&gt;
+ls -l &lt;filename&gt;</code></pre>
+<p>More file information</p>
+<pre><code>stat &lt;filename&gt;</code></pre>
+</div>
+<div id="find-files" class="section level2">
+<h2>Find files</h2>
+<p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).</p>
+<pre><code>find . -name &quot;*.pdf&quot; 
+
+find . -mtime 0 # modified in the last 24 hours</code></pre>
+<p>Find files in the whole system</p>
+<pre><code>locate filename</code></pre>
+</div>
+<div id="file-and-folder-compression" class="section level2">
+<h2>File and folder compression</h2>
+<p>Decompress a file</p>
+<pre><code> gunzip file.gz</code></pre>
+<p>How do I compress a whole directory?</p>
+<pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
+<p>Where</p>
+<pre><code>-z: Compress archive using gzip program
+-c: Create archive
+-v: Verbose i.e display progress while creating archive
+-f: Archive File name</code></pre>
+<p>To extract content from the archive in the current directory</p>
+<pre><code>tar -zxvf archive-name.tar.gz </code></pre>
+</div>
+<div id="rename-files" class="section level2">
+<h2>Rename files</h2>
+<p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
+<pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
+<p>Change file permission:</p>
+<pre><code>chmod a=rwx filename
+chmod 777 filename </code></pre>
+<p>Change file permissions recursively:</p>
+<pre><code>chmod 755 directoryname</code></pre>
+<p>Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.</p>
+<pre><code>Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as &quot;rwxr-xr-x&quot; in ls -l. 
+The default for document files on Debian seems to be chmod 644, visible as &quot;-rw-r--r--&quot; in ls -l.</code></pre>
+</div>
+</div>
+<div id="text-files" class="section level1">
+<h1>Text files</h1>
+<p>Count the number of lines in a file</p>
+<pre><code>wc -l filename.txt </code></pre>
+<p>Count occurrences of a word in a file</p>
+<pre><code>grep -roh word filename.txt  | wc -w</code></pre>
+<p>Remove duplicated lines from a file</p>
+<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
+<p>Search with Grep</p>
+<pre><code> grep &quot;text&quot; file.txt</code></pre>
+<p>Awk tutorial, for example filter a large file for lines that have a third field (product code) starting with 44, keep the header line:</p>
+<pre><code>awk -F, &#39;$3 ~ /^44/||NR==1&#39; nc201501.dat|less</code></pre>
+<p>Regexp match begining of and end of line with ^ and $.</p>
+<p>Follow the end of a log file as it is written</p>
+<pre><code>tail -f</code></pre>
+<p>See tab and end of line characters in a text file</p>
+<pre><code>cat -te filename |less </code></pre>
+<div id="manipulate-strings-in-text-files" class="section level2">
+<h2>Manipulate strings in text files</h2>
+<p>Replace strings</p>
+<pre><code>first=&quot;I love Suzy and Mary&quot;
+second=&quot;Sara&quot;
+first=${first/Suzy/$second}</code></pre>
+<p>Replace strings with sed</p>
+<pre><code>sed -i  &#39;s/pattern/replacement/g&#39; bli.txt 
+
+sed -i  &#39;s/^.*\://g&#39; input_file.txt # edit file in place
+grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code></pre>
+<p>Replace strings with perl in a git repository</p>
+<pre><code>git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;</code></pre>
+</div>
+</div>
+<div id="pdf-files" class="section level1">
+<h1>PDF files</h1>
+<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
+<pre><code>pdfgrep pattern *.pdf</code></pre>
+<p>Merge multiple PDF into one:</p>
+<pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
+<p>Alternatively, pdftk can be used to merge PDF files</p>
+<pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
+</div>
+<div id="videos-and-audio" class="section level1">
+<h1>Videos and audio</h1>
+<p>Install youtube-dl using pip:</p>
+<pre><code> sudo pip install --upgrade youtube_dl</code></pre>
+<p>Download a video from youtube :</p>
+<pre><code>youtube-dl video_url</code></pre>
+<p>Download only the audio in an .mp3 format</p>
+<pre><code>youtube-dl --extract-audio --audio-format mp3 video_url</code></pre>
+</div>
+<div id="users" class="section level1">
+<h1>Users</h1>
+<p>Check your user id</p>
+<pre><code>id </code></pre>
+<p>What group do you belong to as a user</p>
+<pre><code>groups</code></pre>
+<p>Add a new user</p>
+<pre><code>useradd username</code></pre>
+<p>Set a password for the new user</p>
+<pre><code>passwd username </code></pre>
+<p>Delete a user</p>
+<pre><code>userdel username</code></pre>
+<p>Temporary log in as a given user</p>
+<pre><code>su username</code></pre>
+<p>Add a user to the super users</p>
+<pre><code>adduser username sudo</code></pre>
+<p>That user needs to re-log into the shell for the change to take effect.</p>
+<p>Show all users</p>
+<pre><code>getent passwd</code></pre>
+<p>Show all groups</p>
+<pre><code>getent group </code></pre>
+</div>
+<div id="system" class="section level1">
+<h1>System</h1>
+<p>OS release</p>
+<pre><code>less /etc/os-release </code></pre>
+<p>Disk usage</p>
+<pre><code>du -h </code></pre>
+<p>Display available space on drives</p>
+<pre><code>df -h</code></pre>
+<p>Display available RAM memory</p>
+<pre><code>less /proc/meminfo</code></pre>
+<p>Install a program</p>
+<pre><code>sudo apt-get install </code></pre>
+<p>System name</p>
+<pre><code>uname -a
+
+file /sbin/init
+
+hostname -f </code></pre>
+<p>Start and quit a super user session</p>
+<pre><code>su
+exit </code></pre>
+<p>Last time the system was started</p>
+<pre><code>last reboot 
+last</code></pre>
+<p>Show environment variables</p>
+<pre><code>printenv </code></pre>
+</div>
+<div id="job-handling" class="section level1">
+<h1>Job handling</h1>
+<p>List</p>
+<pre><code>jobs</code></pre>
+<p>Bring a job to the foreground</p>
+<pre><code>fg job_number</code></pre>
+<p>Run a job in the background. A command followed by an &amp; will run in the background.</p>
+<p>Stop a job</p>
+<pre><code>CTRL ^ Z</code></pre>
+<p>Quit a job</p>
+<pre><code> CTRL ^ C</code></pre>
+<p>Kill a malfunctionning program:</p>
+<pre><code>kill process_id</code></pre>
+<p>Find a program id with:</p>
+<pre><code>ps aux</code></pre>
+<p>Kill a graphical program, by clicking on it:</p>
+<pre><code> xkill</code></pre>
+</div>
+<div id="secure-shell" class="section level1">
+<h1>Secure shell</h1>
+<p>log into a remote machine</p>
+<pre><code>ssh user@remote_machine</code></pre>
+<p>Copy a local file to a file on the remote machine</p>
+<pre><code>scp local_file_name user@remote_machine:path_to_file/file_name</code></pre>
+<p>Copy a file from the remote machine to a local file</p>
+<pre><code>scp user@remote_machine:path_to_file/file_name  local_file_name</code></pre>
+<p>Copy a full directory (dmouraty) from the remote machine:</p>
+<pre><code> scp -rp user@dest:/path destdirectory</code></pre>
+</div>
+<div id="alias" class="section level1">
+<h1>Alias</h1>
+<pre><code>alias ll=&quot;ls -lh&quot; </code></pre>
+<p>Based on how can i sort du-h output by size</p>
+<pre><code>alias du=&#39;du -hd1 | sort -h -r&#39;</code></pre>
+<p>You can place those commands in your ~/.bashrc to create a permanent alias. bashrc:</p>
+<blockquote>
+<p>“You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly.”</p>
+</blockquote>
+</div>
+<div id="bash_profile-and-.bashrc" class="section level1">
+<h1>.bash_profile and .bashrc</h1>
+<p>These are places where a user can turn of the system BEEP :</p>
+<pre><code>setterm -blength 0</code></pre>
+<p>.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.</p>
+<p>Debian Dotfiles</p>
+<pre><code>&quot;Now, since bash is being invoked as a login shell (with name &quot;-bash&quot;, a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that.&quot;
+
+[...] &quot;You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  &quot;</code></pre>
+<p>In .bashrc a user can set environment variables, define alias (see above).</p>
+</div>
+<div id="keyboard" class="section level1">
+<h1>Keyboard</h1>
+<p>bash french blogger recommended a simple shell command to change keyboard layout :</p>
+<pre><code>sudo loadkeys fr</code></pre>
+<p>fr-keyboard on Debian wiki for a more permanent system configuration and use in GUI apps. Switching between keyboads can then be done with:</p>
+<pre><code>setxkbmap de
+setxkbmap fr</code></pre>
+<p>Information about the system Debian-Admin Finding out basic information about your Hardware:</p>
+<pre><code>cat /proc/meminfo
+cat /proc/cpuinfo</code></pre>
+<p>Find your Debian version</p>
+<pre><code>cat /etc/debian_version
+lsb_release -a</code></pre>
+<p>Shortcuts Keyboard shortcuts for bash for example Ctrl+A to go to the beginning of a line. Documentation</p>
+<pre><code>Creating and running bash scripts
+Unofficial Ubuntu starter guide.</code></pre>
+</div>
+
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
