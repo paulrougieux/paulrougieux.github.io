@@ -107,7 +107,7 @@ Search with Grep
 
      grep "text" file.txt
 
-Awk tutorial, for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
+[Awk tutorial](http://www.grymoire.com/Unix/Awk.html#uh-11), for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
 
     awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
 

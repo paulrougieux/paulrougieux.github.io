@@ -9,9 +9,11 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Paul Rougieux" />
 
+<meta name="date" content="2017-08-17" />
 
-<title>Explore Data</title>
+<title>R Commands</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -25,6 +27,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -333,18 +336,139 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Explore Data</h1>
+<h1 class="title toc-ignore">R Commands</h1>
+<h4 class="author"><em>Paul Rougieux</em></h4>
+<h4 class="date"><em>17 August 2017</em></h4>
 
 </div>
 
 
-<div id="explore-forest-products-consumption-data" class="section level2">
-<h2>Explore forest products consumption data</h2>
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/04/r-commands.html">my blog post on R commands</a>. On the blog, see also <a href="http://paulremote.blogspot.fr/2013/10/why-r.html">why use R</a> and the <a href="http://paulremote.blogspot.com/feeds/posts/default/-/R">RSS feed of posts labelled R</a>.</p>
+<p>See also documentation at:</p>
 <ul>
-<li><a href="docs/explore/Roundwood.html">Roundwood</a></li>
-<li><a href="docs/explore/Sawnwood.html">Sawnwood</a></li>
-<li><a href="docs/explore/Paper%20and%20Paperboard.html">Paper and Paperboard</a></li>
+<li>The Comprehensive R Archive Network <a href="https://cran.r-project.org/manuals.html">manuals</a></li>
+<li>Tidyverse <a href="http://www.tidyverse.org/packages/">packages</a></li>
 </ul>
+<div id="set-operations" class="section level1">
+<h1>Set operations</h1>
+<pre class="r"><code>x = letters[1:3]
+y = letters[3:5]
+union(x, y)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
+<pre class="r"><code>intersect(x, y)</code></pre>
+<pre><code>## [1] &quot;c&quot;</code></pre>
+<pre class="r"><code>setdiff(x, y)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot;</code></pre>
+<pre class="r"><code>setdiff(y, x)</code></pre>
+<pre><code>## [1] &quot;d&quot; &quot;e&quot;</code></pre>
+<pre class="r"><code>setequal(x, y)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+</div>
+<div id="information-about-your-r-system" class="section level1">
+<h1>Information about your R system</h1>
+<pre class="r"><code>sessionInfo()
+installed.packages()</code></pre>
+</div>
+<div id="handling-files" class="section level1">
+<h1>Handling files</h1>
+<pre><code>getwd()
+list.files(tempdir()) 
+dir.create(&quot;blabla&quot;)
+read.csv(&quot;data.csv&quot;)</code></pre>
+</div>
+<div id="lists" class="section level1">
+<h1>Lists</h1>
+<p>Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.</p>
+<pre class="r"><code>l1 &lt;- list(a=&quot;a&quot;, b=&quot;2,&quot;, c=&quot;pi+2i&quot;)
+str(l1)</code></pre>
+<pre><code>## List of 3
+##  $ a: chr &quot;a&quot;
+##  $ b: chr &quot;2,&quot;
+##  $ c: chr &quot;pi+2i&quot;</code></pre>
+<pre class="r"><code>unlist(l1) # a character vector </code></pre>
+<pre><code>##       a       b       c 
+##     &quot;a&quot;    &quot;2,&quot; &quot;pi+2i&quot;</code></pre>
+<pre class="r"><code>str(unlist(l1))</code></pre>
+<pre><code>##  Named chr [1:3] &quot;a&quot; &quot;2,&quot; &quot;pi+2i&quot;
+##  - attr(*, &quot;names&quot;)= chr [1:3] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
+</div>
+<div id="strings" class="section level1">
+<h1>Strings</h1>
+<pre class="r"><code>message(&quot;Using the following letters: &quot;, paste(letters, collapse=&quot;,&quot;), &quot;.&quot;)</code></pre>
+<pre><code>## Using the following letters: a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z.</code></pre>
+</div>
+<div id="s3-methods" class="section level1">
+<h1>S3 methods</h1>
+<p>x&lt;-1</p>
+<p>List all available methods for a class:</p>
+<pre><code>methods(class=&quot;lm&quot;) </code></pre>
+</div>
+<div id="one-liners" class="section level1">
+<h1>One liners</h1>
+<p>Remove all objects in the workspace except one :</p>
+<pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) </code></pre>
+</div>
+<div id="knitr" class="section level1">
+<h1>knitr</h1>
+<p>Those 2 commands are different. Sets the options for chunk, within a knitr chunk inside the .Rmd document</p>
+<pre><code>opts_chunk$set(fig.width=10)</code></pre>
+<p>Sets the options for knitr outside the .Rmd document</p>
+<pre><code>opts_knit$set()</code></pre>
+</div>
+<div id="dplyr" class="section level1">
+<h1>dplyr</h1>
+<p>pipes</p>
+<pre class="r"><code>library(dplyr)
+cars %&gt;%
+    group_by(speed) %&gt;%
+    print() %&gt;% # works because the print function returns its argument
+    summarise(numberofcars = n(),
+              min = min(dist),
+              mean = mean(dist),
+              max = max(dist)) </code></pre>
+<pre><code>## # A tibble: 50 x 2
+## # Groups:   speed [19]
+##    speed  dist
+##    &lt;dbl&gt; &lt;dbl&gt;
+##  1     4     2
+##  2     4    10
+##  3     7     4
+##  4     7    22
+##  5     8    16
+##  6     9    10
+##  7    10    18
+##  8    10    26
+##  9    10    34
+## 10    11    17
+## # ... with 40 more rows</code></pre>
+<pre><code>## # A tibble: 19 x 5
+##    speed numberofcars   min     mean   max
+##    &lt;dbl&gt;        &lt;int&gt; &lt;dbl&gt;    &lt;dbl&gt; &lt;dbl&gt;
+##  1     4            2     2  6.00000    10
+##  2     7            2     4 13.00000    22
+##  3     8            1    16 16.00000    16
+##  4     9            1    10 10.00000    10
+##  5    10            3    18 26.00000    34
+##  6    11            2    17 22.50000    28
+##  7    12            4    14 21.50000    28
+##  8    13            4    26 35.00000    46
+##  9    14            4    26 50.50000    80
+## 10    15            3    20 33.33333    54
+## 11    16            2    32 36.00000    40
+## 12    17            3    32 40.66667    50
+## 13    18            4    42 64.50000    84
+## 14    19            3    36 50.00000    68
+## 15    20            5    32 50.40000    64
+## 16    22            1    66 66.00000    66
+## 17    23            1    54 54.00000    54
+## 18    24            4    70 93.75000   120
+## 19    25            1    85 85.00000    85</code></pre>
+<p>group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.</p>
+</div>
+<div id="plotting-with-ggplot2" class="section level1">
+<h1>Plotting with ggplot2</h1>
+<pre><code>geom_bar
+geom_tile + a gradient produce heat maps</code></pre>
 </div>
 
 

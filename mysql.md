@@ -8,9 +8,9 @@ output:
 
 This page is the continuation of [my blog post on MySQL commands](https://paulremote.blogspot.de/2013/12/mysql-commands.html)
 
-# MySQL Setup, user and db creation
+# As root, setup users and create databases
  As root, create a database and grant permissions to a new user
-To connect to the mysql client as root
+To connect to the mysql client as root, in the shell
 
     mysql -u root -p 
 
@@ -18,23 +18,23 @@ You'll be prompted for the password.
 
 How to create a new user
 
-    CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
+    mysql> CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
 
 Create a database
 
-    create database databasename 
+    mysql> create database databasename;
 
 Connect to a database
 
-    connect databasename
+    mysql> connect databasename;
 
  Grant permissions to a user
 
-    GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
+    mysql> GRANT ALL PRIVILEGES ON * . * TO 'newuser'@'localhost';
 
 Then you can log out of mysql
 
-    quit 
+    mysql> quit;
 
 
 # As a user 
@@ -73,15 +73,16 @@ MySQL documentation on adding user accounts.
 
 # More on databases
 
-Commands below work if your shell user name is the same as your mysql user name. If it's dufferent add -u username to the command.
+`mysqldump` and `mysqladmin` commands below work if your shell user name is the same as your mysql user name. If it's different add -u username to the command.
+If you have configured `~/.my.cnf` (see below)  you don't even need the `-p` switch.
 
 List all databases (in mysql client)
 
-    show databases 
+    mysql> show databases; 
 
 Delete a database (in the mysql client)
 
-    DROP database databasename;
+    mysql> DROP database databasename;
 
 Rename a database  (in the shell)
 
@@ -107,6 +108,12 @@ Back up only the structure of a database (not the data)
 Load a dump into a database :
 
     cat file.sql | mysql -u username -p databasename
+
+## Database engines
+
+Show database engines available:
+
+    mysql> show engines;
 
 # Configuration file my.cnf
 It's not desirable to share user name and password in software disseminated over the internet. User name, password and database names can be placed under groups in the configuration file. For example for a given project enter this group in ~/.my.cnf

@@ -1,0 +1,119 @@
+---
+title: "R Commands"
+author: "Paul Rougieux"
+date: "17 August 2017"
+output: 
+  html_document: 
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+This page is the continuation of [my blog post on R commands](https://paulremote.blogspot.de/2014/04/r-commands.html). 
+On the blog, see also [why use R](http://paulremote.blogspot.fr/2013/10/why-r.html) and the [RSS feed of posts labelled R](http://paulremote.blogspot.com/feeds/posts/default/-/R).
+
+See also documentation at:
+
+ * The Comprehensive R Archive Network [manuals](https://cran.r-project.org/manuals.html)
+ * Tidyverse [packages](http://www.tidyverse.org/packages/)
+ 
+
+
+# Set operations
+
+```{r}
+x = letters[1:3]
+y = letters[3:5]
+union(x, y)
+intersect(x, y)
+setdiff(x, y)
+setdiff(y, x)
+setequal(x, y)
+```
+
+
+
+# Information about your R system
+```{r eval=FALSE}
+sessionInfo()
+installed.packages()
+```
+
+
+# Handling files
+
+    getwd()
+    list.files(tempdir()) 
+    dir.create("blabla")
+    read.csv("data.csv")
+
+# Lists
+Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.
+```{r}
+l1 <- list(a="a", b="2,", c="pi+2i")
+str(l1)
+unlist(l1) # a character vector 
+str(unlist(l1))
+```
+
+
+# Strings
+
+```{r}
+message("Using the following letters: ", paste(letters, collapse=","), ".")
+```
+
+# S3 methods
+x<-1
+
+
+
+List all available methods for a class:
+
+    methods(class="lm") 
+
+
+# One liners
+Remove all objects in the workspace except one :
+
+    rm(list=ls()[!ls()=="object_to_keep"]) 
+
+
+# knitr
+Those 2 commands are different.
+Sets the options for chunk, within a knitr chunk inside the .Rmd document
+
+    opts_chunk$set(fig.width=10)
+
+ Sets the options for knitr outside the .Rmd document
+
+    opts_knit$set()
+
+
+# dplyr
+pipes
+
+```{r warning=FALSE, message=FALSE}
+library(dplyr)
+cars %>%
+    group_by(speed) %>%
+    print() %>% # works because the print function returns its argument
+    summarise(numberofcars = n(),
+              min = min(dist),
+              mean = mean(dist),
+              max = max(dist)) 
+```
+
+
+
+group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.
+
+
+# Plotting with ggplot2
+
+    geom_bar
+    geom_tile + a gradient produce heat maps
+

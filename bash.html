@@ -299,6 +299,9 @@ div.tocify {
       <a href="mysql.html">MySQL</a>
     </li>
     <li>
+      <a href="R.html">R</a>
+    </li>
+    <li>
       <a href="vim.html">Vim</a>
     </li>
   </ul>
@@ -405,7 +408,7 @@ The default for document files on Debian seems to be chmod 644, visible as &quot
 <pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 <p>Search with Grep</p>
 <pre><code> grep &quot;text&quot; file.txt</code></pre>
-<p>Awk tutorial, for example filter a large file for lines that have a third field (product code) starting with 44, keep the header line:</p>
+<p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk tutorial</a>, for example filter a large file for lines that have a third field (product code) starting with 44, keep the header line:</p>
 <pre><code>awk -F, &#39;$3 ~ /^44/||NR==1&#39; nc201501.dat|less</code></pre>
 <p>Regexp match begining of and end of line with ^ and $.</p>
 <p>Follow the end of a log file as it is written</p>

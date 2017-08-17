@@ -17,6 +17,8 @@ navbar:
           href: lyx.html
         - text: "MySQL"
           href: mysql.html
+        - text: "R"
+          href: R.html
         - text: "Vim"
           href: vim.html
     - text: "Data"
