@@ -25,6 +25,7 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-1.1/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -338,6 +339,7 @@ div.tocify {
 </div>
 
 
+<pre class="r"><code>knitr::opts_chunk$set(eval=FALSE)</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/01/linux-shell-commands.html">my blog post on GNU-Linux bash shell commands</a>.</p>
@@ -352,9 +354,9 @@ div.tocify {
 <p>determine file type and encoding</p>
 <pre><code>file filename</code></pre>
 <p>list a directory</p>
-<pre><code>ls
-ls -R #list subdirectories recursively
-ls -lh #sizes in human readable format</code></pre>
+<pre class="bash"><code>ls
+ls -R # list subdirectories recursively
+ls -lh # sizes in human readable format</code></pre>
 <p>Display the <a href="https://stackoverflow.com/questions/16391208/print-a-files-last-modified-date-in-bash">last modification date of a file</a></p>
 <pre><code>date -r &lt;filename&gt;
 ls -l &lt;filename&gt;</code></pre>

@@ -6,6 +6,11 @@ output:
     toc_float: true
 ---
 
+```{r setup}
+knitr::opts_chunk$set(eval=FALSE)
+```
+
+
 # Introduction
 This page is the continuation of [my blog post on GNU-Linux bash shell commands](https://paulremote.blogspot.de/2014/01/linux-shell-commands.html).
 
@@ -26,10 +31,11 @@ determine file type and encoding
     file filename
 
 list a directory
-
-    ls
-    ls -R #list subdirectories recursively
-    ls -lh #sizes in human readable format
+```{bash}
+ls
+ls -R # list subdirectories recursively
+ls -lh # sizes in human readable format
+```
 
 Display the [last modification date of a file](https://stackoverflow.com/questions/16391208/print-a-files-last-modified-date-in-bash)
 
