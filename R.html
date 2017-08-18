@@ -286,7 +286,7 @@ div.tocify {
 </li>
 <li class="dropdown">
   <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
-    <span class="fa fa-gear"></span>
+    <span class="fa fa-wrench"></span>
      
     Tools
      
@@ -470,6 +470,16 @@ cars %&gt;%
 ## 18    24            4    70 93.75000   120
 ## 19    25            1    85 85.00000    85</code></pre>
 <p>group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.</p>
+</div>
+<div id="tidyr" class="section level1">
+<h1>tidyr</h1>
+<p><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidyr vignette on tidy data</a> In the section on “Multiple types in one table”:</p>
+<blockquote>
+<p>Datasets often involve values collected at multiple levels, on different types of observational units. During tidying, each type of observational unit should be stored in its own table. This is closely related to the idea of database normalisation, where each fact is expressed in only one place. It’s important because otherwise inconsistencies can arise.</p>
+</blockquote>
+<blockquote>
+<p>Normalisation is useful for tidying and eliminating inconsistencies. However, there are few data analysis tools that work directly with relational data, so analysis usually also requires denormalisation or the merging the datasets back into one table.</p>
+</blockquote>
 </div>
 <div id="plotting-with-ggplot2" class="section level1">
 <h1>Plotting with ggplot2</h1>

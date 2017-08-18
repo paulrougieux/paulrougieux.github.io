@@ -8,7 +8,7 @@ navbar:
       icon: fa-home 
       href: index.html
     - text: "Tools"
-      icon: fa-gear
+      icon: fa-wrench
       menu:
         - text: "Bash"
           href: bash.html
