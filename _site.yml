@@ -5,6 +5,7 @@ navbar:
   title: "Paul's lab"
   left:
     - text: "Home"
+      icon: fa-home 
       href: index.html
     - text: "Tools"
       icon: fa-gear
@@ -22,6 +23,7 @@ navbar:
         - text: "Vim"
           href: vim.html
     - text: "Data"
+      icon: fa-database
       menu:
         - text: "Sources"
           href: datasources.html
