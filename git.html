@@ -411,8 +411,15 @@ git merge develop</code></pre>
 <pre><code>git log origin/master </code></pre>
 <p>Display a compact log for one file or one directory only</p>
 <pre><code>git log --abbrev-commit --pretty=oneline path_to_file</code></pre>
+</div>
+<div id="rewriting-history" class="section level2">
+<h2>Rewriting history</h2>
 <p>In case you entered a wrong commit message, you can edit the last commit message with:</p>
 <pre><code>git commit --amend </code></pre>
+<p>In case you forgot a file, you can add a file to the last commit with:</p>
+<pre><code>git add filename
+git commit --amend</code></pre>
+<p>A comment in <a href="https://stackoverflow.com/questions/14369155/how-to-change-past-commit-to-include-a-missed-file">How to change past commit to include a missed file?</a> specifies that commits before and after <code>--amend</code> have different hashes, even if only the commit message is changed. The use of <code>--amend</code> is only for private commits, which have not yet been shared with others.</p>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>
@@ -452,6 +459,8 @@ git config --global user.email you@example.com</code></pre>
 git checkout new_branch_name</code></pre>
 <p>To compare a file between 2 branches:</p>
 <pre><code>git diff branch1 branch2 file_name</code></pre>
+<p>To compare the tip of 2 branches</p>
+<pre><code>git diff branch1..branch2</code></pre>
 <p>To merge changes back to the master branch:</p>
 <pre><code>git checkout master
 
@@ -583,10 +592,7 @@ removed from your working tree are ignored with this version of Git.
 <pre><code>$ git push -u
 
 fatal: The current branch master has no upstream branch.
-
 To push the current branch and set the remote as upstream, use
-
-
     git push --set-upstream origin master</code></pre>
 <p>After I run this set upstream flag, I can push to the remote server. Then I get this message</p>
 <pre><code>[...]
@@ -597,7 +603,7 @@ To push the current branch and set the remote as upstream, use
 </div>
 <div id="publishing-project-documentation-on-github" class="section level1">
 <h1>Publishing project documentation on github</h1>
-<p>SO Answer to the question “How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)”: An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.</p>
+<p>SO answer to the question “How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)”: An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.</p>
 <p>In fact I didn’t use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).</p>
 <p>Then within the inst folder, I cloned only the gh-branch. To clone only one branch:</p>
 <pre><code>git clone -b mybranch --single-branch git://sub.domain.com/repo.git</code></pre>

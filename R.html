@@ -412,7 +412,8 @@ str(l1)</code></pre>
 <div id="one-liners" class="section level1">
 <h1>One liners</h1>
 <p>Remove all objects in the workspace except one :</p>
-<pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) </code></pre>
+<pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) 
+rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection</code></pre>
 </div>
 <div id="knitr" class="section level1">
 <h1>knitr</h1>
@@ -485,6 +486,18 @@ cars %&gt;%
 <h1>Plotting with ggplot2</h1>
 <pre><code>geom_bar
 geom_tile + a gradient produce heat maps</code></pre>
+</div>
+<div id="creating-a-package" class="section level1">
+<h1>Creating a package</h1>
+<p>You might want to read the CRAN manual on <a href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions</a>, and its section on <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies">Package dependencies</a>. See also Hadley’s book on R package and its section on <a href="http://r-pkgs.had.co.nz/namespace.html">Namespace</a></p>
+<p>Use the devtools library to start a package folder structure:</p>
+<pre><code>devtools::create(&quot;package_name&quot;)</code></pre>
+<p>Use git to track code modifications (shell commands):</p>
+<pre><code>cd package_name
+git init</code></pre>
+<p>Back in R, add testing infrastructure:</p>
+<pre><code>devtools::use_testthat()</code></pre>
+<p>When checking the package with R CMD CHECK, <a href="https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when">How can I handle R CMD check “no visible binding for global variable”?</a> These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.</p>
 </div>
 
 

@@ -9,9 +9,11 @@
 <meta name="generator" content="pandoc" />
 
 
+<meta name="author" content="Paul Rougieux" />
 
+<meta name="date" content="2017-08-17" />
 
-<title>MySQL Commands</title>
+<title>Python Commands</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -340,96 +342,17 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">MySQL Commands</h1>
+<h1 class="title toc-ignore">Python Commands</h1>
+<h4 class="author"><em>Paul Rougieux</em></h4>
+<h4 class="date"><em>17 August 2017</em></h4>
 
 </div>
 
 
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/12/mysql-commands.html">my blog post on MySQL commands</a></p>
-<div id="as-root-setup-users-and-create-databases" class="section level1">
-<h1>As root, setup users and create databases</h1>
-<p>As root, create a database and grant permissions to a new user To connect to the mysql client as root, in the shell</p>
-<pre><code>mysql -u root -p </code></pre>
-<p>You’ll be prompted for the password.</p>
-<p>How to create a new user</p>
-<pre><code>mysql&gt; CREATE USER &#39;newuser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;</code></pre>
-<p>Create a database</p>
-<pre><code>mysql&gt; create database databasename;</code></pre>
-<p>Connect to a database</p>
-<pre><code>mysql&gt; connect databasename;</code></pre>
-<p>Grant all permissions to a user on all databases</p>
-<pre><code>mysql&gt; GRANT ALL PRIVILEGES ON * . * TO &#39;newuser&#39;@&#39;localhost&#39;;</code></pre>
-<p>Grant all permissions to a user on a specific database</p>
-<pre><code>mysql&gt; GRANT ALL PRIVILEGES ON databasename. * TO &#39;newuser&#39;@&#39;localhost&#39;;</code></pre>
-<p>Then you can log out of mysql</p>
-<pre><code>mysql&gt; quit;</code></pre>
-</div>
-<div id="graphical-clients" class="section level1">
-<h1>Graphical clients</h1>
-<p>On Ubuntu, I used mysql navigator by shi bok jang. On Debian, I used mysql workbench</p>
-</div>
-<div id="user-operations" class="section level1">
-<h1>User operations</h1>
-<p>Change password, as the user itself or as root:</p>
-<pre><code>SET PASSWORD FOR &#39;Karl&#39;@&#39;localhost&#39; = PASSWORD(&#39;cleartext password&#39;);</code></pre>
-<p>As root , list all users</p>
-<pre><code>SELECT User FROM mysql.user;</code></pre>
-<p>As root , delete a user</p>
-<pre><code>drop user Rasdfas@localhost;</code></pre>
-<p>MySQL documentation on adding user accounts.</p>
-<div id="connecting-to-a-database" class="section level2">
-<h2>Connecting to a database</h2>
-<p>To connect to the mysql client as a user</p>
-<pre><code>mysql -u username -p </code></pre>
-<p>Then in the mysql client:</p>
-<pre><code>mysql&gt; connect databasename;</code></pre>
-<p>If you have the correct privileges, you can create a database with a pipe. How to create a database</p>
-<pre><code>echo &quot;create database databasename&quot; | mysql -u username -p </code></pre>
-</div>
-<div id="configuration-file-my.cnf" class="section level2">
-<h2>Configuration file my.cnf</h2>
-<p>It’s not desirable to share user name and password in software disseminated over the internet. User name, password and database names can be placed under groups in the configuration file. For example for a given project enter this group in ~/.my.cnf</p>
-<pre><code>[project_name]
-
-user = user
-password = password
-host = localhost
-database = dbname</code></pre>
-<p>Then simply specify group=project_name to the client that accesses the database.</p>
-</div>
-</div>
-<div id="database-operations" class="section level1">
-<h1>Database operations</h1>
-<p>mysqldump<code>and</code>mysqladmin<code>commands below work if your shell user name is the same as your mysql user name. If it's different add -u username to the command. If you have configured</code>~/.my.cnf<code>(see below)  you don't even need the</code>-p` switch.</p>
-<p>List all databases (in mysql client)</p>
-<pre><code>mysql&gt; show databases; </code></pre>
-<p>Delete a database (in the mysql client)</p>
-<pre><code>mysql&gt; DROP database databasename;</code></pre>
-<p>Show all tables in a database</p>
-<pre><code>mysql&gt; show tables;</code></pre>
-<div id="dump" class="section level2">
-<h2>Dump</h2>
-<p>Rename a database (in the shell)</p>
-<pre><code>mysqladmin -p create new_database
-mysqldump -p old_database | mysql -p new_database</code></pre>
-<p>After you have verified that everything is in order</p>
-<pre><code>drop database old_database</code></pre>
-<p>Move a table from one database to another</p>
-<pre><code>mysqldump -p database_1 table_name | mysql -p database_2 </code></pre>
-<p>Back up only part of a database with the where option</p>
-<pre><code>mysqldump -p -w&quot;productcode=440799&quot; tradeflows raw_flow_yearly &gt; sawnwood99raw.sql</code></pre>
-<p>Back up only the structure of a database (not the data)</p>
-<pre><code>mysqldump -p -d tradeflows &gt; tradeflows.sql</code></pre>
-<p>Load a dump into a database :</p>
-<pre><code>cat file.sql | mysql -u username -p databasename</code></pre>
-<p>And if you have a ~/.my.cnf user configuration file setup, simply</p>
-<p>cat file.sql | mysql databasename</p>
-</div>
-<div id="database-engines" class="section level2">
-<h2>Database engines</h2>
-<p>Show database engines available:</p>
-<pre><code>mysql&gt; show engines;</code></pre>
-</div>
+<div id="unit-tests" class="section level1">
+<h1>Unit tests</h1>
+<p>See <a href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python markdown unit tests</a></p>
+<pre class="python"><code></code></pre>
 </div>
 
 
