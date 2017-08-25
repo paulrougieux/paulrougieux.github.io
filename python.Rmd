@@ -1,0 +1,21 @@
+---
+title: "Python Commands"
+author: "Paul Rougieux"
+date: "17 August 2017"
+output: 
+  html_document: 
+    toc: yes
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Unit tests
+See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
+
+```{python eval=FALSE}
+
+```
+
+
