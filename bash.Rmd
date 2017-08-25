@@ -26,9 +26,10 @@ that are not part of the GNU project.
 
 
 ## Get information about a file
-determine file type and encoding
+Determine file type and encoding. The -i option shows the mime type strings.
 
     file filename
+    file -i filename
 
 list a directory
 ```{bash}
