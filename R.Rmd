@@ -80,6 +80,7 @@ List all available methods for a class:
 Remove all objects in the workspace except one :
 
     rm(list=ls()[!ls()=="object_to_keep"]) 
+    rm(list=ls()[!ls()=="con"]) # Remove all except a database connection
 
 
 # knitr
@@ -127,4 +128,27 @@ In the section on "Multiple types in one table":
 
     geom_bar
     geom_tile + a gradient produce heat maps
+
+
+# Creating a package
+You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).
+See also Hadley's book on R package and its section on [Namespace](http://r-pkgs.had.co.nz/namespace.html)
+
+Use the devtools library to start a package folder structure:
+
+    devtools::create("package_name")
+
+Use git to track code modifications (shell commands):
+
+    cd package_name
+    git init
+
+Back in R, add testing infrastructure:
+
+    devtools::use_testthat()
+
+When checking the package with R CMD CHECK, 
+[How can I handle R CMD check “no visible binding for global variable”?](https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when) 
+These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.
+
 
