@@ -120,9 +120,22 @@ Display a compact log for one file or one directory only
 
     git log --abbrev-commit --pretty=oneline path_to_file
 
+
+## Rewriting history
 In case you entered a wrong commit message, you can edit the last commit message with:
 
     git commit --amend 
+
+In case you forgot a file, you can add a file to the last commit with:
+
+    git add filename
+    git commit --amend
+
+A comment in [How to change past commit to include a missed file?](https://stackoverflow.com/questions/14369155/how-to-change-past-commit-to-include-a-missed-file) 
+specifies that commits before and after `--amend` have different hashes, 
+even if only the commit message is changed. 
+The use of `--amend` is only for private commits, which have not yet
+been shared with others. 
 
 ## Reset whole folder
 Identify the commit identity in the log and copy its sha number. Then to go back to this state for the whole folder: 
@@ -130,6 +143,7 @@ Identify the commit identity in the log and copy its sha number. Then to go back
     git reset --hard commit_sha
 
 Use the begining of a `commit_sha` copied from the log.
+
 
 ## Reset only one file
 To go back to this state for only one file, see git checkout
@@ -177,6 +191,10 @@ To start work in a new branch:
 To compare a file between 2 branches:
 
     git diff branch1 branch2 file_name
+
+To compare the tip of 2 branches
+
+    git diff branch1..branch2
 
 To merge changes back to the master branch:
 
@@ -388,20 +406,15 @@ Then later push of that branch to that remote can be made simply with:
 
     git push
 
-
 Another command without specifying the remote and the branch
 
     $ git push -u
 
     fatal: The current branch master has no upstream branch.
-
     To push the current branch and set the remote as upstream, use
-
-
         git push --set-upstream origin master
 
 After I run this set upstream flag, I can push to the remote server. Then I get this message
-
 
     [...]
      * [new branch]      master -&gt; masterBranch master set up to track remote branch master from origin. 
@@ -414,7 +427,7 @@ I'll have to figure out what this does.
 
 # Publishing project documentation on github
 
-SO Answer to the question "How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)": An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.
+SO answer to the question "How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)": An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.
 
 
 In fact I didn't use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page  branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).
