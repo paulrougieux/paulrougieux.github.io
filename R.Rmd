@@ -122,6 +122,9 @@ In the section on "Multiple types in one table":
 
 > Normalisation is useful for tidying and eliminating inconsistencies. However, there are few data analysis tools that work directly with relational data, so analysis usually also requires denormalisation or the merging the datasets back into one table.
 
+# Discussions
+
+* Gavin Simpson [My aversion to pipers](http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/) shows an Hadley tweet explaining that pipe might not be good in package development.
 
 
 # Plotting with ggplot2

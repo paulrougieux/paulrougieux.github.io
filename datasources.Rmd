@@ -7,6 +7,7 @@ output:
 
 
 
-* Eurostat [forestry statistics](http://ec.europa.eu/eurostat/statistics-explained/index.php/Forestry_statistics)
+* Eurostat [forestry statistics](http://ec.europa.eu/eurostat/statistics-explained/index.php/Forestry_statistics), [Comext statistics on international trade in goods](http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&dir=comext)
 * FAO [forestry production and trade](http://www.fao.org/faostat/en/#data/FO), [forest products trade flows](http://www.fao.org/faostat/en/#data/FT)
+* United Nations Trade Statistics [Comtrade](https://comtrade.un.org/data)
 
