@@ -1,0 +1,41 @@
+---
+title: "Debian GNU/Linux Operation System"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+This page is the continuation of 
+[several blog posts related to Debian](https://paulremote.blogspot.fr/search/label/Debian)
+
+#
+
+
+# Upgrade 
+
+## From Jessie 8 to Stretch 9
+I followed the documentation on 
+[upgrades from Debian 8, Jessie](https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.html)
+
+In bash store the output of apt-get install with many dependency issues in a text file
+
+    $ sudo apt-get -f install > aptgetfinstall.txt
+
+Using R to extract  all packages and try to remove them
+
+    R> bli <- readLines("aptgetfinstall;txt")
+    R> blil <- strsplit(grep("^ [[:alpha:]]", bli, value=TRUE),":")
+    R> pkgissues <- unlist(lapply(blil, "[[", 1))
+
+The bash command to remove a package was
+
+    $ sudo dpkg --force-all -P <packagename>
+
+Send this command for all packages
+
+    R> lapply(paste("sudo dpkg --force-all -P ", pkgissues),system)
+
+
+
+
