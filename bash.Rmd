@@ -83,21 +83,7 @@ For example to rename all upper-case .JPG extension into lower-case .jpg extensi
 
     rename 's/\.JPG$/\.jpg/' *.JPG
 
-Change file permission:
-
-    chmod a=rwx filename
-    chmod 777 filename 
-
-Change file permissions recursively:
-
-    chmod 755 directoryname
-
-Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.
-
-    Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as "rwxr-xr-x" in ls -l. 
-    The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
-
-# Text files
+# Search, filter and count lines in text files
 Count the number of lines in a file
 
     wc -l filename.txt 
@@ -118,7 +104,7 @@ Search with Grep
 
     awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
 
-Regexp match begining of and end of line with ^ and $.
+Regexp match begining of and end of line with ^ and \$.
 
 Follow the end of a log file as it is written 
 
@@ -128,7 +114,7 @@ See tab and end of line characters in a text file
 
     cat -te filename |less 
 
-## Manipulate strings in text files
+## Replace strings in text files
 Replace strings
 
     first="I love Suzy and Mary"
@@ -174,6 +160,8 @@ Download only the audio in an .mp3 format
     youtube-dl --extract-audio --audio-format mp3 video_url
 
 # Users
+
+## Manager users and groups
 Check your user id
 
     id 
@@ -212,6 +200,28 @@ Show all groups
 
     getent group 
 
+# Change file permission
+
+
+Change user and group of a file
+
+    chown groupname:username filename
+
+Change file permission
+
+    chmod a=rwx filename
+    chmod 777 filename 
+
+Change file permissions recursively:
+
+    chmod 755 directoryname
+
+Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.
+
+    Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as "rwxr-xr-x" in ls -l. 
+    The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
+
+
 
 # System
 OS release
@@ -220,7 +230,8 @@ OS release
 
 Disk usage
 
-    du -h 
+    du -hd1  # sub-folder size at depth=1 
+    du -hs * # sub-folder size summary
 
 Display available space on drives
 
@@ -256,6 +267,19 @@ Last time the system was started
 Show environment variables
 
     printenv 
+    printenv LC_TIME
+
+# Monitoring
+
+Run a command every 2 seconds, 
+for example to list a folder as new files are beeing written to it:
+
+    watch ls
+
+Follow the end of a log file, as it is written
+
+    tail filename.log
+
 
 # Job handling
 List
@@ -279,6 +303,7 @@ Quit a job
 Kill a malfunctionning program:
 
     kill process_id
+    kill -9 process_it # -9 forces the kill
 
 Find a program id with:
 

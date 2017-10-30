@@ -154,10 +154,34 @@ No commit hash to get to get the file back to the latest commit.
 
 Chekout the older revision of a file under a new name
 
-
     git show commit_sha:filename > new_file_name
 
 See also alias and git grep below.
+
+# Keeping uncommited changes in the current branch while working quickly in another branch
+For example you edit a file in branch develop
+
+    git checkout develop
+    echo "blabla" > newfile.txt
+
+Imagine you are in the middle of your work and need to do an urgent modification in 
+another branch. 
+To move to another branch, you would normaly need to commit this change.
+If you don't want to commit the change yet.
+You can store temporary changes with the command:
+
+    git stash
+
+Move to the master branch
+
+    git checkout master
+    # perform important operation in the master branch.
+
+Get back to the develop branch and reload uncommited changes
+
+    git checkout develop
+    git stash pop
+
 
 # Help
 

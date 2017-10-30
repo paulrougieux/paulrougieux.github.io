@@ -295,6 +295,9 @@ div.tocify {
       <a href="bash.html">Bash</a>
     </li>
     <li>
+      <a href="debian.html">Debian</a>
+    </li>
+    <li>
       <a href="git.html">Git</a>
     </li>
     <li>
@@ -346,6 +349,7 @@ div.tocify {
 
 
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/12/mysql-commands.html">my blog post on MySQL commands</a></p>
+<p>I currently use the MariaDB client on Debian GNU/Linux. I have kept `mysql&gt;̀ prompts below.</p>
 <div id="as-root-setup-users-and-create-databases" class="section level1">
 <h1>As root, setup users and create databases</h1>
 <p>As root, create a database and grant permissions to a new user To connect to the mysql client as root, in the shell</p>
@@ -381,6 +385,8 @@ div.tocify {
 <h2>Connecting to a database</h2>
 <p>To connect to the mysql client as a user</p>
 <pre><code>mysql -u username -p </code></pre>
+<p>If you have configured ~.my.cnf, you can simply call</p>
+<pre><code>mysql</code></pre>
 <p>Then in the mysql client:</p>
 <pre><code>mysql&gt; connect databasename;</code></pre>
 <p>If you have the correct privileges, you can create a database with a pipe. How to create a database</p>
@@ -401,29 +407,40 @@ database = dbname</code></pre>
 <div id="database-operations" class="section level1">
 <h1>Database operations</h1>
 <p>mysqldump<code>and</code>mysqladmin<code>commands below work if your shell user name is the same as your mysql user name. If it's different add -u username to the command. If you have configured</code>~/.my.cnf<code>(see below)  you don't even need the</code>-p` switch.</p>
+<div id="show-information-about-databases-tables-columns" class="section level2">
+<h2>Show information about databases, tables, columns</h2>
 <p>List all databases (in mysql client)</p>
 <pre><code>mysql&gt; show databases; </code></pre>
-<p>Delete a database (in the mysql client)</p>
-<pre><code>mysql&gt; DROP database databasename;</code></pre>
 <p>Show all tables in a database</p>
 <pre><code>mysql&gt; show tables;</code></pre>
+<p>Show column information</p>
+<pre><code>mysql&gt; show columns from tablename;</code></pre>
+</div>
+<div id="drop" class="section level2">
+<h2>Drop</h2>
+<p>Delete a database (in the mysql client)</p>
+<pre><code>mysql&gt; DROP database databasename;</code></pre>
+<p>Delete a table</p>
+<pre><code>mysql&gt; connect databasename;
+mysql&gt; DROP tablename;</code></pre>
+</div>
 <div id="dump" class="section level2">
 <h2>Dump</h2>
 <p>Rename a database (in the shell)</p>
-<pre><code>mysqladmin -p create new_database
-mysqldump -p old_database | mysql -p new_database</code></pre>
+<pre><code>$ mysqladmin -p create new_database
+$ mysqldump -p old_database | mysql -p new_database</code></pre>
 <p>After you have verified that everything is in order</p>
-<pre><code>drop database old_database</code></pre>
-<p>Move a table from one database to another</p>
-<pre><code>mysqldump -p database_1 table_name | mysql -p database_2 </code></pre>
+<pre><code>mysql&gt; drop database old_database</code></pre>
+<p>Move a table from one database to another (in the shell)</p>
+<pre><code>$ mysqldump -p database_1 table_name | mysql -p database_2 </code></pre>
 <p>Back up only part of a database with the where option</p>
-<pre><code>mysqldump -p -w&quot;productcode=440799&quot; tradeflows raw_flow_yearly &gt; sawnwood99raw.sql</code></pre>
+<pre><code>$ mysqldump -p -w&quot;productcode=440799&quot; tradeflows raw_flow_yearly &gt; sawnwood99raw.sql</code></pre>
 <p>Back up only the structure of a database (not the data)</p>
-<pre><code>mysqldump -p -d tradeflows &gt; tradeflows.sql</code></pre>
+<pre><code>$ mysqldump -p -d tradeflows &gt; tradeflows.sql</code></pre>
 <p>Load a dump into a database :</p>
-<pre><code>cat file.sql | mysql -u username -p databasename</code></pre>
+<pre><code>$ cat file.sql | mysql -u username -p databasename</code></pre>
 <p>And if you have a ~/.my.cnf user configuration file setup, simply</p>
-<p>cat file.sql | mysql databasename</p>
+<pre><code>$ cat file.sql | mysql databasename</code></pre>
 </div>
 <div id="database-engines" class="section level2">
 <h2>Database engines</h2>

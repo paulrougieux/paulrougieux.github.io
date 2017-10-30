@@ -295,6 +295,9 @@ div.tocify {
       <a href="bash.html">Bash</a>
     </li>
     <li>
+      <a href="debian.html">Debian</a>
+    </li>
+    <li>
       <a href="git.html">Git</a>
     </li>
     <li>
@@ -436,6 +439,20 @@ git commit --amend</code></pre>
 <pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
 <p>See also alias and git grep below.</p>
 </div>
+</div>
+<div id="keeping-uncommited-changes-in-the-current-branch-while-working-quickly-in-another-branch" class="section level1">
+<h1>Keeping uncommited changes in the current branch while working quickly in another branch</h1>
+<p>For example you edit a file in branch develop</p>
+<pre><code>git checkout develop
+echo &quot;blabla&quot; &gt; newfile.txt</code></pre>
+<p>Imagine you are in the middle of your work and need to do an urgent modification in another branch. To move to another branch, you would normaly need to commit this change. If you don’t want to commit the change yet. You can store temporary changes with the command:</p>
+<pre><code>git stash</code></pre>
+<p>Move to the master branch</p>
+<pre><code>git checkout master
+# perform important operation in the master branch.</code></pre>
+<p>Get back to the develop branch and reload uncommited changes</p>
+<pre><code>git checkout develop
+git stash pop</code></pre>
 </div>
 <div id="help" class="section level1">
 <h1>Help</h1>
