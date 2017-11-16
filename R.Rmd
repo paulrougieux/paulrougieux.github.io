@@ -84,6 +84,14 @@ Remove all objects in the workspace except one :
 
 
 # knitr
+## kable to create tables
+```{r }
+cat(kable(head(iris, 1), format = "html"))
+cat(kable(head(iris, 1), format = "latex"))
+cat(kable(head(iris, 1), format = "markdown"))
+```
+
+## Setting knitr options
 Those 2 commands are different.
 Sets the options for chunk, within a knitr chunk inside the .Rmd document
 
@@ -93,8 +101,8 @@ Sets the options for chunk, within a knitr chunk inside the .Rmd document
 
     opts_knit$set()
 
-
-# dplyr
+# Tidyverse
+## dplyr
 pipes
 
 ```{r warning=FALSE, message=FALSE}
@@ -113,7 +121,17 @@ cars %>%
 group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.
 
 
-# tidyr
+### Mutate
+
+Mutate multiple variables in the dataframe at once using the `vars()` helper function to scope the mutation:
+```{r} 
+iris %>%
+    mutate_at(vars(starts_with("Petal")), round) %>%
+    head()
+```
+
+
+## tidyr
 
 [tidyr vignette on tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) 
 In the section on "Multiple types in one table":
@@ -122,9 +140,34 @@ In the section on "Multiple types in one table":
 
 > Normalisation is useful for tidying and eliminating inconsistencies. However, there are few data analysis tools that work directly with relational data, so analysis usually also requires denormalisation or the merging the datasets back into one table.
 
+Example use of `tidyr::nest()` to generate a group of plots: 
+[make ggplot2 purrr](http://www.brodrigues.co/blog/2017-03-29-make-ggplot2-purrr/).
+
+```{r}
+piris <- iris %>%  
+    group_by(Species) %>% 
+    nest() %>% 
+    mutate(plot = map2(data, Species, 
+                       ~ggplot(data = .x, 
+                               aes(x = Petal.Length, y = Petal.Width)) + 
+                           geom_point() + ggtitle(.y)))
+piris$plot[1]
+piris$plot[3]
+piris$plot[2]
+```
+
 # Discussions
 
 * Gavin Simpson [My aversion to pipers](http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/) shows an Hadley tweet explaining that pipe might not be good in package development.
+
+
+# Teaching R
+
+* [Teach the tidyverse to beginners](http://varianceexplained.org/r/teach-tidyverse/)
+
+* [Vectorization in R, Why?](http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html)
+
+
 
 
 # Plotting with ggplot2
@@ -143,9 +186,22 @@ Use the devtools library to start a package folder structure:
 
 Use git to track code modifications (shell commands):
 
-    cd package_name
-    git init
+    $ cd package_name
+    $ git init
 
+## Documentation
+
+The roxygen2 package helps with function documentation.
+Documentation can be written in the form of comments #'
+tags such as `@param` and `@description` structure the documentation of each function.
+
+For an introcution to roxygen2, call
+`vignette("roxygen2", package = "roxygen2")` at the R prompt.
+
+Since roxygen2 version 6, markdown formating can be used in the documentation, 
+by specifying the `@md` tag.
+
+## Unit tests
 Back in R, add testing infrastructure:
 
     devtools::use_testthat()
@@ -154,4 +210,15 @@ When checking the package with R CMD CHECK,
 [How can I handle R CMD check “no visible binding for global variable”?](https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when) 
 These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.
 
+
+## Continuous Integration
+It is good to know if your package can be installed on a fresh system. 
+Continuous integration systems make this possible each time you submit a modification to your repository. 
+I have used travis-ci which is free for open github repositories. 
+[Instructions to build an R project on travis](https://docs.travis-ci.com/user/languages/r/).
+Unit tests are also run on travis, in addition to R CMD CHECK.
+
+Package dependencies can be configured in a `.travis.yml`
+file that is read by the travis machine performing the build.
+For package that are not on Cran, it's possible to specify a dependency field under `r_github_packages`.
 

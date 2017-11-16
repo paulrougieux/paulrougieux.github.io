@@ -331,6 +331,13 @@ div.tocify {
     </li>
   </ul>
 </li>
+<li>
+  <a href="events.html">
+    <span class="fa fa-users"></span>
+     
+    Events
+  </a>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -423,6 +430,10 @@ git merge develop</code></pre>
 <pre><code>git add filename
 git commit --amend</code></pre>
 <p>A comment in <a href="https://stackoverflow.com/questions/14369155/how-to-change-past-commit-to-include-a-missed-file">How to change past commit to include a missed file?</a> specifies that commits before and after <code>--amend</code> have different hashes, even if only the commit message is changed. The use of <code>--amend</code> is only for private commits, which have not yet been shared with others.</p>
+<p>Rewriting commits older than the previous one is much harder. It requires the use of git rebase. I regularly want to fix typo in the git log, but it is not possible if was made unflexible on purpose. Explained in this <a href="https://stackoverflow.com/a/457396/2641825">Stackoverflow Answer</a></p>
+<blockquote>
+<p>“The real reason git doesn’t allow you to change the commit message ends up being very simple: that way, you can trust the messages. If you allowed people to change them afterwards, the messages are inherently not very trustworthy.”</p>
+</blockquote>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>

@@ -1,0 +1,9 @@
+
+
+# Nancy Data Science
+
+[Nancy Data Science ](https://www.meetup.com/nancydatascience/) is a
+Meeting of data analysts, users of statistical programming languages such as Fortran, Java, Julia, Matlab, Python, R. The goal is to exchange "recipes" between professional practitioners of statistical programming languages.
+
+FR - Le but est d'échanger des "recettes" entre professionnels, utilisateurs de langages de programmation statistiques.
+
