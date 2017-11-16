@@ -31,6 +31,9 @@ navbar:
           href: datasources.html
         - text: "Explore"
           href: explore.html
+    - text: "Events"
+      icon: fa-users
+      href: events.html
 output:
   html_document:
     toc: true

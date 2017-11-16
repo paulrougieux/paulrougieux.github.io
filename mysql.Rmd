@@ -95,6 +95,12 @@ It's not desirable to share user name and password in software disseminated over
 
 Then simply specify group=project_name to the client that accesses the database. 
 
+# Table operations
+
+Rename a table
+
+    mysql> rename table tbl1 to tbl1;
+
 # Database operations
 
 mysqldump` and `mysqladmin` commands below work if your shell user name is the same as your mysql user name. If it's different add -u username to the command.
