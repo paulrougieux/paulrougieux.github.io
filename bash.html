@@ -449,6 +449,8 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
 <p>Alternatively, pdftk can be used to merge PDF files</p>
 <pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
+<p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
+<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.</code></pre>
 </div>
 <div id="videos-and-audio" class="section level1">
 <h1>Videos and audio</h1>
@@ -583,6 +585,20 @@ kill -9 process_it # -9 forces the kill</code></pre>
 
 [...] &quot;You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  &quot;</code></pre>
 <p>In .bashrc a user can set environment variables, define alias (see above).</p>
+</div>
+<div id="locale" class="section level1">
+<h1>Locale</h1>
+<p><a href="https://wiki.debian.org/Locale">Debian wiki page on Locale settings</a></p>
+<p>To install new locales, run :</p>
+<pre><code>sudo dpkg-reconfigure locales</code></pre>
+<p>SSH forwards locales to the server. The server will try to use thegiven locale, but it might not have them installed. <a href="https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448">Locale variables have no effect in remote shell</a></p>
+<p><a href="https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server">How do I add a locale to a Ubuntu Server?</a> Check which locales are supported:</p>
+<pre><code>locale -a</code></pre>
+<p>add the locales you want (for example ru):</p>
+<pre><code>sudo locale-gen ru_RU
+sudo locale-gen ru_RU.UTF-8</code></pre>
+<p>run this update comand</p>
+<pre><code>sudo update-locale </code></pre>
 </div>
 <div id="keyboard" class="section level1">
 <h1>Keyboard</h1>
