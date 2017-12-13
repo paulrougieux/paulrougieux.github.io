@@ -146,6 +146,10 @@ Alternatively, pdftk can be used to merge PDF files
 
     pdftk input1.pdf input2.pdf cat output output.pdf
 
+[Extract pages from a pdf](https://askubuntu.com/a/282455/315347)
+
+    pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.
+
 # Videos and audio
 Install youtube-dl using pip:
 
@@ -360,6 +364,33 @@ Debian Dotfiles
     [...] "You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  "
 
 In .bashrc a user can set environment variables, define alias (see above).
+
+# Locale
+
+[Debian wiki page on Locale settings](https://wiki.debian.org/Locale)
+
+To install new locales, run :
+
+    sudo dpkg-reconfigure locales
+
+SSH forwards locales to the server. 
+The server will try to use thegiven locale, but it might not have them installed.
+[Locale variables have no effect in remote shell](https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448)
+
+[How do I add a locale to a Ubuntu Server?](https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server)
+Check which locales are supported:
+
+    locale -a
+
+add the locales you want (for example ru):
+
+    sudo locale-gen ru_RU
+    sudo locale-gen ru_RU.UTF-8
+
+run this update comand
+
+    sudo update-locale 
+
 
 # Keyboard
 bash french blogger recommended a simple shell command to change keyboard layout :
