@@ -356,8 +356,21 @@ div.tocify {
 
 <p>j– title: “Debian GNU/Linux Operation System” output: html_document: toc: yes toc_float: true —</p>
 <p>This page is the continuation of <a href="https://paulremote.blogspot.fr/search/label/Debian">several blog posts related to Debian</a></p>
-<div id="section" class="section level1">
-<h1></h1>
+<div id="audio" class="section level1">
+<h1>Audio</h1>
+<div id="audio-setup" class="section level2">
+<h2>Audio Setup</h2>
+</div>
+<div id="audio-issues" class="section level2">
+<h2>Audio Issues</h2>
+<p>“dummy output” issue. Seen on a <a href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian Forum</a> one of the answer to Pulse Audio shows “dummy output” linked to that KDE PulseAudio page: <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE PulseAudio Integration</a> “One thing that can happen is that some other process”hogs&quot; the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a “Dummy Output”. As the name suggests, anything that is “Played” via this device is inaudible). This “Dummy Output” should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere).</p>
+<p>If you need to restart PulseAudio, generally a reboot is simplest. Alternatively, issue the commands: pulseaudio -k; start-pulseaudio-x11; start-pulseaudio-kde. The first command will kill the running daemon, then the second two start PulseAudio and load some additional modules that are normally loaded as part of your typical login procedure. Please note that some applications may require to be restarted after restarting PulseAudio. &quot;</p>
+</div>
+</div>
+<div id="system-information" class="section level1">
+<h1>System information</h1>
+<p>Find out which Debian version is running</p>
+<pre><code>cat /etc/issue</code></pre>
 </div>
 <div id="upgrade" class="section level1">
 <h1>Upgrade</h1>
