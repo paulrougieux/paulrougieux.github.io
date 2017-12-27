@@ -357,39 +357,23 @@ div.tocify {
 </div>
 
 
-<p>j– title: “Debian GNU/Linux Operation System” output: html_document: toc: yes toc_float: true —</p>
-<p>This page is the continuation of <a href="https://paulremote.blogspot.fr/search/label/Debian">several blog posts related to Debian</a></p>
-<div id="audio" class="section level1">
-<h1>Audio</h1>
-<div id="audio-setup" class="section level2">
-<h2>Audio Setup</h2>
+<div id="docker-installation" class="section level1">
+<h1>Docker Installation</h1>
+<p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://store.docker.com/editions/community/docker-ce-server-debian?tab=resources">Docker community edition for Debian.</a> Then run :</p>
+<pre><code>sudo apt-get install docker-ce</code></pre>
 </div>
-<div id="audio-issues" class="section level2">
-<h2>Audio Issues</h2>
-<p>“dummy output” issue. Seen on a <a href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian Forum</a> one of the answer to Pulse Audio shows “dummy output” linked to that KDE PulseAudio page: <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE PulseAudio Integration</a> “One thing that can happen is that some other process”hogs&quot; the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a “Dummy Output”. As the name suggests, anything that is “Played” via this device is inaudible). This “Dummy Output” should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere).</p>
-<p>If you need to restart PulseAudio, generally a reboot is simplest. Alternatively, issue the commands: pulseaudio -k; start-pulseaudio-x11; start-pulseaudio-kde. The first command will kill the running daemon, then the second two start PulseAudio and load some additional modules that are normally loaded as part of your typical login procedure. Please note that some applications may require to be restarted after restarting PulseAudio. &quot;</p>
-</div>
-</div>
-<div id="system-information" class="section level1">
-<h1>System information</h1>
-<p>Find out which Debian version is running</p>
-<pre><code>cat /etc/issue</code></pre>
-</div>
-<div id="upgrade" class="section level1">
-<h1>Upgrade</h1>
-<div id="from-jessie-8-to-stretch-9" class="section level2">
-<h2>From Jessie 8 to Stretch 9</h2>
-<p>I followed the documentation on <a href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.html">upgrades from Debian 8, Jessie</a></p>
-<p>In bash store the output of apt-get install with many dependency issues in a text file</p>
-<pre><code>$ sudo apt-get -f install &gt; aptgetfinstall.txt</code></pre>
-<p>Using R to extract all packages and try to remove them</p>
-<pre><code>R&gt; bli &lt;- readLines(&quot;aptgetfinstall;txt&quot;)
-R&gt; blil &lt;- strsplit(grep(&quot;^ [[:alpha:]]&quot;, bli, value=TRUE),&quot;:&quot;)
-R&gt; pkgissues &lt;- unlist(lapply(blil, &quot;[[&quot;, 1))</code></pre>
-<p>The bash command to remove a package was</p>
-<pre><code>$ sudo dpkg --force-all -P &lt;packagename&gt;</code></pre>
-<p>Send this command for all packages</p>
-<pre><code>R&gt; lapply(paste(&quot;sudo dpkg --force-all -P &quot;, pkgissues),system)</code></pre>
+<div id="docker-commands" class="section level1">
+<h1>Docker Commands</h1>
+<p>Start a container</p>
+<pre><code>sudo docker run hello-world</code></pre>
+<p>Show available images on the system:</p>
+<pre><code>sudo docker images</code></pre>
+<div id="docker-run-options" class="section level2">
+<h2>Docker run options</h2>
+<ul>
+<li><code>rm</code>=true|false “Automatically remove the container when it exits (incompatible with -d). The default is false.”</li>
+<li><code>-v</code>, –volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to a container. These mounts can then be used in other containers using the –volumes-from option.</li>
+</ul>
 </div>
 </div>
 
