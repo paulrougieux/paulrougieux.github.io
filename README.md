@@ -10,7 +10,7 @@ Use `CTRL+SHIFT+B` to build the site in RStudio.
 
 This shell command can also be used:
 
-    cd ~/R/paulrougieux.github.io && Rscript -e "rmarkdown::render_site()"
+    !cd ~/R/paulrougieux.github.io && Rscript -e "rmarkdown::render_site()"
 
 The previous command can yanked with yy and pasted as a bang! shell comamnd 
 in vim with `:! CTRL + R + "`.

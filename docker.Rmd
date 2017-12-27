@@ -1,0 +1,30 @@
+
+
+# Docker Installation
+
+To get the most recent stable docker version 
+on a Debian, system, add the docker repository as explained in 
+[Docker community edition for Debian.](https://store.docker.com/editions/community/docker-ce-server-debian?tab=resources)
+Then run :
+
+    sudo apt-get install docker-ce
+ 
+# Docker Commands
+
+Start a container
+
+    sudo docker run hello-world
+
+Show available images on the system:
+
+    sudo docker images
+
+
+## Docker run options
+
+
+*  `rm`=true|false “Automatically remove the container when it exits (incompatible with  -d).  The default is false.”
+* `-v`, --volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to  a  container.  These  mounts  can  then  be  used  in other containers using the --volumes-from option.
+
+
+

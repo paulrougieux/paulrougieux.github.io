@@ -14,6 +14,8 @@ navbar:
           href: bash.html
         - text: "Debian"
           href: debian.html
+        - text: "Docker"
+          href: docker.html
         - text: "Git"
           href: git.html
         - text: "Lyx"
