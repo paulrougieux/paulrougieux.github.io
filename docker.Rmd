@@ -4,27 +4,61 @@
 
 To get the most recent stable docker version 
 on a Debian, system, add the docker repository as explained in 
-[Docker community edition for Debian.](https://store.docker.com/editions/community/docker-ce-server-debian?tab=resources)
+[Docker community edition for Debian.](https://docs.docker.com/engine/installation/linux/docker-ce/debian/)
 Then run :
 
     sudo apt-get install docker-ce
  
-# Docker Commands
+# Docker container commands
 
 Start a container
 
     sudo docker run hello-world
 
+Restart a container 
+
+    sudo docker restart hello-world
+
+Stop a container 
+
+    sudo docker stop [OPTIONS] CONTAINER [CONTAINER...]
+
 Show available images on the system:
 
     sudo docker images
 
+Start a bash shell inside a container 
+
+    docker ps # find the ID of the running container
+    docker exec -it <container-id> bash 
+
+[Find the IP of a container](https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host):
+
+    sudo docker ps # look for the process id
+    sudo docker inspect <container id>
+
+The IP is at the end.
+Then in a web browser, enter the IP address to see the running web server.
+
 
 ## Docker run options
 
-
 *  `rm`=true|false “Automatically remove the container when it exits (incompatible with  -d).  The default is false.”
 * `-v`, --volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to  a  container.  These  mounts  can  then  be  used  in other containers using the --volumes-from option.
+
+
+## Docker inspect options
+
+Inspect the [run restart policies](https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart)
+Get the number of times a container was restarted:
+
+    docker inspect -f "{{ .RestartCount }}" my-container
+
+Get the last time the container was (re)started;
+
+    docker inspect -f "{{ .State.StartedAt }}" my-container
+
+# Docker compose commands
 
 
 

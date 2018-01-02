@@ -359,15 +359,26 @@ div.tocify {
 
 <div id="docker-installation" class="section level1">
 <h1>Docker Installation</h1>
-<p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://store.docker.com/editions/community/docker-ce-server-debian?tab=resources">Docker community edition for Debian.</a> Then run :</p>
+<p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/">Docker community edition for Debian.</a> Then run :</p>
 <pre><code>sudo apt-get install docker-ce</code></pre>
 </div>
-<div id="docker-commands" class="section level1">
-<h1>Docker Commands</h1>
+<div id="docker-container-commands" class="section level1">
+<h1>Docker container commands</h1>
 <p>Start a container</p>
 <pre><code>sudo docker run hello-world</code></pre>
+<p>Restart a container</p>
+<pre><code>sudo docker restart hello-world</code></pre>
+<p>Stop a container</p>
+<pre><code>sudo docker stop [OPTIONS] CONTAINER [CONTAINER...]</code></pre>
 <p>Show available images on the system:</p>
 <pre><code>sudo docker images</code></pre>
+<p>Start a bash shell inside a container</p>
+<pre><code>docker ps # find the ID of the running container
+docker exec -it &lt;container-id&gt; bash </code></pre>
+<p><a href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find the IP of a container</a>:</p>
+<pre><code>sudo docker ps # look for the process id
+sudo docker inspect &lt;container id&gt;</code></pre>
+<p>The IP is at the end. Then in a web browser, enter the IP address to see the running web server.</p>
 <div id="docker-run-options" class="section level2">
 <h2>Docker run options</h2>
 <ul>
@@ -375,6 +386,16 @@ div.tocify {
 <li><code>-v</code>, –volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to a container. These mounts can then be used in other containers using the –volumes-from option.</li>
 </ul>
 </div>
+<div id="docker-inspect-options" class="section level2">
+<h2>Docker inspect options</h2>
+<p>Inspect the <a href="https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart">run restart policies</a> Get the number of times a container was restarted:</p>
+<pre><code>docker inspect -f &quot;{{ .RestartCount }}&quot; my-container</code></pre>
+<p>Get the last time the container was (re)started;</p>
+<pre><code>docker inspect -f &quot;{{ .State.StartedAt }}&quot; my-container</code></pre>
+</div>
+</div>
+<div id="docker-compose-commands" class="section level1">
+<h1>Docker compose commands</h1>
 </div>
 
 
