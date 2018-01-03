@@ -362,40 +362,98 @@ div.tocify {
 <p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/">Docker community edition for Debian.</a> Then run :</p>
 <pre><code>sudo apt-get install docker-ce</code></pre>
 </div>
-<div id="docker-container-commands" class="section level1">
-<h1>Docker container commands</h1>
+<div id="build" class="section level1">
+<h1>Build</h1>
+<p>Instructions to create a container are storred in a Dockerfile. Docker hub is a collection of Dockerfiles. Containers stored on docker hub can be pulled and started directly from the docker run command. The section below explain how to write your own Docker file.</p>
+<div id="docker-file" class="section level2">
+<h2>Docker file</h2>
+<p>docs.docker.com <a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/">best practices for writing Dockerfiles</a></p>
+<p>Build a container based on the Dockerfile in the present working directory</p>
+<pre><code>docker build -t friendlyhello .</code></pre>
+<p>Dockerfile from R packages:</p>
+<ul>
+<li><a href="https://github.com/bcm-uga/TESS3_encho_sen/blob/master/Dockerfile">bcm-uga/TESS3_encho_sen/Dockerfile</a> FROM rocker/hadleyverse</li>
+</ul>
+</div>
+<div id="compose-file" class="section level2">
+<h2>Compose file</h2>
+<p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/">how services work</a></p>
+<p>Compose several containers in a service</p>
+</div>
+</div>
+<div id="start" class="section level1">
+<h1>Start</h1>
+<div id="start-containers" class="section level2">
+<h2>Start containers</h2>
 <p>Start a container</p>
 <pre><code>sudo docker run hello-world</code></pre>
 <p>Restart a container</p>
 <pre><code>sudo docker restart hello-world</code></pre>
 <p>Stop a container</p>
 <pre><code>sudo docker stop [OPTIONS] CONTAINER [CONTAINER...]</code></pre>
-<p>Show available images on the system:</p>
-<pre><code>sudo docker images</code></pre>
+<div id="docker-run-options" class="section level3">
+<h3>Docker run options</h3>
+<ul>
+<li><code>rm</code>=true|false “Automatically remove the container when it exits (incompatible with -d). The default is false.”</li>
+<li><code>-v</code>, –volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to a container. These mounts can then be used in other containers using the –volumes-from option.</li>
+</ul>
+</div>
+</div>
+<div id="start-services" class="section level2">
+<h2>Start services</h2>
+<p>swarm init error:</p>
+<p>I specified the IP address Stackoverflow <a href="https://stackoverflow.com/questions/38602903/docker-swarm-init-could-not-choose-an-ip-address-error">could not choose and IP address Error</a></p>
+</div>
+</div>
+<div id="monitor" class="section level1">
+<h1>Monitor</h1>
+<div id="monitor-running-containers" class="section level2">
+<h2>Monitor running containers</h2>
+<p><a href="https://docs.docker.com/engine/admin/runmetrics/">run metrics</a></p>
+<pre><code>docker stats &lt;container-id&gt;</code></pre>
 <p>Start a bash shell inside a container</p>
 <pre><code>docker ps # find the ID of the running container
 docker exec -it &lt;container-id&gt; bash </code></pre>
 <p><a href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find the IP of a container</a>:</p>
 <pre><code>sudo docker ps # look for the process id
 sudo docker inspect &lt;container id&gt;</code></pre>
-<p>The IP is at the end. Then in a web browser, enter the IP address to see the running web server.</p>
-<div id="docker-run-options" class="section level2">
-<h2>Docker run options</h2>
-<ul>
-<li><code>rm</code>=true|false “Automatically remove the container when it exits (incompatible with -d). The default is false.”</li>
-<li><code>-v</code>, –volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to a container. These mounts can then be used in other containers using the –volumes-from option.</li>
-</ul>
-</div>
-<div id="docker-inspect-options" class="section level2">
-<h2>Docker inspect options</h2>
+<p>The IP is at the end.</p>
+<div id="inspect-options" class="section level3">
+<h3>Inspect options</h3>
 <p>Inspect the <a href="https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart">run restart policies</a> Get the number of times a container was restarted:</p>
 <pre><code>docker inspect -f &quot;{{ .RestartCount }}&quot; my-container</code></pre>
 <p>Get the last time the container was (re)started;</p>
 <pre><code>docker inspect -f &quot;{{ .State.StartedAt }}&quot; my-container</code></pre>
 </div>
 </div>
-<div id="docker-compose-commands" class="section level1">
-<h1>Docker compose commands</h1>
+<div id="monitor-stopped-containers" class="section level2">
+<h2>Monitor stopped containers</h2>
+<p>See <a href="https://stackoverflow.com/questions/30231187/docker-list-only-stopped-containers/30231188#30231188">stopped containers</a></p>
+<pre><code>docker ps --filter &quot;status=exited&quot;</code></pre>
+<p>Inspect a stopped container</p>
+<pre><code>docker inspect &lt;container-id&gt;</code></pre>
+</div>
+<div id="manage-container-images" class="section level2">
+<h2>Manage container images</h2>
+<p>Show available images on the system:</p>
+<pre><code>sudo docker images</code></pre>
+</div>
+<div id="monitor-running-services" class="section level2">
+<h2>Monitor running services</h2>
+<p>see which services are running</p>
+<pre><code>docker service ls</code></pre>
+<p>see which services are running inside a service</p>
+<pre><code>docker service ps &lt;service_name&gt; </code></pre>
+<p>You can also run <code>docker ps</code> to see all running processes.</p>
+</div>
+</div>
+<div id="cleanup" class="section level1">
+<h1>Cleanup</h1>
+<p>Remove all stopped containers</p>
+<pre><code>docker container prune</code></pre>
+<p>Remove images</p>
+<pre><code>docker images # list available images
+docker image rm  &lt;image-id&gt;</code></pre>
 </div>
 
 
