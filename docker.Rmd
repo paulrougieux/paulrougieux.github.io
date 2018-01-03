@@ -9,7 +9,36 @@ Then run :
 
     sudo apt-get install docker-ce
  
-# Docker container commands
+# Build
+
+Instructions to create a container are storred in a Dockerfile.
+Docker hub is a collection of Dockerfiles. 
+Containers stored on docker hub can be pulled and started directly from the docker run command.
+The section below explain how to write your own Docker file.
+
+## Docker file
+
+docs.docker.com [best practices for writing Dockerfiles](https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/)
+
+Build a container based on the Dockerfile in the present working directory
+
+    docker build -t friendlyhello .
+
+Dockerfile from R packages:
+
+* [bcm-uga/TESS3_encho_sen/Dockerfile](https://github.com/bcm-uga/TESS3_encho_sen/blob/master/Dockerfile) FROM rocker/hadleyverse
+
+
+## Compose file
+
+docs.docker.com [how services work](https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/)
+
+Compose several containers in a service
+
+
+# Start
+
+## Start containers
 
 Start a container
 
@@ -23,9 +52,27 @@ Stop a container
 
     sudo docker stop [OPTIONS] CONTAINER [CONTAINER...]
 
-Show available images on the system:
+### Docker run options
 
-    sudo docker images
+*  `rm`=true|false “Automatically remove the container when it exits (incompatible with  -d).  The default is false.”
+* `-v`, --volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to  a  container.  These  mounts  can  then  be  used  in other containers using the --volumes-from option.
+
+
+## Start services
+
+swarm init error:
+
+I specified the IP address 
+Stackoverflow [could not choose and IP address Error](https://stackoverflow.com/questions/38602903/docker-swarm-init-could-not-choose-an-ip-address-error)
+
+
+# Monitor
+
+## Monitor running containers
+
+[run metrics](https://docs.docker.com/engine/admin/runmetrics/)
+
+    docker stats <container-id>
 
 Start a bash shell inside a container 
 
@@ -38,16 +85,8 @@ Start a bash shell inside a container
     sudo docker inspect <container id>
 
 The IP is at the end.
-Then in a web browser, enter the IP address to see the running web server.
 
-
-## Docker run options
-
-*  `rm`=true|false “Automatically remove the container when it exits (incompatible with  -d).  The default is false.”
-* `-v`, --volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to  a  container.  These  mounts  can  then  be  used  in other containers using the --volumes-from option.
-
-
-## Docker inspect options
+### Inspect options
 
 Inspect the [run restart policies](https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart)
 Get the number of times a container was restarted:
@@ -58,7 +97,43 @@ Get the last time the container was (re)started;
 
     docker inspect -f "{{ .State.StartedAt }}" my-container
 
-# Docker compose commands
 
+## Monitor stopped containers 
+See [stopped containers](https://stackoverflow.com/questions/30231187/docker-list-only-stopped-containers/30231188#30231188)
+
+    docker ps --filter "status=exited"
+
+Inspect a stopped container
+
+    docker inspect <container-id>
+
+
+## Manage container images
+
+Show available images on the system:
+
+    sudo docker images
+
+## Monitor running services
+see which services are running
+
+    docker service ls
+
+see which services are running inside a service
+
+    docker service ps <service_name> 
+
+You can also run `docker ps` to see all running processes.
+
+# Cleanup
+
+Remove all stopped containers
+
+    docker container prune
+
+Remove images
+
+    docker images # list available images
+    docker image rm  <image-id>
 
 

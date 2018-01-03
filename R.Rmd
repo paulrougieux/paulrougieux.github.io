@@ -8,6 +8,7 @@ output:
 ---
 
 ```{r setup, include=FALSE}
+library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -143,7 +144,11 @@ In the section on "Multiple types in one table":
 Example use of `tidyr::nest()` to generate a group of plots: 
 [make ggplot2 purrr](http://www.brodrigues.co/blog/2017-03-29-make-ggplot2-purrr/).
 
-```{r}
+```{r eval=FALSE}
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggplot2)
 piris <- iris %>%  
     group_by(Species) %>% 
     nest() %>% 
@@ -167,7 +172,7 @@ piris$plot[2]
 
 * [Vectorization in R, Why?](http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html)
 
-
+* [Recommendations for resources for after workshops](https://github.com/carpentries/conversations/issues/18)
 
 
 # Plotting with ggplot2

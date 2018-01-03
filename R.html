@@ -300,6 +300,9 @@ div.tocify {
       <a href="debian.html">Debian</a>
     </li>
     <li>
+      <a href="docker.html">Docker</a>
+    </li>
+    <li>
       <a href="git.html">Git</a>
     </li>
     <li>
@@ -332,6 +335,13 @@ div.tocify {
       <a href="explore.html">Explore</a>
     </li>
   </ul>
+</li>
+<li>
+  <a href="events.html">
+    <span class="fa fa-users"></span>
+     
+    Events
+  </a>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -420,13 +430,53 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 </div>
 <div id="knitr" class="section level1">
 <h1>knitr</h1>
+<div id="kable-to-create-tables" class="section level2">
+<h2>kable to create tables</h2>
+<pre class="r"><code>cat(kable(head(iris, 1), format = &quot;html&quot;))</code></pre>
+<pre><code>## &lt;table&gt;
+##  &lt;thead&gt;
+##   &lt;tr&gt;
+##    &lt;th style=&quot;text-align:right;&quot;&gt; Sepal.Length &lt;/th&gt;
+##    &lt;th style=&quot;text-align:right;&quot;&gt; Sepal.Width &lt;/th&gt;
+##    &lt;th style=&quot;text-align:right;&quot;&gt; Petal.Length &lt;/th&gt;
+##    &lt;th style=&quot;text-align:right;&quot;&gt; Petal.Width &lt;/th&gt;
+##    &lt;th style=&quot;text-align:left;&quot;&gt; Species &lt;/th&gt;
+##   &lt;/tr&gt;
+##  &lt;/thead&gt;
+## &lt;tbody&gt;
+##   &lt;tr&gt;
+##    &lt;td style=&quot;text-align:right;&quot;&gt; 5.1 &lt;/td&gt;
+##    &lt;td style=&quot;text-align:right;&quot;&gt; 3.5 &lt;/td&gt;
+##    &lt;td style=&quot;text-align:right;&quot;&gt; 1.4 &lt;/td&gt;
+##    &lt;td style=&quot;text-align:right;&quot;&gt; 0.2 &lt;/td&gt;
+##    &lt;td style=&quot;text-align:left;&quot;&gt; setosa &lt;/td&gt;
+##   &lt;/tr&gt;
+## &lt;/tbody&gt;
+## &lt;/table&gt;</code></pre>
+<pre class="r"><code>cat(kable(head(iris, 1), format = &quot;latex&quot;))</code></pre>
+<pre><code>## 
+## \begin{tabular}{r|r|r|r|l}
+## \hline
+## Sepal.Length &amp; Sepal.Width &amp; Petal.Length &amp; Petal.Width &amp; Species\\
+## \hline
+## 5.1 &amp; 3.5 &amp; 1.4 &amp; 0.2 &amp; setosa\\
+## \hline
+## \end{tabular}</code></pre>
+<pre class="r"><code>cat(kable(head(iris, 1), format = &quot;markdown&quot;))</code></pre>
+<pre><code>## | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species | |------------:|-----------:|------------:|-----------:|:-------| |          5.1|         3.5|          1.4|         0.2|setosa  |</code></pre>
+</div>
+<div id="setting-knitr-options" class="section level2">
+<h2>Setting knitr options</h2>
 <p>Those 2 commands are different. Sets the options for chunk, within a knitr chunk inside the .Rmd document</p>
 <pre><code>opts_chunk$set(fig.width=10)</code></pre>
 <p>Sets the options for knitr outside the .Rmd document</p>
 <pre><code>opts_knit$set()</code></pre>
 </div>
-<div id="dplyr" class="section level1">
-<h1>dplyr</h1>
+</div>
+<div id="tidyverse" class="section level1">
+<h1>Tidyverse</h1>
+<div id="dplyr" class="section level2">
+<h2>dplyr</h2>
 <p>pipes</p>
 <pre class="r"><code>library(dplyr)
 cars %&gt;%
@@ -474,9 +524,23 @@ cars %&gt;%
 ## 18    24            4    70 93.75000   120
 ## 19    25            1    85 85.00000    85</code></pre>
 <p>group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.</p>
+<div id="mutate" class="section level3">
+<h3>Mutate</h3>
+<p>Mutate multiple variables in the dataframe at once using the <code>vars()</code> helper function to scope the mutation:</p>
+<pre class="r"><code>iris %&gt;%
+    mutate_at(vars(starts_with(&quot;Petal&quot;)), round) %&gt;%
+    head()</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5            1           0  setosa
+## 2          4.9         3.0            1           0  setosa
+## 3          4.7         3.2            1           0  setosa
+## 4          4.6         3.1            2           0  setosa
+## 5          5.0         3.6            1           0  setosa
+## 6          5.4         3.9            2           0  setosa</code></pre>
 </div>
-<div id="tidyr" class="section level1">
-<h1>tidyr</h1>
+</div>
+<div id="tidyr" class="section level2">
+<h2>tidyr</h2>
 <p><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidyr vignette on tidy data</a> In the section on “Multiple types in one table”:</p>
 <blockquote>
 <p>Datasets often involve values collected at multiple levels, on different types of observational units. During tidying, each type of observational unit should be stored in its own table. This is closely related to the idea of database normalisation, where each fact is expressed in only one place. It’s important because otherwise inconsistencies can arise.</p>
@@ -484,11 +548,35 @@ cars %&gt;%
 <blockquote>
 <p>Normalisation is useful for tidying and eliminating inconsistencies. However, there are few data analysis tools that work directly with relational data, so analysis usually also requires denormalisation or the merging the datasets back into one table.</p>
 </blockquote>
+<p>Example use of <code>tidyr::nest()</code> to generate a group of plots: <a href="http://www.brodrigues.co/blog/2017-03-29-make-ggplot2-purrr/">make ggplot2 purrr</a>.</p>
+<pre class="r"><code>library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggplot2)
+piris &lt;- iris %&gt;%  
+    group_by(Species) %&gt;% 
+    nest() %&gt;% 
+    mutate(plot = map2(data, Species, 
+                       ~ggplot(data = .x, 
+                               aes(x = Petal.Length, y = Petal.Width)) + 
+                           geom_point() + ggtitle(.y)))
+piris$plot[1]
+piris$plot[3]
+piris$plot[2]</code></pre>
+</div>
 </div>
 <div id="discussions" class="section level1">
 <h1>Discussions</h1>
 <ul>
 <li>Gavin Simpson <a href="http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/">My aversion to pipers</a> shows an Hadley tweet explaining that pipe might not be good in package development.</li>
+</ul>
+</div>
+<div id="teaching-r" class="section level1">
+<h1>Teaching R</h1>
+<ul>
+<li><p><a href="http://varianceexplained.org/r/teach-tidyverse/">Teach the tidyverse to beginners</a></p></li>
+<li><p><a href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">Vectorization in R, Why?</a></p></li>
+<li><p><a href="https://github.com/carpentries/conversations/issues/18">Recommendations for resources for after workshops</a></p></li>
 </ul>
 </div>
 <div id="plotting-with-ggplot2" class="section level1">
@@ -502,11 +590,25 @@ geom_tile + a gradient produce heat maps</code></pre>
 <p>Use the devtools library to start a package folder structure:</p>
 <pre><code>devtools::create(&quot;package_name&quot;)</code></pre>
 <p>Use git to track code modifications (shell commands):</p>
-<pre><code>cd package_name
-git init</code></pre>
+<pre><code>$ cd package_name
+$ git init</code></pre>
+<div id="documentation" class="section level2">
+<h2>Documentation</h2>
+<p>The roxygen2 package helps with function documentation. Documentation can be written in the form of comments #’ tags such as <code>@param</code> and <code>@description</code> structure the documentation of each function.</p>
+<p>For an introcution to roxygen2, call <code>vignette(&quot;roxygen2&quot;, package = &quot;roxygen2&quot;)</code> at the R prompt.</p>
+<p>Since roxygen2 version 6, markdown formating can be used in the documentation, by specifying the <code>@md</code> tag.</p>
+</div>
+<div id="unit-tests" class="section level2">
+<h2>Unit tests</h2>
 <p>Back in R, add testing infrastructure:</p>
 <pre><code>devtools::use_testthat()</code></pre>
 <p>When checking the package with R CMD CHECK, <a href="https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when">How can I handle R CMD check “no visible binding for global variable”?</a> These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.</p>
+</div>
+<div id="continuous-integration" class="section level2">
+<h2>Continuous Integration</h2>
+<p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository. I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK.</p>
+<p>Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
+</div>
 </div>
 
 
