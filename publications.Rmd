@@ -1,5 +1,11 @@
+---
+title: "Publications"
+output: 
+  html_document: 
+    toc: no
+---
 
-# Refereed Journal Articles
+## Refereed Journal Articles
 
 2018: "Reassessing forest products demand functions in Europe using a panel co-integration approach",
 with Olivier Damette, 
@@ -14,7 +20,7 @@ https://doi.org/10.1016/j.jfe.2014.07.001
 ([code to read GFPM output data](https://github.com/paulrougieux/GFPMoutput))
 
 
-# Technical reports and other publications
+## Technical reports and other publications
 
 2017: "The Forest Products Trade Flow Database – A reproducible method and tool to support the analysis of international forest products trade", 
 with Jo Van Brusselen, Marko Lovrić, Janne Kiljunen, Simo Varis and Sergey Zudin,
@@ -22,7 +28,7 @@ with Jo Van Brusselen, Marko Lovrić, Janne Kiljunen, Simo Varis and Sergey Zudi
 ([code](https://github.com/EuropeanForestInstitute/tradeflows))
 
 
-# PhD Thesis
+## PhD Thesis
 
 2017: "Modelling European Forest Products Consumption and Trade in a Context of Structural Change"
 defended on 09-03-2017 in Université de Lorraine, https://www.theses.fr/en/2017LORR0004

@@ -1,8 +1,8 @@
-name: "paulworkbench"
+name: "paulrougieux"
 output_dir: "."
 include: ["docs/tools/git.md"]
 navbar:
-  title: "Paul's Workbench"
+  title: "Paul Rougieux"
   left:
     - text: "Home"
       icon: fa-home 
