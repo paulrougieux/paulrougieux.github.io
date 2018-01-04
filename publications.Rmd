@@ -2,23 +2,29 @@
 # Refereed Journal Articles
 
 2018: "Reassessing forest products demand functions in Europe using a panel co-integration approach",
-with Olivier Damette, Applied Economics, forthcoming
+with Olivier Damette, 
+Applied Economics, forthcoming,
 https://doi.org/10.1080/00036846.2017.1420887
+([data](data/data_Reassessing_forest_products_demand_functions_in_Europe_using_a_panel_cointegration_approach.zip)).
 
 2014: "Potential impact of a Transatlantic Trade and Investment Partnership on the global forest sector"
-with Joseph Buongiorno, Ahmed Barkaoui, Shushuai Zhu, Patrice Harou
+with Joseph Buongiorno, Ahmed Barkaoui, Shushuai Zhu, Patrice Harou, 
+Journal of Forest Economics, Vol 20, No 3, 252-266,
 https://doi.org/10.1016/j.jfe.2014.07.001  
-[R package to read output data from the GFPM model](https://github.com/paulrougieux/GFPMoutput)
+([code to read GFPM output data](https://github.com/paulrougieux/GFPMoutput))
 
 
 # Technical reports and other publications
 
-2017: "The Forest Products Trade Flow Database – A reproducible method and tool to support the analysis of international forest products trade", [EFI Technical Report No 100](http://www.efi.int/portal/virtual_library/publications/technical_reports/),
-with Jo Van Brusselen, Marko Lovrić, Janne Kiljunen, Simo Varis and Sergey Zudin
+2017: "The Forest Products Trade Flow Database – A reproducible method and tool to support the analysis of international forest products trade", 
+with Jo Van Brusselen, Marko Lovrić, Janne Kiljunen, Simo Varis and Sergey Zudin,
+[EFI Technical Report No 100](http://www.efi.int/portal/virtual_library/publications/technical_reports/),
+([code](https://github.com/EuropeanForestInstitute/tradeflows))
+
 
 # PhD Thesis
 
 2017: "Modelling European Forest Products Consumption and Trade in a Context of Structural Change"
-defended on 09-03-2017 in Université de Lorraine. https://www.theses.fr/en/2017LORR0004
+defended on 09-03-2017 in Université de Lorraine, https://www.theses.fr/en/2017LORR0004
 
 
