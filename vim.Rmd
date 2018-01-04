@@ -83,12 +83,21 @@ Automatically change the working directory to the file currently edited
 ## Replace characters
 
 Vim wiki on search and replace 
+Find each occurrence of 'foo' (in the current line only), and replace it with 'bar'. 
+    
+    :s/foo/bar/g
 
-    :s/foo/bar/g Find each occurrence of 'foo' (in the current line only), and replace it with 'bar'. 
+Find each occurrence of 'foo' (in all lines), and replace it with 'bar'.
 
-    :%s/foo/bar/g Find each occurrence of 'foo' (in all lines), and replace it with 'bar'.
+    :%s/foo/bar/g 
 
-    %s/option value=".*"//g remove all beginnings of line. :%s/\option\n/, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.
+Find each occurence of foo but don't perform the replacement, only count the number of occurences
+
+    :%s/foo/bar/n
+
+Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.
+
+    %s/option value=".*"//g 
 
 ## Editing a whole line
 
