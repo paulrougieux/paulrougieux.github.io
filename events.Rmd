@@ -1,3 +1,9 @@
+---
+title: "Events"
+output: 
+  html_document: 
+    toc: no
+---
 
 
 # Nancy Data Science
