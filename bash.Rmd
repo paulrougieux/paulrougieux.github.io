@@ -318,6 +318,13 @@ Kill a graphical program, by clicking on it:
      xkill
 
 
+# Variables
+
+[Variables](https://www.shellscript.sh/variables1.html)
+
+    message = "Hello World"
+    echo $message
+
 # Secure shell
 log into a remote machine
 

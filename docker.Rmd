@@ -29,6 +29,21 @@ Dockerfile from R packages:
 * [bcm-uga/TESS3_encho_sen/Dockerfile](https://github.com/bcm-uga/TESS3_encho_sen/blob/master/Dockerfile) FROM rocker/hadleyverse
 
 
+I used R CMD build inside the docker file to build a package.
+
+    # Set the working directory to /R
+    WORKDIR /R
+
+    # Copy the current directory contents into the container at /R/packagename
+    ADD . /R/packagename
+
+    RUN R CMD build packagename
+
+    # R CMD build generates the file name from the description file
+    # Remember to update file name here below after a version update
+    RUN R -e 'install.packages("packagename_0.1.0.tar.gz")'
+
+
 ## Compose file
 
 docs.docker.com [how services work](https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/)
@@ -54,7 +69,9 @@ Stop a container
 
 ### Docker run options
 
-*  `rm`=true|false “Automatically remove the container when it exits (incompatible with  -d).  The default is false.”
+* `-i, --interactive` Keep STDIN open even if not attached
+* `rm`=true|false “Automatically remove the container when it exits (incompatible with  -d).  The default is false.”
+* `-t, --tty` Allocate a pseudo-TTY
 * `-v`, --volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to  a  container.  These  mounts  can  then  be  used  in other containers using the --volumes-from option.
 
 
@@ -126,6 +143,16 @@ see which services are running inside a service
 You can also run `docker ps` to see all running processes.
 
 # Cleanup
+
+A container should be stopped before it can be removed.
+Stop a container
+
+    docker ps
+    docker stop <container-id>
+
+Remove a stopped container
+
+    docker rm <container-id>
 
 Remove all stopped containers
 

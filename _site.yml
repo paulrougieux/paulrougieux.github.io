@@ -36,6 +36,9 @@ navbar:
     - text: "Events"
       icon: fa-users
       href: events.html
+    - text: "Publications"
+      icon: fa-book
+      href: publications.html
 output:
   html_document:
     toc: true
