@@ -87,6 +87,15 @@ Find each occurrence of 'foo' (in the current line only), and replace it with 'b
     
     :s/foo/bar/g
 
+When [text is visually selected](http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection),
+press : to enter a command. The command line will automatically enter the range:
+
+    :'<,'>
+
+You can enter a command such as s/red/green/g to replace each red with green in all lines of the last visual selection. The command will appear as:
+
+    :'<,'>s/red/green/g
+
 Find each occurrence of 'foo' (in all lines), and replace it with 'bar'.
 
     :%s/foo/bar/g 
@@ -139,6 +148,7 @@ More details on vim indentation in the python wiki.
 ## Window split
 
     :sp[lit] filename  - split window and load another file
+    :10sp - specify the split height with a number
     :vs[plit] - same but split vertically  
     ctrl-w up arrow - move cursor up a window
     ctrl-w ctrl-w   - move cursor to another window (cycle)
