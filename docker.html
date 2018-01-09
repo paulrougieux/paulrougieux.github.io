@@ -397,7 +397,15 @@ RUN R -e &#39;install.packages(&quot;packagename_0.1.0.tar.gz&quot;)&#39;</code>
 <div id="compose-file" class="section level2">
 <h2>Compose file</h2>
 <p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/">how services work</a></p>
-<p>Compose several containers in a service</p>
+<p>Compose several containers in a service <a href="https://docs.docker.com/compose/networking/">Networking in compose</a> from version 2, <a href="https://docs.docker.com/compose/compose-file/#links">links are not required</a>, for example with</p>
+<p>db: image: postgres ports: - “8001:5432”</p>
+<blockquote>
+<p>“Within the web container [in the same compose file], your connection string to db would look like postgres://db:5432, and from the host machine, the connection string would look like postgres://{DOCKER_IP}:8001.”</p>
+</blockquote>
+<p><a href="">Restart policy</a></p>
+<pre><code>deploy:
+  restart_policy:
+    condition: on-failure</code></pre>
 </div>
 </div>
 <div id="start" class="section level1">
@@ -422,6 +430,10 @@ RUN R -e &#39;install.packages(&quot;packagename_0.1.0.tar.gz&quot;)&#39;</code>
 </div>
 <div id="start-services" class="section level2">
 <h2>Start services</h2>
+<p>Create a compose file then start the service with:</p>
+<pre><code>docker stack deploy -c docker-compose.yml servicename </code></pre>
+<p>Stop the service with:</p>
+<pre><code>docker stack rm servicename </code></pre>
 <p>swarm init error:</p>
 <p>I specified the IP address Stackoverflow <a href="https://stackoverflow.com/questions/38602903/docker-swarm-init-could-not-choose-an-ip-address-error">could not choose and IP address Error</a></p>
 </div>
@@ -438,13 +450,18 @@ docker exec -it &lt;container-id&gt; bash </code></pre>
 <p><a href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find the IP of a container</a>:</p>
 <pre><code>sudo docker ps # look for the process id
 sudo docker inspect &lt;container id&gt;</code></pre>
-<p>The IP is at the end.</p>
+<p>The IP is at the end. it can also be <a href="https://stackoverflow.com/a/20686101/2641825">extracted with a template</a>:</p>
+<pre><code> sudo docker inspect -f &#39;{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}&#39; &lt;container id&gt; </code></pre>
 <div id="inspect-options" class="section level3">
 <h3>Inspect options</h3>
 <p>Inspect the <a href="https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart">run restart policies</a> Get the number of times a container was restarted:</p>
 <pre><code>docker inspect -f &quot;{{ .RestartCount }}&quot; my-container</code></pre>
 <p>Get the last time the container was (re)started;</p>
 <pre><code>docker inspect -f &quot;{{ .State.StartedAt }}&quot; my-container</code></pre>
+</div>
+<div id="container-logs" class="section level3">
+<h3>Container logs</h3>
+<pre><code>docker logs [OPTIONS] &lt;container id&gt;</code></pre>
 </div>
 </div>
 <div id="monitor-stopped-containers" class="section level2">
@@ -461,9 +478,12 @@ sudo docker inspect &lt;container id&gt;</code></pre>
 </div>
 <div id="monitor-running-services" class="section level2">
 <h2>Monitor running services</h2>
+<p>see which stacks are running</p>
+<pre><code>sudo docker stack ls
+sudo docker stack services &lt;stackname&gt;</code></pre>
 <p>see which services are running</p>
 <pre><code>docker service ls</code></pre>
-<p>see which services are running inside a service</p>
+<p>see which containers are running inside a service</p>
 <pre><code>docker service ps &lt;service_name&gt; </code></pre>
 <p>You can also run <code>docker ps</code> to see all running processes.</p>
 </div>
@@ -480,6 +500,20 @@ docker stop &lt;container-id&gt;</code></pre>
 <p>Remove images</p>
 <pre><code>docker images # list available images
 docker image rm  &lt;image-id&gt;</code></pre>
+</div>
+<div id="security" class="section level1">
+<h1>Security</h1>
+<p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/secrets/">Manage sensitive data with Docker secrets</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service">Example use secrets with a Wordpress service</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose">Use secrets in compose</a> * Declare the location of secrets :</p>
+<pre><code> secrets:
+   db_password:
+     file: db_password.txt
+   db_root_password:
+     file: db_root_password.txt</code></pre>
+<ul>
+<li><p>give access to secrets to a service :</p>
+<p>db: image: mysql:latest volumes: - db_<a href="data:/var/lib/mysql" class="uri">data:/var/lib/mysql</a> environment: MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password MYSQL_DATABASE: wordpress MYSQL_USER: wordpress MYSQL_PASSWORD_FILE: /run/secrets/db_password secrets: - db_root_password - db_password</p></li>
+</ul>
+<p>Stackoverflow <a href="https://stackoverflow.com/questions/22651647/docker-and-securing-passwords">Docker and securing passwords</a> previous solution recommended passing passwords as environement variables. Docker now has a native solution to deal with secrets.</p>
 </div>
 
 

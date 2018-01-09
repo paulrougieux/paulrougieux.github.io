@@ -49,6 +49,21 @@ I used R CMD build inside the docker file to build a package.
 docs.docker.com [how services work](https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/)
 
 Compose several containers in a service
+[Networking in compose](https://docs.docker.com/compose/networking/) from version 2, 
+[links are not required](https://docs.docker.com/compose/compose-file/#links), for example with
+
+  db:
+    image: postgres
+      ports:
+         - "8001:5432"
+
+> “Within the web container [in the same compose file], your connection string to db would look like postgres://db:5432, and from the host machine, the connection string would look like postgres://{DOCKER_IP}:8001.” 
+
+[Restart policy]()
+
+    deploy:
+      restart_policy:
+        condition: on-failure
 
 
 # Start
@@ -77,6 +92,15 @@ Stop a container
 
 ## Start services
 
+Create a compose file
+then start the service with:
+
+    docker stack deploy -c docker-compose.yml servicename 
+
+Stop the service with:
+
+    docker stack rm servicename 
+
 swarm init error:
 
 I specified the IP address 
@@ -101,7 +125,10 @@ Start a bash shell inside a container
     sudo docker ps # look for the process id
     sudo docker inspect <container id>
 
-The IP is at the end.
+The IP is at the end. it can also be [extracted with a template](https://stackoverflow.com/a/20686101/2641825):
+
+     sudo docker inspect -f '{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}' <container id> 
+
 
 ### Inspect options
 
@@ -114,6 +141,9 @@ Get the last time the container was (re)started;
 
     docker inspect -f "{{ .State.StartedAt }}" my-container
 
+### Container logs
+
+    docker logs [OPTIONS] <container id>
 
 ## Monitor stopped containers 
 See [stopped containers](https://stackoverflow.com/questions/30231187/docker-list-only-stopped-containers/30231188#30231188)
@@ -132,11 +162,16 @@ Show available images on the system:
     sudo docker images
 
 ## Monitor running services
+see which stacks are running
+
+    sudo docker stack ls
+    sudo docker stack services <stackname>
+
 see which services are running
 
     docker service ls
 
-see which services are running inside a service
+see which containers are running inside a service
 
     docker service ps <service_name> 
 
@@ -162,5 +197,39 @@ Remove images
 
     docker images # list available images
     docker image rm  <image-id>
+
+
+# Security
+docs.docker.com [Manage sensitive data with Docker secrets](https://docs.docker.com/engine/swarm/secrets/)
+ * [Example use secrets with a Wordpress service](https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service)
+ * [Use secrets in compose](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
+   * Declare the location of secrets :
+
+     secrets:
+       db_password:
+         file: db_password.txt
+       db_root_password:
+         file: db_root_password.txt
+
+   * give access to secrets to a service :
+
+       db:
+         image: mysql:latest
+         volumes:
+           - db_data:/var/lib/mysql
+         environment:
+           MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+           MYSQL_DATABASE: wordpress
+           MYSQL_USER: wordpress
+           MYSQL_PASSWORD_FILE: /run/secrets/db_password
+         secrets:
+           - db_root_password
+           - db_password
+     
+
+
+Stackoverflow [Docker and securing passwords](https://stackoverflow.com/questions/22651647/docker-and-securing-passwords)
+previous solution recommended passing passwords as environement variables.
+Docker now has a native solution to deal with secrets.
 
 
