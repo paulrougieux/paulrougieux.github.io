@@ -570,8 +570,10 @@ kill -9 process_it # -9 forces the kill</code></pre>
 <pre><code>message = &quot;Hello World&quot;
 echo $message</code></pre>
 </div>
-<div id="secure-shell" class="section level1">
-<h1>Secure shell</h1>
+<div id="ssh" class="section level1">
+<h1>SSH</h1>
+<div id="secure-shell-into-a-remote-machine" class="section level2">
+<h2>Secure shell into a remote machine</h2>
 <p>log into a remote machine</p>
 <pre><code>ssh user@remote_machine</code></pre>
 <p>Copy a local file to a file on the remote machine</p>
@@ -580,6 +582,24 @@ echo $message</code></pre>
 <pre><code>scp user@remote_machine:path_to_file/file_name  local_file_name</code></pre>
 <p>Copy a full directory (dmouraty) from the remote machine:</p>
 <pre><code> scp -rp user@dest:/path destdirectory</code></pre>
+</div>
+<div id="generate-ssh-keys-to-access-a-remote-git-repository" class="section level2">
+<h2>Generate SSH keys to access a remote git repository</h2>
+<p>Generate a new key</p>
+<pre><code>cd ~/.ssh
+ssh-keygen &lt;id_rsa_keyname&gt;</code></pre>
+<p>Temporarily add a key to ssh</p>
+<pre><code>ssh-add ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
+<p>List keys</p>
+<pre><code>ssh-add -l</code></pre>
+<p>After a restart of the ssh agent</p>
+<pre><code>killall ssh-agent
+eval `ssh-agent`</code></pre>
+<p>This key will not be available anymore to <a href="https://stackoverflow.com/a/4246809/2641825">permanently add a key to the ssh config file</a> (SO) Edit your <code>~/.ssh/config</code> file:</p>
+<pre><code>IdentityFile ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
+<p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
+<pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
+</div>
 </div>
 <div id="alias" class="section level1">
 <h1>Alias</h1>

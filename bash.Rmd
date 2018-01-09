@@ -325,7 +325,9 @@ Kill a graphical program, by clicking on it:
     message = "Hello World"
     echo $message
 
-# Secure shell
+# SSH
+## Secure shell into a remote machine
+
 log into a remote machine
 
     ssh user@remote_machine
@@ -341,6 +343,38 @@ Copy a file from the remote machine to a local file
 Copy a full directory (dmouraty) from the remote machine:
 
      scp -rp user@dest:/path destdirectory
+
+## Generate SSH keys to access a remote git repository
+
+Generate a new key
+
+    cd ~/.ssh
+    ssh-keygen <id_rsa_keyname>
+
+Temporarily add a key to ssh
+
+    ssh-add ~/.ssh/<id_rsa_keyname>
+
+List keys
+
+    ssh-add -l
+
+After a restart of the ssh agent
+
+    killall ssh-agent
+    eval `ssh-agent`
+
+This key will not be available anymore
+to [permanently add a key to the ssh config file](https://stackoverflow.com/a/4246809/2641825) (SO)
+Edit your `~/.ssh/config` file:
+ 
+    IdentityFile ~/.ssh/<id_rsa_keyname>
+
+If the key was generated with a password,and you don't exactly remember the password,
+you can [test a few password you might remember with](https://stackoverflow.com/a/23666831/2641825):
+
+    ssh-keygen -y -f <private_key_file_name>
+
 
 # Alias
 
