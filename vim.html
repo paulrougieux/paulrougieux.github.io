@@ -434,6 +434,10 @@ alt+: - switch to navigation mode and send a command</code></pre>
 <h2>Replace characters</h2>
 <p>Vim wiki on search and replace Find each occurrence of ‘foo’ (in the current line only), and replace it with ‘bar’.</p>
 <pre><code>:s/foo/bar/g</code></pre>
+<p>When <a href="http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection">text is visually selected</a>, press : to enter a command. The command line will automatically enter the range:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;</code></pre>
+<p>You can enter a command such as s/red/green/g to replace each red with green in all lines of the last visual selection. The command will appear as:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/red/green/g</code></pre>
 <p>Find each occurrence of ‘foo’ (in all lines), and replace it with ‘bar’.</p>
 <pre><code>:%s/foo/bar/g </code></pre>
 <p>Find each occurence of foo but don’t perform the replacement, only count the number of occurences</p>
@@ -479,6 +483,7 @@ filetype indent on </code></pre>
 <div id="window-split" class="section level2">
 <h2>Window split</h2>
 <pre><code>:sp[lit] filename  - split window and load another file
+:10sp - specify the split height with a number
 :vs[plit] - same but split vertically  
 ctrl-w up arrow - move cursor up a window
 ctrl-w ctrl-w   - move cursor to another window (cycle)

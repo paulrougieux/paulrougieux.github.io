@@ -18,9 +18,15 @@ This page is the continuation of
 Seen on a [Debian Forum](http://forums.debian.net/viewtopic.php?f=7&t=104263) one of the answer to 
 Pulse Audio shows "dummy output" linked to that KDE PulseAudio page:
 [KDE PulseAudio Integration](https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/)
-"One thing that can happen is that some other process "hogs" the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a "Dummy Output". As the name suggests, anything that is "Played" via this device is inaudible). This "Dummy Output" should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere).
+"One thing that can happen is that some other process "hogs" the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a "Dummy Output". As the name suggests, anything that is "Played" via this device is inaudible). This "Dummy Output" should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere)."
 
-If you need to restart PulseAudio, generally a reboot is simplest. Alternatively, issue the commands: pulseaudio -k; start-pulseaudio-x11; start-pulseaudio-kde. The first command will kill the running daemon, then the second two start PulseAudio and load some additional modules that are normally loaded as part of your typical login procedure. Please note that some applications may require to be restarted after restarting PulseAudio. "
+Debian wiki [Missing playback devices or audio capture](https://wiki.debian.org/PulseAudio#Missing_playback_devices_or_audio_capture)
+deleting the configuration files and restarting pulseaudio. 
+The following commands restored audio:
+
+    $ rm -r ~/.config/pulse /tmp/pulse-*
+    $ pulseaudio --kill
+    $ pulseaudio --start
 
 
 # System information
