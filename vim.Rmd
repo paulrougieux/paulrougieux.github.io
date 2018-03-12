@@ -124,6 +124,14 @@ Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by com
     Move to where you would like to paste.
     Press P to paste before the cursor, or p to paste after. 
 
+[Paste without autoindent](https://stackoverflow.com/a/2545242/2641825)
+
+    :r! cat 
+
+And then paste `CTRL + SHIFT + V` the content, and `CTRL+D`.
+
+Also works over SSH.
+
 ## Indentation
 
 Indentation replaced by spaces, add this to the ~/.vimrc file
