@@ -1,4 +1,4 @@
----
+:--
 title: "Bash Commands"
 output: 
   html_document: 
@@ -23,7 +23,6 @@ The page below also contains many commands from external tools
 that are not part of the GNU project.
 
 # Files 
-
 
 ## Get information about a file
 Determine file type and encoding. The -i option shows the mime type strings.
@@ -59,9 +58,19 @@ Find files in the whole system
     locate filename
 
 ## File and folder compression
+Compress a file using gzip or 7z compression
+    
+    gzip <filename>
+    7zr a -si<filename> <filename>.7z 
+
 Decompress a file
 
-     gunzip file.gz
+     gunzip <filename.gz>
+     7zr e <filename.7z>
+
+Convert a 7z file to gz using a pipe similar to [this answer](https://superuser.com/a/357980/419414).
+
+    7zr e -so <filename.7z> | gzip -c > <filename.gz>
 
 How do I compress a whole directory?
 
@@ -132,7 +141,7 @@ Replace strings with perl in a git repository
 
     git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
 
-# PDF files
+## PDF files
 Commands based on the poppler library for PDF manipulation.
 Search a text pattern in all PDF files present in a directory:
 
@@ -150,7 +159,15 @@ Alternatively, pdftk can be used to merge PDF files
 
     pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.
 
-# Videos and audio
+# Tools
+
+## Download with Curl
+
+Load a file from a URL, using the file name from the URL
+
+    curl -O <url_including_a_file_name>
+
+## Download videos and audio
 Install youtube-dl using pip:
 
      sudo pip install --upgrade youtube_dl
@@ -163,12 +180,41 @@ Download only the audio in an .mp3 format
 
     youtube-dl --extract-audio --audio-format mp3 video_url
 
+## Play Midi files
+
+Install a software synthethizer to play midi files.
+[VideoLan Wiki](https://wiki.videolan.org/Midi/)
+
+> If the FluidSynth codec is not shown in VLC's preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound 
+
+## Partition disks
+
+Format a USB drive as a FAT 32 partition.
+
+    sudo fdisk -l 
+    sudo umount /dev/mmcblk0p1 
+    sudo mkdosfs -F 32 -I /dev/mmcblk0
+
+format a USB drive as a FAT 32 partition smaller than the drive size
+
+    sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))
+
+I used the GUI tool Gparted.
+To see if a partition is primary, use the command:
+    sudo parted /dev/mmcblk0 # then:
+    print
+
+This will print the type (primary or logical) of the partition.
+
+
 # Users
 
 ## Manager users and groups
 Check your user id
 
     id 
+    echo $UID
+    echo $USER
 
 What group do you belong to as a user
 
@@ -204,7 +250,7 @@ Show all groups
 
     getent group 
 
-# Change file permission
+## Change file permission
 
 
 Change user and group of a file
@@ -224,6 +270,36 @@ Chmod instructions can be given with characters or numbers, chmod 777 or chmod a
 
     Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as "rwxr-xr-x" in ls -l. 
     The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
+
+## Alias
+
+    alias ll="ls -lh" 
+
+
+Based on how can i sort du-h output by size
+
+    alias du='du -hd1 | sort -h -r'
+
+
+You can place those commands in your ~/.bashrc to create a permanent alias.
+bashrc:
+
+>    "You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly."
+
+## Profile .bash_profile and .bashrc
+These are places where a user can turn of the system BEEP :
+
+    setterm -blength 0
+
+.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.
+
+Debian Dotfiles
+
+    "Now, since bash is being invoked as a login shell (with name "-bash", a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that."
+
+    [...] "You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  "
+
+In .bashrc a user can set environment variables, define alias (see above).
 
 
 
@@ -300,6 +376,13 @@ Stop a job
 
     CTRL ^ Z
 
+Move a stopped job to the background
+
+    bg
+
+[How to manage foreground and background processes](https://www.digitalocean.com/community/tutorials/how-to-use-bash-s-job-control-to-manage-foreground-and-background-processes) 
+“By default, the bg command operates on the most recently stopped process. If you've stopped multiple “
+
 Quit a job
 
      CTRL ^ C
@@ -375,36 +458,6 @@ you can [test a few password you might remember with](https://stackoverflow.com/
 
     ssh-keygen -y -f <private_key_file_name>
 
-
-# Alias
-
-    alias ll="ls -lh" 
-
-
-Based on how can i sort du-h output by size
-
-    alias du='du -hd1 | sort -h -r'
-
-
-You can place those commands in your ~/.bashrc to create a permanent alias.
-bashrc:
-
->    "You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly."
-
-# .bash_profile and .bashrc
-These are places where a user can turn of the system BEEP :
-
-    setterm -blength 0
-
-.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.
-
-Debian Dotfiles
-
-    "Now, since bash is being invoked as a login shell (with name "-bash", a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that."
-
-    [...] "You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  "
-
-In .bashrc a user can set environment variables, define alias (see above).
 
 # Locale
 

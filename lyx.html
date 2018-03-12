@@ -403,6 +403,15 @@ Replace long.bib by short.bib in the .tex file.</code></pre>
 <p>In Document &gt; Settings…, under Language &gt; Encoding, choose “Other” and select “Language Default (no inputenc)”.</p>
 <p>Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.</p>
 </div>
+<div id="fonts" class="section level1">
+<h1>Fonts</h1>
+<div id="icons" class="section level2">
+<h2>Icons</h2>
+<p>Font-awesome is available in the Debian Package “texlive-fonts-extra”. It can be used in Lyx by insterting <code>\usepackage{fontawesome}</code> in the Latex preamble. Then insert an icon with:</p>
+<pre><code>\faComments
+\faWrench</code></pre>
+</div>
+</div>
 <div id="encoding-issues-and-greek-symbols-used-outside-math-mode" class="section level1">
 <h1>Encoding issues and Greek symbols used outside math mode</h1>
 <p>“Encoding file ‘lgrenc.def’ not found” was fixed by installing the debian package texlive-lang-greek (as explained here on stackoverflow). Other errors appeared related to the use of beta signs outside math mode. As one user explained on stackoverflow, placing signs in math mode usually fixes the issue. Hyperlinks in PDF</p>
@@ -438,10 +447,15 @@ Replace long.bib by short.bib in the .tex file.</code></pre>
 <p>Elsevier provides a latex template for articles called elsarticle which is usable in Lyx. However compiling with this template doesn’t seem to work when using the hyperref package with the general option “automatically fill header”. After deactivating this option, compilation works again.</p>
 <p>The elsarticle template uses numerical references by default. it is possible to activate author year reference according to this stack exchange answer. Tips</p>
 <pre><code>CTRL+D uses yap, a faster (on windows) previewer than the default PDF one. There is no noticeable difference on Linux.</code></pre>
+</div>
+<div id="other-templates" class="section level1">
+<h1>Other templates</h1>
 <p>To produce a meeting report with a wider template than the default article.</p>
 <pre><code>I would have liked to find an overview of the templates with screenshots of PDF results. But I couldn&#39;t find such overview online. LyX wiki has a list of examples and a list of layouts. 
 In fact all that was needed was to edit the Document \ Settings \ Page margins, I set the inner and out margins to 2 cm and was happy with the result.</code></pre>
-<p>knitr and Lyx</p>
+</div>
+<div id="knitr-and-lyx" class="section level1">
+<h1>knitr and Lyx</h1>
 <pre><code>Yihui Xie: Using knitr and Lyx
  Krishna Devulapalli: Creation of research papers with embedded R results using LyX</code></pre>
 <p>Export to Microsoft Word compatible format RTF</p>
