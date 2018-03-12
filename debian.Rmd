@@ -35,6 +35,23 @@ Find out which Debian version is running
 
     cat /etc/issue
 
+# Tools
+
+These tools are not specific to Debian. I place them here because 
+I use Debian as my main system. If a section gets too large it may get
+moved to another page in the future. 
+
+
+## Gimp
+
+The most important Gimp shortcuts are: 
+
+ * CTRL + B to open the tool Box
+ * CTRL + L to open the Layers dialog
+
+A [list of Gimp Shortcuts](http://gimptips.com/articles/gimp-keyboard-shortcuts)
+
+
 # Upgrade 
 
 ## From Jessie 8 to Stretch 9
