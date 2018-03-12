@@ -11,7 +11,7 @@
 
 
 
-<title>Bash Commands</title>
+<title></title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -360,11 +360,11 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Bash Commands</h1>
 
 </div>
 
 
+<p>:– title: “Bash Commands” output: html_document: toc: yes toc_float: true —</p>
 <pre class="r"><code>knitr::opts_chunk$set(eval=FALSE)</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
@@ -401,8 +401,14 @@ find . -mtime 0 # modified in the last 24 hours</code></pre>
 </div>
 <div id="file-and-folder-compression" class="section level2">
 <h2>File and folder compression</h2>
+<p>Compress a file using gzip or 7z compression</p>
+<pre><code>gzip &lt;filename&gt;
+7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
 <p>Decompress a file</p>
-<pre><code> gunzip file.gz</code></pre>
+<pre><code> gunzip &lt;filename.gz&gt;
+ 7zr e &lt;filename.7z&gt;</code></pre>
+<p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>
+<pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
 <p>How do I compress a whole directory?</p>
 <pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
 <p>Where</p>
@@ -450,9 +456,8 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <p>Replace strings with perl in a git repository</p>
 <pre><code>git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;</code></pre>
 </div>
-</div>
-<div id="pdf-files" class="section level1">
-<h1>PDF files</h1>
+<div id="pdf-files" class="section level2">
+<h2>PDF files</h2>
 <p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
 <pre><code>pdfgrep pattern *.pdf</code></pre>
 <p>Merge multiple PDF into one:</p>
@@ -462,8 +467,16 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
 <pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.</code></pre>
 </div>
-<div id="videos-and-audio" class="section level1">
-<h1>Videos and audio</h1>
+</div>
+<div id="tools" class="section level1">
+<h1>Tools</h1>
+<div id="download-with-curl" class="section level2">
+<h2>Download with Curl</h2>
+<p>Load a file from a URL, using the file name from the URL</p>
+<pre><code>curl -O &lt;url_including_a_file_name&gt;</code></pre>
+</div>
+<div id="download-videos-and-audio" class="section level2">
+<h2>Download videos and audio</h2>
 <p>Install youtube-dl using pip:</p>
 <pre><code> sudo pip install --upgrade youtube_dl</code></pre>
 <p>Download a video from youtube :</p>
@@ -471,12 +484,33 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <p>Download only the audio in an .mp3 format</p>
 <pre><code>youtube-dl --extract-audio --audio-format mp3 video_url</code></pre>
 </div>
+<div id="play-midi-files" class="section level2">
+<h2>Play Midi files</h2>
+<p>Install a software synthethizer to play midi files. <a href="https://wiki.videolan.org/Midi/">VideoLan Wiki</a></p>
+<blockquote>
+<p>If the FluidSynth codec is not shown in VLC’s preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound</p>
+</blockquote>
+</div>
+<div id="partition-disks" class="section level2">
+<h2>Partition disks</h2>
+<p>Format a USB drive as a FAT 32 partition.</p>
+<pre><code>sudo fdisk -l 
+sudo umount /dev/mmcblk0p1 
+sudo mkdosfs -F 32 -I /dev/mmcblk0</code></pre>
+<p>format a USB drive as a FAT 32 partition smaller than the drive size</p>
+<pre><code>sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))</code></pre>
+<p>I used the GUI tool Gparted. To see if a partition is primary, use the command: sudo parted /dev/mmcblk0 # then: print</p>
+<p>This will print the type (primary or logical) of the partition.</p>
+</div>
+</div>
 <div id="users" class="section level1">
 <h1>Users</h1>
 <div id="manager-users-and-groups" class="section level2">
 <h2>Manager users and groups</h2>
 <p>Check your user id</p>
-<pre><code>id </code></pre>
+<pre><code>id 
+echo $UID
+echo $USER</code></pre>
 <p>What group do you belong to as a user</p>
 <pre><code>groups</code></pre>
 <p>Add a new user</p>
@@ -495,9 +529,8 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <p>Show all groups</p>
 <pre><code>getent group </code></pre>
 </div>
-</div>
-<div id="change-file-permission" class="section level1">
-<h1>Change file permission</h1>
+<div id="change-file-permission" class="section level2">
+<h2>Change file permission</h2>
 <p>Change user and group of a file</p>
 <pre><code>chown groupname:username filename</code></pre>
 <p>Change file permission</p>
@@ -508,6 +541,28 @@ chmod 777 filename </code></pre>
 <p>Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.</p>
 <pre><code>Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as &quot;rwxr-xr-x&quot; in ls -l. 
 The default for document files on Debian seems to be chmod 644, visible as &quot;-rw-r--r--&quot; in ls -l.</code></pre>
+</div>
+<div id="alias" class="section level2">
+<h2>Alias</h2>
+<pre><code>alias ll=&quot;ls -lh&quot; </code></pre>
+<p>Based on how can i sort du-h output by size</p>
+<pre><code>alias du=&#39;du -hd1 | sort -h -r&#39;</code></pre>
+<p>You can place those commands in your ~/.bashrc to create a permanent alias. bashrc:</p>
+<blockquote>
+<p>“You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly.”</p>
+</blockquote>
+</div>
+<div id="profile-.bash_profile-and-.bashrc" class="section level2">
+<h2>Profile .bash_profile and .bashrc</h2>
+<p>These are places where a user can turn of the system BEEP :</p>
+<pre><code>setterm -blength 0</code></pre>
+<p>.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.</p>
+<p>Debian Dotfiles</p>
+<pre><code>&quot;Now, since bash is being invoked as a login shell (with name &quot;-bash&quot;, a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that.&quot;
+
+[...] &quot;You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  &quot;</code></pre>
+<p>In .bashrc a user can set environment variables, define alias (see above).</p>
+</div>
 </div>
 <div id="system" class="section level1">
 <h1>System</h1>
@@ -554,6 +609,9 @@ printenv LC_TIME</code></pre>
 <p>Run a job in the background. A command followed by an &amp; will run in the background.</p>
 <p>Stop a job</p>
 <pre><code>CTRL ^ Z</code></pre>
+<p>Move a stopped job to the background</p>
+<pre><code>bg</code></pre>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-bash-s-job-control-to-manage-foreground-and-background-processes">How to manage foreground and background processes</a> “By default, the bg command operates on the most recently stopped process. If you’ve stopped multiple “</p>
 <p>Quit a job</p>
 <pre><code> CTRL ^ C</code></pre>
 <p>Kill a malfunctionning program:</p>
@@ -600,27 +658,6 @@ eval `ssh-agent`</code></pre>
 <p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
 <pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
 </div>
-</div>
-<div id="alias" class="section level1">
-<h1>Alias</h1>
-<pre><code>alias ll=&quot;ls -lh&quot; </code></pre>
-<p>Based on how can i sort du-h output by size</p>
-<pre><code>alias du=&#39;du -hd1 | sort -h -r&#39;</code></pre>
-<p>You can place those commands in your ~/.bashrc to create a permanent alias. bashrc:</p>
-<blockquote>
-<p>“You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly.”</p>
-</blockquote>
-</div>
-<div id="bash_profile-and-.bashrc" class="section level1">
-<h1>.bash_profile and .bashrc</h1>
-<p>These are places where a user can turn of the system BEEP :</p>
-<pre><code>setterm -blength 0</code></pre>
-<p>.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.</p>
-<p>Debian Dotfiles</p>
-<pre><code>&quot;Now, since bash is being invoked as a login shell (with name &quot;-bash&quot;, a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that.&quot;
-
-[...] &quot;You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  &quot;</code></pre>
-<p>In .bashrc a user can set environment variables, define alias (see above).</p>
 </div>
 <div id="locale" class="section level1">
 <h1>Locale</h1>
