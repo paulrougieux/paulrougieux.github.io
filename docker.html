@@ -407,6 +407,18 @@ RUN R -e &#39;install.packages(&quot;packagename_0.1.0.tar.gz&quot;)&#39;</code>
   restart_policy:
     condition: on-failure</code></pre>
 </div>
+<div id="volumes" class="section level2">
+<h2>Volumes</h2>
+<p>docs.docker <a href="create%20and%20manage%20volumes">https://docs.docker.com/engine/admin/volumes/volumes/#create-and-manage-volumes</a> List volumes:</p>
+<pre><code>docker volume ls</code></pre>
+<p>Inspect a volume:</p>
+<pre><code>docker volume inspect my-vol</code></pre>
+<p>Create a volume</p>
+<pre><code>docker volume create my-vol</code></pre>
+<p>Remove volumes:</p>
+<pre><code>docker volume rm &lt;volume name&gt;
+docker volume rm $(docker volume ls -q) # all volumes</code></pre>
+</div>
 </div>
 <div id="start" class="section level1">
 <h1>Start</h1>
@@ -444,9 +456,11 @@ RUN R -e &#39;install.packages(&quot;packagename_0.1.0.tar.gz&quot;)&#39;</code>
 <h2>Monitor running containers</h2>
 <p><a href="https://docs.docker.com/engine/admin/runmetrics/">run metrics</a></p>
 <pre><code>docker stats &lt;container-id&gt;</code></pre>
-<p>Start a bash shell inside a container</p>
+<p>Start a bash shell inside a container, -it stands for interactive</p>
 <pre><code>docker ps # find the ID of the running container
 docker exec -it &lt;container-id&gt; bash </code></pre>
+<p>Start a script within a container, non interactively</p>
+<pre><code>docker exec &lt;container-id&gt; /path/to/test.sh</code></pre>
 <p><a href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find the IP of a container</a>:</p>
 <pre><code>sudo docker ps # look for the process id
 sudo docker inspect &lt;container id&gt;</code></pre>
@@ -471,11 +485,6 @@ sudo docker inspect &lt;container id&gt;</code></pre>
 <p>Inspect a stopped container</p>
 <pre><code>docker inspect &lt;container-id&gt;</code></pre>
 </div>
-<div id="manage-container-images" class="section level2">
-<h2>Manage container images</h2>
-<p>Show available images on the system:</p>
-<pre><code>sudo docker images</code></pre>
-</div>
 <div id="monitor-running-services" class="section level2">
 <h2>Monitor running services</h2>
 <p>see which stacks are running</p>
@@ -488,8 +497,21 @@ sudo docker stack services &lt;stackname&gt;</code></pre>
 <p>You can also run <code>docker ps</code> to see all running processes.</p>
 </div>
 </div>
-<div id="cleanup" class="section level1">
-<h1>Cleanup</h1>
+<div id="manage-container-images" class="section level1">
+<h1>Manage container images</h1>
+<p>Show available images on the system:</p>
+<pre><code>sudo docker images</code></pre>
+<div id="update-a-container-image" class="section level2">
+<h2>Update a container image</h2>
+<p><a href="https://stackoverflow.com/a/26833005/2641825">How to upgrade docker container after its image changed</a> Has information on the difference between volumes and bind mounts for data backup.</p>
+<pre><code>docker pull &lt;image-name&gt; 
+docker stop &lt;container-id&gt; 
+docker rm &lt;image-name&gt; 
+docker run &lt;image-name&gt; [options]</code></pre>
+<p>If the container is part of a stack, you only need <code>docker pull</code>, then <code>docker stack deploy</code>.</p>
+</div>
+<div id="cleanup" class="section level2">
+<h2>Cleanup</h2>
 <p>A container should be stopped before it can be removed. Stop a container</p>
 <pre><code>docker ps
 docker stop &lt;container-id&gt;</code></pre>
@@ -500,6 +522,7 @@ docker stop &lt;container-id&gt;</code></pre>
 <p>Remove images</p>
 <pre><code>docker images # list available images
 docker image rm  &lt;image-id&gt;</code></pre>
+</div>
 </div>
 <div id="security" class="section level1">
 <h1>Security</h1>

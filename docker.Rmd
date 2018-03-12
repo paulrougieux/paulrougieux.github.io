@@ -65,6 +65,25 @@ Compose several containers in a service
       restart_policy:
         condition: on-failure
 
+## Volumes
+
+docs.docker [https://docs.docker.com/engine/admin/volumes/volumes/#create-and-manage-volumes](create and manage volumes)
+List volumes:
+
+    docker volume ls
+
+Inspect a volume:
+
+    docker volume inspect my-vol
+
+Create a volume
+
+    docker volume create my-vol
+
+Remove volumes:
+
+    docker volume rm <volume name>
+    docker volume rm $(docker volume ls -q) # all volumes
 
 # Start
 
@@ -115,10 +134,14 @@ Stackoverflow [could not choose and IP address Error](https://stackoverflow.com/
 
     docker stats <container-id>
 
-Start a bash shell inside a container 
+Start a bash shell inside a container, -it stands for interactive
 
     docker ps # find the ID of the running container
     docker exec -it <container-id> bash 
+
+Start a script within a container, non interactively
+
+    docker exec <container-id> /path/to/test.sh
 
 [Find the IP of a container](https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host):
 
@@ -155,11 +178,6 @@ Inspect a stopped container
     docker inspect <container-id>
 
 
-## Manage container images
-
-Show available images on the system:
-
-    sudo docker images
 
 ## Monitor running services
 see which stacks are running
@@ -177,7 +195,27 @@ see which containers are running inside a service
 
 You can also run `docker ps` to see all running processes.
 
-# Cleanup
+
+ 
+# Manage container images
+
+Show available images on the system:
+
+    sudo docker images
+
+## Update a container image
+
+[How to upgrade docker container after its image changed](https://stackoverflow.com/a/26833005/2641825)
+Has information on the difference between volumes and bind mounts for data backup.
+
+    docker pull <image-name> 
+    docker stop <container-id> 
+    docker rm <image-name> 
+    docker run <image-name> [options]
+
+If the container is part of a stack, you only need `docker pull`, then `docker stack deploy`.
+
+## Cleanup
 
 A container should be stopped before it can be removed.
 Stop a container
