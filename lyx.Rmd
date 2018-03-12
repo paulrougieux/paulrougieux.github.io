@@ -73,6 +73,15 @@ In Document &gt; Settings..., under Language &gt; Encoding, choose "Other" and s
 
 Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
 
+# Fonts
+## Icons
+Font-awesome is available in the Debian Package "texlive-fonts-extra".
+It can be used in Lyx by insterting `\usepackage{fontawesome}` in the Latex preamble.
+Then insert an icon with:
+
+    \faComments
+    \faWrench
+
 # Encoding issues and Greek symbols used outside math mode
 
 "Encoding file 'lgrenc.def' not found"  was fixed by installing the debian package texlive-lang-greek (as explained here on stackoverflow). Other errors appeared related to the use of beta signs outside math mode. As one user explained on stackoverflow, placing \beta signs in math mode usually fixes the issue.
@@ -130,13 +139,13 @@ The elsarticle template uses numerical references by default. it is possible to 
 
     CTRL+D uses yap, a faster (on windows) previewer than the default PDF one. There is no noticeable difference on Linux.
 
-
+# Other templates
 To produce a meeting report with a wider template than the default article.
 
     I would have liked to find an overview of the templates with screenshots of PDF results. But I couldn't find such overview online. LyX wiki has a list of examples and a list of layouts. 
     In fact all that was needed was to edit the Document \ Settings \ Page margins, I set the inner and out margins to 2 cm and was happy with the result.
 
-knitr and Lyx
+# knitr and Lyx
 
     Yihui Xie: Using knitr and Lyx
      Krishna Devulapalli: Creation of research papers with embedded R results using LyX
