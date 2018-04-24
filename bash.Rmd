@@ -360,6 +360,9 @@ Follow the end of a log file, as it is written
 
     tail filename.log
 
+Find out which program is listening to which port
+
+    sudo netstat -pna | grep <port_number>
 
 # Job handling
 List
