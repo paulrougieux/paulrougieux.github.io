@@ -15,11 +15,11 @@ I have kept `mysql>̀  prompts below.
  As root, create a database and grant permissions to a new user
 To connect to the mysql client as root, in the shell
 
+    sudo mysql 
+    # or
     mysql -u root -p 
 
-You'll be prompted for the password.
-
-How to create a new user
+Create a new user
 
     mysql> CREATE USER 'newuser'@'localhost' IDENTIFIED BY 'password';
 

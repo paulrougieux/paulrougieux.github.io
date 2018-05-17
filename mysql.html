@@ -370,9 +370,10 @@ div.tocify {
 <div id="as-root-setup-users-and-create-databases" class="section level1">
 <h1>As root, setup users and create databases</h1>
 <p>As root, create a database and grant permissions to a new user To connect to the mysql client as root, in the shell</p>
-<pre><code>mysql -u root -p </code></pre>
-<p>You’ll be prompted for the password.</p>
-<p>How to create a new user</p>
+<pre><code>sudo mysql 
+# or
+mysql -u root -p </code></pre>
+<p>Create a new user</p>
 <pre><code>mysql&gt; CREATE USER &#39;newuser&#39;@&#39;localhost&#39; IDENTIFIED BY &#39;password&#39;;</code></pre>
 <p>Create a database</p>
 <pre><code>mysql&gt; create database databasename;</code></pre>
