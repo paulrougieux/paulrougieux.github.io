@@ -93,21 +93,26 @@ For example to rename all upper-case .JPG extension into lower-case .jpg extensi
     rename 's/\.JPG$/\.jpg/' *.JPG
 
 # Search, filter and count lines in text files
-Count the number of lines in a file
+Search with Grep
 
-    wc -l filename.txt 
+     grep "text" file.txt
+
+Search all files the directory for a given pattern (case insensitive)
+
+    grep -ri "pattern" .
 
 Count occurrences of a word in a file
 
     grep -roh word filename.txt  | wc -w
 
+Count the number of lines in a file
+
+    wc -l filename.txt 
+
 Remove duplicated lines from a file
 
     awk '!a[$0]++' input.txt 
 
-Search with Grep
-
-     grep "text" file.txt
 
 [Awk tutorial](http://www.grymoire.com/Unix/Awk.html#uh-11), for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
 
@@ -463,8 +468,11 @@ you can [test a few password you might remember with](https://stackoverflow.com/
 
 
 # Locale
-
 [Debian wiki page on Locale settings](https://wiki.debian.org/Locale)
+
+Display locale settings
+
+    locale
 
 To install new locales, run :
 

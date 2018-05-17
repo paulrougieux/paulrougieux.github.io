@@ -427,14 +427,16 @@ find . -mtime 0 # modified in the last 24 hours</code></pre>
 </div>
 <div id="search-filter-and-count-lines-in-text-files" class="section level1">
 <h1>Search, filter and count lines in text files</h1>
-<p>Count the number of lines in a file</p>
-<pre><code>wc -l filename.txt </code></pre>
-<p>Count occurrences of a word in a file</p>
-<pre><code>grep -roh word filename.txt  | wc -w</code></pre>
-<p>Remove duplicated lines from a file</p>
-<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 <p>Search with Grep</p>
 <pre><code> grep &quot;text&quot; file.txt</code></pre>
+<p>Search all files the directory for a given pattern (case insensitive)</p>
+<pre><code>grep -ri &quot;pattern&quot; .</code></pre>
+<p>Count occurrences of a word in a file</p>
+<pre><code>grep -roh word filename.txt  | wc -w</code></pre>
+<p>Count the number of lines in a file</p>
+<pre><code>wc -l filename.txt </code></pre>
+<p>Remove duplicated lines from a file</p>
+<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 <p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk tutorial</a>, for example filter a large file for lines that have a third field (product code) starting with 44, keep the header line:</p>
 <pre><code>awk -F, &#39;$3 ~ /^44/||NR==1&#39; nc201501.dat|less</code></pre>
 <p>Regexp match begining of and end of line with ^ and $.</p>
@@ -664,6 +666,8 @@ eval `ssh-agent`</code></pre>
 <div id="locale" class="section level1">
 <h1>Locale</h1>
 <p><a href="https://wiki.debian.org/Locale">Debian wiki page on Locale settings</a></p>
+<p>Display locale settings</p>
+<pre><code>locale</code></pre>
 <p>To install new locales, run :</p>
 <pre><code>sudo dpkg-reconfigure locales</code></pre>
 <p>SSH forwards locales to the server. The server will try to use thegiven locale, but it might not have them installed. <a href="https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448">Locale variables have no effect in remote shell</a></p>
