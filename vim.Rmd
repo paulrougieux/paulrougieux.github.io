@@ -115,6 +115,15 @@ Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by com
     p to paste the copied or deleted text after the current line or 
     P to paste the copied or deleted text before the current line 
 
+## Editing multiple lines
+
+You can edit multiple lines simultaneously by 
+[inserting text inside a multi-line selection in Vim](https://stackoverflow.com/a/253391) :
+
+    Use Ctrl+V to enter visual block mode
+    Move Up/Downto select the columns of text in the lines you want to comment.
+    Then hit Shift+i and type the text you want to insert.
+
 ## Copy, cut and paste
 
     Position the cursor where you want to begin cutting.
