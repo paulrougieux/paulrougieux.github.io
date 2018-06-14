@@ -622,7 +622,12 @@ removed from your working tree are ignored with this version of Git.
 </div>
 <div id="remote" class="section level1">
 <h1>Remote</h1>
-<p>When a repository is connected to several remote repositories, to change the default git remote, push with :</p>
+<p>Add a remote repository with:</p>
+<p>git remote add <a href="mailto:git@github.com">git@github.com</a>:paulrougieux/paulrougieux.github.io.git # or git remote add reponame <a href="https://repositoryurl" class="uri">https://repositoryurl</a></p>
+<p>When a repository is connected to several remote repositories, you can push content to repositories by specifying their names</p>
+<pre><code>git push -u origin master
+git push -u anotherrepository master</code></pre>
+<p>To change the default git remote, push with :</p>
 <pre><code>git push -u origin master</code></pre>
 <p>Then later push of that branch to that remote can be made simply with:</p>
 <pre><code>git push</code></pre>

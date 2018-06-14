@@ -428,10 +428,21 @@ To ignore all files in a folder but not the folder itself. Put this .gitignore i
     /foo/*
     !/foo/bar
 
-
 # Remote
 
-When a repository is connected to several remote repositories, to change the default git remote, push with :
+Add a remote repository with:
+
+   git remote add git@github.com:paulrougieux/paulrougieux.github.io.git
+   # or
+   git remote add reponame https://repositoryurl 
+
+When a repository is connected to several remote repositories, 
+you can push content to repositories by specifying their names
+
+    git push -u origin master
+    git push -u anotherrepository master
+
+To change the default git remote, push with :
 
     git push -u origin master
 
