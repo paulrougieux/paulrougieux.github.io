@@ -123,6 +123,7 @@ You can edit multiple lines simultaneously by
     Use Ctrl+V to enter visual block mode
     Move Up/Downto select the columns of text in the lines you want to comment.
     Then hit Shift+i and type the text you want to insert.
+    Then press Escape, the inserted text will appear on all lines.
 
 ## Copy, cut and paste
 
