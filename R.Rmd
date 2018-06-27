@@ -102,6 +102,10 @@ Sets the options for chunk, within a knitr chunk inside the .Rmd document
 
     opts_knit$set()
 
+## R markdown python engine
+
+Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
+
 # Tidyverse
 ## dplyr
 pipes
