@@ -92,7 +92,7 @@ For example to rename all upper-case .JPG extension into lower-case .jpg extensi
 
     rename 's/\.JPG$/\.jpg/' *.JPG
 
-# Search, filter and count lines in text files
+# Search and filter text files
 Search with Grep
 
      grep "text" file.txt
@@ -104,15 +104,6 @@ Search all files the directory for a given pattern (case insensitive)
 Count occurrences of a word in a file
 
     grep -roh word filename.txt  | wc -w
-
-Count the number of lines in a file
-
-    wc -l filename.txt 
-
-Remove duplicated lines from a file
-
-    awk '!a[$0]++' input.txt 
-
 
 [Awk tutorial](http://www.grymoire.com/Unix/Awk.html#uh-11), for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
 
@@ -127,6 +118,16 @@ Follow the end of a log file as it is written
 See tab and end of line characters in a text file
 
     cat -te filename |less 
+
+## Count the number of lines in a text file
+Count the number of lines in a file
+
+    wc -l filename.txt 
+
+Count the number of lines in all files, and give the total line count.
+
+    find . -name '*.py' | xargs wc -l # python code
+    find . -name '*.R' | xargs wc -l # R code
 
 ## Replace strings in text files
 Replace strings
@@ -145,6 +146,12 @@ Replace strings with sed
 Replace strings with perl in a git repository
 
     git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
+
+Remove duplicated lines from a file
+
+    awk '!a[$0]++' input.txt 
+
+
 
 ## PDF files
 Commands based on the poppler library for PDF manipulation.

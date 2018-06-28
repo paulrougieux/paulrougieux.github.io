@@ -425,18 +425,14 @@ find . -mtime 0 # modified in the last 24 hours</code></pre>
 <pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
 </div>
 </div>
-<div id="search-filter-and-count-lines-in-text-files" class="section level1">
-<h1>Search, filter and count lines in text files</h1>
+<div id="search-and-filter-text-files" class="section level1">
+<h1>Search and filter text files</h1>
 <p>Search with Grep</p>
 <pre><code> grep &quot;text&quot; file.txt</code></pre>
 <p>Search all files the directory for a given pattern (case insensitive)</p>
 <pre><code>grep -ri &quot;pattern&quot; .</code></pre>
 <p>Count occurrences of a word in a file</p>
 <pre><code>grep -roh word filename.txt  | wc -w</code></pre>
-<p>Count the number of lines in a file</p>
-<pre><code>wc -l filename.txt </code></pre>
-<p>Remove duplicated lines from a file</p>
-<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 <p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk tutorial</a>, for example filter a large file for lines that have a third field (product code) starting with 44, keep the header line:</p>
 <pre><code>awk -F, &#39;$3 ~ /^44/||NR==1&#39; nc201501.dat|less</code></pre>
 <p>Regexp match begining of and end of line with ^ and $.</p>
@@ -444,6 +440,14 @@ find . -mtime 0 # modified in the last 24 hours</code></pre>
 <pre><code>tail -f</code></pre>
 <p>See tab and end of line characters in a text file</p>
 <pre><code>cat -te filename |less </code></pre>
+<div id="count-the-number-of-lines-in-a-text-file" class="section level2">
+<h2>Count the number of lines in a text file</h2>
+<p>Count the number of lines in a file</p>
+<pre><code>wc -l filename.txt </code></pre>
+<p>Count the number of lines in all files, and give the total line count.</p>
+<pre><code>find . -name &#39;*.py&#39; | xargs wc -l # python code
+find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
+</div>
 <div id="replace-strings-in-text-files" class="section level2">
 <h2>Replace strings in text files</h2>
 <p>Replace strings</p>
@@ -457,6 +461,8 @@ sed -i  &#39;s/^.*\://g&#39; input_file.txt # edit file in place
 grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code></pre>
 <p>Replace strings with perl in a git repository</p>
 <pre><code>git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;</code></pre>
+<p>Remove duplicated lines from a file</p>
+<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 </div>
 <div id="pdf-files" class="section level2">
 <h2>PDF files</h2>
