@@ -42,6 +42,24 @@ I use Debian as my main system. If a section gets too large it may get
 moved to another page in the future. 
 
 
+## Installing software
+
+For software in the repository, use
+
+    sudo apt install packagename
+
+For software in .deb packages, check the md5sum and install with
+
+    md5sum packagename
+    sudo dpkg -i packagename
+
+If there are missingdependencies and you fix them you can retry the previsouly failed installed with:
+    sudo dpkg --configure -a
+
+Remove a package with:
+
+    sudo dpkg -r packagename
+
 ## Gimp
 
 The most important Gimp shortcuts are: 
@@ -52,7 +70,18 @@ The most important Gimp shortcuts are:
 A [list of Gimp Shortcuts](http://gimptips.com/articles/gimp-keyboard-shortcuts)
 
 
-# Upgrade 
+## Rstudio
+
+Download Rstudio for Debian 
+
+ * [Rstudio download](https://www.rstudio.com/products/rstudio/download/preview/)
+ * [Rstudio preview download](https://www.rstudio.com/products/rstudio/download/preview/)
+
+Run 
+
+    dpkg -i rstudio-version-number.deb
+
+# Upgrade Debian version
 
 ## From Jessie 8 to Stretch 9
 I followed the documentation on 

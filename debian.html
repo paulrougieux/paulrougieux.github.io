@@ -23,9 +23,11 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +36,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -92,6 +96,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -388,6 +395,17 @@ $ pulseaudio --start</code></pre>
 <div id="tools" class="section level1">
 <h1>Tools</h1>
 <p>These tools are not specific to Debian. I place them here because I use Debian as my main system. If a section gets too large it may get moved to another page in the future.</p>
+<div id="installing-software" class="section level2">
+<h2>Installing software</h2>
+<p>For software in the repository, use</p>
+<pre><code>sudo apt install packagename</code></pre>
+<p>For software in .deb packages, check the md5sum and install with</p>
+<pre><code>md5sum packagename
+sudo dpkg -i packagename</code></pre>
+<p>If there are missingdependencies and you fix them you can retry the previsouly failed installed with: sudo dpkg –configure -a</p>
+<p>Remove a package with:</p>
+<pre><code>sudo dpkg -r packagename</code></pre>
+</div>
 <div id="gimp" class="section level2">
 <h2>Gimp</h2>
 <p>The most important Gimp shortcuts are:</p>
@@ -397,9 +415,19 @@ $ pulseaudio --start</code></pre>
 </ul>
 <p>A <a href="http://gimptips.com/articles/gimp-keyboard-shortcuts">list of Gimp Shortcuts</a></p>
 </div>
+<div id="rstudio" class="section level2">
+<h2>Rstudio</h2>
+<p>Download Rstudio for Debian</p>
+<ul>
+<li><a href="https://www.rstudio.com/products/rstudio/download/preview/">Rstudio download</a></li>
+<li><a href="https://www.rstudio.com/products/rstudio/download/preview/">Rstudio preview download</a></li>
+</ul>
+<p>Run</p>
+<pre><code>dpkg -i rstudio-version-number.deb</code></pre>
 </div>
-<div id="upgrade" class="section level1">
-<h1>Upgrade</h1>
+</div>
+<div id="upgrade-debian-version" class="section level1">
+<h1>Upgrade Debian version</h1>
 <div id="from-jessie-8-to-stretch-9" class="section level2">
 <h2>From Jessie 8 to Stretch 9</h2>
 <p>I followed the documentation on <a href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.html">upgrades from Debian 8, Jessie</a></p>
