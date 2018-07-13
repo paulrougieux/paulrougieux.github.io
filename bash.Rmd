@@ -58,19 +58,24 @@ Find files in the whole system
     locate filename
 
 ## File and folder compression
+
+### Single file compression
 Compress a file using gzip or 7z compression
     
     gzip <filename>
     7zr a -si<filename> <filename>.7z 
 
-Decompress a file
+Decompress a single file from several archive formats:
 
-     gunzip <filename.gz>
-     7zr e <filename.7z>
+    gunzip <filename.gz>
+    7zr e <filename.7z>  # see also x flag below
+    bzip2 -d <filename.bz2>
 
 Convert a 7z file to gz using a pipe similar to [this answer](https://superuser.com/a/357980/419414).
 
     7zr e -so <filename.7z> | gzip -c > <filename.gz>
+
+### Multiple files compression
 
 How do I compress a whole directory?
 
@@ -83,9 +88,12 @@ Where
     -v: Verbose i.e display progress while creating archive
     -f: Archive File name
 
+Decompress an archive containing multiple files
+Keep full path of files within the archive
 To extract content from the archive in the current directory
 
     tar -zxvf archive-name.tar.gz 
+    7zr x <filename.7z>  
 
 ## Rename files
 For example to rename all upper-case .JPG extension into lower-case .jpg extension.

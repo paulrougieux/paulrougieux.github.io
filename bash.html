@@ -23,9 +23,11 @@
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
-<link href="site_libs/highlightjs-1.1/default.css" rel="stylesheet" />
-<script src="site_libs/highlightjs-1.1/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
+<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
+<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -34,10 +36,12 @@
   }
 </style>
 <script type="text/javascript">
-if (window.hljs && document.readyState && document.readyState === "complete") {
-   window.setTimeout(function() {
-      hljs.initHighlighting();
-   }, 0);
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
 }
 </script>
 
@@ -92,6 +96,9 @@ img {
 }
 .tabbed-pane {
   padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
 }
 button.code-folding-btn:focus {
   outline: none;
@@ -401,14 +408,20 @@ find . -mtime 0 # modified in the last 24 hours</code></pre>
 </div>
 <div id="file-and-folder-compression" class="section level2">
 <h2>File and folder compression</h2>
+<div id="single-file-compression" class="section level3">
+<h3>Single file compression</h3>
 <p>Compress a file using gzip or 7z compression</p>
 <pre><code>gzip &lt;filename&gt;
 7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
-<p>Decompress a file</p>
-<pre><code> gunzip &lt;filename.gz&gt;
- 7zr e &lt;filename.7z&gt;</code></pre>
+<p>Decompress a single file from several archive formats:</p>
+<pre><code>gunzip &lt;filename.gz&gt;
+7zr e &lt;filename.7z&gt;  # see also x flag below
+bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>
 <pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
+</div>
+<div id="multiple-files-compression" class="section level3">
+<h3>Multiple files compression</h3>
 <p>How do I compress a whole directory?</p>
 <pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
 <p>Where</p>
@@ -416,8 +429,10 @@ find . -mtime 0 # modified in the last 24 hours</code></pre>
 -c: Create archive
 -v: Verbose i.e display progress while creating archive
 -f: Archive File name</code></pre>
-<p>To extract content from the archive in the current directory</p>
-<pre><code>tar -zxvf archive-name.tar.gz </code></pre>
+<p>Decompress an archive containing multiple files Keep full path of files within the archive To extract content from the archive in the current directory</p>
+<pre><code>tar -zxvf archive-name.tar.gz 
+7zr x &lt;filename.7z&gt;  </code></pre>
+</div>
 </div>
 <div id="rename-files" class="section level2">
 <h2>Rename files</h2>
