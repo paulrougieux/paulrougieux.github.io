@@ -547,7 +547,13 @@ git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
 <pre><code>git tag -d tag_name</code></pre>
 <p>A regular push command won’t push a tag (bitbucket), to push all your tags :</p>
 <pre><code>git push origin --tags</code></pre>
-<p>Display changes</p>
+<p>Return all files in the repository to a particular tag:</p>
+<pre><code>git checkout tags/v0.1</code></pre>
+<p>Optionally you cancheckout and create a new branch tocommit your changes with:</p>
+<pre><code>git checkout tags/o.1 -b newbranchname</code></pre>
+</div>
+<div id="display-changes" class="section level1">
+<h1>Display changes</h1>
 <p>To view modified files that have not been committed and to view commit history you can use:</p>
 <pre><code>git status
 git log
@@ -560,6 +566,8 @@ git log --pretty=oneline </code></pre>
 <p>Shows all the changes between the working directory and HEAD</p>
 <pre><code>git diff HEAD</code></pre>
 <p>The 3 lines above were copied from this question on git diff.</p>
+<p>Show which change happened in a particular commit</p>
+<pre><code>git show &lt;commit-hash&gt;</code></pre>
 <p>Show when the tip of branches have been updated</p>
 <pre><code>git reflog</code></pre>
 <p>Alternatively, call the repository browser with:</p>
