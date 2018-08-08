@@ -143,6 +143,11 @@ iris %>%
     head()
 ```
 
+## purrr
+
+Hadley Wickham's answer to a SO question 
+[Why use purrr::map instead of lapply?](https://stackoverflow.com/a/47123420/2641825)
+
 
 ## tidyr
 
