@@ -218,6 +218,19 @@ For an introcution to roxygen2, call
 Since roxygen2 version 6, markdown formating can be used in the documentation, 
 by specifying the `@md` tag.
 
+### Examples
+Examples are crucial to demonstrate the use of a fonction. 
+They can be specified in a roxygen block called `@examples`:
+
+	#' @examples
+
+Wrap the examples in donttest if you don't want R CMD check to test them at package building time.
+
+	#' \donttest{d
+
+It is also possible to wrap them in another statement called `dontrun`, but this is not recomended on CRAN
+according to this [Stackoverflow question](https://stackoverflow.com/a/44997778/2641825).
+
 ## Unit tests
 Back in R, add testing infrastructure:
 
