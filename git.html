@@ -407,6 +407,10 @@ git merge develop</code></pre>
 <pre><code>git checkout develop</code></pre>
 <p>Continue to modify files in the repository.</p>
 </div>
+<div id="illustrations" class="section level1">
+<h1>Illustrations</h1>
+<p><a href="https://en.wikipedia.org/wiki/File:Git_operations.svg">Data flows and storage levels in the Git revision control system</a>.</p>
+</div>
 <div id="uploading-content-to-online-git-platforms" class="section level1">
 <h1>Uploading content to online git platforms</h1>
 <p>Git is useful as a version management on its own. But it’s even more usefull when code can be back-up online. Free public git storage is availble on Github. Free public and private git storage are available on Bitbucket, with up to 5 collaborators on one project.</p>
@@ -491,11 +495,12 @@ git stash pop</code></pre>
 <h1>Configuring user name and email</h1>
 <p>Display your user name, email and remote repositories</p>
 <pre><code>git config -l</code></pre>
-<p>To change username and email</p>
+<p>To change username and email globally</p>
 <pre><code>git config --global user.name &quot;Your Name&quot; 
 
 git config --global user.email you@example.com</code></pre>
-<p>Setting your email in git explains how to change the email for the current repository only.</p>
+<p>Stackoverflow <a href="https://stackoverflow.com/a/9063238/2641825">git multiple user names for different projects</a> explains how to change the email for the current repository only</p>
+<pre><code>git config user.email personal@example.org</code></pre>
 </div>
 <div id="branching" class="section level1">
 <h1>Branching</h1>

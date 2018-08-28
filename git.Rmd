@@ -71,6 +71,9 @@ Go back to the development branch
 
 Continue to modify files in the repository.
 
+# Illustrations
+
+[Data flows and storage levels in the Git revision control system](https://en.wikipedia.org/wiki/File:Git_operations.svg).
 
 # Uploading content to online git platforms
 
@@ -205,14 +208,16 @@ Display your user name, email and remote repositories
 
     git config -l
 
-To change username and email
+To change username and email globally
 
     git config --global user.name "Your Name" 
 
     git config --global user.email you@example.com
 
-Setting your email in git explains how to change the email for the current repository only.
+Stackoverflow [git multiple user names for different projects](https://stackoverflow.com/a/9063238/2641825)
+explains how to change the email for the current repository only
 
+    git config user.email personal@example.org
 
 # Branching
 
