@@ -121,9 +121,17 @@ You can edit multiple lines simultaneously by
 [inserting text inside a multi-line selection in Vim](https://stackoverflow.com/a/253391) :
 
     Use Ctrl+V to enter visual block mode
-    Move Up/Downto select the columns of text in the lines you want to comment.
-    Then hit Shift+i and type the text you want to insert.
+    Move down with jj to select the columns of text in the lines you want to comment.
+    Then hit Shift+I and type the text you want to insert.
     Then press Escape, the inserted text will appear on all lines.
+    
+Similarly to enter text at the end of multiple lines ([vim.wikia](http://vim.wikia.com/wiki/Inserting_text_in_multiple_lines))
+
+    Use Ctrl+V to enter visual block mode
+    Move down with jj to select the columns of text in the lines you want to comment.
+    Then hit $ to select all lines until the end of the line.
+    Then press Shift+A and type the text you want to insert.
+    The press Escape, the inserted text will appear at the end of all lines.
 
 ## Copy, cut and paste
 

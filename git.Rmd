@@ -302,7 +302,15 @@ A regular push command won't push a tag (bitbucket), to push all your tags :
 
     git push origin --tags
 
-Display changes
+Return all files in the repository to a particular tag:
+
+    git checkout tags/v0.1
+
+Optionally you cancheckout and create a new branch tocommit your changes with:
+
+    git checkout tags/o.1 -b newbranchname
+
+# Display changes
 
 To view modified files that have not been committed and to view commit history you can use: 
 
@@ -326,7 +334,9 @@ Shows all the changes between the working directory and HEAD
 
 The 3 lines above were copied from this question on git diff.
 
+Show which change happened in a particular commit 
 
+    git show <commit-hash>
 
 Show when the tip of branches have been updated
 

@@ -51,6 +51,14 @@ installed.packages()
     dir.create("blabla")
     read.csv("data.csv")
 
+# Vectors
+
+[SO Answer concerning indexing up to end of vector/matrix](https://stackoverflow.com/a/7500961/2641825) "Sometimes it's easier to tell R what you don't want"
+
+    x <- c(5,5,4,3,2,1)
+    x[-(1:3)]
+    x[-c(1,3,6)]
+
 # Lists
 Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.
 ```{r}
