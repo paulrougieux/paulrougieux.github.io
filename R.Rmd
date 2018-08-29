@@ -162,6 +162,8 @@ Hadley Wickham's answer to a SO question
 	}
 	scatter_plot(mtcars, disp, drat)
 
+* [Tidy evaluation explained in French](https://thinkr.fr/tidyeval/)
+
 ## tidyr
 
 [tidyr vignette on tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) 
