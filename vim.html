@@ -439,8 +439,9 @@ alt+: - switch to navigation mode and send a command</code></pre>
 </div>
 <div id="replace-characters" class="section level2">
 <h2>Replace characters</h2>
-<p>Vim wiki on search and replace Find each occurrence of ‘foo’ (in the current line only), and replace it with ‘bar’.</p>
+<p>Vim wiki on search and replace Find each occurrence of ‘foo’ (in the current line only), and replace it with ‘bar’:</p>
 <pre><code>:s/foo/bar/g</code></pre>
+<p>The <code>s</code>command means “substitute”. The <code>g</code> means “greedy”, it will replace all occurences of the word on each line (not just the first occurence).</p>
 <p>When <a href="http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection">text is visually selected</a>, press : to enter a command. The command line will automatically enter the range:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;</code></pre>
 <p>You can enter a command such as s/red/green/g to replace each red with green in all lines of the last visual selection. The command will appear as:</p>
@@ -463,9 +464,15 @@ P to paste the copied or deleted text before the current line </code></pre>
 <h2>Editing multiple lines</h2>
 <p>You can edit multiple lines simultaneously by <a href="https://stackoverflow.com/a/253391">inserting text inside a multi-line selection in Vim</a> :</p>
 <pre><code>Use Ctrl+V to enter visual block mode
-Move Up/Downto select the columns of text in the lines you want to comment.
-Then hit Shift+i and type the text you want to insert.
+Move down with jj to select the columns of text in the lines you want to comment.
+Then hit Shift+I and type the text you want to insert.
 Then press Escape, the inserted text will appear on all lines.</code></pre>
+<p>Similarly to enter text at the end of multiple lines (<a href="http://vim.wikia.com/wiki/Inserting_text_in_multiple_lines">vim.wikia</a>)</p>
+<pre><code>Use Ctrl+V to enter visual block mode
+Move down with jj to select the columns of text in the lines you want to comment.
+Then hit $ to select all lines until the end of the line.
+Then press Shift+A and type the text you want to insert.
+The press Escape, the inserted text will appear at the end of all lines.</code></pre>
 </div>
 <div id="copy-cut-and-paste" class="section level2">
 <h2>Copy, cut and paste</h2>

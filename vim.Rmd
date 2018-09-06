@@ -83,9 +83,13 @@ Automatically change the working directory to the file currently edited
 ## Replace characters
 
 Vim wiki on search and replace 
-Find each occurrence of 'foo' (in the current line only), and replace it with 'bar'. 
+Find each occurrence of 'foo' (in the current line only), and replace it with 'bar':
     
     :s/foo/bar/g
+
+The `s`command  means "substitute".
+The `g` means "greedy", it will replace all occurences of the word on each line 
+(not just the first occurence).
 
 When [text is visually selected](http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection),
 press : to enter a command. The command line will automatically enter the range:

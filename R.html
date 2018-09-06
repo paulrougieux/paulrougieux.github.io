@@ -409,6 +409,13 @@ list.files(tempdir())
 dir.create(&quot;blabla&quot;)
 read.csv(&quot;data.csv&quot;)</code></pre>
 </div>
+<div id="vectors" class="section level1">
+<h1>Vectors</h1>
+<p><a href="https://stackoverflow.com/a/7500961/2641825">SO Answer concerning indexing up to end of vector/matrix</a> “Sometimes it’s easier to tell R what you don’t want”</p>
+<pre><code>x &lt;- c(5,5,4,3,2,1)
+x[-(1:3)]
+x[-c(1,3,6)]</code></pre>
+</div>
 <div id="lists" class="section level1">
 <h1>Lists</h1>
 <p>Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.</p>
