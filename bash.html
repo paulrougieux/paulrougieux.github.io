@@ -450,11 +450,9 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <div id="search-and-filter-text-files" class="section level1">
 <h1>Search and filter text files</h1>
 <p>Search with Grep</p>
-<pre><code>grep &quot;text&quot; file.txt</code></pre>
-<p>Recursive search in all files the directory for a given pattern (case insensitive)</p>
+<pre><code> grep &quot;text&quot; file.txt</code></pre>
+<p>Search all files the directory for a given pattern (case insensitive)</p>
 <pre><code>grep -ri &quot;pattern&quot; .</code></pre>
-<p>Search and show the line number where the string occurs</p>
-<pre><code>grep -n &quot;text&quot; file.txt</code></pre>
 <p>Count occurrences of a word in a file</p>
 <pre><code>grep -roh word filename.txt  | wc -w</code></pre>
 <p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk tutorial</a>, for example filter a large file for lines that have a third field (product code) starting with 44, keep the header line:</p>

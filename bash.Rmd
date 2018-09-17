@@ -113,15 +113,11 @@ Copy a file
 # Search and filter text files
 Search with Grep
 
-    grep "text" file.txt
+     grep "text" file.txt
 
-Recursive search in all files the directory for a given pattern (case insensitive)
+Search all files the directory for a given pattern (case insensitive)
 
     grep -ri "pattern" .
-
-Search and show the line number where the string occurs
-
-    grep -n "text" file.txt
 
 Count occurrences of a word in a file
 
