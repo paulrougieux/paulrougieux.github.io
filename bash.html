@@ -451,9 +451,9 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <h1>Search and filter text files</h1>
 <p>Search with Grep</p>
 <pre><code>grep &quot;text&quot; file.txt</code></pre>
-<p>Recursive search in all files the directory for a given pattern (case insensitive)</p>
+<p>Recursive search (-r) in all files in the directory for a given pattern, case insensitive (-i)</p>
 <pre><code>grep -ri &quot;pattern&quot; .</code></pre>
-<p>For example to show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters). Use Extended regular expression to search for alphanumeric characters, show the line number where the string occurs, and only show the matching result, not the full line:</p>
+<p>Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters). Use Extended regular expression (-E) to search for alphanumeric characters, only show the matching result (-o), not the full line and show the line number (-w) where the string occurs:</p>
 <pre><code>grep -Eon &quot;[[:alnum:]]+.csv&quot; file.txt</code></pre>
 <p>Count occurrences of a word in a file</p>
 <pre><code>grep -roh word filename.txt  | wc -w</code></pre>

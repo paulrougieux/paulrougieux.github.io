@@ -115,12 +115,14 @@ Search with Grep
 
     grep "text" file.txt
 
-Recursive search in all files the directory for a given pattern (case insensitive)
+Recursive search (-r) in all files in the directory for a given pattern, case insensitive (-i)
 
     grep -ri "pattern" .
 
-For example to show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
-Use Extended regular expression to search for alphanumeric characters, show the line number where the string occurs, and only show the matching result, not the full line:
+Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
+Use Extended regular expression (-E) to search for alphanumeric characters, 
+only show the matching result (-o), not the full line 
+and show the line number (-w) where the string occurs:
 
     grep -Eon "[[:alnum:]]+.csv" file.txt
 
