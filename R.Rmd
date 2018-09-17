@@ -143,6 +143,26 @@ iris %>%
     head()
 ```
 
+## purrr
+
+Hadley Wickham's answer to a SO question 
+[Why use purrr::map instead of lapply?](https://stackoverflow.com/a/47123420/2641825)
+
+
+## tidy evaluation
+
+* Advanced R [metaprogramming section](https://adv-r.hadley.nz/meta.html)
+* [Examples of tidy evaluation with plots](https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/)
+
+	scatter_plot <- function(data, x, y) {
+	    x <- enquo(x)
+	    y <- enquo(y)
+
+	    ggplot(data) + geom_point(aes(!!x, !!y))
+	}
+	scatter_plot(mtcars, disp, drat)
+
+* [Tidy evaluation explained in French](https://thinkr.fr/tidyeval/)
 
 ## tidyr
 
@@ -217,6 +237,19 @@ For an introcution to roxygen2, call
 
 Since roxygen2 version 6, markdown formating can be used in the documentation, 
 by specifying the `@md` tag.
+
+### Examples
+Examples are crucial to demonstrate the use of a fonction. 
+They can be specified in a roxygen block called `@examples`:
+
+	#' @examples
+
+Wrap the examples in donttest if you don't want R CMD check to test them at package building time.
+
+	#' \donttest{d
+
+It is also possible to wrap them in another statement called `dontrun`, but this is not recomended on CRAN
+according to this [Stackoverflow question](https://stackoverflow.com/a/44997778/2641825).
 
 ## Unit tests
 Back in R, add testing infrastructure:
