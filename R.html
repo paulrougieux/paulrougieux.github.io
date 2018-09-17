@@ -564,6 +564,21 @@ cars %&gt;%
 ## 6          5.4         3.9            2           0  setosa</code></pre>
 </div>
 </div>
+<div id="purrr" class="section level2">
+<h2>purrr</h2>
+<p>Hadley Wickham’s answer to a SO question <a href="https://stackoverflow.com/a/47123420/2641825">Why use purrr::map instead of lapply?</a></p>
+</div>
+<div id="tidy-evaluation" class="section level2">
+<h2>tidy evaluation</h2>
+<ul>
+<li>Advanced R <a href="https://adv-r.hadley.nz/meta.html">metaprogramming section</a></li>
+<li><p><a href="https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/">Examples of tidy evaluation with plots</a></p>
+<p>scatter_plot &lt;- function(data, x, y) { x &lt;- enquo(x) y &lt;- enquo(y)</p>
+<pre><code>ggplot(data) + geom_point(aes(!!x, !!y))</code></pre>
+<p>} scatter_plot(mtcars, disp, drat)</p></li>
+<li><p><a href="https://thinkr.fr/tidyeval/">Tidy evaluation explained in French</a></p></li>
+</ul>
+</div>
 <div id="tidyr" class="section level2">
 <h2>tidyr</h2>
 <p><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidyr vignette on tidy data</a> In the section on “Multiple types in one table”:</p>
@@ -622,6 +637,14 @@ $ git init</code></pre>
 <p>The roxygen2 package helps with function documentation. Documentation can be written in the form of comments #’ tags such as <code>@param</code> and <code>@description</code> structure the documentation of each function.</p>
 <p>For an introcution to roxygen2, call <code>vignette(&quot;roxygen2&quot;, package = &quot;roxygen2&quot;)</code> at the R prompt.</p>
 <p>Since roxygen2 version 6, markdown formating can be used in the documentation, by specifying the <code>@md</code> tag.</p>
+<div id="examples" class="section level3">
+<h3>Examples</h3>
+<p>Examples are crucial to demonstrate the use of a fonction. They can be specified in a roxygen block called <code>@examples</code>:</p>
+<pre><code>#&#39; @examples</code></pre>
+<p>Wrap the examples in donttest if you don’t want R CMD check to test them at package building time.</p>
+<pre><code>#&#39; \donttest{d</code></pre>
+<p>It is also possible to wrap them in another statement called <code>dontrun</code>, but this is not recomended on CRAN according to this <a href="https://stackoverflow.com/a/44997778/2641825">Stackoverflow question</a>.</p>
+</div>
 </div>
 <div id="unit-tests" class="section level2">
 <h2>Unit tests</h2>

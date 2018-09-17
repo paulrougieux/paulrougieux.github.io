@@ -119,9 +119,10 @@ Recursive search in all files the directory for a given pattern (case insensitiv
 
     grep -ri "pattern" .
 
-Search and show the line number where the string occurs
+For example to show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
+Use Extended regular expression to search for alphanumeric characters, show the line number where the string occurs, and only show the matching result, not the full line:
 
-    grep -n "text" file.txt
+    grep -Eon "[[:alnum:]]+.csv" file.txt
 
 Count occurrences of a word in a file
 
