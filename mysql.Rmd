@@ -39,6 +39,10 @@ Grant all permissions to a user on a specific database
 
     mysql> GRANT ALL PRIVILEGES ON databasename. * TO 'newuser'@'localhost';
 
+Grant read permission to a user on a specific database
+
+    mysql> GRANT SELECT ON databasename. * TO 'newuser'@'localhost';
+
 Then you can log out of mysql
 
     mysql> quit;

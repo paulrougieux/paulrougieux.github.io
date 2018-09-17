@@ -439,6 +439,13 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
 <pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
 </div>
+<div id="move-and-copy-files" class="section level2">
+<h2>Move and copy files</h2>
+<p>Copy a file</p>
+<pre><code>cp file1 file2</code></pre>
+<p><a href="https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure">Recursive copy some files while keeping the directory structure</a></p>
+<pre><code>find . -name &#39;*.csv&#39; -exec cp --parents \{\} /target \;</code></pre>
+</div>
 </div>
 <div id="search-and-filter-text-files" class="section level1">
 <h1>Search and filter text files</h1>

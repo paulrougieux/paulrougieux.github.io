@@ -390,6 +390,8 @@ mysql -u root -p </code></pre>
 <pre><code>mysql&gt; GRANT ALL PRIVILEGES ON * . * TO &#39;newuser&#39;@&#39;localhost&#39;;</code></pre>
 <p>Grant all permissions to a user on a specific database</p>
 <pre><code>mysql&gt; GRANT ALL PRIVILEGES ON databasename. * TO &#39;newuser&#39;@&#39;localhost&#39;;</code></pre>
+<p>Grant read permission to a user on a specific database</p>
+<pre><code>mysql&gt; GRANT SELECT ON databasename. * TO &#39;newuser&#39;@&#39;localhost&#39;;</code></pre>
 <p>Then you can log out of mysql</p>
 <pre><code>mysql&gt; quit;</code></pre>
 </div>
