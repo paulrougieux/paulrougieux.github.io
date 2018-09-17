@@ -122,7 +122,7 @@ Recursive search (-r) in all files in the directory for a given pattern, case in
 Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
 Use Extended regular expression (-E) to search for alphanumeric characters, 
 only show the matching result (-o), not the full line 
-and show the line number (-w) where the string occurs:
+and show the line number (-n) where the string occurs:
 
     grep -Eon "[[:alnum:]]+.csv" file.txt
 
