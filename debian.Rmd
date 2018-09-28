@@ -9,6 +9,51 @@ output:
 This page is the continuation of 
 [several blog posts related to Debian](https://paulremote.blogspot.fr/search/label/Debian)
 
+# Installing Debian 
+
+The Debian GNU LInux operating system is available as a torent download at: 
+[debian.org/CD/live/](https://www.debian.org/CD/live/).
+Debian GNU/Linux Installation Guide 
+[instruction on how to copy the iso image to a usb key](https://www.debian.org/releases/stable/amd64/ch04s03.html.en) 
+
+Find the device name of my USB key (it had a previous Debian system on it):
+
+    sudo fdisk -l
+    # /dev/sdb1 
+
+Unmount the USB key
+
+    sudo umount /dev/sdb1
+
+Transfer the iso image to the key
+
+   sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb
+
+The iso should be copied to `sdb` and not to `sdb1` !
+
+Then the USB drive can be used to boot a laptop. 
+Note: on an HP laptop make sure that the "legacy boot" is enabled 
+and that the "secure boot" is disabled.
+The boot devices can be choosen by pressing ESC at startup, then F9.
+
+Debian installation went smoothly. 
+There was one issue with the wifi card having a non-free driver.
+I had to place the package 
+[firmware-iwlwifi](https://packages.debian.org/stretch/firmware-iwlwifi)
+on a USB key. Then installed it from the usb key with 
+
+    sudo apt install ./firmware-iwlwifi_20161130-3_all.deb
+
+After that extra step, the wifi card was working inside Debian.
+
+I updated the debian mirror to a nearby mirror in germany
+
+    sudo apt edit-sources
+
+See also my 2014 blog post :
+[Debian GNU Linux installation on a LENOVO T400](https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html)
+
+
 # Audio
 
 ## Audio Setup

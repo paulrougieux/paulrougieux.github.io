@@ -499,6 +499,45 @@ Then within the inst folder, I cloned only the gh-branch. To clone only one bran
 Then I renamed the folder to "web", so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.
 
 
+# Subversion
+
+Subversion is another version control system. 
+It is different than git and should be on another page, but since I don't expect to use it very much,
+it probably makes sense to keep a Subversion section under the git page here.
+See also wiki.debian.org [small SVN tutorial](https://wiki.debian.org/SmallSVNTutorial).
+
+Install subversion from the Debian repository
+
+    sudo apt install subversion
+
+Load the latest version of some repository
+
+    svn checkout --username yourusername http://repositoryurl
+
+Get help on a command
+
+    svn help log
+
+See the last 4 log entries
+
+    svn log -l 4
+
+Bring changes from the repository HEAD into the working copy
+
+    svn up
+
+synchronize working copy to revision given by -r.    
+    
+    svn up -r10860
+
+show the status 
+
+    svn status
+
+show differences
+
+    svn diff
+
 # References
 
 Presentations:

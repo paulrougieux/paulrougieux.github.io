@@ -551,10 +551,32 @@ Find your Debian version
     lsb_release -a
 
 Shortcuts
-Keyboard shortcuts for bash  for example Ctrl+A to go to the beginning of a line.
+Keyboard shortcuts for bash  for example :
+
+ * Ctrl+A to go to the beginning of a line
+ * Ctrl+E to go to the end of a line   
+
 Documentation
 
     Creating and running bash scripts
     Unofficial Ubuntu starter guide.
 
+# Partitioning and formatting drives
+
+Manipulate the disk partition table 
+[See forum post July 21st, 2012, 09:08 AM](https://ubuntuforums.org/archive/index.php/t-2030703.html)
+
+    sudo fdisk /dev/sdb
+    d # delete
+    w # write table to disk
+    sudo fdisk /dev/sdb
+    n # create a new partition
+    # yes to all default choices
+    w # write table to disk
+
+Create a MS-DOS file system for USB drives
+
+    mkfs.vfat -n 'usb_drive_name' -I /dev/sdb1
+
+You can also use the GUI gparted.
 
