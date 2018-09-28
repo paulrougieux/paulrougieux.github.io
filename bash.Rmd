@@ -22,14 +22,7 @@ Linux is the kernel of the operating system on top of which other programs are b
 The page below also contains many commands from external tools 
 that are not part of the GNU project.
 
-# Operations on any file 
-
-## Image files
-
-Resize a picture to 2000 px wide using ImageMagick:
-
-    convert picture1.jpg -resize 2000 picture2.jpg 
-
+# Find
 ## Find files
 Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).
 
@@ -62,76 +55,6 @@ Display the [last modification date of a file](https://stackoverflow.com/questio
 More file information
 
     stat <filename>
-## Compress files
-
-### Single file compression
-Compress a file using gzip or 7z compression
-    
-    gzip <filename>
-    7zr a -si<filename> <filename>.7z 
-
-Decompress a single file from several archive formats:
-
-    gunzip <filename.gz>
-    7zr e <filename.7z>  # see also x flag below
-    bzip2 -d <filename.bz2>
-
-Convert a 7z file to gz using a pipe similar to [this answer](https://superuser.com/a/357980/419414).
-
-    7zr e -so <filename.7z> | gzip -c > <filename.gz>
-
-### Multiple files compression
-
-How do I compress a whole directory?
-
-    tar -zcvf archive-name.tar.gz directory-name 
-
-Where
-
-    -z: Compress archive using gzip program
-    -c: Create archive
-    -v: Verbose i.e display progress while creating archive
-    -f: Archive File name
-
-Decompress an archive containing multiple files
-Keep full path of files within the archive
-To extract content from the archive in the current directory
-
-    tar -zxvf archive-name.tar.gz 
-    7zr x <filename.7z>  
-
-## Move and copy files
-
-Copy a file
-
-    cp file1 file2
-
-[Recursive copy some files while keeping the directory structure](https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure)
-
-    find . -name '*.csv' -exec cp --parents \{\} /target \;
-
-## PDF files
-Commands based on the poppler library for PDF manipulation.
-Search a text pattern in all PDF files present in a directory:
-
-    pdfgrep pattern *.pdf
-
- Merge multiple PDF into one:
-
-    pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf
-
-Alternatively, pdftk can be used to merge PDF files
-
-    pdftk input1.pdf input2.pdf cat output output.pdf
-
-[Extract pages from a pdf](https://askubuntu.com/a/282455/315347)
-
-    pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.
-
-## Rename files
-For example to rename all upper-case .JPG extension into lower-case .jpg extension.
-
-    rename 's/\.JPG$/\.jpg/' *.JPG
 
 ## Search and filter text files
 Search with Grep
@@ -177,6 +100,50 @@ Count the number of lines in all files, and give the total line count.
     find . -name '*.py' | xargs wc -l # python code
     find . -name '*.R' | xargs wc -l # R code
 
+# Read 
+
+## Play Midi files
+
+Install a software synthethizer to play midi files.
+[VideoLan Wiki](https://wiki.videolan.org/Midi/)
+
+> If the FluidSynth codec is not shown in VLC's preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound 
+
+
+
+
+# Edit
+## Edit Image files
+
+Resize a picture to 2000 px wide using ImageMagick:
+
+    convert picture1.jpg -resize 2000 picture2.jpg 
+
+## Edit PDF files
+Commands based on the poppler library for PDF manipulation.
+Search a text pattern in all PDF files present in a directory:
+
+    pdfgrep pattern *.pdf
+
+ Merge multiple PDF into one:
+
+    pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf
+
+Alternatively, pdftk can be used to merge PDF files
+
+    pdftk input1.pdf input2.pdf cat output output.pdf
+
+[Extract pages from a pdf](https://askubuntu.com/a/282455/315347)
+
+    pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.
+
+Split a pdf in two
+
+    mutool poster -x 2 cbmflow.pdf output.pdf
+    # if necessary, install mutool with 
+    apt install mupdf-tools
+
+
 ## Replace strings in text files
 Replace strings
 
@@ -200,8 +167,62 @@ Remove duplicated lines from a file
     awk '!a[$0]++' input.txt 
 
 
+# Organise
 
-# Download files
+## Compress one file
+Compress a file using gzip or 7z compression
+    
+    gzip <filename>
+    7zr a -si<filename> <filename>.7z 
+
+Decompress a single file from several archive formats:
+
+    gunzip <filename.gz>
+    7zr e <filename.7z>  # see also x flag below
+    bzip2 -d <filename.bz2>
+
+Convert a 7z file to gz using a pipe similar to [this answer](https://superuser.com/a/357980/419414).
+
+    7zr e -so <filename.7z> | gzip -c > <filename.gz>
+
+## Compress multiple files
+
+How do I compress a whole directory?
+
+    tar -zcvf archive-name.tar.gz directory-name 
+
+Where
+
+    -z: Compress archive using gzip program
+    -c: Create archive
+    -v: Verbose i.e display progress while creating archive
+    -f: Archive File name
+
+Decompress an archive containing multiple files
+Keep full path of files within the archive
+To extract content from the archive in the current directory
+
+    tar -zxvf archive-name.tar.gz 
+    7zr x <filename.7z>  
+
+## Move and copy files
+
+Copy a file
+
+    cp file1 file2
+
+[Recursive copy some files while keeping the directory structure](https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure)
+
+    find . -name '*.csv' -exec cp --parents \{\} /target \;
+
+## Rename files
+For example to rename all upper-case .JPG extension into lower-case .jpg extension.
+
+    rename 's/\.JPG$/\.jpg/' *.JPG
+
+
+
+# Download 
 
 ## Download with Curl
 
@@ -221,16 +242,6 @@ Download a video from youtube :
 Download only the audio in an .mp3 format
 
     youtube-dl --extract-audio --audio-format mp3 video_url
-
-
-# Read files
-
-## Play Midi files
-
-Install a software synthethizer to play midi files.
-[VideoLan Wiki](https://wiki.videolan.org/Midi/)
-
-> If the FluidSynth codec is not shown in VLC's preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound 
 
 
 
@@ -540,7 +551,7 @@ Kill a graphical program, by clicking on it:
      xkill
 
 
-# Programming with bash
+# Bash Programming
 
 ## Variables
 
@@ -549,7 +560,9 @@ Kill a graphical program, by clicking on it:
     message = "Hello World"
     echo $message
 
-# Shell connection to remote machines 
+
+# Connect to remote machines 
+
 ## Secure shell and secure copy
 
 log into a remote machine

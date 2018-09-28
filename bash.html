@@ -380,13 +380,8 @@ div.tocify {
 <pre><code>info coreutils </code></pre>
 <p>The page below also contains many commands from external tools that are not part of the GNU project.</p>
 </div>
-<div id="operations-on-any-file" class="section level1">
-<h1>Operations on any file</h1>
-<div id="image-files" class="section level2">
-<h2>Image files</h2>
-<p>Resize a picture to 2000 px wide using ImageMagick:</p>
-<pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
-</div>
+<div id="find" class="section level1">
+<h1>Find</h1>
 <div id="find-files" class="section level2">
 <h2>Find files</h2>
 <p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).</p>
@@ -410,57 +405,6 @@ ls -lh # sizes in human readable format</code></pre>
 ls -l &lt;filename&gt;</code></pre>
 <p>More file information</p>
 <pre><code>stat &lt;filename&gt;</code></pre>
-</div>
-<div id="compress-files" class="section level2">
-<h2>Compress files</h2>
-<div id="single-file-compression" class="section level3">
-<h3>Single file compression</h3>
-<p>Compress a file using gzip or 7z compression</p>
-<pre><code>gzip &lt;filename&gt;
-7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
-<p>Decompress a single file from several archive formats:</p>
-<pre><code>gunzip &lt;filename.gz&gt;
-7zr e &lt;filename.7z&gt;  # see also x flag below
-bzip2 -d &lt;filename.bz2&gt;</code></pre>
-<p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>
-<pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
-</div>
-<div id="multiple-files-compression" class="section level3">
-<h3>Multiple files compression</h3>
-<p>How do I compress a whole directory?</p>
-<pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
-<p>Where</p>
-<pre><code>-z: Compress archive using gzip program
--c: Create archive
--v: Verbose i.e display progress while creating archive
--f: Archive File name</code></pre>
-<p>Decompress an archive containing multiple files Keep full path of files within the archive To extract content from the archive in the current directory</p>
-<pre><code>tar -zxvf archive-name.tar.gz 
-7zr x &lt;filename.7z&gt;  </code></pre>
-</div>
-</div>
-<div id="move-and-copy-files" class="section level2">
-<h2>Move and copy files</h2>
-<p>Copy a file</p>
-<pre><code>cp file1 file2</code></pre>
-<p><a href="https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure">Recursive copy some files while keeping the directory structure</a></p>
-<pre><code>find . -name &#39;*.csv&#39; -exec cp --parents \{\} /target \;</code></pre>
-</div>
-<div id="pdf-files" class="section level2">
-<h2>PDF files</h2>
-<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
-<pre><code>pdfgrep pattern *.pdf</code></pre>
-<p>Merge multiple PDF into one:</p>
-<pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
-<p>Alternatively, pdftk can be used to merge PDF files</p>
-<pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
-<p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
-<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.</code></pre>
-</div>
-<div id="rename-files" class="section level2">
-<h2>Rename files</h2>
-<p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
-<pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
 </div>
 <div id="search-and-filter-text-files" class="section level2">
 <h2>Search and filter text files</h2>
@@ -488,6 +432,39 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <pre><code>find . -name &#39;*.py&#39; | xargs wc -l # python code
 find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </div>
+</div>
+<div id="read" class="section level1">
+<h1>Read</h1>
+<div id="play-midi-files" class="section level2">
+<h2>Play Midi files</h2>
+<p>Install a software synthethizer to play midi files. <a href="https://wiki.videolan.org/Midi/">VideoLan Wiki</a></p>
+<blockquote>
+<p>If the FluidSynth codec is not shown in VLC’s preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound</p>
+</blockquote>
+</div>
+</div>
+<div id="edit" class="section level1">
+<h1>Edit</h1>
+<div id="edit-image-files" class="section level2">
+<h2>Edit Image files</h2>
+<p>Resize a picture to 2000 px wide using ImageMagick:</p>
+<pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
+</div>
+<div id="edit-pdf-files" class="section level2">
+<h2>Edit PDF files</h2>
+<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
+<pre><code>pdfgrep pattern *.pdf</code></pre>
+<p>Merge multiple PDF into one:</p>
+<pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
+<p>Alternatively, pdftk can be used to merge PDF files</p>
+<pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
+<p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
+<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.</code></pre>
+<p>Split a pdf in two</p>
+<pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
+# if necessary, install mutool with 
+apt install mupdf-tools</code></pre>
+</div>
 <div id="replace-strings-in-text-files" class="section level2">
 <h2>Replace strings in text files</h2>
 <p>Replace strings</p>
@@ -505,8 +482,48 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 </div>
 </div>
-<div id="download-files" class="section level1">
-<h1>Download files</h1>
+<div id="organise" class="section level1">
+<h1>Organise</h1>
+<div id="compress-one-file" class="section level2">
+<h2>Compress one file</h2>
+<p>Compress a file using gzip or 7z compression</p>
+<pre><code>gzip &lt;filename&gt;
+7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
+<p>Decompress a single file from several archive formats:</p>
+<pre><code>gunzip &lt;filename.gz&gt;
+7zr e &lt;filename.7z&gt;  # see also x flag below
+bzip2 -d &lt;filename.bz2&gt;</code></pre>
+<p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>
+<pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
+</div>
+<div id="compress-multiple-files" class="section level2">
+<h2>Compress multiple files</h2>
+<p>How do I compress a whole directory?</p>
+<pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
+<p>Where</p>
+<pre><code>-z: Compress archive using gzip program
+-c: Create archive
+-v: Verbose i.e display progress while creating archive
+-f: Archive File name</code></pre>
+<p>Decompress an archive containing multiple files Keep full path of files within the archive To extract content from the archive in the current directory</p>
+<pre><code>tar -zxvf archive-name.tar.gz 
+7zr x &lt;filename.7z&gt;  </code></pre>
+</div>
+<div id="move-and-copy-files" class="section level2">
+<h2>Move and copy files</h2>
+<p>Copy a file</p>
+<pre><code>cp file1 file2</code></pre>
+<p><a href="https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure">Recursive copy some files while keeping the directory structure</a></p>
+<pre><code>find . -name &#39;*.csv&#39; -exec cp --parents \{\} /target \;</code></pre>
+</div>
+<div id="rename-files" class="section level2">
+<h2>Rename files</h2>
+<p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
+<pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
+</div>
+</div>
+<div id="download" class="section level1">
+<h1>Download</h1>
 <div id="download-with-curl" class="section level2">
 <h2>Download with Curl</h2>
 <p>Load a file from a URL, using the file name from the URL</p>
@@ -520,16 +537,6 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <pre><code>youtube-dl video_url</code></pre>
 <p>Download only the audio in an .mp3 format</p>
 <pre><code>youtube-dl --extract-audio --audio-format mp3 video_url</code></pre>
-</div>
-</div>
-<div id="read-files" class="section level1">
-<h1>Read files</h1>
-<div id="play-midi-files" class="section level2">
-<h2>Play Midi files</h2>
-<p>Install a software synthethizer to play midi files. <a href="https://wiki.videolan.org/Midi/">VideoLan Wiki</a></p>
-<blockquote>
-<p>If the FluidSynth codec is not shown in VLC’s preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound</p>
-</blockquote>
 </div>
 </div>
 <div id="users" class="section level1">
@@ -720,8 +727,8 @@ kill -9 process_it # -9 forces the kill</code></pre>
 <pre><code> xkill</code></pre>
 </div>
 </div>
-<div id="programming-with-bash" class="section level1">
-<h1>Programming with bash</h1>
+<div id="bash-programming" class="section level1">
+<h1>Bash Programming</h1>
 <div id="variables" class="section level2">
 <h2>Variables</h2>
 <p><a href="https://www.shellscript.sh/variables1.html">Variables</a></p>
@@ -729,8 +736,8 @@ kill -9 process_it # -9 forces the kill</code></pre>
 echo $message</code></pre>
 </div>
 </div>
-<div id="shell-connection-to-remote-machines" class="section level1">
-<h1>Shell connection to remote machines</h1>
+<div id="connect-to-remote-machines" class="section level1">
+<h1>Connect to remote machines</h1>
 <div id="secure-shell-and-secure-copy" class="section level2">
 <h2>Secure shell and secure copy</h2>
 <p>log into a remote machine</p>
