@@ -22,7 +22,24 @@ Linux is the kernel of the operating system on top of which other programs are b
 The page below also contains many commands from external tools 
 that are not part of the GNU project.
 
-# Files 
+# Operations on any file 
+
+## Image files
+
+Resize a picture to 2000 px wide using ImageMagick:
+
+    convert picture1.jpg -resize 2000 picture2.jpg 
+
+## Find files
+Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).
+
+    find . -name "*.pdf" 
+
+    find . -mtime 0 # modified in the last 24 hours
+
+Find files in the whole system
+
+    locate filename
 
 ## Get information about a file
 Determine file type and encoding. The -i option shows the mime type strings.
@@ -45,19 +62,7 @@ Display the [last modification date of a file](https://stackoverflow.com/questio
 More file information
 
     stat <filename>
-    
-## Find files
-Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).
-
-    find . -name "*.pdf" 
-
-    find . -mtime 0 # modified in the last 24 hours
-
-Find files in the whole system
-
-    locate filename
-
-## File and folder compression
+## Compress files
 
 ### Single file compression
 Compress a file using gzip or 7z compression
@@ -95,11 +100,6 @@ To extract content from the archive in the current directory
     tar -zxvf archive-name.tar.gz 
     7zr x <filename.7z>  
 
-## Rename files
-For example to rename all upper-case .JPG extension into lower-case .jpg extension.
-
-    rename 's/\.JPG$/\.jpg/' *.JPG
-
 ## Move and copy files
 
 Copy a file
@@ -110,7 +110,30 @@ Copy a file
 
     find . -name '*.csv' -exec cp --parents \{\} /target \;
 
-# Search and filter text files
+## PDF files
+Commands based on the poppler library for PDF manipulation.
+Search a text pattern in all PDF files present in a directory:
+
+    pdfgrep pattern *.pdf
+
+ Merge multiple PDF into one:
+
+    pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf
+
+Alternatively, pdftk can be used to merge PDF files
+
+    pdftk input1.pdf input2.pdf cat output output.pdf
+
+[Extract pages from a pdf](https://askubuntu.com/a/282455/315347)
+
+    pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.
+
+## Rename files
+For example to rename all upper-case .JPG extension into lower-case .jpg extension.
+
+    rename 's/\.JPG$/\.jpg/' *.JPG
+
+## Search and filter text files
 Search with Grep
 
     grep "text" file.txt
@@ -178,25 +201,7 @@ Remove duplicated lines from a file
 
 
 
-## PDF files
-Commands based on the poppler library for PDF manipulation.
-Search a text pattern in all PDF files present in a directory:
-
-    pdfgrep pattern *.pdf
-
- Merge multiple PDF into one:
-
-    pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf
-
-Alternatively, pdftk can be used to merge PDF files
-
-    pdftk input1.pdf input2.pdf cat output output.pdf
-
-[Extract pages from a pdf](https://askubuntu.com/a/282455/315347)
-
-    pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.
-
-# Tools
+# Download files
 
 ## Download with Curl
 
@@ -217,6 +222,9 @@ Download only the audio in an .mp3 format
 
     youtube-dl --extract-audio --audio-format mp3 video_url
 
+
+# Read files
+
 ## Play Midi files
 
 Install a software synthethizer to play midi files.
@@ -224,24 +232,6 @@ Install a software synthethizer to play midi files.
 
 > If the FluidSynth codec is not shown in VLC's preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound 
 
-## Partition disks
-
-Format a USB drive as a FAT 32 partition.
-
-    sudo fdisk -l 
-    sudo umount /dev/mmcblk0p1 
-    sudo mkdosfs -F 32 -I /dev/mmcblk0
-
-format a USB drive as a FAT 32 partition smaller than the drive size
-
-    sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))
-
-I used the GUI tool Gparted.
-To see if a partition is primary, use the command:
-    sudo parted /dev/mmcblk0 # then:
-    print
-
-This will print the type (primary or logical) of the partition.
 
 
 # Users
@@ -386,7 +376,116 @@ Show environment variables
     printenv 
     printenv LC_TIME
 
-# Monitoring
+## Partition disks
+
+Format a USB drive as a FAT 32 partition.
+
+    sudo fdisk -l 
+    sudo umount /dev/mmcblk0p1 
+    sudo mkdosfs -F 32 -I /dev/mmcblk0
+
+format a USB drive as a FAT 32 partition smaller than the drive size
+
+    sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))
+
+I used the GUI tool Gparted.
+To see if a partition is primary, use the command:
+    sudo parted /dev/mmcblk0 # then:
+    print
+
+This will print the type (primary or logical) of the partition.
+
+## Keyboard
+bash french blogger recommended a simple shell command to change keyboard layout :
+
+    sudo loadkeys fr
+
+fr-keyboard on Debian wiki for a more permanent system configuration and use in GUI apps. Switching between keyboads can then be done with:
+
+    setxkbmap de
+    setxkbmap fr
+
+Information about the system
+Debian-Admin Finding out basic information about your Hardware:
+
+    cat /proc/meminfo
+    cat /proc/cpuinfo
+
+Find your Debian version
+
+    cat /etc/debian_version
+    lsb_release -a
+
+Shortcuts
+Keyboard shortcuts for bash  for example :
+
+ * Ctrl+A to go to the beginning of a line
+ * Ctrl+E to go to the end of a line   
+
+Documentation
+
+    Creating and running bash scripts
+    Unofficial Ubuntu starter guide.
+
+## Locale
+[Debian wiki page on Locale settings](https://wiki.debian.org/Locale)
+
+Display locale settings
+
+    locale
+
+To install new locales, run :
+
+    sudo dpkg-reconfigure locales
+
+SSH forwards locales to the server. 
+The server will try to use thegiven locale, but it might not have them installed.
+[Locale variables have no effect in remote shell](https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448)
+
+[How do I add a locale to a Ubuntu Server?](https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server)
+Check which locales are supported:
+
+    locale -a
+
+add the locales you want (for example ru):
+
+    sudo locale-gen ru_RU
+    sudo locale-gen ru_RU.UTF-8
+
+run this update comand
+
+    sudo update-locale 
+
+
+## Partitioning and formatting drives
+
+Manipulate the disk partition table 
+[See forum post July 21st, 2012, 09:08 AM](https://ubuntuforums.org/archive/index.php/t-2030703.html)
+
+    sudo fdisk /dev/sdb
+    d # delete
+    w # write table to disk
+    sudo fdisk /dev/sdb
+    n # create a new partition
+    # yes to all default choices
+    w # write table to disk
+
+Create a MS-DOS file system for USB drives
+
+    mkfs.vfat -n 'usb_drive_name' -I /dev/sdb1
+
+You can also use the GUI gparted.
+
+
+## Monitoring
+
+Display Linux processes
+
+    top
+
+Interactive process viewer
+
+    htop
 
 Run a command every 2 seconds, 
 for example to list a folder as new files are beeing written to it:
@@ -401,7 +500,7 @@ Find out which program is listening to which port
 
     sudo netstat -pna | grep <port_number>
 
-# Job handling
+## Job handling
 List
 
     jobs
@@ -441,15 +540,17 @@ Kill a graphical program, by clicking on it:
      xkill
 
 
-# Variables
+# Programming with bash
+
+## Variables
 
 [Variables](https://www.shellscript.sh/variables1.html)
 
     message = "Hello World"
     echo $message
 
-# SSH
-## Secure shell into a remote machine
+# Shell connection to remote machines 
+## Secure shell and secure copy
 
 log into a remote machine
 
@@ -498,85 +599,4 @@ you can [test a few password you might remember with](https://stackoverflow.com/
 
     ssh-keygen -y -f <private_key_file_name>
 
-
-# Locale
-[Debian wiki page on Locale settings](https://wiki.debian.org/Locale)
-
-Display locale settings
-
-    locale
-
-To install new locales, run :
-
-    sudo dpkg-reconfigure locales
-
-SSH forwards locales to the server. 
-The server will try to use thegiven locale, but it might not have them installed.
-[Locale variables have no effect in remote shell](https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448)
-
-[How do I add a locale to a Ubuntu Server?](https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server)
-Check which locales are supported:
-
-    locale -a
-
-add the locales you want (for example ru):
-
-    sudo locale-gen ru_RU
-    sudo locale-gen ru_RU.UTF-8
-
-run this update comand
-
-    sudo update-locale 
-
-
-# Keyboard
-bash french blogger recommended a simple shell command to change keyboard layout :
-
-    sudo loadkeys fr
-
-fr-keyboard on Debian wiki for a more permanent system configuration and use in GUI apps. Switching between keyboads can then be done with:
-
-    setxkbmap de
-    setxkbmap fr
-
-Information about the system
-Debian-Admin Finding out basic information about your Hardware:
-
-    cat /proc/meminfo
-    cat /proc/cpuinfo
-
-Find your Debian version
-
-    cat /etc/debian_version
-    lsb_release -a
-
-Shortcuts
-Keyboard shortcuts for bash  for example :
-
- * Ctrl+A to go to the beginning of a line
- * Ctrl+E to go to the end of a line   
-
-Documentation
-
-    Creating and running bash scripts
-    Unofficial Ubuntu starter guide.
-
-# Partitioning and formatting drives
-
-Manipulate the disk partition table 
-[See forum post July 21st, 2012, 09:08 AM](https://ubuntuforums.org/archive/index.php/t-2030703.html)
-
-    sudo fdisk /dev/sdb
-    d # delete
-    w # write table to disk
-    sudo fdisk /dev/sdb
-    n # create a new partition
-    # yes to all default choices
-    w # write table to disk
-
-Create a MS-DOS file system for USB drives
-
-    mkfs.vfat -n 'usb_drive_name' -I /dev/sdb1
-
-You can also use the GUI gparted.
 

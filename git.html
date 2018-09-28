@@ -672,6 +672,26 @@ To push the current branch and set the remote as upstream, use
 <pre><code>git clone -b mybranch --single-branch git://sub.domain.com/repo.git</code></pre>
 <p>Then I renamed the folder to “web”, so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.</p>
 </div>
+<div id="subversion" class="section level1">
+<h1>Subversion</h1>
+<p>Subversion is another version control system. It is different than git and should be on another page, but since I don’t expect to use it very much, it probably makes sense to keep a Subversion section under the git page here. See also wiki.debian.org <a href="https://wiki.debian.org/SmallSVNTutorial">small SVN tutorial</a>.</p>
+<p>Install subversion from the Debian repository</p>
+<pre><code>sudo apt install subversion</code></pre>
+<p>Load the latest version of some repository</p>
+<pre><code>svn checkout --username yourusername http://repositoryurl</code></pre>
+<p>Get help on a command</p>
+<pre><code>svn help log</code></pre>
+<p>See the last 4 log entries</p>
+<pre><code>svn log -l 4</code></pre>
+<p>Bring changes from the repository HEAD into the working copy</p>
+<pre><code>svn up</code></pre>
+<p>synchronize working copy to revision given by -r.</p>
+<pre><code>svn up -r10860</code></pre>
+<p>show the status</p>
+<pre><code>svn status</code></pre>
+<p>show differences</p>
+<pre><code>svn diff</code></pre>
+</div>
 <div id="references" class="section level1">
 <h1>References</h1>
 <p>Presentations:</p>

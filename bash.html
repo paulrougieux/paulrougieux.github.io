@@ -380,8 +380,22 @@ div.tocify {
 <pre><code>info coreutils </code></pre>
 <p>The page below also contains many commands from external tools that are not part of the GNU project.</p>
 </div>
-<div id="files" class="section level1">
-<h1>Files</h1>
+<div id="operations-on-any-file" class="section level1">
+<h1>Operations on any file</h1>
+<div id="image-files" class="section level2">
+<h2>Image files</h2>
+<p>Resize a picture to 2000 px wide using ImageMagick:</p>
+<pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
+</div>
+<div id="find-files" class="section level2">
+<h2>Find files</h2>
+<p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).</p>
+<pre><code>find . -name &quot;*.pdf&quot; 
+
+find . -mtime 0 # modified in the last 24 hours</code></pre>
+<p>Find files in the whole system</p>
+<pre><code>locate filename</code></pre>
+</div>
 <div id="get-information-about-a-file" class="section level2">
 <h2>Get information about a file</h2>
 <p>Determine file type and encoding. The -i option shows the mime type strings.</p>
@@ -397,17 +411,8 @@ ls -l &lt;filename&gt;</code></pre>
 <p>More file information</p>
 <pre><code>stat &lt;filename&gt;</code></pre>
 </div>
-<div id="find-files" class="section level2">
-<h2>Find files</h2>
-<p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).</p>
-<pre><code>find . -name &quot;*.pdf&quot; 
-
-find . -mtime 0 # modified in the last 24 hours</code></pre>
-<p>Find files in the whole system</p>
-<pre><code>locate filename</code></pre>
-</div>
-<div id="file-and-folder-compression" class="section level2">
-<h2>File and folder compression</h2>
+<div id="compress-files" class="section level2">
+<h2>Compress files</h2>
 <div id="single-file-compression" class="section level3">
 <h3>Single file compression</h3>
 <p>Compress a file using gzip or 7z compression</p>
@@ -434,11 +439,6 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 7zr x &lt;filename.7z&gt;  </code></pre>
 </div>
 </div>
-<div id="rename-files" class="section level2">
-<h2>Rename files</h2>
-<p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
-<pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
-</div>
 <div id="move-and-copy-files" class="section level2">
 <h2>Move and copy files</h2>
 <p>Copy a file</p>
@@ -446,9 +446,24 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <p><a href="https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure">Recursive copy some files while keeping the directory structure</a></p>
 <pre><code>find . -name &#39;*.csv&#39; -exec cp --parents \{\} /target \;</code></pre>
 </div>
+<div id="pdf-files" class="section level2">
+<h2>PDF files</h2>
+<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
+<pre><code>pdfgrep pattern *.pdf</code></pre>
+<p>Merge multiple PDF into one:</p>
+<pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
+<p>Alternatively, pdftk can be used to merge PDF files</p>
+<pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
+<p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
+<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.</code></pre>
 </div>
-<div id="search-and-filter-text-files" class="section level1">
-<h1>Search and filter text files</h1>
+<div id="rename-files" class="section level2">
+<h2>Rename files</h2>
+<p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
+<pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
+</div>
+<div id="search-and-filter-text-files" class="section level2">
+<h2>Search and filter text files</h2>
 <p>Search with Grep</p>
 <pre><code>grep &quot;text&quot; file.txt</code></pre>
 <p>Recursive search (-r) in all files in the directory for a given pattern, case insensitive (-i)</p>
@@ -464,6 +479,7 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <pre><code>tail -f</code></pre>
 <p>See tab and end of line characters in a text file</p>
 <pre><code>cat -te filename |less </code></pre>
+</div>
 <div id="count-the-number-of-lines-in-a-text-file" class="section level2">
 <h2>Count the number of lines in a text file</h2>
 <p>Count the number of lines in a file</p>
@@ -488,20 +504,9 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <p>Remove duplicated lines from a file</p>
 <pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 </div>
-<div id="pdf-files" class="section level2">
-<h2>PDF files</h2>
-<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
-<pre><code>pdfgrep pattern *.pdf</code></pre>
-<p>Merge multiple PDF into one:</p>
-<pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
-<p>Alternatively, pdftk can be used to merge PDF files</p>
-<pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
-<p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
-<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.</code></pre>
 </div>
-</div>
-<div id="tools" class="section level1">
-<h1>Tools</h1>
+<div id="download-files" class="section level1">
+<h1>Download files</h1>
 <div id="download-with-curl" class="section level2">
 <h2>Download with Curl</h2>
 <p>Load a file from a URL, using the file name from the URL</p>
@@ -516,23 +521,15 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <p>Download only the audio in an .mp3 format</p>
 <pre><code>youtube-dl --extract-audio --audio-format mp3 video_url</code></pre>
 </div>
+</div>
+<div id="read-files" class="section level1">
+<h1>Read files</h1>
 <div id="play-midi-files" class="section level2">
 <h2>Play Midi files</h2>
 <p>Install a software synthethizer to play midi files. <a href="https://wiki.videolan.org/Midi/">VideoLan Wiki</a></p>
 <blockquote>
 <p>If the FluidSynth codec is not shown in VLC’s preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound</p>
 </blockquote>
-</div>
-<div id="partition-disks" class="section level2">
-<h2>Partition disks</h2>
-<p>Format a USB drive as a FAT 32 partition.</p>
-<pre><code>sudo fdisk -l 
-sudo umount /dev/mmcblk0p1 
-sudo mkdosfs -F 32 -I /dev/mmcblk0</code></pre>
-<p>format a USB drive as a FAT 32 partition smaller than the drive size</p>
-<pre><code>sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))</code></pre>
-<p>I used the GUI tool Gparted. To see if a partition is primary, use the command: sudo parted /dev/mmcblk0 # then: print</p>
-<p>This will print the type (primary or logical) of the partition.</p>
 </div>
 </div>
 <div id="users" class="section level1">
@@ -624,9 +621,75 @@ last</code></pre>
 <p>Show environment variables</p>
 <pre><code>printenv 
 printenv LC_TIME</code></pre>
+<div id="partition-disks" class="section level2">
+<h2>Partition disks</h2>
+<p>Format a USB drive as a FAT 32 partition.</p>
+<pre><code>sudo fdisk -l 
+sudo umount /dev/mmcblk0p1 
+sudo mkdosfs -F 32 -I /dev/mmcblk0</code></pre>
+<p>format a USB drive as a FAT 32 partition smaller than the drive size</p>
+<pre><code>sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))</code></pre>
+<p>I used the GUI tool Gparted. To see if a partition is primary, use the command: sudo parted /dev/mmcblk0 # then: print</p>
+<p>This will print the type (primary or logical) of the partition.</p>
 </div>
-<div id="monitoring" class="section level1">
-<h1>Monitoring</h1>
+<div id="keyboard" class="section level2">
+<h2>Keyboard</h2>
+<p>bash french blogger recommended a simple shell command to change keyboard layout :</p>
+<pre><code>sudo loadkeys fr</code></pre>
+<p>fr-keyboard on Debian wiki for a more permanent system configuration and use in GUI apps. Switching between keyboads can then be done with:</p>
+<pre><code>setxkbmap de
+setxkbmap fr</code></pre>
+<p>Information about the system Debian-Admin Finding out basic information about your Hardware:</p>
+<pre><code>cat /proc/meminfo
+cat /proc/cpuinfo</code></pre>
+<p>Find your Debian version</p>
+<pre><code>cat /etc/debian_version
+lsb_release -a</code></pre>
+<p>Shortcuts Keyboard shortcuts for bash for example :</p>
+<ul>
+<li>Ctrl+A to go to the beginning of a line</li>
+<li>Ctrl+E to go to the end of a line</li>
+</ul>
+<p>Documentation</p>
+<pre><code>Creating and running bash scripts
+Unofficial Ubuntu starter guide.</code></pre>
+</div>
+<div id="locale" class="section level2">
+<h2>Locale</h2>
+<p><a href="https://wiki.debian.org/Locale">Debian wiki page on Locale settings</a></p>
+<p>Display locale settings</p>
+<pre><code>locale</code></pre>
+<p>To install new locales, run :</p>
+<pre><code>sudo dpkg-reconfigure locales</code></pre>
+<p>SSH forwards locales to the server. The server will try to use thegiven locale, but it might not have them installed. <a href="https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448">Locale variables have no effect in remote shell</a></p>
+<p><a href="https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server">How do I add a locale to a Ubuntu Server?</a> Check which locales are supported:</p>
+<pre><code>locale -a</code></pre>
+<p>add the locales you want (for example ru):</p>
+<pre><code>sudo locale-gen ru_RU
+sudo locale-gen ru_RU.UTF-8</code></pre>
+<p>run this update comand</p>
+<pre><code>sudo update-locale </code></pre>
+</div>
+<div id="partitioning-and-formatting-drives" class="section level2">
+<h2>Partitioning and formatting drives</h2>
+<p>Manipulate the disk partition table <a href="https://ubuntuforums.org/archive/index.php/t-2030703.html">See forum post July 21st, 2012, 09:08 AM</a></p>
+<pre><code>sudo fdisk /dev/sdb
+d # delete
+w # write table to disk
+sudo fdisk /dev/sdb
+n # create a new partition
+# yes to all default choices
+w # write table to disk</code></pre>
+<p>Create a MS-DOS file system for USB drives</p>
+<pre><code>mkfs.vfat -n &#39;usb_drive_name&#39; -I /dev/sdb1</code></pre>
+<p>You can also use the GUI gparted.</p>
+</div>
+<div id="monitoring" class="section level2">
+<h2>Monitoring</h2>
+<p>Display Linux processes</p>
+<pre><code>top</code></pre>
+<p>Interactive process viewer</p>
+<pre><code>htop</code></pre>
 <p>Run a command every 2 seconds, for example to list a folder as new files are beeing written to it:</p>
 <pre><code>watch ls</code></pre>
 <p>Follow the end of a log file, as it is written</p>
@@ -634,8 +697,8 @@ printenv LC_TIME</code></pre>
 <p>Find out which program is listening to which port</p>
 <pre><code>sudo netstat -pna | grep &lt;port_number&gt;</code></pre>
 </div>
-<div id="job-handling" class="section level1">
-<h1>Job handling</h1>
+<div id="job-handling" class="section level2">
+<h2>Job handling</h2>
 <p>List</p>
 <pre><code>jobs</code></pre>
 <p>Bring a job to the foreground</p>
@@ -656,16 +719,20 @@ kill -9 process_it # -9 forces the kill</code></pre>
 <p>Kill a graphical program, by clicking on it:</p>
 <pre><code> xkill</code></pre>
 </div>
-<div id="variables" class="section level1">
-<h1>Variables</h1>
+</div>
+<div id="programming-with-bash" class="section level1">
+<h1>Programming with bash</h1>
+<div id="variables" class="section level2">
+<h2>Variables</h2>
 <p><a href="https://www.shellscript.sh/variables1.html">Variables</a></p>
 <pre><code>message = &quot;Hello World&quot;
 echo $message</code></pre>
 </div>
-<div id="ssh" class="section level1">
-<h1>SSH</h1>
-<div id="secure-shell-into-a-remote-machine" class="section level2">
-<h2>Secure shell into a remote machine</h2>
+</div>
+<div id="shell-connection-to-remote-machines" class="section level1">
+<h1>Shell connection to remote machines</h1>
+<div id="secure-shell-and-secure-copy" class="section level2">
+<h2>Secure shell and secure copy</h2>
 <p>log into a remote machine</p>
 <pre><code>ssh user@remote_machine</code></pre>
 <p>Copy a local file to a file on the remote machine</p>
@@ -692,39 +759,6 @@ eval `ssh-agent`</code></pre>
 <p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
 <pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
 </div>
-</div>
-<div id="locale" class="section level1">
-<h1>Locale</h1>
-<p><a href="https://wiki.debian.org/Locale">Debian wiki page on Locale settings</a></p>
-<p>Display locale settings</p>
-<pre><code>locale</code></pre>
-<p>To install new locales, run :</p>
-<pre><code>sudo dpkg-reconfigure locales</code></pre>
-<p>SSH forwards locales to the server. The server will try to use thegiven locale, but it might not have them installed. <a href="https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448">Locale variables have no effect in remote shell</a></p>
-<p><a href="https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server">How do I add a locale to a Ubuntu Server?</a> Check which locales are supported:</p>
-<pre><code>locale -a</code></pre>
-<p>add the locales you want (for example ru):</p>
-<pre><code>sudo locale-gen ru_RU
-sudo locale-gen ru_RU.UTF-8</code></pre>
-<p>run this update comand</p>
-<pre><code>sudo update-locale </code></pre>
-</div>
-<div id="keyboard" class="section level1">
-<h1>Keyboard</h1>
-<p>bash french blogger recommended a simple shell command to change keyboard layout :</p>
-<pre><code>sudo loadkeys fr</code></pre>
-<p>fr-keyboard on Debian wiki for a more permanent system configuration and use in GUI apps. Switching between keyboads can then be done with:</p>
-<pre><code>setxkbmap de
-setxkbmap fr</code></pre>
-<p>Information about the system Debian-Admin Finding out basic information about your Hardware:</p>
-<pre><code>cat /proc/meminfo
-cat /proc/cpuinfo</code></pre>
-<p>Find your Debian version</p>
-<pre><code>cat /etc/debian_version
-lsb_release -a</code></pre>
-<p>Shortcuts Keyboard shortcuts for bash for example Ctrl+A to go to the beginning of a line. Documentation</p>
-<pre><code>Creating and running bash scripts
-Unofficial Ubuntu starter guide.</code></pre>
 </div>
 
 
