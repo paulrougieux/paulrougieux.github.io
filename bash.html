@@ -476,6 +476,11 @@ first=${first/Suzy/$second}</code></pre>
 
 sed -i  &#39;s/^.*\://g&#39; input_file.txt # edit file in place
 grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code></pre>
+<p>Add a line above and below a line that contains a particular string. This was necessary for a Latex to Lyx document conversion. The Latex file had problematic characters in href links. Conversion worked fine without the href links, to keep the links</p>
+<p>I quoted them in \begin{verbatim} statements. <a href="https://stackoverflow.com/a/24230154/2641825">sed add # before a line containing a pattern</a> <a href="https://unix.stackexchange.com/questions/97428/sed-how-to-do-several-consecutive-substitutions-but-process-file-only-once">sed performing several substitutions</a></p>
+<pre><code># Test output to stdout placing # before and after a matching line
+sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
+ # Modify the file in place</code></pre>
 <p>Replace strings with perl in a git repository</p>
 <pre><code>git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;</code></pre>
 <p>Remove duplicated lines from a file</p>

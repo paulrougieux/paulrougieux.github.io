@@ -158,6 +158,19 @@ Replace strings with sed
     sed -i  's/^.*\://g' input_file.txt # edit file in place
     grep EMAIL input_file.txt |sed  's/^.*\://g' > output_file.txt 
 
+Add a line above and below a line that contains a particular string.
+This was necessary for a Latex to Lyx document conversion. 
+The Latex file had problematic characters in href links. 
+Conversion  worked fine without the href links, to keep the links
+
+I quoted them in \begin{verbatim} statements.
+[sed add # before a line containing a pattern](https://stackoverflow.com/a/24230154/2641825)
+[sed performing several substitutions](https://unix.stackexchange.com/questions/97428/sed-how-to-do-several-consecutive-substitutions-but-process-file-only-once)
+
+    # Test output to stdout placing # before and after a matching line
+    sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
+     # Modify the file in place
+
 Replace strings with perl in a git repository
 
     git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
