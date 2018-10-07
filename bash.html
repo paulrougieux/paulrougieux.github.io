@@ -741,19 +741,8 @@ kill -9 process_it # -9 forces the kill</code></pre>
 echo $message</code></pre>
 </div>
 </div>
-<div id="connect-to-remote-machines" class="section level1">
-<h1>Connect to remote machines</h1>
-<div id="secure-shell-and-secure-copy" class="section level2">
-<h2>Secure shell and secure copy</h2>
-<p>log into a remote machine</p>
-<pre><code>ssh user@remote_machine</code></pre>
-<p>Copy a local file to a file on the remote machine</p>
-<pre><code>scp local_file_name user@remote_machine:path_to_file/file_name</code></pre>
-<p>Copy a file from the remote machine to a local file</p>
-<pre><code>scp user@remote_machine:path_to_file/file_name  local_file_name</code></pre>
-<p>Copy a full directory (dmouraty) from the remote machine:</p>
-<pre><code> scp -rp user@dest:/path destdirectory</code></pre>
-</div>
+<div id="authentification-and-security" class="section level1">
+<h1>Authentification and security</h1>
 <div id="generate-ssh-keys-to-access-a-remote-git-repository" class="section level2">
 <h2>Generate SSH keys to access a remote git repository</h2>
 <p>Generate a new key</p>
@@ -770,6 +759,25 @@ eval `ssh-agent`</code></pre>
 <pre><code>IdentityFile ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
 <p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
 <pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
+</div>
+<div id="secure-shell-and-secure-copy" class="section level2">
+<h2>Secure shell and secure copy</h2>
+<p>log into a remote machine</p>
+<pre><code>ssh user@remote_machine</code></pre>
+<p>Copy a local file to a file on the remote machine</p>
+<pre><code>scp local_file_name user@remote_machine:path_to_file/file_name</code></pre>
+<p>Copy a file from the remote machine to a local file</p>
+<pre><code>scp user@remote_machine:path_to_file/file_name  local_file_name</code></pre>
+<p>Copy a full directory (dmouraty) from the remote machine:</p>
+<pre><code> scp -rp user@dest:/path destdirectory</code></pre>
+</div>
+<div id="gpg-signing-keys" class="section level2">
+<h2>GPG signing keys</h2>
+<p>Generate a pgp key</p>
+<pre><code>gpg --gen-key</code></pre>
+<p>To submit your key to a server, export the key</p>
+<pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
+<p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
 </div>
 </div>
 

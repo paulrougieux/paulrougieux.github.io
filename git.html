@@ -554,8 +554,14 @@ git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
 <pre><code>git push origin --tags</code></pre>
 <p>Return all files in the repository to a particular tag:</p>
 <pre><code>git checkout tags/v0.1</code></pre>
-<p>Optionally you cancheckout and create a new branch tocommit your changes with:</p>
+<p>Optionally you cancheckout and create a new branch to commit your changes with:</p>
 <pre><code>git checkout tags/o.1 -b newbranchname</code></pre>
+<p>Git tools <a href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">signing your work</a>Signed tags Generate a pgp key</p>
+<pre><code>gpg --gen-key</code></pre>
+<p>More information on gpg key publishing in the <a href="bash.html">bash page</a>. Display what keys are available</p>
+<pre><code>gpg --list-keys</code></pre>
+<p>Configure git to use the key</p>
+<pre><code> git config --global user.signingkey 0A46826A</code></pre>
 </div>
 <div id="display-changes" class="section level1">
 <h1>Display changes</h1>
