@@ -574,25 +574,7 @@ Kill a graphical program, by clicking on it:
     echo $message
 
 
-# Connect to remote machines 
-
-## Secure shell and secure copy
-
-log into a remote machine
-
-    ssh user@remote_machine
-
-Copy a local file to a file on the remote machine
-
-    scp local_file_name user@remote_machine:path_to_file/file_name
-
-Copy a file from the remote machine to a local file
-
-    scp user@remote_machine:path_to_file/file_name  local_file_name
-
-Copy a full directory (dmouraty) from the remote machine:
-
-     scp -rp user@dest:/path destdirectory
+# Authentification and security
 
 ## Generate SSH keys to access a remote git repository
 
@@ -625,4 +607,34 @@ you can [test a few password you might remember with](https://stackoverflow.com/
 
     ssh-keygen -y -f <private_key_file_name>
 
+## Secure shell and secure copy
+
+log into a remote machine
+
+    ssh user@remote_machine
+
+Copy a local file to a file on the remote machine
+
+    scp local_file_name user@remote_machine:path_to_file/file_name
+
+Copy a file from the remote machine to a local file
+
+    scp user@remote_machine:path_to_file/file_name  local_file_name
+
+Copy a full directory (dmouraty) from the remote machine:
+
+     scp -rp user@dest:/path destdirectory
+
+## GPG signing keys
+
+Generate a pgp key
+
+    gpg --gen-key
+
+To submit your key to a server, export the key
+
+    gpg -a --export name@emailserver.com > public_key_sender.asc 
+
+My keys are visible on pgp.mit.edu 
+[search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
 
