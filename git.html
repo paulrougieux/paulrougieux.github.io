@@ -648,8 +648,12 @@ removed from your working tree are ignored with this version of Git.
 </div>
 <div id="remote" class="section level1">
 <h1>Remote</h1>
-<p>Add a remote repository with:</p>
-<p>git remote add <a href="mailto:git@github.com">git@github.com</a>:paulrougieux/paulrougieux.github.io.git # or git remote add reponame <a href="https://repositoryurl" class="uri">https://repositoryurl</a></p>
+<p><a href="https://git-scm.com/docs/git-remote#git-remote-emaddem">Add a remote repository</a> with:</p>
+<pre><code>git remote add git@github.com:paulrougieux/paulrougieux.github.io.git
+# or
+git remote add reponame https://repositoryurl </code></pre>
+<p><a href="https://git-scm.com/docs/git-remote#git-remote-emset-urlem">Change the url of a remote repository</a></p>
+<pre><code>git remote set-url origin git@github.com:paulrougieux/paulrougieux.github.io.git</code></pre>
 <p>When a repository is connected to several remote repositories, you can push content to repositories by specifying their names</p>
 <pre><code>git push -u origin master
 git push -u anotherrepository master</code></pre>
@@ -667,8 +671,6 @@ To push the current branch and set the remote as upstream, use
 <pre><code>[...]
  * [new branch]      master -&amp;gt; masterBranch master set up to track remote branch master from origin. </code></pre>
 <p>I’ll have to figure out what this does.</p>
-<p><a href="https://help.github.com/articles/changing-a-remote-s-url/">Changing remote repository url</a></p>
-<pre><code>git remote set-url origin git@github.com:paulrougieux/paulrougieux.github.io.git</code></pre>
 </div>
 <div id="publishing-project-documentation-on-github" class="section level1">
 <h1>Publishing project documentation on github</h1>
