@@ -252,10 +252,18 @@ Download a video from youtube :
 
     youtube-dl video_url
 
+Download only the audio in an OGG Vorbis format
+
+    youtube-dl --extract-audio --audio-format vorbis video_url
+
 Download only the audio in an .mp3 format
 
     youtube-dl --extract-audio --audio-format mp3 video_url
 
+Create bash aliases to download various audio formats from youtube
+
+    alias youtube-dlvorbis="youtube-dl --extract-audio --audio-format vorbis"
+    alias youtube-dlmp3="youtube-dl --extract-audio --audio-format mp3"
 
 
 # Users
