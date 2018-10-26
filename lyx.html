@@ -384,8 +384,25 @@ label-insert to Ctrl+Alt+L
 statistics to Ctrl+Alt+T</code></pre>
 <p>See also the Lyx wiki page on shortcuts.</p>
 </div>
-<div id="merge-and-filter-bibliographies" class="section level1">
-<h1>Merge and filter bibliographies</h1>
+<div id="bibliography" class="section level1">
+<h1>Bibliography</h1>
+<div id="encoding" class="section level2">
+<h2>Encoding</h2>
+<p>bib file have an old encoding format. It’s possible to use utf8 in bibtex, but for compatibility reason I stick with the old format.</p>
+<p><a href="https://tex.stackexchange.com/a/57745/44254">How to write “ä” and other umlauts and accented letters in bibliography?</a></p>
+<pre><code>{\&quot;a} {\aa} 
+{\c c}
+{\^e} {\`e} {\&#39;e} 
+{\u g}
+{\`i} {\.I} 
+{\l}
+{\~n}
+{\o} {\H o}
+{\&#39;u}
+{\v r} {\ss}</code></pre>
+</div>
+<div id="merge-and-filter-bibliographies" class="section level2">
+<h2>Merge and filter bibliographies</h2>
 <p>Answers to a question on merging 2 bibtex file recommend using Jabref file / import into current database.</p>
 <p>Create a shorter bibliography with only cited documents from another bibliography Extracting only the BibTex records relevant to the paper. Answers recommend using bibtool or bibexport.</p>
 <p>I have written an article in Lyx which cites 2 bibliographies and a colleague asked to have a .tex version of this article. Here is my recipe:</p>
@@ -399,7 +416,11 @@ Used bibexport to extract a short bibliography corresponding only to the citatio
 bibexport -o short.bib article.aux 
 
 Replace long.bib by short.bib in the .tex file.</code></pre>
-<p>I have done it 3 times already. Could I create a script that does all this automatically? Spell checker</p>
+<p>I have done it 3 times already. Could I create a script that does all this automatically?</p>
+</div>
+</div>
+<div id="spell-checker" class="section level1">
+<h1>Spell checker</h1>
 <p>A spell checker can be activated under Tools / preferences / language settings / spellchecker. On my system the only spell check engine available is Enchant, “a wrapper that provides automatic access to many spell checking libraries (ispell, aspell, hspell, hunspell, etc.)”.</p>
 <p>The button displaying a red-underlined A can be activated to spell check continuously. Language of document</p>
 <p>Under Document / Settings / Language, it’s possible to change the document language, which will have an impact on the language used for spell checking. In my system compiling a document in French returned an error:</p>

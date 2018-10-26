@@ -26,7 +26,27 @@ Under Tools / preferences / Editing / Shortcuts /  Stackoverflow question on how
 
 See also the Lyx wiki page on shortcuts.
 
-# Merge and filter bibliographies 
+
+# Bibliography
+
+## Encoding
+
+bib file have an old encoding format. It's possible to use utf8 in bibtex, but for compatibility reason I stick with the old format. 
+
+[How to write “ä” and other umlauts and accented letters in bibliography?](https://tex.stackexchange.com/a/57745/44254)
+
+    {\"a} {\aa} 
+    {\c c}
+    {\^e} {\`e} {\'e} 
+    {\u g}
+    {\`i} {\.I} 
+    {\l}
+    {\~n}
+    {\o} {\H o}
+    {\'u}
+    {\v r} {\ss}
+
+## Merge and filter bibliographies 
 
 Answers to a question on merging 2 bibtex file recommend using Jabref file / import into current database.
 
@@ -48,7 +68,9 @@ I have written an article in Lyx which cites 2 bibliographies and a colleague as
     Replace long.bib by short.bib in the .tex file.
 
 I have done it 3 times already. Could I create a script that does all this automatically?
-Spell checker
+
+
+# Spell checker
 
 A spell checker can be activated under Tools / preferences / language settings / spellchecker. On my system the only spell check engine available is Enchant, "a wrapper that provides automatic access to many spell checking libraries (ispell, aspell, hspell, hunspell, etc.)".
 
