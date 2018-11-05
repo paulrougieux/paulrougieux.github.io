@@ -154,13 +154,26 @@ Hadley Wickham's answer to a SO question
 * Advanced R [metaprogramming section](https://adv-r.hadley.nz/meta.html)
 * [Examples of tidy evaluation with plots](https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/)
 
-	scatter_plot <- function(data, x, y) {
-	    x <- enquo(x)
-	    y <- enquo(y)
+```{r eval = FALSE}
+scatter_plot <- function(data, x, y) {
+    x <- enquo(x)
+    y <- enquo(y)
+    ggplot(data) + geom_point(aes(!!x, !!y))
+}
+scatter_plot(mtcars, disp, drat)
+```
 
-	    ggplot(data) + geom_point(aes(!!x, !!y))
-	}
-	scatter_plot(mtcars, disp, drat)
+Another example use of metaprogramming to change variables
+```{r eval = FALSE}
+add1000 <- function(dtf, var){
+      varright <- enquo(var)
+  varleft <- quo_name(enquo(var))
+    dtf %>% 
+            mutate(!!varleft := 1000 + (!!varright))
+}
+add1000(iris, Sepal.Length)
+```
+
 
 * [Tidy evaluation explained in French](https://thinkr.fr/tidyeval/)
 

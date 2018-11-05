@@ -572,11 +572,24 @@ cars %&gt;%
 <h2>tidy evaluation</h2>
 <ul>
 <li>Advanced R <a href="https://adv-r.hadley.nz/meta.html">metaprogramming section</a></li>
-<li><p><a href="https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/">Examples of tidy evaluation with plots</a></p>
-<p>scatter_plot &lt;- function(data, x, y) { x &lt;- enquo(x) y &lt;- enquo(y)</p>
-<pre><code>ggplot(data) + geom_point(aes(!!x, !!y))</code></pre>
-<p>} scatter_plot(mtcars, disp, drat)</p></li>
-<li><p><a href="https://thinkr.fr/tidyeval/">Tidy evaluation explained in French</a></p></li>
+<li><a href="https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/">Examples of tidy evaluation with plots</a></li>
+</ul>
+<pre class="r"><code>scatter_plot &lt;- function(data, x, y) {
+    x &lt;- enquo(x)
+    y &lt;- enquo(y)
+    ggplot(data) + geom_point(aes(!!x, !!y))
+}
+scatter_plot(mtcars, disp, drat)</code></pre>
+<p>Another example use of metaprogramming to change variables</p>
+<pre class="r"><code>add1000 &lt;- function(dtf, var){
+      varright &lt;- enquo(var)
+  varleft &lt;- quo_name(enquo(var))
+    dtf %&gt;% 
+            mutate(!!varleft := 1000 + (!!varright))
+}
+add1000(iris, Sepal.Length)</code></pre>
+<ul>
+<li><a href="https://thinkr.fr/tidyeval/">Tidy evaluation explained in French</a></li>
 </ul>
 </div>
 <div id="tidyr" class="section level2">
