@@ -32,17 +32,26 @@ Transfer the iso image to the key
 The iso should be copied to `sdb` and not to `sdb1` !
 
 Then the USB drive can be used to boot a laptop. 
-Note: on an HP laptop make sure that the "legacy boot" is enabled 
+
+
+## Debian on a HP Elitbook
+Note: on a HP laptop make sure that the "legacy boot" is enabled 
 and that the "secure boot" is disabled.
 The boot devices can be choosen by pressing ESC at startup, then F9.
 
 Debian installation went smoothly. 
-There was one issue with the wifi card having a non-free driver.
+
+After the installation, 
+there was one issue with the wifi card having a non-free driver.
 I had to place the package 
 [firmware-iwlwifi](https://packages.debian.org/stretch/firmware-iwlwifi)
 on a USB key. Then installed it from the usb key with 
 
     sudo apt install ./firmware-iwlwifi_20161130-3_all.deb
+
+Alternatively, the .ucode file can also be found in 
+[firmware-nonfree_20161130.orig.tar.xz](http://http.debian.net/debian/pool/non-free/f/firmware-nonfree/firmware-nonfree_20161130.orig.tar.xz)
+And given directly during the installation step.
 
 After that extra step, the wifi card was working inside Debian.
 

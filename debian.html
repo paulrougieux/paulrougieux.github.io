@@ -384,13 +384,19 @@ div.tocify {
 <p>Transfer the iso image to the key</p>
 <p>sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb</p>
 <p>The iso should be copied to <code>sdb</code> and not to <code>sdb1</code> !</p>
-<p>Then the USB drive can be used to boot a laptop. Note: on an HP laptop make sure that the “legacy boot” is enabled and that the “secure boot” is disabled. The boot devices can be choosen by pressing ESC at startup, then F9.</p>
-<p>Debian installation went smoothly. There was one issue with the wifi card having a non-free driver. I had to place the package <a href="https://packages.debian.org/stretch/firmware-iwlwifi">firmware-iwlwifi</a> on a USB key. Then installed it from the usb key with</p>
+<p>Then the USB drive can be used to boot a laptop.</p>
+<div id="debian-on-a-hp-elitbook" class="section level2">
+<h2>Debian on a HP Elitbook</h2>
+<p>Note: on a HP laptop make sure that the “legacy boot” is enabled and that the “secure boot” is disabled. The boot devices can be choosen by pressing ESC at startup, then F9.</p>
+<p>Debian installation went smoothly.</p>
+<p>After the installation, there was one issue with the wifi card having a non-free driver. I had to place the package <a href="https://packages.debian.org/stretch/firmware-iwlwifi">firmware-iwlwifi</a> on a USB key. Then installed it from the usb key with</p>
 <pre><code>sudo apt install ./firmware-iwlwifi_20161130-3_all.deb</code></pre>
+<p>Alternatively, the .ucode file can also be found in <a href="http://http.debian.net/debian/pool/non-free/f/firmware-nonfree/firmware-nonfree_20161130.orig.tar.xz">firmware-nonfree_20161130.orig.tar.xz</a> And given directly during the installation step.</p>
 <p>After that extra step, the wifi card was working inside Debian.</p>
 <p>I updated the debian mirror to a nearby mirror in germany</p>
 <pre><code>sudo apt edit-sources</code></pre>
 <p>See also my 2014 blog post : <a href="https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html">Debian GNU Linux installation on a LENOVO T400</a></p>
+</div>
 </div>
 <div id="audio" class="section level1">
 <h1>Audio</h1>
