@@ -455,6 +455,11 @@ git commit --amend</code></pre>
 <blockquote>
 <p>“The real reason git doesn’t allow you to change the commit message ends up being very simple: that way, you can trust the messages. If you allowed people to change them afterwards, the messages are inherently not very trustworthy.”</p>
 </blockquote>
+<p>It is safe to use rebase as long as the commits have not been pushed to another repository. To rename older commits, simply run:</p>
+<pre><code>git rebase -i
+git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
+<p>Rebase will show the last 3 commits by default in the vim editor. Each line starts with “pick” followed by the commit hash and commit message. You can then replace the “pick” word in the vim editor by the command you want to achieve, press “escape”, “:wq” and peform the git command on the selected commit. See also ansers to this StackOverflow question:<br />
+<a href="https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit">How to modify a specified commit?</a>.</p>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>
