@@ -262,8 +262,8 @@ Download only the audio in an .mp3 format
 
 Create bash aliases to download various audio formats from youtube
 
-    alias youtube-dlvorbis="youtube-dl --extract-audio --audio-format vorbis"
-    alias youtube-dlmp3="youtube-dl --extract-audio --audio-format mp3"
+    alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
+    alias youtubemp3="youtube-dl --extract-audio --audio-format mp3"
 
 
 # Users
