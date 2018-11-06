@@ -65,6 +65,10 @@ Recursive search (-r) in all files in the directory for a given pattern, case in
 
     grep -ri "pattern" .
 
+Give 1 line of context before and 2 lines of context after:
+
+    grep -B 1 -A 2 pattern README.md
+
 Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
 Use Extended regular expression (-E) to search for alphanumeric characters, 
 only show the matching result (-o), not the full line 
