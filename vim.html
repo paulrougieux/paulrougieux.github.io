@@ -439,17 +439,19 @@ alt+: - switch to navigation mode and send a command</code></pre>
 </div>
 <div id="replace-characters" class="section level2">
 <h2>Replace characters</h2>
-<p>Vim wiki on search and replace Find each occurrence of ‘foo’ (in the current line only), and replace it with ‘bar’:</p>
-<pre><code>:s/foo/bar/g</code></pre>
-<p>The <code>s</code>command means “substitute”. The <code>g</code> means “greedy”, it will replace all occurences of the word on each line (not just the first occurence).</p>
+<p>Vim wiki on search and replace Find each occurrence of ‘red’ (in the current line only), and replace it with ‘green’:</p>
+<pre><code>:s/red/green/g</code></pre>
+<p>The <code>s</code>command means “substitute”. The <code>g</code> means “greedy”, it will replace all occurences of the word on a line (not just the first occurence).</p>
 <p>When <a href="http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection">text is visually selected</a>, press : to enter a command. The command line will automatically enter the range:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;</code></pre>
-<p>You can enter a command such as s/red/green/g to replace each red with green in all lines of the last visual selection. The command will appear as:</p>
+<p>Then you can enter a replacement command such as <code>s/red/green/g</code> to replace each occurence of “red” with “green” in all lines of the visual selection. The command will appear as:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/red/green/g</code></pre>
-<p>Find each occurrence of ‘foo’ (in all lines), and replace it with ‘bar’.</p>
-<pre><code>:%s/foo/bar/g </code></pre>
+<p>Find each occurrence of ‘red’ in all lines (<code>%s</code>), and replace it with ‘green’.</p>
+<pre><code>:%s/red/green/g </code></pre>
 <p>Find each occurence of foo but don’t perform the replacement, only count the number of occurences</p>
 <pre><code>:%s/foo/bar/n</code></pre>
+<p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a>:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
 <p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
 <pre><code>%s/option value=&quot;.*&quot;//g </code></pre>
 </div>
