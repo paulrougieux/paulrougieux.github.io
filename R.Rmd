@@ -264,6 +264,12 @@ Wrap the examples in donttest if you don't want R CMD check to test them at pack
 It is also possible to wrap them in another statement called `dontrun`, but this is not recomended on CRAN
 according to this [Stackoverflow question](https://stackoverflow.com/a/44997778/2641825).
 
+### Vignettes
+
+[Vignettes: long-form documentation](http://r-pkgs.had.co.nz/vignettes.html)
+
+    devtools::use_vignette("my-vignette")
+
 ## Unit tests
 Back in R, add testing infrastructure:
 
