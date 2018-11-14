@@ -1,0 +1,7 @@
+
+Format 2
+
+
+\bind "C-M-c" "citation-insert"
+\bind "C-k" "href-insert"
+
