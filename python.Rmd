@@ -11,8 +11,25 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+
+# Control flow
+
+dotnetperls: [not python](https://www.dotnetperls.com/not-python)
+
 # Unit tests
 See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
+
+# String 
+
+[SO answer ](https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects) 
+providing various ways to concatenate python strings.
+
+
+# Web Frameworks
+
+[Flask vs. Django](asynchrosnus://www.codementor.io/garethdwyer/flask-vs-django-why-flask-might-be-better-4xs7mdf8v)
+
+Note: [Flask Evolution into Quart](http://pgjones.gitlab.io/quart/flask_evolution.html#flask-evolution) to support asyncio
 
 
 
