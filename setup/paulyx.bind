@@ -4,4 +4,9 @@ Format 2
 
 \bind "C-M-c" "citation-insert"
 \bind "C-k" "href-insert"
+\bind "C-s" "buffer-write"
+\bind "Escape" "escape"
+\bind "C-z" "undo"
+\bind "C-BackSpace" "word-delete-backward"
+\bind "C-r" "buffer-view"
 
