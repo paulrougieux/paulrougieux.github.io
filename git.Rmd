@@ -79,8 +79,12 @@ Continue to modify files in the repository.
 
 Git is useful as a version management on its own. 
 But it's even more usefull when code can be back-up online. 
-Free public git storage is availble on Github. 
-Free public and private git storage are available on Bitbucket, with up to 5 collaborators on one project.
+ * Free public git storage is availble on [Github](http://github.com/). 
+ * Free public and private git storage are available on 
+   [Bitbucket](http://bitbucket.org/),
+   with up to 5 collaborators per project.
+ * Free public and private git storage are available on 
+   [Gitlab](https://gitlab.com/).
 
 Commands I've used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:
 ```
@@ -143,11 +147,13 @@ been shared with others.
 Rewriting commits older than the previous one is much harder.
 It requires the use of git rebase. 
 I regularly want to fix typo in the git log, but it is not possible
-if was made unflexible on purpose.
+it was made unflexible on purpose.
 Explained in this [Stackoverflow Answer](https://stackoverflow.com/a/457396/2641825)
 
 > "The real reason git doesn't allow you to change the commit message ends up being very simple: that way, you can trust the messages. If you allowed people to change them afterwards, the messages are inherently not very trustworthy." 
 
+
+### Rebase
 It is safe to use rebase as long as the commits have not been pushed 
 to another repository. 
 To rename older commits, simply run:
@@ -159,11 +165,16 @@ Rebase will show the last 3 commits by default in the vim editor.
 Each line starts with "pick" followed by the commit hash and commit message. 
 You can then replace the "pick" word in the vim editor by the command
 you want to achieve, press "escape", ":wq" and peform the git command on the selected commit.
-See also ansers to this StackOverflow question:  
+
+See also :
+
+ * Answers to a StackOverflow question  
 [How to modify a specified commit?](https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit).
+ * [10 things I hate about git](https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/) Translation of the man page which he considers hard to understand: "git-rebase – Sequentially regenerate a series of commits so they can be applied directly to the head node"
 
 ## Reset whole folder
-Identify the commit identity in the log and copy its sha number. Then to go back to this state for the whole folder: 
+Identify the commit identity in the log and copy its sha number. 
+Then to go back to this state for the whole folder: 
 
     git reset --hard commit_sha
 
@@ -580,5 +591,8 @@ Turorial:
 
     Git foundations
 
+Blogs:
 
+ * [10 things I hate about git](https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/)
+ * [list of git resources](http://fperez.org/py4science/git.html) by Fernando Perez, the creator of ipython
 

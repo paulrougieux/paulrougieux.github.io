@@ -413,7 +413,7 @@ git merge develop</code></pre>
 </div>
 <div id="uploading-content-to-online-git-platforms" class="section level1">
 <h1>Uploading content to online git platforms</h1>
-<p>Git is useful as a version management on its own. But it’s even more usefull when code can be back-up online. Free public git storage is availble on Github. Free public and private git storage are available on Bitbucket, with up to 5 collaborators on one project.</p>
+<p>Git is useful as a version management on its own. But it’s even more usefull when code can be back-up online. * Free public git storage is availble on <a href="http://github.com/">Github</a>. * Free public and private git storage are available on <a href="http://bitbucket.org/">Bitbucket</a>, with up to 5 collaborators per project. * Free public and private git storage are available on <a href="https://gitlab.com/">Gitlab</a>.</p>
 <p>Commands I’ve used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:</p>
 <pre><code>    git remote add origin https://github.com/paul4forest/forestproductsdemand
     git pull origin master
@@ -451,15 +451,23 @@ git merge develop</code></pre>
 <pre><code>git add filename
 git commit --amend</code></pre>
 <p>A comment in <a href="https://stackoverflow.com/questions/14369155/how-to-change-past-commit-to-include-a-missed-file">How to change past commit to include a missed file?</a> specifies that commits before and after <code>--amend</code> have different hashes, even if only the commit message is changed. The use of <code>--amend</code> is only for private commits, which have not yet been shared with others.</p>
-<p>Rewriting commits older than the previous one is much harder. It requires the use of git rebase. I regularly want to fix typo in the git log, but it is not possible if was made unflexible on purpose. Explained in this <a href="https://stackoverflow.com/a/457396/2641825">Stackoverflow Answer</a></p>
+<p>Rewriting commits older than the previous one is much harder. It requires the use of git rebase. I regularly want to fix typo in the git log, but it is not possible it was made unflexible on purpose. Explained in this <a href="https://stackoverflow.com/a/457396/2641825">Stackoverflow Answer</a></p>
 <blockquote>
 <p>“The real reason git doesn’t allow you to change the commit message ends up being very simple: that way, you can trust the messages. If you allowed people to change them afterwards, the messages are inherently not very trustworthy.”</p>
 </blockquote>
+<div id="rebase" class="section level3">
+<h3>Rebase</h3>
 <p>It is safe to use rebase as long as the commits have not been pushed to another repository. To rename older commits, simply run:</p>
 <pre><code>git rebase -i
 git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
-<p>Rebase will show the last 3 commits by default in the vim editor. Each line starts with “pick” followed by the commit hash and commit message. You can then replace the “pick” word in the vim editor by the command you want to achieve, press “escape”, “:wq” and peform the git command on the selected commit. See also ansers to this StackOverflow question:<br />
-<a href="https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit">How to modify a specified commit?</a>.</p>
+<p>Rebase will show the last 3 commits by default in the vim editor. Each line starts with “pick” followed by the commit hash and commit message. You can then replace the “pick” word in the vim editor by the command you want to achieve, press “escape”, “:wq” and peform the git command on the selected commit.</p>
+<p>See also :</p>
+<ul>
+<li>Answers to a StackOverflow question<br />
+<a href="https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit">How to modify a specified commit?</a>.</li>
+<li><a href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10 things I hate about git</a> Translation of the man page which he considers hard to understand: “git-rebase – Sequentially regenerate a series of commits so they can be applied directly to the head node”</li>
+</ul>
+</div>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>
@@ -714,6 +722,11 @@ Getting Started with GitHub + Git</code></pre>
 <pre><code>Mixing private and public repository in Git workflow</code></pre>
 <p>Turorial:</p>
 <pre><code>Git foundations</code></pre>
+<p>Blogs:</p>
+<ul>
+<li><a href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10 things I hate about git</a></li>
+<li><a href="http://fperez.org/py4science/git.html">list of git resources</a> by Fernando Perez, the creator of ipython</li>
+</ul>
 </div>
 
 
