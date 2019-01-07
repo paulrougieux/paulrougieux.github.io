@@ -451,6 +451,9 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 <h2>Edit Image files</h2>
 <p>Resize a picture to 2000 px wide using ImageMagick:</p>
 <pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
+<p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
+<pre><code>mkdir newfolder
+mogrify -resize 2000 -path ./newfolder *.jpg</code></pre>
 </div>
 <div id="edit-pdf-files" class="section level2">
 <h2>Edit PDF files</h2>
@@ -527,6 +530,18 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <h2>Rename files</h2>
 <p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
 <pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
+</div>
+</div>
+<div id="convert" class="section level1">
+<h1>Convert</h1>
+<div id="pandoc" class="section level2">
+<h2>Pandoc</h2>
+<p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another.</p>
+<p>Convert an odf document to markdown</p>
+<pre><code>pandoc filename.odt -o description.md</code></pre>
+<p>Convert a Microsoft Word document to markdown</p>
+<pre><code>pandoc filename.docx -o description.md</code></pre>
+<p><a href="https://pandoc.org/MANUAL.html#headers">Use a different header style</a></p>
 </div>
 </div>
 <div id="download" class="section level1">
@@ -747,6 +762,11 @@ kill -9 process_it # -9 forces the kill</code></pre>
 <pre><code>message = &quot;Hello World&quot;
 echo $message</code></pre>
 </div>
+<div id="wildcards" class="section level2">
+<h2>Wildcards</h2>
+<p>Search for a pattern in python and R files:</p>
+<pre><code>grep -n &lt;pattern&gt; *{py,R}</code></pre>
+</div>
 </div>
 <div id="authentification-and-security" class="section level1">
 <h1>Authentification and security</h1>
@@ -785,6 +805,74 @@ eval `ssh-agent`</code></pre>
 <p>To submit your key to a server, export the key</p>
 <pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
 <p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
+</div>
+</div>
+<div id="terminal-multiplexers" class="section level1">
+<h1>Terminal multiplexers</h1>
+<p>Superuser.com <a href="https://superuser.com/questions/236158/tmux-vs-screen">tmux or screen</a></p>
+<div id="screen" class="section level2">
+<h2>Screen</h2>
+<p>I used screen to detatch and re-attach bash sessions on remote hosts. This enabled me to run long algorithms on the remote host. I could disconnect in the evening from the ssh session and reconnect the following morning to check if the algorithm had finnished running. The advantage of screen is that it is old and available on many systems.</p>
+</div>
+<div id="tmux" class="section level2">
+<h2>Tmux</h2>
+<p>Tmux is under more active development than Screen.</p>
+<ul>
+<li><a href="https://robots.thoughtbot.com/a-tmux-crash-course">Crash course</a></li>
+<li><a href="https://gist.github.com/MohamedAlaa/2961058">shortcuts and cheatsheet</a></li>
+</ul>
+<div id="sessions" class="section level3">
+<h3>Sessions</h3>
+<p>To start and name a session:</p>
+<pre><code>tmux new -s session_name</code></pre>
+<p>To detach from a session:</p>
+<pre><code>tmux detach (CTRL + b + d)</code></pre>
+<p>To reatach to a session:</p>
+<pre><code>tmux attach -t session_name</code></pre>
+<p>To list current sessions:</p>
+<pre><code>tmux list-sessions</code></pre>
+<p>To switch to another session:</p>
+<pre><code>tmux switch -t session_name</code></pre>
+<p>To delete a session:</p>
+<pre><code>tmux kill-session -t targetSession</code></pre>
+</div>
+<div id="windows-tabs" class="section level3">
+<h3>Windows (tabs)</h3>
+<p>Create a new windows</p>
+<pre><code>tmux new-window (CTRL + b + c)</code></pre>
+<p>Move to a window</p>
+<pre><code>tmux select-window -t :0-9 (CTRL + b + 0-9)</code></pre>
+<p>Rename the current window</p>
+<pre><code>tmux rename-window (CTRL + b + ,)</code></pre>
+</div>
+<div id="panes-splits" class="section level3">
+<h3>Panes (splits)</h3>
+<p>Following commands should be prefixed by CTRL + b. Vertical split</p>
+<pre><code>%</code></pre>
+<p>Horizontal split</p>
+<pre><code>&quot;</code></pre>
+<p>Kill a pane</p>
+<pre><code>x</code></pre>
+</div>
+<div id="movements" class="section level3">
+<h3>Movements</h3>
+<p>to scroll inside a pane press</p>
+<pre><code>CTRL + b + Page up down</code></pre>
+</div>
+<div id="tmux-configuration" class="section level3">
+<h3>tmux configuration</h3>
+<p><a href="https://stackoverflow.com/a/21033340/2641825">This answer</a> explains how to create a tmux source-file. The configuration file tells tmux to create windows and panes and to start programs in each one of them. I started to create a tmux source file to start my favorite programs: A particular setup I use forces me to start these GUI programs from a command line:</p>
+<pre><code>neww
+split-window -v &#39;lyx&#39;  
+split-window -v &#39;jabref&#39;  
+split-window -h &#39;rstudio&#39; 
+new-window</code></pre>
+<p>Start tmux with this configuration file:</p>
+<pre><code>tmux new-session -s work &quot;tmux source-file ~/.tmux/work&quot;      </code></pre>
+<p>Make it a bash alias, by adding the following line to ~/.bashrc:</p>
+<pre><code>alias tmuxw=&#39;tmux new-session -s work &quot;tmux source-file ~/.tmux/work&quot;&#39;</code></pre>
+<p>Reddit <a href="https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/">discussion on vim splits and tmux tabs</a></p>
+</div>
 </div>
 </div>
 

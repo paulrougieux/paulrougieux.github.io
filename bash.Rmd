@@ -123,6 +123,11 @@ Resize a picture to 2000 px wide using ImageMagick:
 
     convert picture1.jpg -resize 2000 picture2.jpg 
 
+Batch processing, resize all jpg images and place the resized images in a new folder
+
+    mkdir newfolder
+    mogrify -resize 2000 -path ./newfolder *.jpg
+
 ## Edit PDF files
 Commands based on the poppler library for PDF manipulation.
 Search a text pattern in all PDF files present in a directory:
@@ -236,6 +241,25 @@ Copy a file
 For example to rename all upper-case .JPG extension into lower-case .jpg extension.
 
     rename 's/\.JPG$/\.jpg/' *.JPG
+
+
+# Convert
+
+## Pandoc
+
+[Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
+to convert text files from one format to another.
+
+Convert an odf document to markdown
+
+    pandoc filename.odt -o description.md
+
+Convert a Microsoft Word document to markdown
+
+    pandoc filename.docx -o description.md
+
+[Use a different header style](https://pandoc.org/MANUAL.html#headers)
+
 
 
 
@@ -585,6 +609,12 @@ Kill a graphical program, by clicking on it:
     message = "Hello World"
     echo $message
 
+## Wildcards
+
+Search for a pattern in python and R files:
+
+    grep -n <pattern> *{py,R}
+
 
 # Authentification and security
 
@@ -649,4 +679,111 @@ To submit your key to a server, export the key
 
 My keys are visible on pgp.mit.edu 
 [search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
+
+
+# Terminal multiplexers
+
+Superuser.com [tmux or screen](https://superuser.com/questions/236158/tmux-vs-screen)
+
+
+## Screen
+I used screen to detatch and re-attach bash sessions on remote hosts. 
+This enabled me to run long algorithms on the remote host.
+I could disconnect in the evening from the ssh session 
+and reconnect the following morning to check if the algorithm had finnished running. 
+The advantage of screen is that it is old and available on many systems.
+
+## Tmux
+Tmux is under more active development than Screen.
+
+ * [Crash course](https://robots.thoughtbot.com/a-tmux-crash-course)
+ * [shortcuts and cheatsheet](https://gist.github.com/MohamedAlaa/2961058)
+
+### Sessions
+To start and name a session:
+
+    tmux new -s session_name
+
+To detach from a session:
+
+    tmux detach (CTRL + b + d)
+
+To reatach to a session:
+
+    tmux attach -t session_name
+
+To list current sessions:
+
+    tmux list-sessions
+
+To switch to another session:
+
+    tmux switch -t session_name
+
+To delete a session:
+
+    tmux kill-session -t targetSession
+
+
+### Windows (tabs)
+
+Create a new windows
+
+    tmux new-window (CTRL + b + c)
+
+Move to a window
+
+    tmux select-window -t :0-9 (CTRL + b + 0-9)
+
+Rename the current window
+
+    tmux rename-window (CTRL + b + ,)
+
+### Panes (splits)
+
+Following commands should be prefixed by CTRL + b.
+Vertical split
+
+    %
+
+Horizontal split
+
+    "
+
+Kill a pane 
+
+    x
+
+
+### Movements
+
+to scroll inside a pane press
+
+    CTRL + b + Page up down
+
+
+### tmux configuration
+
+[This answer](https://stackoverflow.com/a/21033340/2641825)
+explains how to create a tmux source-file. 
+The configuration file tells tmux to create windows and panes 
+and to start programs in each one of them.
+I started to create a tmux source file to start my favorite programs:
+A particular setup I use forces me to start these GUI programs from a command line:
+
+    neww
+    split-window -v 'lyx'  
+    split-window -v 'jabref'  
+    split-window -h 'rstudio' 
+    new-window
+
+Start tmux with this configuration file:
+
+    tmux new-session -s work "tmux source-file ~/.tmux/work"      
+
+Make it a bash alias, by adding the following line to ~/.bashrc:
+
+    alias tmuxw='tmux new-session -s work "tmux source-file ~/.tmux/work"'
+
+Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/)
 
