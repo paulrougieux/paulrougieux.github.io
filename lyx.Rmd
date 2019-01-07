@@ -26,6 +26,14 @@ Under Tools / preferences / Editing / Shortcuts /  Stackoverflow question on how
 
 See also the Lyx wiki page on shortcuts.
 
+Lyx shortcuts are storred in bind files.
+The default bind file is called cua.
+To restore default bind file, one can simply delete
+the user directory, as explained on this 
+[forum post](https://latex.org/forum/viewtopic.php?t=21551)
+
+See also the setup directory where I saved a bind file.
+
 
 # Bibliography
 
@@ -91,6 +99,10 @@ Change input encoding
 This question on "how do I prevent  Lyx from loading inputenc?" explains where this part of the Latex preamble is defined.
 
 In Document &gt; Settings..., under Language &gt; Encoding, choose "Other" and select "Language Default (no inputenc)".
+
+
+Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
+
 
 
 Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
@@ -171,10 +183,6 @@ To produce a meeting report with a wider template than the default article.
 
     Yihui Xie: Using knitr and Lyx
      Krishna Devulapalli: Creation of research papers with embedded R results using LyX
-
-Export to Microsoft Word compatible format RTF
-
-Under File / Export / Rich Text Format, it's possible to export Lyx files to a format compatible with Microsoft Word.
 
 My Lyx file uses many packages and formatting options. Export to RTF didn't work and returned the error:
 
