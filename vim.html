@@ -379,6 +379,7 @@ div.tocify {
 :help commandname - help on a particular command
 CTRL+] - jump to a highlighted topic
 CTRL+T - jump backwards</code></pre>
+<p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
 </div>
 <div id="navigating" class="section level1">
 <h1>Navigating</h1>
@@ -388,7 +389,8 @@ CTRL+T - jump backwards</code></pre>
 j,k move up down
 h,l move left right
 b,w move previous or next word
-ctrl+b, ctrl+d move page up or page down</code></pre>
+ctrl+b, ctrl+d move page up or page down
+{number} G go to line number </code></pre>
 </div>
 <div id="search" class="section level2">
 <h2>Search</h2>
@@ -398,7 +400,7 @@ ctrl+b, ctrl+d move page up or page down</code></pre>
 <h3>Markdown</h3>
 <p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
 <pre><code>:g/^# /#</code></pre>
-<p>Then enter the line number to jump to that line.</p>
+<p>Then enter <code>:line number</code> to jump to that line.</p>
 </div>
 </div>
 <div id="line-numbers" class="section level2">
@@ -498,6 +500,10 @@ set softtabstop=4
 set shiftwidth=4
 filetype indent on </code></pre>
 <p>More details on vim indentation in the python wiki.</p>
+</div>
+<div id="repeat-commands" class="section level2">
+<h2>Repeat Commands</h2>
+<p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating commands, Vim scripts and debugging</a></p>
 </div>
 </div>
 <div id="multiple-files-and-windows" class="section level1">

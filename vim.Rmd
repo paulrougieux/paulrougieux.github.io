@@ -16,6 +16,10 @@ This page is the continuation of [my blog post on Vim commands](https://paulremo
     CTRL+] - jump to a highlighted topic
     CTRL+T - jump backwards
 
+[HTML version of the Vim help pages](http://vimhelp.appspot.com/)
+kept up-to-date automatically from the 
+[Vim source repository](https://github.com/vim/vim).
+
 # Navigating 
 ## Motion
 
@@ -24,6 +28,7 @@ This page is the continuation of [my blog post on Vim commands](https://paulremo
     h,l move left right
     b,w move previous or next word
     ctrl+b, ctrl+d move page up or page down
+    {number} G go to line number 
 
 ## Search
     "/" to search, then n forward and N backwards
@@ -34,7 +39,7 @@ Display a list of first level header in a markdown document (found in quick mark
 
     :g/^# /#
 
-Then enter the line number to jump to that line.
+Then enter `:line number` to jump to that line.
 
 ## Line numbers
  Display line numbers
@@ -172,6 +177,10 @@ Indentation replaced by spaces, add this to the ~/.vimrc file
     filetype indent on 
 
 More details on vim indentation in the python wiki.
+
+## Repeat Commands
+
+[Repeating commands, Vim scripts and debugging](http://vimhelp.appspot.com/repeat.txt.html)
 
 # Multiple files and windows
 
