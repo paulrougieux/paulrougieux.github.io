@@ -1,4 +1,4 @@
-j--
+---
 title: "Debian GNU/Linux Operation System"
 output: 
   html_document: 
@@ -62,6 +62,8 @@ I updated the debian mirror to a nearby mirror in germany
 See also my 2014 blog post :
 [Debian GNU Linux installation on a LENOVO T400](https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html)
 
+
+[Grub-EFI reinstall](https://wiki.debian.org/GrubEFIReinstall)
 
 # Audio
 
