@@ -538,10 +538,11 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <h2>Pandoc</h2>
 <p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another.</p>
 <p>Convert an odf document to markdown</p>
-<pre><code>pandoc filename.odt -o description.md</code></pre>
+<pre><code>pandoc filename.odt -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
-<pre><code>pandoc filename.docx -o description.md</code></pre>
-<p><a href="https://pandoc.org/MANUAL.html#headers">Use a different header style</a></p>
+<pre><code>pandoc filename.docx -o filename.md </code></pre>
+<p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> Use ATX style headers in markdown output. The default is to use setext-style headers for levels 1-2, and then ATX headers.</p>
+<pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
 </div>
 </div>
 <div id="download" class="section level1">

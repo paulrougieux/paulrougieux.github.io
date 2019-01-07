@@ -252,16 +252,17 @@ to convert text files from one format to another.
 
 Convert an odf document to markdown
 
-    pandoc filename.odt -o description.md
+    pandoc filename.odt -o filename.md 
 
 Convert a Microsoft Word document to markdown
 
-    pandoc filename.docx -o description.md
+    pandoc filename.docx -o filename.md 
 
-[Use a different header style](https://pandoc.org/MANUAL.html#headers)
+[Markdown has two different header styles](https://pandoc.org/MANUAL.html#headers)
+Use ATX style headers in markdown output. The default is to use
+setext-style headers for levels 1-2, and then ATX headers.
 
-
-
+    pandoc --atx-headers filename.docx -o filename.md 
 
 # Download 
 
