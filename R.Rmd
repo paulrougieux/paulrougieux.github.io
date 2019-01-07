@@ -114,6 +114,15 @@ Sets the options for chunk, within a knitr chunk inside the .Rmd document
 
 Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
 
+
+# Rscript
+Capture arguments in an Rscript on windows and write them to a file
+```
+"C:\Program Files\R\R-3.5.0\bin\Rscript.exe" --verbose -e "args = commandArgs(trailingOnly=TRUE)" -e "writeLines(args,'C:\\Dev\\args.txt')" "file1.csv" "file2.csv" "file3.csv"
+```
+Arguments can be extracted one by one with args[1]
+commandArgs() returns a **character vector** containing the name of the executable and the user-supplied command line arguments.
+
 # Tidyverse
 ## dplyr
 pipes

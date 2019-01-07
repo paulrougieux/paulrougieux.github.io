@@ -498,6 +498,12 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 <p>Rstudio: <a href="https://rstudio.github.io/reticulate/articles/r_markdown.html">R Mardown python engine</a></p>
 </div>
 </div>
+<div id="rscript" class="section level1">
+<h1>Rscript</h1>
+<p>Capture arguments in an Rscript on windows and write them to a file</p>
+<pre><code>&quot;C:\Program Files\R\R-3.5.0\bin\Rscript.exe&quot; --verbose -e &quot;args = commandArgs(trailingOnly=TRUE)&quot; -e &quot;writeLines(args,&#39;C:\\Dev\\args.txt&#39;)&quot; &quot;file1.csv&quot; &quot;file2.csv&quot; &quot;file3.csv&quot;</code></pre>
+<p>Arguments can be extracted one by one with args[1] commandArgs() returns a <strong>character vector</strong> containing the name of the executable and the user-supplied command line arguments.</p>
+</div>
 <div id="tidyverse" class="section level1">
 <h1>Tidyverse</h1>
 <div id="dplyr" class="section level2">
