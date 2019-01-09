@@ -504,8 +504,10 @@ git stash pop</code></pre>
 <p>Get help on a command (will start a web browser):</p>
 <pre><code>git init --help</code></pre>
 </div>
-<div id="configuring-user-name-and-email" class="section level1">
-<h1>Configuring user name and email</h1>
+<div id="configuring-git" class="section level1">
+<h1>Configuring git</h1>
+<div id="configuring-user-name-and-email" class="section level2">
+<h2>Configuring user name and email</h2>
 <p>Display your user name, email and remote repositories</p>
 <pre><code>git config -l</code></pre>
 <p>To change username and email globally</p>
@@ -514,6 +516,12 @@ git stash pop</code></pre>
 git config --global user.email you@example.com</code></pre>
 <p>Stackoverflow <a href="https://stackoverflow.com/a/9063238/2641825">git multiple user names for different projects</a> explains how to change the email for the current repository only</p>
 <pre><code>git config user.email personal@example.org</code></pre>
+</div>
+<div id="remembering-passwords" class="section level2">
+<h2>Remembering passwords</h2>
+<p><a href="https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git">How to save user name and password in git</a></p>
+<pre><code>git config credential.helper store</code></pre>
+</div>
 </div>
 <div id="branching" class="section level1">
 <h1>Branching</h1>

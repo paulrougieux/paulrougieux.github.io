@@ -226,7 +226,9 @@ Get help on a command (will start a web browser):
     git init --help
 
 
-# Configuring user name and email
+# Configuring git 
+
+## Configuring user name and email
 
 Display your user name, email and remote repositories
 
@@ -242,6 +244,13 @@ Stackoverflow [git multiple user names for different projects](https://stackover
 explains how to change the email for the current repository only
 
     git config user.email personal@example.org
+
+## Remembering passwords
+
+[How to save user name and password in git](https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git)
+
+    git config credential.helper store
+
 
 # Branching
 
