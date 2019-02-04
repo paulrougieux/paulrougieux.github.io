@@ -500,9 +500,10 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 <pre><code>gzip &lt;filename&gt;
 7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
 <p>Decompress a single file from several archive formats:</p>
-<pre><code>gunzip &lt;filename.gz&gt;
-7zr e &lt;filename.7z&gt;  # see also x flag below
-bzip2 -d &lt;filename.bz2&gt;</code></pre>
+<pre><code>bzip2 -d &lt;filename.bz2&gt;
+gunzip &lt;filename.gz&gt;
+7zr e &lt;filename.7z&gt; # extract all files in the same directory 
+7zr x &lt;filename.7z&gt; # keep directory structure (see also multiple files below)</code></pre>
 <p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>
 <pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
 </div>
@@ -518,6 +519,8 @@ bzip2 -d &lt;filename.bz2&gt;</code></pre>
 <p>Decompress an archive containing multiple files Keep full path of files within the archive To extract content from the archive in the current directory</p>
 <pre><code>tar -zxvf archive-name.tar.gz 
 7zr x &lt;filename.7z&gt;  </code></pre>
+<p>List content of an archive</p>
+<pre><code>7zr l &lt;filename.7z&gt;</code></pre>
 </div>
 <div id="move-and-copy-files" class="section level2">
 <h2>Move and copy files</h2>
@@ -808,6 +811,11 @@ eval `ssh-agent`</code></pre>
 <p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
 </div>
 </div>
+<div id="networking" class="section level1">
+<h1>Networking</h1>
+<p>Check open ports on a system</p>
+<pre><code>nmap -Pn &lt;hostname or IP address&gt;</code></pre>
+</div>
 <div id="terminal-multiplexers" class="section level1">
 <h1>Terminal multiplexers</h1>
 <p>Superuser.com <a href="https://superuser.com/questions/236158/tmux-vs-screen">tmux or screen</a></p>
@@ -873,6 +881,13 @@ new-window</code></pre>
 <p>Make it a bash alias, by adding the following line to ~/.bashrc:</p>
 <pre><code>alias tmuxw=&#39;tmux new-session -s work &quot;tmux source-file ~/.tmux/work&quot;&#39;</code></pre>
 <p>Reddit <a href="https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/">discussion on vim splits and tmux tabs</a></p>
+</div>
+<div id="vim-and-tmux-navigation" class="section level3">
+<h3>VIM and TMUX Navigation</h3>
+<ul>
+<li><p><a href="https://github.com/christoomey/vim-tmux-navigator">VIM and TMUX navigator</a></p></li>
+<li><p><a href="https://robots.thoughtbot.com/seamlessly-navigate-vim-and-tmux-splits">Seamlessly navigate VIM and TMUX splits</a></p></li>
+</ul>
 </div>
 </div>
 </div>

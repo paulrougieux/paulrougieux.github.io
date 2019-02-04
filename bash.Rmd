@@ -199,9 +199,10 @@ Compress a file using gzip or 7z compression
 
 Decompress a single file from several archive formats:
 
-    gunzip <filename.gz>
-    7zr e <filename.7z>  # see also x flag below
     bzip2 -d <filename.bz2>
+    gunzip <filename.gz>
+    7zr e <filename.7z> # extract all files in the same directory 
+    7zr x <filename.7z> # keep directory structure (see also multiple files below)
 
 Convert a 7z file to gz using a pipe similar to [this answer](https://superuser.com/a/357980/419414).
 
@@ -226,6 +227,10 @@ To extract content from the archive in the current directory
 
     tar -zxvf archive-name.tar.gz 
     7zr x <filename.7z>  
+
+List content of an archive
+
+    7zr l <filename.7z>
 
 ## Move and copy files
 
@@ -682,6 +687,12 @@ My keys are visible on pgp.mit.edu
 [search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
 
 
+# Networking
+
+Check open ports on a system
+
+    nmap -Pn <hostname or IP address>
+
 # Terminal multiplexers
 
 Superuser.com [tmux or screen](https://superuser.com/questions/236158/tmux-vs-screen)
@@ -787,4 +798,12 @@ Make it a bash alias, by adding the following line to ~/.bashrc:
     alias tmuxw='tmux new-session -s work "tmux source-file ~/.tmux/work"'
 
 Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/)
+
+
+### VIM and TMUX Navigation
+
+* [VIM and TMUX navigator](https://github.com/christoomey/vim-tmux-navigator)
+
+* [Seamlessly navigate VIM and TMUX splits](https://robots.thoughtbot.com/seamlessly-navigate-vim-and-tmux-splits)
+
 
