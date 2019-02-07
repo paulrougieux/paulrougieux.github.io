@@ -16,6 +16,13 @@ knitr::opts_chunk$set(echo = TRUE)
 
 dotnetperls: [not python](https://www.dotnetperls.com/not-python)
 
+
+# Jupyter notebooks
+
+Using the Table of Content extension
+[jupyter table of content extension](https://github.com/minrk/ipython_extensions#table-of-contents)
+
+
 # Unit tests
 See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
 
@@ -32,4 +39,9 @@ providing various ways to concatenate python strings.
 Note: [Flask Evolution into Quart](http://pgjones.gitlab.io/quart/flask_evolution.html#flask-evolution) to support asyncio
 
 
+
+# Media
+
+Podecast [talk python to me](https://talkpython.fm/)
+ * [Data science year in review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
 
