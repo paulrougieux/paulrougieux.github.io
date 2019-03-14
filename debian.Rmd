@@ -63,7 +63,9 @@ See also my 2014 blog post :
 [Debian GNU Linux installation on a LENOVO T400](https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html)
 
 
+"BootDevice Not Found" issue in a HP Elitebook:
 [Grub-EFI reinstall](https://wiki.debian.org/GrubEFIReinstall)
+
 
 # Audio
 
