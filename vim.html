@@ -452,6 +452,8 @@ alt+: - switch to navigation mode and send a command</code></pre>
 <pre><code>:%s/red/green/g </code></pre>
 <p>Find each occurence of foo but don’t perform the replacement, only count the number of occurences</p>
 <pre><code>:%s/foo/bar/n</code></pre>
+<p>To replace by a new line character, use instead of . For example to insert a new line after each comma in a selection:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/,/,\r/g</code></pre>
 <p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a>:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
 <p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>

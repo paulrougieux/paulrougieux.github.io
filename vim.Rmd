@@ -115,6 +115,11 @@ Find each occurence of foo but don't perform the replacement, only count the num
 
     :%s/foo/bar/n
 
+To replace by a new line character, use \r instead of \n.
+For example to insert a new line after each comma in a selection:
+
+    :'<,'>s/,/,\r/g
+
 You can use replacement to remove text. 
 For example to [remove the last 2 characters of each line in a selection](https://stackoverflow.com/a/36264759/2641825):
 
