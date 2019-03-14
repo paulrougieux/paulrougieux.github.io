@@ -380,9 +380,116 @@ div.tocify {
 <h1>Control flow</h1>
 <p>dotnetperls: <a href="https://www.dotnetperls.com/not-python">not python</a></p>
 </div>
+<div id="object-types" class="section level1">
+<h1>Object types</h1>
+<p><code>type()</code> displays the type of an object.</p>
+<pre><code>i = 1
+print(type(i))
+# &lt;type &#39;int&#39;&gt;
+x = 1.2
+print(type(x))
+# &lt;type &#39;float&#39;&gt;
+t = (1,2)
+print(type(t))
+# &lt;type &#39;tuple&#39;&gt;
+l = [1,2]
+print(type(l))
+# &lt;type &#39;list&#39;&gt;</code></pre>
+<div id="list" class="section level2">
+<h2>List</h2>
+</div>
+</div>
 <div id="jupyter-notebooks" class="section level1">
 <h1>Jupyter notebooks</h1>
 <p>Using the Table of Content extension <a href="https://github.com/minrk/ipython_extensions#table-of-contents">jupyter table of content extension</a></p>
+<pre><code>jupyter nbconvert --to markdown mynotebook.ipynb
+jupyter nbconvert --to html mynotebook.ipynb</code></pre>
+<div id="help-in-a-jupyter-notebook" class="section level2">
+<h2>Help in a jupyter notebook</h2>
+<p>To get help on a function, enter <code>function_name?</code> in a cell.</p>
+</div>
+</div>
+<div id="objects" class="section level1">
+<h1>Objects</h1>
+<div id="inheritance-and-composition" class="section level2">
+<h2>Inheritance and composition</h2>
+<p>Example</p>
+<pre><code>###############################################################################
+class Vehicle(object):
+
+    def __init__(self, color, speed_max, garage=None):
+        # Default attributes #
+        self.color = color
+        self.speed_max = speed_max
+        self.garage = garage
+
+    def paint(self, new_color):
+        # Default attributes #
+        self.color = new_color
+
+    def go_back_home(self, new_color):
+        # Default attributes #
+        self.position = self.go_to(self.parent.location)
+
+###############################################################################
+class Car(Vehicle):
+
+    def open_door(self):
+        pass
+
+###############################################################################
+class Boat(Vehicle):
+
+    def open_balast(self):
+        pass
+
+###############################################################################
+class Garage(object):
+
+    def __init__(self, all_vehicles):
+        self.all_vehicles = all_vehicles
+
+    def mass_paint(self, new_color):
+        # Default attributes #
+        for v in self.all_vehicles: v.paint(new_color)
+
+    def build_car(self, color):
+        new_car = Car(color, 90, self)
+        self.all_vehicles.append(new_car)
+        return new_car
+
+    @property
+    def location(self):
+        return &#39;10, 18&#39;
+
+###############################################################################
+###############################################################################
+###############################################################################
+honda = Car(&#39;bleu&#39;, 60)
+gorgeoote = Boat(&#39;rouge&#39;, 30)
+honda.paint(&#39;purple&#39;)
+
+mike = Garage([honda, gorgeoote])
+
+mike.mass_paint()
+
+sport_car = mike.build_car(&#39;rouge&#39;)</code></pre>
+</div>
+</div>
+<div id="pandas-data-frames" class="section level1">
+<h1>Pandas data frames</h1>
+<div id="selection-with-loc-and-iloc" class="section level2">
+<h2>Selection with loc and iloc</h2>
+<p><a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></p>
+</div>
+<div id="comparison-with-r" class="section level2">
+<h2>Comparison with R</h2>
+<ul>
+<li>pandas.pydata.org <a href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison with R</a></li>
+<li><p><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a> &gt; The basic mapping of dplyr to pandas is:</p>
+<p>dplyr pandas mutate assign select filter rename rename filter query arrange sort_values group_by groupby summarize agg</p></li>
+</ul>
+</div>
 </div>
 <div id="unit-tests" class="section level1">
 <h1>Unit tests</h1>
@@ -400,6 +507,11 @@ div.tocify {
 <div id="media" class="section level1">
 <h1>Media</h1>
 <p>Podecast <a href="https://talkpython.fm/">talk python to me</a> * <a href="https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition">Data science year in review</a></p>
+</div>
+<div id="r-and-python" class="section level1">
+<h1>R and python</h1>
+<p>See also the section above on pandas data frame / comparison with R.</p>
+<p><a href="https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/">Migrating from R to python</a> Python is a full fledge programming language but it is missing statistical and plotting libraries. Vectors are an after thought in python most functionality can be reproduced using operator overloading, but some functionality looks clumsy.</p>
 </div>
 
 

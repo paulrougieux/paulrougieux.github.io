@@ -16,6 +16,25 @@ knitr::opts_chunk$set(echo = TRUE)
 
 dotnetperls: [not python](https://www.dotnetperls.com/not-python)
 
+# Object types
+
+`type()` displays the type of an object.
+
+    i = 1
+    print(type(i))
+    # <type 'int'>
+    x = 1.2
+    print(type(x))
+    # <type 'float'>
+    t = (1,2)
+    print(type(t))
+    # <type 'tuple'>
+    l = [1,2]
+    print(type(l))
+    # <type 'list'>
+
+## List
+
 
 # Jupyter notebooks
 
@@ -23,8 +42,110 @@ Using the Table of Content extension
 [jupyter table of content extension](https://github.com/minrk/ipython_extensions#table-of-contents)
 
 
+    jupyter nbconvert --to markdown mynotebook.ipynb
+    jupyter nbconvert --to html mynotebook.ipynb
+
+
+## Help in a jupyter notebook 
+
+To get help on a function, enter `function_name?` in a cell. 
+
+# Objects
+
+## Inheritance and composition
+
+Example 
+
+    ###############################################################################
+    class Vehicle(object):
+
+        def __init__(self, color, speed_max, garage=None):
+            # Default attributes #
+            self.color = color
+            self.speed_max = speed_max
+            self.garage = garage
+
+        def paint(self, new_color):
+            # Default attributes #
+            self.color = new_color
+
+        def go_back_home(self, new_color):
+            # Default attributes #
+            self.position = self.go_to(self.parent.location)
+
+    ###############################################################################
+    class Car(Vehicle):
+
+        def open_door(self):
+            pass
+
+    ###############################################################################
+    class Boat(Vehicle):
+
+        def open_balast(self):
+            pass
+
+    ###############################################################################
+    class Garage(object):
+
+        def __init__(self, all_vehicles):
+            self.all_vehicles = all_vehicles
+
+        def mass_paint(self, new_color):
+            # Default attributes #
+            for v in self.all_vehicles: v.paint(new_color)
+
+        def build_car(self, color):
+            new_car = Car(color, 90, self)
+            self.all_vehicles.append(new_car)
+            return new_car
+
+        @property
+        def location(self):
+            return '10, 18'
+
+    ###############################################################################
+    ###############################################################################
+    ###############################################################################
+    honda = Car('bleu', 60)
+    gorgeoote = Boat('rouge', 30)
+    honda.paint('purple')
+
+    mike = Garage([honda, gorgeoote])
+
+    mike.mass_paint()
+
+    sport_car = mike.build_car('rouge')
+
+
+
+
+# Pandas data frames
+
+## Selection with loc and iloc
+
+[Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
+
+
+## Comparison with R
+
+ * pandas.pydata.org [Comparison with R](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
+ * [Tydiverse style pandas](https://stmorse.github.io/journal/tidyverse-style-pandas.html) 
+> The basic mapping of dplyr to pandas is:
+
+    dplyr   pandas
+    mutate  assign
+    select  filter
+    rename  rename
+    filter  query
+    arrange     sort_values
+    group_by    groupby
+    summarize   agg
+
+
 # Unit tests
 See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
+
 
 # String 
 
@@ -39,9 +160,20 @@ providing various ways to concatenate python strings.
 Note: [Flask Evolution into Quart](http://pgjones.gitlab.io/quart/flask_evolution.html#flask-evolution) to support asyncio
 
 
-
 # Media
 
 Podecast [talk python to me](https://talkpython.fm/)
  * [Data science year in review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
+
+
+# R and python
+
+See also the section above on pandas data frame / comparison with R. 
+
+[Migrating from R to python](https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/)
+Python is a full fledge programming language but it is missing statistical and plotting libraries.
+Vectors are an after thought in python most functionality can be reproduced using operator overloading,
+but some functionality looks clumsy. 
+
+
 
