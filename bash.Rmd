@@ -766,6 +766,14 @@ Kill a pane
 
     x
 
+Display pane numbers
+
+    q
+
+[How to switch directly to a pane in tmux?](https://unix.stackexchange.com/a/136643/85530):
+
+> "You can jump directly to a pane by typing pane's index while it is showed by display-panes command."
+
 
 ### Movements
 
