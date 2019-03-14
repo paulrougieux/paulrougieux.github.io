@@ -22,6 +22,8 @@ navbar:
           href: lyx.html
         - text: "MySQL"
           href: mysql.html
+        - text: "Python"
+          href: python.html
         - text: "R"
           href: R.html
         - text: "Vim"
