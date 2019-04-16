@@ -400,6 +400,40 @@ print(type(l))
 # &lt;type &#39;list&#39;&gt;</code></pre>
 <div id="list" class="section level2">
 <h2>List</h2>
+<div id="list-of-tuples" class="section level3">
+<h3>List of tuples</h3>
+<p><a href="https://stackoverflow.com/questions/10632839/transform-list-of-tuples-into-a-flat-list-or-a-matrix">How to flatten a list of tuples</a></p>
+<pre><code>nested_list = [(1, 2, 4), (0, 9)]</code></pre>
+<p>Using <code>reduce</code>:</p>
+<pre><code>reduce(lambda x,y:x+y, map(list, nested_list))                                                                                                                              
+[1, 2, 4, 0, 9]</code></pre>
+<p>Using itertools.chain:</p>
+<pre><code>import itertools
+list(itertools.chain.from_iterable(nested_list))</code></pre>
+<p>Using <code>extend</code>:</p>
+<pre><code>flat_list = []
+for a_tuple in nested_list:
+    flat_list.extend(list(a_tuple))                                                                                                                                     
+flat_list
+[1, 2, 4, 0, 9]</code></pre>
+</div>
+</div>
+</div>
+<div id="ipython" class="section level1">
+<h1>ipython</h1>
+<p>Add these options at the ipyhton command line to reload objects automatically while you are coding</p>
+<pre><code>%load_ext autoreload   
+%autoreload 2         </code></pre>
+<div id="debugging-in-ipython" class="section level2">
+<h2>Debugging in ipython</h2>
+<p>Once an error occurs at the ipython command line. Press <code>debug</code> then you can move up the stack trace with:</p>
+<pre><code>`u`</code></pre>
+<p>Move down the stack trace with:</p>
+<pre><code>`d` </code></pre>
+<p>Show code context of the error:</p>
+<pre><code>`l` </code></pre>
+<p>Show available variable in the current context:</p>
+<pre><code>`a` </code></pre>
 </div>
 </div>
 <div id="jupyter-notebooks" class="section level1">
@@ -481,12 +515,30 @@ sport_car = mike.build_car(&#39;rouge&#39;)</code></pre>
 </div>
 <div id="pandas-data-frames" class="section level1">
 <h1>Pandas data frames</h1>
+<div id="joining-and-merging" class="section level2">
+<h2>Joining and merging</h2>
+<p>Stackoverflow <a href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas mergin</a></p>
+</div>
+<div id="reshaping" class="section level2">
+<h2>Reshaping</h2>
+<p><a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt">The Pandas user guide on reshaping</a> gives several example using <code>melt</code> (easier to rename the “variable” and “value” columns) or <code>stack</code> (designed to work together with MultiIndex objects).</p>
+</div>
+<div id="replacement" class="section level2">
+<h2>Replacement</h2>
+<p><a href="https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace">Pyton pandas equivalent for replace</a></p>
+<pre><code>import pandas
+s = pandas.Series([&quot;ape&quot;, &quot;monkey&quot;, &quot;seagull&quot;])
+s.replace([&quot;ape&quot;, &quot;monkey&quot;], [&quot;lion&quot;, &quot;panda&quot;])
+s.replace(&quot;a&quot;, &quot;x&quot;, regex=True)
+s.replace({&quot;ape&quot;: &quot;lion&quot;, &quot;monkey&quot;: &quot;panda&quot;})
+pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&quot;,regex=True)</code></pre>
+</div>
 <div id="selection-with-loc-and-iloc" class="section level2">
 <h2>Selection with loc and iloc</h2>
 <p><a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></p>
 </div>
-<div id="comparison-with-r" class="section level2">
-<h2>Comparison with R</h2>
+<div id="zz-comparison-with-r" class="section level2">
+<h2>ZZ Comparison with R</h2>
 <ul>
 <li>pandas.pydata.org <a href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison with R</a></li>
 <li><p><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a> &gt; The basic mapping of dplyr to pandas is:</p>

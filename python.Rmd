@@ -35,6 +35,62 @@ dotnetperls: [not python](https://www.dotnetperls.com/not-python)
 
 ## List
 
+### List of tuples
+
+[How to flatten a list of tuples](https://stackoverflow.com/questions/10632839/transform-list-of-tuples-into-a-flat-list-or-a-matrix)
+
+    nested_list = [(1, 2, 4), (0, 9)]
+
+Using `reduce`:
+
+    reduce(lambda x,y:x+y, map(list, nested_list))                                                                                                                              
+    [1, 2, 4, 0, 9]
+
+Using itertools.chain:
+
+    import itertools
+    list(itertools.chain.from_iterable(nested_list))
+
+Using `extend`:
+    
+    flat_list = []
+    for a_tuple in nested_list:
+        flat_list.extend(list(a_tuple))                                                                                                                                     
+    flat_list
+    [1, 2, 4, 0, 9]
+
+
+# ipython
+
+Add these options at the ipyhton command line to reload objects automatically while you are coding
+
+    %load_ext autoreload   
+    %autoreload 2         
+
+
+## Debugging in ipython
+
+
+Once an error occurs at the ipython command line. 
+Press `debug` then you can move up the stack trace with:
+
+    `u`
+
+Move down the stack trace with:
+
+    `d` 
+
+Show code context of the error:
+
+    `l` 
+
+Show available variable in the current context:
+
+    `a` 
+
+
+
+
 
 # Jupyter notebooks
 
@@ -122,12 +178,38 @@ Example
 
 # Pandas data frames
 
+## Joining and merging
+
+Stackoverflow [Pandas mergin](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
+
+
+## Reshaping
+
+[The Pandas user guide on reshaping](https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt) 
+gives several example using `melt` (easier to rename the  “variable” and “value” columns) 
+or `stack` (designed to work together with MultiIndex objects).
+
+
+## Replacement
+
+[Pyton pandas equivalent for replace](https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace)
+
+    import pandas
+    s = pandas.Series(["ape", "monkey", "seagull"])
+    s.replace(["ape", "monkey"], ["lion", "panda"])
+    s.replace("a", "x", regex=True)
+    s.replace({"ape": "lion", "monkey": "panda"})
+    pandas.Series(["bla", "bla"]).replace("a","i",regex=True)
+
+
 ## Selection with loc and iloc
 
 [Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
 
 
-## Comparison with R
+
+
+## ZZ Comparison with R
 
  * pandas.pydata.org [Comparison with R](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
  * [Tydiverse style pandas](https://stmorse.github.io/journal/tidyverse-style-pandas.html) 
