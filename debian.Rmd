@@ -93,14 +93,8 @@ Find out which Debian version is running
 
     cat /etc/issue
 
-# Tools
 
-These tools are not specific to Debian. I place them here because 
-I use Debian as my main system. If a section gets too large it may get
-moved to another page in the future. 
-
-
-## Installing software
+# Installing software
 
 For software in the repository, use
 
@@ -117,15 +111,6 @@ If there are missingdependencies and you fix them you can retry the previsouly f
 Remove a package with:
 
     sudo dpkg -r packagename
-
-## Gimp
-
-The most important Gimp shortcuts are: 
-
- * CTRL + B to open the tool Box
- * CTRL + L to open the Layers dialog
-
-A [list of Gimp Shortcuts](http://gimptips.com/articles/gimp-keyboard-shortcuts)
 
 
 ## R and Rstudio
@@ -167,6 +152,21 @@ Download Rstudio for Debian
 Run 
 
     dpkg -i rstudio-version-number.deb
+
+# Tools
+
+These tools are not specific to Debian. I place them here because 
+I use Debian as my main system. If a section gets too large it may get
+moved to another page in the future. 
+
+## Gimp
+
+The most important Gimp shortcuts are: 
+
+ * CTRL + B to open the tool Box
+ * CTRL + L to open the Layers dialog
+
+A [list of Gimp Shortcuts](http://gimptips.com/articles/gimp-keyboard-shortcuts)
 
 # Upgrade Debian version
 
