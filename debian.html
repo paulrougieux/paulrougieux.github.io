@@ -25,9 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.0.13/css/fa-svg-with-js.css" rel="stylesheet" />
-<script src="site_libs/font-awesome-5.0.13/js/fontawesome-all.min.js"></script>
-<script src="site_libs/font-awesome-5.0.13/js/fa-v4-shims.min.js"></script>
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -76,9 +75,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -103,6 +100,9 @@ img {
 button.code-folding-btn:focus {
   outline: none;
 }
+summary {
+  display: list-item;
+}
 </style>
 
 
@@ -117,7 +117,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -137,6 +136,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -158,18 +194,75 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
 <script>
 $(document).ready(function () {
   window.buildTabsets("TOC");
 });
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
 </script>
 
 <!-- code folding -->
-
 
 
 
@@ -257,6 +350,16 @@ div.tocify {
 
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -444,8 +547,24 @@ sudo dpkg -i packagename</code></pre>
 </ul>
 <p>A <a href="http://gimptips.com/articles/gimp-keyboard-shortcuts">list of Gimp Shortcuts</a></p>
 </div>
-<div id="rstudio" class="section level2">
-<h2>Rstudio</h2>
+<div id="r-and-rstudio" class="section level2">
+<h2>R and Rstudio</h2>
+<div id="installing-r-from-the-cran-mirror" class="section level3">
+<h3>Installing R from the CRAN mirror</h3>
+<p>Install R from the CRAN repository, see <a href="https://cran.r-project.org/bin/linux/debian/#debian-stretch-stable">Cran mirror of Debian packages</a></p>
+<p>Add the following to /etc/apt/sources.list</p>
+<pre><code>deb https://cran.stat.unipd.it/bin/linux/debian stretch-cran35/</code></pre>
+<p>In case you get an error:</p>
+<pre><code>The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY FCAE2A0E115C3D8A</code></pre>
+<p>Add the PGP key so that this server is trusted :</p>
+<pre><code>sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;FCAE2A0E115C3D8A&#39;</code></pre>
+<p>Based on this stackoverflow answer <a href="https://unix.stackexchange.com/a/110594/85530">about key server receive fail error</a> I had to use a server providing a connection on port 80 because the default port is apparently blocked by a firewall on my network.</p>
+<p>Then run the following to upgrade R to the lastest version availale on your CRAN mirror:</p>
+<pre><code>sudo apt update
+sudo apt upgrade </code></pre>
+</div>
+<div id="installing-rstudio" class="section level3">
+<h3>Installing Rstudio</h3>
 <p>Download Rstudio for Debian</p>
 <ul>
 <li><a href="https://www.rstudio.com/products/rstudio/download/preview/">Rstudio download</a></li>
@@ -453,6 +572,7 @@ sudo dpkg -i packagename</code></pre>
 </ul>
 <p>Run</p>
 <pre><code>dpkg -i rstudio-version-number.deb</code></pre>
+</div>
 </div>
 </div>
 <div id="upgrade-debian-version" class="section level1">

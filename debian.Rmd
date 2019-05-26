@@ -128,7 +128,36 @@ The most important Gimp shortcuts are:
 A [list of Gimp Shortcuts](http://gimptips.com/articles/gimp-keyboard-shortcuts)
 
 
-## Rstudio
+## R and Rstudio
+
+### Installing R from the CRAN mirror
+
+Install R from the CRAN repository,
+see [Cran mirror of Debian packages](https://cran.r-project.org/bin/linux/debian/#debian-stretch-stable)
+
+Add the following to /etc/apt/sources.list
+
+    deb https://cran.stat.unipd.it/bin/linux/debian stretch-cran35/
+
+In case you get an error:
+
+    The following signatures couldn't be verified because the public key is not available: NO_PUBKEY FCAE2A0E115C3D8A
+
+Add the PGP key so that this server is trusted :
+
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 'FCAE2A0E115C3D8A'
+
+Based on this stackoverflow answer 
+[about key server receive fail error](https://unix.stackexchange.com/a/110594/85530)
+I had to use a server providing a connection on port 80 because the default port is 
+apparently blocked by a firewall on my network.
+
+Then run the following to upgrade R to the lastest version availale on your CRAN mirror:
+
+    sudo apt update
+    sudo apt upgrade 
+
+### Installing Rstudio
 
 Download Rstudio for Debian 
 
