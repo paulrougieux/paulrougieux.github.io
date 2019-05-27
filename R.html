@@ -685,6 +685,44 @@ $ git init</code></pre>
 <p>Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
 </div>
 </div>
+<div id="differences-between-python-and-r" class="section level1">
+<h1>Differences between python and R</h1>
+<pre><code>l = c(1,2,3)
+s = l
+s[3]
+[1] 3
+s[3] = &quot;a&quot;
+s
+[1] &quot;1&quot; &quot;2&quot; &quot;a&quot;
+l
+[1] 1 2 3</code></pre>
+<p>Using the address function to see the address of these objects in memory We can see that s and l share the same address. The address only changes when we asign something to s.</p>
+<pre><code>library(pryr)
+l = c(1,2,3)
+s = l
+address(l)
+[1] &quot;0x316f718&quot;
+address(s)
+[1] &quot;0x316f718&quot;
+s[3] = &quot;a&quot;
+address(s)
+[1] &quot;0x36a7d30&quot;
+s
+[1] &quot;1&quot; &quot;2&quot; &quot;a&quot;
+l
+[1] 1 2 3</code></pre>
+<p>Checking string objects</p>
+<pre><code>bla = &quot;qsdfmlkj&quot;
+address(bla)
+[1] &quot;0x38e5120&quot;
+bli = bla
+address(bli)
+[1] &quot;0x38e5120&quot;
+bli = paste(bli, &quot;sdf&quot;)
+address(bli)
+[1] &quot;0x38d1d60&quot;</code></pre>
+<p>TODO Compare to the same code in python to see the difference between the above and passing by reference.</p>
+</div>
 
 
 

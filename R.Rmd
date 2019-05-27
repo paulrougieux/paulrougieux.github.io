@@ -300,3 +300,57 @@ Package dependencies can be configured in a `.travis.yml`
 file that is read by the travis machine performing the build.
 For package that are not on Cran, it's possible to specify a dependency field under `r_github_packages`.
 
+
+# Differences between python and R
+
+
+
+    l = c(1,2,3)
+    s = l
+    s[3]
+    [1] 3
+    s[3] = "a"
+    s
+    [1] "1" "2" "a"
+    l
+    [1] 1 2 3
+
+Using the address function to see the address of these objects in memory
+We can see that s and l share the same address. 
+The address only changes when we asign something to s. 
+
+    library(pryr)
+    l = c(1,2,3)
+    s = l
+    address(l)
+    [1] "0x316f718"
+    address(s)
+    [1] "0x316f718"
+    s[3] = "a"
+    address(s)
+    [1] "0x36a7d30"
+    s
+    [1] "1" "2" "a"
+    l
+    [1] 1 2 3
+
+Checking string objects
+
+    bla = "qsdfmlkj"
+    address(bla)
+    [1] "0x38e5120"
+    bli = bla
+    address(bli)
+    [1] "0x38e5120"
+    bli = paste(bli, "sdf")
+    address(bli)
+    [1] "0x38d1d60"
+
+
+
+
+TODO Compare to the same code in python
+to see the difference between the above and passing by reference.
+
+
+
