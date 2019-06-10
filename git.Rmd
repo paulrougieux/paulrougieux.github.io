@@ -110,6 +110,24 @@ Commands to copy an existing repository from bitbucket :
 
      git clone git@bitbucket.org/username/bbreponame.git
 
+## Setting up SSH keys 
+
+See [Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+and [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account)
+
+To test if my new ssh key worked with github, 
+I created a branch and pushed it to github.
+Then I deleted the branch locally and remotely:
+
+	git branch "key"
+	git checkout key
+	git push --set-upstream origin key
+	# Checked that the "key" branch became visible on github
+	git checkout master
+	git branch -d key
+	git push origin --delete key
+
+
 # Going back in time 
 
 ## Log
