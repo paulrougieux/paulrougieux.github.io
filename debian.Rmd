@@ -67,7 +67,8 @@ See also my 2014 blog post :
 
 "BootDevice Not Found" issue in a HP Elitebook:
 [Grub-EFI reinstall](https://wiki.debian.org/GrubEFIReinstall)
-
+The issue happenned on a partitionned disk. 
+The fix was to completely erase the main disk and to reinstall a new debian on a single partition. 
 
 # Audio
 
