@@ -45,7 +45,9 @@ After the installation,
 there was one issue with the wifi card having a non-free driver.
 I had to place the package 
 [firmware-iwlwifi](https://packages.debian.org/stretch/firmware-iwlwifi)
-on a USB key. Then installed it from the usb key with 
+on a USB key. 
+The download link is at the bottom of the page ([all](https://packages.debian.org/stretch/all/firmware-iwlwifi/download).
+Then installed it from the usb key with 
 
     sudo apt install ./firmware-iwlwifi_20161130-3_all.deb
 

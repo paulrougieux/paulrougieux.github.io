@@ -537,13 +537,69 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <h2>Selection with loc and iloc</h2>
 <p><a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></p>
 </div>
-<div id="zz-comparison-with-r" class="section level2">
-<h2>ZZ Comparison with R</h2>
+<div id="pandas-comparison-with-r" class="section level2">
+<h2>Pandas comparison with R</h2>
 <ul>
 <li>pandas.pydata.org <a href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison with R</a></li>
-<li><p><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a> &gt; The basic mapping of dplyr to pandas is:</p>
-<p>dplyr pandas mutate assign select filter rename rename filter query arrange sort_values group_by groupby summarize agg</p></li>
+<li><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a> &gt; The basic mapping of dplyr to pandas is:</li>
 </ul>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Base R</th>
+<th align="left">pandas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">gsub</td>
+<td align="left">replace</td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr class="header">
+<th align="left">dplyr</th>
+<th align="left">pandas</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">dplyr</td>
+<td align="left">pandas</td>
+</tr>
+<tr class="even">
+<td align="left">mutate</td>
+<td align="left">assign</td>
+</tr>
+<tr class="odd">
+<td align="left">select</td>
+<td align="left">filter</td>
+</tr>
+<tr class="even">
+<td align="left">rename</td>
+<td align="left">rename</td>
+</tr>
+<tr class="odd">
+<td align="left">filter</td>
+<td align="left">query</td>
+</tr>
+<tr class="even">
+<td align="left">arrange</td>
+<td align="left">sort_values</td>
+</tr>
+<tr class="odd">
+<td align="left">group_by</td>
+<td align="left">groupby</td>
+</tr>
+<tr class="even">
+<td align="left">summarize</td>
+<td align="left">agg</td>
+</tr>
+</tbody>
+</table>
+<p>Related SO questions: * <a href="">gsub in pandas</a></p>
 </div>
 </div>
 <div id="unit-tests" class="section level1">

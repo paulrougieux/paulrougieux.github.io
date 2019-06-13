@@ -209,20 +209,32 @@ or `stack` (designed to work together with MultiIndex objects).
 
 
 
-## ZZ Comparison with R
+## Pandas comparison with R
 
  * pandas.pydata.org [Comparison with R](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
  * [Tydiverse style pandas](https://stmorse.github.io/journal/tidyverse-style-pandas.html) 
 > The basic mapping of dplyr to pandas is:
 
-    dplyr   pandas
-    mutate  assign
-    select  filter
-    rename  rename
-    filter  query
-    arrange     sort_values
-    group_by    groupby
-    summarize   agg
+
+|Base R  |pandas  |
+|--------|--------|
+|gsub    |replace |
+
+
+| dplyr    |pandas     |
+|----------|-----------|
+|dplyr     |pandas     |
+|mutate    |assign     |
+|select    |filter     |
+|rename    |rename     |
+|filter    |query      |
+|arrange   |sort_values|
+|group_by  |groupby|
+|summarize |agg   |
+
+Related SO questions:
+ * [gsub in pandas]()
+
 
 
 # Unit tests
