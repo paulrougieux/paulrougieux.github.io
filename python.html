@@ -400,6 +400,11 @@ print(type(l))
 # &lt;type &#39;list&#39;&gt;</code></pre>
 <div id="list" class="section level2">
 <h2>List</h2>
+<p><a href="https://stackoverflow.com/a/31077838/2641825">Remove an element from a list of strings</a></p>
+<pre><code>myList = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
+myList.remove(&#39;c&#39;)
+myList
+[&#39;a&#39;, &#39;b&#39;, &#39;d&#39;]</code></pre>
 <div id="list-of-tuples" class="section level3">
 <h3>List of tuples</h3>
 <p><a href="https://stackoverflow.com/questions/10632839/transform-list-of-tuples-into-a-flat-list-or-a-matrix">How to flatten a list of tuples</a></p>
@@ -541,22 +546,28 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <h2>Pandas comparison with R</h2>
 <ul>
 <li>pandas.pydata.org <a href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison with R</a></li>
-<li><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a> &gt; The basic mapping of dplyr to pandas is:</li>
+<li><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a></li>
 </ul>
+<blockquote>
+<p>“Tidyverse allows a mix of quoted and unquoted references to variable names. In my (in)experience, the convenience this brings is accompanied by equal consternation. It seems to me a lot of the problems solved by tidyeval would not exist if all variables were quoted all the time, as in pandas, but there are likely deeper truths I’m missing here…”</p>
+</blockquote>
 <table>
 <thead>
 <tr class="header">
 <th align="left">Base R</th>
 <th align="left">pandas</th>
+<th align="left">SO questions</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td align="left">gsub</td>
-<td align="left">replace</td>
+<td align="left">replace(regex=True)</td>
+<td align="left"><a href="https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104">gsub in pandas</a></td>
 </tr>
 </tbody>
 </table>
+<p>The mapping of dplyr to pandas is:</p>
 <table>
 <thead>
 <tr class="header">
@@ -566,40 +577,35 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">dplyr</td>
-<td align="left">pandas</td>
-</tr>
-<tr class="even">
 <td align="left">mutate</td>
 <td align="left">assign</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">select</td>
 <td align="left">filter</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">rename</td>
 <td align="left">rename</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">filter</td>
 <td align="left">query</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">arrange</td>
 <td align="left">sort_values</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td align="left">group_by</td>
 <td align="left">groupby</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td align="left">summarize</td>
 <td align="left">agg</td>
 </tr>
 </tbody>
 </table>
-<p>Related SO questions: * <a href="">gsub in pandas</a></p>
 </div>
 </div>
 <div id="unit-tests" class="section level1">

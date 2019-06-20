@@ -35,6 +35,14 @@ dotnetperls: [not python](https://www.dotnetperls.com/not-python)
 
 ## List
 
+[Remove an element from a list of strings ](https://stackoverflow.com/a/31077838/2641825)
+
+    myList = ['a', 'b', 'c', 'd']
+    myList.remove('c')
+    myList
+    ['a', 'b', 'd']
+
+
 ### List of tuples
 
 [How to flatten a list of tuples](https://stackoverflow.com/questions/10632839/transform-list-of-tuples-into-a-flat-list-or-a-matrix)
@@ -213,17 +221,18 @@ or `stack` (designed to work together with MultiIndex objects).
 
  * pandas.pydata.org [Comparison with R](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
  * [Tydiverse style pandas](https://stmorse.github.io/journal/tidyverse-style-pandas.html) 
-> The basic mapping of dplyr to pandas is:
+
+> "Tidyverse allows a mix of quoted and unquoted references to variable names. In my (in)experience, the convenience this brings is accompanied by equal consternation. It seems to me a lot of the problems solved by tidyeval would not exist if all variables were quoted all the time, as in pandas, but there are likely deeper truths I’m missing here…"
 
 
-|Base R  |pandas  |
-|--------|--------|
-|gsub    |replace |
+|Base R  |pandas             |SO questions      |
+|--------|-------------------|------------------|
+|gsub    |replace(regex=True)|[gsub in pandas](https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104)|
 
+The mapping of dplyr to pandas is:
 
 | dplyr    |pandas     |
 |----------|-----------|
-|dplyr     |pandas     |
 |mutate    |assign     |
 |select    |filter     |
 |rename    |rename     |
@@ -232,8 +241,6 @@ or `stack` (designed to work together with MultiIndex objects).
 |group_by  |groupby|
 |summarize |agg   |
 
-Related SO questions:
- * [gsub in pandas]()
 
 
 
