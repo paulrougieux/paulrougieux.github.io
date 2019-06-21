@@ -551,6 +551,10 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <blockquote>
 <p>“Tidyverse allows a mix of quoted and unquoted references to variable names. In my (in)experience, the convenience this brings is accompanied by equal consternation. It seems to me a lot of the problems solved by tidyeval would not exist if all variables were quoted all the time, as in pandas, but there are likely deeper truths I’m missing here…”</p>
 </blockquote>
+<p>R data frame to be used for examples:</p>
+<pre><code>df = data.frame(x = 1:3, y = c(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;), stringsAsFactors = FALSE)</code></pre>
+<p>Pandas data frame to be used for examples:</p>
+<pre><code>df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  </code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -564,6 +568,16 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <td align="left">gsub</td>
 <td align="left">replace(regex=True)</td>
 <td align="left"><a href="https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104">gsub in pandas</a></td>
+</tr>
+<tr class="even">
+<td align="left">length</td>
+<td align="left">df.shape</td>
+<td align="left"><a href="https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe">row count of a data frame</a></td>
+</tr>
+<tr class="odd">
+<td align="left">df[df$y %in% c(‘a’,‘b’),]</td>
+<td align="left">df[df[‘y’].isin([‘a’,‘b’])]</td>
+<td align="left"><a href="https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe">list of values to select a row</a></td>
 </tr>
 </tbody>
 </table>

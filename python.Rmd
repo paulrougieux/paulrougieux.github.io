@@ -224,10 +224,19 @@ or `stack` (designed to work together with MultiIndex objects).
 
 > "Tidyverse allows a mix of quoted and unquoted references to variable names. In my (in)experience, the convenience this brings is accompanied by equal consternation. It seems to me a lot of the problems solved by tidyeval would not exist if all variables were quoted all the time, as in pandas, but there are likely deeper truths I’m missing here…"
 
+R data frame to be used for examples:
 
-|Base R  |pandas             |SO questions      |
-|--------|-------------------|------------------|
-|gsub    |replace(regex=True)|[gsub in pandas](https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104)|
+    df = data.frame(x = 1:3, y = c('a','b','c'), stringsAsFactors = FALSE)
+
+Pandas data frame to be used for examples:
+
+    df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})  
+
+|Base R                    |pandas                     |SO questions      |
+|--------------------------|---------------------------|------------------|
+|gsub                      |replace(regex=True)        |[gsub in pandas](https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104)|
+|length                    |df.shape                   |[row count of a data frame](https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe)|
+|df[df$y %in% c('a','b'),] |df[df['y'].isin(['a','b'])]|[list of values to select a row](https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe)|
 
 The mapping of dplyr to pandas is:
 
