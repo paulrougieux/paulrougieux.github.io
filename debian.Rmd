@@ -99,9 +99,32 @@ Find out which Debian version is running
 
 # Installing software
 
+## APT
+
 For software in the repository, use
 
     sudo apt install packagename
+
+
+### APT behind a proxy
+
+[Hash sum mismatch issue, fix bad proxy](https://askubuntu.com/a/809808/315347)
+
+    sudo vim /etc/apt/apt.conf.d/99fixbadproxy
+
+Enter: 
+
+	Acquire::http::Pipeline-Depth 0;
+	Acquire::http::No-Cache true;
+	Acquire::BrokenProxy    true;
+
+Now run the update command:
+
+    sudo apt update
+
+
+
+## DEB packages
 
 For software in .deb packages, check the md5sum and install with
 
