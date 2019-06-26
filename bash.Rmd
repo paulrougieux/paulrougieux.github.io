@@ -655,6 +655,17 @@ you can [test a few password you might remember with](https://stackoverflow.com/
 
     ssh-keygen -y -f <private_key_file_name>
 
+## Check a key's fingerprint
+
+On github, ssh key fingerprints are displayed in md5format.
+To display the fingerprint in md5format, enter:
+
+    ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub
+
+[How to generate an SSH key fingerprint](https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated)
+
+
+
 ## Secure shell and secure copy
 
 log into a remote machine
