@@ -139,6 +139,20 @@ Remove a package with:
     sudo dpkg -r packagename
 
 
+## Lyx
+
+Default version of Lyx is 2.2 on debian strech.
+wiki.lyx.org [LyXOnDebian](https://wiki.lyx.org/LyX/LyXOnDebian) 
+explains how to install lyx 2.3 from the backports on Debian stretch. 
+
+    sudo vim /etc/apt/sources.list
+    # Add deb http://ftp.debian.org/debian stretch-backports main 
+    # Or a mirror, for example
+    # deb http://ftp.it.debian.org/debian stretch-backports main
+    sudo apt update
+    sudo apt-get -t stretch-backports install lyx
+
+
 ## R and Rstudio
 
 ### Installing R from the CRAN mirror
