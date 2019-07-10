@@ -193,6 +193,13 @@ Run
 
     dpkg -i rstudio-version-number.deb
 
+## Remmina
+
+Installing from the backports (see above section on how to add the backports in sources.list)
+
+    sudo apt-get -t stretch-backports install remmina 
+
+
 # Tools
 
 These tools are not specific to Debian. I place them here because 
