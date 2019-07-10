@@ -68,6 +68,51 @@ Using `extend`:
     [1, 2, 4, 0, 9]
 
 
+## Set
+
+Instances of [set](https://docs.python.org/3/library/stdtypes.html#set)
+provide the following operations:
+
+
+	issubset(other)
+	set <= other
+
+	    Test whether every element in the set is in other.
+
+	set < other
+
+	    Test whether the set is a proper subset of other, that is, set <= other and set != other.
+
+	issuperset(other)
+	set >= other
+
+	    Test whether every element in other is in the set.
+
+	set > other
+
+	    Test whether the set is a proper superset of other, that is, set >= other and set != other.
+
+	union(*others)
+	set | other | ...
+
+	    Return a new set with elements from the set and all others.
+
+	intersection(*others)
+	set & other & ...
+
+	    Return a new set with elements common to the set and all others.
+
+	difference(*others)
+	set - other - ...
+
+	    Return a new set with elements in the set that are not in the others.
+
+	symmetric_difference(other)
+	set ^ other
+
+	    Return a new set with elements in either the set or other but not both.
+    
+
 # ipython
 
 Add these options at the ipyhton command line to reload objects automatically while you are coding
