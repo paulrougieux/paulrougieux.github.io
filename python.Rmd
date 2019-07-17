@@ -280,25 +280,27 @@ Pandas data frame to be used for examples:
 |Base R                    |pandas                     |SO questions      |
 |--------------------------|---------------------------|------------------|
 |gsub                      |replace(regex=True)        |[gsub in pandas](https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104)|
-|length                    |df.shape                   |[row count of a data frame](https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe)|
+|length(df) and dim(df)    |df.shape                   |[row count of a data frame](https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe)|
 |df[df$y %in% c('a','b'),] |df[df['y'].isin(['a','b'])]|[list of values to select a row](https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe)|
 
-The mapping of dplyr to pandas is:
+The mapping of tidyverse to pandas is:
 
-| dplyr    |pandas     |
+|tidyverse |pandas     |
 |----------|-----------|
 |mutate    |assign     |
 |select    |filter     |
 |rename    |rename     |
 |filter    |query      |
 |arrange   |sort_values|
-|group_by  |groupby|
-|summarize |agg   |
-
+|group_by  |groupby    |
+|summarize |agg        |
+|gather    |melt       |
+|spread    |pivot      |
 
 
 
 # Unit tests
+
 See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
 
 
