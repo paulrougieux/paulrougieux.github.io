@@ -49,11 +49,43 @@ installed.packages()
     getwd()
     list.files(tempdir()) 
     dir.create("blabla")
-    read.csv("data.csv")
+
+## CSV files
+
+Read one csv file with default R function.
+
+    read.csv("data.csv", )
+
+Read many csv files with functions from the tidyverse packages.
+
+First write sample csv files to a temporary directory.
+It's more complicated than I thought it would be.
+
+    data_folder <- file.path(tempdir(), "iris")
+    dir.create(data_folder)
+    iris %>%
+        # Keep the Species column in the output
+        # Create a new column that will be used as the grouping variable
+        mutate(species_group = Species) %>% 
+        group_by(species_group) %>%
+        nest() %>%
+        by_row(~write.csv(.$data, 
+                          file = file.path(data_folder, paste0(.$species_group, ".csv")),
+                          row.names = FALSE))
+
+
+Read these csv files into one data frame.
+Note the Species column has to be present in the csv files, otherwise we would loose that information. 
+
+    iris_csv <- list.files(data_folder, full.names = TRUE) %>% 
+        map_dfr(read_csv)
+
+`write_csv` returned an `Error in write_delim(...) is.data.frame(x) is not TRUE`
+That's why we used `write.csv` instead.
 
 # Vectors
 
-[SO Answer concerning indexing up to end of vector/matrix](https://stackoverflow.com/a/7500961/2641825) "Sometimes it's easier to tell R what you don't want"
+[SO answer concerning indexing up to end of vector/matrix](https://stackoverflow.com/a/7500961/2641825) "Sometimes it's easier to tell R what you don't want"
 
     x <- c(5,5,4,3,2,1)
     x[-(1:3)]
@@ -67,7 +99,6 @@ str(l1)
 unlist(l1) # a character vector 
 str(unlist(l1))
 ```
-
 
 # Strings
 

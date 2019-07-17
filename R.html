@@ -409,12 +409,33 @@ installed.packages()</code></pre>
 <h1>Handling files</h1>
 <pre><code>getwd()
 list.files(tempdir()) 
-dir.create(&quot;blabla&quot;)
-read.csv(&quot;data.csv&quot;)</code></pre>
+dir.create(&quot;blabla&quot;)</code></pre>
+<div id="csv-files" class="section level2">
+<h2>CSV files</h2>
+<p>Read one csv file with default R function.</p>
+<pre><code>read.csv(&quot;data.csv&quot;, )</code></pre>
+<p>Read many csv files with functions from the tidyverse packages.</p>
+<p>First write sample csv files to a temporary directory. It’s more complicated than I thought it would be.</p>
+<pre><code>data_folder &lt;- file.path(tempdir(), &quot;iris&quot;)
+dir.create(data_folder)
+iris %&gt;%
+    # Keep the Species column in the output
+    # Create a new column that will be used as the grouping variable
+    mutate(species_group = Species) %&gt;% 
+    group_by(species_group) %&gt;%
+    nest() %&gt;%
+    by_row(~write.csv(.$data, 
+                      file = file.path(data_folder, paste0(.$species_group, &quot;.csv&quot;)),
+                      row.names = FALSE))</code></pre>
+<p>Read these csv files into one data frame. Note the Species column has to be present in the csv files, otherwise we would loose that information.</p>
+<pre><code>iris_csv &lt;- list.files(data_folder, full.names = TRUE) %&gt;% 
+    map_dfr(read_csv)</code></pre>
+<p><code>write_csv</code> returned an <code>Error in write_delim(...) is.data.frame(x) is not TRUE</code> That’s why we used <code>write.csv</code> instead.</p>
+</div>
 </div>
 <div id="vectors" class="section level1">
 <h1>Vectors</h1>
-<p><a href="https://stackoverflow.com/a/7500961/2641825">SO Answer concerning indexing up to end of vector/matrix</a> “Sometimes it’s easier to tell R what you don’t want”</p>
+<p><a href="https://stackoverflow.com/a/7500961/2641825">SO answer concerning indexing up to end of vector/matrix</a> “Sometimes it’s easier to tell R what you don’t want”</p>
 <pre><code>x &lt;- c(5,5,4,3,2,1)
 x[-(1:3)]
 x[-c(1,3,6)]</code></pre>
@@ -534,7 +555,7 @@ cars %&gt;%
 ##  8    10    26
 ##  9    10    34
 ## 10    11    17
-## # ... with 40 more rows</code></pre>
+## # … with 40 more rows</code></pre>
 <pre><code>## # A tibble: 19 x 5
 ##    speed numberofcars   min  mean   max
 ##    &lt;dbl&gt;        &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;

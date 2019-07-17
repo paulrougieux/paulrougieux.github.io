@@ -614,9 +614,10 @@ Workflow:
 
     Mixing private and public repository in Git workflow
 
-Turorial:
+Tutorial:
 
-    Git foundations
+ * Git foundations
+ * [Definition and pictures of git and related services](https://www.willingconsulting.com/post/2019-07-01-locations-and-git/)
 
 Blogs:
 
