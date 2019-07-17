@@ -423,6 +423,47 @@ flat_list
 [1, 2, 4, 0, 9]</code></pre>
 </div>
 </div>
+<div id="set" class="section level2">
+<h2>Set</h2>
+<p>Instances of <a href="https://docs.python.org/3/library/stdtypes.html#set">set</a> provide the following operations:</p>
+<pre><code>issubset(other)
+set &lt;= other
+
+    Test whether every element in the set is in other.
+
+set &lt; other
+
+    Test whether the set is a proper subset of other, that is, set &lt;= other and set != other.
+
+issuperset(other)
+set &gt;= other
+
+    Test whether every element in other is in the set.
+
+set &gt; other
+
+    Test whether the set is a proper superset of other, that is, set &gt;= other and set != other.
+
+union(*others)
+set | other | ...
+
+    Return a new set with elements from the set and all others.
+
+intersection(*others)
+set &amp; other &amp; ...
+
+    Return a new set with elements common to the set and all others.
+
+difference(*others)
+set - other - ...
+
+    Return a new set with elements in the set that are not in the others.
+
+symmetric_difference(other)
+set ^ other
+
+    Return a new set with elements in either the set or other but not both.</code></pre>
+</div>
 </div>
 <div id="ipython" class="section level1">
 <h1>ipython</h1>
@@ -570,7 +611,7 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <td align="left"><a href="https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104">gsub in pandas</a></td>
 </tr>
 <tr class="even">
-<td align="left">length</td>
+<td align="left">length(df) and dim(df)</td>
 <td align="left">df.shape</td>
 <td align="left"><a href="https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe">row count of a data frame</a></td>
 </tr>
@@ -581,11 +622,11 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 </tr>
 </tbody>
 </table>
-<p>The mapping of dplyr to pandas is:</p>
+<p>The mapping of tidyverse to pandas is:</p>
 <table>
 <thead>
 <tr class="header">
-<th align="left">dplyr</th>
+<th align="left">tidyverse</th>
 <th align="left">pandas</th>
 </tr>
 </thead>
@@ -617,6 +658,14 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <tr class="odd">
 <td align="left">summarize</td>
 <td align="left">agg</td>
+</tr>
+<tr class="even">
+<td align="left">gather</td>
+<td align="left">melt</td>
+</tr>
+<tr class="odd">
+<td align="left">spread</td>
+<td align="left">pivot</td>
 </tr>
 </tbody>
 </table>

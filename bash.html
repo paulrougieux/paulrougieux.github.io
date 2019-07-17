@@ -794,6 +794,12 @@ eval `ssh-agent`</code></pre>
 <p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
 <pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
 </div>
+<div id="check-a-keys-fingerprint" class="section level2">
+<h2>Check a key’s fingerprint</h2>
+<p>On github, ssh key fingerprints are displayed in md5format. To display the fingerprint in md5format, enter:</p>
+<pre><code>ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub</code></pre>
+<p><a href="https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated">How to generate an SSH key fingerprint</a></p>
+</div>
 <div id="secure-shell-and-secure-copy" class="section level2">
 <h2>Secure shell and secure copy</h2>
 <p>log into a remote machine</p>
@@ -899,6 +905,10 @@ new-window</code></pre>
 </ul>
 </div>
 </div>
+</div>
+<div id="vpn" class="section level1">
+<h1>VPN</h1>
+<p>A VPN was usefull when: * SMS interface didn’t work on orange.fr. I could access it through a VPN server based in Paris. * FTP download site based in Canada didn’t work from Italy. A colleague could access it through a VPN server based in Canada. * SSH access to remote servers didn’t work on company wifi. I could access the machines through the VPN. VPN access also removes localisation of site searches on google and google maps.</p>
 </div>
 
 

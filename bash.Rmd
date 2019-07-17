@@ -828,3 +828,10 @@ Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/com
 
 # VPN
 
+A VPN was usefull when:
+* SMS interface didn't work on orange.fr. I could access it through a VPN server based in Paris.
+* FTP download site based in Canada didn't work from Italy. A colleague could access it through a VPN server based in Canada.
+* SSH access to remote servers didn't work on company wifi. I could access the machines through the VPN.
+VPN access also removes localisation of site searches on google and google maps. 
+
+

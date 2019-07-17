@@ -423,14 +423,41 @@ $ pulseaudio --start</code></pre>
 </div>
 <div id="installing-software" class="section level1">
 <h1>Installing software</h1>
+<div id="apt" class="section level2">
+<h2>APT</h2>
 <p>For software in the repository, use</p>
 <pre><code>sudo apt install packagename</code></pre>
+<div id="apt-behind-a-proxy" class="section level3">
+<h3>APT behind a proxy</h3>
+<p><a href="https://askubuntu.com/a/809808/315347">Hash sum mismatch issue, fix bad proxy</a></p>
+<pre><code>sudo vim /etc/apt/apt.conf.d/99fixbadproxy</code></pre>
+<p>Enter:</p>
+<pre><code>Acquire::http::Pipeline-Depth 0;
+Acquire::http::No-Cache true;
+Acquire::BrokenProxy    true;</code></pre>
+<p>Now run the update command:</p>
+<pre><code>sudo apt update</code></pre>
+</div>
+</div>
+<div id="deb-packages" class="section level2">
+<h2>DEB packages</h2>
 <p>For software in .deb packages, check the md5sum and install with</p>
 <pre><code>md5sum packagename
 sudo dpkg -i packagename</code></pre>
 <p>If there are missingdependencies and you fix them you can retry the previsouly failed installed with: sudo dpkg –configure -a</p>
 <p>Remove a package with:</p>
 <pre><code>sudo dpkg -r packagename</code></pre>
+</div>
+<div id="lyx" class="section level2">
+<h2>Lyx</h2>
+<p>Default version of Lyx is 2.2 on debian strech. wiki.lyx.org <a href="https://wiki.lyx.org/LyX/LyXOnDebian">LyXOnDebian</a> explains how to install lyx 2.3 from the backports on Debian stretch.</p>
+<pre><code>sudo vim /etc/apt/sources.list
+# Add deb http://ftp.debian.org/debian stretch-backports main 
+# Or a mirror, for example
+# deb http://ftp.it.debian.org/debian stretch-backports main
+sudo apt update
+sudo apt-get -t stretch-backports install lyx</code></pre>
+</div>
 <div id="r-and-rstudio" class="section level2">
 <h2>R and Rstudio</h2>
 <div id="installing-r-from-the-cran-mirror" class="section level3">
@@ -457,6 +484,11 @@ sudo apt upgrade </code></pre>
 <p>Run</p>
 <pre><code>dpkg -i rstudio-version-number.deb</code></pre>
 </div>
+</div>
+<div id="remmina" class="section level2">
+<h2>Remmina</h2>
+<p>Installing from the backports (see above section on how to add the backports in sources.list)</p>
+<pre><code>sudo apt-get -t stretch-backports install remmina </code></pre>
 </div>
 </div>
 <div id="tools" class="section level1">

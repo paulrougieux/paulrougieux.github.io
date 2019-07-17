@@ -424,6 +424,19 @@ Replace long.bib by short.bib in the .tex file.</code></pre>
 <p>I have done it 3 times already. Could I create a script that does all this automatically?</p>
 </div>
 </div>
+<div id="install-dependencies" class="section level1">
+<h1>Install dependencies</h1>
+<div id="tex-packages" class="section level2">
+<h2>Tex packages</h2>
+<p>Tex packages are located at CTAN. Most of the time it’s sufficient to install them from the Debian repository. Some times the debian repository version is outdated. In that case you can try to install the packages from the backports:</p>
+<pre><code>sudo vim /etc/apt/sources.list
+# Add deb http://ftp.debian.org/debian stretch-backports main 
+# Or a mirror, for example
+# deb http://ftp.it.debian.org/debian stretch-backports main
+sudo apt update
+sudo apt-get -t stretch-backports install texlive-bibtex-extra</code></pre>
+</div>
+</div>
 <div id="spell-checker" class="section level1">
 <h1>Spell checker</h1>
 <p>A spell checker can be activated under Tools / preferences / language settings / spellchecker. On my system the only spell check engine available is Enchant, “a wrapper that provides automatic access to many spell checking libraries (ispell, aspell, hspell, hunspell, etc.)”.</p>
