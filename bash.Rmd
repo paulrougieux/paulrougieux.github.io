@@ -834,4 +834,26 @@ A VPN was usefull when:
 * SSH access to remote servers didn't work on company wifi. I could access the machines through the VPN.
 VPN access also removes localisation of site searches on google and google maps. 
 
+Example session,from a company wifi system which is probably bloking ssh traffic.
+The SSH connection breaks:
+
+    paul@debianpaul:~/repos$ ssh cbm1 
+    ssh_exchange_identification: Connection closed by remote host
+
+I start the VPN:
+
+    paul@debianpaul:~/repos$ vpn connect
+    Connecting to France - Paris - 1...     100.0%                       
+    Connected to France - Paris - 1
+
+I try to reconnect to that server through SSH:
+
+    paul@debianpaul:~/repos$ ssh cbm1 
+    The authenticity of host '[.......eu-west-1.compute.amazonaws.com] ([__IP__])' can't be established.
+    ECDSA key fingerprint is SHA256:PTwO1p7Q3XqPE4Gs+KH37XqH88ePDYh5bNqKXyVpGAE.
+    Are you sure you want to continue connecting (yes/no)? yes
+    Warning: Permanently added '[......eu-west-1.compute.amazonaws.com],[....]' (ECDSA) to the list of known hosts.
+
+Now the connection works. 
+
 

@@ -548,6 +548,15 @@ After I run this set upstream flag, I can push to the remote server. Then I get 
 
 I'll have to figure out what this does.
 
+# Autocompletion
+
+git has an [auto complete](https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion) 
+feature available in a script: `git-completion.bash`.
+
+That script can be loaded in bashrc at the start of the shell.
+A debian package was made to simply load git-completion.bash for you:
+
+    sudo apt install bash-completion
 
 # Publishing project documentation on github
 
