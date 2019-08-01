@@ -19,4 +19,6 @@ set softtabstop=4
 set shiftwidth=4
 filetype indent on 
 
+" wrap markdown text to 80 characters
+au BufRead,BufNewFile *.md setlocal textwidth=80
 

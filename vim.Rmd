@@ -41,6 +41,18 @@ Display a list of first level header in a markdown document (found in quick mark
 
 Then enter `:line number` to jump to that line.
 
+Thoughtbot.com [Wrap existing block of text to 80 characters](https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim):
+
+    :set textwidth=80
+
+Apply automatically to markdown files, by adding this to .vimrc 
+
+    au BufRead,BufNewFile *.md setlocal textwidth=80
+
+To format the text, select it with v and up or down movements, and press 
+
+    gq
+
 ## Line numbers
  Display line numbers
 

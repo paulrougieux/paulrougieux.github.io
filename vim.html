@@ -467,6 +467,12 @@ ctrl+b, ctrl+d move page up or page down
 <p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
 <pre><code>:g/^# /#</code></pre>
 <p>Then enter <code>:line number</code> to jump to that line.</p>
+<p>Thoughtbot.com <a href="https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim">Wrap existing block of text to 80 characters</a>:</p>
+<pre><code>:set textwidth=80</code></pre>
+<p>Apply automatically to markdown files, by adding this to .vimrc</p>
+<pre><code>au BufRead,BufNewFile *.md setlocal textwidth=80</code></pre>
+<p>To format the text, select it with v and up or down movements, and press</p>
+<pre><code>gq</code></pre>
 </div>
 </div>
 <div id="line-numbers" class="section level2">
