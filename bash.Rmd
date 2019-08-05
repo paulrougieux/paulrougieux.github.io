@@ -186,6 +186,7 @@ Replace strings with perl in a git repository.
 The examples below replace all occurences of the first string with the second string, for all 
 files under git version control. 
 
+    git grep -lz 'first_string'| xargs -0 perl -i'' -pE "s/first_string/second_string/g"
     git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
     git grep -lz 'RMySQL::'| xargs -0 perl -i'' -pE "s/RMySQL::/RMariaDB::/g"
 
