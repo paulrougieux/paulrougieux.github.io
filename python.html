@@ -660,6 +660,11 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <p>Pandas data frame to be used for examples:</p>
 <pre><code>df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  </code></pre>
 <table>
+<colgroup>
+<col width="36%" />
+<col width="37%" />
+<col width="25%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>Base R</th>
@@ -679,8 +684,8 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <td><a href="https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe">row count of a data frame</a></td>
 </tr>
 <tr class="odd">
-<td>df[df$y %in% c(‘a’,‘b’),]</td>
-<td>df[df[‘y’].isin([‘a’,‘b’])]</td>
+<td><code>df[df$y %in% c('a','b'),]</code></td>
+<td><code>df[df['y'].isin(['a','b'])]</code></td>
 <td><a href="https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe">list of values to select a row</a></td>
 </tr>
 </tbody>
@@ -745,7 +750,7 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <div id="web-frameworks" class="section level1">
 <h1>Web Frameworks</h1>
 <p><a href="asynchrosnus://www.codementor.io/garethdwyer/flask-vs-django-why-flask-might-be-better-4xs7mdf8v">Flask vs. Django</a></p>
-<p>Note: <a href="http://pgjones.gitlab.io/quart/flask_evolution.html#flask-evolution">Flask Evolution into Quart</a> to support asyncio</p>
+<p>Note: <a href="http://pgjones.gitlab.io/quart/flask_evolution.html#flask-evolution">Flask Evolution into Quart</a> to support <a href="http://pgjones.gitlab.io/quart/asyncio.html#asyncio">asyncio</a> This last link contains a nice, simple example of how asyncio works with a simulated delay to fetch a web page.</p>
 </div>
 <div id="media" class="section level1">
 <h1>Media</h1>
