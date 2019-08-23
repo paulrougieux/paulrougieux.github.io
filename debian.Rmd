@@ -193,6 +193,15 @@ Run
 
     dpkg -i rstudio-version-number.deb
 
+Dependency error: rstudio depends on libclang-dev
+Install it 
+
+    sudo apt install libclang-dev
+
+[Uninstall rstudio](https://support.rstudio.com/hc/en-us/articles/200554736-How-To-Uninstall-RStudio-Desktop)
+
+    sudo apt remove rstudio
+
 ## Remmina
 
 Installing from the backports (see above section on how to add the backports in sources.list)
