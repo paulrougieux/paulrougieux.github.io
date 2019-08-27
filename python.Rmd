@@ -309,6 +309,17 @@ See [python markdown unit tests](https://github.com/okken/markdown.py/blob/maste
 [SO answer ](https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects) 
 providing various ways to concatenate python strings.
 
+# Statistics
+
+## Scaling
+
+[Feature scaling with scikit learn](http://benalexkeen.com/feature-scaling-with-scikit-learn/)
+
+ * StandardScaler
+ * MinMaxScaler
+ * RobustScaler
+ * Normalizer
+
 
 # Web Frameworks
 
