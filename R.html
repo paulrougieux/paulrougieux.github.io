@@ -448,28 +448,27 @@ div.tocify {
 <li>The Comprehensive R Archive Network <a href="https://cran.r-project.org/manuals.html">manuals</a></li>
 <li>Tidyverse <a href="http://www.tidyverse.org/packages/">packages</a></li>
 </ul>
-<div id="set-operations" class="section level1">
-<h1>Set operations</h1>
-<pre class="r"><code>x = letters[1:3]
-y = letters[3:5]
-union(x, y)</code></pre>
-<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
-<pre class="r"><code>intersect(x, y)</code></pre>
-<pre><code>## [1] &quot;c&quot;</code></pre>
-<pre class="r"><code>setdiff(x, y)</code></pre>
-<pre><code>## [1] &quot;a&quot; &quot;b&quot;</code></pre>
-<pre class="r"><code>setdiff(y, x)</code></pre>
-<pre><code>## [1] &quot;d&quot; &quot;e&quot;</code></pre>
-<pre class="r"><code>setequal(x, y)</code></pre>
-<pre><code>## [1] FALSE</code></pre>
+<div id="installing-r-and-packages" class="section level1">
+<h1>Installing R and packages</h1>
+<p>To install R and Rstudio on Debian, see the <a href="debian.html#r_and_rstudio" class="uri">debian.html#r_and_rstudio</a> page on this site.</p>
+<p>To install packages simply enter the following at an R command prompt:</p>
+<pre><code>install.packages(&quot;package_name&quot;)</code></pre>
+<p>Some packages have dependencies that need to be installed at the OS level. Error messages:</p>
+<pre><code>&quot;Configuration failed because libcurl was not found.&quot; 
+&quot;Configuration failed because libxml-2.0 was not found.&quot;
+&quot;Configuration failed because openssl was not found.&quot;</code></pre>
+<p>Can be solved by installing these dependencies:</p>
+<pre><code>sudo apt install libcurl4-openssl-dev 
+sudo apt install libxml2-dev 
+sudo apt install libssl-dev</code></pre>
 </div>
 <div id="information-about-your-r-system" class="section level1">
 <h1>Information about your R system</h1>
 <pre class="r"><code>sessionInfo()
 installed.packages()</code></pre>
 </div>
-<div id="handling-files" class="section level1">
-<h1>Handling files</h1>
+<div id="files-input-output" class="section level1">
+<h1>Files input output</h1>
 <pre><code>getwd()
 list.files(tempdir()) 
 dir.create(&quot;blabla&quot;)</code></pre>
@@ -502,6 +501,21 @@ iris %&gt;%
 <pre><code>x &lt;- c(5,5,4,3,2,1)
 x[-(1:3)]
 x[-c(1,3,6)]</code></pre>
+<div id="set-operations" class="section level2">
+<h2>Set operations</h2>
+<pre class="r"><code>x = letters[1:3]
+y = letters[3:5]
+union(x, y)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot; &quot;c&quot; &quot;d&quot; &quot;e&quot;</code></pre>
+<pre class="r"><code>intersect(x, y)</code></pre>
+<pre><code>## [1] &quot;c&quot;</code></pre>
+<pre class="r"><code>setdiff(x, y)</code></pre>
+<pre><code>## [1] &quot;a&quot; &quot;b&quot;</code></pre>
+<pre class="r"><code>setdiff(y, x)</code></pre>
+<pre><code>## [1] &quot;d&quot; &quot;e&quot;</code></pre>
+<pre class="r"><code>setequal(x, y)</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+</div>
 </div>
 <div id="lists" class="section level1">
 <h1>Lists</h1>
