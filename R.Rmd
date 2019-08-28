@@ -205,6 +205,68 @@ Hadley Wickham's answer to a SO question
 [Why use purrr::map instead of lapply?](https://stackoverflow.com/a/47123420/2641825)
 
 
+### Map a function to nested data sets
+
+Load data
+
+```{r}
+list.files(getwd())
+forestEU_wide <- read.csv("Forest-R-EU.csv", stringsAsFactors = FALSE)
+head(forestEU)
+```
+Pivot to long format
+```{r}
+# at some pointin the future this will be called pivot_long
+forestEU <- forestEU_wide  %>% 
+      # select everything except the Year, then pivot all columns and put the value in area
+      gather(-Year, key = "Country", value = "Area")
+```
+
+# Interpolate for one country
+```{r}
+country_interpolation <- function(df) {
+      df <- data.frame(approx(df$Year, df$Area, method = "linear", n=71))
+  df <- rename(df, Year = x, Area = y)
+    return(df)
+}
+
+forestEU %>%  filter(Country=="Austria") %>% country_interpolation()
+```
+
+
+Interpolate for all countries
+Perform the Interpolation on all countries
+
+
+See documentation in 
+* many models https://r4ds.had.co.nz/many-models.html
+* blog https://emoriebeck.github.io/R-tutorials/purrr/
+
+
+```{r}
+
+forestEU_nested <- forestEU %>%
+      # Remove empty area
+      filter(!is.na(Area)) %>% 
+      group_by(Country) %>%  
+      nest() %>% 
+      mutate(interpolated = map(data, country_interpolation))
+
+# forestEU_nested %>% unnest(data)
+# Unnest the interpolated data to look at it and plotting
+forestEU_interpolated <- forestEU_nested %>% unnest(interpolated)
+```
+
+
+# Write to many csv
+```{r}
+#dir.create("output")
+forestEU_nested <- forestEU_nested %>% 
+    mutate(filename = paste0("output/", Country, ".csv"),
+    wrote_stuff = map2(interpolated, filename, write.csv))
+```
+
+
 ## tidy evaluation
 
 * Advanced R [metaprogramming section](https://adv-r.hadley.nz/meta.html)
