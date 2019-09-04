@@ -180,7 +180,11 @@ I quoted them in \begin{verbatim} statements.
     sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
      # Modify the file in place
 
-### Refactor
+## Remove duplicated lines from a file
+
+    awk '!a[$0]++' input.txt 
+
+# Refactor
 
 Replace strings with perl in a git repository.
 The examples below replace all occurences of the first string with the second string, for all 
@@ -190,9 +194,14 @@ files under git version control.
     git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
     git grep -lz 'RMySQL::'| xargs -0 perl -i'' -pE "s/RMySQL::/RMariaDB::/g"
 
-Remove duplicated lines from a file
+Alias to refactor, probably needs improvement
 
-    awk '!a[$0]++' input.txt 
+    refactor() {
+        echo "Replacing $1 by $2 in all files in this git repository."
+        git grep -lz $1| xargs -0 perl -i'' -pE "s/$1/$2/g"
+    }
+
+
 
 
 # Organise
