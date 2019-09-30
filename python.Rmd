@@ -277,11 +277,12 @@ Pandas data frame to be used for examples:
 
     df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})  
 
-|Base R                    |pandas                     |SO questions      |
-|--------------------------|---------------------------|------------------|
-|gsub                      |replace(regex=True)        |[gsub in pandas](https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104)|
-|length(df) and dim(df)    |df.shape                   |[row count of a data frame](https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe)|
+|Base R                     |pandas                     |SO questions      |
+|---------------------------|---------------------------|------------------|
+|gsub                       |replace(regex=True)        |[gsub in pandas](https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104)|
 |`df[df$y %in% c('a','b'),]`|`df[df['y'].isin(['a','b'])]`|[list of values to select a row](https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe)|
+|length(df) and dim(df)     |df.shape                   |[row count of a data frame](https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe)|
+|rbind                      |pandas.concat              |[Pandas version of rbind](https://stackoverflow.com/questions/14988480/pandas-version-of-rbind)|
 
 The mapping of tidyverse to pandas is:
 

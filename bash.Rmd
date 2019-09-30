@@ -715,6 +715,14 @@ My keys are visible on pgp.mit.edu
 
 # Networking
 
+Show the IP address 
+
+    ip addr show
+
+Show the state of network interfaces
+
+    ip link
+
 Check open ports on a system
 
     nmap -Pn <hostname or IP address>
