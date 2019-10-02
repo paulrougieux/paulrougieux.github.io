@@ -558,6 +558,33 @@ A debian package was made to simply load git-completion.bash for you:
 
     sudo apt install bash-completion
 
+
+# Git run 
+
+Git run enables to pull from many repositories with a single command  
+
+configuration was a bit complicated on debian
+
+
+Install nodejs and npm from the backports
+
+    sudo apt -t stretch-backports install nodejs
+    sudo apt -t stretch-backports install npm
+    sudo apt install build-essential
+
+Configure nmp to run only for the local user
+[configure npm to use a different directory](https://stackoverflow.com/a/40905762/2641825)
+
+
+Then the configuration file is a .json file on the home folder. 
+
+
+    gr git pull
+
+
+    gr git status
+
+
 # Publishing project documentation on github
 
 SO answer to the question "How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)": An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.
