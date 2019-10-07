@@ -552,16 +552,23 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <pre><code># Test output to stdout placing # before and after a matching line
 sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
  # Modify the file in place</code></pre>
-<div id="refactor" class="section level3">
-<h3>Refactor</h3>
+</div>
+<div id="remove-duplicated-lines-from-a-file" class="section level2">
+<h2>Remove duplicated lines from a file</h2>
+<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
+</div>
+</div>
+<div id="refactor" class="section level1">
+<h1>Refactor</h1>
 <p>Replace strings with perl in a git repository. The examples below replace all occurences of the first string with the second string, for all files under git version control.</p>
 <pre><code>git grep -lz &#39;first_string&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/first_string/second_string/g&quot;
 git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;
 git grep -lz &#39;RMySQL::&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/RMySQL::/RMariaDB::/g&quot;</code></pre>
-<p>Remove duplicated lines from a file</p>
-<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
-</div>
-</div>
+<p>Alias to refactor, probably needs improvement</p>
+<pre><code>refactor() {
+    echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
+    git grep -lz $1| xargs -0 perl -i&#39;&#39; -pE &quot;s/$1/$2/g&quot;
+}</code></pre>
 </div>
 <div id="organise" class="section level1">
 <h1>Organise</h1>
@@ -890,6 +897,10 @@ eval `ssh-agent`</code></pre>
 </div>
 <div id="networking" class="section level1">
 <h1>Networking</h1>
+<p>Show the IP address</p>
+<pre><code>ip addr show</code></pre>
+<p>Show the state of network interfaces</p>
+<pre><code>ip link</code></pre>
 <p>Check open ports on a system</p>
 <pre><code>nmap -Pn &lt;hostname or IP address&gt;</code></pre>
 </div>

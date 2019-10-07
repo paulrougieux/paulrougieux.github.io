@@ -777,6 +777,21 @@ To push the current branch and set the remote as upstream, use
 <p>That script can be loaded in bashrc at the start of the shell. A debian package was made to simply load git-completion.bash for you:</p>
 <pre><code>sudo apt install bash-completion</code></pre>
 </div>
+<div id="git-run" class="section level1">
+<h1>Git run</h1>
+<p>Git run enables to pull from many repositories with a single command</p>
+<p>configuration was a bit complicated on debian</p>
+<p>Install nodejs and npm from the backports</p>
+<pre><code>sudo apt -t stretch-backports install nodejs
+sudo apt -t stretch-backports install npm
+sudo apt install build-essential</code></pre>
+<p>Configure nmp to run only for the local user <a href="https://stackoverflow.com/a/40905762/2641825">configure npm to use a different directory</a></p>
+<p>Then the configuration file is a .json file on the home folder.</p>
+<pre><code>gr git pull
+
+
+gr git status</code></pre>
+</div>
 <div id="publishing-project-documentation-on-github" class="section level1">
 <h1>Publishing project documentation on github</h1>
 <p>SO answer to the question “How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)”: An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.</p>

@@ -464,6 +464,10 @@ div.tocify {
 <p>See also my 2014 blog post : <a href="https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html">Debian GNU Linux installation on a LENOVO T400</a></p>
 <p>“BootDevice Not Found” issue in a HP Elitebook: <a href="https://wiki.debian.org/GrubEFIReinstall">Grub-EFI reinstall</a> The issue happenned on a partitionned disk. The fix was to completely erase the main disk and to reinstall a new debian on a single partition.</p>
 </div>
+<div id="installing-debian-software-from-backports" class="section level2">
+<h2>Installing debian software from backports:</h2>
+<pre><code> sudo apt -t stretch-backports install nodejs</code></pre>
+</div>
 </div>
 <div id="audio" class="section level1">
 <h1>Audio</h1>
@@ -510,6 +514,14 @@ sudo dpkg -i packagename</code></pre>
 <p>If there are missingdependencies and you fix them you can retry the previsouly failed installed with: sudo dpkg –configure -a</p>
 <p>Remove a package with:</p>
 <pre><code>sudo dpkg -r packagename</code></pre>
+</div>
+<div id="anbox" class="section level2">
+<h2>Anbox</h2>
+<p><a href="https://anbox.io/">Android in a box</a> is an android emulator that runs on Linux. To install it on debian I added the contrib and non-free backports to /etc/apt/sources.list :</p>
+<pre><code>deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free</code></pre>
+<p>Then installed anbox from the backports:</p>
+<pre><code>sudo apt -t stretch-backports install anbox</code></pre>
+<p>I have encountered <a href="https://github.com/anbox/anbox/issues/211">issue 211</a></p>
 </div>
 <div id="lyx" class="section level2">
 <h2>Lyx</h2>

@@ -143,6 +143,20 @@ Remove a package with:
     sudo dpkg -r packagename
 
 
+## Anbox
+
+[Android in a box](https://anbox.io/)
+is an android emulator that runs on Linux. 
+To install it on debian I added the contrib and non-free backports to /etc/apt/sources.list :
+
+    deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free
+
+Then installed anbox from the backports:
+
+    sudo apt -t stretch-backports install anbox
+
+I have encountered [issue 211](https://github.com/anbox/anbox/issues/211)
+
 ## Lyx
 
 Default version of Lyx is 2.2 on debian strech.
