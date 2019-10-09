@@ -268,4 +268,17 @@ Send this command for all packages
 
 
 
+## From stretch 9 to buster 10
+
+* debian.org [buster upgrading](https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading)
+* tecadmin.net [upgrade debian 9 to debian 10 buster](https://tecadmin.net/upgrade-debian-9-to-debian-10-buster/)
+
+    sudo apt update 
+    sudo apt upgrade
+    sudo vim /etc/apt/sources.list
+    # in vim :%s/stretch/buster/g
+    sudo apt update
+    sudo apt upgrade
+    sudo apt dist-upgrade
+
 
