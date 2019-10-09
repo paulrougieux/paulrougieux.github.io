@@ -257,6 +257,17 @@ or `stack` (designed to work together with MultiIndex objects).
 [Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
 
 
+## String operations
+
+Concatenate all values in a character vector:
+
+    df['A'].str.cat()
+
+Replace elements in a character vector:
+
+    df['A'].replace('a','b',regex=True)
+
+
 
 
 ## Pandas comparison with R
@@ -303,6 +314,15 @@ Methods to use inside the .groupby().agg() method:
 * `mean`
 * `', '.join` [to get a union of strings](https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings)
 
+## R and python
+
+See also the section above on pandas data frame / comparison with R. 
+
+[Migrating from R to python](https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/)
+Python is a full fledge programming language but it is missing statistical and plotting libraries.
+Vectors are an after thought in python most functionality can be reproduced using operator overloading,
+but some functionality looks clumsy. 
+
 
 # Unit tests
 
@@ -343,14 +363,6 @@ Podecast [talk python to me](https://talkpython.fm/)
  * [Data science year in review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
 
 
-# R and python
-
-See also the section above on pandas data frame / comparison with R. 
-
-[Migrating from R to python](https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/)
-Python is a full fledge programming language but it is missing statistical and plotting libraries.
-Vectors are an after thought in python most functionality can be reproduced using operator overloading,
-but some functionality looks clumsy. 
 
 
 
