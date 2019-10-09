@@ -639,7 +639,7 @@ sport_car = mike.build_car(&#39;rouge&#39;)</code></pre>
 s = pandas.Series([&quot;ape&quot;, &quot;monkey&quot;, &quot;seagull&quot;])
 s.replace([&quot;ape&quot;, &quot;monkey&quot;], [&quot;lion&quot;, &quot;panda&quot;])
 s.replace(&quot;a&quot;, &quot;x&quot;, regex=True)
-s.replace({&quot;ape&quot;: &quot;lion&quot;, &quot;monkey&quot;: &quot;panda&quot;})
+`s.replace({&quot;ape&quot;: &quot;lion&quot;, &quot;monkey&quot;: &quot;panda&quot;})`
 pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&quot;,regex=True)</code></pre>
 </div>
 <div id="selection-with-loc-and-iloc" class="section level2">
@@ -658,7 +658,7 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <p>R data frame to be used for examples:</p>
 <pre><code>df = data.frame(x = 1:3, y = c(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;), stringsAsFactors = FALSE)</code></pre>
 <p>Pandas data frame to be used for examples:</p>
-<pre><code>df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  </code></pre>
+<pre><code>`df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  `</code></pre>
 <table style="width:100%;">
 <colgroup>
 <col width="37%" />
@@ -742,6 +742,13 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 </tr>
 </tbody>
 </table>
+<p>Methods to use inside the .groupby().agg() method:</p>
+<ul>
+<li><code>sum</code></li>
+<li><code>count</code></li>
+<li><code>mean</code></li>
+<li><code>', '.join</code> <a href="https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings">to get a union of strings</a></li>
+</ul>
 </div>
 </div>
 <div id="unit-tests" class="section level1">

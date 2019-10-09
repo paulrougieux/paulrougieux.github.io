@@ -209,13 +209,13 @@ Hadley Wickham's answer to a SO question
 
 Load data
 
-```{r}
+```{r eval=FALSE}
 list.files(getwd())
 forestEU_wide <- read.csv("Forest-R-EU.csv", stringsAsFactors = FALSE)
 head(forestEU)
 ```
 Pivot to long format
-```{r}
+```{r eval=FALSE}
 # at some pointin the future this will be called pivot_long
 forestEU <- forestEU_wide  %>% 
       # select everything except the Year, then pivot all columns and put the value in area
@@ -223,7 +223,7 @@ forestEU <- forestEU_wide  %>%
 ```
 
 # Interpolate for one country
-```{r}
+```{r eval=FALSE}
 country_interpolation <- function(df) {
       df <- data.frame(approx(df$Year, df$Area, method = "linear", n=71))
   df <- rename(df, Year = x, Area = y)
@@ -243,7 +243,7 @@ See documentation in
 * blog https://emoriebeck.github.io/R-tutorials/purrr/
 
 
-```{r}
+```{r eval=FALSE}
 
 forestEU_nested <- forestEU %>%
       # Remove empty area
@@ -259,7 +259,7 @@ forestEU_interpolated <- forestEU_nested %>% unnest(interpolated)
 
 
 # Write to many csv
-```{r}
+```{r eval=FALSE}
 #dir.create("output")
 forestEU_nested <- forestEU_nested %>% 
     mutate(filename = paste0("output/", Country, ".csv"),

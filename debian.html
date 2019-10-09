@@ -599,6 +599,25 @@ R&gt; pkgissues &lt;- unlist(lapply(blil, &quot;[[&quot;, 1))</code></pre>
 <p>Send this command for all packages</p>
 <pre><code>R&gt; lapply(paste(&quot;sudo dpkg --force-all -P &quot;, pkgissues),system)</code></pre>
 </div>
+<div id="from-stretch-9-to-buster-10" class="section level2">
+<h2>From stretch 9 to buster 10</h2>
+<ul>
+<li>debian.org <a href="https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading">buster upgrading</a></li>
+<li><p>tecadmin.net <a href="https://tecadmin.net/upgrade-debian-9-to-debian-10-buster/">upgrade debian 9 to debian 10 buster</a></p>
+<p>sudo apt update sudo apt upgrade</p></li>
+</ul>
+<p>Edit the sources.list files to replace “stretch” by “buster”</p>
+<pre><code>sudo vim /etc/apt/sources.list
+# in vim :%s/stretch/buster/g</code></pre>
+<p>Attention, I had another sources.list file under a subdirectory I had to comment the sources mention there as well, otherwise the system wouldn’t uprgade most packages.</p>
+<pre><code>sudo vim  /etc/apt/sources.list.d/base.list
+
+
+
+sudo apt update
+sudo apt upgrade
+sudo apt dist-upgrade</code></pre>
+</div>
 </div>
 
 

@@ -674,7 +674,48 @@ cars %&gt;%
 <div id="purrr" class="section level2">
 <h2>purrr</h2>
 <p>Hadley Wickham’s answer to a SO question <a href="https://stackoverflow.com/a/47123420/2641825">Why use purrr::map instead of lapply?</a></p>
+<div id="map-a-function-to-nested-data-sets" class="section level3">
+<h3>Map a function to nested data sets</h3>
+<p>Load data</p>
+<pre class="r"><code>list.files(getwd())
+forestEU_wide &lt;- read.csv(&quot;Forest-R-EU.csv&quot;, stringsAsFactors = FALSE)
+head(forestEU)</code></pre>
+<p>Pivot to long format</p>
+<pre class="r"><code># at some pointin the future this will be called pivot_long
+forestEU &lt;- forestEU_wide  %&gt;% 
+      # select everything except the Year, then pivot all columns and put the value in area
+      gather(-Year, key = &quot;Country&quot;, value = &quot;Area&quot;)</code></pre>
 </div>
+</div>
+</div>
+<div id="interpolate-for-one-country" class="section level1">
+<h1>Interpolate for one country</h1>
+<pre class="r"><code>country_interpolation &lt;- function(df) {
+      df &lt;- data.frame(approx(df$Year, df$Area, method = &quot;linear&quot;, n=71))
+  df &lt;- rename(df, Year = x, Area = y)
+    return(df)
+}
+
+forestEU %&gt;%  filter(Country==&quot;Austria&quot;) %&gt;% country_interpolation()</code></pre>
+<p>Interpolate for all countries Perform the Interpolation on all countries</p>
+<p>See documentation in * many models <a href="https://r4ds.had.co.nz/many-models.html" class="uri">https://r4ds.had.co.nz/many-models.html</a> * blog <a href="https://emoriebeck.github.io/R-tutorials/purrr/" class="uri">https://emoriebeck.github.io/R-tutorials/purrr/</a></p>
+<pre class="r"><code>forestEU_nested &lt;- forestEU %&gt;%
+      # Remove empty area
+      filter(!is.na(Area)) %&gt;% 
+      group_by(Country) %&gt;%  
+      nest() %&gt;% 
+      mutate(interpolated = map(data, country_interpolation))
+
+# forestEU_nested %&gt;% unnest(data)
+# Unnest the interpolated data to look at it and plotting
+forestEU_interpolated &lt;- forestEU_nested %&gt;% unnest(interpolated)</code></pre>
+</div>
+<div id="write-to-many-csv" class="section level1">
+<h1>Write to many csv</h1>
+<pre class="r"><code>#dir.create(&quot;output&quot;)
+forestEU_nested &lt;- forestEU_nested %&gt;% 
+    mutate(filename = paste0(&quot;output/&quot;, Country, &quot;.csv&quot;),
+    wrote_stuff = map2(interpolated, filename, write.csv))</code></pre>
 <div id="tidy-evaluation" class="section level2">
 <h2>tidy evaluation</h2>
 <ul>

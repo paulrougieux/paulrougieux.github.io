@@ -7,9 +7,6 @@ output:
     toc: yes
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-```
 
 
 # Control flow
@@ -251,7 +248,7 @@ or `stack` (designed to work together with MultiIndex objects).
     s = pandas.Series(["ape", "monkey", "seagull"])
     s.replace(["ape", "monkey"], ["lion", "panda"])
     s.replace("a", "x", regex=True)
-    s.replace({"ape": "lion", "monkey": "panda"})
+    `s.replace({"ape": "lion", "monkey": "panda"})`
     pandas.Series(["bla", "bla"]).replace("a","i",regex=True)
 
 
@@ -275,7 +272,7 @@ R data frame to be used for examples:
 
 Pandas data frame to be used for examples:
 
-    df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})  
+    `df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})  `
 
 |Base R                     |pandas                     |SO questions      |
 |---------------------------|---------------------------|------------------|
@@ -298,6 +295,13 @@ The mapping of tidyverse to pandas is:
 |gather    |melt       |
 |spread    |pivot      |
 
+
+Methods to use inside the .groupby().agg() method:
+
+* `sum`
+* `count`
+* `mean`
+* `', '.join` [to get a union of strings](https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings)
 
 
 # Unit tests

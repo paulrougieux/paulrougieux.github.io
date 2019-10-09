@@ -273,10 +273,22 @@ Send this command for all packages
 * debian.org [buster upgrading](https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading)
 * tecadmin.net [upgrade debian 9 to debian 10 buster](https://tecadmin.net/upgrade-debian-9-to-debian-10-buster/)
 
+
     sudo apt update 
     sudo apt upgrade
+
+Edit the sources.list files to replace "stretch" by "buster"
+
     sudo vim /etc/apt/sources.list
     # in vim :%s/stretch/buster/g
+
+Attention, I had another sources.list file under a subdirectory
+I had to comment the sources mention there as well, otherwise the system wouldn't uprgade most packages. 
+
+    sudo vim  /etc/apt/sources.list.d/base.list
+    
+
+
     sudo apt update
     sudo apt upgrade
     sudo apt dist-upgrade
