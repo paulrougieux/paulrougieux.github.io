@@ -646,6 +646,13 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <h2>Selection with loc and iloc</h2>
 <p><a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></p>
 </div>
+<div id="string-operations" class="section level2">
+<h2>String operations</h2>
+<p>Concatenate all values in a character vector:</p>
+<pre><code>df[&#39;A&#39;].str.cat()</code></pre>
+<p>Replace elements in a character vector:</p>
+<pre><code>df[&#39;A&#39;].replace(&#39;a&#39;,&#39;b&#39;,regex=True)</code></pre>
+</div>
 <div id="pandas-comparison-with-r" class="section level2">
 <h2>Pandas comparison with R</h2>
 <ul>
@@ -750,6 +757,11 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <li><code>', '.join</code> <a href="https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings">to get a union of strings</a></li>
 </ul>
 </div>
+<div id="r-and-python" class="section level2">
+<h2>R and python</h2>
+<p>See also the section above on pandas data frame / comparison with R.</p>
+<p><a href="https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/">Migrating from R to python</a> Python is a full fledge programming language but it is missing statistical and plotting libraries. Vectors are an after thought in python most functionality can be reproduced using operator overloading, but some functionality looks clumsy.</p>
+</div>
 </div>
 <div id="unit-tests" class="section level1">
 <h1>Unit tests</h1>
@@ -780,11 +792,6 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <div id="media" class="section level1">
 <h1>Media</h1>
 <p>Podecast <a href="https://talkpython.fm/">talk python to me</a> * <a href="https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition">Data science year in review</a></p>
-</div>
-<div id="r-and-python" class="section level1">
-<h1>R and python</h1>
-<p>See also the section above on pandas data frame / comparison with R.</p>
-<p><a href="https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/">Migrating from R to python</a> Python is a full fledge programming language but it is missing statistical and plotting libraries. Vectors are an after thought in python most functionality can be reproduced using operator overloading, but some functionality looks clumsy.</p>
 </div>
 
 

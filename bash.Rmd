@@ -639,7 +639,7 @@ Search for a pattern in python and R files:
 
 # Authentification and security
 
-## Generate SSH keys to access a remote git repository
+## Generate SSH keys and add them to the agent 
 
 Generate a new key
 
@@ -669,6 +669,14 @@ If the key was generated with a password,and you don't exactly remember the pass
 you can [test a few password you might remember with](https://stackoverflow.com/a/23666831/2641825):
 
     ssh-keygen -y -f <private_key_file_name>
+
+Note if you copy keys from one machine to another, you might 
+encounter this error:
+[ssh “permissions are too open” error](https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error)
+Change the permission so only the current user has access to the file:
+
+    chmod 600 id_rsa
+
 
 ## Check a key's fingerprint
 
