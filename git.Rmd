@@ -565,7 +565,6 @@ Git run enables to pull from many repositories with a single command
 
 configuration was a bit complicated on debian
 
-
 Install nodejs and npm from the backports
 
     sudo apt -t stretch-backports install nodejs
@@ -574,15 +573,34 @@ Install nodejs and npm from the backports
 
 Configure nmp to run only for the local user
 [configure npm to use a different directory](https://stackoverflow.com/a/40905762/2641825)
+citing 
+docs.npmjs.com [Manually change npm’s default directory](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
 
+in your home directory, create a directory for global installations:
+
+    mkdir ~/.npm-global
+
+Configure npm to use the new directory path:
+
+    npm config set prefix '~/.npm-global'
+
+Edit your bash profile:
+
+    vim ~/.bash_aliases
+    
+and add this line:
+
+    export PATH=~/.npm-global/bin:$PATH
 
 Then the configuration file is a .json file on the home folder. 
+Edit it: 
 
+    vim ~/.grconfig.json
 
-    gr git pull
-
+Show the status and pull from many repos:
 
     gr git status
+    gr git pull
 
 
 # Publishing project documentation on github
