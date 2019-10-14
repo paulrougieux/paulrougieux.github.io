@@ -584,6 +584,10 @@ Configure npm to use the new directory path:
 
     npm config set prefix '~/.npm-global'
 
+Install Git run:
+
+    npm install -g git-run
+
 Edit your bash profile:
 
     vim ~/.bash_aliases
@@ -596,6 +600,22 @@ Then the configuration file is a .json file on the home folder.
 Edit it: 
 
     vim ~/.grconfig.json
+
+For example:
+
+    {
+      "tags": {
+        "all": [
+          "/home/paul/repos/bioeconomy_notes",
+          "/home/paul/repos/bioeconomy_papers",
+          "/home/paul/repos/cbm3_python",
+          "/home/paul/repos/cbmcfs3_data",
+          "/home/paul/repos/cbmcfs3_pub",
+          "/home/paul/repos/cbmcfs3_runner",
+        ]
+      }
+    }
+
 
 Show the status and pull from many repos:
 
