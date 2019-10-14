@@ -267,6 +267,21 @@ Replace elements in a character vector:
 
     df['A'].replace('a','b',regex=True)
 
+# Difference between 2 data frames
+
+* [Find difference between two data frames](https://stackoverflow.com/questions/48647534/python-pandas-find-difference-between-two-data-frames)
+* [Diff of 2 data frames](https://stackoverflow.com/questions/36891977/pandas-diff-of-two-dataframes/36893773)
+
+Two methods
+Using `merge`:
+
+    merged = df1.merge(df2, indicator=True, how='outer')
+    merged[merged['_merge'] == 'right_only']
+
+Using `drop_duplicates`
+
+    newdf=pd.concat[df1,df2].drop_duplicates(keep=False)
+
 
 
 
