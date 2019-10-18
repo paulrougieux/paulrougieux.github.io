@@ -11,9 +11,18 @@ This page is the continuation of
 
 # Installing Debian 
 
-The Debian GNU LInux operating system is available as a torent download at: 
-[debian.org/CD/live/](https://www.debian.org/CD/live/).
-Debian GNU/Linux Installation Guide 
+The Debian GNU Linux operating system is available as a torent download or a http download at
+[debian.org/CD](https://www.debian.org/CD/): 
+
+ * The [net install CD](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/) is sufficient to install debian
+ * On [debian.org/CD/live/](https://www.debian.org/CD/live/) you can get 
+   "Live images which you can use to try Debian first and then install the contents of the image."
+
+Verify the checksum 
+
+    shasum debian-10.1.0-amd64-netinst.iso
+
+To copy the image to a usb key follow the 
 [instruction on how to copy the iso image to a usb key](https://www.debian.org/releases/stable/amd64/ch04s03.html.en) 
 
 Find the device name of my USB key (it had a previous Debian system on it):
@@ -24,15 +33,30 @@ Find the device name of my USB key (it had a previous Debian system on it):
 Unmount the USB key
 
     sudo umount /dev/sdb1
+    # or
+    sudo umount "/media/gabriele/Debian Inst"
 
 Transfer the iso image to the key
 
    sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb
+   # or
+   sudo cp debian-10.1.0-amd64-netinst.iso  /dev/sdb
 
 The iso should be copied to `sdb` and not to `sdb1` !
-
 Then the USB drive can be used to boot a laptop. 
 
+
+## After the installation
+
+Add my user name to the super user group
+
+    su
+    # Then as a super user 
+    /usr/sbin/adduser paul sudo
+
+I updated the debian mirror to a nearby mirror 
+
+    sudo apt edit-sources
 
 ## Debian on a HP Elitbook
 Note: on a HP laptop make sure that the "legacy boot" is enabled 
@@ -57,9 +81,6 @@ And given directly during the installation step.
 
 After that extra step, the wifi card was working inside Debian.
 
-I updated the debian mirror to a nearby mirror in germany
-
-    sudo apt edit-sources
 
 See also my 2014 blog post :
 [Debian GNU Linux installation on a LENOVO T400](https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html)
