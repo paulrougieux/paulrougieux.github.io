@@ -1,15 +1,10 @@
-bind h select-pane -L
-bind j select-pane -D
-bind k select-pane -U
-bind l select-pane -R
-neww
-select-window -t :1 
-
 # Create windows and panes
 rename-window utils 
 split-window -v 'tail -f .tmux/work'
 split-window -v 
 neww
+neww
+rename-window server 
 select-window -t :1 
 
 # Tools used on desktop
