@@ -59,6 +59,7 @@ I updated the debian mirror to a nearby mirror
     sudo apt edit-sources
 
 ## Debian on a HP Elitbook
+
 Note: on a HP laptop make sure that the "legacy boot" is enabled 
 and that the "secure boot" is disabled.
 The boot devices can be choosen by pressing ESC at startup, then F9.
@@ -247,6 +248,18 @@ Installing from the backports (see above section on how to add the backports in 
 
     sudo apt-get -t stretch-backports install remmina 
 
+
+## Riot
+
+[Desktop Riot installation](https://riot.im/download/desktop/)
+
+
+    sudo apt install -y lsb-release wget apt-transport-https
+    sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] https://packages.riot.im/debian/ $(lsb_release -cs) main" |
+    sudo tee /etc/apt/sources.list.d/riot-im.list
+    sudo apt update
+    sudo apt install riot-web
 
 # Tools
 

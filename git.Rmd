@@ -263,12 +263,19 @@ explains how to change the email for the current repository only
 
     git config user.email personal@example.org
 
+## Other config --global options
+
+[How do I make Git use the editor of my choice for commits?](https://stackoverflow.com/a/2596835/2641825)
+
+    git config --global core.editor "vim"
+
 ## Remembering passwords
 
 [How to save user name and password in git](https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git)
 
     git config credential.helper store
 
+Alternativelly, it's better to use ssh keys to connect to git repositories.
 
 # Branching
 

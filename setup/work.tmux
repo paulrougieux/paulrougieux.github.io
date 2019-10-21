@@ -3,6 +3,7 @@ rename-window utils
 split-window -v 'tail -f .tmux/work'
 split-window -v 
 neww
+cat ~/.tmux/work
 neww
 rename-window server 
 select-window -t :1 
