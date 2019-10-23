@@ -224,8 +224,6 @@ Example
     sport_car = mike.build_car('rouge')
 
 
-
-
 # Pandas data frames
 
 ## Joining and merging
@@ -252,10 +250,119 @@ or `stack` (designed to work together with MultiIndex objects).
     pandas.Series(["bla", "bla"]).replace("a","i",regex=True)
 
 
-## Selection with loc and iloc
+## Selection with loc, iloc and query
 
-[Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
+ * blog [Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
 
+
+### loc
+
+I copied the examples below from the pandas **loc** documentation at:
+[pandas.DataFrame.loc](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html)
+
+Create an example data frame
+
+    import pandas
+    df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                          index=['cobra', 'viper', 'sidewinder'],
+                          columns=['max_speed', 'shield'])
+
+List of index labels
+
+    In :  df.loc[['viper', 'sidewinder']]
+    Out:
+                        max_speed  shield
+            viper               4       5
+            sidewinder          7       8
+
+Slice with labels for row and labels for columns.
+
+    In :  df.loc['cobra':'viper', 'max_speed':'shield']
+    Out:
+                   max_speed  shield
+            cobra          1       2
+            viper          4       5
+
+Conditional that returns a boolean Series
+
+    In :  df.loc[df['shield'] > 6]
+    Out:
+                         max_speed  shield
+             sidewinder          7       8
+
+Set value for all items matching the list of labels
+
+    In : df.loc[['viper', 'sidewinder'], ['shield']] = 50
+
+    In : df
+    Out:
+                        max_speed  shield
+            cobra               1       2
+            viper               4      50
+            sidewinder          7      50
+
+Another example using integers for the index
+
+    In : df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                               index=[7, 8, 9],
+                               columns=['max_speed', 'shield'])
+
+Slice with integer labels for rows. Note that both the start and stop of the slice are included.
+
+    In :  df.loc[8:9]
+    Out:
+          max_speed  shield
+       8          4       5
+       9          7       8
+
+### iloc 
+
+Create a sample data frame:
+
+    In : example = [{'a': 1, 'b': 2, 'c': 3, 'd': 4},
+                    {'a': 100, 'b': 200, 'c': 300, 'd': 400},
+                    {'a': 1000, 'b': 2000, 'c': 3000, 'd': 4000 }]
+          df = pandas.DataFrame(example)
+
+    In : df
+    Out: 
+                a     b     c     d
+          0     1     2     3     4
+          1   100   200   300   400
+          2  1000  2000  3000  4000
+
+Index with a slice object. Note that it doesn't include the upper bound.
+
+    In :  df.iloc[0:2]
+    Out: 
+              a    b    c    d
+         0    1    2    3    4
+         1  100  200  300  400
+
+With lists of integers.
+
+    In : df.iloc[[0, 2], [1, 3]]
+    Out: 
+                b     d
+          0     2     4
+          2  2000  4000
+
+With slice objects.
+
+    In : df.iloc[1:3, 0:3]
+    Out: 
+                a     b     c
+          1   100   200   300
+          2  1000  2000  3000
+
+With a boolean array whose length matches the columns.
+
+    In : df.iloc[:, [True, False, True, False]]
+    Out: 
+                a     c
+          0     1     3
+          1   100   300
+          2  1000  3000
 
 ## String operations
 
