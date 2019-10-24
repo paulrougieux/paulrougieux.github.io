@@ -250,10 +250,16 @@ or `stack` (designed to work together with MultiIndex objects).
     pandas.Series(["bla", "bla"]).replace("a","i",regex=True)
 
 
-## Selection with loc, iloc and query
+## Selection with loc, iloc, query and isin
 
  * blog [Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
 
+### isin
+
+[Use alist of values to select rows](https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe)
+
+    df = pd.DataFrame({'A': [5,6,3,4], 'B': [1,2,3,5]})
+    df[df['A'].isin([3, 6])]
 
 ### loc
 
