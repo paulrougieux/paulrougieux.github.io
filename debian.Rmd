@@ -154,6 +154,18 @@ I have encountered [issue 211](https://github.com/anbox/anbox/issues/211)
 
 ## Lyx
 
+wiki.lyx.org [LyXOnDebian](https://wiki.lyx.org/LyX/LyXOnDebian) 
+explains how to install Lyx on Debian:
+
+    sudo apt install lyx
+
+Lyx couldn't access some layout files, I first thought I needed install latex layouts:
+
+    sudo apt install texlive-latex-recommended
+    sudo apt install texlive-latex-extra
+
+But these were already installed. 
+
 Default version of Lyx is 2.2 on debian strech.
 wiki.lyx.org [LyXOnDebian](https://wiki.lyx.org/LyX/LyXOnDebian) 
 explains how to install lyx 2.3 from the backports on Debian stretch. 
@@ -176,6 +188,7 @@ see [Cran mirror of Debian packages](https://cran.r-project.org/bin/linux/debian
 Add the following to /etc/apt/sources.list
 
     deb https://cran.stat.unipd.it/bin/linux/debian stretch-cran35/
+    deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/
 
 In case you get an error:
 
@@ -193,6 +206,10 @@ apparently blocked by a firewall on my network.
 Then run the following to upgrade R to the lastest version availale on your CRAN mirror:
 
     sudo apt update
+    sudo apt install r-base r-base-dev
+
+Or if you already had an old R version on your system:
+
     sudo apt upgrade 
 
 ### Installing Rstudio

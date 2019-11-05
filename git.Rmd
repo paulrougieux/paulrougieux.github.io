@@ -212,6 +212,13 @@ Chekout the older revision of a file under a new name
 
 See also alias and git grep below.
 
+## Revert
+
+Revert an unwanted comming with a new comming doing exactly the reverse operation
+
+    git revert <commit hash>
+
+
 # Keeping uncommited changes in the current branch while working quickly in another branch
 For example you edit a file in branch develop
 
