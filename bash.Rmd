@@ -152,7 +152,7 @@ Alternatively, pdftk can be used to merge PDF files
 
 [Extract pages from a pdf](https://askubuntu.com/a/282455/315347)
 
-    pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.
+    pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf
 
 Split a pdf in two
 
