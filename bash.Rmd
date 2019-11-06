@@ -69,8 +69,8 @@ Give 1 line of context before and 2 lines of context after:
 
     grep -B 1 -A 2 pattern README.md
 
-Show one line for only specific log files recursively in a directory,
-also count those lines.
+Search for lines containing "Done" or "encountered" only in specific log files recursively in a directory.
+Also count those lines.
 
    grep -r Done --include runner.log
    grep -r Done --include runner.log |wc -l
