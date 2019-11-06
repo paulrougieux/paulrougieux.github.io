@@ -69,6 +69,14 @@ Give 1 line of context before and 2 lines of context after:
 
     grep -B 1 -A 2 pattern README.md
 
+Show one line for only specific log files recursively in a directory,
+also count those lines.
+
+   grep -r Done --include runner.log
+   grep -r Done --include runner.log |wc -l
+   grep -r encountered --include runner.log
+   grep -r encountered --include runner.log |wc -l
+
 Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
 Use Extended regular expression (-E) to search for alphanumeric characters, 
 only show the matching result (-o), not the full line 
