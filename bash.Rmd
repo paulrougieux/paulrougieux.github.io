@@ -72,10 +72,10 @@ Give 1 line of context before and 2 lines of context after:
 Search for lines containing "Done" or "encountered" only in specific log files recursively in a directory.
 Also count those lines.
 
-   grep -r Done --include runner.log
-   grep -r Done --include runner.log |wc -l
-   grep -r encountered --include runner.log
-   grep -r encountered --include runner.log |wc -l
+    grep -r Done --include runner.log
+    grep -r Done --include runner.log |wc -l
+    grep -r encountered --include runner.log
+    grep -r encountered --include runner.log |wc -l
 
 Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
 Use Extended regular expression (-E) to search for alphanumeric characters, 
