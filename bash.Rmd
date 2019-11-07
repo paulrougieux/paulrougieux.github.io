@@ -70,14 +70,14 @@ Give 1 line of context before and 2 lines of context after:
     grep -B 1 -A 2 pattern README.md
 
 Search for lines containing "Done" or "encountered" only in specific log files recursively in a directory.
-Also count those lines.
+Also displays the line count at the end.
 
-    grep -r Done --include runner.log
-    grep -r Done --include runner.log |wc -l
-    grep -r encountered --include runner.log
-    grep -r encountered --include runner.log |wc -l
+    grep -r Done --include runner.log | tee /dev/tty |wc -l
+    grep -r encountered --include runner.log | tee /dev/tty |wc -l
 
-Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters).
+Note: [How to pipe stdout while keeping it on screen](https://stackoverflow.com/questions/5677201/how-to-pipe-stdout-while-keeping-it-on-screen-and-not-to-a-output-file)
+
+Show all csv files mentioned in a source code (supposing the csv file name contain only alphanumeric characters).
 Use Extended regular expression (-E) to search for alphanumeric characters, 
 only show the matching result (-o), not the full line 
 and show the line number (-n) where the string occurs:
@@ -92,7 +92,7 @@ Count occurrences of a word in a file
 
     awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
 
-Regexp match begining of and end of line with ^ and \$.
+Regexp match beginning of and end of line with ^ and \$.
 
 Follow the end of a log file as it is written 
 
@@ -116,7 +116,7 @@ Count the number of lines in all files, and give the total line count.
 
 ## Play Midi files
 
-Install a software synthethizer to play midi files.
+Install a software synthesizer to play midi files.
 [VideoLan Wiki](https://wiki.videolan.org/Midi/)
 
 > If the FluidSynth codec is not shown in VLC's preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound 
@@ -195,7 +195,7 @@ I quoted them in \begin{verbatim} statements.
 # Refactor
 
 Replace strings with perl in a git repository.
-The examples below replace all occurences of the first string with the second string, for all 
+The examples below replace all occurrences of the first string with the second string, for all 
 files under git version control. 
 
     git grep -lz 'first_string'| xargs -0 perl -i'' -pE "s/first_string/second_string/g"
@@ -528,7 +528,7 @@ To install new locales, run :
     sudo dpkg-reconfigure locales
 
 SSH forwards locales to the server. 
-The server will try to use thegiven locale, but it might not have them installed.
+The server will try to use the given locale, but it might not have them installed.
 [Locale variables have no effect in remote shell](https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448)
 
 [How do I add a locale to a Ubuntu Server?](https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server)
@@ -541,7 +541,7 @@ add the locales you want (for example ru):
     sudo locale-gen ru_RU
     sudo locale-gen ru_RU.UTF-8
 
-run this update comand
+run this update command
 
     sudo update-locale 
 
@@ -577,7 +577,7 @@ Interactive process viewer
     htop
 
 Run a command every 2 seconds, 
-for example to list a folder as new files are beeing written to it:
+for example to list a folder as new files are being written to it:
 
     watch ls
 
@@ -615,7 +615,7 @@ Quit a job
 
      CTRL ^ C
 
-Kill a malfunctionning program:
+Kill a malfunctioning program:
 
     kill process_id
     kill -9 process_it # -9 forces the kill
@@ -638,7 +638,7 @@ Kill a graphical program, by clicking on it:
     message = "Hello World"
     echo $message
 
-## Wildcards
+## Wild cards
 
 Search for a pattern in python and R files:
 
@@ -749,10 +749,10 @@ Superuser.com [tmux or screen](https://superuser.com/questions/236158/tmux-vs-sc
 
 
 ## Screen
-I used screen to detatch and re-attach bash sessions on remote hosts. 
+I used screen to detach and reattach bash sessions on remote hosts. 
 This enabled me to run long algorithms on the remote host.
 I could disconnect in the evening from the ssh session 
-and reconnect the following morning to check if the algorithm had finnished running. 
+and reconnect the following morning to check if the algorithm had finished running. 
 The advantage of screen is that it is old and available on many systems.
 
 ## Tmux
@@ -770,7 +770,7 @@ To detach from a session:
 
     tmux detach (CTRL + b + d)
 
-To reatach to a session:
+To reattach to a session:
 
     tmux attach -t session_name
 
@@ -822,12 +822,12 @@ Display pane numbers
 
 [How to switch directly to a pane in tmux?](https://unix.stackexchange.com/a/136643/85530):
 
-> "You can jump directly to a pane by typing pane's index while it is showed by display-panes command."
+> "You can jump directly to a pane by typing pane's index while it is showed by display panes command."
 
 
 ### Movements
 
-to scroll inside a pane press
+To scroll inside a pane press
 
     CTRL + b + Page up down
 
@@ -867,13 +867,13 @@ Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/com
 
 # VPN
 
-A VPN was usefull when:
+A VPN was useful when:
 * SMS interface didn't work on orange.fr. I could access it through a VPN server based in Paris.
 * FTP download site based in Canada didn't work from Italy. A colleague could access it through a VPN server based in Canada.
 * SSH access to remote servers didn't work on company wifi. I could access the machines through the VPN.
 VPN access also removes localisation of site searches on google and google maps. 
 
-Example session,from a company wifi system which is probably bloking ssh traffic.
+Example session,from a company wifi system which is probably blocking SSH traffic.
 The SSH connection breaks:
 
     paul@debianpaul:~/repos$ ssh cbm1 

@@ -479,18 +479,17 @@ ls -l &lt;filename&gt;</code></pre>
 <pre><code>grep -ri &quot;pattern&quot; .</code></pre>
 <p>Give 1 line of context before and 2 lines of context after:</p>
 <pre><code>grep -B 1 -A 2 pattern README.md</code></pre>
-<p>Search for lines containing “Done” or “encountered” only in specific log files recursively in a directory. Also count those lines.</p>
-<pre><code>grep -r Done --include runner.log
-grep -r Done --include runner.log |wc -l
-grep -r encountered --include runner.log
-grep -r encountered --include runner.log |wc -l</code></pre>
-<p>Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters). Use Extended regular expression (-E) to search for alphanumeric characters, only show the matching result (-o), not the full line and show the line number (-n) where the string occurs:</p>
+<p>Search for lines containing “Done” or “encountered” only in specific log files recursively in a directory. Also displays the line count at the end.</p>
+<pre><code>grep -r Done --include runner.log | tee /dev/tty |wc -l
+grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
+<p>Note: <a href="https://stackoverflow.com/questions/5677201/how-to-pipe-stdout-while-keeping-it-on-screen-and-not-to-a-output-file">How to pipe stdout while keeping it on screen</a></p>
+<p>Show all csv files mentioned in a source code (supposing the csv file name contain only alphanumeric characters). Use Extended regular expression (-E) to search for alphanumeric characters, only show the matching result (-o), not the full line and show the line number (-n) where the string occurs:</p>
 <pre><code>grep -Eon &quot;[[:alnum:]]+.csv&quot; file.txt</code></pre>
 <p>Count occurrences of a word in a file</p>
 <pre><code>grep -roh word filename.txt  | wc -w</code></pre>
 <p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk tutorial</a>, for example filter a large file for lines that have a third field (product code) starting with 44, keep the header line:</p>
 <pre><code>awk -F, &#39;$3 ~ /^44/||NR==1&#39; nc201501.dat|less</code></pre>
-<p>Regexp match begining of and end of line with ^ and $.</p>
+<p>Regexp match beginning of and end of line with ^ and $.</p>
 <p>Follow the end of a log file as it is written</p>
 <pre><code>tail -f</code></pre>
 <p>See tab and end of line characters in a text file</p>
@@ -509,7 +508,7 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 <h1>Read</h1>
 <div id="play-midi-files" class="section level2">
 <h2>Play Midi files</h2>
-<p>Install a software synthethizer to play midi files. <a href="https://wiki.videolan.org/Midi/">VideoLan Wiki</a></p>
+<p>Install a software synthesizer to play midi files. <a href="https://wiki.videolan.org/Midi/">VideoLan Wiki</a></p>
 <blockquote>
 <p>If the FluidSynth codec is not shown in VLC’s preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound</p>
 </blockquote>
@@ -564,7 +563,7 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 </div>
 <div id="refactor" class="section level1">
 <h1>Refactor</h1>
-<p>Replace strings with perl in a git repository. The examples below replace all occurences of the first string with the second string, for all files under git version control.</p>
+<p>Replace strings with perl in a git repository. The examples below replace all occurrences of the first string with the second string, for all files under git version control.</p>
 <pre><code>git grep -lz &#39;first_string&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/first_string/second_string/g&quot;
 git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;
 git grep -lz &#39;RMySQL::&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/RMySQL::/RMariaDB::/g&quot;</code></pre>
@@ -781,13 +780,13 @@ Unofficial Ubuntu starter guide.</code></pre>
 <pre><code>locale</code></pre>
 <p>To install new locales, run :</p>
 <pre><code>sudo dpkg-reconfigure locales</code></pre>
-<p>SSH forwards locales to the server. The server will try to use thegiven locale, but it might not have them installed. <a href="https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448">Locale variables have no effect in remote shell</a></p>
+<p>SSH forwards locales to the server. The server will try to use the given locale, but it might not have them installed. <a href="https://askubuntu.com/questions/144235/locale-variables-have-no-effect-in-remote-shell-perl-warning-setting-locale-f/144448#144448">Locale variables have no effect in remote shell</a></p>
 <p><a href="https://askubuntu.com/questions/76013/how-do-i-add-locale-to-ubuntu-server">How do I add a locale to a Ubuntu Server?</a> Check which locales are supported:</p>
 <pre><code>locale -a</code></pre>
 <p>add the locales you want (for example ru):</p>
 <pre><code>sudo locale-gen ru_RU
 sudo locale-gen ru_RU.UTF-8</code></pre>
-<p>run this update comand</p>
+<p>run this update command</p>
 <pre><code>sudo update-locale </code></pre>
 </div>
 <div id="partitioning-and-formatting-drives" class="section level2">
@@ -810,7 +809,7 @@ w # write table to disk</code></pre>
 <pre><code>top</code></pre>
 <p>Interactive process viewer</p>
 <pre><code>htop</code></pre>
-<p>Run a command every 2 seconds, for example to list a folder as new files are beeing written to it:</p>
+<p>Run a command every 2 seconds, for example to list a folder as new files are being written to it:</p>
 <pre><code>watch ls</code></pre>
 <p>Follow the end of a log file, as it is written</p>
 <pre><code>tail filename.log</code></pre>
@@ -831,7 +830,7 @@ w # write table to disk</code></pre>
 <p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-bash-s-job-control-to-manage-foreground-and-background-processes">How to manage foreground and background processes</a> “By default, the bg command operates on the most recently stopped process. If you’ve stopped multiple “</p>
 <p>Quit a job</p>
 <pre><code> CTRL ^ C</code></pre>
-<p>Kill a malfunctionning program:</p>
+<p>Kill a malfunctioning program:</p>
 <pre><code>kill process_id
 kill -9 process_it # -9 forces the kill</code></pre>
 <p>Find a program id with:</p>
@@ -848,8 +847,8 @@ kill -9 process_it # -9 forces the kill</code></pre>
 <pre><code>message = &quot;Hello World&quot;
 echo $message</code></pre>
 </div>
-<div id="wildcards" class="section level2">
-<h2>Wildcards</h2>
+<div id="wild-cards" class="section level2">
+<h2>Wild cards</h2>
 <p>Search for a pattern in python and R files:</p>
 <pre><code>grep -n &lt;pattern&gt; *{py,R}</code></pre>
 </div>
@@ -915,7 +914,7 @@ eval `ssh-agent`</code></pre>
 <p>Superuser.com <a href="https://superuser.com/questions/236158/tmux-vs-screen">tmux or screen</a></p>
 <div id="screen" class="section level2">
 <h2>Screen</h2>
-<p>I used screen to detatch and re-attach bash sessions on remote hosts. This enabled me to run long algorithms on the remote host. I could disconnect in the evening from the ssh session and reconnect the following morning to check if the algorithm had finnished running. The advantage of screen is that it is old and available on many systems.</p>
+<p>I used screen to detach and reattach bash sessions on remote hosts. This enabled me to run long algorithms on the remote host. I could disconnect in the evening from the ssh session and reconnect the following morning to check if the algorithm had finished running. The advantage of screen is that it is old and available on many systems.</p>
 </div>
 <div id="tmux" class="section level2">
 <h2>Tmux</h2>
@@ -930,7 +929,7 @@ eval `ssh-agent`</code></pre>
 <pre><code>tmux new -s session_name</code></pre>
 <p>To detach from a session:</p>
 <pre><code>tmux detach (CTRL + b + d)</code></pre>
-<p>To reatach to a session:</p>
+<p>To reattach to a session:</p>
 <pre><code>tmux attach -t session_name</code></pre>
 <p>To list current sessions:</p>
 <pre><code>tmux list-sessions</code></pre>
@@ -960,12 +959,12 @@ eval `ssh-agent`</code></pre>
 <pre><code>q</code></pre>
 <p><a href="https://unix.stackexchange.com/a/136643/85530">How to switch directly to a pane in tmux?</a>:</p>
 <blockquote>
-<p>“You can jump directly to a pane by typing pane’s index while it is showed by display-panes command.”</p>
+<p>“You can jump directly to a pane by typing pane’s index while it is showed by display panes command.”</p>
 </blockquote>
 </div>
 <div id="movements" class="section level3">
 <h3>Movements</h3>
-<p>to scroll inside a pane press</p>
+<p>To scroll inside a pane press</p>
 <pre><code>CTRL + b + Page up down</code></pre>
 </div>
 <div id="tmux-configuration" class="section level3">
@@ -993,8 +992,8 @@ new-window</code></pre>
 </div>
 <div id="vpn" class="section level1">
 <h1>VPN</h1>
-<p>A VPN was usefull when: * SMS interface didn’t work on orange.fr. I could access it through a VPN server based in Paris. * FTP download site based in Canada didn’t work from Italy. A colleague could access it through a VPN server based in Canada. * SSH access to remote servers didn’t work on company wifi. I could access the machines through the VPN. VPN access also removes localisation of site searches on google and google maps.</p>
-<p>Example session,from a company wifi system which is probably bloking ssh traffic. The SSH connection breaks:</p>
+<p>A VPN was useful when: * SMS interface didn’t work on orange.fr. I could access it through a VPN server based in Paris. * FTP download site based in Canada didn’t work from Italy. A colleague could access it through a VPN server based in Canada. * SSH access to remote servers didn’t work on company wifi. I could access the machines through the VPN. VPN access also removes localisation of site searches on google and google maps.</p>
+<p>Example session,from a company wifi system which is probably blocking SSH traffic. The SSH connection breaks:</p>
 <pre><code>paul@debianpaul:~/repos$ ssh cbm1 
 ssh_exchange_identification: Connection closed by remote host</code></pre>
 <p>I start the VPN:</p>

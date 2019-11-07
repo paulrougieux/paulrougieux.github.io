@@ -271,17 +271,21 @@ To use the spellcheck for two languages, add this to your `~/.vimrc`:
 
     set spell spelllang=en_gb,fr
 
-Set spell check only in the local buffer:
-
-    :setlocal spell spelllang=en_gb   
-
- Turn spell check off
+On the first use, vim may give a warning that some word lists are missing. 
+[How to make vim download missing word lists](https://www.monolune.com/how-to-make-vim-download-missing-word-lists/)
+To solve this issue, turn spell check off
 
     :set nospell 
 
 Turn spell check on
 
     :set spell
+
+Then vim will offer to download the missing dictionaries. 
+
+Set spell check only in the local buffer:
+
+    :setlocal spell spelllang=en_gb   
 
 Find alternative for highlighted word:
 
