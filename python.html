@@ -92,7 +92,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -642,9 +641,102 @@ s.replace(&quot;a&quot;, &quot;x&quot;, regex=True)
 `s.replace({&quot;ape&quot;: &quot;lion&quot;, &quot;monkey&quot;: &quot;panda&quot;})`
 pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&quot;,regex=True)</code></pre>
 </div>
-<div id="selection-with-loc-and-iloc" class="section level2">
-<h2>Selection with loc and iloc</h2>
-<p><a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></p>
+<div id="selection-with-loc-iloc-query-and-isin" class="section level2">
+<h2>Selection with loc, iloc, query and isin</h2>
+<ul>
+<li>blog <a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></li>
+</ul>
+<div id="isin" class="section level3">
+<h3>isin</h3>
+<p><a href="https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe">Use alist of values to select rows</a></p>
+<pre><code>df = pd.DataFrame({&#39;A&#39;: [5,6,3,4], &#39;B&#39;: [1,2,3,5]})
+df[df[&#39;A&#39;].isin([3, 6])]</code></pre>
+</div>
+<div id="loc" class="section level3">
+<h3>loc</h3>
+<p>I copied the examples below from the pandas <strong>loc</strong> documentation at: <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html">pandas.DataFrame.loc</a></p>
+<p>Create an example data frame</p>
+<pre><code>import pandas
+df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                      index=[&#39;cobra&#39;, &#39;viper&#39;, &#39;sidewinder&#39;],
+                      columns=[&#39;max_speed&#39;, &#39;shield&#39;])</code></pre>
+<p>List of index labels</p>
+<pre><code>In :  df.loc[[&#39;viper&#39;, &#39;sidewinder&#39;]]
+Out:
+                    max_speed  shield
+        viper               4       5
+        sidewinder          7       8</code></pre>
+<p>Slice with labels for row and labels for columns.</p>
+<pre><code>In :  df.loc[&#39;cobra&#39;:&#39;viper&#39;, &#39;max_speed&#39;:&#39;shield&#39;]
+Out:
+               max_speed  shield
+        cobra          1       2
+        viper          4       5</code></pre>
+<p>Conditional that returns a boolean Series</p>
+<pre><code>In :  df.loc[df[&#39;shield&#39;] &gt; 6]
+Out:
+                     max_speed  shield
+         sidewinder          7       8</code></pre>
+<p>Set value for all items matching the list of labels</p>
+<pre><code>In : df.loc[[&#39;viper&#39;, &#39;sidewinder&#39;], [&#39;shield&#39;]] = 50
+
+In : df
+Out:
+                    max_speed  shield
+        cobra               1       2
+        viper               4      50
+        sidewinder          7      50</code></pre>
+<p>Another example using integers for the index</p>
+<pre><code>In : df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                           index=[7, 8, 9],
+                           columns=[&#39;max_speed&#39;, &#39;shield&#39;])</code></pre>
+<p>Slice with integer labels for rows. Note that both the start and stop of the slice are included.</p>
+<pre><code>In :  df.loc[8:9]
+Out:
+      max_speed  shield
+   8          4       5
+   9          7       8</code></pre>
+</div>
+<div id="iloc" class="section level3">
+<h3>iloc</h3>
+<p>Create a sample data frame:</p>
+<pre><code>In : example = [{&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4},
+                {&#39;a&#39;: 100, &#39;b&#39;: 200, &#39;c&#39;: 300, &#39;d&#39;: 400},
+                {&#39;a&#39;: 1000, &#39;b&#39;: 2000, &#39;c&#39;: 3000, &#39;d&#39;: 4000 }]
+      df = pandas.DataFrame(example)
+
+In : df
+Out: 
+            a     b     c     d
+      0     1     2     3     4
+      1   100   200   300   400
+      2  1000  2000  3000  4000</code></pre>
+<p>Index with a slice object. Note that it doesn’t include the upper bound.</p>
+<pre><code>In :  df.iloc[0:2]
+Out: 
+          a    b    c    d
+     0    1    2    3    4
+     1  100  200  300  400</code></pre>
+<p>With lists of integers.</p>
+<pre><code>In : df.iloc[[0, 2], [1, 3]]
+Out: 
+            b     d
+      0     2     4
+      2  2000  4000</code></pre>
+<p>With slice objects.</p>
+<pre><code>In : df.iloc[1:3, 0:3]
+Out: 
+            a     b     c
+      1   100   200   300
+      2  1000  2000  3000</code></pre>
+<p>With a boolean array whose length matches the columns.</p>
+<pre><code>In : df.iloc[:, [True, False, True, False]]
+Out: 
+            a     c
+      0     1     3
+      1   100   300
+      2  1000  3000</code></pre>
+</div>
 </div>
 <div id="string-operations" class="section level2">
 <h2>String operations</h2>
@@ -653,6 +745,18 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <p>Replace elements in a character vector:</p>
 <pre><code>df[&#39;A&#39;].replace(&#39;a&#39;,&#39;b&#39;,regex=True)</code></pre>
 </div>
+</div>
+<div id="difference-between-2-data-frames" class="section level1">
+<h1>Difference between 2 data frames</h1>
+<ul>
+<li><a href="https://stackoverflow.com/questions/48647534/python-pandas-find-difference-between-two-data-frames">Find difference between two data frames</a></li>
+<li><a href="https://stackoverflow.com/questions/36891977/pandas-diff-of-two-dataframes/36893773">Diff of 2 data frames</a></li>
+</ul>
+<p>Two methods Using <code>merge</code>:</p>
+<pre><code>merged = df1.merge(df2, indicator=True, how=&#39;outer&#39;)
+merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
+<p>Using <code>drop_duplicates</code></p>
+<pre><code>newdf=pd.concat[df1,df2].drop_duplicates(keep=False)</code></pre>
 <div id="pandas-comparison-with-r" class="section level2">
 <h2>Pandas comparison with R</h2>
 <ul>
@@ -666,7 +770,7 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
 <pre><code>df = data.frame(x = 1:3, y = c(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;), stringsAsFactors = FALSE)</code></pre>
 <p>Pandas data frame to be used for examples:</p>
 <pre><code>`df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  `</code></pre>
-<table style="width:100%;">
+<table>
 <colgroup>
 <col width="37%" />
 <col width="37%" />

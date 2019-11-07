@@ -90,7 +90,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -441,16 +440,33 @@ div.tocify {
 <p>This page is the continuation of <a href="https://paulremote.blogspot.fr/search/label/Debian">several blog posts related to Debian</a></p>
 <div id="installing-debian" class="section level1">
 <h1>Installing Debian</h1>
-<p>The Debian GNU LInux operating system is available as a torent download at: <a href="https://www.debian.org/CD/live/">debian.org/CD/live/</a>. Debian GNU/Linux Installation Guide <a href="https://www.debian.org/releases/stable/amd64/ch04s03.html.en">instruction on how to copy the iso image to a usb key</a></p>
+<p>The Debian GNU Linux operating system is available as a torent download or a http download at <a href="https://www.debian.org/CD/">debian.org/CD</a>:</p>
+<ul>
+<li>The <a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/">net install CD</a> is sufficient to install debian</li>
+<li>On <a href="https://www.debian.org/CD/live/">debian.org/CD/live/</a> you can get “Live images which you can use to try Debian first and then install the contents of the image.”</li>
+</ul>
+<p>Verify the checksum</p>
+<pre><code>shasum debian-10.1.0-amd64-netinst.iso</code></pre>
+<p>To copy the image to a usb key follow the <a href="https://www.debian.org/releases/stable/amd64/ch04s03.html.en">instruction on how to copy the iso image to a usb key</a></p>
 <p>Find the device name of my USB key (it had a previous Debian system on it):</p>
 <pre><code>sudo fdisk -l
 # /dev/sdb1 </code></pre>
 <p>Unmount the USB key</p>
-<pre><code>sudo umount /dev/sdb1</code></pre>
+<pre><code>sudo umount /dev/sdb1
+# or
+sudo umount &quot;/media/gabriele/Debian Inst&quot;</code></pre>
 <p>Transfer the iso image to the key</p>
-<p>sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb</p>
-<p>The iso should be copied to <code>sdb</code> and not to <code>sdb1</code> !</p>
-<p>Then the USB drive can be used to boot a laptop.</p>
+<p>sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb # or sudo cp debian-10.1.0-amd64-netinst.iso /dev/sdb</p>
+<p>The iso should be copied to <code>sdb</code> and not to <code>sdb1</code> ! Then the USB drive can be used to boot a laptop.</p>
+<div id="after-the-installation" class="section level2">
+<h2>After the installation</h2>
+<p>Add my user name to the super user group</p>
+<pre><code>su
+# Then as a super user 
+/usr/sbin/adduser paul sudo</code></pre>
+<p>I updated the debian mirror to a nearby mirror</p>
+<pre><code>sudo apt edit-sources</code></pre>
+</div>
 <div id="debian-on-a-hp-elitbook" class="section level2">
 <h2>Debian on a HP Elitbook</h2>
 <p>Note: on a HP laptop make sure that the “legacy boot” is enabled and that the “secure boot” is disabled. The boot devices can be choosen by pressing ESC at startup, then F9.</p>
@@ -459,34 +475,9 @@ div.tocify {
 <pre><code>sudo apt install ./firmware-iwlwifi_20161130-3_all.deb</code></pre>
 <p>Alternatively, the .ucode file can also be found in <a href="http://http.debian.net/debian/pool/non-free/f/firmware-nonfree/firmware-nonfree_20161130.orig.tar.xz">firmware-nonfree_20161130.orig.tar.xz</a> And given directly during the installation step.</p>
 <p>After that extra step, the wifi card was working inside Debian.</p>
-<p>I updated the debian mirror to a nearby mirror in germany</p>
-<pre><code>sudo apt edit-sources</code></pre>
 <p>See also my 2014 blog post : <a href="https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html">Debian GNU Linux installation on a LENOVO T400</a></p>
 <p>“BootDevice Not Found” issue in a HP Elitebook: <a href="https://wiki.debian.org/GrubEFIReinstall">Grub-EFI reinstall</a> The issue happenned on a partitionned disk. The fix was to completely erase the main disk and to reinstall a new debian on a single partition.</p>
 </div>
-<div id="installing-debian-software-from-backports" class="section level2">
-<h2>Installing debian software from backports:</h2>
-<pre><code> sudo apt -t stretch-backports install nodejs</code></pre>
-</div>
-</div>
-<div id="audio" class="section level1">
-<h1>Audio</h1>
-<div id="audio-setup" class="section level2">
-<h2>Audio Setup</h2>
-</div>
-<div id="audio-issues" class="section level2">
-<h2>Audio Issues</h2>
-<p>“dummy output” issue. Seen on a <a href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian Forum</a> one of the answer to Pulse Audio shows “dummy output” linked to that KDE PulseAudio page: <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE PulseAudio Integration</a> “One thing that can happen is that some other process”hogs&quot; the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a “Dummy Output”. As the name suggests, anything that is “Played” via this device is inaudible). This “Dummy Output” should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere).&quot;</p>
-<p>Debian wiki <a href="https://wiki.debian.org/PulseAudio#Missing_playback_devices_or_audio_capture">Missing playback devices or audio capture</a> deleting the configuration files and restarting pulseaudio. The following commands restored audio:</p>
-<pre><code>$ rm -r ~/.config/pulse /tmp/pulse-*
-$ pulseaudio --kill
-$ pulseaudio --start</code></pre>
-</div>
-</div>
-<div id="system-information" class="section level1">
-<h1>System information</h1>
-<p>Find out which Debian version is running</p>
-<pre><code>cat /etc/issue</code></pre>
 </div>
 <div id="installing-software" class="section level1">
 <h1>Installing software</h1>
@@ -505,6 +496,10 @@ Acquire::BrokenProxy    true;</code></pre>
 <p>Now run the update command:</p>
 <pre><code>sudo apt update</code></pre>
 </div>
+</div>
+<div id="installing-debian-software-from-backports" class="section level2">
+<h2>Installing debian software from backports:</h2>
+<pre><code> sudo apt -t stretch-backports install nodejs</code></pre>
 </div>
 <div id="deb-packages" class="section level2">
 <h2>DEB packages</h2>
@@ -525,6 +520,12 @@ sudo dpkg -i packagename</code></pre>
 </div>
 <div id="lyx" class="section level2">
 <h2>Lyx</h2>
+<p>wiki.lyx.org <a href="https://wiki.lyx.org/LyX/LyXOnDebian">LyXOnDebian</a> explains how to install Lyx on Debian:</p>
+<pre><code>sudo apt install lyx</code></pre>
+<p>Lyx couldn’t access some layout files, I first thought I needed install latex layouts:</p>
+<pre><code>sudo apt install texlive-latex-recommended
+sudo apt install texlive-latex-extra</code></pre>
+<p>But these were already installed.</p>
 <p>Default version of Lyx is 2.2 on debian strech. wiki.lyx.org <a href="https://wiki.lyx.org/LyX/LyXOnDebian">LyXOnDebian</a> explains how to install lyx 2.3 from the backports on Debian stretch.</p>
 <pre><code>sudo vim /etc/apt/sources.list
 # Add deb http://ftp.debian.org/debian stretch-backports main 
@@ -539,7 +540,8 @@ sudo apt-get -t stretch-backports install lyx</code></pre>
 <h3>Installing R from the CRAN mirror</h3>
 <p>Install R from the CRAN repository, see <a href="https://cran.r-project.org/bin/linux/debian/#debian-stretch-stable">Cran mirror of Debian packages</a></p>
 <p>Add the following to /etc/apt/sources.list</p>
-<pre><code>deb https://cran.stat.unipd.it/bin/linux/debian stretch-cran35/</code></pre>
+<pre><code>deb https://cran.stat.unipd.it/bin/linux/debian stretch-cran35/
+deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/</code></pre>
 <p>In case you get an error:</p>
 <pre><code>The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY FCAE2A0E115C3D8A</code></pre>
 <p>Add the PGP key so that this server is trusted :</p>
@@ -547,7 +549,9 @@ sudo apt-get -t stretch-backports install lyx</code></pre>
 <p>Based on this stackoverflow answer <a href="https://unix.stackexchange.com/a/110594/85530">about key server receive fail error</a> I had to use a server providing a connection on port 80 because the default port is apparently blocked by a firewall on my network.</p>
 <p>Then run the following to upgrade R to the lastest version availale on your CRAN mirror:</p>
 <pre><code>sudo apt update
-sudo apt upgrade </code></pre>
+sudo apt install r-base r-base-dev</code></pre>
+<p>Or if you already had an old R version on your system:</p>
+<pre><code>sudo apt upgrade </code></pre>
 </div>
 <div id="installing-rstudio" class="section level3">
 <h3>Installing Rstudio</h3>
@@ -569,6 +573,35 @@ sudo apt upgrade </code></pre>
 <p>Installing from the backports (see above section on how to add the backports in sources.list)</p>
 <pre><code>sudo apt-get -t stretch-backports install remmina </code></pre>
 </div>
+<div id="riot" class="section level2">
+<h2>Riot</h2>
+<p><a href="https://riot.im/download/desktop/">Desktop Riot installation</a></p>
+<pre><code>sudo apt install -y lsb-release wget apt-transport-https
+sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
+echo &quot;deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] https://packages.riot.im/debian/ $(lsb_release -cs) main&quot; |
+sudo tee /etc/apt/sources.list.d/riot-im.list
+sudo apt update
+sudo apt install riot-web</code></pre>
+</div>
+</div>
+<div id="audio" class="section level1">
+<h1>Audio</h1>
+<div id="audio-setup" class="section level2">
+<h2>Audio Setup</h2>
+</div>
+<div id="audio-issues" class="section level2">
+<h2>Audio Issues</h2>
+<p>“dummy output” issue. Seen on a <a href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian Forum</a> one of the answer to Pulse Audio shows “dummy output” linked to that KDE PulseAudio page: <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE PulseAudio Integration</a> “One thing that can happen is that some other process”hogs&quot; the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a “Dummy Output”. As the name suggests, anything that is “Played” via this device is inaudible). This “Dummy Output” should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere).&quot;</p>
+<p>Debian wiki <a href="https://wiki.debian.org/PulseAudio#Missing_playback_devices_or_audio_capture">Missing playback devices or audio capture</a> deleting the configuration files and restarting pulseaudio. The following commands restored audio:</p>
+<pre><code>$ rm -r ~/.config/pulse /tmp/pulse-*
+$ pulseaudio --kill
+$ pulseaudio --start</code></pre>
+</div>
+</div>
+<div id="system-information" class="section level1">
+<h1>System information</h1>
+<p>Find out which Debian version is running</p>
+<pre><code>cat /etc/issue</code></pre>
 </div>
 <div id="tools" class="section level1">
 <h1>Tools</h1>

@@ -12,7 +12,7 @@
 
 
 
-<title></title>
+<title>bash.utf8.md</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -90,7 +90,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -480,6 +479,8 @@ ls -l &lt;filename&gt;</code></pre>
 <pre><code>grep -ri &quot;pattern&quot; .</code></pre>
 <p>Give 1 line of context before and 2 lines of context after:</p>
 <pre><code>grep -B 1 -A 2 pattern README.md</code></pre>
+<p>Search for lines containing “Done” or “encountered” only in specific log files recursively in a directory. Also count those lines.</p>
+<p>grep -r Done –include runner.log grep -r Done –include runner.log |wc -l grep -r encountered –include runner.log grep -r encountered –include runner.log |wc -l</p>
 <p>Show all csv files mentionned in a source code (supposing the csv file name contain only alphanumeric characters). Use Extended regular expression (-E) to search for alphanumeric characters, only show the matching result (-o), not the full line and show the line number (-n) where the string occurs:</p>
 <pre><code>grep -Eon &quot;[[:alnum:]]+.csv&quot; file.txt</code></pre>
 <p>Count occurrences of a word in a file</p>
@@ -530,7 +531,7 @@ mogrify -resize 2000 -path ./newfolder *.jpg</code></pre>
 <p>Alternatively, pdftk can be used to merge PDF files</p>
 <pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
 <p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
-<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf.</code></pre>
+<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf</code></pre>
 <p>Split a pdf in two</p>
 <pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
 # if necessary, install mutool with 

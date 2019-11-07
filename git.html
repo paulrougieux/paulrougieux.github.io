@@ -90,7 +90,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -562,6 +561,11 @@ git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
 <pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
 <p>See also alias and git grep below.</p>
 </div>
+<div id="revert" class="section level2">
+<h2>Revert</h2>
+<p>Revert an unwanted comming with a new comming doing exactly the reverse operation</p>
+<pre><code>git revert &lt;commit hash&gt;</code></pre>
+</div>
 </div>
 <div id="keeping-uncommited-changes-in-the-current-branch-while-working-quickly-in-another-branch" class="section level1">
 <h1>Keeping uncommited changes in the current branch while working quickly in another branch</h1>
@@ -595,10 +599,16 @@ git config --global user.email you@example.com</code></pre>
 <p>Stackoverflow <a href="https://stackoverflow.com/a/9063238/2641825">git multiple user names for different projects</a> explains how to change the email for the current repository only</p>
 <pre><code>git config user.email personal@example.org</code></pre>
 </div>
+<div id="other-config-global-options" class="section level2">
+<h2>Other config –global options</h2>
+<p><a href="https://stackoverflow.com/a/2596835/2641825">How do I make Git use the editor of my choice for commits?</a></p>
+<pre><code>git config --global core.editor &quot;vim&quot;</code></pre>
+</div>
 <div id="remembering-passwords" class="section level2">
 <h2>Remembering passwords</h2>
 <p><a href="https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git">How to save user name and password in git</a></p>
 <pre><code>git config credential.helper store</code></pre>
+<p>Alternativelly, it’s better to use ssh keys to connect to git repositories.</p>
 </div>
 </div>
 <div id="branching" class="section level1">
@@ -790,12 +800,27 @@ sudo apt install build-essential</code></pre>
 <pre><code>mkdir ~/.npm-global</code></pre>
 <p>Configure npm to use the new directory path:</p>
 <pre><code>npm config set prefix &#39;~/.npm-global&#39;</code></pre>
+<p>Install Git run:</p>
+<pre><code>npm install -g git-run</code></pre>
 <p>Edit your bash profile:</p>
 <pre><code>vim ~/.bash_aliases</code></pre>
 <p>and add this line:</p>
 <pre><code>export PATH=~/.npm-global/bin:$PATH</code></pre>
 <p>Then the configuration file is a .json file on the home folder. Edit it:</p>
 <pre><code>vim ~/.grconfig.json</code></pre>
+<p>For example:</p>
+<pre><code>{
+  &quot;tags&quot;: {
+    &quot;all&quot;: [
+      &quot;/home/paul/repos/bioeconomy_notes&quot;,
+      &quot;/home/paul/repos/bioeconomy_papers&quot;,
+      &quot;/home/paul/repos/cbm3_python&quot;,
+      &quot;/home/paul/repos/cbmcfs3_data&quot;,
+      &quot;/home/paul/repos/cbmcfs3_pub&quot;,
+      &quot;/home/paul/repos/cbmcfs3_runner&quot;,
+    ]
+  }
+}</code></pre>
 <p>Show the status and pull from many repos:</p>
 <pre><code>gr git status
 gr git pull</code></pre>

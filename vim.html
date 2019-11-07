@@ -90,7 +90,6 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
@@ -624,17 +623,23 @@ set splitright</code></pre>
 <p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:</p>
 <pre><code>:r ! ls -1 /home/user/directory</code></pre>
 </div>
-<div id="vimdiff" class="section level2">
-<h2>Vimdiff</h2>
-<p>View differences between file1 and file2 (vim documentation)</p>
+<div id="vim-diff" class="section level2">
+<h2>Vim diff</h2>
+<p>View differences between <code>file1</code> and <code>file2</code> (vim documentation)</p>
 <pre><code>vimdiff file1 file2</code></pre>
 </div>
 <div id="spell-check" class="section level2">
 <h2>spell check</h2>
+<p><a href="https://superuser.com/questions/911412/how-to-configure-vim-spellcheck-to-use-two-languages">How to configure vim spellcheck to use two languages</a> To use the spellcheck for two languages, add this to your <code>~/.vimrc</code>:</p>
+<pre><code>set spell spelllang=en_gb,fr</code></pre>
 <p>Set spell check only in the local buffer:</p>
 <pre><code>:setlocal spell spelllang=en_gb   </code></pre>
 <p>Turn spell check off</p>
 <pre><code>:set nospell </code></pre>
+<p>Turn spell check on</p>
+<pre><code>:set spell</code></pre>
+<p>Find alternative for highlighted word:</p>
+<pre><code>z=</code></pre>
 <p>Mark word as correct, this creates a spell file under /home/user/.vim/spell:</p>
 <pre><code>zg </code></pre>
 <p>Mark word as incorrect</p>
