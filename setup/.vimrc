@@ -22,3 +22,6 @@ filetype indent on
 " wrap markdown text to 80 characters
 au BufRead,BufNewFile *.md setlocal textwidth=80
 
+" Spelling
+set spell spelllang=en_gb,fr
+

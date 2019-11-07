@@ -258,13 +258,19 @@ You can also read in the output of shell applications. For example, if you wante
 
     :r ! ls -1 /home/user/directory
 
-## Vimdiff
-View differences between file1 and file2 (vim documentation)
+## Vim diff
+
+View differences between `file1` and `file2` (vim documentation)
 
     vimdiff file1 file2
 
-
 ## spell check
+
+[How to configure vim spellcheck to use two languages](https://superuser.com/questions/911412/how-to-configure-vim-spellcheck-to-use-two-languages)
+To use the spellcheck for two languages, add this to your `~/.vimrc`:
+
+    set spell spelllang=en_gb,fr
+
 Set spell check only in the local buffer:
 
     :setlocal spell spelllang=en_gb   
@@ -273,6 +279,13 @@ Set spell check only in the local buffer:
 
     :set nospell 
 
+Turn spell check on
+
+    :set spell
+
+Find alternative for highlighted word:
+
+    z=
 
 Mark word as correct, this creates a spell file under /home/user/.vim/spell:
 
