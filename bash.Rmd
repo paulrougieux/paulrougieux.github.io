@@ -301,9 +301,14 @@ Load a file from a URL, using the file name from the URL
     curl -O <url_including_a_file_name>
 
 ## Download videos and audio
+
 Install youtube-dl using pip:
 
      sudo pip install --upgrade youtube_dl
+
+You may also need to install the ffmpeg package:
+
+    sudo apt-get install ffmpeg
 
 Download a video from youtube :
 
