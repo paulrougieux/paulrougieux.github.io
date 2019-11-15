@@ -9,10 +9,8 @@ output:
 # Introduction
 This page is the continuation of [my blog post on git commands](https://paulremote.blogspot.de/2013/10/git-commands.html).
 
-My typicall git use consists in archiving file modifications for personnal projects.
-I never work in the master branch, always in a development branch called `develop`. 
-I merge `develop` in `master`, only before pushing modifications back to my remote archive.
-This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.
+My typical git use consists in archiving file modifications for personal projects.
+Sometimes I share these projects with colleagues and are 2 persons working concurrently on the same project, pushing and pulling changes several times per day. 
 
 
 # Basic git workflow 
@@ -345,6 +343,15 @@ See also below git clean.
 Add minor change to the previous commit (git commit --amend):
 
     git commit --amend
+
+I use to have this branching strategy:
+
+> I never work in the master branch, always in a development branch called `develop`. 
+> I merge `develop` in `master`, only before pushing modifications back to my remote archive.
+> This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.
+
+
+But I have now changed to a simpler strategy where I work only on the master branch. 
 
 # Tagging
 
