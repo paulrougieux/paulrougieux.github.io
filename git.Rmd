@@ -10,7 +10,8 @@ output:
 This page is the continuation of [my blog post on git commands](https://paulremote.blogspot.de/2013/10/git-commands.html).
 
 My typical git use consists in archiving file modifications for personal projects.
-Sometimes I share these projects with colleagues and are 2 persons working concurrently on the same project, pushing and pulling changes several times per day. 
+Sometimes I share these projects with a colleague. 
+We are then 2 persons working concurrently on the same project, pushing and pulling changes several times per day. 
 
 
 # Basic git workflow 
