@@ -30,6 +30,9 @@ kept up-to-date automatically from the
     ctrl+b, ctrl+d move page up or page down
     {number} G go to line number 
 
+Note on motion with wrapped lines:
+[Move cursor by display lines when wrapping](https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping)
+
 ## Search
     "/" to search, then n forward and N backwards
     "*" to search for the word under the cursor (you can also create a mapping to search for a selected text)
