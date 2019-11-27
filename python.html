@@ -554,6 +554,24 @@ jupyter nbconvert --to html mynotebook.ipynb</code></pre>
 <p>To get help on a function, enter <code>function_name?</code> in a cell.</p>
 </div>
 </div>
+<div id="functions" class="section level1">
+<h1>Functions</h1>
+<p>Functions in python can be defined with</p>
+<pre><code>def add_one(x):
+    return x + 1
+add_one(1)
+
+# 2</code></pre>
+<div id="decorators" class="section level2">
+<h2>Decorators</h2>
+<p>Decorators are a way to wrap a function around another function. It is useful to repeat a pattern of behaviour around a function.</p>
+<ul>
+<li>Data camp <a href="https://www.datacamp.com/community/tutorials/decorators-python">course on decorators</a></li>
+<li>Examples <a href="https://www.oreilly.com/ideas/5-reasons-you-need-to-learn-to-write-python-decorators">5 use cases for decorators</a></li>
+</ul>
+<p>I have used decorators to cache the function output along a data processing pipeline.</p>
+</div>
+</div>
 <div id="objects" class="section level1">
 <h1>Objects</h1>
 <div id="inheritance-and-composition" class="section level2">
@@ -812,52 +830,7 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 </tbody>
 </table>
 <p>The mapping of tidyverse to pandas is:</p>
-<table>
-<thead>
-<tr class="header">
-<th>tidyverse</th>
-<th>pandas</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>mutate</td>
-<td>assign</td>
-</tr>
-<tr class="even">
-<td>select</td>
-<td>filter</td>
-</tr>
-<tr class="odd">
-<td>rename</td>
-<td>rename</td>
-</tr>
-<tr class="even">
-<td>filter</td>
-<td>query</td>
-</tr>
-<tr class="odd">
-<td>arrange</td>
-<td>sort_values</td>
-</tr>
-<tr class="even">
-<td>group_by</td>
-<td>groupby</td>
-</tr>
-<tr class="odd">
-<td>summarize</td>
-<td>agg</td>
-</tr>
-<tr class="even">
-<td>gather</td>
-<td>melt</td>
-</tr>
-<tr class="odd">
-<td>spread</td>
-<td>pivot</td>
-</tr>
-</tbody>
-</table>
+<p>|tidyverse |pandas | Link | |———-|———–| | |mutate |assign | | |select |filter | | |rename |rename | | |filter |query | | |arrange |sort_values| | |group_by |groupby | | |summarize |agg | | |gather |melt | | |spread |pivot | | |unnest |<a href="https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html">explode</a>|<a href="https://stackoverflow.com/a/53218939/2641825">How to unnest in pandas</a>|</p>
 <p>Methods to use inside the .groupby().agg() method:</p>
 <ul>
 <li><code>sum</code></li>

@@ -156,6 +156,27 @@ Using the Table of Content extension
 
 To get help on a function, enter `function_name?` in a cell. 
 
+# Functions
+
+Functions in python can be defined with 
+
+    def add_one(x):
+        return x + 1
+    add_one(1)
+
+    # 2
+
+## Decorators
+
+Decorators are a way to wrap a function around another function. 
+It is useful to repeat a pattern of behaviour around a function.
+
+* Data camp [course on decorators](https://www.datacamp.com/community/tutorials/decorators-python)
+* Examples [5 use cases for decorators](https://www.oreilly.com/ideas/5-reasons-you-need-to-learn-to-write-python-decorators)
+
+I have used decorators to cache the function output
+along a data processing pipeline. 
+
 # Objects
 
 ## Inheritance and composition
@@ -423,17 +444,18 @@ Pandas data frame to be used for examples:
 
 The mapping of tidyverse to pandas is:
 
-|tidyverse |pandas     |
-|----------|-----------|
-|mutate    |assign     |
-|select    |filter     |
-|rename    |rename     |
-|filter    |query      |
-|arrange   |sort_values|
-|group_by  |groupby    |
-|summarize |agg        |
-|gather    |melt       |
-|spread    |pivot      |
+|tidyverse |pandas     | Link            |
+|----------|-----------|                 |
+|mutate    |assign     |                 |
+|select    |filter     |                 |
+|rename    |rename     |                 |
+|filter    |query      |                 |
+|arrange   |sort_values|                 |
+|group_by  |groupby    |                 |
+|summarize |agg        |                 |
+|gather    |melt       |                 |
+|spread    |pivot      |                 |
+|unnest    |[explode](https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html)|[How to unnest in pandas](https://stackoverflow.com/a/53218939/2641825)|
 
 
 Methods to use inside the .groupby().agg() method:
