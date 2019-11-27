@@ -763,9 +763,8 @@ Out:
 <p>Replace elements in a character vector:</p>
 <pre><code>df[&#39;A&#39;].replace(&#39;a&#39;,&#39;b&#39;,regex=True)</code></pre>
 </div>
-</div>
-<div id="difference-between-2-data-frames" class="section level1">
-<h1>Difference between 2 data frames</h1>
+<div id="difference-between-2-data-frames" class="section level2">
+<h2>Difference between 2 data frames</h2>
 <ul>
 <li><a href="https://stackoverflow.com/questions/48647534/python-pandas-find-difference-between-two-data-frames">Find difference between two data frames</a></li>
 <li><a href="https://stackoverflow.com/questions/36891977/pandas-diff-of-two-dataframes/36893773">Diff of 2 data frames</a></li>
@@ -775,6 +774,12 @@ Out:
 merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <p>Using <code>drop_duplicates</code></p>
 <pre><code>newdf=pd.concat[df1,df2].drop_duplicates(keep=False)</code></pre>
+</div>
+</div>
+<div id="r-and-python" class="section level1">
+<h1>R and python</h1>
+<p>See also the section above on pandas data frame / comparison with R.</p>
+<p><a href="https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/">Migrating from R to python</a> Python is a full fledge programming language but it is missing statistical and plotting libraries. Vectors are an after thought in python most functionality can be reproduced using operator overloading, but some functionality looks clumsy.</p>
 <div id="pandas-comparison-with-r" class="section level2">
 <h2>Pandas comparison with R</h2>
 <ul>
@@ -790,9 +795,9 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <pre><code>`df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  `</code></pre>
 <table>
 <colgroup>
-<col width="37%" />
-<col width="37%" />
-<col width="25%" />
+<col width="36%" />
+<col width="39%" />
+<col width="24%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -830,7 +835,67 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 </tbody>
 </table>
 <p>The mapping of tidyverse to pandas is:</p>
-<p>|tidyverse |pandas | Link | |———-|———–| | |mutate |assign | | |select |filter | | |rename |rename | | |filter |query | | |arrange |sort_values| | |group_by |groupby | | |summarize |agg | | |gather |melt | | |spread |pivot | | |unnest |<a href="https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html">explode</a>|<a href="https://stackoverflow.com/a/53218939/2641825">How to unnest in pandas</a>|</p>
+<table>
+<thead>
+<tr class="header">
+<th>tidyverse</th>
+<th>pandas</th>
+<th>SO questions</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>mutate</td>
+<td>assign</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>select</td>
+<td>filter</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>rename</td>
+<td>rename</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>filter</td>
+<td>query</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>arrange</td>
+<td>sort_values</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>group_by</td>
+<td>groupby</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>summarize</td>
+<td>agg</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>gather</td>
+<td><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html">melt</a></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>spread</td>
+<td><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html">pivot</a></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>unnest</td>
+<td><a href="https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html">explode</a></td>
+<td><a href="https://stackoverflow.com/a/53218939/2641825">unnest in pandas</a></td>
+</tr>
+</tbody>
+</table>
 <p>Methods to use inside the .groupby().agg() method:</p>
 <ul>
 <li><code>sum</code></li>
@@ -838,11 +903,6 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <li><code>mean</code></li>
 <li><code>', '.join</code> <a href="https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings">to get a union of strings</a></li>
 </ul>
-</div>
-<div id="r-and-python" class="section level2">
-<h2>R and python</h2>
-<p>See also the section above on pandas data frame / comparison with R.</p>
-<p><a href="https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/">Migrating from R to python</a> Python is a full fledge programming language but it is missing statistical and plotting libraries. Vectors are an after thought in python most functionality can be reproduced using operator overloading, but some functionality looks clumsy.</p>
 </div>
 </div>
 <div id="unit-tests" class="section level1">
