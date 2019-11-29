@@ -127,8 +127,16 @@ Now run the update command:
 
 For software in .deb packages, check the md5sum and install with
 
-    md5sum packagename
-    sudo dpkg -i packagename
+    md5sum packagename.deb
+    sudo dpkg -i packagename.deb
+
+or 
+
+    sudo apt install ./packagename.deb
+
+Stack overflow [How to install a deb file, by dpkg -i or by apt?](https://unix.stackexchange.com/a/159114/85530)
+"When you use apt to install a package, under the hood it uses dpkg."
+
 
 If there are missingdependencies and you fix them you can retry the previsouly failed installed with:
     sudo dpkg --configure -a

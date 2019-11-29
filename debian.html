@@ -504,8 +504,11 @@ Acquire::BrokenProxy    true;</code></pre>
 <div id="deb-packages" class="section level2">
 <h2>DEB packages</h2>
 <p>For software in .deb packages, check the md5sum and install with</p>
-<pre><code>md5sum packagename
-sudo dpkg -i packagename</code></pre>
+<pre><code>md5sum packagename.deb
+sudo dpkg -i packagename.deb</code></pre>
+<p>or</p>
+<pre><code>sudo apt install ./packagename.deb</code></pre>
+<p>Stack overflow <a href="https://unix.stackexchange.com/a/159114/85530">How to install a deb file, by dpkg -i or by apt?</a> “When you use apt to install a package, under the hood it uses dpkg.”</p>
 <p>If there are missingdependencies and you fix them you can retry the previsouly failed installed with: sudo dpkg –configure -a</p>
 <p>Remove a package with:</p>
 <pre><code>sudo dpkg -r packagename</code></pre>
