@@ -672,6 +672,7 @@ df[df[&#39;A&#39;].isin([3, 6])]</code></pre>
 </div>
 <div id="loc" class="section level3">
 <h3>loc</h3>
+<p><code>.loc</code> is primarily label based, but may also be used with a boolean array.</p>
 <p>I copied the examples below from the pandas <strong>loc</strong> documentation at: <a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html">pandas.DataFrame.loc</a></p>
 <p>Create an example data frame</p>
 <pre><code>import pandas
@@ -717,6 +718,7 @@ Out:
 </div>
 <div id="iloc" class="section level3">
 <h3>iloc</h3>
+<p><a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#indexing-integer">.iloc</a> is primarily integer position based (from 0 to length -1 of the axis), but may also be used with a boolean array.</p>
 <p>Create a sample data frame:</p>
 <pre><code>In : example = [{&#39;a&#39;: 1, &#39;b&#39;: 2, &#39;c&#39;: 3, &#39;d&#39;: 4},
                 {&#39;a&#39;: 100, &#39;b&#39;: 200, &#39;c&#39;: 300, &#39;d&#39;: 400},

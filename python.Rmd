@@ -284,6 +284,8 @@ or `stack` (designed to work together with MultiIndex objects).
 
 ### loc
 
+`.loc` is primarily label based, but may also be used with a boolean array.
+
 I copied the examples below from the pandas **loc** documentation at:
 [pandas.DataFrame.loc](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.loc.html)
 
@@ -343,6 +345,9 @@ Slice with integer labels for rows. Note that both the start and stop of the sli
        9          7       8
 
 ### iloc 
+
+[.iloc](https://pandas.pydata.org/pandas-docs/stable/user_guide/indexing.html#indexing-integer)
+is primarily integer position based (from 0 to length -1 of the axis), but may also be used with a boolean array.
 
 Create a sample data frame:
 
