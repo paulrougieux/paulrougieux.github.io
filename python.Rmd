@@ -247,6 +247,18 @@ Example
 
 # Pandas data frames
 
+## Creating a pandas data frame
+
+You can create a data frame by passing a dictionary :
+
+    import pandas 
+    pandas.DataFrame({'a':range(0,3),'b':range(3,6)})
+           a  b
+        0  0  3
+        1  1  4
+        2  2  5
+
+
 ## Joining and merging
 
 Stackoverflow [Pandas mergin](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
