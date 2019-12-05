@@ -3,8 +3,10 @@
 	name = Paul Rougieux
 [core]
     editor = vim
+	excludesfile = /home/paul/.gitignore_global
 [alias]
     st     = status
     wdiff  = diff --word-diff=plain
     amend  = commit --amend -a
     lg     = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative
+    lkj    = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit --date=relative -10
