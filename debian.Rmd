@@ -280,6 +280,17 @@ The following commands restored audio:
     $ pulseaudio --start
 
 
+# Fonts
+
+Some programs require fonts that are not installed by default. 
+For example:
+
+    sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea
+    sudo apt install fonts-deva-extra
+
+[List of missing fonts](https://wiki.debian.org/Fonts/Missing)
+[SubstitutingCalibriAndCambriaFonts](https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts)
+
 # System information
 
 Find out which Debian version is running
