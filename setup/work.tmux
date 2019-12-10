@@ -9,11 +9,14 @@ rename-window server
 select-window -t :1 
 
 # Tools used on desktop
-#rename-window lyxjabR 
-#split-window -v 'QT_X11_NO_MITSHM=1 lyx ~/research/reports/readingsJRC/readingsJRC.lyx'  
-#split-window -v 'jabref ~/research/reports/readingsJRC/paulJRC.bib'  
-#split-window -v 'rstudio ~/R/statisticallearning/statisticallearning.Rproj'
-#split-window -v 'riot-web'
+# rename-window lyxjabR 
+# split-window -v 'QT_X11_NO_MITSHM=1 lyx ~/rp/bioeconomy_papers/notes/readings_jrc.lyx'  
+# split-window -v 'jabref ~/rp/bioeconomy_papers/bibliography/jrc_ispra.bib' 
+# split-window -v 'rstudio ~/R/statisticallearning/statisticallearning.Rproj'
+# split-window -v 'riot-web'
+# split-window -v 'QT_X11_NO_MITSHM=1 spyder3'
+# neww
+# select-window -t :1 
 
 # Vim style pane selection
 bind h select-pane -L
