@@ -352,6 +352,8 @@ piris$plot[2]
 > palette. Let’s make a palette of 8 colors from the qualitative palette,
 > “Set2”. 
 
+
+    library(RColorBrewer)
     brewer.pal(n = 8, name = "Set2") 
     [1] "#66C2A5" "#FC8D62" "#8DA0CB" "#E78AC3"
     "#A6D854" "#FFD92F" "#E5C494" "#B3B3B3" 
@@ -377,6 +379,16 @@ Create a named palette using R colour brewer:
     iris_palette <- setNames(brewer.pal(n=length(species_names), name='Set2'), 
                              species_names)
     p + scale_colour_manual(values = iris_palette)
+
+### Display palettes
+
+Display qualitative palettes:
+
+    display.brewer.all(type="qual") 
+
+Display all palettes 
+
+    display.brewer.all()
 
 # Creating a package
 You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).

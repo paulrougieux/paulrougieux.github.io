@@ -789,7 +789,8 @@ geom_tile + a gradient produce heat maps</code></pre>
 <blockquote>
 <p>To create a RColorBrewer palette, use the brewer.pal function. It takes two arguments: n, the number of colors in the palette; and name, the name of the palette. Let’s make a palette of 8 colors from the qualitative palette, “Set2”.</p>
 </blockquote>
-<pre><code>brewer.pal(n = 8, name = &quot;Set2&quot;) 
+<pre><code>library(RColorBrewer)
+brewer.pal(n = 8, name = &quot;Set2&quot;) 
 [1] &quot;#66C2A5&quot; &quot;#FC8D62&quot; &quot;#8DA0CB&quot; &quot;#E78AC3&quot;
 &quot;#A6D854&quot; &quot;#FFD92F&quot; &quot;#E5C494&quot; &quot;#B3B3B3&quot; 
 palette(brewer.pal(n = 8, name = &quot;Set2&quot;))</code></pre>
@@ -806,6 +807,13 @@ p + scale_colour_manual(values = c(setosa=&#39;black&#39;, versicolor=&#39;red&#
 iris_palette &lt;- setNames(brewer.pal(n=length(species_names), name=&#39;Set2&#39;), 
                          species_names)
 p + scale_colour_manual(values = iris_palette)</code></pre>
+<div id="display-palettes" class="section level3">
+<h3>Display palettes</h3>
+<p>Display qualitative palettes:</p>
+<pre><code>display.brewer.all(type=&quot;qual&quot;) </code></pre>
+<p>Display all palettes</p>
+<pre><code>display.brewer.all()</code></pre>
+</div>
 </div>
 </div>
 <div id="creating-a-package" class="section level1">
