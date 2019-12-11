@@ -783,6 +783,30 @@ piris$plot[2]</code></pre>
 <h1>Plotting with ggplot2</h1>
 <pre><code>geom_bar
 geom_tile + a gradient produce heat maps</code></pre>
+<div id="palettes" class="section level2">
+<h2>Palettes</h2>
+<p><a href="https://data.library.virginia.edu/setting-up-color-palettes-in-r/">Setting up colour palettes in R</a></p>
+<blockquote>
+<p>To create a RColorBrewer palette, use the brewer.pal function. It takes two arguments: n, the number of colors in the palette; and name, the name of the palette. Let’s make a palette of 8 colors from the qualitative palette, “Set2”.</p>
+</blockquote>
+<pre><code>brewer.pal(n = 8, name = &quot;Set2&quot;) 
+[1] &quot;#66C2A5&quot; &quot;#FC8D62&quot; &quot;#8DA0CB&quot; &quot;#E78AC3&quot;
+&quot;#A6D854&quot; &quot;#FFD92F&quot; &quot;#E5C494&quot; &quot;#B3B3B3&quot; 
+palette(brewer.pal(n = 8, name = &quot;Set2&quot;))</code></pre>
+<p>Use this palette in ggplot2</p>
+<pre><code>ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
+    geom_point() +
+    scale_color_brewer(palette = &quot;Set2&quot;)</code></pre>
+<p>Use a named vector to set a palette in ggplot2 as explained in <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">ggplot2 scale_manual</a></p>
+<pre><code>p &lt;- ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) +
+        geom_point() 
+p + scale_colour_manual(values = c(setosa=&#39;black&#39;, versicolor=&#39;red&#39;, virginica=&#39;green&#39;))</code></pre>
+<p>Create a named palette using R colour brewer:</p>
+<pre><code>species_names &lt;- c(&quot;setosa&quot;, &quot;versicolor&quot;, &quot;virginica&quot;) 
+iris_palette &lt;- setNames(brewer.pal(n=length(species_names), name=&#39;Set2&#39;), 
+                         species_names)
+p + scale_colour_manual(values = iris_palette)</code></pre>
+</div>
 </div>
 <div id="creating-a-package" class="section level1">
 <h1>Creating a package</h1>
