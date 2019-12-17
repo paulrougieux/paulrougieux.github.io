@@ -14,7 +14,48 @@ Sometimes I share these projects with a colleague.
 We are then 2 persons working concurrently on the same project, pushing and pulling changes several times per day. 
 
 
-# Basic git workflow 
+# Git workflow
+
+# Simple workflow for one user
+
+Initialise a new repository
+    
+    git init
+    
+Work and modify files in the folder. At some point, when your work has reached
+a certain status, you might want to archive it before you move on to something
+else. The few commands below tell git to archive the work. 
+
+Show which files have been modified in the folder under git control: 
+
+    git status
+
+Commit and describe changes
+
+    git commit -m "describe changes made to those files"
+    
+Now you can continue working and changing files. Repeat the `git add --all` and
+`git commit -m "describe changes"` each time your reach a consistant change
+status.
+Before you leave your computer, push the content to the remote repository with:
+
+    git push
+
+In case you work with other people on this remote repository, 
+Before you push, you might want to integrate work done by others in your repository.
+If any new work has been added by others on the remote repository, git will ask you to first do:
+
+    git pull 
+
+and then:
+
+    git push
+
+This simple work flow works well for one user pulling from and pushing to the
+master branch on a remote repository.
+
+# Workflow with branches
+
 Initialise a new repository
     
     git init

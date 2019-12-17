@@ -442,8 +442,28 @@ div.tocify {
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog post on git commands</a>.</p>
 <p>My typical git use consists in archiving file modifications for personal projects. Sometimes I share these projects with a colleague. We are then 2 persons working concurrently on the same project, pushing and pulling changes several times per day.</p>
 </div>
-<div id="basic-git-workflow" class="section level1">
-<h1>Basic git workflow</h1>
+<div id="git-workflow" class="section level1">
+<h1>Git workflow</h1>
+</div>
+<div id="simple-workflow-for-one-user" class="section level1">
+<h1>Simple workflow for one user</h1>
+<p>Initialise a new repository</p>
+<pre><code>git init</code></pre>
+<p>Work and modify files in the folder. At some point, when your work has reached a certain status, you might want to archive it before you move on to something else. The few commands below tell git to archive the work.</p>
+<p>Show which files have been modified in the folder under git control:</p>
+<pre><code>git status</code></pre>
+<p>Commit and describe changes</p>
+<pre><code>git commit -m &quot;describe changes made to those files&quot;</code></pre>
+<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m &quot;describe changes&quot;</code> each time your reach a consistant change status. Before you leave your computer, push the content to the remote repository with:</p>
+<pre><code>git push</code></pre>
+<p>In case you work with other people on this remote repository, Before you push, you might want to integrate work done by others in your repository. If any new work has been added by others on the remote repository, git will ask you to first do:</p>
+<pre><code>git pull </code></pre>
+<p>and then:</p>
+<pre><code>git push</code></pre>
+<p>This simple work flow works well for one user pulling from and pushing to the master branch on a remote repository.</p>
+</div>
+<div id="workflow-with-branches" class="section level1">
+<h1>Workflow with branches</h1>
 <p>Initialise a new repository</p>
 <pre><code>git init</code></pre>
 <p>Change to the development branch</p>
