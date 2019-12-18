@@ -537,6 +537,12 @@ See [python markdown unit tests](https://github.com/okken/markdown.py/blob/maste
 [SO answer ](https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects) 
 providing various ways to concatenate python strings.
 
+## String formatting
+
+[How to print number with commas as thousands separators?](https://stackoverflow.com/a/10742904/2641825)
+
+    f'{1e6:,}' 
+
 # Statistics
 
 ## Scaling
