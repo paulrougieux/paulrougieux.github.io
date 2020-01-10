@@ -563,7 +563,8 @@ jupyter nbconvert --to html mynotebook.ipynb</code></pre>
     display(FileLink(csv_file_name))
     if delete_prompt:
         a = input(&#39;Press enter to delete the file after you have downloaded it.&#39;)
-        import os</code></pre>
+        import os
+        os.remove(csv_file_name)</code></pre>
 <p>To get a link to a csv file, enter the above function and the code below in a jupyter notebook cell :</p>
 <pre><code>csv_download_link(df, &#39;df.csv&#39;)</code></pre>
 </div>

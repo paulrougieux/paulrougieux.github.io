@@ -170,6 +170,7 @@ I wrote this csv download function in an
         if delete_prompt:
             a = input('Press enter to delete the file after you have downloaded it.')
             import os
+            os.remove(csv_file_name)
 
 To get a link to a csv file, enter the above function and the code below in a jupyter notebook cell :
 
