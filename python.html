@@ -551,7 +551,21 @@ set ^ other
 jupyter nbconvert --to html mynotebook.ipynb</code></pre>
 <div id="help-in-a-jupyter-notebook" class="section level2">
 <h2>Help in a jupyter notebook</h2>
-<p>To get help on a function, enter <code>function_name?</code> in a cell.</p>
+<p>To get help on a function, enter <code>function_name?</code> in a cell. Quick hep can also be obtained by pressing SHIFT + TAB.</p>
+</div>
+<div id="download-data-from-a-jupyter-notebook" class="section level2">
+<h2>Download data from a jupyter notebook</h2>
+<p>I wrote this csv download function in an <a href="https://stackoverflow.com/a/57613621/2641825">SO answer</a></p>
+<pre><code>def csv_download_link(df, csv_file_name, delete_prompt=True):
+    &quot;&quot;&quot;Display a download link to load a data frame as csv from within a Jupyter notebook&quot;&quot;&quot;
+    df.to_csv(csv_file_name, index=False)
+    from IPython.display import FileLink
+    display(FileLink(csv_file_name))
+    if delete_prompt:
+        a = input(&#39;Press enter to delete the file after you have downloaded it.&#39;)
+        import os</code></pre>
+<p>To get a link to a csv file, enter the above function and the code below in a jupyter notebook cell :</p>
+<pre><code>csv_download_link(df, &#39;df.csv&#39;)</code></pre>
 </div>
 </div>
 <div id="functions" class="section level1">
@@ -808,6 +822,41 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <pre><code>newdf=pd.concat[df1,df2].drop_duplicates(keep=False)</code></pre>
 </div>
 </div>
+<div id="plot" class="section level1">
+<h1>Plot</h1>
+<div id="seaborn" class="section level2">
+<h2>Seaborn</h2>
+<div id="figure-title" class="section level3">
+<h3>Figure Title</h3>
+<p>Use <code>set_title</code> to add a title:</p>
+<pre><code>import seaborn
+tips = seaborn.load_dataset(&quot;tips&quot;) 
+(seaborn
+ .scatterplot(x=&quot;total_bill&quot;, y=&quot;tip&quot;, data=tips)
+ .set_title(&#39;Progression of tips along the bill amount&#39;)
+)</code></pre>
+<p>Set a common title for grid plots</p>
+<pre><code>import seaborn 
+import matplotlib.pyplot as pyplot 
+tips = seaborn.load_dataset(&quot;tips&quot;)
+g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
+g = g.map(pyplot.hist, &quot;total_bill&quot;)
+g.fig.suptitle(&#39;Afforested area in ha&#39;)</code></pre>
+</div>
+<div id="figure-size" class="section level3">
+<h3>Figure size</h3>
+<p><code>set_figwidth</code> and <code>set_figheight</code> work well for grid objects.</p>
+<pre><code>import seaborn 
+import matplotlib.pyplot as pyplot 
+tips = seaborn.load_dataset(&quot;tips&quot;)
+g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
+g = g.map(pyplot.hist, &quot;total_bill&quot;)
+g.fig.set_figwidth(10)
+g.fig.set_figheight(10) </code></pre>
+<p>Mentioned as a comment under <a href="https://stackoverflow.com/a/56970556/2641825">this answer</a></p>
+</div>
+</div>
+</div>
 <div id="r-and-python" class="section level1">
 <h1>R and python</h1>
 <p>See also the section above on pandas data frame / comparison with R.</p>
@@ -937,10 +986,6 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 </ul>
 </div>
 </div>
-<div id="unit-tests" class="section level1">
-<h1>Unit tests</h1>
-<p>See <a href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python markdown unit tests</a></p>
-</div>
 <div id="string" class="section level1">
 <h1>String</h1>
 <p><a href="https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects">SO answer</a> providing various ways to concatenate python strings.</p>
@@ -962,6 +1007,10 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <li>Normalizer</li>
 </ul>
 </div>
+</div>
+<div id="unit-tests" class="section level1">
+<h1>Unit tests</h1>
+<p>See <a href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python markdown unit tests</a></p>
 </div>
 <div id="web-frameworks" class="section level1">
 <h1>Web Frameworks</h1>

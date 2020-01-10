@@ -155,6 +155,26 @@ Using the Table of Content extension
 ## Help in a jupyter notebook 
 
 To get help on a function, enter `function_name?` in a cell. 
+Quick hep can also be obtained by pressing SHIFT + TAB.
+
+## Download data from a jupyter notebook    
+
+I wrote this csv download function in an 
+[SO answer](https://stackoverflow.com/a/57613621/2641825)
+
+    def csv_download_link(df, csv_file_name, delete_prompt=True):
+        """Display a download link to load a data frame as csv from within a Jupyter notebook"""
+        df.to_csv(csv_file_name, index=False)
+        from IPython.display import FileLink
+        display(FileLink(csv_file_name))
+        if delete_prompt:
+            a = input('Press enter to delete the file after you have downloaded it.')
+            import os
+
+To get a link to a csv file, enter the above function and the code below in a jupyter notebook cell :
+
+    csv_download_link(df, 'df.csv')
+
 
 # Functions
 
@@ -458,8 +478,43 @@ Using `drop_duplicates`
     newdf=pd.concat[df1,df2].drop_duplicates(keep=False)
 
 
+# Plot
 
+## Seaborn
 
+### Figure Title
+
+Use `set_title` to add a title:
+
+    import seaborn
+    tips = seaborn.load_dataset("tips") 
+    (seaborn
+     .scatterplot(x="total_bill", y="tip", data=tips)
+     .set_title('Progression of tips along the bill amount')
+    )
+
+Set a common title for grid plots
+
+    import seaborn 
+    import matplotlib.pyplot as pyplot 
+    tips = seaborn.load_dataset("tips")
+    g = seaborn.FacetGrid(tips, col="time", row="smoker")
+    g = g.map(pyplot.hist, "total_bill")
+    g.fig.suptitle('Afforested area in ha')
+
+### Figure size
+
+`set_figwidth` and `set_figheight` work well for grid objects. 
+
+    import seaborn 
+    import matplotlib.pyplot as pyplot 
+    tips = seaborn.load_dataset("tips")
+    g = seaborn.FacetGrid(tips, col="time", row="smoker")
+    g = g.map(pyplot.hist, "total_bill")
+    g.fig.set_figwidth(10)
+    g.fig.set_figheight(10) 
+
+Mentioned as a comment under [this answer](https://stackoverflow.com/a/56970556/2641825)
 
 # R and python
 
@@ -527,11 +582,6 @@ Methods to use inside the .groupby().agg() method:
 * `', '.join` [to get a union of strings](https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings)
 
 
-# Unit tests
-
-See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
-
-
 # String 
 
 [SO answer ](https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects) 
@@ -553,6 +603,10 @@ providing various ways to concatenate python strings.
  * MinMaxScaler
  * RobustScaler
  * Normalizer
+
+# Unit tests
+
+See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
 
 
 # Web Frameworks
