@@ -194,7 +194,7 @@ I quoted them in \begin{verbatim} statements.
 
 # Refactor
 
-Replace strings with perl in a git repository.
+[A one liner to replace strings with perl in a git repository](https://stackoverflow.com/a/21685766/2641825).
 The examples below replace all occurrences of the first string with the second string, for all 
 files under git version control. 
 
@@ -202,14 +202,17 @@ files under git version control.
     git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
     git grep -lz 'RMySQL::'| xargs -0 perl -i'' -pE "s/RMySQL::/RMariaDB::/g"
 
-Alias to refactor, probably needs improvement
+Alias to refactor:
 
     refactor() {
         echo "Replacing $1 by $2 in all files in this git repository."
         git grep -lz $1| xargs -0 perl -i'' -pE "s/$1/$2/g"
     }
 
+Usage, for example replace 'word' with 'sword':
 
+    refactor word sword
+    git diff
 
 
 # Organise

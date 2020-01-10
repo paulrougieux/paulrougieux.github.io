@@ -563,15 +563,18 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 </div>
 <div id="refactor" class="section level1">
 <h1>Refactor</h1>
-<p>Replace strings with perl in a git repository. The examples below replace all occurrences of the first string with the second string, for all files under git version control.</p>
+<p><a href="https://stackoverflow.com/a/21685766/2641825">A one liner to replace strings with perl in a git repository</a>. The examples below replace all occurrences of the first string with the second string, for all files under git version control.</p>
 <pre><code>git grep -lz &#39;first_string&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/first_string/second_string/g&quot;
 git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;
 git grep -lz &#39;RMySQL::&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/RMySQL::/RMariaDB::/g&quot;</code></pre>
-<p>Alias to refactor, probably needs improvement</p>
+<p>Alias to refactor:</p>
 <pre><code>refactor() {
     echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
     git grep -lz $1| xargs -0 perl -i&#39;&#39; -pE &quot;s/$1/$2/g&quot;
 }</code></pre>
+<p>Usage, for example replace ‘word’ with ‘sword’:</p>
+<pre><code>refactor word sword
+git diff</code></pre>
 </div>
 <div id="organise" class="section level1">
 <h1>Organise</h1>
