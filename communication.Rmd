@@ -1,3 +1,9 @@
+# Introduction
+The purpose of this document is to analyse communication 
+options such as mail, chat, calls and video calls from
+the perspective of a privacy conscious individual.
+
+
 # Snail mail
 
 Snail mail can be seen as an emotional form of communication through a physical medium.
@@ -10,27 +16,26 @@ you can exchange emails with someone who uses an email server from a different c
 Through communication tools such as skype or Whatsapp, you can only communicate
 with people registered at the same company.
 
-# Chat, calls and video calls
 
-## Riot
+# Riot
 
 Riot-web is a chat application based on the matrix decentralised communication protocol. 
 
-## Signal 
+# Signal 
 
 The issue is that the desktop client requires a mobile phone with camera to be started. 
 As of January 2020 I still use a nokia 3010 phone and this means I cannot use signal on my desktop. 
 
-## Skype
+# Skype
 
 Skype was purchased by Microsoft. 
 Screen sharing has a poor quality on Linux desktop.
 
-## Telegram
+# Telegram
 
 Another chat application. 
 
-## Whatsapp
+# Whatsapp
 
 [Why you should switch to signal or telegram](https://medium.com/@contactsunny/why-you-should-switch-to-signal-or-telegram-from-whatsapp-today-fa773694d05e) (2018):
 
@@ -50,7 +55,7 @@ Whatsapp betrayed its user by sharing contact details with FaceBook for advertis
 > already are, actually). This is a clear betrayal, for many users. "
 
 
-## Zoom 
+# Zoom 
 
 Call with screen sharing in great quality. 
 
