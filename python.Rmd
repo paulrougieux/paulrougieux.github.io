@@ -483,12 +483,25 @@ Using `drop_duplicates`
 
 ## Seaborn
 
-### Figure Title
-
-Use `set_title` to add a title:
+All seaborn examples below require the tips dataset and the following imports:
 
     import seaborn
     tips = seaborn.load_dataset("tips") 
+    from matplotlib import pyplot
+
+### Axes limit
+
+In Seaborn facet grid.
+[How to set xlim and ylim in seaborn facet grid](https://stackoverflow.com/a/25213614/2641825)
+
+    g = seaborn.FacetGrid(tips, col="time", row="smoker")
+    g = g.map(pyplot.hist, "total_bill")
+    g.set(ylim=(0, None)) 
+
+### Title
+
+Use `set_title` to add a title:
+
     (seaborn
      .scatterplot(x="total_bill", y="tip", data=tips)
      .set_title('Progression of tips along the bill amount')
@@ -496,20 +509,14 @@ Use `set_title` to add a title:
 
 Set a common title for grid plots
 
-    import seaborn 
-    import matplotlib.pyplot as pyplot 
-    tips = seaborn.load_dataset("tips")
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
     g = g.map(pyplot.hist, "total_bill")
-    g.fig.suptitle('Afforested area in ha')
+    g.fig.suptitle('I don't smoke and I don't tip.')
 
 ### Figure size
 
 `set_figwidth` and `set_figheight` work well for grid objects. 
 
-    import seaborn 
-    import matplotlib.pyplot as pyplot 
-    tips = seaborn.load_dataset("tips")
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
     g = g.map(pyplot.hist, "total_bill")
     g.fig.set_figwidth(10)
