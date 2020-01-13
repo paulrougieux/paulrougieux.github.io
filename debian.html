@@ -495,6 +495,10 @@ Acquire::http::No-Cache true;
 Acquire::BrokenProxy    true;</code></pre>
 <p>Now run the update command:</p>
 <pre><code>sudo apt update</code></pre>
+<p><a href="https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-the-proxy-for-apt-for-ubuntu-18-04/">How to set the proxy for APT</a> I entered the proxy url in this apt configuration file:</p>
+<pre><code>vim /etc/apt/apt.conf.d/proxy.conf</code></pre>
+<p>In the following form (do not forget the semicolon at the end):</p>
+<pre><code>Acquire::http::Proxy &quot;http://user:password@proxy.server:port/&quot;;</code></pre>
 </div>
 </div>
 <div id="installing-debian-software-from-backports" class="section level2">
@@ -582,9 +586,13 @@ sudo apt install r-base r-base-dev</code></pre>
 <pre><code>sudo apt install -y lsb-release wget apt-transport-https
 sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
 echo &quot;deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] https://packages.riot.im/debian/ $(lsb_release -cs) main&quot; |
-sudo tee /etc/apt/sources.list.d/riot-im.list
+    sudo tee /etc/apt/sources.list.d/riot-im.list
 sudo apt update
 sudo apt install riot-web</code></pre>
+<p>In an earlier version riot the source.list was mentionned directly in /etc/apt/sources.list. I needed to remove it as explained <a href="https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818">here</a>:</p>
+<blockquote>
+<p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that”</p>
+</blockquote>
 </div>
 </div>
 <div id="audio" class="section level1">

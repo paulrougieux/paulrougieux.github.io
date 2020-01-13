@@ -12,6 +12,8 @@ navbar:
       menu:
         - text: "Bash"
           href: bash.html
+        - text: "Communication"
+          href: communication.html
         - text: "Debian"
           href: debian.html
         - text: "Docker"
