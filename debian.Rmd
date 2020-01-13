@@ -118,6 +118,19 @@ Now run the update command:
 
     sudo apt update
 
+
+[How to set the proxy for APT](https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-the-proxy-for-apt-for-ubuntu-18-04/)
+I entered the proxy url in this apt configuration file: 
+
+    vim /etc/apt/apt.conf.d/proxy.conf
+
+In the following form (do not forget the semicolon at the end):
+
+    Acquire::http::Proxy "http://user:password@proxy.server:port/";
+
+
+
+
 ## Installing debian software from backports:
 
      sudo apt -t stretch-backports install nodejs
@@ -251,14 +264,17 @@ Installing from the backports (see above section on how to add the backports in 
 
 [Desktop Riot installation](https://riot.im/download/desktop/)
 
-
     sudo apt install -y lsb-release wget apt-transport-https
     sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
     echo "deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] https://packages.riot.im/debian/ $(lsb_release -cs) main" |
-    sudo tee /etc/apt/sources.list.d/riot-im.list
+        sudo tee /etc/apt/sources.list.d/riot-im.list
     sudo apt update
     sudo apt install riot-web
 
+In an earlier version riot the source.list was mentionned directly in /etc/apt/sources.list.
+I needed to remove it as explained [here](https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818):
+
+> "You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that"
 
 # Audio
 
