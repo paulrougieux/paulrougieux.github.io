@@ -1,12 +1,11 @@
+
 # Introduction
+
 The purpose of this document is to analyse communication 
 options such as mail, chat, calls and video calls from
 the perspective of a privacy conscious individual.
 
 
-# Snail mail
-
-Snail mail can be seen as an emotional form of communication through a physical medium.
 
 # Email
 
@@ -24,12 +23,21 @@ Riot-web is a chat application based on the matrix decentralised communication p
 # Signal 
 
 The issue is that the desktop client requires a mobile phone with camera to be started. 
-As of January 2020 I still use a nokia 3010 phone and this means I cannot use signal on my desktop. 
+As of January 2020 I still use a nokia 3010 phone.
+I cannot install the signal application on that phone and this means that I cannot use signal on my desktop. 
 
 # Skype
 
 Skype was purchased by Microsoft. 
 Screen sharing has a poor quality on Linux desktop.
+
+# Snail mail
+
+Snail mail can be seen as an emotional form of communication through a physical
+medium: paper. You can smell it. You can touch it. You can drop a tear on it.
+You can tear it apart. You can burn it. It's based on plants that were growing
+in a forest somewhere. It might have been recycled. It might have spend time in
+a trash bin. 
 
 # Telegram
 
