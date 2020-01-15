@@ -504,10 +504,17 @@ Using `drop_duplicates`
 All seaborn examples below require the tips dataset and the following imports:
 
     import seaborn
+    iris = seaborn.load_dataset("iris")
     tips = seaborn.load_dataset("tips") 
     from matplotlib import pyplot
 
 ### Axes limit
+
+Set limits on the one axis in a Seaborn plot:
+
+    p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
+    p.set(ylim=(-2,None))
+
 
 In Seaborn facet grid.
 [How to set xlim and ylim in seaborn facet grid](https://stackoverflow.com/a/25213614/2641825)

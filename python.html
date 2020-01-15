@@ -846,10 +846,14 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <h2>Seaborn</h2>
 <p>All seaborn examples below require the tips dataset and the following imports:</p>
 <pre><code>import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
 tips = seaborn.load_dataset(&quot;tips&quot;) 
 from matplotlib import pyplot</code></pre>
 <div id="axes-limit" class="section level3">
 <h3>Axes limit</h3>
+<p>Set limits on the one axis in a Seaborn plot:</p>
+<pre><code>p = seaborn.scatterplot(&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;,data=iris)
+p.set(ylim=(-2,None))</code></pre>
 <p>In Seaborn facet grid. <a href="https://stackoverflow.com/a/25213614/2641825">How to set xlim and ylim in seaborn facet grid</a></p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
 g = g.map(pyplot.hist, &quot;total_bill&quot;)
