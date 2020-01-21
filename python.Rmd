@@ -162,6 +162,18 @@ Show available variable in the current context:
 
 # Jupyter notebooks
 
+
+## Install Jupyter
+
+To [install Jupyter](https://jupyter.org/install) notebooks on python3:
+
+    pip3 install jupyter notebook
+
+Then start the notebook server as such:
+
+    jupyter notebook
+
+## table of content
 Using the Table of Content extension
 [jupyter table of content extension](https://github.com/minrk/ipython_extensions#table-of-contents)
 
@@ -501,7 +513,7 @@ Using `drop_duplicates`
 
 ## Seaborn
 
-All seaborn examples below require the tips dataset and the following imports:
+All seaborn examples below require the following imports and datasets:
 
     import seaborn
     iris = seaborn.load_dataset("iris")
@@ -537,6 +549,12 @@ Set a common title for grid plots
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
     g = g.map(pyplot.hist, "total_bill")
     g.fig.suptitle('I don't smoke and I don't tip.')
+
+In case the title is overwritten on the subplots, you might need to use 
+[fig.subplot_adjust()](https://stackoverflow.com/a/28650623/2641825) 
+as such:
+
+    g.fig.subplots_adjust(top=.95)
 
 ### Figure size
 

@@ -563,9 +563,19 @@ set ^ other
 </div>
 <div id="jupyter-notebooks" class="section level1">
 <h1>Jupyter notebooks</h1>
+<div id="install-jupyter" class="section level2">
+<h2>Install Jupyter</h2>
+<p>To <a href="https://jupyter.org/install">install Jupyter</a> notebooks on python3:</p>
+<pre><code>pip3 install jupyter notebook</code></pre>
+<p>Then start the notebook server as such:</p>
+<pre><code>jupyter notebook</code></pre>
+</div>
+<div id="table-of-content" class="section level2">
+<h2>table of content</h2>
 <p>Using the Table of Content extension <a href="https://github.com/minrk/ipython_extensions#table-of-contents">jupyter table of content extension</a></p>
 <pre><code>jupyter nbconvert --to markdown mynotebook.ipynb
 jupyter nbconvert --to html mynotebook.ipynb</code></pre>
+</div>
 <div id="help-in-a-jupyter-notebook" class="section level2">
 <h2>Help in a jupyter notebook</h2>
 <p>To get help on a function, enter <code>function_name?</code> in a cell. Quick hep can also be obtained by pressing SHIFT + TAB.</p>
@@ -844,7 +854,7 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <h1>Plot</h1>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>
-<p>All seaborn examples below require the tips dataset and the following imports:</p>
+<p>All seaborn examples below require the following imports and datasets:</p>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;)
 tips = seaborn.load_dataset(&quot;tips&quot;) 
@@ -870,6 +880,8 @@ g.set(ylim=(0, None)) </code></pre>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
 g = g.map(pyplot.hist, &quot;total_bill&quot;)
 g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
+<p>In case the title is overwritten on the subplots, you might need to use <a href="https://stackoverflow.com/a/28650623/2641825">fig.subplot_adjust()</a> as such:</p>
+<pre><code>g.fig.subplots_adjust(top=.95)</code></pre>
 </div>
 <div id="figure-size" class="section level3">
 <h3>Figure size</h3>
