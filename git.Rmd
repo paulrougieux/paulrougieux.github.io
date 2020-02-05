@@ -252,6 +252,13 @@ Then to go back to this state for the whole folder:
 Use the begining of a `commit_sha` copied from the log.
 
 
+To remove a commit where I accidentaly commited a very large file.
+I used [how to remove a too large file in a commit](https://stackoverflow.com/a/39768343/2641825):
+
+    git reset HEAD^
+
+Then added the large file to .gitignore and committed again. 
+
 ## Reset only one file
 To go back to this state for only one file, see git checkout
 

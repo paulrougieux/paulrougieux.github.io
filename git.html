@@ -578,6 +578,9 @@ git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
 <p>Identify the commit identity in the log and copy its sha number. Then to go back to this state for the whole folder:</p>
 <pre><code>git reset --hard commit_sha</code></pre>
 <p>Use the begining of a <code>commit_sha</code> copied from the log.</p>
+<p>To remove a commit where I accidentaly commited a very large file. I used <a href="https://stackoverflow.com/a/39768343/2641825">how to remove a too large file in a commit</a>:</p>
+<pre><code>git reset HEAD^</code></pre>
+<p>Then added the large file to .gitignore and committed again.</p>
 </div>
 <div id="reset-only-one-file" class="section level2">
 <h2>Reset only one file</h2>
