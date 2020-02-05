@@ -434,6 +434,31 @@ according to this [Stackoverflow question](https://stackoverflow.com/a/44997778/
 
     devtools::use_vignette("my-vignette")
 
+[Where to put package vignettes for CRAN submission](https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission)
+
+> "You put the .Rnw sources in vignettes/ as you did, but you missed out a critical step; don't check the source tree. The expected workflow is to build the source tarball and then check that tarball. Building the tarball will create the vignette PDF."
+
+    R CMD build ../foo/pkg
+    R CMD check ./pkg-0.4.tar.gz
+
+Issues while building vignette for a packages:
+
+* sh: 1: /usr/bin/texi2dvi: not found
+
+    sudo apt-get install texinfo
+
+* [Warning about "vignette without corresponding PDF/HTML"?](https://github.com/clonghurst/Res.plotter/issues/3)
+
+> "Maybe you're running R CMD check using the directory name rather than the .tar.gz file?"
+
+* [Inconsolata missing to build R vignette](https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette)
+
+> "Installing texlive-fonts-extra should take care of it."
+
+
+R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings 
+No solution for this one but I guess it's ok since it concerns country names? 
+
 ## Unit tests
 Back in R, add testing infrastructure:
 

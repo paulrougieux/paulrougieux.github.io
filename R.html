@@ -844,6 +844,28 @@ $ git init</code></pre>
 <h3>Vignettes</h3>
 <p><a href="http://r-pkgs.had.co.nz/vignettes.html">Vignettes: long-form documentation</a></p>
 <pre><code>devtools::use_vignette(&quot;my-vignette&quot;)</code></pre>
+<p><a href="https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission">Where to put package vignettes for CRAN submission</a></p>
+<blockquote>
+<p>“You put the .Rnw sources in vignettes/ as you did, but you missed out a critical step; don’t check the source tree. The expected workflow is to build the source tarball and then check that tarball. Building the tarball will create the vignette PDF.”</p>
+</blockquote>
+<pre><code>R CMD build ../foo/pkg
+R CMD check ./pkg-0.4.tar.gz</code></pre>
+<p>Issues while building vignette for a packages:</p>
+<ul>
+<li><p>sh: 1: /usr/bin/texi2dvi: not found</p>
+<p>sudo apt-get install texinfo</p></li>
+<li><p><a href="https://github.com/clonghurst/Res.plotter/issues/3">Warning about “vignette without corresponding PDF/HTML”?</a></p></li>
+</ul>
+<blockquote>
+<p>“Maybe you’re running R CMD check using the directory name rather than the .tar.gz file?”</p>
+</blockquote>
+<ul>
+<li><a href="https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette">Inconsolata missing to build R vignette</a></li>
+</ul>
+<blockquote>
+<p>“Installing texlive-fonts-extra should take care of it.”</p>
+</blockquote>
+<p>R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings No solution for this one but I guess it’s ok since it concerns country names?</p>
 </div>
 </div>
 <div id="unit-tests" class="section level2">
