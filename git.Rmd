@@ -310,6 +310,20 @@ Get help on a command (will start a web browser):
 
     git init --help
 
+# Line endings
+
+[How to renormalize line endings in all files in all revisions?](https://stackoverflow.com/questions/7156694/git-how-to-renormalize-line-endings-in-all-files-in-all-revisions)
+
+    git add --renormalize .
+
+This is usually taken care of at the system level. 
+But sometimes when you share files with windows machines (accessing them on a shared folder for example)
+you end up with commits that show a lot of modifications because the windows line ending LRLF appears in the linux machine. 
+[Configuring git to handle line endings](https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings)
+To force the line ending to be LF only, create a  .gitattributes file which contains: 
+
+    text eol=lf
+
 
 # Configuring git 
 

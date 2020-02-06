@@ -616,6 +616,13 @@ git stash pop</code></pre>
 <p>Get help on a command (will start a web browser):</p>
 <pre><code>git init --help</code></pre>
 </div>
+<div id="line-endings" class="section level1">
+<h1>Line endings</h1>
+<p><a href="https://stackoverflow.com/questions/7156694/git-how-to-renormalize-line-endings-in-all-files-in-all-revisions">How to renormalize line endings in all files in all revisions?</a></p>
+<pre><code>git add --renormalize .</code></pre>
+<p>This is usually taken care of at the system level. But sometimes when you share files with windows machines (accessing them on a shared folder for example) you end up with commits that show a lot of modifications because the windows line ending LRLF appears in the linux machine. <a href="https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings">Configuring git to handle line endings</a> To force the line ending to be LF only, create a .gitattributes file which contains:</p>
+<pre><code>text eol=lf</code></pre>
+</div>
 <div id="configuring-git" class="section level1">
 <h1>Configuring git</h1>
 <div id="configuring-user-name-and-email" class="section level2">
