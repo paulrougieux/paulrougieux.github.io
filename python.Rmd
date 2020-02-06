@@ -206,6 +206,36 @@ To get a link to a csv file, enter the above function and the code below in a ju
 
     csv_download_link(df, 'df.csv')
 
+## How to use notebooks in a revision control system like git
+
+Install https://github.com/mwouts/jupytext
+
+    python3 -m pip install --user jupytext
+
+More commands:
+
+    python3 -m jupyter notebook --generate-config
+    vim ~/.jupyter/jupyter_notebook_config.py
+
+Add this line:
+
+    c.NotebookApp.contents_manager_class = "jupytext.TextFileContentsManager"
+
+And also this line if you always want to pair notebooks with their markdown counterparts:
+
+    c.ContentsManager.default_jupytext_formats = "ipynb,md"
+
+More commands:
+
+    python3 -m jupyter nbextension install jupytext --py --user
+    python3 -m jupyter nbextension enable  jupytext --py --user
+
+Add syncing to a given notebook:
+
+    # Markdown sync
+    jupytext --set-formats ipynb,md --sync ~/repos/example_repos/notebooks/test.ipynb
+    # Python sync
+    jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipynb
 
 # Functions
 
