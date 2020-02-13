@@ -277,6 +277,84 @@ Modulo
     5%3
     # 2
 
+## Numpy
+
+All examples below are based on the numpy package being imported as np :
+
+    import numpy as np
+
+Random vector or matrices
+
+    np.random.random([2,3])
+    array([[0.8808173 , 0.95042477, 0.3919726 ],
+           [0.34651036, 0.34365034, 0.94717281]])
+
+Matrix of zeroes
+
+    np.zeros([2,2])
+    #array([[0., 0.],
+    #       [0., 0.]])
+
+Create a vector
+
+    a = np.array([1,2,3])
+
+Create a matrix
+
+    b = np.array([[1,2,3],[5,6,6]])
+
+Shape
+
+    a.shape
+    # (3,)
+    b.shape
+    # (2, 3)
+
+Transpose
+
+    b.transpose()
+    # array([[1, 5],
+    #        [2, 6],
+    #        [3, 6]])
+    c = b.transpose()
+
+Matrix multiplication
+
+    np.matmul(a,c)
+    # array([14, 35])
+
+Note otherwise the simple multiplication is an element wise multiplication. 
+
+    b * b
+    # array([[ 1,  4,  9],
+    #        [25, 36, 36]])
+
+
+Math functions in numpy:
+
+    np.cos()
+    np.sin()
+    np.tan()
+    np.exp()
+
+min and max
+
+    x = np.array([1,2,3,4,5,-7,10,-8])
+    x.max()
+    # 10
+    x.min()
+    # -8
+
+Linear algebra with numpy.linalg
+For example the norm of a matrix or vector:
+
+    np.linalg.norm(x)
+    # 16.3707055437449
+    np.linalg.norm(np.array([3,4]))
+    # 5.0
+    np.linalg.norm(a)
+    # 3.7416573867739413
+
 # Objects
 
 ## Inheritance and composition
@@ -559,6 +637,25 @@ Using `drop_duplicates`
 
 
 # Plot
+
+## Matplotlib
+
+All matplotlib examples require teh following imports:
+
+    %matplotlib inline
+    from matplotlib import pyplot
+    pyplot.style.use('seaborn-whitegrid')
+    import numpy
+
+Simple plot changing the figure size and the axes limit with pyplot
+
+    pyplot.rcParams['figure.figsize'] = [10, 10]
+    fig = pyplot.figure()
+    ax = pyplot.axes()
+    x = numpy.linspace(-1.5, 1.5, 1000)
+    ax.plot(x, 1-3*x)
+    ax.set_xlim(-6, 6)
+    ax.set_ylim(-6, 6)
 
 ## Seaborn
 
