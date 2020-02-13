@@ -122,6 +122,12 @@ str(unlist(l1))
 message("Using the following letters: ", paste(letters, collapse=","), ".")
 ```
 
+## Levenshtein distance between words
+
+Cf. https://en.wikipedia.org/wiki/Levenshtein_distance
+
+    adist("kitten", "sitting")
+
 # S3 methods
 x<-1
 
