@@ -199,6 +199,13 @@ explains how to install lyx 2.3 from the backports on Debian stretch.
     sudo apt-get -t stretch-backports install lyx
 
 
+## Python
+
+
+Install editor
+
+    pip3 install spyder
+
 ## R and Rstudio
 
 ### Installing R from the CRAN mirror
