@@ -111,9 +111,7 @@ Under Document / Settings / Language, it's possible to change the document langu
 This stackexchange post suggest installing the texlive-lang-french Debian package. This fixed the error.
 Math mode
 
-Press CTRL+M at the cursor or on highlighted text to enter math mode. Latex syntax "\beta", "x_t" can be used to enter equations and is displayed directly as math symbols.
-Change input encoding
-
+# Encoding
 This question on "how do I prevent  Lyx from loading inputenc?" explains where this part of the Latex preamble is defined.
 
 In Document &gt; Settings..., under Language &gt; Encoding, choose "Other" and select "Language Default (no inputenc)".
@@ -124,6 +122,17 @@ Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
 
 
 Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
+
+# Math
+
+Press CTRL+M at the cursor or on highlighted text to enter math mode. Latex syntax "\beta", "x_t" can be used to enter equations and is displayed directly as math symbols.
+Change input encoding
+
+
+[How to enter a column vector](https://tex.stackexchange.com/questions/153615/help-me-input-a-column-vector)
+Has recommendations on how to enter matrix operations with sub-variables. 
+
+
 
 # Fonts
 ## Icons

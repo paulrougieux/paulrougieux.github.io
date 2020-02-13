@@ -509,11 +509,18 @@ sudo apt-get -t stretch-backports install texlive-bibtex-extra</code></pre>
 <p>Under Document / Settings / Language, it’s possible to change the document language, which will have an impact on the language used for spell checking. In my system compiling a document in French returned an error:</p>
 <p>“Package babel Error: Unknown option `french’.”</p>
 <p>This stackexchange post suggest installing the texlive-lang-french Debian package. This fixed the error. Math mode</p>
-<p>Press CTRL+M at the cursor or on highlighted text to enter math mode. Latex syntax “”, “x_t” can be used to enter equations and is displayed directly as math symbols. Change input encoding</p>
+</div>
+<div id="encoding-1" class="section level1">
+<h1>Encoding</h1>
 <p>This question on “how do I prevent Lyx from loading inputenc?” explains where this part of the Latex preamble is defined.</p>
 <p>In Document &gt; Settings…, under Language &gt; Encoding, choose “Other” and select “Language Default (no inputenc)”.</p>
 <p>Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.</p>
 <p>Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.</p>
+</div>
+<div id="math" class="section level1">
+<h1>Math</h1>
+<p>Press CTRL+M at the cursor or on highlighted text to enter math mode. Latex syntax “”, “x_t” can be used to enter equations and is displayed directly as math symbols. Change input encoding</p>
+<p><a href="https://tex.stackexchange.com/questions/153615/help-me-input-a-column-vector">How to enter a column vector</a> Has recommendations on how to enter matrix operations with sub-variables.</p>
 </div>
 <div id="fonts" class="section level1">
 <h1>Fonts</h1>
