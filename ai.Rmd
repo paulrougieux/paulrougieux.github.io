@@ -1,0 +1,17 @@
+
+# Introduction
+
+This document is a collection of reflections on Artificial Intelligence. 
+
+
+## Recommender systems and the electorate
+Today February 10 2020, I heard about the victory of Shin Fein in the Irish elections. 
+I'm wondering again about the influence of social media algorithms from You tube and Facebook on the electorate.
+It struck me many times that when I listen to Irish folk music on Youtube, the recommender system always suggests me 
+military related them songs in the playlist. Is it because most viewers want to hear military songs? 
+I have to search explicitly for peace related songs. 
+
+Recommender systems maximise the stimulation of the limbic system. I guess there is more stimulation through 
+war themed songs than through peace songs? 
+
+
