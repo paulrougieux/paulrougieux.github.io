@@ -5,3 +5,4 @@ alias youtubemp3="youtube-dl --extract-audio --audio-format mp3"
 # disk usage sorted
 alias dus='du -hd1|sort -hr'
 export PATH=~/.npm-global/bin:$PATH
+export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"

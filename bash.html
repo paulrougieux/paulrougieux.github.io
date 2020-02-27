@@ -689,11 +689,19 @@ echo $USER</code></pre>
 <h2>Change file permission</h2>
 <p>Change user and group of a file</p>
 <pre><code>chown groupname:username filename</code></pre>
+<p>Change user and group of all files in a folder, recursively</p>
+<pre><code># In one command
+sudo chown -R paul:paul scenarios
+# In two commands
+sudo chown -R paul scenarios
+sudo chgrp -R paul scenarios</code></pre>
 <p>Change file permission</p>
 <pre><code>chmod a=rwx filename
-chmod 777 filename </code></pre>
+chmod 777 filename # all permissions to every one</code></pre>
 <p>Change file permissions recursively:</p>
-<pre><code>chmod 755 directoryname</code></pre>
+<pre><code>chmod 755 directoryname # all permissions to the user, only read and execute for other users
+sudo chmod -R 770 scenarios</code></pre>
+<p><a href="https://stackoverflow.com/a/58449179/2641825">nice illustration</a> of read, write execute permission codes on Linux.</p>
 <p>Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.</p>
 <pre><code>Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as &quot;rwxr-xr-x&quot; in ls -l. 
 The default for document files on Debian seems to be chmod 644, visible as &quot;-rw-r--r--&quot; in ls -l.</code></pre>

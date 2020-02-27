@@ -381,14 +381,26 @@ Change user and group of a file
 
     chown groupname:username filename
 
+Change user and group of all files in a folder, recursively
+
+    # In one command
+    sudo chown -R paul:paul scenarios
+    # In two commands
+    sudo chown -R paul scenarios
+    sudo chgrp -R paul scenarios
+
 Change file permission
 
     chmod a=rwx filename
-    chmod 777 filename 
+    chmod 777 filename # all permissions to every one
 
 Change file permissions recursively:
 
-    chmod 755 directoryname
+    chmod 755 directoryname # all permissions to the user, only read and execute for other users
+    sudo chmod -R 770 scenarios
+
+[nice illustration](https://stackoverflow.com/a/58449179/2641825)
+of read, write execute permission codes on Linux. 
 
 Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.
 

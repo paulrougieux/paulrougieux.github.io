@@ -656,8 +656,48 @@ array([[0.8808173 , 0.95042477, 0.3919726 ],
        [0.34651036, 0.34365034, 0.94717281]])</code></pre>
 <p>Matrix of zeroes</p>
 <pre><code>np.zeros([2,2])
-array([[0., 0.],
-       [0., 0.]])</code></pre>
+#array([[0., 0.],
+#       [0., 0.]])</code></pre>
+<p>Create a vector</p>
+<pre><code>a = np.array([1,2,3])</code></pre>
+<p>Create a matrix</p>
+<pre><code>b = np.array([[1,2,3],[5,6,6]])</code></pre>
+<p>Shape</p>
+<pre><code>a.shape
+# (3,)
+b.shape
+# (2, 3)</code></pre>
+<p>Transpose</p>
+<pre><code>b.transpose()
+# array([[1, 5],
+#        [2, 6],
+#        [3, 6]])
+c = b.transpose()</code></pre>
+<p>Matrix multiplication</p>
+<pre><code>np.matmul(a,c)
+# array([14, 35])</code></pre>
+<p>Note otherwise the simple multiplication is an element wise multiplication.</p>
+<pre><code>b * b
+# array([[ 1,  4,  9],
+#        [25, 36, 36]])</code></pre>
+<p>Math functions in numpy:</p>
+<pre><code>np.cos()
+np.sin()
+np.tan()
+np.exp()</code></pre>
+<p>min and max</p>
+<pre><code>x = np.array([1,2,3,4,5,-7,10,-8])
+x.max()
+# 10
+x.min()
+# -8</code></pre>
+<p>Linear algebra with numpy.linalg For example the norm of a matrix or vector:</p>
+<pre><code>np.linalg.norm(x)
+# 16.3707055437449
+np.linalg.norm(np.array([3,4]))
+# 5.0
+np.linalg.norm(a)
+# 3.7416573867739413</code></pre>
 </div>
 </div>
 <div id="objects" class="section level1">
