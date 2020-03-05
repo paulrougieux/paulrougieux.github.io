@@ -487,6 +487,14 @@ sudo umount &quot;/media/gabriele/Debian Inst&quot;</code></pre>
 <p>or use lock orientation in the dash. But this doesn’t solve the issue on the home screen.</p>
 <p><a href="https://askubuntu.com/a/1054060">Screen rotation in Ubuntu 18.04</a> Also mentioned in <a href="https://www.reddit.com/r/gnome/comments/6ndc8d/incorrect_display_orientation_after_bootup/">reddit incorrect display orientation after bootup</a></p>
 <pre><code>gsettings set org.gnome.settings-daemon.plugins.orientation active false</code></pre>
+<p><a href="https://unix.stackexchange.com/a/518564/85530">Also after boot</a></p>
+<p>Default matrix:</p>
+<p>vim /etc/udev/hwdb.d/60-sensor.hwdb</p>
+<pre><code>sensor:modalias:*
+  ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1</code></pre>
+<p>or</p>
+<pre><code>sensor:modalias:*
+  ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1</code></pre>
 </div>
 </div>
 </div>

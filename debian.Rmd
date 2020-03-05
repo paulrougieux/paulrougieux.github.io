@@ -106,6 +106,23 @@ Also mentioned in [reddit incorrect display orientation after bootup](https://ww
 
     gsettings set org.gnome.settings-daemon.plugins.orientation active false
 
+[Also after boot](https://unix.stackexchange.com/a/518564/85530)
+
+Default matrix:
+
+
+vim  /etc/udev/hwdb.d/60-sensor.hwdb
+
+    sensor:modalias:*
+      ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
+
+or
+
+    sensor:modalias:*
+      ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1
+
+
+
 # Installing software
 
 ## APT
