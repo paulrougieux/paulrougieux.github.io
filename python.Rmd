@@ -40,6 +40,9 @@ I have set the following shortcuts to be similar to RStudio:
 
 * F2 go to function definition
 * Ctrl+Shift+C comment/uncomment code block
+* Ctrl+R run selection or current line
+* Ctrl+H find and replace dialog
+
 
 # Object types
 
@@ -364,6 +367,18 @@ For example the norm of a matrix or vector:
     # 5.0
     np.linalg.norm(a)
     # 3.7416573867739413
+
+Append vs concatenate
+
+    x = np.array([1,2])
+    print(np.append(x,x))
+    # [1 2 1 2]
+    print(np.concatenate((x,x),axis=None))
+    a = np.array([[1, 2], [3, 4]])
+    b = np.array([[5, 6]])
+    print(np.concatenate((a, b), axis=0))
+    print(np.concatenate((a, b.T), axis=1))
+    print(np.concatenate((a, b), axis=None))
 
 # Objects
 

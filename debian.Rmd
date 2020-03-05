@@ -93,6 +93,19 @@ The issue happenned on a partitionned disk.
 The fix was to completely erase the main disk and to reinstall a new debian on a single partition. 
 
 
+### Screen rotation issue
+
+[Debian / Gnome: disable sensor-based screen rotation](https://unix.stackexchange.com/a/381398/85530)
+
+    gsettings set org.gnome.settings-daemon.peripherals.touchscreen orientation-lock true
+
+or use lock orientation in the dash. But this doesn't solve the issue on the home screen.
+
+[Screen rotation in Ubuntu 18.04](https://askubuntu.com/a/1054060)
+Also mentioned in [reddit incorrect display orientation after bootup](https://www.reddit.com/r/gnome/comments/6ndc8d/incorrect_display_orientation_after_bootup/)
+
+    gsettings set org.gnome.settings-daemon.plugins.orientation active false
+
 # Installing software
 
 ## APT

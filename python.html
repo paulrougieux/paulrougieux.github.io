@@ -470,6 +470,8 @@ div.tocify {
 <ul>
 <li>F2 go to function definition</li>
 <li>Ctrl+Shift+C comment/uncomment code block</li>
+<li>Ctrl+R run selection or current line</li>
+<li>Ctrl+H find and replace dialog</li>
 </ul>
 </div>
 </div>
@@ -709,6 +711,16 @@ np.linalg.norm(np.array([3,4]))
 # 5.0
 np.linalg.norm(a)
 # 3.7416573867739413</code></pre>
+<p>Append vs concatenate</p>
+<pre><code>x = np.array([1,2])
+print(np.append(x,x))
+# [1 2 1 2]
+print(np.concatenate((x,x),axis=None))
+a = np.array([[1, 2], [3, 4]])
+b = np.array([[5, 6]])
+print(np.concatenate((a, b), axis=0))
+print(np.concatenate((a, b.T), axis=1))
+print(np.concatenate((a, b), axis=None))</code></pre>
 </div>
 </div>
 <div id="objects" class="section level1">

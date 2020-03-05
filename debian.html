@@ -480,6 +480,14 @@ sudo umount &quot;/media/gabriele/Debian Inst&quot;</code></pre>
 <p>After that extra step, the wifi card was working inside Debian.</p>
 <p>See also my 2014 blog post : <a href="https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html">Debian GNU Linux installation on a LENOVO T400</a></p>
 <p>“BootDevice Not Found” issue in a HP Elitebook: <a href="https://wiki.debian.org/GrubEFIReinstall">Grub-EFI reinstall</a> The issue happenned on a partitionned disk. The fix was to completely erase the main disk and to reinstall a new debian on a single partition.</p>
+<div id="screen-rotation-issue" class="section level3">
+<h3>Screen rotation issue</h3>
+<p><a href="https://unix.stackexchange.com/a/381398/85530">Debian / Gnome: disable sensor-based screen rotation</a></p>
+<pre><code>gsettings set org.gnome.settings-daemon.peripherals.touchscreen orientation-lock true</code></pre>
+<p>or use lock orientation in the dash. But this doesn’t solve the issue on the home screen.</p>
+<p><a href="https://askubuntu.com/a/1054060">Screen rotation in Ubuntu 18.04</a> Also mentioned in <a href="https://www.reddit.com/r/gnome/comments/6ndc8d/incorrect_display_orientation_after_bootup/">reddit incorrect display orientation after bootup</a></p>
+<pre><code>gsettings set org.gnome.settings-daemon.plugins.orientation active false</code></pre>
+</div>
 </div>
 </div>
 <div id="installing-software" class="section level1">
