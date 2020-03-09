@@ -313,6 +313,16 @@ I needed to remove it as explained [here](https://github.com/vector-im/riot-web/
 
 > "You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that"
 
+## Zoom
+
+[Zoom install on
+Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Linux#h_adcc0b66-b2f4-468b-bc7a-12c182f354b7)
+
+    cd downloads/
+    wget https://zoom.us/client/latest/zoom_amd64.deb
+    sudo apt install ./zoom_amd64.deb 
+
+
 # Audio
 
 ## Audio Setup
