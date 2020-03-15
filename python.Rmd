@@ -186,8 +186,30 @@ Then start the notebook server as such:
 
     jupyter notebook
 
-## table of content
-Using the Table of Content extension
+## table of content in your notebooks
+
+Install [jupyter_contrib_nbextensions](https://github.com/ipython-contrib/jupyter_contrib_nbextensions)
+
+    python3 -m pip install --user jupyter_contrib_nbextensions
+    python3 -m jupyter contrib nbextension install --user
+
+Activate the table of content extension:
+
+    python3 -m jupyter nbextension enable toc2/main
+
+There are many other extensions available in this package.
+Optionally you can install the jupyter notebook extension configurator (not needed)
+
+    python3 -m pip install --user jupyter_nbextensions_configurator
+    jupyter nbextensions_configurator enable --user
+
+This will make a configuration interface available at:
+
+    http://localhost:8888/nbextensions
+
+
+
+Using the old Table of Content extension
 [jupyter table of content extension](https://github.com/minrk/ipython_extensions#table-of-contents)
 
 
@@ -219,7 +241,8 @@ To get a link to a csv file, enter the above function and the code below in a ju
 
     csv_download_link(df, 'df.csv')
 
-## How to use notebooks in a revision control system like git
+## Archive notebooks in a revision control system like git
+Convert notebooks to markdown so they are easier to track in git. 
 
 Install https://github.com/mwouts/jupytext
 
@@ -331,10 +354,15 @@ Transpose
     #        [3, 6]])
     c = b.transpose()
 
-Matrix multiplication
+Matrix multiplication [matmul](https://docs.scipy.org/doc/numpy/reference/generated/numpy.matmul.html)
 
     np.matmul(a,c)
     # array([14, 35])
+
+    # or 
+    a @ c
+    # array([14, 35])
+
 
 Note otherwise the simple multiplication is an element wise multiplication. 
 

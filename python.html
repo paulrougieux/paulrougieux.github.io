@@ -583,9 +583,19 @@ set ^ other
 <p>Then start the notebook server as such:</p>
 <pre><code>jupyter notebook</code></pre>
 </div>
-<div id="table-of-content" class="section level2">
-<h2>table of content</h2>
-<p>Using the Table of Content extension <a href="https://github.com/minrk/ipython_extensions#table-of-contents">jupyter table of content extension</a></p>
+<div id="table-of-content-in-your-notebooks" class="section level2">
+<h2>table of content in your notebooks</h2>
+<p>Install <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions">jupyter_contrib_nbextensions</a></p>
+<pre><code>python3 -m pip install --user jupyter_contrib_nbextensions
+python3 -m jupyter contrib nbextension install --user</code></pre>
+<p>Activate the table of content extension:</p>
+<pre><code>python3 -m jupyter nbextension enable toc2/main</code></pre>
+<p>There are many other extensions available in this package. Optionally you can install the jupyter notebook extension configurator (not needed)</p>
+<pre><code>python3 -m pip install --user jupyter_nbextensions_configurator
+jupyter nbextensions_configurator enable --user</code></pre>
+<p>This will make a configuration interface available at:</p>
+<pre><code>http://localhost:8888/nbextensions</code></pre>
+<p>Using the old Table of Content extension <a href="https://github.com/minrk/ipython_extensions#table-of-contents">jupyter table of content extension</a></p>
 <pre><code>jupyter nbconvert --to markdown mynotebook.ipynb
 jupyter nbconvert --to html mynotebook.ipynb</code></pre>
 </div>
@@ -608,8 +618,9 @@ jupyter nbconvert --to html mynotebook.ipynb</code></pre>
 <p>To get a link to a csv file, enter the above function and the code below in a jupyter notebook cell :</p>
 <pre><code>csv_download_link(df, &#39;df.csv&#39;)</code></pre>
 </div>
-<div id="how-to-use-notebooks-in-a-revision-control-system-like-git" class="section level2">
-<h2>How to use notebooks in a revision control system like git</h2>
+<div id="archive-notebooks-in-a-revision-control-system-like-git" class="section level2">
+<h2>Archive notebooks in a revision control system like git</h2>
+<p>Convert notebooks to markdown so they are easier to track in git.</p>
 <p>Install <a href="https://github.com/mwouts/jupytext" class="uri">https://github.com/mwouts/jupytext</a></p>
 <pre><code>python3 -m pip install --user jupytext</code></pre>
 <p>More commands:</p>
@@ -686,8 +697,12 @@ b.shape
 #        [2, 6],
 #        [3, 6]])
 c = b.transpose()</code></pre>
-<p>Matrix multiplication</p>
+<p>Matrix multiplication <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.matmul.html">matmul</a></p>
 <pre><code>np.matmul(a,c)
+# array([14, 35])
+
+# or 
+a @ c
 # array([14, 35])</code></pre>
 <p>Note otherwise the simple multiplication is an element wise multiplication.</p>
 <pre><code>b * b
