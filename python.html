@@ -726,6 +726,17 @@ np.linalg.norm(np.array([3,4]))
 # 5.0
 np.linalg.norm(a)
 # 3.7416573867739413</code></pre>
+<p>Norm of the matrix for the regularization parameter in a machine learning model</p>
+<pre><code>bli = np.array([[1, 1, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 0.0, 0.0, 0.0, 0.0],
+                [0.0, 1, 0.0, 0.0, 0.0]])
+sum(np.linalg.norm(bli, axis=0)**2) 3.0000000000000004
+sum(np.linalg.norm(bli, axis=1)**2) 3.0000000000000004
+np.linalg.norm(bli)**2 2.9999999999999996</code></pre>
 <p>Append vs concatenate</p>
 <pre><code>x = np.array([1,2])
 print(np.append(x,x))
@@ -736,6 +747,11 @@ b = np.array([[5, 6]])
 print(np.concatenate((a, b), axis=0))
 print(np.concatenate((a, b.T), axis=1))
 print(np.concatenate((a, b), axis=None))</code></pre>
+<p>Masks <a href="https://docs.scipy.org/doc/numpy/reference/maskedarray.generic.html">masked array</a> We wish to mark the fourth entry as invalid. The easiest is to create a masked array:</p>
+<pre><code>x = np.array([1, 2, 3, -1, 5])
+mx = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
+print(x.sum(), mx.sum())
+# 10 11</code></pre>
 </div>
 </div>
 <div id="objects" class="section level1">

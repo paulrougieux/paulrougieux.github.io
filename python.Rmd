@@ -396,6 +396,19 @@ For example the norm of a matrix or vector:
     np.linalg.norm(a)
     # 3.7416573867739413
 
+Norm of the matrix for the regularization parameter in a machine learning model
+
+    bli = np.array([[1, 1, 0.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0, 0.0, 0.0],
+                    [0.0, 0.0, 0.0, 0.0, 0.0],
+                    [0.0, 1, 0.0, 0.0, 0.0]])
+    sum(np.linalg.norm(bli, axis=0)**2) 3.0000000000000004
+    sum(np.linalg.norm(bli, axis=1)**2) 3.0000000000000004
+    np.linalg.norm(bli)**2 2.9999999999999996
+
 Append vs concatenate
 
     x = np.array([1,2])
@@ -407,6 +420,15 @@ Append vs concatenate
     print(np.concatenate((a, b), axis=0))
     print(np.concatenate((a, b.T), axis=1))
     print(np.concatenate((a, b), axis=None))
+
+Masks [masked array](https://docs.scipy.org/doc/numpy/reference/maskedarray.generic.html)
+We wish to mark the fourth entry as invalid. The easiest is to create a masked array:
+
+    x = np.array([1, 2, 3, -1, 5])
+    mx = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
+    print(x.sum(), mx.sum())
+    # 10 11
+
 
 # Objects
 
@@ -874,8 +896,5 @@ how asyncio works with a simulated delay to fetch a web page.
 
 Podecast [talk python to me](https://talkpython.fm/)
  * [Data science year in review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
-
-
-
 
 
