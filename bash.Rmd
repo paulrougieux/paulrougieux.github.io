@@ -131,10 +131,19 @@ Resize a picture to 2000 px wide using ImageMagick:
 
     convert picture1.jpg -resize 2000 picture2.jpg 
 
+Resize a picture to 2000 px wide and also convert it to gray scale:
+
+    convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg 
+
+Convert to black and white (tricky to get the threshold right): 
+
+    convert picture1.jpg -threshold 40% picture2.jpg 
+    
 Batch processing, resize all jpg images and place the resized images in a new folder
 
     mkdir newfolder
     mogrify -resize 2000 -path ./newfolder *.jpg
+    mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg
 
 ## Edit PDF files
 Commands based on the poppler library for PDF manipulation.

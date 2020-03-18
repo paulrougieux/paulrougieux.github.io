@@ -523,9 +523,14 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 <h2>Edit Image files</h2>
 <p>Resize a picture to 2000 px wide using ImageMagick:</p>
 <pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
+<p>Resize a picture to 2000 px wide and also convert it to gray scale:</p>
+<pre><code>convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg </code></pre>
+<p>Convert to black and white (tricky to get the threshold right):</p>
+<pre><code>convert picture1.jpg -threshold 40% picture2.jpg </code></pre>
 <p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
 <pre><code>mkdir newfolder
-mogrify -resize 2000 -path ./newfolder *.jpg</code></pre>
+mogrify -resize 2000 -path ./newfolder *.jpg
+mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg</code></pre>
 </div>
 <div id="edit-pdf-files" class="section level2">
 <h2>Edit PDF files</h2>
