@@ -38,11 +38,11 @@ dotnetperls: [not python](https://www.dotnetperls.com/not-python)
 
 I have set the following shortcuts to be similar to RStudio:
 
-* F2 go to function definition
-* Ctrl+Shift+C comment/uncomment code block
-* Ctrl+R run selection or current line
 * Ctrl+H find and replace dialog
-
+* Ctrl+R run selection or current line
+* Ctrl+Shift+C comment/uncomment code block
+* F1 inspect current object (i.e. display function and classes documentation)
+* F2 go to function definition
 
 # Object types
 

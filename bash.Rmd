@@ -135,7 +135,8 @@ Resize a picture to 2000 px wide and also convert it to gray scale:
 
     convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg 
 
-Convert to black and white (tricky to get the threshold right): 
+Convert to [black and white](http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279)
+(tricky to get the threshold right): 
 
     convert picture1.jpg -threshold 40% picture2.jpg 
     
