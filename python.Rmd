@@ -321,9 +321,27 @@ All examples below are based on the numpy package being imported as np :
 
 Random vector or matrices
 
-    np.random.random([2,3])
-    array([[0.8808173 , 0.95042477, 0.3919726 ],
-           [0.34651036, 0.34365034, 0.94717281]])
+    x = np.random.random([3,4])
+    x
+    # array([[0.64174957, 0.18540429, 0.7045183 , 0.44623567],
+    #        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
+    #        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])
+
+Numpy [array indexing](https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html)
+
+> "Basic slicing extends Python’s basic concept of slicing to N dimensions. Basic slicing occurs when 
+> obj is a slice object (constructed by start:stop:step notation inside of brackets), an integer, or a tuple of slice objects and integers."
+> [...]
+> The basic slice syntax is i:j:k where i is the starting index, j is the stopping index, and k is the step ($k\neq0$).
+> "[...]
+> "Advanced indexing always returns a copy of the data (contrast with basic slicing that returns a view)." 
+> "Integer array indexing allows selection of arbitrary items in the array based on their N-dimensional index.
+> Each integer array represents a number of indexes into that dimension."
+
+    x[0:3,0:2]
+    array([[0.64174957, 0.18540429],
+           [0.97558697, 0.69314058],
+           [0.51646795, 0.71055115]])
 
 Matrix of zeroes
 
