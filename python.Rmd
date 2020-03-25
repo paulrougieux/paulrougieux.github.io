@@ -737,22 +737,38 @@ Using `drop_duplicates`
 
 ## Matplotlib
 
-All matplotlib examples require teh following imports:
+All matplotlib examples require the following imports:
 
     %matplotlib inline
     from matplotlib import pyplot
     pyplot.style.use('seaborn-whitegrid')
-    import numpy
+    import numpy as np
 
-Simple plot changing the figure size and the axes limit with pyplot
+Simple line plot changing the figure size and the axes limit with pyplot
 
     pyplot.rcParams['figure.figsize'] = [10, 10]
     fig = pyplot.figure()
     ax = pyplot.axes()
-    x = numpy.linspace(-1.5, 1.5, 1000)
+    x = np.linspace(-1.5, 1.5, 1000)
     ax.plot(x, 1-3*x)
     ax.set_xlim(-6, 6)
     ax.set_ylim(-6, 6)
+
+Scatter plot, using a colour variable and the 'jet' colour map.
+
+    Y = np.array([1,-1,-1, 1])
+    X = np.array([
+            [-1, -1],
+            [ 1, -1],
+            [-1,  1],
+            [ 1,  1]])
+    fig = pyplot.figure()
+    ax = pyplot.axes()
+    ax.scatter(X[:,0], X[:,1],c=Y, cmap='jet')
+
+Use another [colour map](https://matplotlib.org/examples/color/colormaps_reference.html)
+
+    ax.scatter(X[:,0], X[:,1],c=Y, cmap='Spectral')
 
 ## Seaborn
 

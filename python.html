@@ -1007,19 +1007,31 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <h1>Plot</h1>
 <div id="matplotlib" class="section level2">
 <h2>Matplotlib</h2>
-<p>All matplotlib examples require teh following imports:</p>
+<p>All matplotlib examples require the following imports:</p>
 <pre><code>%matplotlib inline
 from matplotlib import pyplot
 pyplot.style.use(&#39;seaborn-whitegrid&#39;)
-import numpy</code></pre>
-<p>Simple plot changing the figure size and the axes limit with pyplot</p>
+import numpy as np</code></pre>
+<p>Simple line plot changing the figure size and the axes limit with pyplot</p>
 <pre><code>pyplot.rcParams[&#39;figure.figsize&#39;] = [10, 10]
 fig = pyplot.figure()
 ax = pyplot.axes()
-x = numpy.linspace(-1.5, 1.5, 1000)
+x = np.linspace(-1.5, 1.5, 1000)
 ax.plot(x, 1-3*x)
 ax.set_xlim(-6, 6)
 ax.set_ylim(-6, 6)</code></pre>
+<p>Scatter plot, using a colour variable and the ‘jet’ colour map.</p>
+<pre><code>Y = np.array([1,-1,-1, 1])
+X = np.array([
+        [-1, -1],
+        [ 1, -1],
+        [-1,  1],
+        [ 1,  1]])
+fig = pyplot.figure()
+ax = pyplot.axes()
+ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;jet&#39;)</code></pre>
+<p>Use another <a href="https://matplotlib.org/examples/color/colormaps_reference.html">colour map</a></p>
+<pre><code>ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;Spectral&#39;)</code></pre>
 </div>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>
