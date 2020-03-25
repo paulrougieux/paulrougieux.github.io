@@ -449,10 +449,27 @@ CTRL+] - jump to a highlighted topic
 CTRL+T - jump backwards</code></pre>
 <p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
 </div>
+<div id="enter-commands-save-and-quit" class="section level1">
+<h1>Enter commands, save and quit</h1>
+<p>To enter edit mode:</p>
+<pre><code>i</code></pre>
+<p>To enter command mode:</p>
+<pre><code>escape</code></pre>
+<p>To exit vim, go in command mode and enter the following command:</p>
+<pre><code>:q</code></pre>
+<p>To exit without saving the content of the file:</p>
+<pre><code>:q!</code></pre>
+<p>To save the content of the file:</p>
+<pre><code>:w</code></pre>
+<p>If you accidentally press CTRL+S the <a href="https://askubuntu.com/a/264253/315347">terminal will hang</a> Press <code>CTRL+Q</code> to regain control. See also <a href="https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator">Ctrl-s hang terminal emulator?</a> which provides a workaround: entering <code>stty -ixon</code> in .bashrc.</p>
+<p>To save content and exit:</p>
+<pre><code>:wq</code></pre>
+</div>
 <div id="navigating" class="section level1">
 <h1>Navigating</h1>
 <div id="motion" class="section level2">
 <h2>Motion</h2>
+<p>In command mode, the following motions are activated:</p>
 <pre><code>:help left-right-motion
 j,k move up down
 h,l move left right

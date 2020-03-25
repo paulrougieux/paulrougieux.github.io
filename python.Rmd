@@ -339,9 +339,13 @@ Numpy [array indexing](https://docs.scipy.org/doc/numpy/reference/arrays.indexin
 > Each integer array represents a number of indexes into that dimension."
 
     x[0:3,0:2]
-    array([[0.64174957, 0.18540429],
-           [0.97558697, 0.69314058],
-           [0.51646795, 0.71055115]])
+    # array([[0.64174957, 0.18540429],
+    #        [0.97558697, 0.69314058],
+    #        [0.51646795, 0.71055115]])
+
+In this case because every row is selected, it is the same as:
+
+    x[:,0:2]
 
 Matrix of zeroes
 

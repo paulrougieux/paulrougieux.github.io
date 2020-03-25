@@ -686,9 +686,11 @@ x
 <p>“Basic slicing extends Python’s basic concept of slicing to N dimensions. Basic slicing occurs when obj is a slice object (constructed by start:stop:step notation inside of brackets), an integer, or a tuple of slice objects and integers.” […] The basic slice syntax is i:j:k where i is the starting index, j is the stopping index, and k is the step (<span class="math inline">\(k\neq0\)</span>). “[…]”Advanced indexing always returns a copy of the data (contrast with basic slicing that returns a view).&quot; “Integer array indexing allows selection of arbitrary items in the array based on their N-dimensional index. Each integer array represents a number of indexes into that dimension.”</p>
 </blockquote>
 <pre><code>x[0:3,0:2]
-array([[0.64174957, 0.18540429],
-       [0.97558697, 0.69314058],
-       [0.51646795, 0.71055115]])</code></pre>
+# array([[0.64174957, 0.18540429],
+#        [0.97558697, 0.69314058],
+#        [0.51646795, 0.71055115]])</code></pre>
+<p>In this case because every row is selected, it is the same as:</p>
+<pre><code>x[:,0:2]</code></pre>
 <p>Matrix of zeroes</p>
 <pre><code>np.zeros([2,2])
 #array([[0., 0.],
