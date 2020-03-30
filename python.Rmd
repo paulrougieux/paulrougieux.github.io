@@ -770,6 +770,25 @@ Use another [colour map](https://matplotlib.org/examples/color/colormaps_referen
 
     ax.scatter(X[:,0], X[:,1],c=Y, cmap='Spectral')
 
+Plot the probability density function of the 
+[normal distribution](https://en.wikipedia.org/wiki/Normal_distribution). 
+
+$$f(x)=\frac{1}{\sigma{\sqrt {2\pi }}}e^{-{\frac {1}{2}}\left({\frac {x-\mu }{\sigma }}\right)^{2}}$$
+
+with various sigma and mu values displayed in the legend.
+
+    fig = pyplot.figure()
+    ax = pyplot.axes()
+    x = np.linspace(-5, 5, 1000)
+    def pdensitynormal(x,sigma_squared,mu):
+        sigma = np.sqrt(sigma_squared)
+        return 1/(sigma*np.sqrt(2*np.math.pi))*np.exp(-1/2*((x-mu)/sigma)**2)
+    ax.plot(x, pdensitynormal(x,0.2,0), label="$\sigma^2=0.2, \mu=0$")
+    ax.plot(x, pdensitynormal(x,1,0), label="$\sigma^2=1, \mu=0$")
+    ax.plot(x, pdensitynormal(x,5,0), label="$\sigma^2=5, \mu=0$")
+    ax.plot(x, pdensitynormal(x,0.5,-2), label="$\sigma^2=0.5, \mu=-2$")
+    ax.legend(loc="upper right")
+
 ## Seaborn
 
 All seaborn examples below require the following imports and datasets:

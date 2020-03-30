@@ -1032,6 +1032,20 @@ ax = pyplot.axes()
 ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;jet&#39;)</code></pre>
 <p>Use another <a href="https://matplotlib.org/examples/color/colormaps_reference.html">colour map</a></p>
 <pre><code>ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;Spectral&#39;)</code></pre>
+<p>Plot the probability density function of the <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a>.</p>
+<p><span class="math display">\[f(x)=\frac{1}{\sigma{\sqrt {2\pi }}}e^{-{\frac {1}{2}}\left({\frac {x-\mu }{\sigma }}\right)^{2}}\]</span></p>
+<p>with various sigma and mu values displayed in the legend.</p>
+<pre><code>fig = pyplot.figure()
+ax = pyplot.axes()
+x = np.linspace(-5, 5, 1000)
+def pdensitynormal(x,sigma_squared,mu):
+    sigma = np.sqrt(sigma_squared)
+    return 1/(sigma*np.sqrt(2*np.math.pi))*np.exp(-1/2*((x-mu)/sigma)**2)
+ax.plot(x, pdensitynormal(x,0.2,0), label=&quot;$\sigma^2=0.2, \mu=0$&quot;)
+ax.plot(x, pdensitynormal(x,1,0), label=&quot;$\sigma^2=1, \mu=0$&quot;)
+ax.plot(x, pdensitynormal(x,5,0), label=&quot;$\sigma^2=5, \mu=0$&quot;)
+ax.plot(x, pdensitynormal(x,0.5,-2), label=&quot;$\sigma^2=0.5, \mu=-2$&quot;)
+ax.legend(loc=&quot;upper right&quot;)</code></pre>
 </div>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>
