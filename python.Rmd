@@ -327,6 +327,8 @@ Random vector or matrices
     #        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
     #        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])
 
+### Indexing Multi-dimensional arrays and masks
+
 Numpy [array indexing](https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html)
 
 > "Basic slicing extends Python’s basic concept of slicing to N dimensions. Basic slicing occurs when 
@@ -346,6 +348,31 @@ Numpy [array indexing](https://docs.scipy.org/doc/numpy/reference/arrays.indexin
 In this case because every row is selected, it is the same as:
 
     x[:,0:2]
+
+Examples modified from https://docs.scipy.org/doc/numpy/user/basics.indexing.html
+
+    y = np.arange(35).reshape(5,7)
+    print(y[np.array([0,2,4]), np.array([0,1,2])])
+
+    print('With slice 1:3')
+    print(y[np.array([0,2,4]),1:3])
+    print('is equivalent to')
+    print(y[np.array([[0],[2],[4]]),np.array([[1,2]])])
+    # This one is the same but transposed, which is weird
+    print(y[np.array([[0,2,4]]),np.array([[1],[2]])])
+    # Notice the difference with the following
+    print(y[np.array([0,2,4]),np.array([1,2,3])])
+
+Masks [masked array](https://docs.scipy.org/doc/numpy/reference/maskedarray.generic.html)
+We wish to mark the fourth entry as invalid. The easiest is to create a masked array:
+
+    x = np.array([1, 2, 3, -1, 5])
+    mx = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
+    print(x.sum(), mx.sum())
+    # 10 11
+
+
+### Simple matrix operations and shapes
 
 Matrix of zeroes
 
@@ -376,23 +403,6 @@ Transpose
     #        [3, 6]])
     c = b.transpose()
 
-Matrix multiplication [matmul](https://docs.scipy.org/doc/numpy/reference/generated/numpy.matmul.html)
-
-    np.matmul(a,c)
-    # array([14, 35])
-
-    # or 
-    a @ c
-    # array([14, 35])
-
-
-Note otherwise the simple multiplication is an element wise multiplication. 
-
-    b * b
-    # array([[ 1,  4,  9],
-    #        [25, 36, 36]])
-
-
 Math functions in numpy:
 
     np.cos()
@@ -407,6 +417,27 @@ min and max
     # 10
     x.min()
     # -8
+
+### Matrix multiplication
+
+Matrix multiplication [matmul](https://docs.scipy.org/doc/numpy/reference/generated/numpy.matmul.html)
+
+    np.matmul(a,c)
+    # array([14, 35])
+
+    # Can also be written as
+    a @ c
+    # array([14, 35])
+
+Otherwise the multiplication symbol implements an element wise multiplication, also called the 
+[Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices)).
+It only works on 2 matrices of same dimensions. 
+Element-wise multiplication is used for example in convolution kernels. 
+
+    b * b
+    # array([[ 1,  4,  9],
+    #        [25, 36, 36]])
+
 
 Linear algebra with numpy.linalg
 For example the norm of a matrix or vector:
@@ -442,14 +473,6 @@ Append vs concatenate
     print(np.concatenate((a, b), axis=0))
     print(np.concatenate((a, b.T), axis=1))
     print(np.concatenate((a, b), axis=None))
-
-Masks [masked array](https://docs.scipy.org/doc/numpy/reference/maskedarray.generic.html)
-We wish to mark the fourth entry as invalid. The easiest is to create a masked array:
-
-    x = np.array([1, 2, 3, -1, 5])
-    mx = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
-    print(x.sum(), mx.sum())
-    # 10 11
 
 
 # Objects
@@ -585,6 +608,24 @@ List of index labels
             viper               4       5
             sidewinder          7       8
 
+Conditional that returns a boolean Series
+
+    In :  df.loc[df['shield'] > 6]
+    Out:
+                         max_speed  shield
+             sidewinder          7       8
+
+Select rows that are not in ['cobra','viper'] 
+Based on a [SO answer use isin on the index](https://stackoverflow.com/a/29140194/2641825):
+
+    In : df.index.isin(['cobra','viper'])
+    Out: array([ True,  True, False])
+
+    In : df.loc[~df.index.isin(['cobra','viper'])]
+    Out: 
+                max_speed  shield
+    sidewinder          7       8
+
 Slice with labels for row and labels for columns.
 
     In :  df.loc['cobra':'viper', 'max_speed':'shield']
@@ -592,13 +633,6 @@ Slice with labels for row and labels for columns.
                    max_speed  shield
             cobra          1       2
             viper          4       5
-
-Conditional that returns a boolean Series
-
-    In :  df.loc[df['shield'] > 6]
-    Out:
-                         max_speed  shield
-             sidewinder          7       8
 
 Set value for all items matching the list of labels
 

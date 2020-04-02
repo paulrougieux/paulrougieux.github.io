@@ -681,6 +681,8 @@ x
 # array([[0.64174957, 0.18540429, 0.7045183 , 0.44623567],
 #        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
 #        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])</code></pre>
+<div id="indexing-multi-dimensional-arrays-and-masks" class="section level3">
+<h3>Indexing Multi-dimensional arrays and masks</h3>
 <p>Numpy <a href="https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html">array indexing</a></p>
 <blockquote>
 <p>“Basic slicing extends Python’s basic concept of slicing to N dimensions. Basic slicing occurs when obj is a slice object (constructed by start:stop:step notation inside of brackets), an integer, or a tuple of slice objects and integers.” […] The basic slice syntax is i:j:k where i is the starting index, j is the stopping index, and k is the step (<span class="math inline">\(k\neq0\)</span>). “[…]”Advanced indexing always returns a copy of the data (contrast with basic slicing that returns a view).&quot; “Integer array indexing allows selection of arbitrary items in the array based on their N-dimensional index. Each integer array represents a number of indexes into that dimension.”</p>
@@ -691,6 +693,26 @@ x
 #        [0.51646795, 0.71055115]])</code></pre>
 <p>In this case because every row is selected, it is the same as:</p>
 <pre><code>x[:,0:2]</code></pre>
+<p>Examples modified from <a href="https://docs.scipy.org/doc/numpy/user/basics.indexing.html" class="uri">https://docs.scipy.org/doc/numpy/user/basics.indexing.html</a></p>
+<pre><code>y = np.arange(35).reshape(5,7)
+print(y[np.array([0,2,4]), np.array([0,1,2])])
+
+print(&#39;With slice 1:3&#39;)
+print(y[np.array([0,2,4]),1:3])
+print(&#39;is equivalent to&#39;)
+print(y[np.array([[0],[2],[4]]),np.array([[1,2]])])
+# This one is the same but transposed, which is weird
+print(y[np.array([[0,2,4]]),np.array([[1],[2]])])
+# Notice the difference with the following
+print(y[np.array([0,2,4]),np.array([1,2,3])])</code></pre>
+<p>Masks <a href="https://docs.scipy.org/doc/numpy/reference/maskedarray.generic.html">masked array</a> We wish to mark the fourth entry as invalid. The easiest is to create a masked array:</p>
+<pre><code>x = np.array([1, 2, 3, -1, 5])
+mx = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
+print(x.sum(), mx.sum())
+# 10 11</code></pre>
+</div>
+<div id="simple-matrix-operations-and-shapes" class="section level3">
+<h3>Simple matrix operations and shapes</h3>
 <p>Matrix of zeroes</p>
 <pre><code>np.zeros([2,2])
 #array([[0., 0.],
@@ -710,17 +732,6 @@ b.shape
 #        [2, 6],
 #        [3, 6]])
 c = b.transpose()</code></pre>
-<p>Matrix multiplication <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.matmul.html">matmul</a></p>
-<pre><code>np.matmul(a,c)
-# array([14, 35])
-
-# or 
-a @ c
-# array([14, 35])</code></pre>
-<p>Note otherwise the simple multiplication is an element wise multiplication.</p>
-<pre><code>b * b
-# array([[ 1,  4,  9],
-#        [25, 36, 36]])</code></pre>
 <p>Math functions in numpy:</p>
 <pre><code>np.cos()
 np.sin()
@@ -732,6 +743,20 @@ x.max()
 # 10
 x.min()
 # -8</code></pre>
+</div>
+<div id="matrix-multiplication" class="section level3">
+<h3>Matrix multiplication</h3>
+<p>Matrix multiplication <a href="https://docs.scipy.org/doc/numpy/reference/generated/numpy.matmul.html">matmul</a></p>
+<pre><code>np.matmul(a,c)
+# array([14, 35])
+
+# Can also be written as
+a @ c
+# array([14, 35])</code></pre>
+<p>Otherwise the multiplication symbol implements an element wise multiplication, also called the <a href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">Hadamard product</a>. It only works on 2 matrices of same dimensions. Element-wise multiplication is used for example in convolution kernels.</p>
+<pre><code>b * b
+# array([[ 1,  4,  9],
+#        [25, 36, 36]])</code></pre>
 <p>Linear algebra with numpy.linalg For example the norm of a matrix or vector:</p>
 <pre><code>np.linalg.norm(x)
 # 16.3707055437449
@@ -760,11 +785,7 @@ b = np.array([[5, 6]])
 print(np.concatenate((a, b), axis=0))
 print(np.concatenate((a, b.T), axis=1))
 print(np.concatenate((a, b), axis=None))</code></pre>
-<p>Masks <a href="https://docs.scipy.org/doc/numpy/reference/maskedarray.generic.html">masked array</a> We wish to mark the fourth entry as invalid. The easiest is to create a masked array:</p>
-<pre><code>x = np.array([1, 2, 3, -1, 5])
-mx = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
-print(x.sum(), mx.sum())
-# 10 11</code></pre>
+</div>
 </div>
 </div>
 <div id="objects" class="section level1">
@@ -884,17 +905,25 @@ Out:
                     max_speed  shield
         viper               4       5
         sidewinder          7       8</code></pre>
+<p>Conditional that returns a boolean Series</p>
+<pre><code>In :  df.loc[df[&#39;shield&#39;] &gt; 6]
+Out:
+                     max_speed  shield
+         sidewinder          7       8</code></pre>
+<p>Select rows that are not in [‘cobra’,‘viper’] Based on a <a href="https://stackoverflow.com/a/29140194/2641825">SO answer use isin on the index</a>:</p>
+<pre><code>In : df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])
+Out: array([ True,  True, False])
+
+In : df.loc[~df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])]
+Out: 
+            max_speed  shield
+sidewinder          7       8</code></pre>
 <p>Slice with labels for row and labels for columns.</p>
 <pre><code>In :  df.loc[&#39;cobra&#39;:&#39;viper&#39;, &#39;max_speed&#39;:&#39;shield&#39;]
 Out:
                max_speed  shield
         cobra          1       2
         viper          4       5</code></pre>
-<p>Conditional that returns a boolean Series</p>
-<pre><code>In :  df.loc[df[&#39;shield&#39;] &gt; 6]
-Out:
-                     max_speed  shield
-         sidewinder          7       8</code></pre>
 <p>Set value for all items matching the list of labels</p>
 <pre><code>In : df.loc[[&#39;viper&#39;, &#39;sidewinder&#39;], [&#39;shield&#39;]] = 50
 
