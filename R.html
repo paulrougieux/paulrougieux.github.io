@@ -884,6 +884,16 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 <p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository. I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK.</p>
 <p>Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
 </div>
+<div id="submitting-to-cran" class="section level2">
+<h2>Submitting to CRAN</h2>
+<p><a href="https://cran.r-project.org/submit.html">Submit package to CRAN</a> The second page will ask to</p>
+<ul>
+<li>Step 1 (Upload) the <code>*.tar.gz</code> file.</li>
+<li>Step 2 (Submission) review information from the package’s DESCRIPTION file.</li>
+<li>Step 3 (Confirmation)</li>
+</ul>
+<p>The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review.</p>
+</div>
 </div>
 <div id="differences-between-python-and-r" class="section level1">
 <h1>Differences between python and R</h1>

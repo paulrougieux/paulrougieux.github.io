@@ -486,10 +486,18 @@ Package dependencies can be configured in a `.travis.yml`
 file that is read by the travis machine performing the build.
 For package that are not on Cran, it's possible to specify a dependency field under `r_github_packages`.
 
+## Submitting to CRAN
+
+[Submit package to CRAN](https://cran.r-project.org/submit.html)
+The second page will ask to 
+
+* Step 1 (Upload) the `*.tar.gz` file.
+* Step 2 (Submission) review information from the package's DESCRIPTION file. 
+* Step 3 (Confirmation)
+
+The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review. 
 
 # Differences between python and R
-
-
 
     l = c(1,2,3)
     s = l
