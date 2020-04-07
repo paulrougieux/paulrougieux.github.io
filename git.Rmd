@@ -785,6 +785,10 @@ Workflow:
 
     Mixing private and public repository in Git workflow
 
+Book: 
+
+* [Pro Git book](https://git-scm.com/book/en/v2) good introduction. 
+
 Tutorial:
 
  * Git foundations

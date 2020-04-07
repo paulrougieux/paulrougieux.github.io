@@ -62,6 +62,10 @@ Whatsapp betrayed its user by sharing contact details with FaceBook for advertis
 > phone to tailor ads to you. They will see your contacts list (which they
 > already are, actually). This is a clear betrayal, for many users. "
 
+# Webex
+
+A question I wrote: 
+[How to use webex from Debian Linux](https://superuser.com/questions/1539643/how-to-use-webex-from-debian-linux)
 
 # Zoom 
 
