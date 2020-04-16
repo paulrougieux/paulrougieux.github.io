@@ -2,12 +2,13 @@
 # Introduction
 
 The purpose of this document is to analyse communication 
-options such as mail, chat, calls and video calls from
+options such as mail, social media, chat, calls and video calls from
 the perspective of a privacy conscious individual.
 
 
+# Mail
 
-# Email
+## Email
 
 Email is an open protocol and that is good because it means 
 you can exchange emails with someone who uses an email server from a different company.
@@ -16,22 +17,7 @@ Through communication tools such as skype or Whatsapp, you can only communicate
 with people registered at the same company.
 
 
-# Riot
-
-Riot-web is a chat application based on the matrix decentralised communication protocol. 
-
-# Signal 
-
-The issue is that the desktop client requires a mobile phone with camera to be started. 
-As of January 2020 I still use a nokia 3010 phone.
-I cannot install the signal application on that phone and this means that I cannot use signal on my desktop. 
-
-# Skype
-
-Skype was purchased by Microsoft. 
-Screen sharing has a poor quality on Linux desktop.
-
-# Snail mail
+## Snail mail
 
 Snail mail can be seen as an emotional form of communication through a physical
 medium: paper. You can smell it. You can touch it. You can drop a tear on it.
@@ -39,11 +25,29 @@ You can tear it apart. You can burn it. It's based on plants that were growing
 in a forest somewhere. It might have been recycled. It might have spend time in
 a trash bin. 
 
-# Telegram
+
+# Chat, calls and video calls
+## Riot
+
+Riot-web is a chat application based on the matrix decentralised communication protocol. 
+
+## Signal 
+
+The issue is that the desktop client requires a mobile phone with camera to be started. 
+As of January 2020 I still use a nokia 3010 phone.
+I cannot install the signal application on that phone and this means that I cannot use signal on my desktop. 
+
+## Skype
+
+Skype was purchased by Microsoft. 
+Screen sharing has a poor quality on Linux desktop.
+
+
+## Telegram
 
 Another chat application. 
 
-# Whatsapp
+## Whatsapp
 
 [Why you should switch to signal or telegram](https://medium.com/@contactsunny/why-you-should-switch-to-signal-or-telegram-from-whatsapp-today-fa773694d05e) (2018):
 
@@ -62,16 +66,21 @@ Whatsapp betrayed its user by sharing contact details with FaceBook for advertis
 > phone to tailor ads to you. They will see your contacts list (which they
 > already are, actually). This is a clear betrayal, for many users. "
 
-# Webex
+## Webex
 
 A question I wrote: 
 [How to use webex from Debian Linux](https://superuser.com/questions/1539643/how-to-use-webex-from-debian-linux)
 
-# Zoom 
+## Zoom 
 
 Call with screen sharing in great quality. 
 
 [Privacy policy](https://zoom.us/privacy)
 
+
+# Social Media
+
+Social media "facilitate controlled experimentation".
+When you use social media, you subject yourself to experimentation and behaviour modification.
 
 

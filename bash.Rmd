@@ -758,6 +758,14 @@ To submit your key to a server, export the key
 My keys are visible on pgp.mit.edu 
 [search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
 
+# Navigate
+
+To search within previous commands, press CTRL+R and start typing words contained in the previous command. 
+
+If you accidentally press CTRL+S the [terminal will hang](https://askubuntu.com/a/264253/315347)
+Press `CTRL+Q` to regain control.
+See also [Ctrl-s hang terminal emulator?](https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator)
+which provides a workaround: entering `stty -ixon` in .bashrc. 
 
 # Networking
 

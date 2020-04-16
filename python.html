@@ -476,6 +476,23 @@ div.tocify {
 </ul>
 </div>
 </div>
+<div id="neural-networks" class="section level1">
+<h1>Neural Networks</h1>
+<div id="pytorch" class="section level2">
+<h2>Pytorch</h2>
+<p>Print the size of the output layer</p>
+<pre><code>import torch
+import torch.nn as nn
+x = torch.randn(28,28).view(-1,1,28,28)
+model = nn.Sequential(
+      nn.Conv2d(1, 32, (3, 3)),
+      nn.ReLU(),
+      nn.MaxPool2d((2, 2)),
+      nn.Conv2d(32, 64, (3, 3)),
+)
+print(model(x).shape)</code></pre>
+</div>
+</div>
 <div id="object-types" class="section level1">
 <h1>Object types</h1>
 <p><code>type()</code> displays the type of an object.</p>
@@ -603,6 +620,11 @@ jupyter nbconvert --to html mynotebook.ipynb</code></pre>
 <div id="help-in-a-jupyter-notebook" class="section level2">
 <h2>Help in a jupyter notebook</h2>
 <p>To get help on a function, enter <code>function_name?</code> in a cell. Quick hep can also be obtained by pressing SHIFT + TAB.</p>
+</div>
+<div id="call-bash-from-a-notebook" class="section level2">
+<h2>Call bash from a notebook</h2>
+<p>Prefix the bash call with an exclamation mark, for example:</p>
+<pre><code>!df -h</code></pre>
 </div>
 <div id="download-data-from-a-jupyter-notebook" class="section level2">
 <h2>Download data from a jupyter notebook</h2>
@@ -1075,6 +1097,22 @@ ax.plot(x, pdensitynormal(x,1,0), label=&quot;$\sigma^2=1, \mu=0$&quot;)
 ax.plot(x, pdensitynormal(x,5,0), label=&quot;$\sigma^2=5, \mu=0$&quot;)
 ax.plot(x, pdensitynormal(x,0.5,-2), label=&quot;$\sigma^2=0.5, \mu=-2$&quot;)
 ax.legend(loc=&quot;upper right&quot;)</code></pre>
+<p>3D line, contour plot and scatter plot</p>
+<pre><code>from mpl_toolkits import mplot3d # Required for 3d plots
+fig = pyplot.figure()
+ax = pyplot.axes(projection=&#39;3d&#39;)
+# Data for a three-dimensional line
+xline = numpy.linspace(-10, 10, 1000)
+yline = numpy.linspace(-10, 10, 1000)
+# Just a line
+zline = xline**2 + yline**2
+ax.plot3D(xline, yline, zline, &#39;gray&#39;)
+# A mesh grid
+X, Y = numpy.meshgrid(x, y)
+Z = X**2 + Y**2
+ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)
+# Scatter points
+ax.scatter(1,2,3)</code></pre>
 </div>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>

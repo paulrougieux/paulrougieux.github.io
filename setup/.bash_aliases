@@ -12,4 +12,5 @@ export PATH=~/.npm-global/bin:$PATH
 export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
 
