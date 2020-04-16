@@ -344,10 +344,22 @@ piris$plot[2]
 * [Recommendations for resources for after workshops](https://github.com/carpentries/conversations/issues/18)
 
 
-# Plotting with ggplot2
+# Plots
+
+
+## Plotting with ggplot2
 
     geom_bar
     geom_tile + a gradient produce heat maps
+
+## Choropleth maps
+
+[Choropleth map](https://www.r-graph-gallery.com/choropleth-map.html)
+
+Shape files to make choropleth maps of Europe:
+[GISCO: Geographical Information and maps](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts)
+
+
 
 ## Palettes
 
