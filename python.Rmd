@@ -246,6 +246,10 @@ Prefix the bash call with an exclamation mark, for example:
 
     !df -h
 
+In fact the question mark also works from an ipython shell. 
+See also 
+[Difference between ! and % in Jupyter Notebooks](https://stackoverflow.com/questions/45784499/difference-between-and-in-jupyter-notebooks)
+
 ## Download data from a jupyter notebook    
 
 I wrote this csv download function in an 
@@ -890,6 +894,16 @@ In Seaborn facet grid.
     g = g.map(pyplot.hist, "total_bill")
     g.set(ylim=(0, None)) 
 
+### Grid plot
+
+
+    g = seaborn.FacetGrid(iris, col="species")
+    iris['species'] = iris['species'].astype('category')
+    g.map(seaborn.scatterplot,'petal_length','petal_width','species')
+
+Notice that if you don't change the color to a categorical variable, it will not vary across the species. 
+I reported [this issue](https://github.com/mwaskom/seaborn/issues/2028).
+
 ### Title
 
 Use `set_title` to add a title:
@@ -962,18 +976,19 @@ Pandas data frame to be used for examples:
 
 The mapping of tidyverse to pandas is:
 
-|tidyverse |pandas     | SO questions    |
-|----------|-----------|-----------------|
-|mutate    |assign     |                 |
-|select    |filter     |                 |
-|rename    |rename     |                 |
-|filter    |query      |                 |
-|arrange   |sort_values|                 |
-|group_by  |groupby    |                 |
-|summarize |agg        |                 |
-|gather    |[melt]     |                 |
-|spread    |[pivot]    |                 |
-|unnest    |[explode]  |[unnest in pandas][so_unnest]|
+|tidyverse                |pandas                       | SO questions    |
+|-------------------------|-----------------------------|-----------------|
+|mutate                   |assign                       |                 |
+|select                   |filter                       |                 |
+|df %>% select(-a,-b)     |df.drop(columns=['a', 'b'])  |                 |
+|rename                   |rename                       |                 |
+|filter                   |query                        |                 |
+|arrange                  |sort_values                  |                 |
+|group_by                 |groupby                      |                 |
+|summarize                |agg                          |                 |
+|pivot_longer             |[melt]                       |                 |
+|pivot_wider              |[pivot]                      |                 |
+|unnest                   |[explode]                    |[unnest in pandas][so_unnest]|
 
 [melt]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html
 [pivot]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html
