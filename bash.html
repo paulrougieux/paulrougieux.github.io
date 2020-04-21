@@ -518,7 +518,18 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </div>
 <div id="play-music-with-cmus" class="section level2">
 <h2>Play music with cmus</h2>
-<p>Common Context q quit -i ^C echo Type :quit<enter> to exit cmus. I echo {} b player-next c player-pause x player-play z player-prev v player-stop</p>
+<p><a href="https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt">Cmus tutorial</a></p>
+<p>When starting cmus for the first time press 5 to go to the file-browser panel, choose a folder and press “a” to add it to the cmus library.</p>
+<p>Then press “2” to go to the simple library view or press “1” to go to the artist/album view.</p>
+<p>Common Context q quit -i b player-next c player-pause x player-play z player-prev v player-stop</p>
+<p>Volume control</p>
+<pre><code> common  =  :vol +10%
+ common  +  :vol +10%
+ common  -  :vol -10%
+ common  [  :vol +1% +0%
+ common  ]  :vol +0% +1%
+ common  {  :vol -1% -0%
+ common  }  :vol -0% -1%</code></pre>
 </div>
 </div>
 <div id="edit" class="section level1">

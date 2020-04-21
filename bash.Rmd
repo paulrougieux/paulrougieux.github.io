@@ -124,15 +124,32 @@ Install a software synthesizer to play midi files.
 
 ## Play music with cmus
 
+[Cmus tutorial](https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt)
+
+When starting cmus for the first time 
+press 5 to go to the file-browser panel, choose a folder and press "a" to
+add it to the cmus library. 
+
+Then press "2" to go to the simple library view 
+or press "1" to go to the artist/album view.
+
    Common Context
        q                           quit -i
-       ^C                          echo Type :quit<enter> to exit cmus.
-       I                           echo {}
        b                           player-next
        c                           player-pause
        x                           player-play
        z                           player-prev
        v                           player-stop
+
+Volume control
+
+     common  =  :vol +10%
+     common  +  :vol +10%
+     common  -  :vol -10%
+     common  [  :vol +1% +0%
+     common  ]  :vol +0% +1%
+     common  {  :vol -1% -0%
+     common  }  :vol -0% -1%
 
 # Edit
 ## Edit Image files
