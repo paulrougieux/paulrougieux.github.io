@@ -341,7 +341,7 @@ Modulo
     5%3
     # 2
 
-## Numpy
+# Numpy vectors and matrices (arrays)
 
 All examples below are based on the numpy package being imported as np :
 
@@ -355,7 +355,7 @@ Random vector or matrices
     #        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
     #        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])
 
-### Indexing Multi-dimensional arrays and masks
+## Indexing Multi-dimensional arrays and masks
 
 Numpy [array indexing](https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html)
 
@@ -400,7 +400,7 @@ We wish to mark the fourth entry as invalid. The easiest is to create a masked a
     # 10 11
 
 
-### Simple matrix operations and shapes
+## Simple matrix operations and shapes
 
 Matrix of zeroes
 
@@ -446,7 +446,7 @@ min and max
     x.min()
     # -8
 
-### Matrix multiplication
+## Matrix multiplication
 
 Matrix multiplication [matmul](https://docs.scipy.org/doc/numpy/reference/generated/numpy.matmul.html)
 
@@ -976,19 +976,19 @@ Pandas data frame to be used for examples:
 
 The mapping of tidyverse to pandas is:
 
-|tidyverse                |pandas                       | SO questions    |
-|-------------------------|-----------------------------|-----------------|
-|mutate                   |assign                       |                 |
-|select                   |filter                       |                 |
-|df %>% select(-a,-b)     |df.drop(columns=['a', 'b'])  |                 |
-|rename                   |rename                       |                 |
-|filter                   |query                        |                 |
-|arrange                  |sort_values                  |                 |
-|group_by                 |groupby                      |                 |
-|summarize                |agg                          |                 |
-|pivot_longer             |[melt]                       |                 |
-|pivot_wider              |[pivot]                      |                 |
-|unnest                   |[explode]                    |[unnest in pandas][so_unnest]|
+|tidyverse                |pandas                        | SO questions    |
+|-------------------------|----------------------------- |-----------------|
+|mutate                   |assign                        |                 |
+|select                   |filter                        |                 |
+|df %>% select(-a,-b)     |df.drop(columns=['a', 'b'])   |                 |
+|rename                   |df.rename(columns={'a':'new'})|                 |
+|filter                   |query                         |                 |
+|arrange                  |sort_values                   |                 |
+|group_by                 |groupby                       |                 |
+|summarize                |agg                           |                 |
+|pivot_longer             |[melt]                        |                 |
+|pivot_wider              |[pivot]                       |                 |
+|unnest                   |[explode]                     |[unnest in pandas][so_unnest]|
 
 [melt]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html
 [pivot]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html
