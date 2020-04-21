@@ -122,7 +122,17 @@ Install a software synthesizer to play midi files.
 > If the FluidSynth codec is not shown in VLC's preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound 
 
 
+## Play music with cmus
 
+   Common Context
+       q                           quit -i
+       ^C                          echo Type :quit<enter> to exit cmus.
+       I                           echo {}
+       b                           player-next
+       c                           player-pause
+       x                           player-play
+       z                           player-prev
+       v                           player-stop
 
 # Edit
 ## Edit Image files
