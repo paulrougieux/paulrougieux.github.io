@@ -13,9 +13,12 @@ the perspective of a privacy conscious individual.
 Email is an open protocol and that is good because it means 
 you can exchange emails with someone who uses an email server from a different company.
 
-Through communication tools such as skype or Whatsapp, you can only communicate
-with people registered at the same company.
+Most [emails are encrypted](https://en.wikipedia.org/wiki/Email_encryption)
+at the transport layer.
+End-to-end encryption would be better, but it's usage is rare. 
 
+Through communication tools such as skype, Whatsapp or zoom you can only communicate
+with people registered at the same company. This makes you dependent on that company and encourages network effects, where friends and family members encourage you to choose the biggest platform. 
 
 ## Snail mail
 
@@ -66,6 +69,7 @@ Whatsapp betrayed its user by sharing contact details with FaceBook for advertis
 > phone to tailor ads to you. They will see your contacts list (which they
 > already are, actually). This is a clear betrayal, for many users. "
 
+
 ## Webex
 
 A question I wrote: 
@@ -82,5 +86,10 @@ Call with screen sharing in great quality.
 
 Social media "facilitate controlled experimentation".
 When you use social media, you subject yourself to experimentation and behaviour modification.
+
+## Facebook 
+
+[Facebook–Cambridge Analytica data scandal](https://en.wikipedia.org/wiki/Facebook–Cambridge_Analytica_data_scandal)
+
 
 
