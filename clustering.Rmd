@@ -1,0 +1,36 @@
+---
+title: "Clustering"
+author: "Paul"
+date: "4/23/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+knitr::opts_chunk$set(engine.path = '/usr/bin/python3')
+knitr::knit_engines$set(python = reticulate::eng_python)
+```
+
+
+
+```{python}
+from matplotlib import pyplot as plt
+plt.style.use('seaborn-whitegrid')
+import numpy as np
+from sklearn.cluster import KMeans
+```
+
+
+```{python}
+np.random.seed(7)
+points = np.vstack(((np.random.randn(150, 2) * 0.75 + np.array([1, 0])),
+                   (np.random.randn(50, 2) * 0.25 + np.array([-0.5, 0.5])),
+                   (np.random.randn(50, 2) * 0.5 + np.array([-0.5, -0.5]))))
+```
+
+```{python eval=FALSE}
+fig = plt.figure()
+ax = plt.axes()
+ax.scatter(points[:,0], points[:,1])
+```
+

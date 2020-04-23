@@ -10,9 +10,10 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Paul" />
 
 
-<title>docker.utf8.md</title>
+<title>Clustering</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -449,184 +450,24 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Clustering</h1>
+<h4 class="author">Paul</h4>
+<h4 class="date">4/23/2020</h4>
 
 </div>
 
 
-<div id="docker-installation" class="section level1">
-<h1>Docker Installation</h1>
-<p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/">Docker community edition for Debian.</a> Then run :</p>
-<pre><code>sudo apt-get install docker-ce</code></pre>
-</div>
-<div id="build" class="section level1">
-<h1>Build</h1>
-<p>Instructions to create a container are storred in a Dockerfile. Docker hub is a collection of Dockerfiles. Containers stored on docker hub can be pulled and started directly from the docker run command. The section below explain how to write your own Docker file.</p>
-<div id="docker-file" class="section level2">
-<h2>Docker file</h2>
-<p>docs.docker.com <a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/">best practices for writing Dockerfiles</a></p>
-<p>Build a container based on the Dockerfile in the present working directory</p>
-<pre><code>docker build -t friendlyhello .</code></pre>
-<p>Dockerfile from R packages:</p>
-<ul>
-<li><a href="https://github.com/bcm-uga/TESS3_encho_sen/blob/master/Dockerfile">bcm-uga/TESS3_encho_sen/Dockerfile</a> FROM rocker/hadleyverse</li>
-</ul>
-<p>I used R CMD build inside the docker file to build a package.</p>
-<pre><code># Set the working directory to /R
-WORKDIR /R
-
-# Copy the current directory contents into the container at /R/packagename
-ADD . /R/packagename
-
-RUN R CMD build packagename
-
-# R CMD build generates the file name from the description file
-# Remember to update file name here below after a version update
-RUN R -e &#39;install.packages(&quot;packagename_0.1.0.tar.gz&quot;)&#39;</code></pre>
-</div>
-<div id="compose-file" class="section level2">
-<h2>Compose file</h2>
-<p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/">how services work</a></p>
-<p>Compose several containers in a service <a href="https://docs.docker.com/compose/networking/">Networking in compose</a> from version 2, <a href="https://docs.docker.com/compose/compose-file/#links">links are not required</a>, for example with</p>
-<p>db: image: postgres ports: - “8001:5432”</p>
-<blockquote>
-<p>“Within the web container [in the same compose file], your connection string to db would look like postgres://db:5432, and from the host machine, the connection string would look like postgres://{DOCKER_IP}:8001.”</p>
-</blockquote>
-<p><a href="">Restart policy</a></p>
-<pre><code>deploy:
-  restart_policy:
-    condition: on-failure</code></pre>
-</div>
-<div id="volumes" class="section level2">
-<h2>Volumes</h2>
-<p>docs.docker <a href="create%20and%20manage%20volumes">https://docs.docker.com/engine/admin/volumes/volumes/#create-and-manage-volumes</a> List volumes:</p>
-<pre><code>docker volume ls</code></pre>
-<p>Inspect a volume:</p>
-<pre><code>docker volume inspect my-vol</code></pre>
-<p>Create a volume</p>
-<pre><code>docker volume create my-vol</code></pre>
-<p>Remove volumes:</p>
-<pre><code>docker volume rm &lt;volume name&gt;
-docker volume rm $(docker volume ls -q) # all volumes</code></pre>
-</div>
-</div>
-<div id="start" class="section level1">
-<h1>Start</h1>
-<div id="start-containers" class="section level2">
-<h2>Start containers</h2>
-<p>Start a container</p>
-<pre><code>sudo docker run hello-world</code></pre>
-<p>Restart a container</p>
-<pre><code>sudo docker restart hello-world</code></pre>
-<p>Stop a container</p>
-<pre><code>sudo docker stop [OPTIONS] CONTAINER [CONTAINER...]</code></pre>
-<div id="docker-run-options" class="section level3">
-<h3>Docker run options</h3>
-<ul>
-<li><code>-i, --interactive</code> Keep STDIN open even if not attached</li>
-<li><code>rm</code>=true|false “Automatically remove the container when it exits (incompatible with -d). The default is false.”</li>
-<li><code>-t, --tty</code> Allocate a pseudo-TTY</li>
-<li><code>-v</code>, –volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to a container. These mounts can then be used in other containers using the –volumes-from option.</li>
-</ul>
-</div>
-</div>
-<div id="start-services" class="section level2">
-<h2>Start services</h2>
-<p>Create a compose file then start the service with:</p>
-<pre><code>docker stack deploy -c docker-compose.yml servicename </code></pre>
-<p>Stop the service with:</p>
-<pre><code>docker stack rm servicename </code></pre>
-<p>swarm init error:</p>
-<p>I specified the IP address Stackoverflow <a href="https://stackoverflow.com/questions/38602903/docker-swarm-init-could-not-choose-an-ip-address-error">could not choose and IP address Error</a></p>
-</div>
-</div>
-<div id="monitor" class="section level1">
-<h1>Monitor</h1>
-<div id="monitor-running-containers" class="section level2">
-<h2>Monitor running containers</h2>
-<p><a href="https://docs.docker.com/engine/admin/runmetrics/">run metrics</a></p>
-<pre><code>docker stats &lt;container-id&gt;</code></pre>
-<p>Start a bash shell inside a container, -it stands for interactive</p>
-<pre><code>docker ps # find the ID of the running container
-docker exec -it &lt;container-id&gt; bash </code></pre>
-<p>Start a script within a container, non interactively</p>
-<pre><code>docker exec &lt;container-id&gt; /path/to/test.sh</code></pre>
-<p><a href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find the IP of a container</a>:</p>
-<pre><code>sudo docker ps # look for the process id
-sudo docker inspect &lt;container id&gt;</code></pre>
-<p>The IP is at the end. it can also be <a href="https://stackoverflow.com/a/20686101/2641825">extracted with a template</a>:</p>
-<pre><code> sudo docker inspect -f &#39;{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}&#39; &lt;container id&gt; </code></pre>
-<div id="inspect-options" class="section level3">
-<h3>Inspect options</h3>
-<p>Inspect the <a href="https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart">run restart policies</a> Get the number of times a container was restarted:</p>
-<pre><code>docker inspect -f &quot;{{ .RestartCount }}&quot; my-container</code></pre>
-<p>Get the last time the container was (re)started;</p>
-<pre><code>docker inspect -f &quot;{{ .State.StartedAt }}&quot; my-container</code></pre>
-</div>
-<div id="container-logs" class="section level3">
-<h3>Container logs</h3>
-<pre><code>docker logs [OPTIONS] &lt;container id&gt;</code></pre>
-</div>
-</div>
-<div id="monitor-stopped-containers" class="section level2">
-<h2>Monitor stopped containers</h2>
-<p>See <a href="https://stackoverflow.com/questions/30231187/docker-list-only-stopped-containers/30231188#30231188">stopped containers</a></p>
-<pre><code>docker ps --filter &quot;status=exited&quot;</code></pre>
-<p>Inspect a stopped container</p>
-<pre><code>docker inspect &lt;container-id&gt;</code></pre>
-</div>
-<div id="monitor-running-services" class="section level2">
-<h2>Monitor running services</h2>
-<p>see which stacks are running</p>
-<pre><code>sudo docker stack ls
-sudo docker stack services &lt;stackname&gt;</code></pre>
-<p>see which services are running</p>
-<pre><code>docker service ls</code></pre>
-<p>see which containers are running inside a service</p>
-<pre><code>docker service ps &lt;service_name&gt; </code></pre>
-<p>You can also run <code>docker ps</code> to see all running processes.</p>
-</div>
-</div>
-<div id="manage-container-images" class="section level1">
-<h1>Manage container images</h1>
-<p>Show available images on the system:</p>
-<pre><code>sudo docker images</code></pre>
-<div id="update-a-container-image" class="section level2">
-<h2>Update a container image</h2>
-<p><a href="https://stackoverflow.com/a/26833005/2641825">How to upgrade docker container after its image changed</a> Has information on the difference between volumes and bind mounts for data backup.</p>
-<pre><code>docker pull &lt;image-name&gt; 
-docker stop &lt;container-id&gt; 
-docker rm &lt;image-name&gt; 
-docker run &lt;image-name&gt; [options]</code></pre>
-<p>If the container is part of a stack, you only need <code>docker pull</code>, then <code>docker stack deploy</code>.</p>
-</div>
-<div id="cleanup" class="section level2">
-<h2>Cleanup</h2>
-<p>A container should be stopped before it can be removed. Stop a container</p>
-<pre><code>docker ps
-docker stop &lt;container-id&gt;</code></pre>
-<p>Remove a stopped container</p>
-<pre><code>docker rm &lt;container-id&gt;</code></pre>
-<p>Remove all stopped containers</p>
-<pre><code>docker container prune</code></pre>
-<p>Remove images</p>
-<pre><code>docker images # list available images
-docker image rm  &lt;image-id&gt;</code></pre>
-</div>
-</div>
-<div id="security" class="section level1">
-<h1>Security</h1>
-<p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/secrets/">Manage sensitive data with Docker secrets</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service">Example use secrets with a Wordpress service</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose">Use secrets in compose</a> * Declare the location of secrets :</p>
-<pre><code> secrets:
-   db_password:
-     file: db_password.txt
-   db_root_password:
-     file: db_root_password.txt</code></pre>
-<ul>
-<li><p>give access to secrets to a service :</p>
-<p>db: image: mysql:latest volumes: - db_<a href="data:/var/lib/mysql" class="uri">data:/var/lib/mysql</a> environment: MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password MYSQL_DATABASE: wordpress MYSQL_USER: wordpress MYSQL_PASSWORD_FILE: /run/secrets/db_password secrets: - db_root_password - db_password</p></li>
-</ul>
-<p>Stackoverflow <a href="https://stackoverflow.com/questions/22651647/docker-and-securing-passwords">Docker and securing passwords</a> previous solution recommended passing passwords as environement variables. Docker now has a native solution to deal with secrets.</p>
-</div>
+<pre class="python"><code>from matplotlib import pyplot as plt
+plt.style.use(&#39;seaborn-whitegrid&#39;)
+import numpy as np
+from sklearn.cluster import KMeans</code></pre>
+<pre class="python"><code>np.random.seed(7)
+points = np.vstack(((np.random.randn(150, 2) * 0.75 + np.array([1, 0])),
+                   (np.random.randn(50, 2) * 0.25 + np.array([-0.5, 0.5])),
+                   (np.random.randn(50, 2) * 0.5 + np.array([-0.5, -0.5]))))</code></pre>
+<pre class="python"><code>fig = plt.figure()
+ax = plt.axes()
+ax.scatter(points[:,0], points[:,1])</code></pre>
 
 
 

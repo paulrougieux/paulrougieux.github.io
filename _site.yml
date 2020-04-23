@@ -30,6 +30,11 @@ navbar:
           href: R.html
         - text: "Vim"
           href: vim.html
+    - text: "Algos"
+      icon: fa-wrench
+      menu:
+        - text: "Clustering"
+          href: clustering.html
     - text: "Data"
       icon: fa-database
       menu:
