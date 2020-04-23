@@ -206,10 +206,10 @@ I have encountered [issue 211](https://github.com/anbox/anbox/issues/211)
 ## CEWE Photobuch
 
 Download one of the setup files from CEWE or partner shops
-`setup_CEWE_FOTOWELT.tgzi`, `setup_CEWE_Photoworld.tgz`, `setup_dm_Fotowelt.tgz`
+`setup_CEWE_FOTOWELT.tgz`, `setup_CEWE_Photoworld.tgz`, `setup_dm_Fotowelt.tgz`
 Extract it :
 
-    tar --extract -f setup_CEWE_FOTOWELT.tgz --one-top-leve
+    tar --extract -f setup_CEWE_FOTOWELT.tgz --one-top-level
 
 Launch the installer (no need to be sudo):
 
