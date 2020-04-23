@@ -7,8 +7,11 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+# Use python 3 as an engine
 knitr::opts_chunk$set(engine.path = '/usr/bin/python3')
-knitr::knit_engines$set(python = reticulate::eng_python)
+# Enable knitr caching if this document takes long to render
+# https://bookdown.org/yihui/rmarkdown/rmarkdown-site.html#knitr-caching
+knitr::opts_chunk$set(cache = TRUE)
 ```
 
 

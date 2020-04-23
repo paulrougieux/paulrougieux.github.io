@@ -3,3 +3,5 @@
 .RData
 .Ruserdata
 *.swp
+# Ignore cache folders
+*_cache/*
