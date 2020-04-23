@@ -615,14 +615,19 @@ git diff</code></pre>
 </div>
 <div id="organise" class="section level1">
 <h1>Organise</h1>
-<div id="compress-one-file" class="section level2">
-<h2>Compress one file</h2>
+<div id="compress-and-decompress-files" class="section level2">
+<h2>Compress and decompress files</h2>
 <p>Compress a file using gzip or 7z compression</p>
 <pre><code>gzip &lt;filename&gt;
 7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
 <p>Decompress a single file from several archive formats:</p>
 <pre><code>bzip2 -d &lt;filename.bz2&gt;
-gunzip &lt;filename.gz&gt;
+gunzip &lt;filename.gz&gt;</code></pre>
+<p><a href="https://askubuntu.com/a/499809/315347">Askubuntu to extract a .tgz file with tar you need to use,</a></p>
+<pre><code>tar -xvzf /path/to/file.tgz
+tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
+# Extract in a folder that has the archive name
+tar --extract -f /path/to/file.tgz --one-top-leve
 7zr e &lt;filename.7z&gt; # extract all files in the same directory 
 7zr x &lt;filename.7z&gt; # keep directory structure (see also multiple files below)</code></pre>
 <p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>

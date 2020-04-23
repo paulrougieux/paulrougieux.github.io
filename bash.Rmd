@@ -254,7 +254,9 @@ Usage, for example replace 'word' with 'sword':
 
 # Organise
 
-## Compress one file
+## Compress and decompress files
+
+
 Compress a file using gzip or 7z compression
     
     gzip <filename>
@@ -264,6 +266,13 @@ Decompress a single file from several archive formats:
 
     bzip2 -d <filename.bz2>
     gunzip <filename.gz>
+
+[Askubuntu to extract a .tgz file with tar you need to use,](https://askubuntu.com/a/499809/315347)
+
+    tar -xvzf /path/to/file.tgz
+    tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
+    # Extract in a folder that has the archive name
+    tar --extract -f /path/to/file.tgz --one-top-leve
     7zr e <filename.7z> # extract all files in the same directory 
     7zr x <filename.7z> # keep directory structure (see also multiple files below)
 
