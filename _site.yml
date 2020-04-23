@@ -31,7 +31,7 @@ navbar:
         - text: "Vim"
           href: vim.html
     - text: "Algos"
-      icon: fa-wrench
+      icon: fa-microchip
       menu:
         - text: "Clustering"
           href: clustering.html

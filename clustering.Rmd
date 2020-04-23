@@ -32,5 +32,6 @@ points = np.vstack(((np.random.randn(150, 2) * 0.75 + np.array([1, 0])),
 fig = plt.figure()
 ax = plt.axes()
 ax.scatter(points[:,0], points[:,1])
+plt.show()
 ```
 
