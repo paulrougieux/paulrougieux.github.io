@@ -17,8 +17,10 @@ Most [emails are encrypted](https://en.wikipedia.org/wiki/Email_encryption)
 at the transport layer.
 End-to-end encryption would be better, but it's usage is rare. 
 
-Through communication tools such as skype, Whatsapp or zoom you can only communicate
-with people registered at the same company. This makes you dependent on that company and encourages network effects, where friends and family members encourage you to choose the biggest platform. 
+Through communication tools such as skype, Whatsapp or zoom you can only
+communicate with people registered at the same company. This makes you
+dependent on that company and creates network effects, where friends and family
+members encourage you to choose the biggest platform. 
 
 ## Snail mail
 
@@ -32,13 +34,15 @@ a trash bin.
 # Chat, calls and video calls
 ## Riot
 
-Riot-web is a chat application based on the matrix decentralised communication protocol. 
+Riot-web is a chat application based on the matrix decentralised communication
+protocol. 
 
 ## Signal 
 
-The issue is that the desktop client requires a mobile phone with camera to be started. 
-As of January 2020 I still use a nokia 3010 phone.
-I cannot install the signal application on that phone and this means that I cannot use signal on my desktop. 
+The issue is that the desktop client requires a mobile phone with camera to be
+started. As of January 2020 I still use a nokia 3010 phone. I cannot install
+the signal application on that phone and this means that I cannot use signal on
+my desktop. 
 
 ## Skype
 
@@ -84,8 +88,8 @@ Call with screen sharing in great quality.
 
 # Social Media
 
-Social media "facilitate controlled experimentation".
-When you use social media, you subject yourself to experimentation and behaviour modification.
+Social media "facilitate controlled experimentation". When you use social
+media, you subject yourself to experimentation and behaviour modification.
 
 ## Facebook 
 
