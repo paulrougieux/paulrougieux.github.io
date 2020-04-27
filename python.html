@@ -751,10 +751,6 @@ print(x.sum(), mx.sum())
 </div>
 <div id="simple-matrix-operations-and-shapes" class="section level2">
 <h2>Simple matrix operations and shapes</h2>
-<p>Matrix of zeroes</p>
-<pre><code>np.zeros([2,2])
-#array([[0., 0.],
-#       [0., 0.]])</code></pre>
 <p>Create a vector</p>
 <pre><code>a = np.array([1,2,3])</code></pre>
 <p>Create a matrix</p>
@@ -764,6 +760,19 @@ print(x.sum(), mx.sum())
 # (3,)
 b.shape
 # (2, 3)</code></pre>
+<p>Matrix of zeroes</p>
+<pre><code>np.zeros([2,2])
+#array([[0., 0.],
+#       [0., 0.]])</code></pre>
+<p>Create a matrix with an additional dimension</p>
+<pre><code>np.zeros(b.shape + (2,))
+array([[[0., 0.],
+        [0., 0.],
+        [0., 0.]],
+
+       [[0., 0.],
+        [0., 0.],
+        [0., 0.]]])</code></pre>
 <p>Transpose</p>
 <pre><code>b.transpose()
 # array([[1, 5],
@@ -1117,17 +1126,25 @@ ax.legend(loc=&quot;upper right&quot;)</code></pre>
 fig = pyplot.figure()
 ax = pyplot.axes(projection=&#39;3d&#39;)
 # Data for a three-dimensional line
-xline = numpy.linspace(-10, 10, 1000)
-yline = numpy.linspace(-10, 10, 1000)
+xline = np.linspace(-10, 10, 1000)
+yline = np.linspace(-10, 10, 1000)
 # Just a line
 zline = xline**2 + yline**2
 ax.plot3D(xline, yline, zline, &#39;gray&#39;)
 # A mesh grid
-X, Y = numpy.meshgrid(x, y)
+X, Y = np.meshgrid(xline, yline)
 Z = X**2 + Y**2
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)
 # Scatter points
 ax.scatter(1,2,3)</code></pre>
+<p>See how the <code>np.meshgridi</code> objects interact with each other. Note this nested loop is not the optimal way to compute. Better to use X<strong>2 + Y</strong>2 directly as above.</p>
+<pre><code>for i in range(Z.shape[0]):
+    for j in range(Z.shape[1]):
+        vector = np.array([X[i,j],Y[i,j]])
+            Z[i,j] = np.linalg.norm(vector)**2
+fig = pyplot.figure()
+ax = pyplot.axes(projection=&#39;3d&#39;)
+ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
 </div>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>
@@ -1233,6 +1250,11 @@ g.fig.set_figheight(10) </code></pre>
 <td>dput(df)</td>
 <td>df.to_dict()</td>
 <td><a href="https://stackoverflow.com/questions/47450931/print-pandas-data-frame-for-reproducible-example-equivalent-to-dput-in-r">Print pandas data frame for reproducible example</a></td>
+</tr>
+<tr class="even">
+<td>seq(1:5)</td>
+<td>np.array(range(0,5))</td>
+<td><a href="https://stackoverflow.com/a/60753578/2641825">numpy function to generate sequences</a></td>
 </tr>
 </tbody>
 </table>
@@ -1343,6 +1365,11 @@ g.fig.set_figheight(10) </code></pre>
 <blockquote>
 <p>“Until the 1.15 release, NumPy used the nose testing framework, it now uses the pytest framework. The older framework is still maintained in order to support downstream projects that use the old numpy framework, but all tests for NumPy should use pytest.”</p>
 </blockquote>
+<p>Save this function in a file names test_numpy.py</p>
+<pre><code>def test_numpy_closeness():
+    assert [1,2] == [1,2]
+    assert (np.array([1,2]) == np.array([1,2])).all()
+    np.testing.assert_allclose(np.array([1,2]),np.array([1,3]))</code></pre>
 <p>Save the file to test_nn.py</p>
 <pre><code>import neural_nets as nn
 import numpy as np
@@ -1367,6 +1394,7 @@ py.test</code></pre>
 <div id="media" class="section level1">
 <h1>Media</h1>
 <p>Podecast <a href="https://talkpython.fm/">talk python to me</a> * <a href="https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition">Data science year in review</a></p>
+<p>Blogs * <a href="https://blog.juliobiason.me/thoughts/things-i-learnt-the-hard-way/">Things I Learnt The Hard Way (in 30 Years of Software Development)</a></p>
 </div>
 
 

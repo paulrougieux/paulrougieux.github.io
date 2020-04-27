@@ -335,13 +335,28 @@ Mark word as incorrect
 
     zw
 
+
+# Plugins
+
+Potentially usefull plugins
+
+ * Fuzzy search 
+ * File explorer
+ * [Vimtex](https://github.com/lervag/vimtex#alternatives) 
+   vim plugin for editing LaTeX files. 
+
+
 ## Plugins for programming languages
 
     Vim R
     Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)
 
-# .vimrc
+# Configure vim in .vimrc
 See also my vimrc file stored in [setup/.vimrc](setup/.vimrc).
+
+Reload the configuration after editing it: 
+
+    :so ~/.vimrc
 
 Text colour.
 Add syntax highlight to your .vimrc

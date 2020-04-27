@@ -325,6 +325,17 @@ In an earlier version riot the source.list was mentionned directly in /etc/apt/s
 I needed to remove it as explained [here](https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818):
 
 > "You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that"
+## Vim 
+
+Edit the keyboard configuration as explained in 
+[mapping caps lock to escape in Debian]
+(https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/)
+
+   sudo vim /etc/default/keyboard
+
+Add the following line to that file:
+
+    XKBOPTIONS="caps:escape"
 
 ## Zoom
 

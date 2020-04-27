@@ -637,8 +637,12 @@ sudo apt update
 sudo apt install riot-web</code></pre>
 <p>In an earlier version riot the source.list was mentionned directly in /etc/apt/sources.list. I needed to remove it as explained <a href="https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818">here</a>:</p>
 <blockquote>
-<p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that”</p>
+<p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that” ## Vim</p>
 </blockquote>
+<p>Edit the keyboard configuration as explained in [mapping caps lock to escape in Debian] (<a href="https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/" class="uri">https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/</a>)</p>
+<p>sudo vim /etc/default/keyboard</p>
+<p>Add the following line to that file:</p>
+<pre><code>XKBOPTIONS=&quot;caps:escape&quot;</code></pre>
 </div>
 <div id="zoom" class="section level2">
 <h2>Zoom</h2>

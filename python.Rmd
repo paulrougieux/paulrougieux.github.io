@@ -402,12 +402,6 @@ We wish to mark the fourth entry as invalid. The easiest is to create a masked a
 
 ## Simple matrix operations and shapes
 
-Matrix of zeroes
-
-    np.zeros([2,2])
-    #array([[0., 0.],
-    #       [0., 0.]])
-
 Create a vector
 
     a = np.array([1,2,3])
@@ -422,6 +416,23 @@ Shape
     # (3,)
     b.shape
     # (2, 3)
+
+Matrix of zeroes
+
+    np.zeros([2,2])
+    #array([[0., 0.],
+    #       [0., 0.]])
+
+Create a matrix with an additional dimension 
+
+    np.zeros(b.shape + (2,))
+    array([[[0., 0.],
+            [0., 0.],
+            [0., 0.]],
+
+           [[0., 0.],
+            [0., 0.],
+            [0., 0.]]])
 
 Transpose
 
@@ -857,18 +868,29 @@ with various sigma and mu values displayed in the legend.
     fig = pyplot.figure()
     ax = pyplot.axes(projection='3d')
     # Data for a three-dimensional line
-    xline = numpy.linspace(-10, 10, 1000)
-    yline = numpy.linspace(-10, 10, 1000)
+    xline = np.linspace(-10, 10, 1000)
+    yline = np.linspace(-10, 10, 1000)
     # Just a line
     zline = xline**2 + yline**2
     ax.plot3D(xline, yline, zline, 'gray')
     # A mesh grid
-    X, Y = numpy.meshgrid(x, y)
+    X, Y = np.meshgrid(xline, yline)
     Z = X**2 + Y**2
     ax.contour3D(X, Y, Z, 50, cmap='binary')
     # Scatter points
     ax.scatter(1,2,3)
 
+See how the `np.meshgridi` objects interact with each other.
+Note this nested loop is not the optimal way to compute.
+Better to use X**2 + Y**2 directly as above.
+
+    for i in range(Z.shape[0]):
+        for j in range(Z.shape[1]):
+            vector = np.array([X[i,j],Y[i,j]])
+                Z[i,j] = np.linalg.norm(vector)**2
+    fig = pyplot.figure()
+    ax = pyplot.axes(projection='3d')
+    ax.contour3D(X, Y, Z, 50, cmap='binary')
 
 ## Seaborn
 
@@ -967,12 +989,14 @@ Pandas data frame to be used for examples:
 |length(df) and dim(df)     |df.shape                     |[row count of a data frame]|
 |rbind                      |pandas.concat                |[Pandas version of rbind]|
 |dput(df)                   |df.to_dict()                 |[Print pandas data frame for reproducible example]|
+|seq(1:5)                   |np.array(range(0,5))         |[numpy function to generate sequences]|
 
 [gsub in pandas]: https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104
 [list of values to select a row]: https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe
 [row count of a data frame]: https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe
 [Pandas version of rbind]: https://stackoverflow.com/questions/14988480/pandas-version-of-rbind
 [Print pandas data frame for reproducible example]: https://stackoverflow.com/questions/47450931/print-pandas-data-frame-for-reproducible-example-equivalent-to-dput-in-r
+[numpy function to generate sequences]: https://stackoverflow.com/a/60753578/2641825
 
 The mapping of tidyverse to pandas is:
 
@@ -1035,6 +1059,13 @@ Numpy moved from nose to pytest in their, as explained in their
 
 > "Until the 1.15 release, NumPy used the nose testing framework, it now uses the pytest framework. The older framework is still maintained in order to support downstream projects that use the old numpy framework, but all tests for NumPy should use pytest." 
 
+Save this function in a file names test_numpy.py
+
+    def test_numpy_closeness():
+        assert [1,2] == [1,2]
+        assert (np.array([1,2]) == np.array([1,2])).all()
+        np.testing.assert_allclose(np.array([1,2]),np.array([1,3]))
+
 Save the file to test_nn.py
 
     import neural_nets as nn
@@ -1070,4 +1101,6 @@ how asyncio works with a simulated delay to fetch a web page.
 Podecast [talk python to me](https://talkpython.fm/)
  * [Data science year in review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
 
+Blogs
+* [Things I Learnt The Hard Way (in 30 Years of Software Development)](https://blog.juliobiason.me/thoughts/things-i-learnt-the-hard-way/)
 

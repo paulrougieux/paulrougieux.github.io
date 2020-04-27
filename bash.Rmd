@@ -151,6 +151,11 @@ Volume control
      common  {  :vol -1% -0%
      common  }  :vol -0% -1%
 
+Jump to currently playing song `i`.
+Follow currently playing son `f` see [issue 206](https://github.com/cmus/cmus/issues/206)
+
+
+
 # Edit
 ## Edit Image files
 
