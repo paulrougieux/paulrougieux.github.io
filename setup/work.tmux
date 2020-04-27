@@ -5,6 +5,10 @@ split-window -v
 neww
 cat ~/.tmux/work
 neww
+rename-window blog
+neww
+rename-window music 
+neww
 rename-window server 
 select-window -t :1 
 
