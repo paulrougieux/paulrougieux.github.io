@@ -3,9 +3,10 @@ alias tmuxw='tmux new-session -s work "tmux source-file ~/.tmux/work"'
 alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
 alias youtubemp3="youtube-dl --extract-audio --audio-format mp3"
 # Based on https://askubuntu.com/questions/564567/how-to-download-playlist-to-mp3-format-with-youtube-dl/668028#668028
-alias youtubeplaylist="youtube-dl --extract-audio --audio-format vorbis --sleep-interval 30 -i"
 # Add the txt file name at the end
 alias youtubebatchfile="youtube-dl --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file"
+# somehow playlist download doesn't work when given at the url, needs to be in a file that's why this is simply an alias of the one before
+alias youtubeplaylist=youtubebatchfile
 # disk usage sorted
 alias dus='du -hd1|sort -hr'
 # Disable Ctrl-S ctrl-Q in terminals

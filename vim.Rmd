@@ -373,7 +373,6 @@ I used it to display markdown files as text files:
 
 # blogs
 
-
 [Why atom cant replace vim](https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1)
 
 > "This philosophy of minimalist commands that can be composed together is the
@@ -383,4 +382,15 @@ I used it to display markdown files as text files:
 [Python workflow with terminal using tmux](https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/)
 
 [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
+[Browse the web in vim mode](https://github.com/tridactyl/tridactyl)
+
+* [Vim creator Bram Moolenaar
+    interview](https://www.binpress.com/vim-creator-bram-moolenaar-interview/)
+> "The project I encountered in Kibaale is completely different. The foreigners
+> who work there are volunteers, they have sponsors themselves to make it
+> possible to live and work there. All the donations for children go to the
+> project and are spent there. Also for staff and vehicles, but that’s local
+> staff that then spend their money in the country, thus indirectly it helps
+> others. And in the end seeing the children grow up, finish their studies and
+> find a job is wonderful. "
 
