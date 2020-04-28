@@ -122,6 +122,13 @@ or
       ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1
 
 
+# Debian Development
+
+* [Debian Salsa](https://salsa.debian.org/public) code repository.
+
+## Documentation
+
+* [wiki.debian.org](https://wiki.debian.org/)
 
 # Installing software
 
