@@ -204,36 +204,6 @@ Then start the notebook server as such:
 
     jupyter notebook
 
-## table of content in your notebooks
-
-Install [jupyter_contrib_nbextensions](https://github.com/ipython-contrib/jupyter_contrib_nbextensions)
-
-    python3 -m pip install --user jupyter_contrib_nbextensions
-    python3 -m jupyter contrib nbextension install --user
-
-Activate the table of content extension:
-
-    python3 -m jupyter nbextension enable toc2/main
-
-There are many other extensions available in this package.
-Optionally you can install the jupyter notebook extension configurator (not needed)
-
-    python3 -m pip install --user jupyter_nbextensions_configurator
-    jupyter nbextensions_configurator enable --user
-
-This will make a configuration interface available at:
-
-    http://localhost:8888/nbextensions
-
-
-
-Using the old Table of Content extension
-[jupyter table of content extension](https://github.com/minrk/ipython_extensions#table-of-contents)
-
-
-    jupyter nbconvert --to markdown mynotebook.ipynb
-    jupyter nbconvert --to html mynotebook.ipynb
-
 
 ## Help in a jupyter notebook 
 
@@ -269,7 +239,43 @@ To get a link to a csv file, enter the above function and the code below in a ju
 
     csv_download_link(df, 'df.csv')
 
-## Archive notebooks in a revision control system like git
+## Documentation with Jupyter
+
+[Using jupyter to write documentation](https://hub.packtpub.com/using-jupyter-write-documentation/)
+
+## Table of content in your notebooks
+
+Install [jupyter_contrib_nbextensions](https://github.com/ipython-contrib/jupyter_contrib_nbextensions)
+
+    python3 -m pip install --user jupyter_contrib_nbextensions
+    python3 -m jupyter contrib nbextension install --user
+
+Activate the table of content extension:
+
+    python3 -m jupyter nbextension enable toc2/main
+
+There are many other extensions available in this package.
+Optionally you can install the jupyter notebook extension configurator (not needed)
+
+    python3 -m pip install --user jupyter_nbextensions_configurator
+    jupyter nbextensions_configurator enable --user
+
+This will make a configuration interface available at:
+
+    http://localhost:8888/nbextensions
+
+
+
+Using the old Table of Content extension
+[jupyter table of content extension](https://github.com/minrk/ipython_extensions#table-of-contents)
+
+
+    jupyter nbconvert --to markdown mynotebook.ipynb
+    jupyter nbconvert --to html mynotebook.ipynb
+
+
+
+## Version control the markdown version with git
 Convert notebooks to markdown so they are easier to track in git. 
 
 Install https://github.com/mwouts/jupytext
@@ -310,6 +316,30 @@ Functions in python can be defined with
     add_one(1)
 
     # 2
+
+## Call by reference or call by value
+
+When using numpy arrays, python displays a behaviour of call by reference 
+
+    a = np.array([1,2])
+
+    def changeinput(x, scalar):
+        x[0] = scalar
+
+    changeinput(a,3)
+
+    a
+    # array([3, 2])
+
+This is really weird coming from R, which has a copy-on-modify principle.
+
+The R Language Definition says this (in section 4.3.3 Argument Evaluation)
+
+> "The semantics of invoking a function in R argument are call-by-value. In
+> general, supplied arguments behave as if they are local variables initialized
+> with the value supplied and the name of the corresponding formal argument.
+> Changing the value of a supplied argument within a function will not affect
+> the value of the variable in the calling frame. [Emphasis added]"
 
 ## Decorators
 
