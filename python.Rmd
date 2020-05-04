@@ -498,7 +498,8 @@ Matrix multiplication [matmul](https://docs.scipy.org/doc/numpy/reference/genera
     a @ c
     # array([14, 35])
 
-Otherwise the multiplication symbol implements an element wise multiplication, also called the 
+Otherwise the multiplication symbol implements an element wise multiplication, also called the
+
 [Hadamard product](https://en.wikipedia.org/wiki/Hadamard_product_(matrices)).
 It only works on 2 matrices of same dimensions. 
 Element-wise multiplication is used for example in convolution kernels. 
@@ -507,6 +508,21 @@ Element-wise multiplication is used for example in convolution kernels.
     # array([[ 1,  4,  9],
     #        [25, 36, 36]])
 
+So here is again an example showing the difference between
+
+    m = np.array([[0,1],[2,3]])
+
+Element wise multiplication :
+
+    m * m 
+    # array([[0, 1],
+    #        [4, 9]])
+
+Matrix multiplication :
+
+    m @ m
+    # array([[ 2,  3],
+    #        [ 6, 11]])
 
 Linear algebra with numpy.linalg
 For example the norm of a matrix or vector:

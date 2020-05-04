@@ -378,6 +378,9 @@ div.tocify {
       <a href="git.html">Git</a>
     </li>
     <li>
+      <a href="learning.html">Learning</a>
+    </li>
+    <li>
       <a href="lyx.html">Lyx</a>
     </li>
     <li>
@@ -822,10 +825,21 @@ x.min()
 # Can also be written as
 a @ c
 # array([14, 35])</code></pre>
-<p>Otherwise the multiplication symbol implements an element wise multiplication, also called the <a href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">Hadamard product</a>. It only works on 2 matrices of same dimensions. Element-wise multiplication is used for example in convolution kernels.</p>
+<p>Otherwise the multiplication symbol implements an element wise multiplication, also called the</p>
+<p><a href="https://en.wikipedia.org/wiki/Hadamard_product_(matrices)">Hadamard product</a>. It only works on 2 matrices of same dimensions. Element-wise multiplication is used for example in convolution kernels.</p>
 <pre><code>b * b
 # array([[ 1,  4,  9],
 #        [25, 36, 36]])</code></pre>
+<p>So here is again an example showing the difference between</p>
+<pre><code>m = np.array([[0,1],[2,3]])</code></pre>
+<p>Element wise multiplication :</p>
+<pre><code>m * m 
+# array([[0, 1],
+#        [4, 9]])</code></pre>
+<p>Matrix multiplication :</p>
+<pre><code>m @ m
+# array([[ 2,  3],
+#        [ 6, 11]])</code></pre>
 <p>Linear algebra with numpy.linalg For example the norm of a matrix or vector:</p>
 <pre><code>np.linalg.norm(x)
 # 16.3707055437449

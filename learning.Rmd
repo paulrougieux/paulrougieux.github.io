@@ -1,0 +1,23 @@
+---
+title: "Learning"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+
+# Mistakes 
+
+The more mistakes you make, the more you learn. 
+Let them make mistakes.
+
+# Resources
+
+
+* [Stack Over Flow](stackoverflow.com/)
+* [Wikipedia](https://en.wikipedia.org/)
+* Online courses 
+* Conferences
+* Research Articles
+

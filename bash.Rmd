@@ -381,6 +381,11 @@ Create bash aliases to download various audio formats from youtube
     alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
     alias youtubemp3="youtube-dl --extract-audio --audio-format mp3"
 
+If you encounter some Errors 403 forbidden, removing the cache might help
+
+[error 403 with youtube-dl](https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by)
+
+    youtube-dl --rm-cache-dir
 
 # Users
 

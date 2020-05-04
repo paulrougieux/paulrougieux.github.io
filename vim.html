@@ -376,6 +376,9 @@ div.tocify {
       <a href="git.html">Git</a>
     </li>
     <li>
+      <a href="learning.html">Learning</a>
+    </li>
+    <li>
       <a href="lyx.html">Lyx</a>
     </li>
     <li>
@@ -529,6 +532,18 @@ ctrl+b, ctrl+d move page up or page down
 <pre><code>set autochdir</code></pre>
 </div>
 </div>
+<div id="configure-vim-in-.vimrc" class="section level1">
+<h1>Configure vim in .vimrc</h1>
+<p>See also my vimrc file stored in <a href="setup/.vimrc" class="uri">setup/.vimrc</a>.</p>
+<p>Reload the configuration after editing it:</p>
+<pre><code>:so ~/.vimrc</code></pre>
+<p>Text colour. Add syntax highlight to your .vimrc</p>
+<pre><code>syntax enable</code></pre>
+<p>How to add a file extension to vim syntax highlight</p>
+<pre><code>au BufNewFile,BufRead *.dump set filetype=sql</code></pre>
+<p>I used it to display markdown files as text files:</p>
+<pre><code>au BufNewFile,BufRead *.md set filetype=txt</code></pre>
+</div>
 <div id="editing" class="section level1">
 <h1>Editing</h1>
 <div id="undo-redo" class="section level2">
@@ -642,6 +657,39 @@ nnoremap &lt;C-H&gt; &lt;C-W&gt;&lt;C-H&gt; </code></pre>
 <pre><code>set splitbelow
 set splitright</code></pre>
 </div>
+<div id="vim-and-tmux" class="section level2">
+<h2>Vim and Tmux</h2>
+<p><a href="https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl">vim-tmux-navigator to use tmux prefix instead of C-[hjkl]</a></p>
+</div>
+</div>
+<div id="plugins" class="section level1">
+<h1>Plugins</h1>
+<p>Potentially usefull plugins</p>
+<ul>
+<li>Fuzzy search</li>
+<li>File explorer</li>
+<li><a href="https://github.com/lervag/vimtex#alternatives">Vimtex</a> vim plugin for editing LaTeX files.</li>
+</ul>
+<div id="plugins-for-python-programming" class="section level2">
+<h2>Plugins for python programming</h2>
+<ul>
+<li><a href="https://github.com/davidhalter/jedi">Jedi</a></li>
+<li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
+<li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
+<li><a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
+</ul>
+</div>
+<div id="plugins-for-r-programming" class="section level2">
+<h2>Plugins for R programming</h2>
+<p>Vim R</p>
+</div>
+</div>
+<div id="programming-with-vim" class="section level1">
+<h1>Programming with vim</h1>
+<div id="running-code" class="section level2">
+<h2>Running code</h2>
+<p>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</p>
+</div>
 </div>
 <div id="tools" class="section level1">
 <h1>Tools</h1>
@@ -682,32 +730,6 @@ set splitright</code></pre>
 <pre><code>zw</code></pre>
 </div>
 </div>
-<div id="plugins" class="section level1">
-<h1>Plugins</h1>
-<p>Potentially usefull plugins</p>
-<ul>
-<li>Fuzzy search</li>
-<li>File explorer</li>
-<li><a href="https://github.com/lervag/vimtex#alternatives">Vimtex</a> vim plugin for editing LaTeX files.</li>
-</ul>
-<div id="plugins-for-programming-languages" class="section level2">
-<h2>Plugins for programming languages</h2>
-<pre><code>Vim R
-Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)</code></pre>
-</div>
-</div>
-<div id="configure-vim-in-.vimrc" class="section level1">
-<h1>Configure vim in .vimrc</h1>
-<p>See also my vimrc file stored in <a href="setup/.vimrc" class="uri">setup/.vimrc</a>.</p>
-<p>Reload the configuration after editing it:</p>
-<pre><code>:so ~/.vimrc</code></pre>
-<p>Text colour. Add syntax highlight to your .vimrc</p>
-<pre><code>syntax enable</code></pre>
-<p>How to add a file extension to vim syntax highlight</p>
-<pre><code>au BufNewFile,BufRead *.dump set filetype=sql</code></pre>
-<p>I used it to display markdown files as text files:</p>
-<pre><code>au BufNewFile,BufRead *.md set filetype=txt</code></pre>
-</div>
 <div id="blogs" class="section level1">
 <h1>blogs</h1>
 <p><a href="https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1">Why atom cant replace vim</a></p>
@@ -716,9 +738,19 @@ Vim on Python wiki (set softtabstop=4) or your  python development environment (
 </blockquote>
 <p><a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a></p>
 <p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a> <a href="https://github.com/tridactyl/tridactyl">Browse the web in vim mode</a></p>
+<div id="learning-vim" class="section level2">
+<h2>Learning vim</h2>
+<ul>
+<li><a href="https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/">Should I introduce vim tomy kid</a> &gt; “Learn to support, not to shoehorn.”</li>
+<li><a href="https://vim-adventures.com/">Vim adventures</a></li>
+</ul>
+</div>
+<div id="the-history-of-vim" class="section level2">
+<h2>The history of vim</h2>
 <ul>
 <li><a href="https://www.binpress.com/vim-creator-bram-moolenaar-interview/">Vim creator Bram Moolenaar interview</a> &gt; “The project I encountered in Kibaale is completely different. The foreigners &gt; who work there are volunteers, they have sponsors themselves to make it &gt; possible to live and work there. All the donations for children go to the &gt; project and are spent there. Also for staff and vehicles, but that’s local &gt; staff that then spend their money in the country, thus indirectly it helps &gt; others. And in the end seeing the children grow up, finish their studies and &gt; find a job is wonderful.”</li>
 </ul>
+</div>
 </div>
 
 

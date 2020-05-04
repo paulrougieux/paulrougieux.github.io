@@ -118,6 +118,26 @@ Automatically change the working directory to the file currently edited
 
     set autochdir
 
+# Configure vim in .vimrc
+See also my vimrc file stored in [setup/.vimrc](setup/.vimrc).
+
+Reload the configuration after editing it: 
+
+    :so ~/.vimrc
+
+Text colour.
+Add syntax highlight to your .vimrc
+
+    syntax enable
+
+How to add a file extension to vim syntax highlight
+
+    au BufNewFile,BufRead *.dump set filetype=sql
+
+I used it to display markdown files as text files:
+
+    au BufNewFile,BufRead *.md set filetype=txt
+
 # Editing
 ## Undo redo
 
@@ -268,6 +288,38 @@ Natural split opening
     set splitbelow
     set splitright
 
+## Vim and Tmux
+
+[vim-tmux-navigator to use tmux prefix instead of C-[hjkl]](https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl)
+
+# Plugins
+
+Potentially usefull plugins
+
+ * Fuzzy search 
+ * File explorer
+ * [Vimtex](https://github.com/lervag/vimtex#alternatives) 
+   vim plugin for editing LaTeX files. 
+
+
+## Plugins for python programming
+
+* [Jedi](https://github.com/davidhalter/jedi)
+* Plug-in [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
+* Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)
+* [Vim and python a match made in heaven](https://realpython.com/vim-and-python-a-match-made-in-heaven/)
+
+## Plugins for R programming 
+
+Vim R
+
+# Programming with vim
+
+## Running code
+
+SO [Running python code in VIM](https://stackoverflow.com/questions/18948491/running-python-code-in-vim)
+Make sure your files start with a shebang.
+
 # Tools
 
 ## Shell
@@ -336,40 +388,6 @@ Mark word as incorrect
     zw
 
 
-# Plugins
-
-Potentially usefull plugins
-
- * Fuzzy search 
- * File explorer
- * [Vimtex](https://github.com/lervag/vimtex#alternatives) 
-   vim plugin for editing LaTeX files. 
-
-
-## Plugins for programming languages
-
-    Vim R
-    Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)
-
-# Configure vim in .vimrc
-See also my vimrc file stored in [setup/.vimrc](setup/.vimrc).
-
-Reload the configuration after editing it: 
-
-    :so ~/.vimrc
-
-Text colour.
-Add syntax highlight to your .vimrc
-
-    syntax enable
-
-How to add a file extension to vim syntax highlight
-
-    au BufNewFile,BufRead *.dump set filetype=sql
-
-I used it to display markdown files as text files:
-
-    au BufNewFile,BufRead *.md set filetype=txt
 
 # blogs
 
@@ -383,6 +401,14 @@ I used it to display markdown files as text files:
 
 [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
 [Browse the web in vim mode](https://github.com/tridactyl/tridactyl)
+
+## Learning vim
+* [Should I introduce vim tomy kid](https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/)
+> "Learn to support, not to shoehorn."
+* [Vim adventures](https://vim-adventures.com/)
+
+
+## The history of vim
 
 * [Vim creator Bram Moolenaar
     interview](https://www.binpress.com/vim-creator-bram-moolenaar-interview/)
