@@ -1,0 +1,6 @@
+# Usage:
+# make    # extract urls from the music file
+
+extract:
+	grep -Eo '(http|https)://[^"]+' Musicwelistento.html | sed -e  's/https:\/\/www.google.com\/url?q=//g' > song_links.txt
+
