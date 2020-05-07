@@ -579,6 +579,10 @@ mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg</code></pre>
 <pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
 # if necessary, install mutool with 
 apt install mupdf-tools</code></pre>
+<p>Extract tables from a pdf with <a href="https://tabula.technology/">tabula</a></p>
+<pre><code>cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
+java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
+<p>Then visit <a href="http://127.0.0.1:8080/" class="uri">http://127.0.0.1:8080/</a></p>
 </div>
 <div id="replace-strings-in-text-files" class="section level2">
 <h2>Replace strings in text files</h2>
@@ -703,6 +707,17 @@ alias youtubemp3=&quot;youtube-dl --extract-audio --audio-format mp3&quot;</code
 <p>If you encounter some Errors 403 forbidden, removing the cache might help</p>
 <p><a href="https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by">error 403 with youtube-dl</a></p>
 <pre><code>youtube-dl --rm-cache-dir</code></pre>
+</div>
+<div id="parse-html-files-for-urls" class="section level2">
+<h2>Parse html files for URLS</h2>
+<p><a href="https://unix.stackexchange.com/questions/181254/how-to-use-grep-and-cut-in-script-to-obtain-website-urls-from-an-html-file">How to use grep and cut in script to obtain website URLs from an HTML file</a> Nice examples such as this one with decomposition</p>
+<pre><code>grep -Eoi &#39;&lt;a [^&gt;]+&gt;&#39; source.html |
+grep -Eo &#39;href=&quot;[^\&quot;]+&quot;&#39; | 
+grep -Eo &#39;(http|https)://[^/&quot;]+&#39;</code></pre>
+<p>and this one which extracts all top level domain present in an html page</p>
+<pre><code>cat urls.html | grep -Eo &quot;(http|https)://[a-zA-Z0-9./?=_-]*&quot; | sort -u</code></pre>
+<p>This is how I extracted all links from an html file:</p>
+<pre><code>grep -Eo &#39;(http|https)://[^&quot;]+&#39; Musicwelistento.html | sed -e  &#39;s/https:\/\/www.google.com\/url?q=//g&#39; &gt; song_links.txt</code></pre>
 </div>
 </div>
 <div id="users" class="section level1">

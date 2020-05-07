@@ -202,6 +202,13 @@ Split a pdf in two
     # if necessary, install mutool with 
     apt install mupdf-tools
 
+Extract tables from a pdf with [tabula](https://tabula.technology/)
+
+    cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
+    java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar
+
+Then visit http://127.0.0.1:8080/
+
 
 ## Replace strings in text files
 Replace strings
@@ -386,6 +393,24 @@ If you encounter some Errors 403 forbidden, removing the cache might help
 [error 403 with youtube-dl](https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by)
 
     youtube-dl --rm-cache-dir
+
+## Parse html files for URLS
+
+[How to use grep and cut in script to obtain website URLs from an HTML file](https://unix.stackexchange.com/questions/181254/how-to-use-grep-and-cut-in-script-to-obtain-website-urls-from-an-html-file)
+Nice examples such as this one with decomposition 
+
+    grep -Eoi '<a [^>]+>' source.html |
+    grep -Eo 'href="[^\"]+"' | 
+    grep -Eo '(http|https)://[^/"]+'
+
+and this one which extracts all top level domain present in an html page 
+
+    cat urls.html | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort -u
+
+This is how I extracted all links from an html file: 
+
+    grep -Eo '(http|https)://[^"]+' Musicwelistento.html | sed -e  's/https:\/\/www.google.com\/url?q=//g' > song_links.txt
+
 
 # Users
 
