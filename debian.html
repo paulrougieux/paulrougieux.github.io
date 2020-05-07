@@ -664,6 +664,12 @@ sudo apt install riot-web</code></pre>
 <p><a href="https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Linux#h_adcc0b66-b2f4-468b-bc7a-12c182f354b7">Zoom install on Linux</a></p>
 <pre><code>cd downloads/
 wget https://zoom.us/client/latest/zoom_amd64.deb
+
+# Check public key fingerprint
+wget https://zoom.us/linux/download/pubkey zoom_pubkey
+cat pubkey | gpg --import-options show-only --import
+
+# Install
 sudo apt install ./zoom_amd64.deb </code></pre>
 </div>
 </div>

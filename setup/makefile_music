@@ -1,6 +1,11 @@
 # Usage:
 # make    # extract urls from the music file
 
+# Extract all html links
+# remove google.com due to the fact that the original document is a google doc
+# replace %3D by = due to the fact that the url was converted
 extract:
-	grep -Eo '(http|https)://[^"]+' Musicwelistento.html | sed -e  's/https:\/\/www.google.com\/url?q=//g' > song_links.txt
+	grep -Eo '(http|https)://[^"]+' Musicwelistento.html | sed -e  's/https:\/\/www.google.com\/url?q=//g' | sed -e 's/%3D/=/g'| sed -e 's/%26/\&/g' > song_links.txt
 
+# Download music files for all links in the list but do not follow the playlist links
+# youtube-dl --extract-audio --audio-format vorbis --sleep-interval 30 -i --no-playlist --batch-file
