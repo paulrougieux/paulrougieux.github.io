@@ -12,7 +12,7 @@ Plugin 'VundleVim/Vundle.vim'
 " Navigate markdown toc
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
-
+Plugin 'tpope/vim-fugitive'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -65,4 +65,10 @@ augroup filetypedetect_markdown
     au!
     au BufRead,BufNewFile *.Rmd set ft=markdown
 augroup END
+
+" use tmux with slime
+let g:slime_target = "tmux"
+" configuration for vim in a split tmux window with a REPL in the other pane:
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
 
