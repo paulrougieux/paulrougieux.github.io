@@ -13,6 +13,7 @@ This page is the continuation of [my blog post on Vim commands](https://paulremo
 
     :help  -  vim help
     :help commandname - help on a particular command
+    :h commandname -help on a particular command
     CTRL+] - jump to a highlighted topic
     CTRL+T - jump backwards
 
@@ -52,6 +53,17 @@ To save content and exit:
     :wq
 
 # Navigating 
+
+## File explorer
+
+Vim comes with a file explorer:
+
+    :E
+
+or 
+
+    :Explorer
+
 ## Motion
 
 In command mode, the following motions are activated:
@@ -70,24 +82,27 @@ Note on motion with wrapped lines:
     "/" to search, then n forward and N backwards
     "*" to search for the word under the cursor (you can also create a mapping to search for a selected text)
 
+### Search in multiple files
+
+[open files on the match lines given by grep](https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep)
+
+    :copen
+    :grep -r pattern .
+
+or specify specific files extensions
+
+    :grep -r pattern *.py
+
+
+
 ### Markdown
 Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)
 
     :g/^# /#
 
+See also the markdown TOC extension for vim.
 Then enter `:line number` to jump to that line.
 
-Thoughtbot.com [Wrap existing block of text to 80 characters](https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim):
-
-    :set textwidth=80
-
-Apply automatically to markdown files, by adding this to .vimrc 
-
-    au BufRead,BufNewFile *.md setlocal textwidth=80
-
-To format the text, select it with v and up or down movements, and press 
-
-    gq
 
 ## Line numbers
  Display line numbers
@@ -189,15 +204,17 @@ For example to insert a new line after each comma in a selection:
     :'<,'>s/,/,\r/g
 
 You can use replacement to remove text. 
-For example to [remove the last 2 characters of each line in a selection](https://stackoverflow.com/a/36264759/2641825):
+For example to [remove the last 2 characters of each line in a selection](https://stackoverflow.com/a/36264759/2641825) :
 
     :'<,'>s/..$//
 
 Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.
 
-    %s/option value=".*"//g 
+     %s/option value=".*"//g 
 
 ## Editing a whole line
+
+To edit a whole line: 
 
     dd to delete a whole line
     yy to copy a whole line
@@ -223,6 +240,8 @@ Similarly to enter text at the end of multiple lines ([vim.wikia](http://vim.wik
     The press Escape, the inserted text will appear at the end of all lines.
 
 ## Copy, cut and paste
+
+Copy and paste with the following instructions
 
     Position the cursor where you want to begin cutting.
     Press v (or upper case V if you want to cut whole lines).
@@ -254,6 +273,20 @@ More details on vim indentation in the python wiki.
 ## Repeat Commands
 
 [Repeating commands, Vim scripts and debugging](http://vimhelp.appspot.com/repeat.txt.html)
+
+## Wrap lines
+
+Thoughtbot.com [Wrap existing block of text to 80 characters](https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim):
+
+    :set textwidth=80
+
+Apply automatically to markdown files, by adding this to .vimrc 
+
+    au BufRead,BufNewFile *.md setlocal textwidth=80
+
+To format the text, select it with v and up or down movements, and press 
+
+    gq
 
 # Multiple files and windows
 
@@ -290,35 +323,142 @@ Natural split opening
 
 ## Vim and Tmux
 
+See the [bash](bash.html) page for the tmux side of the configuration.
+
 [vim-tmux-navigator to use tmux prefix instead of C-[hjkl]](https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl)
+
+busnag.com [tmux and vim](https://www.bugsnag.com/blog/tmux-and-vim)
+> " like many vim users, I edited my .vimrc to simplify split navigation, so
+> that I can jump between vim splits using ctrl-j, ctrl-k, etc. 
+
+reddit [python workflow with terminal using tmux](https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/)
+> "Finally, I have Ctrl+[hjkl] setup such that I can navigate seamlessly between vim and tmux panes."
+
 
 # Plugins
 
-Potentially usefull plugins
+Plugins are mentioned in diverse section of this document. 
+This section is mostly to list plugins I used and potentially interesting plugins. 
 
- * Fuzzy search 
- * File explorer
- * [Vimtex](https://github.com/lervag/vimtex#alternatives) 
-   vim plugin for editing LaTeX files. 
+Plugins I currently use with vundle: 
+
+    :PluginList
+    Plugin 'VundleVim/Vundle.vim'
+    Plugin 'godlygeek/tabular'
+    Plugin 'plasticboy/vim-markdown'
+
+I also use a spell checker. 
+
+Potentially useful plugins
+
+* [fugitive](https://github.com/tpope/vim-fugitive) git integration
+* Fuzzy search 
+* File explorer 
+    * or simply use the native vim explorer `:Explore`
+* [Vimtex](https://github.com/lervag/vimtex#alternatives) 
+  vim plugin for editing LaTeX files. 
+
+See also the section programming with vim below for language specific plugins. 
+
+## Installing plugins with vim's built-in plugin support
+
+Install slime with Vim's built-in package support (since Vim 7.4.1528):
+
+     mkdir -p ~/.vim/pack/plugins/start
+     cd ~/.vim/pack/plugins/start
+     git clone https://github.com/jpalardy/vim-slime.git
+
+## Installing plugins with Vundle
+
+Since there is a built-in plugin support, maybe I don't need Vundle after all? 
+
+Edit your .vimrc and add the following at the beginning
+
+    set nocompatible              " be iMproved, required
+    filetype off                  " required
+
+    " set the runtime path to include Vundle and initialize
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+    " alternatively, pass a path where Vundle should install plugins
+    "call vundle#begin('~/some/path/here')
+
+    " let Vundle manage Vundle, required
+    Plugin 'VundleVim/Vundle.vim'
+    " Navigate markdown toc
+    Plugin 'godlygeek/tabular'
+    Plugin 'plasticboy/vim-markdown'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'jpalardy/vim-slime'
+
+    " All of your Plugins must be added before the following line
+    call vundle#end()            " required
+    filetype plugin indent on    " required
+    " To ignore plugin indent changes, instead use:
+    "filetype plugin on
+    "
+    " Brief help
+    " :PluginList       - lists configured plugins
+    " :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+    " :PluginSearch foo - searches for foo; append `!` to refresh local cache
+    " :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+    "
+    " see :h vundle for more details or wiki for FAQ
+    " Put your non-Plugin stuff after this line
 
 
-## Plugins for python programming
+Install all plugins configured in your `.vimrc`.
+
+    :PluginInstall
+
+# Programming with vim
+
+## Python programming with vim
+
+SO [Running python code in VIM](https://stackoverflow.com/questions/18948491/running-python-code-in-vim)
+Make sure your files start with a shebang.
 
 * [Jedi](https://github.com/davidhalter/jedi)
 * Plug-in [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
 * Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)
-* [Vim and python a match made in heaven](https://realpython.com/vim-and-python-a-match-made-in-heaven/)
+* realpython.com [Vim and python a match made in heaven](https://realpython.com/vim-and-python-a-match-made-in-heaven/)
+* full stack python [vim](https://www.fullstackpython.com/vim.html)
+* [vim and python script debugging](https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging)
 
-## Plugins for R programming 
+reddit [python workflow with terminal using tmux](https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/)
 
-Vim R
+> "I run my scripts using
+> 
+> ipython -i script.py
+> 
+> That way I drop to an ipython shell whenever it breaks or finishes running. I also insert
+> 
+> from ipython import embed; embed();
+> 
+> Instead of using pdb. Its really neat."
 
-# Programming with vim
+## R programming with vim
 
-## Running code
+[Turning vim into an IDE](https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/)
 
-SO [Running python code in VIM](https://stackoverflow.com/questions/18948491/running-python-code-in-vim)
-Make sure your files start with a shebang.
+ Uses [Nvim-R](https://github.com/jalvesaq/Nvim-R)
+ which works with both vim and neo vim
+
+## Send code to target terminal
+
+[vim slime](https://github.com/jpalardy/vim-slime)
+> "Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal"
+
+Tmux is not the default, to use it you will have to add this line to your .vimrc:
+
+    let g:slime_target = "tmux"
+
+Then add this to configure the sending of commands to a 
+[Read Eval Print Loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop):
+in the general use case of
+vim in a split tmux window with a REPL in the other pane:
+
+    let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 
 # Tools
 
@@ -397,7 +537,8 @@ Mark word as incorrect
 > fundamental originating philosophy of Unix, and Vim exemplifies it like no
 > other editor."
 
-[Python workflow with terminal using tmux](https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/)
+reddit [Python workflow with terminal using tmux](https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/)
+I tried slime.
 
 [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
 [Browse the web in vim mode](https://github.com/tridactyl/tridactyl)
@@ -406,7 +547,7 @@ Mark word as incorrect
 * [Should I introduce vim tomy kid](https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/)
 > "Learn to support, not to shoehorn."
 * [Vim adventures](https://vim-adventures.com/)
-
+* [Learn vim basic featurs](https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/)
 
 ## The history of vim
 

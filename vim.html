@@ -462,6 +462,7 @@ div.tocify {
 <h1>Help</h1>
 <pre><code>:help  -  vim help
 :help commandname - help on a particular command
+:h commandname -help on a particular command
 CTRL+] - jump to a highlighted topic
 CTRL+T - jump backwards</code></pre>
 <p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
@@ -484,6 +485,13 @@ CTRL+T - jump backwards</code></pre>
 </div>
 <div id="navigating" class="section level1">
 <h1>Navigating</h1>
+<div id="file-explorer" class="section level2">
+<h2>File explorer</h2>
+<p>Vim comes with a file explorer:</p>
+<pre><code>:E</code></pre>
+<p>or</p>
+<pre><code>:Explorer</code></pre>
+</div>
 <div id="motion" class="section level2">
 <h2>Motion</h2>
 <p>In command mode, the following motions are activated:</p>
@@ -499,17 +507,19 @@ ctrl+b, ctrl+d move page up or page down
 <h2>Search</h2>
 <pre><code>&quot;/&quot; to search, then n forward and N backwards
 &quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</code></pre>
+<div id="search-in-multiple-files" class="section level3">
+<h3>Search in multiple files</h3>
+<p><a href="https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep">open files on the match lines given by grep</a></p>
+<pre><code>:copen
+:grep -r pattern .</code></pre>
+<p>or specify specific files extensions</p>
+<pre><code>:grep -r pattern *.py</code></pre>
+</div>
 <div id="markdown" class="section level3">
 <h3>Markdown</h3>
 <p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
 <pre><code>:g/^# /#</code></pre>
-<p>Then enter <code>:line number</code> to jump to that line.</p>
-<p>Thoughtbot.com <a href="https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim">Wrap existing block of text to 80 characters</a>:</p>
-<pre><code>:set textwidth=80</code></pre>
-<p>Apply automatically to markdown files, by adding this to .vimrc</p>
-<pre><code>au BufRead,BufNewFile *.md setlocal textwidth=80</code></pre>
-<p>To format the text, select it with v and up or down movements, and press</p>
-<pre><code>gq</code></pre>
+<p>See also the markdown TOC extension for vim. Then enter <code>:line number</code> to jump to that line.</p>
 </div>
 </div>
 <div id="line-numbers" class="section level2">
@@ -575,13 +585,14 @@ alt+: - switch to navigation mode and send a command</code></pre>
 <pre><code>:%s/foo/bar/n</code></pre>
 <p>To replace by a new line character, use instead of . For example to insert a new line after each comma in a selection:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/,/,\r/g</code></pre>
-<p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a>:</p>
+<p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
 <p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
-<pre><code>%s/option value=&quot;.*&quot;//g </code></pre>
+<pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
 </div>
 <div id="editing-a-whole-line" class="section level2">
 <h2>Editing a whole line</h2>
+<p>To edit a whole line:</p>
 <pre><code>dd to delete a whole line
 yy to copy a whole line
 p to paste the copied or deleted text after the current line or 
@@ -603,6 +614,7 @@ The press Escape, the inserted text will appear at the end of all lines.</code><
 </div>
 <div id="copy-cut-and-paste" class="section level2">
 <h2>Copy, cut and paste</h2>
+<p>Copy and paste with the following instructions</p>
 <pre><code>Position the cursor where you want to begin cutting.
 Press v (or upper case V if you want to cut whole lines).
 Move the cursor to the end of what you want to cut.
@@ -627,6 +639,15 @@ filetype indent on </code></pre>
 <div id="repeat-commands" class="section level2">
 <h2>Repeat Commands</h2>
 <p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating commands, Vim scripts and debugging</a></p>
+</div>
+<div id="wrap-lines" class="section level2">
+<h2>Wrap lines</h2>
+<p>Thoughtbot.com <a href="https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim">Wrap existing block of text to 80 characters</a>:</p>
+<pre><code>:set textwidth=80</code></pre>
+<p>Apply automatically to markdown files, by adding this to .vimrc</p>
+<pre><code>au BufRead,BufNewFile *.md setlocal textwidth=80</code></pre>
+<p>To format the text, select it with v and up or down movements, and press</p>
+<pre><code>gq</code></pre>
 </div>
 </div>
 <div id="multiple-files-and-windows" class="section level1">
@@ -659,36 +680,112 @@ set splitright</code></pre>
 </div>
 <div id="vim-and-tmux" class="section level2">
 <h2>Vim and Tmux</h2>
+<p>See the <a href="bash.html">bash</a> page for the tmux side of the configuration.</p>
 <p><a href="https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl">vim-tmux-navigator to use tmux prefix instead of C-[hjkl]</a></p>
+<p>busnag.com <a href="https://www.bugsnag.com/blog/tmux-and-vim">tmux and vim</a> &gt; &quot; like many vim users, I edited my .vimrc to simplify split navigation, so &gt; that I can jump between vim splits using ctrl-j, ctrl-k, etc.</p>
+<p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a> &gt; “Finally, I have Ctrl+[hjkl] setup such that I can navigate seamlessly between vim and tmux panes.”</p>
 </div>
 </div>
 <div id="plugins" class="section level1">
 <h1>Plugins</h1>
-<p>Potentially usefull plugins</p>
+<p>Plugins are mentioned in diverse section of this document. This section is mostly to list plugins I used and potentially interesting plugins.</p>
+<p>Plugins I currently use with vundle:</p>
+<pre><code>:PluginList
+Plugin &#39;VundleVim/Vundle.vim&#39;
+Plugin &#39;godlygeek/tabular&#39;
+Plugin &#39;plasticboy/vim-markdown&#39;</code></pre>
+<p>I also use a spell checker.</p>
+<p>Potentially useful plugins</p>
 <ul>
+<li><a href="https://github.com/tpope/vim-fugitive">fugitive</a> git integration</li>
 <li>Fuzzy search</li>
-<li>File explorer</li>
+<li>File explorer
+<ul>
+<li>or simply use the native vim explorer <code>:Explore</code></li>
+</ul></li>
 <li><a href="https://github.com/lervag/vimtex#alternatives">Vimtex</a> vim plugin for editing LaTeX files.</li>
 </ul>
-<div id="plugins-for-python-programming" class="section level2">
-<h2>Plugins for python programming</h2>
-<ul>
-<li><a href="https://github.com/davidhalter/jedi">Jedi</a></li>
-<li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
-<li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
-<li><a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
-</ul>
+<p>See also the section programming with vim below for language specific plugins.</p>
+<div id="installing-plugins-with-vims-built-in-plugin-support" class="section level2">
+<h2>Installing plugins with vim’s built-in plugin support</h2>
+<p>Install slime with Vim’s built-in package support (since Vim 7.4.1528):</p>
+<pre><code> mkdir -p ~/.vim/pack/plugins/start
+ cd ~/.vim/pack/plugins/start
+ git clone https://github.com/jpalardy/vim-slime.git</code></pre>
 </div>
-<div id="plugins-for-r-programming" class="section level2">
-<h2>Plugins for R programming</h2>
-<p>Vim R</p>
+<div id="installing-plugins-with-vundle" class="section level2">
+<h2>Installing plugins with Vundle</h2>
+<p>Since there is a built-in plugin support, maybe I don’t need Vundle after all?</p>
+<p>Edit your .vimrc and add the following at the beginning</p>
+<pre><code>set nocompatible              &quot; be iMproved, required
+filetype off                  &quot; required
+
+&quot; set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+&quot; alternatively, pass a path where Vundle should install plugins
+&quot;call vundle#begin(&#39;~/some/path/here&#39;)
+
+&quot; let Vundle manage Vundle, required
+Plugin &#39;VundleVim/Vundle.vim&#39;
+&quot; Navigate markdown toc
+Plugin &#39;godlygeek/tabular&#39;
+Plugin &#39;plasticboy/vim-markdown&#39;
+Plugin &#39;tpope/vim-fugitive&#39;
+Plugin &#39;jpalardy/vim-slime&#39;
+
+&quot; All of your Plugins must be added before the following line
+call vundle#end()            &quot; required
+filetype plugin indent on    &quot; required
+&quot; To ignore plugin indent changes, instead use:
+&quot;filetype plugin on
+&quot;
+&quot; Brief help
+&quot; :PluginList       - lists configured plugins
+&quot; :PluginInstall    - installs plugins; append `!` to update or just :PluginUpdate
+&quot; :PluginSearch foo - searches for foo; append `!` to refresh local cache
+&quot; :PluginClean      - confirms removal of unused plugins; append `!` to auto-approve removal
+&quot;
+&quot; see :h vundle for more details or wiki for FAQ
+&quot; Put your non-Plugin stuff after this line</code></pre>
+<p>Install all plugins configured in your <code>.vimrc</code>.</p>
+<pre><code>:PluginInstall</code></pre>
 </div>
 </div>
 <div id="programming-with-vim" class="section level1">
 <h1>Programming with vim</h1>
-<div id="running-code" class="section level2">
-<h2>Running code</h2>
+<div id="python-programming-with-vim" class="section level2">
+<h2>Python programming with vim</h2>
 <p>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</p>
+<ul>
+<li><a href="https://github.com/davidhalter/jedi">Jedi</a></li>
+<li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
+<li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
+<li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
+<li>full stack python <a href="https://www.fullstackpython.com/vim.html">vim</a></li>
+<li><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></li>
+</ul>
+<p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
+<blockquote>
+<p>&quot;I run my scripts using</p>
+<p>ipython -i script.py</p>
+<p>That way I drop to an ipython shell whenever it breaks or finishes running. I also insert</p>
+<p>from ipython import embed; embed();</p>
+<p>Instead of using pdb. Its really neat.&quot;</p>
+</blockquote>
+</div>
+<div id="r-programming-with-vim" class="section level2">
+<h2>R programming with vim</h2>
+<p><a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a></p>
+<p>Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</p>
+</div>
+<div id="send-code-to-target-terminal" class="section level2">
+<h2>Send code to target terminal</h2>
+<p><a href="https://github.com/jpalardy/vim-slime">vim slime</a> &gt; “Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal”</p>
+<p>Tmux is not the default, to use it you will have to add this line to your .vimrc:</p>
+<pre><code>let g:slime_target = &quot;tmux&quot;</code></pre>
+<p>Then add this to configure the sending of commands to a <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read Eval Print Loop</a>: in the general use case of vim in a split tmux window with a REPL in the other pane:</p>
+<pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
 </div>
 </div>
 <div id="tools" class="section level1">
@@ -736,13 +833,14 @@ set splitright</code></pre>
 <blockquote>
 <p>“This philosophy of minimalist commands that can be composed together is the fundamental originating philosophy of Unix, and Vim exemplifies it like no other editor.”</p>
 </blockquote>
-<p><a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a></p>
+<p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a> I tried slime.</p>
 <p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a> <a href="https://github.com/tridactyl/tridactyl">Browse the web in vim mode</a></p>
 <div id="learning-vim" class="section level2">
 <h2>Learning vim</h2>
 <ul>
 <li><a href="https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/">Should I introduce vim tomy kid</a> &gt; “Learn to support, not to shoehorn.”</li>
 <li><a href="https://vim-adventures.com/">Vim adventures</a></li>
+<li><a href="https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/">Learn vim basic featurs</a></li>
 </ul>
 </div>
 <div id="the-history-of-vim" class="section level2">

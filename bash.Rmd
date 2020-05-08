@@ -51,7 +51,7 @@ Display the [last modification date of a file](https://stackoverflow.com/questio
 
     date -r <filename>
     ls -l <filename>
-    
+
 More file information
 
     stat <filename>
@@ -865,10 +865,11 @@ and reconnect the following morning to check if the algorithm had finished runni
 The advantage of screen is that it is old and available on many systems.
 
 ## Tmux
+
 Tmux is under more active development than Screen.
 
  * [Crash course](https://robots.thoughtbot.com/a-tmux-crash-course)
- * [shortcuts and cheatsheet](https://gist.github.com/MohamedAlaa/2961058)
+ * [shortcuts and cheat sheet](https://gist.github.com/MohamedAlaa/2961058)
 
 ### Sessions
 To start and name a session:

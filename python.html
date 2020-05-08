@@ -738,12 +738,6 @@ a
 <h1>Numpy vectors and matrices (arrays)</h1>
 <p>All examples below are based on the numpy package being imported as np :</p>
 <pre><code>import numpy as np</code></pre>
-<p>Random vector or matrices</p>
-<pre><code>x = np.random.random([3,4])
-x
-# array([[0.64174957, 0.18540429, 0.7045183 , 0.44623567],
-#        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
-#        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])</code></pre>
 <div id="indexing-multi-dimensional-arrays-and-masks" class="section level2">
 <h2>Indexing Multi-dimensional arrays and masks</h2>
 <p>Numpy <a href="https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html">array indexing</a></p>
@@ -774,8 +768,8 @@ mx = np.ma.masked_array(x, mask=[0, 0, 0, 1, 0])
 print(x.sum(), mx.sum())
 # 10 11</code></pre>
 </div>
-<div id="simple-matrix-operations-and-shapes" class="section level2">
-<h2>Simple matrix operations and shapes</h2>
+<div id="matrix-creation-and-shapes" class="section level2">
+<h2>Matrix creation and shapes</h2>
 <p>Create a vector</p>
 <pre><code>a = np.array([1,2,3])</code></pre>
 <p>Create a matrix</p>
@@ -868,6 +862,42 @@ b = np.array([[5, 6]])
 print(np.concatenate((a, b), axis=0))
 print(np.concatenate((a, b.T), axis=1))
 print(np.concatenate((a, b), axis=None))</code></pre>
+</div>
+<div id="random-vector-or-matrices" class="section level2">
+<h2>Random vector or matrices</h2>
+<pre><code>x = np.random.random([3,4])
+x
+# array([[0.64174957, 0.18540429, 0.7045183 , 0.44623567],
+#        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
+#        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])</code></pre>
+<p>Random choice, with a given probability Choose zero with probability 0.1 and one with probability 0.9.</p>
+<pre><code>for i in range(10):
+    print(np.random.choice(2, p=[0.1, 0.9]))
+    
+print(np.random.choice(2, 10, p=[0.1, 0.9]))
+print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
+
+[[1 1 1 1 1 1 1 1 1 0]
+ [1 1 1 1 1 1 1 1 1 1]
+ [1 1 1 1 1 1 1 1 1 0]
+ [1 1 1 1 1 1 1 1 1 1]
+ [1 1 1 1 1 1 1 0 1 1]
+ [1 1 1 0 1 1 1 1 1 1]
+ [1 1 0 1 1 1 1 1 0 1]
+ [1 1 1 1 1 1 1 1 1 1]
+ [1 1 1 1 1 1 0 1 1 0]
+ [1 1 1 1 1 1 1 1 1 1]]</code></pre>
+<p>Error if probabilities do not sum up to one</p>
+<pre><code>print(np.random.choice(2, p=[0.1, 0.8]))
+
+# ---------------------------------------------------------------------------
+# ValueError                                Traceback (most recent call last)
+# &lt;ipython-input-31-8a8665287968&gt; in &lt;module&gt;
+# ----&gt; 1 print(np.random.choice(2, p=[0.1, 0.8]))
+
+# mtrand.pyx in numpy.random.mtrand.RandomState.choice()
+
+# ValueError: probabilities do not sum to 1</code></pre>
 </div>
 </div>
 <div id="objects" class="section level1">
@@ -1391,6 +1421,10 @@ g.fig.set_figheight(10) </code></pre>
 <li>Normalizer</li>
 </ul>
 </div>
+</div>
+<div id="style-guide-and-linter" class="section level1">
+<h1>Style guide and linter</h1>
+<p><a href="https://github.com/psf/black">Black</a> “the uncompromising Python code formater”</p>
 </div>
 <div id="unit-tests" class="section level1">
 <h1>Unit tests</h1>

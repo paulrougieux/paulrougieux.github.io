@@ -377,13 +377,6 @@ All examples below are based on the numpy package being imported as np :
 
     import numpy as np
 
-Random vector or matrices
-
-    x = np.random.random([3,4])
-    x
-    # array([[0.64174957, 0.18540429, 0.7045183 , 0.44623567],
-    #        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
-    #        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])
 
 ## Indexing Multi-dimensional arrays and masks
 
@@ -430,7 +423,7 @@ We wish to mark the fourth entry as invalid. The easiest is to create a masked a
     # 10 11
 
 
-## Simple matrix operations and shapes
+## Matrix creation and shapes
 
 Create a vector
 
@@ -558,6 +551,48 @@ Append vs concatenate
     print(np.concatenate((a, b), axis=0))
     print(np.concatenate((a, b.T), axis=1))
     print(np.concatenate((a, b), axis=None))
+
+## Random vector or matrices
+
+    x = np.random.random([3,4])
+    x
+    # array([[0.64174957, 0.18540429, 0.7045183 , 0.44623567],
+    #        [0.97558697, 0.69314058, 0.32469324, 0.82612627],
+    #        [0.51646795, 0.71055115, 0.74864751, 0.2142459 ]])
+
+
+Random choice, with a given probability
+Choose zero with probability 0.1 and one with probability 0.9.
+
+    for i in range(10):
+        print(np.random.choice(2, p=[0.1, 0.9]))
+        
+    print(np.random.choice(2, 10, p=[0.1, 0.9]))
+    print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
+
+    [[1 1 1 1 1 1 1 1 1 0]
+     [1 1 1 1 1 1 1 1 1 1]
+     [1 1 1 1 1 1 1 1 1 0]
+     [1 1 1 1 1 1 1 1 1 1]
+     [1 1 1 1 1 1 1 0 1 1]
+     [1 1 1 0 1 1 1 1 1 1]
+     [1 1 0 1 1 1 1 1 0 1]
+     [1 1 1 1 1 1 1 1 1 1]
+     [1 1 1 1 1 1 0 1 1 0]
+     [1 1 1 1 1 1 1 1 1 1]]
+
+Error if probabilities do not sum up to one
+
+    print(np.random.choice(2, p=[0.1, 0.8]))
+
+    # ---------------------------------------------------------------------------
+    # ValueError                                Traceback (most recent call last)
+    # <ipython-input-31-8a8665287968> in <module>
+    # ----> 1 print(np.random.choice(2, p=[0.1, 0.8]))
+
+    # mtrand.pyx in numpy.random.mtrand.RandomState.choice()
+
+    # ValueError: probabilities do not sum to 1
 
 
 # Objects
@@ -1094,6 +1129,14 @@ providing various ways to concatenate python strings.
  * MinMaxScaler
  * RobustScaler
  * Normalizer
+
+# Style guide and linter
+
+[Black](https://github.com/psf/black)
+"the uncompromising Python code formater"
+
+
+
 
 # Unit tests
 
