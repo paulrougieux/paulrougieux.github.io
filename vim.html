@@ -503,8 +503,8 @@ ctrl+b, ctrl+d move page up or page down
 {number} G go to line number </code></pre>
 <p>Note on motion with wrapped lines: <a href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move cursor by display lines when wrapping</a></p>
 </div>
-<div id="search" class="section level2">
-<h2>Search</h2>
+<div id="search-text" class="section level2">
+<h2>Search text</h2>
 <pre><code>&quot;/&quot; to search, then n forward and N backwards
 &quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</code></pre>
 <div id="search-in-multiple-files" class="section level3">
@@ -514,6 +514,9 @@ ctrl+b, ctrl+d move page up or page down
 :grep -r pattern .</code></pre>
 <p>or specify specific files extensions</p>
 <pre><code>:grep -r pattern *.py</code></pre>
+<p>Or use git grep with the fugitive plugin:</p>
+<pre><code>:copen
+:Ggrep pattern</code></pre>
 </div>
 <div id="markdown" class="section level3">
 <h3>Markdown</h3>
@@ -634,11 +637,19 @@ set expandtab
 set softtabstop=4
 set shiftwidth=4
 filetype indent on </code></pre>
-<p>More details on vim indentation in the python wiki.</p>
+<p>More details on vim indentation in the <a href="https://wiki.python.org/moin/Vim">python wiki</a>.</p>
 </div>
 <div id="repeat-commands" class="section level2">
 <h2>Repeat Commands</h2>
 <p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating commands, Vim scripts and debugging</a></p>
+</div>
+<div id="save-file" class="section level2">
+<h2>Save file</h2>
+<p>save the current file</p>
+<pre><code>:w</code></pre>
+<p>Save under a new name and edit that file</p>
+<pre><code>:sav</code></pre>
+<p>SO <a href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim">save as q new file qnd continue editing the original one</a></p>
 </div>
 <div id="wrap-lines" class="section level2">
 <h2>Wrap lines</h2>
@@ -693,16 +704,24 @@ set splitright</code></pre>
 <pre><code>:PluginList
 Plugin &#39;VundleVim/Vundle.vim&#39;
 Plugin &#39;godlygeek/tabular&#39;
-Plugin &#39;plasticboy/vim-markdown&#39;</code></pre>
+Plugin &#39;plasticboy/vim-markdown&#39;
+Plugin &#39;tpope/vim-fugitive&#39;
+Plugin &#39;davidhalter/jedi-vim&#39;</code></pre>
 <p>I also use a spell checker.</p>
+<p>Other plugins installed in the default vim repo:</p>
+<pre><code>:r ! ls ~/.vim/pack/plugins/start/
+vim-slime
+vim-tmux-navigator</code></pre>
 <p>Potentially useful plugins</p>
 <ul>
 <li><a href="https://github.com/tpope/vim-fugitive">fugitive</a> git integration</li>
 <li>Fuzzy search</li>
+<li>fzf command line fuzzy finder <a href="https://github.com/junegunn/fzf">fzf</a></li>
 <li>File explorer
 <ul>
 <li>or simply use the native vim explorer <code>:Explore</code></li>
 </ul></li>
+<li>Minibufexplorer and SO post on <a href="https://stackoverflow.com/questions/4865132/an-alternative-to-minibufexplorer-vim">alternatives to minibufexplorer</a></li>
 <li><a href="https://github.com/lervag/vimtex#alternatives">Vimtex</a> vim plugin for editing LaTeX files.</li>
 </ul>
 <p>See also the section programming with vim below for language specific plugins.</p>
@@ -756,14 +775,21 @@ filetype plugin indent on    &quot; required
 <h1>Programming with vim</h1>
 <div id="python-programming-with-vim" class="section level2">
 <h2>Python programming with vim</h2>
-<p>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</p>
+<p>plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) Jedi Installation required enabling python mode in vim:</p>
+<pre><code>sudo apt install vim-nox</code></pre>
 <ul>
-<li><a href="https://github.com/davidhalter/jedi">Jedi</a></li>
+<li><p>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</p></li>
+<li>wiki.python.org <a href="https://wiki.python.org/moin/Vim">vim</a> mentions:
+<ul>
+<li><a href="https://200ok.ch/posts/vim-as-python-ide.html">vim as a python IDE</a></li>
+</ul></li>
+<li>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</li>
+<li><a href="https://github.com/davidhalter/jedi">Jedi</a> autocompletion, also used by ipython.</li>
 <li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
 <li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
 <li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
 <li>full stack python <a href="https://www.fullstackpython.com/vim.html">vim</a></li>
-<li><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></li>
+<li><p><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></p></li>
 </ul>
 <p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
 <blockquote>

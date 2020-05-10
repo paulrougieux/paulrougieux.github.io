@@ -1062,6 +1062,8 @@ new-window</code></pre>
 <p>Make it a bash alias, by adding the following line to ~/.bashrc:</p>
 <pre><code>alias tmuxw=&#39;tmux new-session -s work &quot;tmux source-file ~/.tmux/work&quot;&#39;</code></pre>
 <p>Reddit <a href="https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/">discussion on vim splits and tmux tabs</a></p>
+<p>Reload the tmux configuration file</p>
+<pre><code>source-file ~/.tmux.conf</code></pre>
 </div>
 <div id="vim-and-tmux-navigation" class="section level3">
 <h3>VIM and TMUX Navigation</h3>
@@ -1069,6 +1071,14 @@ new-window</code></pre>
 <li><p><a href="https://github.com/christoomey/vim-tmux-navigator">VIM and TMUX navigator</a></p></li>
 <li><p><a href="https://robots.thoughtbot.com/seamlessly-navigate-vim-and-tmux-splits">Seamlessly navigate VIM and TMUX splits</a></p></li>
 </ul>
+<p>I simply copie the tmux side of the configuration here:</p>
+<p>Smart pane switching with awareness of Vim splits. See: <a href="https://github.com/christoomey/vim-tmux-navigator" class="uri">https://github.com/christoomey/vim-tmux-navigator</a></p>
+<pre><code>is_vim=&quot;ps -o state= -o comm= -t &#39;#{pane_tty}&#39; \
+    | grep -iqE &#39;^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$&#39;&quot;
+bind-key -n &#39;C-h&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-h&#39;  &#39;select-pane -L&#39;
+bind-key -n &#39;C-j&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-j&#39;  &#39;select-pane -D&#39;
+bind-key -n &#39;C-k&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-k&#39;  &#39;select-pane -U&#39;
+bind-key -n &#39;C-l&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-l&#39;  &#39;select-pane -R&#39;</code></pre>
 </div>
 </div>
 </div>

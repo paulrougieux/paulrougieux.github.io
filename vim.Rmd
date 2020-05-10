@@ -78,7 +78,7 @@ In command mode, the following motions are activated:
 Note on motion with wrapped lines:
 [Move cursor by display lines when wrapping](https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping)
 
-## Search
+## Search text
     "/" to search, then n forward and N backwards
     "*" to search for the word under the cursor (you can also create a mapping to search for a selected text)
 
@@ -93,6 +93,10 @@ or specify specific files extensions
 
     :grep -r pattern *.py
 
+Or use git grep with the fugitive plugin:
+
+    :copen
+    :Ggrep pattern
 
 
 ### Markdown
@@ -268,11 +272,23 @@ Indentation replaced by spaces, add this to the ~/.vimrc file
     set shiftwidth=4
     filetype indent on 
 
-More details on vim indentation in the python wiki.
+More details on vim indentation in the [python wiki](https://wiki.python.org/moin/Vim).
 
 ## Repeat Commands
 
 [Repeating commands, Vim scripts and debugging](http://vimhelp.appspot.com/repeat.txt.html)
+
+## Save file
+
+save the current file
+
+    :w
+
+Save under a new name and edit that file
+
+    :sav
+
+SO [save as q new file qnd continue editing the original one](https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim)
 
 ## Wrap lines
 
@@ -346,15 +362,25 @@ Plugins I currently use with vundle:
     Plugin 'VundleVim/Vundle.vim'
     Plugin 'godlygeek/tabular'
     Plugin 'plasticboy/vim-markdown'
+    Plugin 'tpope/vim-fugitive'
+    Plugin 'davidhalter/jedi-vim'
 
 I also use a spell checker. 
+
+Other plugins installed in the default vim repo:
+
+    :r ! ls ~/.vim/pack/plugins/start/
+    vim-slime
+    vim-tmux-navigator
 
 Potentially useful plugins
 
 * [fugitive](https://github.com/tpope/vim-fugitive) git integration
 * Fuzzy search 
+* fzf command line fuzzy finder [fzf](https://github.com/junegunn/fzf)
 * File explorer 
     * or simply use the native vim explorer `:Explore`
+* Minibufexplorer and SO post on [alternatives to minibufexplorer](https://stackoverflow.com/questions/4865132/an-alternative-to-minibufexplorer-vim)
 * [Vimtex](https://github.com/lervag/vimtex#alternatives) 
   vim plugin for editing LaTeX files. 
 
@@ -415,10 +441,21 @@ Install all plugins configured in your `.vimrc`.
 
 ## Python programming with vim
 
-SO [Running python code in VIM](https://stackoverflow.com/questions/18948491/running-python-code-in-vim)
-Make sure your files start with a shebang.
+plugins
+* [Python mode](https://github.com/python-mode/python-mode)
+* [Jedi](https://github.com/python-mode/python-mode) it's incompatible with python mode (according to the readme)
+Jedi Installation required enabling python mode in vim:
 
-* [Jedi](https://github.com/davidhalter/jedi)
+    sudo apt install vim-nox
+
+* reddit [python-mode or Jedi?](https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/)
+     python mode seems to be for starting, most people turn the features off.
+
+* wiki.python.org [vim](https://wiki.python.org/moin/Vim) mentions:
+    * [vim as a python IDE](https://200ok.ch/posts/vim-as-python-ide.html)
+* SO [Running python code in VIM](https://stackoverflow.com/questions/18948491/running-python-code-in-vim)
+Make sure your files start with a shebang.
+* [Jedi](https://github.com/davidhalter/jedi) autocompletion, also used by ipython.
 * Plug-in [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
 * Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)
 * realpython.com [Vim and python a match made in heaven](https://realpython.com/vim-and-python-a-match-made-in-heaven/)

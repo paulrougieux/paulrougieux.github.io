@@ -967,6 +967,9 @@ Make it a bash alias, by adding the following line to ~/.bashrc:
 
 Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/)
 
+Reload the tmux configuration file
+
+    source-file ~/.tmux.conf
 
 ### VIM and TMUX Navigation
 
@@ -974,6 +977,17 @@ Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/com
 
 * [Seamlessly navigate VIM and TMUX splits](https://robots.thoughtbot.com/seamlessly-navigate-vim-and-tmux-splits)
 
+I simply copie the tmux side of the configuration here: 
+
+Smart pane switching with awareness of Vim splits.
+See: https://github.com/christoomey/vim-tmux-navigator
+
+    is_vim="ps -o state= -o comm= -t '#{pane_tty}' \
+        | grep -iqE '^[^TXZ ]+ +(\\S+\\/)?g?(view|n?vim?x?)(diff)?$'"
+    bind-key -n 'C-h' if-shell "$is_vim" 'send-keys C-h'  'select-pane -L'
+    bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
+    bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
+    bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
 
 # VPN
 

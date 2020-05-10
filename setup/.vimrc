@@ -12,7 +12,10 @@ Plugin 'VundleVim/Vundle.vim'
 " Navigate markdown toc
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
+" Git interface 
 Plugin 'tpope/vim-fugitive'
+" python autocompletion 
+Plugin 'davidhalter/jedi-vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -70,5 +73,8 @@ augroup END
 let g:slime_target = "tmux"
 " configuration for vim in a split tmux window with a REPL in the other pane:
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
-
-
+" Handle indentation correctly  https://github.com/jpalardy/vim-slime/issues/54
+" let g:slime_python_ipython = 1
+" Tell jedi vim to use python2 for the engine only
+" https://github.com/davidhalter/jedi-vim/issues/841
+" let g:jedi#loader_py_version = 2
