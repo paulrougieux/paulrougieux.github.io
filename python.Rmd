@@ -893,15 +893,15 @@ Using `drop_duplicates`
 
 All matplotlib examples require the following imports:
 
-    from matplotlib import pyplot
-    pyplot.style.use('seaborn-whitegrid')
+    from matplotlib import pyplot as plt
+    plt.style.use('seaborn-whitegrid')
     import numpy as np
 
 Simple line plot changing the figure size and the axes limit with pyplot
 
-    pyplot.rcParams['figure.figsize'] = [10, 10]
-    fig = pyplot.figure()
-    ax = pyplot.axes()
+    plt.rcParams['figure.figsize'] = [10, 10]
+    fig = plt.figure()
+    ax = plt.axes()
     x = np.linspace(-1.5, 1.5, 1000)
     ax.plot(x, 1-3*x)
     ax.set_xlim(-6, 6)
@@ -915,8 +915,8 @@ Scatter plot, using a colour variable and the 'jet' colour map.
             [ 1, -1],
             [-1,  1],
             [ 1,  1]])
-    fig = pyplot.figure()
-    ax = pyplot.axes()
+    fig = plt.figure()
+    ax = plt.axes()
     ax.scatter(X[:,0], X[:,1],c=Y, cmap='jet')
 
 Use another [colour map](https://matplotlib.org/examples/color/colormaps_reference.html)
@@ -928,10 +928,10 @@ Plot the probability density function of the
 
 $$f(x)=\frac{1}{\sigma{\sqrt {2\pi }}}e^{-{\frac {1}{2}}\left({\frac {x-\mu }{\sigma }}\right)^{2}}$$
 
-with various sigma and mu values displayed in the legend.
+With various sigma and mu values displayed in the legend.
 
-    fig = pyplot.figure()
-    ax = pyplot.axes()
+    fig = plt.figure()
+    ax = plt.axes()
     x = np.linspace(-5, 5, 1000)
     def pdensitynormal(x,sigma_squared,mu):
         sigma = np.sqrt(sigma_squared)
@@ -941,12 +941,13 @@ with various sigma and mu values displayed in the legend.
     ax.plot(x, pdensitynormal(x,5,0), label="$\sigma^2=5, \mu=0$")
     ax.plot(x, pdensitynormal(x,0.5,-2), label="$\sigma^2=0.5, \mu=-2$")
     ax.legend(loc="upper right")
+    plt.show()
 
 3D line, contour plot and scatter plot
 
     from mpl_toolkits import mplot3d # Required for 3d plots
-    fig = pyplot.figure()
-    ax = pyplot.axes(projection='3d')
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
     # Data for a three-dimensional line
     xline = np.linspace(-10, 10, 1000)
     yline = np.linspace(-10, 10, 1000)
@@ -968,8 +969,8 @@ Better to use X**2 + Y**2 directly as above.
         for j in range(Z.shape[1]):
             vector = np.array([X[i,j],Y[i,j]])
                 Z[i,j] = np.linalg.norm(vector)**2
-    fig = pyplot.figure()
-    ax = pyplot.axes(projection='3d')
+    fig = plt.figure()
+    ax = plt.axes(projection='3d')
     ax.contour3D(X, Y, Z, 50, cmap='binary')
 
 ## Seaborn
@@ -979,7 +980,7 @@ All seaborn examples below require the following imports and datasets:
     import seaborn
     iris = seaborn.load_dataset("iris")
     tips = seaborn.load_dataset("tips") 
-    from matplotlib import pyplot
+    from matplotlib import pyplot as plt
 
 ### Axes limit
 
@@ -993,7 +994,7 @@ In Seaborn facet grid.
 [How to set xlim and ylim in seaborn facet grid](https://stackoverflow.com/a/25213614/2641825)
 
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
-    g = g.map(pyplot.hist, "total_bill")
+    g = g.map(plt.hist, "total_bill")
     g.set(ylim=(0, None)) 
 
 ### Grid plot
@@ -1018,7 +1019,7 @@ Use `set_title` to add a title:
 Set a common title for grid plots
 
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
-    g = g.map(pyplot.hist, "total_bill")
+    g = g.map(plt.hist, "total_bill")
     g.fig.suptitle('I don't smoke and I don't tip.')
 
 In case the title is overwritten on the subplots, you might need to use 
@@ -1032,7 +1033,7 @@ as such:
 `set_figwidth` and `set_figheight` work well for grid objects. 
 
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
-    g = g.map(pyplot.hist, "total_bill")
+    g = g.map(plt.hist, "total_bill")
     g.fig.set_figwidth(10)
     g.fig.set_figheight(10) 
 

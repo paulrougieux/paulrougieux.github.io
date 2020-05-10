@@ -78,3 +78,8 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " Tell jedi vim to use python2 for the engine only
 " https://github.com/davidhalter/jedi-vim/issues/841
 " let g:jedi#loader_py_version = 2
+"
+" jedi go to definition
+noremap <F2> <leader>d 
+" change leader key from \ (the default) to ,
+:let mapleader = ","

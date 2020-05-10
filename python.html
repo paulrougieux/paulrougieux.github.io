@@ -1149,13 +1149,13 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <div id="matplotlib" class="section level2">
 <h2>Matplotlib</h2>
 <p>All matplotlib examples require the following imports:</p>
-<pre><code>from matplotlib import pyplot
-pyplot.style.use(&#39;seaborn-whitegrid&#39;)
+<pre><code>from matplotlib import pyplot as plt
+plt.style.use(&#39;seaborn-whitegrid&#39;)
 import numpy as np</code></pre>
 <p>Simple line plot changing the figure size and the axes limit with pyplot</p>
-<pre><code>pyplot.rcParams[&#39;figure.figsize&#39;] = [10, 10]
-fig = pyplot.figure()
-ax = pyplot.axes()
+<pre><code>plt.rcParams[&#39;figure.figsize&#39;] = [10, 10]
+fig = plt.figure()
+ax = plt.axes()
 x = np.linspace(-1.5, 1.5, 1000)
 ax.plot(x, 1-3*x)
 ax.set_xlim(-6, 6)
@@ -1167,16 +1167,16 @@ X = np.array([
         [ 1, -1],
         [-1,  1],
         [ 1,  1]])
-fig = pyplot.figure()
-ax = pyplot.axes()
+fig = plt.figure()
+ax = plt.axes()
 ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;jet&#39;)</code></pre>
 <p>Use another <a href="https://matplotlib.org/examples/color/colormaps_reference.html">colour map</a></p>
 <pre><code>ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;Spectral&#39;)</code></pre>
 <p>Plot the probability density function of the <a href="https://en.wikipedia.org/wiki/Normal_distribution">normal distribution</a>.</p>
 <p><span class="math display">\[f(x)=\frac{1}{\sigma{\sqrt {2\pi }}}e^{-{\frac {1}{2}}\left({\frac {x-\mu }{\sigma }}\right)^{2}}\]</span></p>
-<p>with various sigma and mu values displayed in the legend.</p>
-<pre><code>fig = pyplot.figure()
-ax = pyplot.axes()
+<p>With various sigma and mu values displayed in the legend.</p>
+<pre><code>fig = plt.figure()
+ax = plt.axes()
 x = np.linspace(-5, 5, 1000)
 def pdensitynormal(x,sigma_squared,mu):
     sigma = np.sqrt(sigma_squared)
@@ -1185,11 +1185,12 @@ ax.plot(x, pdensitynormal(x,0.2,0), label=&quot;$\sigma^2=0.2, \mu=0$&quot;)
 ax.plot(x, pdensitynormal(x,1,0), label=&quot;$\sigma^2=1, \mu=0$&quot;)
 ax.plot(x, pdensitynormal(x,5,0), label=&quot;$\sigma^2=5, \mu=0$&quot;)
 ax.plot(x, pdensitynormal(x,0.5,-2), label=&quot;$\sigma^2=0.5, \mu=-2$&quot;)
-ax.legend(loc=&quot;upper right&quot;)</code></pre>
+ax.legend(loc=&quot;upper right&quot;)
+plt.show()</code></pre>
 <p>3D line, contour plot and scatter plot</p>
 <pre><code>from mpl_toolkits import mplot3d # Required for 3d plots
-fig = pyplot.figure()
-ax = pyplot.axes(projection=&#39;3d&#39;)
+fig = plt.figure()
+ax = plt.axes(projection=&#39;3d&#39;)
 # Data for a three-dimensional line
 xline = np.linspace(-10, 10, 1000)
 yline = np.linspace(-10, 10, 1000)
@@ -1207,8 +1208,8 @@ ax.scatter(1,2,3)</code></pre>
     for j in range(Z.shape[1]):
         vector = np.array([X[i,j],Y[i,j]])
             Z[i,j] = np.linalg.norm(vector)**2
-fig = pyplot.figure()
-ax = pyplot.axes(projection=&#39;3d&#39;)
+fig = plt.figure()
+ax = plt.axes(projection=&#39;3d&#39;)
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
 </div>
 <div id="seaborn" class="section level2">
@@ -1217,7 +1218,7 @@ ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;)
 tips = seaborn.load_dataset(&quot;tips&quot;) 
-from matplotlib import pyplot</code></pre>
+from matplotlib import pyplot as plt</code></pre>
 <div id="axes-limit" class="section level3">
 <h3>Axes limit</h3>
 <p>Set limits on the one axis in a Seaborn plot:</p>
@@ -1225,7 +1226,7 @@ from matplotlib import pyplot</code></pre>
 p.set(ylim=(-2,None))</code></pre>
 <p>In Seaborn facet grid. <a href="https://stackoverflow.com/a/25213614/2641825">How to set xlim and ylim in seaborn facet grid</a></p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
-g = g.map(pyplot.hist, &quot;total_bill&quot;)
+g = g.map(plt.hist, &quot;total_bill&quot;)
 g.set(ylim=(0, None)) </code></pre>
 </div>
 <div id="grid-plot" class="section level3">
@@ -1244,7 +1245,7 @@ g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;spec
 )</code></pre>
 <p>Set a common title for grid plots</p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
-g = g.map(pyplot.hist, &quot;total_bill&quot;)
+g = g.map(plt.hist, &quot;total_bill&quot;)
 g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
 <p>In case the title is overwritten on the subplots, you might need to use <a href="https://stackoverflow.com/a/28650623/2641825">fig.subplot_adjust()</a> as such:</p>
 <pre><code>g.fig.subplots_adjust(top=.95)</code></pre>
@@ -1253,7 +1254,7 @@ g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
 <h3>Figure size</h3>
 <p><code>set_figwidth</code> and <code>set_figheight</code> work well for grid objects.</p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
-g = g.map(pyplot.hist, &quot;total_bill&quot;)
+g = g.map(plt.hist, &quot;total_bill&quot;)
 g.fig.set_figwidth(10)
 g.fig.set_figheight(10) </code></pre>
 <p>Mentioned as a comment under <a href="https://stackoverflow.com/a/56970556/2641825">this answer</a></p>

@@ -723,8 +723,9 @@ vim-tmux-navigator</code></pre>
 </ul></li>
 <li>Minibufexplorer and SO post on <a href="https://stackoverflow.com/questions/4865132/an-alternative-to-minibufexplorer-vim">alternatives to minibufexplorer</a></li>
 <li><a href="https://github.com/lervag/vimtex#alternatives">Vimtex</a> vim plugin for editing LaTeX files.</li>
+<li><a href="https://vim.spf13.com/">distribution spf13</a> probably not recommended but the home page contains a list of interesting plugins.</li>
+<li>See also the section programming with vim below for language specific plugins.</li>
 </ul>
-<p>See also the section programming with vim below for language specific plugins.</p>
 <div id="installing-plugins-with-vims-built-in-plugin-support" class="section level2">
 <h2>Installing plugins with vim’s built-in plugin support</h2>
 <p>Install slime with Vim’s built-in package support (since Vim 7.4.1528):</p>
@@ -775,23 +776,22 @@ filetype plugin indent on    &quot; required
 <h1>Programming with vim</h1>
 <div id="python-programming-with-vim" class="section level2">
 <h2>Python programming with vim</h2>
-<p>plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) Jedi Installation required enabling python mode in vim:</p>
-<pre><code>sudo apt install vim-nox</code></pre>
+<p>plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a></p>
+<p>Blog posts</p>
 <ul>
-<li><p>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</p></li>
+<li>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</li>
 <li>wiki.python.org <a href="https://wiki.python.org/moin/Vim">vim</a> mentions:
 <ul>
 <li><a href="https://200ok.ch/posts/vim-as-python-ide.html">vim as a python IDE</a></li>
 </ul></li>
 <li>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</li>
-<li><a href="https://github.com/davidhalter/jedi">Jedi</a> autocompletion, also used by ipython.</li>
 <li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
 <li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
 <li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
 <li>full stack python <a href="https://www.fullstackpython.com/vim.html">vim</a></li>
-<li><p><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></p></li>
+<li><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></li>
 </ul>
-<p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
+<p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
 <blockquote>
 <p>&quot;I run my scripts using</p>
 <p>ipython -i script.py</p>
@@ -799,6 +799,20 @@ filetype plugin indent on    &quot; required
 <p>from ipython import embed; embed();</p>
 <p>Instead of using pdb. Its really neat.&quot;</p>
 </blockquote>
+<div id="jedi-vim" class="section level3">
+<h3>Jedi vim</h3>
+<ul>
+<li><a href="https://github.com/davidhalter/jedi">Jedi</a> autocompletion, also used by ipython.</li>
+<li><a href="https://github.com/davidhalter/jedi-vim/blob/master/doc/jedi-vim.txt">Jedi vim documentation</a></li>
+</ul>
+<p>Jedi Installation required enabling python mode in vim, available inside this Debian package:</p>
+<pre><code>sudo apt install vim-nox</code></pre>
+<p>Autocomplete is turned on Enter for example a module name, then use CTRL+N and CTRL+P to choose among the objects and functions in that module.</p>
+<p>Jump to definition:</p>
+<pre><code>&lt;leader&gt;d</code></pre>
+<p>I remapped the leader key to <code>,</code> in my .vimrc</p>
+<pre><code>:let mapleader = &quot;,&quot;</code></pre>
+</div>
 </div>
 <div id="r-programming-with-vim" class="section level2">
 <h2>R programming with vim</h2>
