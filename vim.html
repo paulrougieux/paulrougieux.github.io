@@ -483,17 +483,37 @@ CTRL+T - jump backwards</code></pre>
 <p>To save content and exit:</p>
 <pre><code>:wq</code></pre>
 </div>
-<div id="navigating" class="section level1">
-<h1>Navigating</h1>
-<div id="file-explorer" class="section level2">
-<h2>File explorer</h2>
+<div id="navigate" class="section level1">
+<h1>Navigate</h1>
+<div id="display-line-numbers" class="section level2">
+<h2>Display line numbers</h2>
+<p>Display line numbers</p>
+<pre><code>:set nu</code></pre>
+<p>Disable line numbers</p>
+<pre><code>:set nonu</code></pre>
+<p>Enter <code>:line number</code> to jump to a particular line number.</p>
+</div>
+<div id="explore-files" class="section level2">
+<h2>Explore files</h2>
 <p>Vim comes with a file explorer:</p>
 <pre><code>:E</code></pre>
 <p>or</p>
 <pre><code>:Explorer</code></pre>
 </div>
-<div id="motion" class="section level2">
-<h2>Motion</h2>
+<div id="jump-back-and-forth" class="section level2">
+<h2>Jump back and forth</h2>
+<p>Vim wiki <a href="https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations">jumping to previously visited locations</a> &gt; “Like a web browser, you can go back, then forward:”</p>
+<pre><code>Press Ctrl-O to jump back to the previous (older) location.
+Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code></pre>
+</div>
+<div id="markdown" class="section level2">
+<h2>Markdown</h2>
+<p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
+<pre><code>:g/^# /#</code></pre>
+<p>See also the markdown TOC extension for vim.</p>
+</div>
+<div id="move-up-down-left-right" class="section level2">
+<h2>Move up, down, left, right</h2>
 <p>In command mode, the following motions are activated:</p>
 <pre><code>:help left-right-motion
 j,k move up down
@@ -503,12 +523,18 @@ ctrl+b, ctrl+d move page up or page down
 {number} G go to line number </code></pre>
 <p>Note on motion with wrapped lines: <a href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move cursor by display lines when wrapping</a></p>
 </div>
-<div id="search-text" class="section level2">
-<h2>Search text</h2>
-<pre><code>&quot;/&quot; to search, then n forward and N backwards
-&quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</code></pre>
-<div id="search-in-multiple-files" class="section level3">
-<h3>Search in multiple files</h3>
+<div id="quick-fix-window" class="section level2">
+<h2>Quick fix window</h2>
+<p>Help</p>
+<pre><code>:help quickfix</code></pre>
+</div>
+<div id="search-in-a-file" class="section level2">
+<h2>Search in a file</h2>
+<p>Use “/” to search, then n forward and N backwards &quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
+<p>Use <code>:g/patter</code> to display a list of all search result in the document.</p>
+</div>
+<div id="search-in-multiple-files" class="section level2">
+<h2>Search in multiple files</h2>
 <p><a href="https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep">open files on the match lines given by grep</a></p>
 <pre><code>:copen
 :grep -r pattern .</code></pre>
@@ -517,20 +543,6 @@ ctrl+b, ctrl+d move page up or page down
 <p>Or use git grep with the fugitive plugin:</p>
 <pre><code>:copen
 :Ggrep pattern</code></pre>
-</div>
-<div id="markdown" class="section level3">
-<h3>Markdown</h3>
-<p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
-<pre><code>:g/^# /#</code></pre>
-<p>See also the markdown TOC extension for vim. Then enter <code>:line number</code> to jump to that line.</p>
-</div>
-</div>
-<div id="line-numbers" class="section level2">
-<h2>Line numbers</h2>
-<p>Display line numbers</p>
-<pre><code>:set nu</code></pre>
-<p>Disable line numbers</p>
-<pre><code>:set nonu</code></pre>
 </div>
 <div id="working-directory" class="section level2">
 <h2>Working directory</h2>
@@ -556,14 +568,27 @@ ctrl+b, ctrl+d move page up or page down
 <pre><code>au BufNewFile,BufRead *.dump set filetype=sql</code></pre>
 <p>I used it to display markdown files as text files:</p>
 <pre><code>au BufNewFile,BufRead *.md set filetype=txt</code></pre>
+<div id="shortcuts" class="section level2">
+<h2>Shortcuts</h2>
+<p>Show all mappings including <leader> commands:</p>
+<p>:map</p>
 </div>
-<div id="editing" class="section level1">
-<h1>Editing</h1>
+<div id="colour-themes" class="section level2">
+<h2>Colour themes</h2>
+<ul>
+<li>Slant <a href="https://www.slant.co/topics/480/~best-vim-color-schemes#1">vim Theme gallery</a></li>
+<li><a href="https://github.com/rafalbromirski/vim-aurora">Custom theme aurora</a></li>
+</ul>
+</div>
+</div>
+<div id="edit-a-file" class="section level1">
+<h1>Edit a file</h1>
 <div id="undo-redo" class="section level2">
 <h2>Undo redo</h2>
 <pre><code>u: undo last change (can be repeated to undo preceding commands)
 Ctrl-R: Redo changes which were undone (undo the undos). 
-Compare to &#39;.&#39; to repeat a previous change, at the current cursor position. Ctrl-R will redo a previously undone change, wherever the change occurred. </code></pre>
+Compare to &#39;.&#39; to repeat a previous change, at the current cursor position.
+Ctrl-R will redo a previously undone change, wherever the change occurred. </code></pre>
 </div>
 <div id="switch-between-navigation-and-editing-mode" class="section level2">
 <h2>Switch between navigation and editing mode</h2>
@@ -593,16 +618,20 @@ alt+: - switch to navigation mode and send a command</code></pre>
 <p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
 <pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
 </div>
-<div id="editing-a-whole-line" class="section level2">
-<h2>Editing a whole line</h2>
+<div id="remove-unwanted-spaces" class="section level2">
+<h2>Remove unwanted spaces</h2>
+<p><a href="https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace">Remove unwanted spaces</a></p>
+</div>
+<div id="edit-a-whole-line" class="section level2">
+<h2>Edit a whole line</h2>
 <p>To edit a whole line:</p>
 <pre><code>dd to delete a whole line
 yy to copy a whole line
 p to paste the copied or deleted text after the current line or 
 P to paste the copied or deleted text before the current line </code></pre>
 </div>
-<div id="editing-multiple-lines" class="section level2">
-<h2>Editing multiple lines</h2>
+<div id="edit-multiple-lines" class="section level2">
+<h2>Edit multiple lines</h2>
 <p>You can edit multiple lines simultaneously by <a href="https://stackoverflow.com/a/253391">inserting text inside a multi-line selection in Vim</a> :</p>
 <pre><code>Use Ctrl+V to enter visual block mode
 Move down with jj to select the columns of text in the lines you want to comment.
@@ -624,13 +653,17 @@ Move the cursor to the end of what you want to cut.
 Press d to cut or y to copy.
 Move to where you would like to paste.
 Press P to paste before the cursor, or p to paste after. </code></pre>
-<p><a href="https://stackoverflow.com/a/2545242/2641825">Paste without autoindent</a></p>
+<p>When pasting from the system register i.e. with <code>Ctrl+Shift+V</code> you need to prevent auto indent otherwise vim will mess with the indentation. As explained in <a href="https://stackoverflow.com/a/2545242/2641825">Paste without autoindent</a> You can either read from the shell with:</p>
 <pre><code>:r! cat </code></pre>
-<p>And then paste <code>CTRL + SHIFT + V</code> the content, and <code>CTRL+D</code>.</p>
-<p>Also works over SSH.</p>
+<p>And then paste <code>CTRL + SHIFT + V</code> the content, and <code>CTRL+D</code>. Also works over SSH.</p>
+<p>Or use</p>
+<pre><code>:set paste
+:set nopaste</code></pre>
+<p>Set up a shortcut to toggle paste mode on and off with:</p>
+<pre><code>set pastetoggle=&lt;F3&gt;</code></pre>
 </div>
-<div id="indentation" class="section level2">
-<h2>Indentation</h2>
+<div id="indent" class="section level2">
+<h2>Indent</h2>
 <p>Indentation replaced by spaces, add this to the ~/.vimrc file</p>
 <pre><code>set tabstop=4
 set expandtab
@@ -774,9 +807,13 @@ filetype plugin indent on    &quot; required
 </div>
 <div id="programming-with-vim" class="section level1">
 <h1>Programming with vim</h1>
+<div id="debugging" class="section level2">
+<h2>Debugging</h2>
+<p>vi.stackexchange <a href="https://vi.stackexchange.com/questions/17962/python-debugging">Python debugging</a> <a href="https://github.com/gotcha/vimpdb">vimpdb</a></p>
+</div>
 <div id="python-programming-with-vim" class="section level2">
 <h2>Python programming with vim</h2>
-<p>plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a></p>
+<p>Plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the Jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a> * [vim-test] see also the tests section below.</p>
 <p>Blog posts</p>
 <ul>
 <li>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</li>
@@ -807,11 +844,17 @@ filetype plugin indent on    &quot; required
 </ul>
 <p>Jedi Installation required enabling python mode in vim, available inside this Debian package:</p>
 <pre><code>sudo apt install vim-nox</code></pre>
-<p>Autocomplete is turned on Enter for example a module name, then use CTRL+N and CTRL+P to choose among the objects and functions in that module.</p>
+<p>Autocomplete is turned on to complete a word, press:</p>
+<pre><code>Ctrl+Space</code></pre>
+<p>To cycle through proposition you can use <code>Ctrl+space</code> again or:</p>
+<pre><code>Ctrl+P
+Ctrl+N</code></pre>
+<p>Enter for example a module name, then use Ctrl+N and Ctrl+P to choose among the objects and functions in that module.</p>
 <p>Jump to definition:</p>
 <pre><code>&lt;leader&gt;d</code></pre>
-<p>I remapped the leader key to <code>,</code> in my .vimrc</p>
+<p>I remapped the <code>&lt;leader&gt;</code> key to <code>,</code> in my .vimrc</p>
 <pre><code>:let mapleader = &quot;,&quot;</code></pre>
+<p>See above section on navigation, you can use <code>Ctrl-O</code> to jump back and <code>Ctrl-I</code>to jump forward.</p>
 </div>
 </div>
 <div id="r-programming-with-vim" class="section level2">
@@ -826,6 +869,11 @@ filetype plugin indent on    &quot; required
 <pre><code>let g:slime_target = &quot;tmux&quot;</code></pre>
 <p>Then add this to configure the sending of commands to a <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read Eval Print Loop</a>: in the general use case of vim in a split tmux window with a REPL in the other pane:</p>
 <pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
+</div>
+<div id="tests" class="section level2">
+<h2>Tests</h2>
+<p><a href="https://github.com/vim-test/vim-test">Vim Test</a> Works with pytest and many other testing suites for many languages. Test results appear in the quick fix window.</p>
+<p><a href="https://github.com/alfredodeza/pytest.vim">pytest vim</a> Run pytest from within vim.</p>
 </div>
 </div>
 <div id="tools" class="section level1">
@@ -861,7 +909,7 @@ filetype plugin indent on    &quot; required
 <pre><code>:setlocal spell spelllang=en_gb   </code></pre>
 <p>Find alternative for highlighted word:</p>
 <pre><code>z=</code></pre>
-<p>Mark word as correct, this creates a spell file under /home/user/.vim/spell:</p>
+<p><a href="https://superuser.com/questions/133208/how-to-make-vim-spellcheck-remember-a-new-word">How to make vim spell check remember a word</a> Mark word as correct, this creates a spell file under /home/user/.vim/spell:</p>
 <pre><code>zg </code></pre>
 <p>Mark word as incorrect</p>
 <pre><code>zw</code></pre>

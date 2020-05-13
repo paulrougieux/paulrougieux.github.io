@@ -14,4 +14,9 @@ I have to search explicitly for peace related songs.
 Recommender systems maximise the stimulation of the limbic system. I guess there is more stimulation through 
 war themed songs than through peace songs? 
 
+# Expressions
+
+If the devil is in the details, then the devil is in the source code. 
+The more eyes analyse the source code, the better the output will be.
+
 

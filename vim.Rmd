@@ -8,7 +8,6 @@ output:
 
 This page is the continuation of [my blog post on Vim commands](https://paulremote.blogspot.de/2014/07/vim-commands.html).
 
-
 # Help
 
     :help  -  vim help
@@ -52,9 +51,20 @@ To save content and exit:
 
     :wq
 
-# Navigating 
+# Navigate
 
-## File explorer
+## Display line numbers
+ Display line numbers
+
+    :set nu
+
+Disable line numbers
+
+    :set nonu
+
+Enter `:line number` to jump to a particular line number.
+
+## Explore files
 
 Vim comes with a file explorer:
 
@@ -64,7 +74,24 @@ or
 
     :Explorer
 
-## Motion
+## Jump back and forth
+
+Vim wiki [jumping to previously visited
+locations](https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations)
+> "Like a web browser, you can go back, then forward:"
+
+    Press Ctrl-O to jump back to the previous (older) location.
+    Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. 
+
+## Markdown
+
+Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)
+
+    :g/^# /#
+
+See also the markdown TOC extension for vim.
+
+## Move up, down, left, right
 
 In command mode, the following motions are activated:
 
@@ -78,11 +105,20 @@ In command mode, the following motions are activated:
 Note on motion with wrapped lines:
 [Move cursor by display lines when wrapping](https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping)
 
-## Search text
-    "/" to search, then n forward and N backwards
-    "*" to search for the word under the cursor (you can also create a mapping to search for a selected text)
+## Quick fix window
 
-### Search in multiple files
+Help 
+
+    :help quickfix
+
+## Search in a file 
+
+Use "/" to search, then n forward and N backwards "*" to search for the word
+under the cursor (you can also create a mapping to search for a selected text)
+
+Use `:g/patter` to display a list of all search result in the document. 
+
+## Search in multiple files
 
 [open files on the match lines given by grep](https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep)
 
@@ -97,25 +133,6 @@ Or use git grep with the fugitive plugin:
 
     :copen
     :Ggrep pattern
-
-
-### Markdown
-Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)
-
-    :g/^# /#
-
-See also the markdown TOC extension for vim.
-Then enter `:line number` to jump to that line.
-
-
-## Line numbers
- Display line numbers
-
-    :set nu
-
-Disable line numbers
-
-    :set nonu
 
 ## Working directory
 
@@ -157,12 +174,30 @@ I used it to display markdown files as text files:
 
     au BufNewFile,BufRead *.md set filetype=txt
 
-# Editing
+## Colour themes
+
+* Slant [vim Theme gallery](https://www.slant.co/topics/480/~best-vim-color-schemes#1) 
+* [Custom theme aurora](https://github.com/rafalbromirski/vim-aurora)
+
+## Keyboard
+
+* SO [Configure vim for AZERTY keyboards](https://stackoverflow.com/questions/33245317/vim-and-azerty-keyboards)
+* Reddit [AZERTY keymapping](https://www.reddit.com/r/vim/comments/2tvupe/azerty_keymapping/)
+
+## Shortcuts
+
+Show all mappings including <leader> commands:
+
+   :map
+
+# Edit a file
+
 ## Undo redo
 
     u: undo last change (can be repeated to undo preceding commands)
     Ctrl-R: Redo changes which were undone (undo the undos). 
-    Compare to '.' to repeat a previous change, at the current cursor position. Ctrl-R will redo a previously undone change, wherever the change occurred. 
+    Compare to '.' to repeat a previous change, at the current cursor position.
+    Ctrl-R will redo a previously undone change, wherever the change occurred. 
 
 ## Switch between navigation and editing mode
 
@@ -216,7 +251,11 @@ Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by com
 
      %s/option value=".*"//g 
 
-## Editing a whole line
+## Remove unwanted spaces
+
+[Remove unwanted spaces](https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace)
+
+## Edit a whole line
 
 To edit a whole line: 
 
@@ -225,7 +264,7 @@ To edit a whole line:
     p to paste the copied or deleted text after the current line or 
     P to paste the copied or deleted text before the current line 
 
-## Editing multiple lines
+## Edit multiple lines
 
 You can edit multiple lines simultaneously by 
 [inserting text inside a multi-line selection in Vim](https://stackoverflow.com/a/253391) :
@@ -254,15 +293,26 @@ Copy and paste with the following instructions
     Move to where you would like to paste.
     Press P to paste before the cursor, or p to paste after. 
 
-[Paste without autoindent](https://stackoverflow.com/a/2545242/2641825)
+When pasting from the system register i.e. with `Ctrl+Shift+V` you need to prevent auto indent
+otherwise vim will mess with the indentation. 
+As explained in [Paste without autoindent](https://stackoverflow.com/a/2545242/2641825)
+You can either read from the shell with:
 
     :r! cat 
 
 And then paste `CTRL + SHIFT + V` the content, and `CTRL+D`.
-
 Also works over SSH.
 
-## Indentation
+Or use
+
+    :set paste
+    :set nopaste
+
+Set up a shortcut to toggle paste mode on and off with:
+
+    set pastetoggle=<F3>
+
+## Indent
 
 Indentation replaced by spaces, add this to the ~/.vimrc file
 
@@ -440,13 +490,19 @@ Install all plugins configured in your `.vimrc`.
 
 # Programming with vim
 
+## Debugging
+
+vi.stackexchange [Python debugging](https://vi.stackexchange.com/questions/17962/python-debugging)
+[vimpdb](https://github.com/gotcha/vimpdb)
+
 ## Python programming with vim
 
-plugins
+Plugins
 * [Python mode](https://github.com/python-mode/python-mode)
 * [Jedi](https://github.com/python-mode/python-mode) it's incompatible with python mode (according to the readme)
-    * more explanations in the jedi section below
+    * more explanations in the Jedi section below
 * [vim ipython](https://github.com/ivanov/vim-ipython)
+* [vim-test] see also the tests section below.
 
 Blog posts
 
@@ -486,16 +542,28 @@ Debian package:
 
     sudo apt install vim-nox
 
-Autocomplete is turned on Enter for example a module name, then use CTRL+N and
-CTRL+P to choose among the objects and functions in that module. 
+Autocomplete is turned on to complete a word, press:
+
+    Ctrl+Space
+
+To cycle through proposition you can use `Ctrl+space` again or:
+
+    Ctrl+P
+    Ctrl+N
+
+Enter for example a module name, then use Ctrl+N and
+Ctrl+P to choose among the objects and functions in that module. 
 
 Jump to definition:
 
     <leader>d
 
-I remapped the leader key to `,` in my .vimrc
+I remapped the `<leader>` key to `,` in my .vimrc
 
     :let mapleader = ","
+
+See above section on navigation, you can use `Ctrl-O` to jump back and
+`Ctrl-I`to jump forward.
 
 ## R programming with vim
 
@@ -520,6 +588,15 @@ in the general use case of
 vim in a split tmux window with a REPL in the other pane:
 
     let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
+## Tests
+
+[Vim Test](https://github.com/vim-test/vim-test)
+Works with pytest and many other testing suites for many languages.
+Test results appear in the quick fix window.
+
+[pytest vim](https://github.com/alfredodeza/pytest.vim)
+Run pytest from within vim. 
 
 # Tools
 
@@ -580,6 +657,7 @@ Find alternative for highlighted word:
 
     z=
 
+[How to make vim spell check remember a word](https://superuser.com/questions/133208/how-to-make-vim-spellcheck-remember-a-new-word)
 Mark word as correct, this creates a spell file under /home/user/.vim/spell:
 
     zg 

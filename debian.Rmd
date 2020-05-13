@@ -332,6 +332,7 @@ In an earlier version riot the source.list was mentionned directly in /etc/apt/s
 I needed to remove it as explained [here](https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818):
 
 > "You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that"
+
 ## Vim 
 
 Edit the keyboard configuration as explained in 
@@ -350,6 +351,7 @@ Add the following line to that file:
 Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Linux#h_adcc0b66-b2f4-468b-bc7a-12c182f354b7)
 
     cd downloads/
+    rm zoom_amd64.deb
     wget https://zoom.us/client/latest/zoom_amd64.deb
 
     # Check public key fingerprint
@@ -358,8 +360,6 @@ Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Li
 
     # Install
     sudo apt install ./zoom_amd64.deb 
-
-
 
 # Audio
 
@@ -391,6 +391,11 @@ For example:
 
 [List of missing fonts](https://wiki.debian.org/Fonts/Missing)
 [SubstitutingCalibriAndCambriaFonts](https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts)
+
+
+# Keyboard
+
+* [A better AZERTY for developers](https://github.com/r03/azerty)
 
 # System information
 

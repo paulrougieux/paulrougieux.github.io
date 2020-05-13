@@ -27,9 +27,26 @@ or
     pip3 install --user pandas==0.24.2
 
 
+## Virtual environments
+
+[Pipenv](https://pipenv.pypa.io/en/latest/)
+makes pip and virtual env work together. 
+
 # Control flow
 
 dotnetperls: [not python](https://www.dotnetperls.com/not-python)
+
+Sample code with a function and if conditions:
+
+	def function(condition):
+		if condition:
+			print("Hi")
+		if not condition:
+			print("Bye")
+	function(True)
+	function(False)
+	function('')
+	function('lalala')
 
 
 # Editors
@@ -43,6 +60,10 @@ I have set the following shortcuts to be similar to RStudio:
 * Ctrl+Shift+C comment/uncomment code block
 * F1 inspect current object (i.e. display function and classes documentation)
 * F2 go to function definition
+
+## Vim 
+
+See my page on [vim.html](vim.html).
 
 # Neural Networks
 
