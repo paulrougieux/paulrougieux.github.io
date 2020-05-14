@@ -16,7 +16,9 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'tpope/vim-fugitive'
 " python autocompletion 
 Plugin 'davidhalter/jedi-vim'
-
+" Colour theme for Vim
+Plugin 'morhetz/gruvbox'
+Plugin 'nanotech/jellybeans.vim'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -93,3 +95,20 @@ nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
 nmap <silent><Leader>m <Esc>:Pytest method<CR>
 
+"""""""""""""""""""""""
+" Change colour theme "
+"""""""""""""""""""""""
+set t_Co=256
+" terminal’s color palette #444444 is suggested by jellybeans.vim,
+" I used 353131
+" This is suggested by a stackoverflow answer
+set background=dark
+"autocmd vimenter * colorscheme gruvbox
+colorscheme jellybeans
+
+" Underline bad spelling instead of highlighting it
+" this should be placed after colorscheme and background colour
+hi clear SpellBad
+hi SpellBad cterm=underline
+
+" To reload :source ~/.vimrc

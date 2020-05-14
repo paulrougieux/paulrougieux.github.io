@@ -176,6 +176,12 @@ I used it to display markdown files as text files:
 
 ## Colour themes
 
+Be sure to set terminal colour to 256 as explained in an answer
+ to [a question on vi.stackexchange](https://vi.stackexchange.com/a/25310/6671)
+and in the vim wiki [256 colors in vim](https://vim.fandom.com/wiki/256_colors_in_vim)
+
+    set t_Co=256
+
 * Slant [vim Theme gallery](https://www.slant.co/topics/480/~best-vim-color-schemes#1) 
 * [Custom theme aurora](https://github.com/rafalbromirski/vim-aurora)
 
@@ -312,6 +318,14 @@ Set up a shortcut to toggle paste mode on and off with:
 
     set pastetoggle=<F3>
 
+
+### Bracketed paste
+
+[Enable bracketed paste in a session](https://stackoverflow.com/a/44507798/2641825)
+
+    bind 'set enable-bracketed-paste on'    
+
+
 ## Indent
 
 Indentation replaced by spaces, add this to the ~/.vimrc file
@@ -354,7 +368,9 @@ To format the text, select it with v and up or down movements, and press
 
     gq
 
-# Multiple files and windows
+# Multiple files, buffers and windows
+
+## Buffers
 
     :e filename - edit another file 
     :ls         - show current buffers
@@ -362,6 +378,13 @@ To format the text, select it with v and up or down movements, and press
     :b filename - open buffer #filename in this window
     :bd         - close the current buffer (! to forget changes)
     :bd filename -close a buffer by name 
+
+## Tabs should be called workspaces
+
+[Why do vim experts prefer buffers over tabs?](https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166)
+> ""Vim experts" don't prefer buffers over tabs: they use buffers as the file
+> proxies they are and tab pages as the workspaces they are. Buffers and tab
+> pages have different purposes"
 
 ## Window split
 

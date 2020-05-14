@@ -652,8 +652,11 @@ sudo apt update
 sudo apt install riot-web</code></pre>
 <p>In an earlier version riot the source.list was mentionned directly in /etc/apt/sources.list. I needed to remove it as explained <a href="https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818">here</a>:</p>
 <blockquote>
-<p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that” ## Vim</p>
+<p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that”</p>
 </blockquote>
+</div>
+<div id="vim" class="section level2">
+<h2>Vim</h2>
 <p>Edit the keyboard configuration as explained in [mapping caps lock to escape in Debian] (<a href="https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/" class="uri">https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/</a>)</p>
 <p>sudo vim /etc/default/keyboard</p>
 <p>Add the following line to that file:</p>
@@ -694,6 +697,45 @@ $ pulseaudio --start</code></pre>
 <pre><code>sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea
 sudo apt install fonts-deva-extra</code></pre>
 <p><a href="https://wiki.debian.org/Fonts/Missing">List of missing fonts</a> <a href="https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts">SubstitutingCalibriAndCambriaFonts</a></p>
+</div>
+<div id="keyboard" class="section level1">
+<h1>Keyboard</h1>
+<ul>
+<li><a href="https://github.com/r03/azerty">A better AZERTY for developers</a></li>
+</ul>
+</div>
+<div id="screen-display" class="section level1">
+<h1>Screen display</h1>
+<p>The issue is that sometimes the display menu doesn’t provide all resolutions available for a given additional screen. Typically resolution suggested are lower than the one recommended by the screen.</p>
+<div id="wayland" class="section level2">
+<h2>Wayland</h2>
+<p>Ask Ubuntu <a href="https://askubuntu.com/a/973582">Adding a custom resolution with Wayland</a> I tried <a href="https://askubuntu.com/a/1210275/315347">this answer</a> and added this to the kernel boot parameter. Note from ubuntu wiki <a href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">kernel boot parameter</a> “Be sure to add a SPACE after”splash&quot; before adding your new parameter.) Click the Save button, then close the editor window. &quot;</p>
+<pre><code>sudo vim /etc/default/grub</code></pre>
+<p>Then edit this line</p>
+<pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet video=DP-2:1920x1200@60&quot;</code></pre>
+<p>Then update grub</p>
+<pre><code>sudo update-grub</code></pre>
+<p>This did make the new resolution available in the Gnome display settings.</p>
+</div>
+<div id="outdated-solution-using-xrandr" class="section level2">
+<h2>Outdated solution using xrandr</h2>
+<p><a href="https://forums.fedoraforum.org/showthread.php?312000-Wayland-xrandr-equivalent">xrandr doesn’t work with Wayland</a> Askubuntu <a href="https://askubuntu.com/a/973582">wrandr will not work with wayland</a> The information on setting a resolution with cvt is still relevant. CVT calculates VESA CVT mode lines.</p>
+<p><a href="https://www.ma-no.org/en/software/how-to-force-screen-s-resolution-in-ubuntu-and-make-it-permanent">How to force screen resolution in Ubuntu and make it permanent</a> The lack of auto detection of the available resolution probably mostly arises with VGA ports. See all active screens with the RandR extension:</p>
+<pre><code>xrandr</code></pre>
+<p>Create a new resolution using cvt :</p>
+<pre><code>cvt 1920 1200 60
+# 1920x1200 59.88 Hz (CVT 2.30MA) hsync: 74.56 kHz; pclk: 193.25 MHz
+# Modeline &quot;1920x1200_60.00&quot;  193.25  1920 2056 2256 2592  1200 1203 1209 1245 -hsync +vsync</code></pre>
+<p>Use the output of the cvt command to create a new mode</p>
+<pre><code>sudo xrandr --newmode &quot;1920x1200_60.00&quot;  193.25  1920 2056 2256 2592  1200 1203 1209 1245 -hsync +vsync</code></pre>
+<p>An <a href="https://askubuntu.com/a/448113">askubuntu answer</a> suggests the same command without sudo.</p>
+<p>Find the display</p>
+<pre><code>xrandr | grep -e &quot; connected [^(]&quot; | sed -e &quot;s/\([A-Z0-9]\+\) connected.*/\1/&quot;</code></pre>
+<p>Add new display mode where is the output from the previous command</p>
+<pre><code>xrandr --addmode XWAYLAND1 1920x1200_60.00</code></pre>
+<p>This will add the new resolution to your existing list of supported resolutions. You can then choose the right option from the “display settings” or following command</p>
+<pre><code>xrandr --output XWAYLAND1 --mode &quot;1920x1200_60.00&quot;</code></pre>
+</div>
 </div>
 <div id="system-information" class="section level1">
 <h1>System information</h1>

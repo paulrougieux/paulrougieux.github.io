@@ -568,17 +568,26 @@ ctrl+b, ctrl+d move page up or page down
 <pre><code>au BufNewFile,BufRead *.dump set filetype=sql</code></pre>
 <p>I used it to display markdown files as text files:</p>
 <pre><code>au BufNewFile,BufRead *.md set filetype=txt</code></pre>
-<div id="shortcuts" class="section level2">
-<h2>Shortcuts</h2>
-<p>Show all mappings including <leader> commands:</p>
-<p>:map</p>
-</div>
 <div id="colour-themes" class="section level2">
 <h2>Colour themes</h2>
+<p>Be sure to set terminal colour to 256 as explained in an answer to <a href="https://vi.stackexchange.com/a/25310/6671">a question on vi.stackexchange</a> and in the vim wiki <a href="https://vim.fandom.com/wiki/256_colors_in_vim">256 colors in vim</a></p>
+<pre><code>set t_Co=256</code></pre>
 <ul>
 <li>Slant <a href="https://www.slant.co/topics/480/~best-vim-color-schemes#1">vim Theme gallery</a></li>
 <li><a href="https://github.com/rafalbromirski/vim-aurora">Custom theme aurora</a></li>
 </ul>
+</div>
+<div id="keyboard" class="section level2">
+<h2>Keyboard</h2>
+<ul>
+<li>SO <a href="https://stackoverflow.com/questions/33245317/vim-and-azerty-keyboards">Configure vim for AZERTY keyboards</a></li>
+<li>Reddit <a href="https://www.reddit.com/r/vim/comments/2tvupe/azerty_keymapping/">AZERTY keymapping</a></li>
+</ul>
+</div>
+<div id="shortcuts" class="section level2">
+<h2>Shortcuts</h2>
+<p>Show all mappings including <leader> commands:</p>
+<p>:map</p>
 </div>
 </div>
 <div id="edit-a-file" class="section level1">
@@ -661,6 +670,11 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 :set nopaste</code></pre>
 <p>Set up a shortcut to toggle paste mode on and off with:</p>
 <pre><code>set pastetoggle=&lt;F3&gt;</code></pre>
+<div id="bracketed-paste" class="section level3">
+<h3>Bracketed paste</h3>
+<p><a href="https://stackoverflow.com/a/44507798/2641825">Enable bracketed paste in a session</a></p>
+<pre><code>bind &#39;set enable-bracketed-paste on&#39;    </code></pre>
+</div>
 </div>
 <div id="indent" class="section level2">
 <h2>Indent</h2>
@@ -694,14 +708,21 @@ filetype indent on </code></pre>
 <pre><code>gq</code></pre>
 </div>
 </div>
-<div id="multiple-files-and-windows" class="section level1">
-<h1>Multiple files and windows</h1>
+<div id="multiple-files-buffers-and-windows" class="section level1">
+<h1>Multiple files, buffers and windows</h1>
+<div id="buffers" class="section level2">
+<h2>Buffers</h2>
 <pre><code>:e filename - edit another file 
 :ls         - show current buffers
 :b 2        - open buffer #2 in this window
 :b filename - open buffer #filename in this window
 :bd         - close the current buffer (! to forget changes)
 :bd filename -close a buffer by name </code></pre>
+</div>
+<div id="tabs-should-be-called-workspaces" class="section level2">
+<h2>Tabs should be called workspaces</h2>
+<p><a href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why do vim experts prefer buffers over tabs?</a> &gt; &quot;“Vim experts” don’t prefer buffers over tabs: they use buffers as the file &gt; proxies they are and tab pages as the workspaces they are. Buffers and tab &gt; pages have different purposes&quot;</p>
+</div>
 <div id="window-split" class="section level2">
 <h2>Window split</h2>
 <pre><code>:sp[lit] filename  - split window and load another file
