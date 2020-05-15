@@ -53,13 +53,6 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
-" Indentation settings
-set tabstop=4
-set expandtab
-set softtabstop=4
-set shiftwidth=4
-filetype indent on 
-
 " wrap markdown text to 80 characters
 au BufRead,BufNewFile *.md setlocal textwidth=80
 " Do not use double spaces after points
@@ -79,6 +72,24 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " Handle indentation correctly  https://github.com/jpalardy/vim-slime/issues/54
 " let g:slime_python_ipython = 1
+
+""""""""""""""""""
+" AZERTY keyboard "
+""""""""""""""""""
+nnoremap m $
+" Move into wrapped lines with arrow keys
+nnoremap <Up> gk
+nnoremap <Down> gj
+""""""""""""""""""""""""
+" Python configuration "
+""""""""""""""""""""""""
+" Indentation settings
+set tabstop=4
+set expandtab
+set softtabstop=4
+set shiftwidth=4
+filetype indent on 
+
 " Tell jedi vim to use python2 for the engine only
 " https://github.com/davidhalter/jedi-vim/issues/841
 " let g:jedi#loader_py_version = 2

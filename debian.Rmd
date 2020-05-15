@@ -380,6 +380,13 @@ The following commands restored audio:
     $ pulseaudio --kill
     $ pulseaudio --start
 
+## Media keys
+
+Some keyboards have media keys stop, previous, play/pause, next. 
+I'd like to remap them to play pause in cmus.
+In the mean time I have set 'Ctrl+Shift+P' as a shortcut in settings/keyboard, '+' at the bottom:
+
+    cmus-remote --pause
 
 # Fonts
 

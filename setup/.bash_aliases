@@ -18,4 +18,7 @@ export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
-
+# Enable bracketed paste in vim
+# https://vi.stackexchange.com/questions/25311/how-to-activate-bracketed-paste-mode-in-gnome-terminal-for-vim?noredirect=1#comment44475_25311
+# It's actually better to enable this in the gnome shell in fact https://superuser.com/a/870547/419414
+# export TERM=xterm-256color
