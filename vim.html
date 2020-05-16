@@ -837,20 +837,44 @@ filetype plugin indent on    &quot; required
 <h2>Debugging</h2>
 <p>vi.stackexchange <a href="https://vi.stackexchange.com/questions/17962/python-debugging">Python debugging</a> <a href="https://github.com/gotcha/vimpdb">vimpdb</a></p>
 </div>
+<div id="linter" class="section level2">
+<h2>Linter</h2>
+<p>I have installed the <a href="https://github.com/dense-analysis/ale">ALE linter</a> and use it for python code. To temporarily disable ALE in a buffer:</p>
+<pre><code>:let b:ale_enabled = 0</code></pre>
+<p>To enable it:</p>
+<pre><code>:let b:ale_enabled = 1</code></pre>
+<p>For the python options, see:</p>
+<pre><code>:h ale-python-options</code></pre>
+<p>I’ve added this option to my .vimrc to show which linter is complaining</p>
+<pre><code>let g:ale_echo_msg_format = &#39;[%linter%] %s&#39;</code></pre>
+<p>The linters I see most in python code are pylint and flake8.</p>
+<p>Pylint complains about <a href="https://github.com/PyCQA/pylint/issues/2018">variable names that are too short</a></p>
+</div>
+<div id="navigate-code" class="section level2">
+<h2>Navigate code</h2>
+<p>Install exhuberant ctags</p>
+<pre><code>sudo apt install ctags</code></pre>
+<p>Install the taglist plugin with vundle</p>
+<pre><code>Plugin &#39;yegappan/taglist&#39;</code></pre>
+<p><a href="http://vim-taglist.sourceforge.net/manual.html#taglist-internet">taglist manual</a></p>
+<blockquote>
+<p>“You can open the taglist window using the”:TlistOpen&quot; or the “:TlistToggle” commands. The “:TlistOpen” command opens the taglist window and jumps to it. The “:TlistToggle” command opens or closes (toggle) the taglist window and the cursor remains in the current window.&quot;</p>
+</blockquote>
+</div>
 <div id="python-programming-with-vim" class="section level2">
 <h2>Python programming with vim</h2>
 <p>Plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the Jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a> * [vim-test] see also the tests section below.</p>
 <p>Blog posts</p>
 <ul>
-<li>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</li>
 <li>wiki.python.org <a href="https://wiki.python.org/moin/Vim">vim</a> mentions:
 <ul>
 <li><a href="https://200ok.ch/posts/vim-as-python-ide.html">vim as a python IDE</a></li>
 </ul></li>
+<li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
+<li>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</li>
 <li>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</li>
 <li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
 <li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
-<li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
 <li>full stack python <a href="https://www.fullstackpython.com/vim.html">vim</a></li>
 <li><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></li>
 </ul>

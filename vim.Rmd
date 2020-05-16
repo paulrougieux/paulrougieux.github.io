@@ -528,6 +528,46 @@ Install all plugins configured in your `.vimrc`.
 vi.stackexchange [Python debugging](https://vi.stackexchange.com/questions/17962/python-debugging)
 [vimpdb](https://github.com/gotcha/vimpdb)
 
+## Linter
+
+I have installed the [ALE linter](https://github.com/dense-analysis/ale) and use it for python code.
+To temporarily disable ALE in a buffer:
+
+    :let b:ale_enabled = 0
+
+To enable it:
+
+    :let b:ale_enabled = 1
+
+For the python options, see:
+
+    :h ale-python-options
+
+I've added this option to my .vimrc to show which linter is complaining
+
+    let g:ale_echo_msg_format = '[%linter%] %s'
+
+The linters I see most in python code are pylint and flake8.
+
+Pylint complains about [variable names that are too short](https://github.com/PyCQA/pylint/issues/2018)
+
+## Navigate code
+
+Install exhuberant ctags 
+
+    sudo apt install ctags
+
+Install the taglist plugin with vundle
+
+    Plugin 'yegappan/taglist'
+
+[taglist manual](http://vim-taglist.sourceforge.net/manual.html#taglist-internet)
+
+> "You can open the taglist window using the ":TlistOpen" or the ":TlistToggle"
+> commands. The ":TlistOpen" command opens the taglist window and jumps to it.
+> The ":TlistToggle" command opens or closes (toggle) the taglist window and the
+> cursor remains in the current window."
+
 ## Python programming with vim
 
 Plugins
@@ -539,15 +579,15 @@ Plugins
 
 Blog posts
 
-* reddit [python-mode or Jedi?](https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/)
-     python mode seems to be for starting, most people turn the features off.
 * wiki.python.org [vim](https://wiki.python.org/moin/Vim) mentions:
     * [vim as a python IDE](https://200ok.ch/posts/vim-as-python-ide.html)
+* realpython.com [Vim and python a match made in heaven](https://realpython.com/vim-and-python-a-match-made-in-heaven/)
+* reddit [python-mode or Jedi?](https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/)
+     python mode seems to be for starting, most people turn the features off.
 * SO [Running python code in VIM](https://stackoverflow.com/questions/18948491/running-python-code-in-vim)
 Make sure your files start with a shebang.
 * Plug-in [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
 * Vim on Python wiki (set softtabstop=4) or your  python development environment (set tabstop=4 and set softtabstop=4)
-* realpython.com [Vim and python a match made in heaven](https://realpython.com/vim-and-python-a-match-made-in-heaven/)
 * full stack python [vim](https://www.fullstackpython.com/vim.html)
 * [vim and python script debugging](https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging)
 

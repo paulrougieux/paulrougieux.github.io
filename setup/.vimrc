@@ -16,9 +16,13 @@ Plugin 'plasticboy/vim-markdown'
 Plugin 'tpope/vim-fugitive'
 " python autocompletion 
 Plugin 'davidhalter/jedi-vim'
-" Colour theme for Vim
+" Colour themes for Vim
 Plugin 'morhetz/gruvbox'
 Plugin 'nanotech/jellybeans.vim'
+" Code structure i.e. table of content of classes, methods and functions
+Plugin 'yegappan/taglist'
+" Linter for python
+Plugin 'dense-analysis/ale' 
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -105,6 +109,12 @@ let g:jedi#popup_on_dot = 0
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
 nmap <silent><Leader>m <Esc>:Pytest method<CR>
+" Toggle taglist
+nnoremap <silent> <F8> :TlistToggle<CR>
+"Remove all trailing whitespace by pressing F5
+nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+" specify which ALE linter is complaining
+let g:ale_echo_msg_format = '[%linter%] %s'
 
 """""""""""""""""""""""
 " Change colour theme "
@@ -121,5 +131,15 @@ colorscheme jellybeans
 " this should be placed after colorscheme and background colour
 hi clear SpellBad
 hi SpellBad cterm=underline
+
+" Activate bracketed paste in tmux
+if &term =~ "screen"
+  let &t_BE = "\e[?2004h"
+  let &t_BD = "\e[?2004l"
+  exec "set t_PS=\e[200~"
+  exec "set t_PE=\e[201~"
+endif
+
+
 
 " To reload :source ~/.vimrc
