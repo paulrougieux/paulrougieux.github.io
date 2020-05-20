@@ -80,7 +80,7 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 """"""""""""""""""
 " AZERTY keyboard "
 """"""""""""""""""
-nnoremap m $
+noremap m $
 " Move into wrapped lines with arrow keys
 nnoremap <Up> gk
 nnoremap <Down> gj
@@ -115,7 +115,11 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " specify which ALE linter is complaining
 let g:ale_echo_msg_format = '[%linter%] %s'
-
+" Disable ale for some file extensions
+let g:ale_pattern_options = {
+\   '.*\.md$': {'ale_enabled': 0},
+\   '.*\.Rmd$': {'ale_enabled': 0},
+\}
 """""""""""""""""""""""
 " Change colour theme "
 """""""""""""""""""""""
@@ -130,7 +134,8 @@ colorscheme jellybeans
 " Underline bad spelling instead of highlighting it
 " this should be placed after colorscheme and background colour
 hi clear SpellBad
-hi SpellBad cterm=underline
+"hi SpellBad cterm=underline
+hi SpellBad cterm=underline ctermbg=black
 
 " Activate bracketed paste in tmux
 if &term =~ "screen"
@@ -140,6 +145,7 @@ if &term =~ "screen"
   exec "set t_PE=\e[201~"
 endif
 
-
+" Open git grep in a quickfix window
+autocmd QuickFixCmdPost *grep* cwindow
 
 " To reload :source ~/.vimrc

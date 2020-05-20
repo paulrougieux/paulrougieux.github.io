@@ -264,6 +264,22 @@ To get a link to a csv file, enter the above function and the code below in a ju
 
 [Using jupyter to write documentation](https://hub.packtpub.com/using-jupyter-write-documentation/)
 
+
+## Display all rows and columns of a notebook 
+
+Display all columns
+
+    pandas.options.display.max_columns = None
+
+Display max rows
+
+    pandas.set_option('display.max_rows', 500)
+
+With a  context manager [as in this answer](https://stackoverflow.com/a/47113685/2641825)
+
+    with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+    some pandas stuff
+
 ## Table of content in your notebooks
 
 Install [jupyter_contrib_nbextensions](https://github.com/ipython-contrib/jupyter_contrib_nbextensions)
@@ -1086,12 +1102,15 @@ Pandas data frame to be used for examples:
 
 |Base R                     |pandas                       |SO questions      |
 |---------------------------|-----------------------------|------------------|
+|expand.grid(df$x,df$y)     |itertools.product            |see section below |
 |gsub                       |replace(regex=True)          |[gsub in pandas]  |
 |`df[df$y %in% c('a','b'),]`|`df[df['y'].isin(['a','b'])]`|[list of values to select a row]|
 |length(df) and dim(df)     |df.shape                     |[row count of a data frame]|
 |rbind                      |pandas.concat                |[Pandas version of rbind]|
 |dput(df)                   |df.to_dict()                 |[Print pandas data frame for reproducible example]|
 |seq(1:5)                   |np.array(range(0,5))         |[numpy function to generate sequences]|
+
+
 
 [gsub in pandas]: https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104
 [list of values to select a row]: https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe
@@ -1128,6 +1147,17 @@ Methods to use inside the .groupby().agg() method:
 * `mean`
 * `', '.join` [to get a union of strings](https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings)
 
+### Expand grid in pandas
+
+This [SO answer](https://stackoverflow.com/a/60371544/2641825) provides an
+implementation of expand grid using itertools:
+
+    import itertools
+    import pandas
+    countries = self.by_country_year['country'].drop_duplicates()
+    years = range(1990, datetime.now().year)
+    expand_grid = list(itertools.product(countries, years))
+    df = pandas.DataFrame(expand_grid, columns=('country', 'year'))
 
 # String 
 

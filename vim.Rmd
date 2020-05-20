@@ -74,6 +74,14 @@ or
 
     :Explorer
 
+Pressing `s`changes the way files are sorted. Pressing `x` on a file name opens
+that file with the relevant system program associated with it. For example
+pressing `x` on a pdf file opens that file in the evince reader on my system.
+
+To create a new file in the current directory visible in the explorer, press:
+
+    %
+
 ## Jump back and forth
 
 Vim wiki [jumping to previously visited
@@ -181,7 +189,7 @@ I used it to display markdown files as text files:
 
 I mapped m to the end of line, maybe I should use m instead? 
 
-    nnoremap m $
+    noremap m $
 
 See also mapping below.
 
@@ -266,6 +274,22 @@ For example to [remove the last 2 characters of each line in a selection](https:
 Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.
 
      %s/option value=".*"//g 
+
+### Convert to lower-case
+
+[Switching case of characters](https://vim.fandom.com/wiki/Switching_case_of_characters):
+
+    Toggle case "HellO" to "hELLo" with g~ then a movement.
+    Uppercase "HellO" to "HELLO" with gU then a movement.
+    Lowercase "HellO" to "hello" with gu then a movement.
+
+For example to convert to lower case from the cursor to the end of the line: 
+
+    gu$
+
+To change the current line from upper to lower case: 
+
+    guu
 
 ## Remove unwanted spaces
 
@@ -389,6 +413,15 @@ To format the text, select it with v and up or down movements, and press
     :bd         - close the current buffer (! to forget changes)
     :bd filename -close a buffer by name 
 
+## Quickfix window
+
+Open the quickfix window with:
+
+    :copen
+
+The result of some search operation seach as grep can be displayed in the quick
+fix window.
+
 ## Tabs should be called workspaces
 
 [Why do vim experts prefer buffers over tabs?](https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166)
@@ -459,6 +492,7 @@ Other plugins installed in the default vim repo:
 Potentially useful plugins
 
 * [fugitive](https://github.com/tpope/vim-fugitive) git integration
+* [Quick fix preview](https://github.com/bfrg/vim-qf-preview)
 * Fuzzy search 
 * fzf command line fuzzy finder [fzf](https://github.com/junegunn/fzf)
 * File explorer 

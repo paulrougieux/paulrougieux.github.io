@@ -934,6 +934,9 @@ Display pane numbers
 
 > "You can jump directly to a pane by typing pane's index while it is showed by display panes command."
 
+Zoom a pane and de-zoom it:
+
+   z
 
 ### Movements
 

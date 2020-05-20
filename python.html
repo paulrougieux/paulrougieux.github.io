@@ -665,6 +665,16 @@ set ^ other
 <h2>Documentation with Jupyter</h2>
 <p><a href="https://hub.packtpub.com/using-jupyter-write-documentation/">Using jupyter to write documentation</a></p>
 </div>
+<div id="display-all-rows-and-columns-of-a-notebook" class="section level2">
+<h2>Display all rows and columns of a notebook</h2>
+<p>Display all columns</p>
+<pre><code>pandas.options.display.max_columns = None</code></pre>
+<p>Display max rows</p>
+<pre><code>pandas.set_option(&#39;display.max_rows&#39;, 500)</code></pre>
+<p>With a context manager <a href="https://stackoverflow.com/a/47113685/2641825">as in this answer</a></p>
+<pre><code>with pd.option_context(&#39;display.max_rows&#39;, 100, &#39;display.max_columns&#39;, 10):
+some pandas stuff</code></pre>
+</div>
 <div id="table-of-content-in-your-notebooks" class="section level2">
 <h2>Table of content in your notebooks</h2>
 <p>Install <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions">jupyter_contrib_nbextensions</a></p>
@@ -1311,31 +1321,36 @@ g.fig.set_figheight(10) </code></pre>
 </thead>
 <tbody>
 <tr class="odd">
+<td>expand.grid(df<span class="math inline">\(x,df\)</span>y)</td>
+<td>itertools.product</td>
+<td>see section below</td>
+</tr>
+<tr class="even">
 <td>gsub</td>
 <td>replace(regex=True)</td>
 <td><a href="https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104">gsub in pandas</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>df[df$y %in% c('a','b'),]</code></td>
 <td><code>df[df['y'].isin(['a','b'])]</code></td>
 <td><a href="https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe">list of values to select a row</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>length(df) and dim(df)</td>
 <td>df.shape</td>
 <td><a href="https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe">row count of a data frame</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>rbind</td>
 <td>pandas.concat</td>
 <td><a href="https://stackoverflow.com/questions/14988480/pandas-version-of-rbind">Pandas version of rbind</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>dput(df)</td>
 <td>df.to_dict()</td>
 <td><a href="https://stackoverflow.com/questions/47450931/print-pandas-data-frame-for-reproducible-example-equivalent-to-dput-in-r">Print pandas data frame for reproducible example</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>seq(1:5)</td>
 <td>np.array(range(0,5))</td>
 <td><a href="https://stackoverflow.com/a/60753578/2641825">numpy function to generate sequences</a></td>
@@ -1416,6 +1431,16 @@ g.fig.set_figheight(10) </code></pre>
 <li><code>mean</code></li>
 <li><code>', '.join</code> <a href="https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings">to get a union of strings</a></li>
 </ul>
+<div id="expand-grid-in-pandas" class="section level3">
+<h3>Expand grid in pandas</h3>
+<p>This <a href="https://stackoverflow.com/a/60371544/2641825">SO answer</a> provides an implementation of expand grid using itertools:</p>
+<pre><code>import itertools
+import pandas
+countries = self.by_country_year[&#39;country&#39;].drop_duplicates()
+years = range(1990, datetime.now().year)
+expand_grid = list(itertools.product(countries, years))
+df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))</code></pre>
+</div>
 </div>
 </div>
 <div id="string" class="section level1">

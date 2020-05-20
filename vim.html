@@ -499,6 +499,9 @@ CTRL+T - jump backwards</code></pre>
 <pre><code>:E</code></pre>
 <p>or</p>
 <pre><code>:Explorer</code></pre>
+<p>Pressing <code>s</code>changes the way files are sorted. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system.</p>
+<p>To create a new file in the current directory visible in the explorer, press:</p>
+<pre><code>%</code></pre>
 </div>
 <div id="jump-back-and-forth" class="section level2">
 <h2>Jump back and forth</h2>
@@ -575,7 +578,7 @@ ctrl+b, ctrl+d move page up or page down
 <li>Reddit <a href="https://www.reddit.com/r/vim/comments/2tvupe/azerty_keymapping/">AZERTY keymapping</a></li>
 </ul>
 <p>I mapped m to the end of line, maybe I should use m instead?</p>
-<pre><code>nnoremap m $</code></pre>
+<pre><code>noremap m $</code></pre>
 <p>See also mapping below.</p>
 </div>
 <div id="colour-themes" class="section level2">
@@ -631,6 +634,17 @@ alt+: - switch to navigation mode and send a command</code></pre>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
 <p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
 <pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
+<div id="convert-to-lower-case" class="section level3">
+<h3>Convert to lower-case</h3>
+<p><a href="https://vim.fandom.com/wiki/Switching_case_of_characters">Switching case of characters</a>:</p>
+<pre><code>Toggle case &quot;HellO&quot; to &quot;hELLo&quot; with g~ then a movement.
+Uppercase &quot;HellO&quot; to &quot;HELLO&quot; with gU then a movement.
+Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code></pre>
+<p>For example to convert to lower case from the cursor to the end of the line:</p>
+<pre><code>gu$</code></pre>
+<p>To change the current line from upper to lower case:</p>
+<pre><code>guu</code></pre>
+</div>
 </div>
 <div id="remove-unwanted-spaces" class="section level2">
 <h2>Remove unwanted spaces</h2>
@@ -724,6 +738,12 @@ filetype indent on </code></pre>
 :bd         - close the current buffer (! to forget changes)
 :bd filename -close a buffer by name </code></pre>
 </div>
+<div id="quickfix-window" class="section level2">
+<h2>Quickfix window</h2>
+<p>Open the quickfix window with:</p>
+<pre><code>:copen</code></pre>
+<p>The result of some search operation seach as grep can be displayed in the quick fix window.</p>
+</div>
 <div id="tabs-should-be-called-workspaces" class="section level2">
 <h2>Tabs should be called workspaces</h2>
 <p><a href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why do vim experts prefer buffers over tabs?</a> &gt; &quot;“Vim experts” don’t prefer buffers over tabs: they use buffers as the file &gt; proxies they are and tab pages as the workspaces they are. Buffers and tab &gt; pages have different purposes&quot;</p>
@@ -774,6 +794,7 @@ vim-tmux-navigator</code></pre>
 <p>Potentially useful plugins</p>
 <ul>
 <li><a href="https://github.com/tpope/vim-fugitive">fugitive</a> git integration</li>
+<li><a href="https://github.com/bfrg/vim-qf-preview">Quick fix preview</a></li>
 <li>Fuzzy search</li>
 <li>fzf command line fuzzy finder <a href="https://github.com/junegunn/fzf">fzf</a></li>
 <li>File explorer
