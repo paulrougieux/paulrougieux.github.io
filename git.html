@@ -839,6 +839,24 @@ To push the current branch and set the remote as upstream, use
 <pre><code>[...]
  * [new branch]      master -&amp;gt; masterBranch master set up to track remote branch master from origin. </code></pre>
 <p>I’ll have to figure out what this does.</p>
+<div id="push-to-multiple-remotes" class="section level2">
+<h2>Push to multiple remotes</h2>
+<p>Based on <a href="https://jigarius.com/blog/multiple-git-remote-repositories">this bog post</a> I added the push remote twice to the origin repo as such :</p>
+<pre><code>git remote set-url --add --push origin  git@gitlab.com:paulrougieux/paulrougieux.git
+git remote set-url --add --push origin  git@github.com:paulrougieux/paulrougieux.github.io.git</code></pre>
+<p>The output of git push -v shows that it is now pushing to both repositories</p>
+<pre><code>git push -v
+Pushing to git@gitlab.com:paulrougieux/paulrougieux.git
+To gitlab.com:paulrougieux/paulrougieux.git
+ = [up to date]      master -&gt; master
+updating local tracking ref &#39;refs/remotes/origin/master&#39;
+Everything up-to-date
+Pushing to git@github.com:paulrougieux/paulrougieux.github.io.git
+To github.com:paulrougieux/paulrougieux.github.io.git
+ = [up to date]      master -&gt; master
+updating local tracking ref &#39;refs/remotes/origin/master&#39;
+Everything up-to-date</code></pre>
+</div>
 </div>
 <div id="autocompletion" class="section level1">
 <h1>Autocompletion</h1>
