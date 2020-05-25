@@ -550,7 +550,7 @@ Acquire::BrokenProxy    true;</code></pre>
 </div>
 </div>
 <div id="installing-debian-software-from-backports" class="section level2">
-<h2>Installing debian software from backports:</h2>
+<h2>Installing Debian software from backports</h2>
 <pre><code> sudo apt -t stretch-backports install nodejs</code></pre>
 </div>
 <div id="deb-packages" class="section level2">
@@ -655,6 +655,13 @@ sudo apt install riot-web</code></pre>
 <p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that”</p>
 </blockquote>
 </div>
+<div id="skype" class="section level2">
+<h2>Skype</h2>
+<p>Debian wiki <a href="https://wiki.debian.org/skype">skype</a>: Download .deb file from <a href="https://www.skype.com/en/get-skype/" class="uri">https://www.skype.com/en/get-skype/</a></p>
+<pre><code>wget https://go.skype.com/skypeforlinux-64.deb</code></pre>
+<p>Install</p>
+<pre><code>    sudo apt install ./skypeforlinux-64.deb</code></pre>
+</div>
 <div id="vim" class="section level2">
 <h2>Vim</h2>
 <p>Edit the keyboard configuration as explained in [mapping caps lock to escape in Debian] (<a href="https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/" class="uri">https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/</a>)</p>
@@ -708,6 +715,14 @@ sudo apt install fonts-deva-extra</code></pre>
 <ul>
 <li><a href="https://github.com/r03/azerty">A better AZERTY for developers</a></li>
 </ul>
+</div>
+<div id="network" class="section level1">
+<h1>Network</h1>
+<p>Restart network interface:</p>
+<pre><code>sudo service network-manager restart</code></pre>
+<p>Or</p>
+<pre><code>sudo systemctl restart NetworkManager</code></pre>
+<p><a href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences between systemctl and service commands</a>. <a href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What is the difference between service and systemctl</a> &gt; “[…], service is designed as a high-level wrapper to”abstract&quot; out various service managers like init.d, initctl, and (of course) systemctl.&quot;</p>
 </div>
 <div id="screen-display" class="section level1">
 <h1>Screen display</h1>

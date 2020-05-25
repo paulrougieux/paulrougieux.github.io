@@ -498,6 +498,13 @@ Package dependencies can be configured in a `.travis.yml`
 file that is read by the travis machine performing the build.
 For package that are not on Cran, it's possible to specify a dependency field under `r_github_packages`.
 
+## Make file
+
+* kbroman [minimal make](https://kbroman.org/minimal_make/)
+* Cran [how to use make files with R CMD build](https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build)
+
+I copied the make file from the knitr package.
+
 ## Submitting to CRAN
 
 [Submit package to CRAN](https://cran.r-project.org/submit.html)

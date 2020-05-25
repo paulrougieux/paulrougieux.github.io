@@ -168,7 +168,7 @@ In the following form (do not forget the semicolon at the end):
 
 
 
-## Installing debian software from backports:
+## Installing Debian software from backports
 
      sudo apt -t stretch-backports install nodejs
 
@@ -333,6 +333,17 @@ I needed to remove it as explained [here](https://github.com/vector-im/riot-web/
 
 > "You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that"
 
+## Skype
+
+Debian wiki [skype](https://wiki.debian.org/skype):
+Download .deb file from https://www.skype.com/en/get-skype/
+
+    wget https://go.skype.com/skypeforlinux-64.deb
+
+Install
+
+        sudo apt install ./skypeforlinux-64.deb
+
 ## Vim 
 
 Edit the keyboard configuration as explained in 
@@ -403,6 +414,20 @@ For example:
 # Keyboard
 
 * [A better AZERTY for developers](https://github.com/r03/azerty)
+
+# Network
+
+Restart network interface: 
+
+    sudo service network-manager restart
+
+Or
+
+    sudo systemctl restart NetworkManager
+
+[Differences between systemctl and service commands](https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands). 
+[What is the difference between service and systemctl](https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl)
+> "[...], service is designed as a high-level wrapper to "abstract" out various service managers like init.d, initctl, and (of course) systemctl."
 
 # Screen display
 
