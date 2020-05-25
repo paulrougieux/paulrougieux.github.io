@@ -1469,9 +1469,16 @@ df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))<
 <h1>Style guide and linter</h1>
 <p><a href="https://github.com/psf/black">Black</a> “the uncompromising Python code formater”</p>
 </div>
-<div id="unit-tests" class="section level1">
-<h1>Unit tests</h1>
+<div id="test-driven-development" class="section level1">
+<h1>Test driven development</h1>
+<p>A good post about TDD <a href="https://medium.com/@Cyrdup/unit-testing-youre-doing-it-wrong-407a07692989">Unit testing your doing it wrong</a></p>
+<blockquote>
+<p>“TDD is actually about every form of tests. For example, I often write performance tests as part of my TDD routine; end-to-end tests as well. Furthermore, this is about behaviours, not implementation: you write a new test when you need to fulfil a requirement. You do not write a test when you need to code a new class or a new method. Subtle, but important nuance. For example, you should not write a new test just because you refactored the code. If you have to, it means you were not really doing TDD.” […] “Good tests must test a behavior in isolation to other tests. Calling them unit, system or integration has no relevance to this. Kent Beck says this much better than I would ever do. ’‘’From this perspective, the integration/unit test frontier is a frontier of design, not of tools or frameworks or how long tests run or how many lines of code we wrote get executed while running the test.’’’ Kent Beck”</p>
+</blockquote>
+<div id="unit-tests" class="section level2">
+<h2>Unit tests</h2>
 <p>See <a href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python markdown unit tests</a></p>
+</div>
 <div id="pytest" class="section level2">
 <h2>pytest</h2>
 <p>Numpy moved from nose to pytest in their, as explained in their <a href="https://docs.scipy.org/doc/numpy/reference/testing.html">testing guidelines</a>:</p>

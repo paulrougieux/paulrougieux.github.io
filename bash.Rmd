@@ -124,37 +124,51 @@ Install a software synthesizer to play midi files.
 
 ## Play music with cmus
 
-[Cmus tutorial](https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt)
+[Cmus tutorial](https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt):
+
+    man cmus-tutorial
 
 When starting cmus for the first time 
 press 5 to go to the file-browser panel, choose a folder and press "a" to
 add it to the cmus library. 
-
 Then press "2" to go to the simple library view 
 or press "1" to go to the artist/album view.
 
-   Common Context
-       q                           quit -i
-       b                           player-next
-       c                           player-pause
-       x                           player-play
-       z                           player-prev
-       v                           player-stop
+|Common Context |Remote Command | Description                        |
+|---------------|---------------|------------------------------------|
+| b             |player-next    |                                    |
+| c             |player-pause   |                                    |
+| C             |               | Continue at end of track           |
+| q             |quit -i        |                                    |
+| s             |shuffle        |                                    |
+| v             |player-stop    |                                    |
+| x             |player-play    |                                    |
+| z             |player-prev    |                                    |
+
+Commands can be sent through a command line with cmus-remote, for example
+to pause a running instance of cmus (and restart it):
+
+    cmus-remote -C player-pause
+
+I use this in the pomodoro gnome app to pause music at breaks.
 
 Volume control
 
-     common  =  :vol +10%
-     common  +  :vol +10%
-     common  -  :vol -10%
-     common  [  :vol +1% +0%
-     common  ]  :vol +0% +1%
-     common  {  :vol -1% -0%
-     common  }  :vol -0% -1%
+|Common Context |Description                                         |
+|---------------|----------------------------------------------------|
+| =             |:vol +10%                                           |
+| +             |:vol +10%                                           |
+| -             |:vol -10%                                           |
+| [             |:vol +1% +0%                                        |
+| ]             |:vol +0% +1%                                        |
+| {             |:vol -1% -0%                                        |
+| }             |:vol -0% -1%                                        |
 
 Jump to currently playing song `i`.
 Follow currently playing son `f` see [issue 206](https://github.com/cmus/cmus/issues/206)
 
-
+There is a feedback of all the currently active options at the bottom right of
+the cums screen.
 
 # Edit
 ## Edit Image files

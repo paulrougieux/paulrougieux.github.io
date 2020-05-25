@@ -502,6 +502,10 @@ CTRL+T - jump backwards</code></pre>
 <p>Pressing <code>s</code>changes the way files are sorted. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system.</p>
 <p>To create a new file in the current directory visible in the explorer, press:</p>
 <pre><code>%</code></pre>
+<p>This is also works to create a new directory and file.</p>
+<p>A blog post on <a href="https://shapeshed.com/vim-netrw/">netrw</a>, vim’s file browser. Explains how to turn the banner off:</p>
+<pre><code>let g:netrw_banner = 0</code></pre>
+<p>You can put the banner back on by pressing <code>I</code>.</p>
 </div>
 <div id="jump-back-and-forth" class="section level2">
 <h2>Jump back and forth</h2>
@@ -558,6 +562,7 @@ ctrl+b, ctrl+d move page up or page down
 <p>In these commands, % gives the name of the current file, %:p gives its full path, and %:p:h gives its directory (the “head” of the full path).</p>
 <p>Automatically change the working directory to the file currently edited</p>
 <pre><code>set autochdir</code></pre>
+<p>autochdir conflicts with the ctags plugin taglist <a href="https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set">as explained here</a> so I deactivated it.</p>
 </div>
 </div>
 <div id="configure-vim-in-.vimrc" class="section level1">
@@ -930,8 +935,10 @@ Ctrl+N</code></pre>
 </div>
 <div id="r-programming-with-vim" class="section level2">
 <h2>R programming with vim</h2>
-<p><a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a></p>
-<p>Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</p>
+<ul>
+<li>reddit <a href="https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/">R programmers, do you prefer vim or Rstudio?</a> &gt; “Vim with fzf helps open these subsection code files super easily, ag helps &gt; me find keywords across all the files in my code folder, ctags helps me find &gt; functions I’ve defined, ale tells where I’ve made some trivial mistake, &gt; gitgutter tells me where I’ve made changes I’d maybe like to revisit later. I &gt; find these plugins alone make coding in vim much easier than R studio and &gt; they aren’t even R specific.”</li>
+<li><a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a> Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</li>
+</ul>
 </div>
 <div id="send-code-to-target-terminal" class="section level2">
 <h2>Send code to target terminal</h2>
@@ -961,6 +968,12 @@ Ctrl+N</code></pre>
 <pre><code>:r textfile</code></pre>
 <p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:</p>
 <pre><code>:r ! ls -1 /home/user/directory</code></pre>
+</div>
+<div id="terminal" class="section level2">
+<h2>Terminal</h2>
+<p>You can start a terminal inside a vim split by entering the command:</p>
+<pre><code>:terminal</code></pre>
+<p>Reddit <a href="https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/">does anybody use terminal instead of tmux and a normal terminal?</a> Some users prefer tmux panes and windows, others prefer vim terminal. I have not used vim terminal buffers enough to know how to use them properly. For example <a href="https://vimawesome.com/plugin/vim-slime#vim-terminal">slime is also working with vim’s terminal</a></p>
 </div>
 <div id="vim-diff" class="section level2">
 <h2>Vim diff</h2>

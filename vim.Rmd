@@ -82,6 +82,16 @@ To create a new file in the current directory visible in the explorer, press:
 
     %
 
+This is also works to create a new directory and file.
+
+A blog post on 
+[netrw](https://shapeshed.com/vim-netrw/), vim's file browser.
+Explains how to turn the banner off: 
+
+    let g:netrw_banner = 0
+
+You can put the banner back on by pressing `I`.
+
 ## Jump back and forth
 
 Vim wiki [jumping to previously visited
@@ -161,6 +171,10 @@ In these commands, % gives the name of the current file, %:p gives its full path
 Automatically change the working directory to the file currently edited
 
     set autochdir
+
+autochdir conflicts with the ctags plugin taglist [as explained
+here](https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set)
+so I deactivated it. 
 
 # Configure vim in .vimrc
 See also my vimrc file stored in [setup/.vimrc](setup/.vimrc).
@@ -674,11 +688,17 @@ See above section on navigation, you can use `Ctrl-O` to jump back and
 
 ## R programming with vim
 
-[Turning vim into an
+* reddit [R programmers, do you prefer vim or Rstudio?](https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/)
+    > "Vim with fzf helps open these subsection code files super easily, ag helps
+    > me find keywords across all the files in my code folder, ctags helps me find
+    > functions I've defined, ale tells where I've made some trivial mistake,
+    > gitgutter tells me where I've made changes I'd maybe like to revisit later. I
+    > find these plugins alone make coding in vim much easier than R studio and
+    > they aren't even R specific."
+* [Turning vim into an
 IDE](https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/)
-
-Uses [Nvim-R](https://github.com/jalvesaq/Nvim-R)
-which works with both vim and neo vim
+    Uses [Nvim-R](https://github.com/jalvesaq/Nvim-R)
+    which works with both vim and neo vim
 
 ## Send code to target terminal
 
@@ -730,6 +750,17 @@ Insert text from a specified file into the current buffer:
 You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:
 
     :r ! ls -1 /home/user/directory
+
+## Terminal
+
+You can start a terminal inside a vim split by entering the command: 
+
+    :terminal
+
+Reddit [does anybody use terminal instead of tmux and a normal terminal?](https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/)
+Some users prefer tmux panes and windows, others prefer vim terminal. 
+I have not used vim terminal buffers enough to know how to use them properly. 
+For example [slime is also working with vim's terminal](https://vimawesome.com/plugin/vim-slime#vim-terminal)
 
 ## Vim diff
 

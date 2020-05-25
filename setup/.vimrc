@@ -23,6 +23,8 @@ Plugin 'nanotech/jellybeans.vim'
 Plugin 'yegappan/taglist'
 " Linter for python
 Plugin 'dense-analysis/ale' 
+" To edit R code
+Plugin 'jalvesaq/Nvim-R'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -81,9 +83,22 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " AZERTY keyboard "
 """"""""""""""""""
 noremap m $
+noremap µ #
 " Move into wrapped lines with arrow keys
 nnoremap <Up> gk
 nnoremap <Down> gj
+
+"""""""""""""""""
+" File Explorer "
+"""""""""""""""""
+" Tree list view
+let g:netrw_liststyle = 3
+" Remove the banner
+let g:netrw_banner = 0
+" Per default, netrw leaves unmodified buffers open. This autocommand
+" deletes netrw's buffer once it's hidden (using ':q', for example)
+autocmd FileType netrw setl bufhidden=delete
+
 """"""""""""""""""""""""
 " Python configuration "
 """"""""""""""""""""""""

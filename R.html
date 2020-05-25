@@ -909,6 +909,14 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 <p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository. I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK.</p>
 <p>Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
 </div>
+<div id="make-file" class="section level2">
+<h2>Make file</h2>
+<ul>
+<li>kbroman <a href="https://kbroman.org/minimal_make/">minimal make</a></li>
+<li>Cran <a href="https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build">how to use make files with R CMD build</a></li>
+</ul>
+<p>I copied the make file from the knitr package.</p>
+</div>
 <div id="submitting-to-cran" class="section level2">
 <h2>Submitting to CRAN</h2>
 <p><a href="https://cran.r-project.org/submit.html">Submit package to CRAN</a> The second page will ask to</p>
