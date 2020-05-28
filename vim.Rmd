@@ -486,20 +486,38 @@ reddit [python workflow with terminal using tmux](https://www.reddit.com/r/vim/c
 Plugins are mentioned in diverse section of this document. 
 This section is mostly to list plugins I used and potentially interesting plugins. 
 
-Plugins I currently use with vundle: 
+Display plugins I currently use with vundle: 
 
     :PluginList
-    Plugin 'VundleVim/Vundle.vim'
+
+Copy of the list from my `.vimrc`:
+
+    " Colour themes for Vim
+    Plugin 'morhetz/gruvbox'
+    Plugin 'nanotech/jellybeans.vim'
+    " Code structure i.e. table of content of classes, methods and functions
+    Plugin 'yegappan/taglist'
+    " Git interface 
+    Plugin 'tpope/vim-fugitive'
+    " Latex editing
+    Plugin 'vim-latex/vim-latex'
+    " Markdown toc navigation
     Plugin 'godlygeek/tabular'
     Plugin 'plasticboy/vim-markdown'
-    Plugin 'tpope/vim-fugitive'
+    " Python autocompletion 
     Plugin 'davidhalter/jedi-vim'
+    " Python linter
+    Plugin 'dense-analysis/ale' 
+    " R programming
+    Plugin 'jalvesaq/Nvim-R'
 
 I also use a spell checker. 
 
 Other plugins installed in the default vim repo:
 
     :r ! ls ~/.vim/pack/plugins/start/
+    indentpython.vim
+    pytest.vim
     vim-slime
     vim-tmux-navigator
 

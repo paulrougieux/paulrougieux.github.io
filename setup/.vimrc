@@ -1,3 +1,7 @@
+""""""""""""""""""""""""""
+" Vundle package manager "
+""""""""""""""""""""""""""
+" Should be at the beginning 
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
@@ -9,21 +13,23 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'VundleVim/Vundle.vim'
-" Navigate markdown toc
-Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
-" Git interface 
-Plugin 'tpope/vim-fugitive'
-" python autocompletion 
-Plugin 'davidhalter/jedi-vim'
 " Colour themes for Vim
 Plugin 'morhetz/gruvbox'
 Plugin 'nanotech/jellybeans.vim'
 " Code structure i.e. table of content of classes, methods and functions
 Plugin 'yegappan/taglist'
-" Linter for python
+" Git interface 
+Plugin 'tpope/vim-fugitive'
+" Latex editing
+Plugin 'vim-latex/vim-latex'
+" Markdown toc navigation
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+" Python autocompletion 
+Plugin 'davidhalter/jedi-vim'
+" Python linter
 Plugin 'dense-analysis/ale' 
-" To edit R code
+" R programming
 Plugin 'jalvesaq/Nvim-R'
 
 " All of your Plugins must be added before the following line
@@ -41,6 +47,10 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 " Enable file type detection
+
+"""""""""""""""""""""""""
+" General configuration "
+"""""""""""""""""""""""""
 filetype on
 syntax enable
 
@@ -59,26 +69,6 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
-" wrap markdown text to 80 characters
-au BufRead,BufNewFile *.md setlocal textwidth=80
-" Do not use double spaces after points
-set nojoinspaces
-
-" disable folding in vim-markdown 
-let g:vim_markdown_folding_disabled = 1
-" enable vim-markdown for .Rmd files too
-augroup filetypedetect_markdown
-    au!
-    au BufRead,BufNewFile *.Rmd set ft=markdown
-augroup END
-
-" use tmux with slime
-let g:slime_target = "tmux"
-" configuration for vim in a split tmux window with a REPL in the other pane:
-let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
-" Handle indentation correctly  https://github.com/jpalardy/vim-slime/issues/54
-" let g:slime_python_ipython = 1
-
 """"""""""""""""""
 " AZERTY keyboard "
 """"""""""""""""""
@@ -88,56 +78,9 @@ noremap µ #
 nnoremap <Up> gk
 nnoremap <Down> gj
 
-"""""""""""""""""
-" File Explorer "
-"""""""""""""""""
-" Tree list view
-let g:netrw_liststyle = 3
-" Remove the banner
-let g:netrw_banner = 0
-" Per default, netrw leaves unmodified buffers open. This autocommand
-" deletes netrw's buffer once it's hidden (using ':q', for example)
-autocmd FileType netrw setl bufhidden=delete
-
-""""""""""""""""""""""""
-" Python configuration "
-""""""""""""""""""""""""
-" Indentation settings
-set tabstop=4
-set expandtab
-set softtabstop=4
-set shiftwidth=4
-filetype indent on 
-
-" Tell jedi vim to use python2 for the engine only
-" https://github.com/davidhalter/jedi-vim/issues/841
-" let g:jedi#loader_py_version = 2
-"
-" jedi go to definition
-noremap <F2> <leader>-d
-" jedi  do not start completion when I type a dot
-let g:jedi#popup_on_dot = 0
-" change leader key from \ (the default) to ,
-:let mapleader = ","
-
-" Pytest
-nmap <silent><Leader>f <Esc>:Pytest file<CR>
-nmap <silent><Leader>c <Esc>:Pytest class<CR>
-nmap <silent><Leader>m <Esc>:Pytest method<CR>
-" Toggle taglist
-nnoremap <silent> <F8> :TlistToggle<CR>
-"Remove all trailing whitespace by pressing F5
-nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
-" specify which ALE linter is complaining
-let g:ale_echo_msg_format = '[%linter%] %s'
-" Disable ale for some file extensions
-let g:ale_pattern_options = {
-\   '.*\.md$': {'ale_enabled': 0},
-\   '.*\.Rmd$': {'ale_enabled': 0},
-\}
-"""""""""""""""""""""""
-" Change colour theme "
-"""""""""""""""""""""""
+""""""""""""""""
+" Colour theme "
+""""""""""""""""
 set t_Co=256
 " terminal’s color palette #444444 is suggested by jellybeans.vim,
 " I used 353131
@@ -152,6 +95,96 @@ hi clear SpellBad
 "hi SpellBad cterm=underline
 hi SpellBad cterm=underline ctermbg=black
 
+"""""""""""""""""
+" File Explorer "
+"""""""""""""""""
+" Tree list view
+let g:netrw_liststyle = 3
+" Remove the banner
+let g:netrw_banner = 0
+" Per default, netrw leaves unmodified buffers open. This autocommand
+" deletes netrw's buffer once it's hidden (using ':q', for example)
+autocmd FileType netrw setl bufhidden=delete
+
+"""""""""""""""""""""
+" Git configuration "
+"""""""""""""""""""""
+" Open git grep in a quickfix window
+autocmd QuickFixCmdPost *grep* cwindow
+
+"""""""""""""""""""""""
+" Latex configuration "
+"""""""""""""""""""""""
+" No folding
+:let Tex_FoldedSections=""
+:let Tex_FoldedEnvironments=""
+:let Tex_FoldedMisc=""
+
+""""""""""""""""""""""""""
+" Markdown configuration "
+""""""""""""""""""""""""""
+" wrap markdown text to 88 characters like psf/black
+au BufRead,BufNewFile *.md setlocal textwidth=88
+" Do not use double spaces after points
+set nojoinspaces
+
+" disable folding in vim-markdown 
+let g:vim_markdown_folding_disabled = 1
+" enable vim-markdown for .Rmd files too
+augroup filetypedetect_markdown
+    au!
+    au BufRead,BufNewFile *.Rmd set ft=markdown
+augroup END
+
+""""""""""""""""""""""""
+" Python configuration "
+""""""""""""""""""""""""
+" Indentation settings
+set tabstop=4
+set expandtab
+set softtabstop=4
+set shiftwidth=4
+filetype indent on 
+
+" Tell Jedi vim to use python2 for the engine only
+" https://github.com/davidhalter/jedi-vim/issues/841
+" let g:jedi#loader_py_version = 2
+"
+" Jedi go to definition
+noremap <F2> <leader>-d
+" Jedi  do not start completion when I type a dot
+let g:jedi#popup_on_dot = 0
+" Disable call signatures
+let g:jedi#show_call_signatures = "0" 
+" change leader key from \ (the default) to ,
+:let mapleader = ","
+
+" Pytest
+nmap <silent><Leader>f <Esc>:Pytest file<CR>
+nmap <silent><Leader>c <Esc>:Pytest class<CR>
+nmap <silent><Leader>m <Esc>:Pytest method<CR>
+" Toggle taglist
+nnoremap <silent> <F8> :TlistToggle<CR>
+" Remove all trailing whitespace by pressing F5
+nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
+" Specify which ALE linter is complaining
+let g:ale_echo_msg_format = '[%linter%] %s'
+" Disable ale for some file extensions
+let g:ale_pattern_options = {
+\   '.*\.md$': {'ale_enabled': 0},
+\   '.*\.Rmd$': {'ale_enabled': 0},
+\}
+
+
+"""""""""""""""""""
+" R configuration "
+"""""""""""""""""""
+" disable autoreplacement of _ to <- by Nvim-R
+let R_assign = 0
+
+""""""""""""""""""""""
+" Tmux configuration "
+""""""""""""""""""""""
 " Activate bracketed paste in tmux
 if &term =~ "screen"
   let &t_BE = "\e[?2004h"
@@ -159,8 +192,12 @@ if &term =~ "screen"
   exec "set t_PS=\e[200~"
   exec "set t_PE=\e[201~"
 endif
+" use tmux with slime
+let g:slime_target = "tmux"
+" configuration for vim in a split tmux window with a REPL in the other pane:
+let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+" Handle indentation correctly  https://github.com/jpalardy/vim-slime/issues/54
+" let g:slime_python_ipython = 1
 
-" Open git grep in a quickfix window
-autocmd QuickFixCmdPost *grep* cwindow
 
 " To reload :source ~/.vimrc

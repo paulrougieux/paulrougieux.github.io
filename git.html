@@ -841,7 +841,7 @@ To push the current branch and set the remote as upstream, use
 <p>I’ll have to figure out what this does.</p>
 <div id="push-to-multiple-remotes" class="section level2">
 <h2>Push to multiple remotes</h2>
-<p>Based on <a href="https://jigarius.com/blog/multiple-git-remote-repositories">this bog post</a> I added the push remote twice to the origin repo as such :</p>
+<p>Based on <a href="https://jigarius.com/blog/multiple-git-remote-repositories">this blog post</a> I added the push remote twice to the origin repo as such :</p>
 <pre><code>git remote set-url --add --push origin  git@gitlab.com:paulrougieux/paulrougieux.git
 git remote set-url --add --push origin  git@github.com:paulrougieux/paulrougieux.github.io.git</code></pre>
 <p>The output of git push -v shows that it is now pushing to both repositories</p>

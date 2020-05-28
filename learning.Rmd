@@ -6,14 +6,21 @@ output:
     toc_float: true
 ---
 
+# Distraction
+
+
 
 # Mistakes 
 
 The more mistakes you make, the more you learn. 
 Let them make mistakes.
 
-# Resources
+# Neural Networks
 
+* [How neural networks are trained](https://ml4a.github.io/ml4a/how_neural_networks_are_trained/)
+
+
+# Resources
 
 * [Stack Over Flow](stackoverflow.com/)
 * [Wikipedia](https://en.wikipedia.org/)

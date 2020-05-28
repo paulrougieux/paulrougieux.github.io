@@ -647,7 +647,7 @@ I'll have to figure out what this does.
 
 ## Push to multiple remotes
 
-Based on [this bog post](https://jigarius.com/blog/multiple-git-remote-repositories)
+Based on [this blog post](https://jigarius.com/blog/multiple-git-remote-repositories)
 I added the push remote twice to the origin repo as such :
 
     git remote set-url --add --push origin  git@gitlab.com:paulrougieux/paulrougieux.git

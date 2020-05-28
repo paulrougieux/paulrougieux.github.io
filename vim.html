@@ -784,16 +784,32 @@ set splitright</code></pre>
 <div id="plugins" class="section level1">
 <h1>Plugins</h1>
 <p>Plugins are mentioned in diverse section of this document. This section is mostly to list plugins I used and potentially interesting plugins.</p>
-<p>Plugins I currently use with vundle:</p>
-<pre><code>:PluginList
-Plugin &#39;VundleVim/Vundle.vim&#39;
+<p>Display plugins I currently use with vundle:</p>
+<pre><code>:PluginList</code></pre>
+<p>Copy of the list from my <code>.vimrc</code>:</p>
+<pre><code>&quot; Colour themes for Vim
+Plugin &#39;morhetz/gruvbox&#39;
+Plugin &#39;nanotech/jellybeans.vim&#39;
+&quot; Code structure i.e. table of content of classes, methods and functions
+Plugin &#39;yegappan/taglist&#39;
+&quot; Git interface 
+Plugin &#39;tpope/vim-fugitive&#39;
+&quot; Latex editing
+Plugin &#39;vim-latex/vim-latex&#39;
+&quot; Markdown toc navigation
 Plugin &#39;godlygeek/tabular&#39;
 Plugin &#39;plasticboy/vim-markdown&#39;
-Plugin &#39;tpope/vim-fugitive&#39;
-Plugin &#39;davidhalter/jedi-vim&#39;</code></pre>
+&quot; Python autocompletion 
+Plugin &#39;davidhalter/jedi-vim&#39;
+&quot; Python linter
+Plugin &#39;dense-analysis/ale&#39; 
+&quot; R programming
+Plugin &#39;jalvesaq/Nvim-R&#39;</code></pre>
 <p>I also use a spell checker.</p>
 <p>Other plugins installed in the default vim repo:</p>
 <pre><code>:r ! ls ~/.vim/pack/plugins/start/
+indentpython.vim
+pytest.vim
 vim-slime
 vim-tmux-navigator</code></pre>
 <p>Potentially useful plugins</p>
