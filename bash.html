@@ -465,14 +465,40 @@ div.tocify {
 <pre><code>info coreutils </code></pre>
 <p>The page below also contains many commands from external tools that are not part of the GNU project.</p>
 </div>
+<div id="count" class="section level1">
+<h1>Count</h1>
+<div id="number-of-files" class="section level2">
+<h2>Number of files</h2>
+<p><a href="https://stackoverflow.com/a/9157162/2641825">Recursively counting files</a></p>
+<pre><code>find DIR_NAME -type f | wc -l</code></pre>
+<p><a href="https://askubuntu.com/a/370717/315347">Recursively count the number of files in a directory</a>, limiting the maximum depth</p>
+<pre><code>find -maxdepth 1 -type f | wc -l</code></pre>
+<p>Counting files with a specific extension</p>
+<pre><code>find -name &#39;*.csv&#39; |wc -l</code></pre>
+</div>
+<div id="number-of-lines-in-a-text-file" class="section level2">
+<h2>Number of lines in a text file</h2>
+<p>Count the number of lines in a file</p>
+<pre><code>wc -l filename.txt </code></pre>
+<p>Count the number of lines in all files, and give the total line count.</p>
+<pre><code>find . -name &#39;*.py&#39; | xargs wc -l # python code
+find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
+</div>
+</div>
 <div id="find" class="section level1">
 <h1>Find</h1>
 <div id="find-files" class="section level2">
 <h2>Find files</h2>
-<p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).</p>
-<pre><code>find . -name &quot;*.pdf&quot; 
-
-find . -mtime 0 # modified in the last 24 hours</code></pre>
+<p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion). Find files of a specific extension:</p>
+<pre><code>find . -name &quot;*.pdf&quot; </code></pre>
+<p>Find files of a specific modification time:</p>
+<pre><code>find . -mtime 0 # modified in the last 24 hours</code></pre>
+<p>Find files <a href="https://stackoverflow.com/questions/1341467/find-filenames-not-ending-in-specific-extensions-on-unix">not having a specific extension</a>:</p>
+<pre><code>find . -type f -not -name &#39;*.csv&#39;
+# Alternative syntax
+find . -type f ! \( -name &#39;*.csv&#39; \)</code></pre>
+<p>Limit the depth of the search</p>
+<pre><code>find . -maxdepth 1 -name &quot;*.pdf&quot; </code></pre>
 <p>Find files in the whole system</p>
 <pre><code>locate filename</code></pre>
 </div>
@@ -514,14 +540,6 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 <pre><code>tail -f</code></pre>
 <p>See tab and end of line characters in a text file</p>
 <pre><code>cat -te filename |less </code></pre>
-</div>
-<div id="count-the-number-of-lines-in-a-text-file" class="section level2">
-<h2>Count the number of lines in a text file</h2>
-<p>Count the number of lines in a file</p>
-<pre><code>wc -l filename.txt </code></pre>
-<p>Count the number of lines in all files, and give the total line count.</p>
-<pre><code>find . -name &#39;*.py&#39; | xargs wc -l # python code
-find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </div>
 </div>
 <div id="read" class="section level1">

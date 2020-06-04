@@ -170,7 +170,16 @@ In the following form (do not forget the semicolon at the end):
 
 ## Installing Debian software from backports
 
-     sudo apt -t stretch-backports install nodejs
+
+[backports.debian.org](https://backports.debian.org/) contains a list of backports available for each LTS Debian version.
+
+Add the main, contrib and non-free backports to /etc/apt/sources.list :
+
+    deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free
+
+Install from backports
+
+    sudo apt -t stretch-backports install nodejs
 
 
 ## DEB packages

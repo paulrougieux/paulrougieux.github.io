@@ -21,7 +21,8 @@ Plugin 'yegappan/taglist'
 " Git interface 
 Plugin 'tpope/vim-fugitive'
 " Latex editing
-Plugin 'vim-latex/vim-latex'
+"Plugin 'vim-latex/vim-latex'
+Plugin 'lervag/vimtex'
 " Markdown toc navigation
 Plugin 'godlygeek/tabular'
 Plugin 'plasticboy/vim-markdown'
@@ -48,9 +49,15 @@ filetype plugin indent on    " required
 " Put your non-Plugin stuff after this line
 " Enable file type detection
 
+" Temporarily disable a plugin 
+" https://stackoverflow.com/questions/601412/how-to-turn-off-a-plugin-in-vim-temporarily
+" set runtimepath-=~/.vim/bundle/vim-latex
+
+
 """""""""""""""""""""""""
 " General configuration "
 """""""""""""""""""""""""
+" Determine the type of the current file
 filetype on
 syntax enable
 
@@ -69,11 +76,19 @@ nnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 
+" Toggle taglist
+nnoremap <silent> <F8> :TlistToggle<CR>
+
 """"""""""""""""""
 " AZERTY keyboard "
 """"""""""""""""""
+" Shared on https://stackoverflow.com/a/62195253/2641825
+" Move to the end of the line
 noremap m $
+" Search backward for the word under the cursor
 noremap µ #
+" Navigate to the help tag under the cursor
+noremap ' <C-]>
 " Move into wrapped lines with arrow keys
 nnoremap <Up> gk
 nnoremap <Down> gj
@@ -119,6 +134,8 @@ autocmd QuickFixCmdPost *grep* cwindow
 :let Tex_FoldedSections=""
 :let Tex_FoldedEnvironments=""
 :let Tex_FoldedMisc=""
+" Only citation keys for completion
+let g:vimtex_complete_bib = { 'simple': 1 }
 
 """"""""""""""""""""""""""
 " Markdown configuration "
@@ -163,8 +180,6 @@ let g:jedi#show_call_signatures = "0"
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
 nmap <silent><Leader>c <Esc>:Pytest class<CR>
 nmap <silent><Leader>m <Esc>:Pytest method<CR>
-" Toggle taglist
-nnoremap <silent> <F8> :TlistToggle<CR>
 " Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " Specify which ALE linter is complaining

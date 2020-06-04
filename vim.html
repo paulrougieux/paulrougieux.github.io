@@ -873,10 +873,10 @@ filetype plugin indent on    &quot; required
 <pre><code>:PluginInstall</code></pre>
 </div>
 </div>
-<div id="programming-with-vim" class="section level1">
-<h1>Programming with vim</h1>
-<div id="debugging" class="section level2">
-<h2>Debugging</h2>
+<div id="programming-tools" class="section level1">
+<h1>Programming tools</h1>
+<div id="debugger" class="section level2">
+<h2>Debugger</h2>
 <p>vi.stackexchange <a href="https://vi.stackexchange.com/questions/17962/python-debugging">Python debugging</a> <a href="https://github.com/gotcha/vimpdb">vimpdb</a></p>
 </div>
 <div id="linter" class="section level2">
@@ -892,19 +892,75 @@ filetype plugin indent on    &quot; required
 <p>The linters I see most in python code are pylint and flake8.</p>
 <p>Pylint complains about <a href="https://github.com/PyCQA/pylint/issues/2018">variable names that are too short</a></p>
 </div>
-<div id="navigate-code" class="section level2">
-<h2>Navigate code</h2>
-<p>Install exhuberant ctags</p>
-<pre><code>sudo apt install ctags</code></pre>
+<div id="navigate-code-with-tags" class="section level2">
+<h2>Navigate code with tags</h2>
+<p>Install universtal ctags, the updated version</p>
+<pre><code>sudo apt install universal-ctags</code></pre>
+<p>This is the old version called exhuberant ctags (not updated since 2009):</p>
+<pre><code># not needed if above is installed
+sudo apt install ctags </code></pre>
+<div id="taglist" class="section level3">
+<h3>Taglist</h3>
 <p>Install the taglist plugin with vundle</p>
 <pre><code>Plugin &#39;yegappan/taglist&#39;</code></pre>
 <p><a href="http://vim-taglist.sourceforge.net/manual.html#taglist-internet">taglist manual</a></p>
 <blockquote>
 <p>“You can open the taglist window using the”:TlistOpen&quot; or the “:TlistToggle” commands. The “:TlistOpen” command opens the taglist window and jumps to it. The “:TlistToggle” command opens or closes (toggle) the taglist window and the cursor remains in the current window.&quot;</p>
 </blockquote>
+<p>Help:</p>
+<pre><code>:help taglist-intro</code></pre>
 </div>
-<div id="python-programming-with-vim" class="section level2">
-<h2>Python programming with vim</h2>
+<div id="tagbar" class="section level3">
+<h3>Tagbar</h3>
+<p>I don’t use it because it opens only one file in the list, see feature request <a href="https://github.com/majutsushi/tagbar/issues/31">open multiple files like taglist 31</a></p>
+<p>An alternative plugin called <a href="https://github.com/majutsushi/tagbar">tagbar</a> enables</p>
+<pre><code>https://github.com/majutsushi/tagbar</code></pre>
+<p><a href="">latex related issues</a> <a href="https://github.com/majutsushi/tagbar/issues/336">Issue 336 too much space</a> Recommends:</p>
+<pre><code>let g:tagbar_compact = 1</code></pre>
+<p>Here are the settings I used when I tried tagbar:</p>
+<pre><code>&quot; Settings for plugin &#39;majutsushi/tagbar&#39;
+&quot; Toggle tagbar
+nmap &lt;F8&gt; :TagbarToggle&lt;CR&gt;
+&quot; Place tagbar to the left
+let g:tagbar_left = 1
+&quot; Place lines closer together
+let g:tagbar_compact = 1</code></pre>
+</div>
+</div>
+<div id="send-code-to-target-terminal" class="section level2">
+<h2>Send code to target terminal</h2>
+<p><a href="https://github.com/jpalardy/vim-slime">vim slime</a> &gt; “Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal”</p>
+<p>Tmux is not the default, to use it you will have to add this line to your .vimrc:</p>
+<pre><code>let g:slime_target = &quot;tmux&quot;</code></pre>
+<p>Then add this to configure the sending of commands to a <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read Eval Print Loop</a>: in the general use case of vim in a split tmux window with a REPL in the other pane:</p>
+<pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
+</div>
+<div id="tests" class="section level2">
+<h2>Tests</h2>
+<p><a href="https://github.com/vim-test/vim-test">Vim Test</a> Works with pytest and many other testing suites for many languages. Test results appear in the quick fix window.</p>
+<p><a href="https://github.com/alfredodeza/pytest.vim">pytest vim</a> Run pytest from within vim.</p>
+</div>
+</div>
+<div id="programming-languages" class="section level1">
+<h1>Programming languages</h1>
+<div id="latex-editing" class="section level2">
+<h2>Latex editing</h2>
+<ul>
+<li><a href="https://github.com/vim-latex/vim-latex">vim-latex</a> the one I used first.
+<ul>
+<li>Was complaining about my makefile, that it didn’t include a dvi section</li>
+<li>Was creating nice taglist but with duplicated tags.</li>
+</ul></li>
+<li><a href="https://github.com/lervag/vimtex#alternatives">vimtex</a> more recent
+<ul>
+<li>Completion uses omni completion, see <code>:help compl-omni</code> with CTRL-X CTRL-O</li>
+<li>doesn’t complain about my minimalistic makefile</li>
+<li>Doesn’t add anything to the taglist (maybe I should use gutentag?)</li>
+</ul></li>
+</ul>
+</div>
+<div id="python-programming" class="section level2">
+<h2>Python programming</h2>
 <p>Plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the Jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a> * [vim-test] see also the tests section below.</p>
 <p>Blog posts</p>
 <ul>
@@ -949,25 +1005,12 @@ Ctrl+N</code></pre>
 <p>See above section on navigation, you can use <code>Ctrl-O</code> to jump back and <code>Ctrl-I</code>to jump forward.</p>
 </div>
 </div>
-<div id="r-programming-with-vim" class="section level2">
-<h2>R programming with vim</h2>
+<div id="r-programming" class="section level2">
+<h2>R programming</h2>
 <ul>
 <li>reddit <a href="https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/">R programmers, do you prefer vim or Rstudio?</a> &gt; “Vim with fzf helps open these subsection code files super easily, ag helps &gt; me find keywords across all the files in my code folder, ctags helps me find &gt; functions I’ve defined, ale tells where I’ve made some trivial mistake, &gt; gitgutter tells me where I’ve made changes I’d maybe like to revisit later. I &gt; find these plugins alone make coding in vim much easier than R studio and &gt; they aren’t even R specific.”</li>
 <li><a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a> Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</li>
 </ul>
-</div>
-<div id="send-code-to-target-terminal" class="section level2">
-<h2>Send code to target terminal</h2>
-<p><a href="https://github.com/jpalardy/vim-slime">vim slime</a> &gt; “Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal”</p>
-<p>Tmux is not the default, to use it you will have to add this line to your .vimrc:</p>
-<pre><code>let g:slime_target = &quot;tmux&quot;</code></pre>
-<p>Then add this to configure the sending of commands to a <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read Eval Print Loop</a>: in the general use case of vim in a split tmux window with a REPL in the other pane:</p>
-<pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
-</div>
-<div id="tests" class="section level2">
-<h2>Tests</h2>
-<p><a href="https://github.com/vim-test/vim-test">Vim Test</a> Works with pytest and many other testing suites for many languages. Test results appear in the quick fix window.</p>
-<p><a href="https://github.com/alfredodeza/pytest.vim">pytest vim</a> Run pytest from within vim.</p>
 </div>
 </div>
 <div id="tools" class="section level1">

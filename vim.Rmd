@@ -587,9 +587,9 @@ Install all plugins configured in your `.vimrc`.
 
     :PluginInstall
 
-# Programming with vim
+# Programming tools
 
-## Debugging
+## Debugger
 
 vi.stackexchange [Python debugging](https://vi.stackexchange.com/questions/17962/python-debugging)
 [vimpdb](https://github.com/gotcha/vimpdb)
@@ -617,11 +617,18 @@ The linters I see most in python code are pylint and flake8.
 
 Pylint complains about [variable names that are too short](https://github.com/PyCQA/pylint/issues/2018)
 
-## Navigate code
+## Navigate code with tags 
 
-Install exhuberant ctags 
+Install universtal ctags, the updated version
 
-    sudo apt install ctags
+    sudo apt install universal-ctags
+
+This is the old version called exhuberant ctags (not updated since 2009):
+
+    # not needed if above is installed
+    sudo apt install ctags 
+
+### Taglist 
 
 Install the taglist plugin with vundle
 
@@ -634,7 +641,77 @@ Install the taglist plugin with vundle
 > The ":TlistToggle" command opens or closes (toggle) the taglist window and the
 > cursor remains in the current window."
 
-## Python programming with vim
+Help:
+
+    :help taglist-intro
+
+### Tagbar 
+
+I don't use it because it opens only one file in the list, see feature request
+[open multiple files like taglist 31](https://github.com/majutsushi/tagbar/issues/31)
+
+An alternative plugin called [tagbar](https://github.com/majutsushi/tagbar) enables 
+
+    https://github.com/majutsushi/tagbar
+
+[latex related issues]()
+[Issue 336 too much space](https://github.com/majutsushi/tagbar/issues/336)
+Recommends: 
+
+    let g:tagbar_compact = 1
+
+Here are the settings I used when I tried tagbar:
+
+    " Settings for plugin 'majutsushi/tagbar'
+    " Toggle tagbar
+    nmap <F8> :TagbarToggle<CR>
+    " Place tagbar to the left
+    let g:tagbar_left = 1
+    " Place lines closer together
+    let g:tagbar_compact = 1
+
+## Send code to target terminal
+
+[vim slime](https://github.com/jpalardy/vim-slime)
+> "Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal"
+
+Tmux is not the default, to use it you will have to add this line to your .vimrc:
+
+    let g:slime_target = "tmux"
+
+Then add this to configure the sending of commands to a 
+[Read Eval Print Loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop):
+in the general use case of
+vim in a split tmux window with a REPL in the other pane:
+
+    let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
+## Tests
+
+[Vim Test](https://github.com/vim-test/vim-test)
+Works with pytest and many other testing suites for many languages.
+Test results appear in the quick fix window.
+
+[pytest vim](https://github.com/alfredodeza/pytest.vim)
+Run pytest from within vim. 
+
+
+# Programming languages 
+
+## Latex editing
+
+* [vim-latex](https://github.com/vim-latex/vim-latex) the one I used first.
+    * Was complaining about my makefile, that it didn't include a dvi section
+    * Was creating nice taglist but with duplicated tags.
+
+* [vimtex](https://github.com/lervag/vimtex#alternatives) more recent 
+    * Completion uses omni completion, see `:help compl-omni` with 
+        CTRL-X CTRL-O
+    * doesn't complain about my minimalistic makefile
+    * Doesn't add anything to the taglist (maybe I should use gutentag?)
+
+
+## Python programming
 
 Plugins
 * [Python mode](https://github.com/python-mode/python-mode)
@@ -704,7 +781,7 @@ I remapped the `<leader>` key to `,` in my .vimrc
 See above section on navigation, you can use `Ctrl-O` to jump back and
 `Ctrl-I`to jump forward.
 
-## R programming with vim
+## R programming
 
 * reddit [R programmers, do you prefer vim or Rstudio?](https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/)
     > "Vim with fzf helps open these subsection code files super easily, ag helps
@@ -718,30 +795,6 @@ IDE](https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/)
     Uses [Nvim-R](https://github.com/jalvesaq/Nvim-R)
     which works with both vim and neo vim
 
-## Send code to target terminal
-
-[vim slime](https://github.com/jpalardy/vim-slime)
-> "Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal"
-
-Tmux is not the default, to use it you will have to add this line to your .vimrc:
-
-    let g:slime_target = "tmux"
-
-Then add this to configure the sending of commands to a 
-[Read Eval Print Loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop):
-in the general use case of
-vim in a split tmux window with a REPL in the other pane:
-
-    let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
-
-## Tests
-
-[Vim Test](https://github.com/vim-test/vim-test)
-Works with pytest and many other testing suites for many languages.
-Test results appear in the quick fix window.
-
-[pytest vim](https://github.com/alfredodeza/pytest.vim)
-Run pytest from within vim. 
 
 # Tools
 

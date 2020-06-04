@@ -22,13 +22,54 @@ Linux is the kernel of the operating system on top of which other programs are b
 The page below also contains many commands from external tools 
 that are not part of the GNU project.
 
+# Count
+
+## Number of files
+
+[Recursively counting files](https://stackoverflow.com/a/9157162/2641825)
+
+    find DIR_NAME -type f | wc -l
+
+[Recursively count the number of files in a
+directory](https://askubuntu.com/a/370717/315347), limiting the maximum depth
+
+    find -maxdepth 1 -type f | wc -l
+
+Counting files with a specific extension
+
+    find -name '*.csv' |wc -l
+
+## Number of lines in a text file
+Count the number of lines in a file
+
+    wc -l filename.txt 
+
+Count the number of lines in all files, and give the total line count.
+
+    find . -name '*.py' | xargs wc -l # python code
+    find . -name '*.R' | xargs wc -l # R code
+
 # Find
+
 ## Find files
 Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).
+Find files of a specific extension:
 
     find . -name "*.pdf" 
 
+Find files of a specific modification time:
+
     find . -mtime 0 # modified in the last 24 hours
+
+Find files [not having a specific extension](https://stackoverflow.com/questions/1341467/find-filenames-not-ending-in-specific-extensions-on-unix):
+
+    find . -type f -not -name '*.csv'
+    # Alternative syntax
+    find . -type f ! \( -name '*.csv' \)
+
+Limit the depth of the search 
+
+    find . -maxdepth 1 -name "*.pdf" 
 
 Find files in the whole system
 
@@ -101,16 +142,6 @@ Follow the end of a log file as it is written
 See tab and end of line characters in a text file
 
     cat -te filename |less 
-
-## Count the number of lines in a text file
-Count the number of lines in a file
-
-    wc -l filename.txt 
-
-Count the number of lines in all files, and give the total line count.
-
-    find . -name '*.py' | xargs wc -l # python code
-    find . -name '*.R' | xargs wc -l # R code
 
 # Read 
 
@@ -281,7 +312,6 @@ Usage, for example replace 'word' with 'sword':
 # Organise
 
 ## Compress and decompress files
-
 
 Compress a file using gzip or 7z compression
     

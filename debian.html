@@ -551,7 +551,11 @@ Acquire::BrokenProxy    true;</code></pre>
 </div>
 <div id="installing-debian-software-from-backports" class="section level2">
 <h2>Installing Debian software from backports</h2>
-<pre><code> sudo apt -t stretch-backports install nodejs</code></pre>
+<p><a href="https://backports.debian.org/">backports.debian.org</a> contains a list of backports available for each LTS Debian version.</p>
+<p>Add the main, contrib and non-free backports to /etc/apt/sources.list :</p>
+<pre><code>deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free</code></pre>
+<p>Install from backports</p>
+<pre><code>sudo apt -t stretch-backports install nodejs</code></pre>
 </div>
 <div id="deb-packages" class="section level2">
 <h2>DEB packages</h2>
