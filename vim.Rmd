@@ -84,6 +84,10 @@ To create a new file in the current directory visible in the explorer, press:
 
 This is also works to create a new directory and file.
 
+To move or rename a file within the explorer:
+
+    R
+
 A blog post on 
 [netrw](https://shapeshed.com/vim-netrw/), vim's file browser.
 Explains how to turn the banner off: 
@@ -285,10 +289,6 @@ For example to [remove the last 2 characters of each line in a selection](https:
 
     :'<,'>s/..$//
 
-Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.
-
-     %s/option value=".*"//g 
-
 ### Convert to lower-case
 
 [Switching case of characters](https://vim.fandom.com/wiki/Switching_case_of_characters):
@@ -305,9 +305,29 @@ To change the current line from upper to lower case:
 
     guu
 
-## Remove unwanted spaces
 
-[Remove unwanted spaces](https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace)
+## Replace spaces and new lines
+
+Vim wiki [Remove unwanted
+spaces](https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace):
+
+> In a search, \s finds white space (a space or a tab), and \+ finds one or
+> more occurrences.
+Command to replace repeated white spaces by a single white space in a selection:
+
+    :'<,'>s/\s\+/ /g
+
+SO [vim regex replace multiple consecutive spaces with only one
+space](https://stackoverflow.com/questions/3860532/vim-regex-replace-multiple-consecutive-spaces-with-only-one-space)
+proposes multiple other solutions, this one derived from Aristotle's answer
+keeps indentation white spaces at the beginning of the line:
+
+    :'<,'>s/[^\s]\zs\s\+/ /g
+
+Remove all beginnings of line. :%s/\option\n/, /g replace all end of line by
+comma + space. This cleans an html list of species for inclusion in a text.
+
+     %s/option value=".*"//g 
 
 ## Edit a whole line
 
@@ -390,17 +410,21 @@ More details on vim indentation in the [python wiki](https://wiki.python.org/moi
 
 [Repeating commands, Vim scripts and debugging](http://vimhelp.appspot.com/repeat.txt.html)
 
-## Save file
+## Save and rename a file
 
-save the current file
+Save the current file
 
     :w
 
-Save under a new name and edit that file
+Save under a new name (save as) and edit that file
 
     :sav
 
-SO [save as q new file qnd continue editing the original one](https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim)
+SO [save as a new file and continue editing the original one](https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim)
+
+To move or rename a file within the vim file explorer:
+
+    R
 
 ## Wrap lines
 
@@ -796,16 +820,9 @@ IDE](https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/)
     which works with both vim and neo vim
 
 
-# Tools
+# Terminal interaction
 
-## Shell
-
-[Working with external commands](https://www.linux.com/learn/vim-tips-working-external-commands)
-explains how to start a shell:
-
-    :shell
-
-Then exit the shell normaly with `exit`.
+## Bang commands
 
 Use a Bang! to run a command directly, for example to
 see how many words are in the file, run:
@@ -818,11 +835,22 @@ Insert text from a specified file into the current buffer:
 
     :r textfile
 
-You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:
+You can also read in the output of shell applications. For example, if you
+wanted to include a list of files from a specific directory, you could include
+them using this read command:
 
     :r ! ls -1 /home/user/directory
 
-## Terminal
+## Shell
+
+[Working with external commands](https://www.linux.com/learn/vim-tips-working-external-commands)
+explains how to start a shell:
+
+    :shell
+
+Then exit the shell normally with `exit`.
+
+## Terminal buffer
 
 You can start a terminal inside a vim split by entering the command: 
 
@@ -833,11 +861,27 @@ Some users prefer tmux panes and windows, others prefer vim terminal.
 I have not used vim terminal buffers enough to know how to use them properly. 
 For example [slime is also working with vim's terminal](https://vimawesome.com/plugin/vim-slime#vim-terminal)
 
+To start a vertical terminal:
+
+    :vert term
+
+Start a make action: 
+
+    :term make
+
+Start ipython3:
+
+    :vert term ipython3
+
+# Tools
+
 ## Vim diff
 
 View differences between `file1` and `file2` (vim documentation)
 
     vimdiff file1 file2
+
+
 
 ## spell check
 
@@ -874,8 +918,6 @@ Mark word as correct, this creates a spell file under /home/user/.vim/spell:
 Mark word as incorrect
 
     zw
-
-
 
 # blogs
 

@@ -503,6 +503,8 @@ CTRL+T - jump backwards</code></pre>
 <p>To create a new file in the current directory visible in the explorer, press:</p>
 <pre><code>%</code></pre>
 <p>This is also works to create a new directory and file.</p>
+<p>To move or rename a file within the explorer:</p>
+<pre><code>R</code></pre>
 <p>A blog post on <a href="https://shapeshed.com/vim-netrw/">netrw</a>, vim’s file browser. Explains how to turn the banner off:</p>
 <pre><code>let g:netrw_banner = 0</code></pre>
 <p>You can put the banner back on by pressing <code>I</code>.</p>
@@ -637,8 +639,6 @@ alt+: - switch to navigation mode and send a command</code></pre>
 <pre><code>:&#39;&lt;,&#39;&gt;s/,/,\r/g</code></pre>
 <p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
-<p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
-<pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
 <div id="convert-to-lower-case" class="section level3">
 <h3>Convert to lower-case</h3>
 <p><a href="https://vim.fandom.com/wiki/Switching_case_of_characters">Switching case of characters</a>:</p>
@@ -651,9 +651,17 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <pre><code>guu</code></pre>
 </div>
 </div>
-<div id="remove-unwanted-spaces" class="section level2">
-<h2>Remove unwanted spaces</h2>
-<p><a href="https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace">Remove unwanted spaces</a></p>
+<div id="replace-spaces-and-new-lines" class="section level2">
+<h2>Replace spaces and new lines</h2>
+<p>Vim wiki <a href="https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace">Remove unwanted spaces</a>:</p>
+<blockquote>
+<p>In a search, finds white space (a space or a tab), and + finds one or more occurrences. Command to replace repeated white spaces by a single white space in a selection:</p>
+</blockquote>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\s\+/ /g</code></pre>
+<p>SO <a href="https://stackoverflow.com/questions/3860532/vim-regex-replace-multiple-consecutive-spaces-with-only-one-space">vim regex replace multiple consecutive spaces with only one space</a> proposes multiple other solutions, this one derived from Aristotle’s answer keeps indentation white spaces at the beginning of the line:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/[^\s]\zs\s\+/ /g</code></pre>
+<p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
+<pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
 </div>
 <div id="edit-a-whole-line" class="section level2">
 <h2>Edit a whole line</h2>
@@ -714,13 +722,15 @@ filetype indent on </code></pre>
 <h2>Repeat Commands</h2>
 <p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating commands, Vim scripts and debugging</a></p>
 </div>
-<div id="save-file" class="section level2">
-<h2>Save file</h2>
-<p>save the current file</p>
+<div id="save-and-rename-a-file" class="section level2">
+<h2>Save and rename a file</h2>
+<p>Save the current file</p>
 <pre><code>:w</code></pre>
 <p>Save under a new name and edit that file</p>
 <pre><code>:sav</code></pre>
-<p>SO <a href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim">save as q new file qnd continue editing the original one</a></p>
+<p>SO <a href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim">save as a new file and continue editing the original one</a></p>
+<p>To move or rename a file within the vim file explorer:</p>
+<pre><code>R</code></pre>
 </div>
 <div id="wrap-lines" class="section level2">
 <h2>Wrap lines</h2>
@@ -1013,13 +1023,10 @@ Ctrl+N</code></pre>
 </ul>
 </div>
 </div>
-<div id="tools" class="section level1">
-<h1>Tools</h1>
-<div id="shell" class="section level2">
-<h2>Shell</h2>
-<p><a href="https://www.linux.com/learn/vim-tips-working-external-commands">Working with external commands</a> explains how to start a shell:</p>
-<pre><code>:shell</code></pre>
-<p>Then exit the shell normaly with <code>exit</code>.</p>
+<div id="terminal-interaction" class="section level1">
+<h1>Terminal interaction</h1>
+<div id="bang-commands" class="section level2">
+<h2>Bang commands</h2>
 <p>Use a Bang! to run a command directly, for example to see how many words are in the file, run:</p>
 <pre><code>:! wc %</code></pre>
 <p>You can copy (<code>y $</code>) and paste a command in the vim command line with <code>CTRL + R + &quot;</code>.</p>
@@ -1028,12 +1035,27 @@ Ctrl+N</code></pre>
 <p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:</p>
 <pre><code>:r ! ls -1 /home/user/directory</code></pre>
 </div>
-<div id="terminal" class="section level2">
-<h2>Terminal</h2>
+<div id="shell" class="section level2">
+<h2>Shell</h2>
+<p><a href="https://www.linux.com/learn/vim-tips-working-external-commands">Working with external commands</a> explains how to start a shell:</p>
+<pre><code>:shell</code></pre>
+<p>Then exit the shell normally with <code>exit</code>.</p>
+</div>
+<div id="terminal-buffer" class="section level2">
+<h2>Terminal buffer</h2>
 <p>You can start a terminal inside a vim split by entering the command:</p>
 <pre><code>:terminal</code></pre>
 <p>Reddit <a href="https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/">does anybody use terminal instead of tmux and a normal terminal?</a> Some users prefer tmux panes and windows, others prefer vim terminal. I have not used vim terminal buffers enough to know how to use them properly. For example <a href="https://vimawesome.com/plugin/vim-slime#vim-terminal">slime is also working with vim’s terminal</a></p>
+<p>To start a vertical terminal:</p>
+<pre><code>:vert term</code></pre>
+<p>Start a make action:</p>
+<pre><code>:term make</code></pre>
+<p>Start ipython3:</p>
+<pre><code>:vert term ipython3</code></pre>
 </div>
+</div>
+<div id="tools" class="section level1">
+<h1>Tools</h1>
 <div id="vim-diff" class="section level2">
 <h2>Vim diff</h2>
 <p>View differences between <code>file1</code> and <code>file2</code> (vim documentation)</p>
