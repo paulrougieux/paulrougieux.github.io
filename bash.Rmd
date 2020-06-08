@@ -378,10 +378,17 @@ For example to rename all upper-case .JPG extension into lower-case .jpg extensi
 
 # Convert
 
+This section is about converting from one document format into another. For
+example converting a text file into a pdf file and vice-versa.
+
 ## Pandoc
 
 [Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
 to convert text files from one format to another.
+
+Convert a markdown document to pdf
+
+    pandoc filname.md -o filename.pdf
 
 Convert an odf document to markdown
 
@@ -391,11 +398,59 @@ Convert a Microsoft Word document to markdown
 
     pandoc filename.docx -o filename.md 
 
-[Markdown has two different header styles](https://pandoc.org/MANUAL.html#headers)
-Use ATX style headers in markdown output. The default is to use
-setext-style headers for levels 1-2, and then ATX headers.
+[Markdown has two different header
+styles](https://pandoc.org/MANUAL.html#headers) Use ATX style headers in
+markdown output. The default is to use setext-style headers for levels 1-2, and
+then ATX headers.
 
     pandoc --atx-headers filename.docx -o filename.md 
+
+Adding headers and footers to pandoc suggests using:
+
+    ---
+    title: Test
+    author: Author Name
+    header-includes: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[CO,CE]{This is fancy}
+        \fancyfoot[CO,CE]{So is this}
+        \fancyfoot[LE,RO]{\thepage}
+    abstract: This is a pandoc test . . . 
+    ---
+
+Generic [makefile for
+pandoc](https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69)
+
+[Bash script for pandoc](https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs)
+
+    for mdfile in *.md; do
+    pdffile=${mdfile%.md}.pdf
+    echo $pdffile
+    done
+
+Convert all docx documents to markdown in the current folder
+
+    for docxfile in *.docx; do
+    mdfile=${docxfile%.docx}.md
+    echo "converting $docxfile to $mdfile"
+    pandoc "$docxfile" -o "$mdfile"
+    done
+
+Pandoc can convert to PDF, but not from PDF.
+
+## pdfminer
+
+(pdfminer](https://github.com/pdfminer/pdfminer.six)
+Convert all pdf documents to text files in the current folder:
+
+    for pdffile in *.pdf; do
+    txtfile=${pdffile%.pdf}.txt
+    echo "converting $pdffile to $txtfile"
+    pdf2txt.py $pdffile > $txtfile
+    done
+
+See also a utility to extract tables from pdf documents.
 
 # Download 
 
@@ -1039,9 +1094,11 @@ See: https://github.com/christoomey/vim-tmux-navigator
 # VPN
 
 A VPN was useful when:
+
 * SMS interface didn't work on orange.fr. I could access it through a VPN server based in Paris.
 * FTP download site based in Canada didn't work from Italy. A colleague could access it through a VPN server based in Canada.
 * SSH access to remote servers didn't work on company wifi. I could access the machines through the VPN.
+
 VPN access also removes localisation of site searches on google and google maps. 
 
 Example session,from a company wifi system which is probably blocking SSH traffic.

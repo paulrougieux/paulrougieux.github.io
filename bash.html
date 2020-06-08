@@ -774,15 +774,53 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 </div>
 <div id="convert" class="section level1">
 <h1>Convert</h1>
+<p>This section is about converting from one document format into another. For example converting a text file into a pdf file and vice-versa.</p>
 <div id="pandoc" class="section level2">
 <h2>Pandoc</h2>
 <p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another.</p>
+<p>Convert a markdown document to pdf</p>
+<pre><code>pandoc filname.md -o filename.pdf</code></pre>
 <p>Convert an odf document to markdown</p>
 <pre><code>pandoc filename.odt -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
 <pre><code>pandoc filename.docx -o filename.md </code></pre>
 <p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> Use ATX style headers in markdown output. The default is to use setext-style headers for levels 1-2, and then ATX headers.</p>
 <pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
+<p>Adding headers and footers to pandoc suggests using:</p>
+<pre><code>---
+title: Test
+author: Author Name
+header-includes: |
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[CO,CE]{This is fancy}
+    \fancyfoot[CO,CE]{So is this}
+    \fancyfoot[LE,RO]{\thepage}
+abstract: This is a pandoc test . . . 
+---</code></pre>
+<p>Generic <a href="https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69">makefile for pandoc</a></p>
+<p><a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">Bash script for pandoc</a></p>
+<pre><code>for mdfile in *.md; do
+pdffile=${mdfile%.md}.pdf
+echo $pdffile
+done</code></pre>
+<p>Convert all docx documents to markdown in the current folder</p>
+<pre><code>for docxfile in *.docx; do
+mdfile=${docxfile%.docx}.md
+echo &quot;converting $docxfile to $mdfile&quot;
+pandoc &quot;$docxfile&quot; -o &quot;$mdfile&quot;
+done</code></pre>
+<p>Pandoc can convert to PDF, but not from PDF.</p>
+</div>
+<div id="pdfminer" class="section level2">
+<h2>pdfminer</h2>
+<p>(pdfminer](<a href="https://github.com/pdfminer/pdfminer.six" class="uri">https://github.com/pdfminer/pdfminer.six</a>) Convert all pdf documents to text files in the current folder:</p>
+<pre><code>for pdffile in *.pdf; do
+txtfile=${pdffile%.pdf}.txt
+echo &quot;converting $pdffile to $txtfile&quot;
+pdf2txt.py $pdffile &gt; $txtfile
+done</code></pre>
+<p>See also a utility to extract tables from pdf documents.</p>
 </div>
 </div>
 <div id="download" class="section level1">
@@ -1189,7 +1227,13 @@ bind-key -n &#39;C-l&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-l&#39;  
 </div>
 <div id="vpn" class="section level1">
 <h1>VPN</h1>
-<p>A VPN was useful when: * SMS interface didn’t work on orange.fr. I could access it through a VPN server based in Paris. * FTP download site based in Canada didn’t work from Italy. A colleague could access it through a VPN server based in Canada. * SSH access to remote servers didn’t work on company wifi. I could access the machines through the VPN. VPN access also removes localisation of site searches on google and google maps.</p>
+<p>A VPN was useful when:</p>
+<ul>
+<li>SMS interface didn’t work on orange.fr. I could access it through a VPN server based in Paris.</li>
+<li>FTP download site based in Canada didn’t work from Italy. A colleague could access it through a VPN server based in Canada.</li>
+<li>SSH access to remote servers didn’t work on company wifi. I could access the machines through the VPN.</li>
+</ul>
+<p>VPN access also removes localisation of site searches on google and google maps.</p>
 <p>Example session,from a company wifi system which is probably blocking SSH traffic. The SSH connection breaks:</p>
 <pre><code>paul@debianpaul:~/repos$ ssh cbm1 
 ssh_exchange_identification: Connection closed by remote host</code></pre>
