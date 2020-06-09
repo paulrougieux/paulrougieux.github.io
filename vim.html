@@ -726,7 +726,7 @@ filetype indent on </code></pre>
 <h2>Save and rename a file</h2>
 <p>Save the current file</p>
 <pre><code>:w</code></pre>
-<p>Save under a new name and edit that file</p>
+<p>Save under a new name (save as) and edit that file</p>
 <pre><code>:sav</code></pre>
 <p>SO <a href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim">save as a new file and continue editing the original one</a></p>
 <p>To move or rename a file within the vim file explorer:</p>
@@ -888,6 +888,30 @@ filetype plugin indent on    &quot; required
 <div id="debugger" class="section level2">
 <h2>Debugger</h2>
 <p>vi.stackexchange <a href="https://vi.stackexchange.com/questions/17962/python-debugging">Python debugging</a> <a href="https://github.com/gotcha/vimpdb">vimpdb</a></p>
+</div>
+<div id="git-fugitive" class="section level2">
+<h2>Git fugitive</h2>
+<p>Once the fugitive plugin is installed the <code>:G</code> command can be used run any git command, such as:</p>
+<pre><code>:G status
+:G pull 
+:G log</code></pre>
+<p>The output of these command may appear in a vim buffer, or it may appear in a terminal, depending on whether or not fugitive has a special way to handle the output of git. You can also call the command alone to open a fugitive summary buffer:</p>
+<pre><code>:G</code></pre>
+<p>Within this summary buffer many things can be done with mappings. Move to the next file and expand inline diffs:</p>
+<pre><code>i</code></pre>
+<p>Expand inline diffs of the file under the cursor :</p>
+<pre><code>&gt;</code></pre>
+<p>Remove the inline diff of the file under the cursor.</p>
+<pre><code>&lt;</code></pre>
+<p>Perform a horizontal diff on the file under the cursor.</p>
+<pre><code>dd</code></pre>
+<p>Perform a vertical diff on the file under the cursor.</p>
+<pre><code>dv</code></pre>
+<p>Stage (add) or unstage (reset) the file under the cursor:</p>
+<pre><code>a
+-</code></pre>
+<p>Create a commit</p>
+<pre><code>cc</code></pre>
 </div>
 <div id="linter" class="section level2">
 <h2>Linter</h2>

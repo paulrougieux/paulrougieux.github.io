@@ -618,6 +618,53 @@ Install all plugins configured in your `.vimrc`.
 vi.stackexchange [Python debugging](https://vi.stackexchange.com/questions/17962/python-debugging)
 [vimpdb](https://github.com/gotcha/vimpdb)
 
+## Git fugitive
+
+Once the fugitive plugin is installed the `:G` command can be used run any git
+command, such as:
+
+    :G status
+    :G pull 
+    :G log
+
+The output of these command may appear in a vim buffer, or it may appear in a
+terminal, depending on whether or not fugitive has a special way to handle the
+output of git. You can also call the command alone to open a fugitive summary
+buffer:
+
+    :G
+
+Within this summary buffer many things can be done with mappings. 
+Move to the next file and expand inline diffs:
+    
+    i
+
+Expand inline diffs of the file under the cursor :
+
+    >
+
+Remove the inline diff of the file under the cursor.
+
+    <
+
+Perform a horizontal diff on the file under the cursor.
+
+    dd
+
+Perform a vertical diff on the file under the cursor.
+
+    dv
+
+Stage (add) or unstage (reset) the file under the cursor:
+
+    a
+    -
+
+Create a commit
+
+    cc
+
+
 ## Linter
 
 I have installed the [ALE linter](https://github.com/dense-analysis/ale) and use it for python code.
