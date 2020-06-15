@@ -426,6 +426,7 @@ For example:
 
 # Network
 
+Sometimes helps with WiFi connection.
 Restart network interface: 
 
     sudo service network-manager restart

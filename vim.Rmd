@@ -10,9 +10,9 @@ This page is the continuation of [my blog post on Vim commands](https://paulremo
 
 # Help
 
-    :help  -  vim help
+    :help - vim help
     :help commandname - help on a particular command
-    :h commandname -help on a particular command
+    :h commandname - help on a particular command
     CTRL+] - jump to a highlighted topic
     CTRL+T - jump backwards
 
@@ -181,16 +181,19 @@ here](https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autoc
 so I deactivated it. 
 
 # Configure vim in .vimrc
+
 See also my vimrc file stored in [setup/.vimrc](setup/.vimrc).
+Many configuration options are mentioned throughout this document. 
 
 Reload the configuration after editing it: 
 
     :so ~/.vimrc
 
-Text colour.
-Add syntax highlight to your .vimrc
+Text colour. Add syntax highlight to your .vimrc
 
     syntax enable
+
+## File specific .vimrc options
 
 How to add a file extension to vim syntax highlight
 
@@ -199,6 +202,15 @@ How to add a file extension to vim syntax highlight
 I used it to display markdown files as text files:
 
     au BufNewFile,BufRead *.md set filetype=txt
+
+Make a key combination specific to latex files, to insert a citation key using the vimtex plugin.
+Note: ctrl-space appears as ctrl-@ in my terminal
+
+    au BufRead,BufNewFile *.tex inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
+
+Prevent tab expanding to space in make files [SO answer](https://stackoverflow.com/a/158990/2641825):
+
+    autocmd FileType make set noexpandtab
 
 ## AZERTY Keyboard
 
@@ -854,6 +866,9 @@ See above section on navigation, you can use `Ctrl-O` to jump back and
 
 ## R programming
 
+* Medium Xiaoou WANG [How to turn vim into a perfect, better R IDE and
+    Rmarkdown writer than Rstudio (part
+    I)](https://medium.com/@xiaoouwang/how-to-turn-vim-into-a-perfect-better-r-ide-and-rmarkdown-writer-than-rstudio-part-i-48e1293c9c05)
 * reddit [R programmers, do you prefer vim or Rstudio?](https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/)
     > "Vim with fzf helps open these subsection code files super easily, ag helps
     > me find keywords across all the files in my code folder, ctags helps me find
@@ -861,11 +876,17 @@ See above section on navigation, you can use `Ctrl-O` to jump back and
     > gitgutter tells me where I've made changes I'd maybe like to revisit later. I
     > find these plugins alone make coding in vim much easier than R studio and
     > they aren't even R specific."
-* [Turning vim into an
+* free code camp [Turning vim into an
 IDE](https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/)
     Uses [Nvim-R](https://github.com/jalvesaq/Nvim-R)
     which works with both vim and neo vim
 
+### Nvim-R
+
+Nvim-R supports knitr and mappings can be defined for example:
+
+   RSendChunk
+   RDSendChunk
 
 # Terminal interaction
 

@@ -236,6 +236,15 @@ Remove images
     docker images # list available images
     docker image rm  <image-id>
 
+# Programming with Docker
+
+## Docker for python
+
+[Docker packaging guide for python](https://pythonspeed.com/docker/)
+
+## Docker for R
+
+Docker hub [R-base](https://hub.docker.com/_/r-base)
 
 # Security
 docs.docker.com [Manage sensitive data with Docker secrets](https://docs.docker.com/engine/swarm/secrets/)

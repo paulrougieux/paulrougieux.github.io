@@ -32,6 +32,7 @@ Plugin 'davidhalter/jedi-vim'
 Plugin 'dense-analysis/ale' 
 " R programming
 Plugin 'jalvesaq/Nvim-R'
+Plugin 'jalvesaq/R-Vim-runtime'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -136,6 +137,10 @@ autocmd QuickFixCmdPost *grep* cwindow
 :let Tex_FoldedMisc=""
 " Only citation keys for completion
 let g:vimtex_complete_bib = { 'simple': 1 }
+" Settings only implemented for .tex files
+" Key combination to insert a citation 
+" note: ctrl-space appears as ctrl-@ in my terminal
+au BufRead,BufNewFile *.tex inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
 """"""""""""""""""""""""""
 " Markdown configuration "
@@ -148,6 +153,7 @@ set nojoinspaces
 " disable folding in vim-markdown 
 let g:vim_markdown_folding_disabled = 1
 " enable vim-markdown for .Rmd files too
+" This might conflict with the Nvim-R plugin
 augroup filetypedetect_markdown
     au!
     au BufRead,BufNewFile *.Rmd set ft=markdown

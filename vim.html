@@ -460,9 +460,9 @@ div.tocify {
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my blog post on Vim commands</a>.</p>
 <div id="help" class="section level1">
 <h1>Help</h1>
-<pre><code>:help  -  vim help
+<pre><code>:help - vim help
 :help commandname - help on a particular command
-:h commandname -help on a particular command
+:h commandname - help on a particular command
 CTRL+] - jump to a highlighted topic
 CTRL+T - jump backwards</code></pre>
 <p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
@@ -569,15 +569,22 @@ ctrl+b, ctrl+d move page up or page down
 </div>
 <div id="configure-vim-in-.vimrc" class="section level1">
 <h1>Configure vim in .vimrc</h1>
-<p>See also my vimrc file stored in <a href="setup/.vimrc" class="uri">setup/.vimrc</a>.</p>
+<p>See also my vimrc file stored in <a href="setup/.vimrc" class="uri">setup/.vimrc</a>. Many configuration options are mentioned throughout this document.</p>
 <p>Reload the configuration after editing it:</p>
 <pre><code>:so ~/.vimrc</code></pre>
 <p>Text colour. Add syntax highlight to your .vimrc</p>
 <pre><code>syntax enable</code></pre>
+<div id="file-specific-.vimrc-options" class="section level2">
+<h2>File specific .vimrc options</h2>
 <p>How to add a file extension to vim syntax highlight</p>
 <pre><code>au BufNewFile,BufRead *.dump set filetype=sql</code></pre>
 <p>I used it to display markdown files as text files:</p>
 <pre><code>au BufNewFile,BufRead *.md set filetype=txt</code></pre>
+<p>Make a key combination specific to latex files, to insert a citation key using the vimtex plugin. Note: ctrl-space appears as ctrl-@ in my terminal</p>
+<pre><code>au BufRead,BufNewFile *.tex inoremap &lt;C-Space&gt; &lt;C-x&gt;&lt;C-o&gt; | inoremap &lt;C-@&gt; &lt;C-x&gt;&lt;C-o&gt;</code></pre>
+<p>Prevent tab expanding to space in make files <a href="https://stackoverflow.com/a/158990/2641825">SO answer</a>:</p>
+<pre><code>autocmd FileType make set noexpandtab</code></pre>
+</div>
 <div id="azerty-keyboard" class="section level2">
 <h2>AZERTY Keyboard</h2>
 <ul>
@@ -1042,9 +1049,15 @@ Ctrl+N</code></pre>
 <div id="r-programming" class="section level2">
 <h2>R programming</h2>
 <ul>
+<li>Medium Xiaoou WANG <a href="https://medium.com/@xiaoouwang/how-to-turn-vim-into-a-perfect-better-r-ide-and-rmarkdown-writer-than-rstudio-part-i-48e1293c9c05">How to turn vim into a perfect, better R IDE and Rmarkdown writer than Rstudio (part I)</a></li>
 <li>reddit <a href="https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/">R programmers, do you prefer vim or Rstudio?</a> &gt; “Vim with fzf helps open these subsection code files super easily, ag helps &gt; me find keywords across all the files in my code folder, ctags helps me find &gt; functions I’ve defined, ale tells where I’ve made some trivial mistake, &gt; gitgutter tells me where I’ve made changes I’d maybe like to revisit later. I &gt; find these plugins alone make coding in vim much easier than R studio and &gt; they aren’t even R specific.”</li>
-<li><a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a> Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</li>
+<li>free code camp <a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a> Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</li>
 </ul>
+<div id="nvim-r" class="section level3">
+<h3>Nvim-R</h3>
+<p>Nvim-R supports knitr and mappings can be defined for example:</p>
+<p>RSendChunk RDSendChunk</p>
+</div>
 </div>
 </div>
 <div id="terminal-interaction" class="section level1">
