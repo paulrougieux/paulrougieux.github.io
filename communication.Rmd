@@ -1,48 +1,66 @@
 
 # Introduction
 
-The purpose of this document is to analyse communication 
-options such as mail, social media, chat, calls and video calls from
-the perspective of a privacy conscious individual.
+The purpose of this document is to analyse communication options such as mail,
+social media, chat, calls and video calls from the perspective of a privacy
+conscious individual. I also care about freedom of speech and would like to
+avoid vendor lock in.
 
+
+## Network effects
+
+Network effects appear when friends encourage you to choose a particular
+platform. It is hard to resist the pressure from peers, friends and family who
+describe how convenient the software is and how nice it would be to write,
+talk, share pictures and videos on that platform. Network effects are natural, I
+suppose. They can apply to any form of communication. 
+
+# Silos versus freedom
+
+Through communication tools such as Skype, Whatsapp or Zoom you can only
+communicate with people registered at the same company.  
+Incompatible tools split our digital expression into silos. These silos lock us
+to a particular platform and limit our freedom of expression. Once a silo has
+managed to attract a large number of users, network effects pushes those users
+to attract more peers inside. 
+
+Our communication doesn't have to be locked into a particular platform. The
+internet protocols were conceived with neutrality at the core.
 
 # Mail
 
 ## Email
 
-Email is an open protocol and that is good because it means 
-you can exchange emails with someone who uses an email server from a different company.
+Email is an open protocol and that is good because it means you can exchange
+emails with someone who uses an email server from a different company. In other
+words there are no communication silos with email.
 
-Most [emails are encrypted](https://en.wikipedia.org/wiki/Email_encryption)
-at the transport layer.
-End-to-end encryption would be better, but it's usage is rare. 
+Most [emails are encrypted](https://en.wikipedia.org/wiki/Email_encryption) at
+the transport layer. End-to-end encryption would be better, but it's usage is
+rare. 
 
-Through communication tools such as skype, Whatsapp or zoom you can only
-communicate with people registered at the same company. This makes you
-dependent on that company and creates network effects, where friends and family
-members encourage you to choose the biggest platform. 
 
 ## Snail mail
 
 Snail mail can be seen as an emotional form of communication through a physical
 medium: paper. You can smell it. You can touch it. You can drop a tear on it.
 You can tear it apart. You can burn it. It's based on plants that were growing
-in a forest somewhere. It might have been recycled. It might have spent time in
-a trash bin. 
+in a forest somewhere. It might have spent time in a trash bin. It might have
+been recycled.
 
 
 # Chat, calls and video calls
 ## Riot
 
 Riot-web is a chat application based on the matrix decentralised communication
-protocol. 
+protocol. Matrix is an open protocol meant to avoid communication silos.
 
 ## Signal 
 
 The issue is that the desktop client requires a mobile phone with camera to be
 started. As of January 2020 I still use a nokia 3010 phone. I cannot install
 the signal application on that phone and this means that I cannot use signal on
-my desktop. 
+my desktop.
 
 ## Skype
 
@@ -91,9 +109,13 @@ Call with screen sharing in great quality.
 Social media "facilitate controlled experimentation". When you use social
 media, you subject yourself to experimentation and behaviour modification.
 
+
 ## Facebook 
 
 [Facebook–Cambridge Analytica data scandal](https://en.wikipedia.org/wiki/Facebook–Cambridge_Analytica_data_scandal)
 
 
+# Links
+
+* eff.org [surveillance self defence](https://ssd.eff.org/en/module-categories/tool-guides)
 
