@@ -733,6 +733,8 @@ sudo apt install fonts-deva-extra</code></pre>
 <p>The issue is that sometimes the display menu doesn’t provide all resolutions available for a given additional screen. Typically resolution suggested are lower than the one recommended by the screen.</p>
 <div id="wayland" class="section level2">
 <h2>Wayland</h2>
+<div id="make-another-screen-resolution-available" class="section level3">
+<h3>Make another screen resolution available</h3>
 <p>Ask Ubuntu <a href="https://askubuntu.com/a/973582">Adding a custom resolution with Wayland</a> I tried <a href="https://askubuntu.com/a/1210275/315347">this answer</a> and added this to the kernel boot parameter. Note from ubuntu wiki <a href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">kernel boot parameter</a> “Be sure to add a SPACE after”splash&quot; before adding your new parameter.) Click the Save button, then close the editor window. &quot;</p>
 <pre><code>sudo vim /etc/default/grub</code></pre>
 <p>Then edit this line</p>
@@ -740,6 +742,14 @@ sudo apt install fonts-deva-extra</code></pre>
 <p>Then update grub</p>
 <pre><code>sudo update-grub</code></pre>
 <p>This did make the new resolution available in the Gnome display settings.</p>
+</div>
+</div>
+<div id="custom-wrapper-script-for-x11" class="section level2">
+<h2>Custom wrapper script for x11</h2>
+<p>Debian 10 Buster uses wayland as a window manager. To force the use of x11 for zathura, in debian a zathura wrapper script containing:</p>
+<pre><code>#!/usr/bin/bash
+GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
+<p>Can be placed under the default user bin located at ~/.local/bin. This is one of the first element of the <code>$PATH</code> environment variable.</p>
 </div>
 <div id="outdated-solution-using-xrandr" class="section level2">
 <h2>Outdated solution using xrandr</h2>

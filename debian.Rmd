@@ -447,6 +447,7 @@ lower than the one recommended by the screen.
 
 ## Wayland
 
+### Make another screen resolution available
 Ask Ubuntu [Adding a custom resolution with
 Wayland](https://askubuntu.com/a/973582) I tried [this
 answer](https://askubuntu.com/a/1210275/315347) and added this to the kernel
@@ -466,6 +467,17 @@ Then update grub
     sudo update-grub
 
 This did make the new resolution available in the Gnome display settings. 
+
+## Custom wrapper script for x11
+Debian 10 Buster uses wayland as a
+window manager. To force the use of x11 for zathura, in debian a zathura
+wrapper script containing:
+
+    #!/usr/bin/bash
+    GDK_BACKEND=x11 /usr/bin/zathura "$@"
+
+Can be placed under the default user bin located at ~/.local/bin.
+This is one of the first element of the `$PATH` environment variable. 
 
 
 ## Outdated solution using xrandr
