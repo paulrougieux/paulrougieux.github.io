@@ -111,7 +111,26 @@ Display a list of first level header in a markdown document (found in quick mark
 
     :g/^# /#
 
-See also the markdown TOC extension for vim.
+See also :
+
+* The markdown TOC extension for vim.
+* [Vim markdown composer](https://github.com/euclio/vim-markdown-composer/blob/master/README.md)
+    a plugin that adds asynchronous Markdown preview to Neovim and Vim.
+
+In [this
+question](https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md),
+I managed to create an auto command to activate vim-markdown for Rmd files. But
+now that I start using Nvim-R more intensively, I hit [vim-markdown issue
+263](https://github.com/plasticboy/vim-markdown/issues/263): activating
+vim-markdown removes syntax highlighting and auto completion of the R code
+chunks. I first extracted the Toc function into a small plugin. 
+Then chose to create the table of content
+with the [Voom plugin](https://github.com/vim-voom/VOoM) based on a suggestion on [Nvim-R
+issue 505](https://github.com/jalvesaq/Nvim-R/issues/505). I have this in my
+`.vimrc`: 
+
+    let voom_ft_modes = {'markdown': 'pandoc', 'rmd': 'pandoc', 'rnoweb': 'latex'}
+    au BufRead,BufNewFile *.Rmd command! Toc Voom 
 
 ## Move up, down, left, right
 
@@ -243,6 +262,41 @@ See
 Show all mappings including <leader> commands:
 
    :map
+
+## Minimal .vimrc for bug reports
+
+You can create a minimal .vimrc and use is by calling vim with
+
+    vim -u /tmp/.vimrc
+
+See for example this [bug report](https://github.com/lervag/vimtex/issues/1719)
+where I used this minimal vimrc file to investigate an issue with the Vimtex
+plugin. 
+
+    set nocompatible
+    let &runtimepath  = '~/.vim/bundle/vimtex,' . &runtimepath
+    let &runtimepath .= ',~/.vim/bundle/vimtex/after'
+    filetype plugin indent on
+    syntax enable
+    " Use zathura as a PDF viewer
+    let g:vimtex_view_method = 'zathura'
+
+Or another minimal vimrc to investigate an issue with the nvim-R plugin.
+
+    set nocompatible
+    let &runtimepath  = '~/.vim/bundle/Nvim-R,' . &runtimepath
+    filetype plugin indent on
+    syntax enable
+    let maplocalleader = ";"
+
+    " enable vim-markdown for .Rmd files too
+    " This might conflict with the Nvim-R plugin
+    augroup filetypedetect_markdown
+        au!
+        au BufRead,BufNewFile *.Rmd set ft=markdown
+    augroup END
+
+The solution was to use 2 file types for Rmd files: `set ft=rmd.markdown`.
 
 # Edit a file
 
@@ -507,6 +561,11 @@ Natural split opening
 
 See the [bash](bash.html) page for the tmux side of the configuration.
 
+I use the [vim-tmux-navigator](https://github.com/christoomey/vim-tmux-navigator)
+
+It doesn't work in a terminal buffer because of conflicts with fuzzy file search. 
+[issue 172](https://github.com/christoomey/vim-tmux-navigator/pull/172)
+
 [vim-tmux-navigator to use tmux prefix instead of C-[hjkl]](https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl)
 
 busnag.com [tmux and vim](https://www.bugsnag.com/blog/tmux-and-vim)
@@ -622,6 +681,21 @@ Edit your .vimrc and add the following at the beginning
 Install all plugins configured in your `.vimrc`.
 
     :PluginInstall
+
+
+## Creating a plugin
+
+I'm trying to extract a table of content functionality from a plugin that does
+many other things I don't need. 
+
+* https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin
+
+I extracted the function into a plugin called
+[markdown-toc-toc](https://github.com/paulrougieux/markdown-toc-toc) I placed
+the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my
+issue. I now have both Nvim-R autocompletion and syntax highlight working
+correctly in R markdown chunks as well as a table of content for the markdown
+titles.
 
 # Programming tools
 
@@ -783,16 +857,72 @@ Run pytest from within vim.
 
 ## Latex editing
 
-* [vim-latex](https://github.com/vim-latex/vim-latex) the one I used first.
-    * Was complaining about my makefile, that it didn't include a dvi section
-    * Was creating nice taglist but with duplicated tags.
 
-* [vimtex](https://github.com/lervag/vimtex#alternatives) more recent 
-    * Completion uses omni completion, see `:help compl-omni` with 
-        CTRL-X CTRL-O
-    * doesn't complain about my minimalistic makefile
-    * Doesn't add anything to the taglist (maybe I should use gutentag?)
+### vim Latex
 
+[vim-latex](https://github.com/vim-latex/vim-latex) the one I used first.
+
+* Was complaining about my makefile, that it didn't include a dvi section
+* Was creating nice taglist but with duplicated tags.
+
+### Vimtex
+
+[vimtex](https://github.com/lervag/vimtex#alternatives) is more recent compared to vim-latex 
+
+* Completion uses omni completion, see `:help compl-omni` with 
+    CTRL-X CTRL-O
+* doesn't complain about my minimalistic makefile
+* doesn't add anything to the taglist (maybe I should use gutentag?) but there is a table of content buffer.
+
+Display a table of content:
+
+    :VimtexTocOpen
+    :VimtexTocToggle
+
+Define a shorter command name `Toc`, by placing this in the .vimrc
+
+    au BufRead,BufNewFile *.tex command! Toc VimtexTocOpen
+
+I first ran into this error when viewing git diffs or when jumping back to the tex file with 
+Ctrl-O
+
+    Error detected while processing BufRead Autocommands for "*.tex":
+    E174: Command already exists: add ! to replace it: Toc VimtexTocOpen
+
+Because I had the autocommand defined this way:
+
+    au BufRead,BufNewFile *.tex command Toc VimtexTocOpen
+
+Compile 
+
+    :VimtexCompile
+
+Install prerequisite to view pdf files with forward (from vim to the pdf
+viewer) and backward (from the pdf viewer to vim) search. Note: Forward and
+backward search are not available for evince [issue
+179](https://github.com/lervag/vimtex/issues/179).
+
+    sudo apt install zathura
+    sudo apt install xdotool
+
+This bug report pushed me to learn about xdotool and xprop. 
+
+There was a issue with the focus not moving to the zathura viewer.
+I reported it as [issue #1719](https://github.com/lervag/vimtex/issues/1719).
+The first step was to add client server support to vim. 
+I asked a question on [how to install vim with clientserver
+support](https://vi.stackexchange.com/questions/26025/how-to-install-vim-with-clientserver-on-debian).
+But the issue remained even with client server enabled in vim. 
+
+The second step was related to the fact that Debian 10 Buster uses wayland as a
+window manager. To force the use of x11 for zathura, in debian a zathura
+wrapper script containing:
+
+    #!/usr/bin/bash
+    GDK_BACKEND=x11 /usr/bin/zathura "$@"
+
+Can be placed under the default user bin located at ~/.local/bin.
+This is one of the first element of the `$PATH` environment variable. 
 
 ## Python programming
 
@@ -887,6 +1017,39 @@ Nvim-R supports knitr and mappings can be defined for example:
 
    RSendChunk
    RDSendChunk
+
+I mapped the local leader key to ";"
+
+Start R
+
+  Start R (default)                                  <localleader>rf
+
+Sending code to R:
+
+  . Line                                                \l
+  . Line (and down)                                     \d
+    
+
+
+Setting up tags as explained in :help Nvim-R
+
+> You could, for example, download and unpack R's source code, start R inside
+> the ~/.cache/Nvim-R directory and do the following commands:
+> >
+>    rtags(path = "/path/to/R/source/code", recursive = TRUE, ofile = "RTAGS")
+>    etags2ctags("RTAGS", "Rtags")
+> <
+> Then, you would quit R and do the following command in the terminal emulator:
+> >
+>    ctags --languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code
+> <
+> Finally, you would put the following in your |vimrc|, optionally inside an
+> |autocmd-group|:
+> >
+>    autocmd FileType r set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
+>    autocmd FileType rnoweb set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
+> 
+
 
 # Terminal interaction
 

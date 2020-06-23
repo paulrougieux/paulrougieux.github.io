@@ -519,7 +519,12 @@ Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code>
 <h2>Markdown</h2>
 <p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
 <pre><code>:g/^# /#</code></pre>
-<p>See also the markdown TOC extension for vim.</p>
+<p>See also :</p>
+<ul>
+<li>The markdown TOC extension for vim.</li>
+<li><a href="https://github.com/euclio/vim-markdown-composer/blob/master/README.md">Vim markdown composer</a> a plugin that adds asynchronous Markdown preview to Neovim and Vim.</li>
+</ul>
+<p>In <a href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this question</a>, I managed to create an auto command to activate vim-markdown for Rmd files. But now that I start using Nvim-R more intensively, I hit <a href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown issue 263</a>: activating vim-markdown removes syntax highlighting and auto completion of the R code chunks. That issue hasn’t been resolved since 2016, so I guess it will be hard to make both plugins work in parallel.</p>
 </div>
 <div id="move-up-down-left-right" class="section level2">
 <h2>Move up, down, left, right</h2>
@@ -610,6 +615,33 @@ ctrl+b, ctrl+d move page up or page down
 <pre><code>:help map</code></pre>
 <p>Show all mappings including <leader> commands:</p>
 <p>:map</p>
+</div>
+<div id="minimal-.vimrc-for-bug-reports" class="section level2">
+<h2>Minimal .vimrc for bug reports</h2>
+<p>You can create a minimal .vimrc and use is by calling vim with</p>
+<pre><code>vim -u /tmp/.vimrc</code></pre>
+<p>See for example this <a href="https://github.com/lervag/vimtex/issues/1719">bug report</a> where I used this minimal vimrc file to investigate an issue with the Vimtex plugin.</p>
+<pre><code>set nocompatible
+let &amp;runtimepath  = &#39;~/.vim/bundle/vimtex,&#39; . &amp;runtimepath
+let &amp;runtimepath .= &#39;,~/.vim/bundle/vimtex/after&#39;
+filetype plugin indent on
+syntax enable
+&quot; Use zathura as a PDF viewer
+let g:vimtex_view_method = &#39;zathura&#39;</code></pre>
+<p>Or another minimal vimrc to investigate an issue with the nvim-R plugin.</p>
+<pre><code>set nocompatible
+let &amp;runtimepath  = &#39;~/.vim/bundle/Nvim-R,&#39; . &amp;runtimepath
+filetype plugin indent on
+syntax enable
+let maplocalleader = &quot;;&quot;
+
+&quot; enable vim-markdown for .Rmd files too
+&quot; This might conflict with the Nvim-R plugin
+augroup filetypedetect_markdown
+    au!
+    au BufRead,BufNewFile *.Rmd set ft=markdown
+augroup END</code></pre>
+<p>The solution was to use 2 file types for Rmd files: <code>set ft=rmd.markdown</code>.</p>
 </div>
 </div>
 <div id="edit-a-file" class="section level1">
@@ -793,6 +825,8 @@ set splitright</code></pre>
 <div id="vim-and-tmux" class="section level2">
 <h2>Vim and Tmux</h2>
 <p>See the <a href="bash.html">bash</a> page for the tmux side of the configuration.</p>
+<p>I use the <a href="https://github.com/christoomey/vim-tmux-navigator">vim-tmux-navigator</a></p>
+<p>It doesn’t work in a terminal buffer because of conflicts with fuzzy file search. <a href="https://github.com/christoomey/vim-tmux-navigator/pull/172">issue 172</a></p>
 <p><a href="https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl">vim-tmux-navigator to use tmux prefix instead of C-[hjkl]</a></p>
 <p>busnag.com <a href="https://www.bugsnag.com/blog/tmux-and-vim">tmux and vim</a> &gt; &quot; like many vim users, I edited my .vimrc to simplify split navigation, so &gt; that I can jump between vim splits using ctrl-j, ctrl-k, etc.</p>
 <p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a> &gt; “Finally, I have Ctrl+[hjkl] setup such that I can navigate seamlessly between vim and tmux panes.”</p>
@@ -888,6 +922,14 @@ filetype plugin indent on    &quot; required
 &quot; Put your non-Plugin stuff after this line</code></pre>
 <p>Install all plugins configured in your <code>.vimrc</code>.</p>
 <pre><code>:PluginInstall</code></pre>
+</div>
+<div id="creating-a-plugin" class="section level2">
+<h2>Creating a plugin</h2>
+<p>I’m trying to extract a table of content functionality from a plugin that does many other things I don’t need.</p>
+<ul>
+<li><a href="https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin" class="uri">https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin</a></li>
+</ul>
+<p>I extracted the function into a plugin called <a href="https://github.com/paulrougieux/markdown-toc-toc">markdown-toc-toc</a> I placed the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my issue. I now have both Nvim-R autocompletion and syntax highlight working correctly in R markdown chunks as well as a table of content for the markdown titles.</p>
 </div>
 </div>
 <div id="programming-tools" class="section level1">
@@ -986,19 +1028,44 @@ let g:tagbar_compact = 1</code></pre>
 <h1>Programming languages</h1>
 <div id="latex-editing" class="section level2">
 <h2>Latex editing</h2>
-<ul>
-<li><a href="https://github.com/vim-latex/vim-latex">vim-latex</a> the one I used first.
+<div id="vim-latex" class="section level3">
+<h3>vim Latex</h3>
+<p><a href="https://github.com/vim-latex/vim-latex">vim-latex</a> the one I used first.</p>
 <ul>
 <li>Was complaining about my makefile, that it didn’t include a dvi section</li>
 <li>Was creating nice taglist but with duplicated tags.</li>
-</ul></li>
-<li><a href="https://github.com/lervag/vimtex#alternatives">vimtex</a> more recent
+</ul>
+</div>
+<div id="vimtex" class="section level3">
+<h3>Vimtex</h3>
+<p><a href="https://github.com/lervag/vimtex#alternatives">vimtex</a> is more recent compared to vim-latex</p>
 <ul>
 <li>Completion uses omni completion, see <code>:help compl-omni</code> with CTRL-X CTRL-O</li>
 <li>doesn’t complain about my minimalistic makefile</li>
-<li>Doesn’t add anything to the taglist (maybe I should use gutentag?)</li>
-</ul></li>
+<li>doesn’t add anything to the taglist (maybe I should use gutentag?) but there is a table of content buffer.</li>
 </ul>
+<p>Display a table of content:</p>
+<pre><code>:VimtexTocOpen
+:VimtexTocToggle</code></pre>
+<p>Define a shorter command name <code>Toc</code>, by placing this in the .vimrc</p>
+<pre><code>au BufRead,BufNewFile *.tex command! Toc VimtexTocOpen</code></pre>
+<p>I first ran into this error when viewing git diffs or when jumping back to the tex file with Ctrl-O</p>
+<pre><code>Error detected while processing BufRead Autocommands for &quot;*.tex&quot;:
+E174: Command already exists: add ! to replace it: Toc VimtexTocOpen</code></pre>
+<p>Because I had the autocommand defined this way:</p>
+<pre><code>au BufRead,BufNewFile *.tex command Toc VimtexTocOpen</code></pre>
+<p>Compile</p>
+<pre><code>:VimtexCompile</code></pre>
+<p>Install prerequisite to view pdf files with forward (from vim to the pdf viewer) and backward (from the pdf viewer to vim) search. Note: Forward and backward search are not available for evince <a href="https://github.com/lervag/vimtex/issues/179">issue 179</a>.</p>
+<pre><code>sudo apt install zathura
+sudo apt install xdotool</code></pre>
+<p>This bug report pushed me to learn about xdotool and xprop.</p>
+<p>There was a issue with the focus not moving to the zathura viewer. I reported it as <a href="https://github.com/lervag/vimtex/issues/1719">issue #1719</a>. The first step was to add client server support to vim. I asked a question on <a href="https://vi.stackexchange.com/questions/26025/how-to-install-vim-with-clientserver-on-debian">how to install vim with clientserver support</a>. But the issue remained even with client server enabled in vim.</p>
+<p>The second step was related to the fact that Debian 10 Buster uses wayland as a window manager. To force the use of x11 for zathura, in debian a zathura wrapper script containing:</p>
+<pre><code>#!/usr/bin/bash
+GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
+<p>Can be placed under the default user bin located at ~/.local/bin. This is one of the first element of the <code>$PATH</code> environment variable.</p>
+</div>
 </div>
 <div id="python-programming" class="section level2">
 <h2>Python programming</h2>
@@ -1057,6 +1124,15 @@ Ctrl+N</code></pre>
 <h3>Nvim-R</h3>
 <p>Nvim-R supports knitr and mappings can be defined for example:</p>
 <p>RSendChunk RDSendChunk</p>
+<p>I mapped the local leader key to “;”</p>
+<p>Start R</p>
+<p>Start R (default) <localleader>rf</p>
+<p>Sending code to R:</p>
+<p>. Line  . Line (and down) </p>
+<p>Setting up tags as explained in :help Nvim-R</p>
+<blockquote>
+<p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands: &gt; rtags(path = “/path/to/R/source/code”, recursive = TRUE, ofile = “RTAGS”) etags2ctags(“RTAGS”, “Rtags”) &lt; Then, you would quit R and do the following command in the terminal emulator: &gt; ctags –languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code &lt; Finally, you would put the following in your |vimrc|, optionally inside an |autocmd-group|: &gt; autocmd FileType r set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags autocmd FileType rnoweb set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags</p>
+</blockquote>
 </div>
 </div>
 </div>

@@ -21,11 +21,11 @@ Plugin 'yegappan/taglist'
 " Git interface 
 Plugin 'tpope/vim-fugitive'
 " Latex editing
-"Plugin 'vim-latex/vim-latex'
 Plugin 'lervag/vimtex'
 " Markdown toc navigation
 Plugin 'godlygeek/tabular'
-Plugin 'plasticboy/vim-markdown'
+Plugin 'vim-voom/VOoM'
+"Plugin 'plasticboy/vim-markdown'
 " Python autocompletion 
 Plugin 'davidhalter/jedi-vim'
 " Python linter
@@ -62,6 +62,10 @@ filetype plugin indent on    " required
 filetype on
 syntax enable
 
+" change leader key from \ (the default) to ,
+let mapleader = ","
+let maplocalleader = ";"
+
 " Case insensitive search
 set ignorecase
 set smartcase
@@ -70,12 +74,19 @@ set smartcase
 set spell spelllang=en_gb,fr
 
 " Split settings
-nnoremap <C-J> <C-W><C-J>
-nnoremap <C-K> <C-W><C-K>
-nnoremap <C-L> <C-W><C-L>
-nnoremap <C-H> <C-W><C-H>
+" Commented out because I use tmux-navigator in normal mode
+"nnoremap <C-J> <C-W><C-J>
+"nnoremap <C-K> <C-W><C-K>
+"nnoremap <C-L> <C-W><C-L>
+"nnoremap <C-H> <C-W><C-H>
+" Mappings for terminal buffer similar to tmux navigator
+tnoremap <C-J> <C-W><C-J>
+tnoremap <C-K> <C-W><C-K>
+tnoremap <C-L> <C-W><C-L>
+tnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
+" See also tmux configuration
 
 " Toggle taglist
 nnoremap <silent> <F8> :TlistToggle<CR>
@@ -88,7 +99,7 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 noremap m $
 " Search backward for the word under the cursor
 noremap µ #
-" Navigate to the help tag under the cursor
+" Navigate to the help tag under the cursor with ctrl-ù
 noremap ' <C-]>
 " Move into wrapped lines with arrow keys
 nnoremap <Up> gk
@@ -131,33 +142,53 @@ autocmd QuickFixCmdPost *grep* cwindow
 """""""""""""""""""""""
 " Latex configuration "
 """""""""""""""""""""""
+" Settings for the vim-latex plugin
 " No folding
 :let Tex_FoldedSections=""
 :let Tex_FoldedEnvironments=""
 :let Tex_FoldedMisc=""
+" Settings for the vimtex plugin
 " Only citation keys for completion
 let g:vimtex_complete_bib = { 'simple': 1 }
+" Use zathura as a PDF viewer
+let g:vimtex_view_method = 'zathura'
+
 " Settings only implemented for .tex files
-" Key combination to insert a citation 
-" note: ctrl-space appears as ctrl-@ in my terminal
+" Key combination to insert citation and references using the vimtex plugin
+" Note: ctrl-space appears as ctrl-@ in my terminal
 au BufRead,BufNewFile *.tex inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
+" Define a shorter command name for the `Toc`
+au BufRead,BufNewFile *.tex command! Toc VimtexTocOpen
+
+" Use zathura as a PDF viewer
+let g:vimtex_view_method = 'zathura'
+
+" Map key to view the pdf
+nmap <silent><Leader>lv <Esc>:VimtexView<CR>
+nmap <silent><Leader>ll <Esc>:VimtexCompile<CR>
+
+" use xdotool in a hook function
+" https://github.com/lervag/vimtex/issues/1719
+function! ZathuraHook() dict abort
+  if self.xwin_id <= 0 | return | endif
+
+  silent call system('xdotool windowactivate ' . self.xwin_id . ' --sync')
+  silent call system('xdotool windowraise ' . self.xwin_id)
+endfunction
+
+let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 
 """"""""""""""""""""""""""
 " Markdown configuration "
 """"""""""""""""""""""""""
-" wrap markdown text to 88 characters like psf/black
+" Wrap markdown text to 88 characters like psf/black
 au BufRead,BufNewFile *.md setlocal textwidth=88
 " Do not use double spaces after points
 set nojoinspaces
 
-" disable folding in vim-markdown 
-let g:vim_markdown_folding_disabled = 1
-" enable vim-markdown for .Rmd files too
-" This might conflict with the Nvim-R plugin
-augroup filetypedetect_markdown
-    au!
-    au BufRead,BufNewFile *.Rmd set ft=markdown
-augroup END
+" Voom 
+let voom_ft_modes = {'markdown': 'pandoc', 'rmd': 'pandoc', 'rnoweb': 'latex'}
+au BufRead,BufNewFile *.Rmd command! Toc Voom 
 
 """"""""""""""""""""""""
 " Python configuration "
@@ -179,8 +210,6 @@ noremap <F2> <leader>-d
 let g:jedi#popup_on_dot = 0
 " Disable call signatures
 let g:jedi#show_call_signatures = "0" 
-" change leader key from \ (the default) to ,
-:let mapleader = ","
 
 " Pytest
 nmap <silent><Leader>f <Esc>:Pytest file<CR>
@@ -200,8 +229,11 @@ let g:ale_pattern_options = {
 """""""""""""""""""
 " R configuration "
 """""""""""""""""""
-" disable autoreplacement of _ to <- by Nvim-R
+" Nvim-R options
+" disable auto replacement of _ to <- by Nvim-R
 let R_assign = 0
+" Run R in a tmux buffer
+"let R_in_buffer = 0
 
 """"""""""""""""""""""
 " Tmux configuration "
