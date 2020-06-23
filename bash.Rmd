@@ -398,6 +398,10 @@ Convert a Microsoft Word document to markdown
 
     pandoc filename.docx -o filename.md 
 
+Convert a Microsoft Word document to markdown keep images
+
+    pandoc --extract-media ./figures input.docx -o output.md
+
 [Markdown has two different header
 styles](https://pandoc.org/MANUAL.html#headers) Use ATX style headers in
 markdown output. The default is to use setext-style headers for levels 1-2, and

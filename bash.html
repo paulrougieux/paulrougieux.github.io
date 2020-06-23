@@ -784,6 +784,8 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 <pre><code>pandoc filename.odt -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
 <pre><code>pandoc filename.docx -o filename.md </code></pre>
+<p>Convert a Microsoft Word document to markdown keep images</p>
+<pre><code>pandoc --extract-media ./figures input.docx -o output.md</code></pre>
 <p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> Use ATX style headers in markdown output. The default is to use setext-style headers for levels 1-2, and then ATX headers.</p>
 <pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
 <p>Adding headers and footers to pandoc suggests using:</p>
