@@ -1308,9 +1308,9 @@ g.fig.set_figheight(10) </code></pre>
 <pre><code>`df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  `</code></pre>
 <table>
 <colgroup>
-<col width="36%" />
-<col width="39%" />
-<col width="24%" />
+<col width="25%" />
+<col width="27%" />
+<col width="47%" />
 </colgroup>
 <thead>
 <tr class="header">
@@ -1321,13 +1321,13 @@ g.fig.set_figheight(10) </code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td>expand.grid(df<span class="math inline">\(x,df\)</span>y)</td>
-<td>itertools.product</td>
+<td><code>expand.grid(df$x,df$y)</code></td>
+<td><code>itertools.product</code></td>
 <td>see section below</td>
 </tr>
 <tr class="even">
-<td>gsub</td>
-<td>replace(regex=True)</td>
+<td><code>gsub</code></td>
+<td><code>replace(regex=True)</code></td>
 <td><a href="https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104">gsub in pandas</a></td>
 </tr>
 <tr class="odd">
@@ -1336,23 +1336,23 @@ g.fig.set_figheight(10) </code></pre>
 <td><a href="https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe">list of values to select a row</a></td>
 </tr>
 <tr class="even">
-<td>length(df) and dim(df)</td>
-<td>df.shape</td>
+<td><code>length(df)</code> and <code>dim(df)</code></td>
+<td><code>df.shape</code></td>
 <td><a href="https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe">row count of a data frame</a></td>
 </tr>
 <tr class="odd">
-<td>rbind</td>
-<td>pandas.concat</td>
+<td><code>rbind</code></td>
+<td><code>pandas.concat</code></td>
 <td><a href="https://stackoverflow.com/questions/14988480/pandas-version-of-rbind">Pandas version of rbind</a></td>
 </tr>
 <tr class="even">
-<td>dput(df)</td>
-<td>df.to_dict()</td>
+<td><code>dput(df)</code></td>
+<td><code>df.to_dict()</code></td>
 <td><a href="https://stackoverflow.com/questions/47450931/print-pandas-data-frame-for-reproducible-example-equivalent-to-dput-in-r">Print pandas data frame for reproducible example</a></td>
 </tr>
 <tr class="odd">
-<td>seq(1:5)</td>
-<td>np.array(range(0,5))</td>
+<td><code>seq(1:5)</code></td>
+<td><code>np.array(range(0,5))</code></td>
 <td><a href="https://stackoverflow.com/a/60753578/2641825">numpy function to generate sequences</a></td>
 </tr>
 </tbody>

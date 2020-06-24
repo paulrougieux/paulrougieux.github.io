@@ -1100,15 +1100,15 @@ Pandas data frame to be used for examples:
 
     `df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})  `
 
-|Base R                     |pandas                       |SO questions      |
-|---------------------------|-----------------------------|------------------|
-|expand.grid(df$x,df$y)     |itertools.product            |see section below |
-|gsub                       |replace(regex=True)          |[gsub in pandas]  |
-|`df[df$y %in% c('a','b'),]`|`df[df['y'].isin(['a','b'])]`|[list of values to select a row]|
-|length(df) and dim(df)     |df.shape                     |[row count of a data frame]|
-|rbind                      |pandas.concat                |[Pandas version of rbind]|
-|dput(df)                   |df.to_dict()                 |[Print pandas data frame for reproducible example]|
-|seq(1:5)                   |np.array(range(0,5))         |[numpy function to generate sequences]|
+| Base R                      | pandas                        | SO questions                                       |
+| --------------------------- | ----------------------------- | -------------------------------------------------- |
+| `expand.grid(df$x,df$y)`    | `itertools.product`           | see section below                                  |
+| `gsub`                      | `replace(regex=True)`         | [gsub in pandas]                                   |
+| `df[df$y %in% c('a','b'),]` | `df[df['y'].isin(['a','b'])]` | [list of values to select a row]                   |
+| `length(df)` and `dim(df)`  | `df.shape`                    | [row count of a data frame]                        |
+| `rbind`                     | `pandas.concat`               | [Pandas version of rbind]                          |
+| `dput(df)`                  | `df.to_dict()`                | [Print pandas data frame for reproducible example] |
+| `seq(1:5)`                  | `np.array(range(0,5))`        | [numpy function to generate sequences]             |
 
 
 
@@ -1121,19 +1121,19 @@ Pandas data frame to be used for examples:
 
 The mapping of tidyverse to pandas is:
 
-|tidyverse                |pandas                        | SO questions    |
-|-------------------------|----------------------------- |-----------------|
-|mutate                   |assign                        |                 |
-|select                   |filter                        |                 |
-|df %>% select(-a,-b)     |df.drop(columns=['a', 'b'])   |                 |
-|rename                   |df.rename(columns={'a':'new'})|                 |
-|filter                   |query                         |                 |
-|arrange                  |sort_values                   |                 |
-|group_by                 |groupby                       |                 |
-|summarize                |agg                           |                 |
-|pivot_longer             |[melt]                        |                 |
-|pivot_wider              |[pivot]                       |                 |
-|unnest                   |[explode]                     |[unnest in pandas][so_unnest]|
+| tidyverse                 | pandas                         | SO questions                  |
+| ------------------------- | -----------------------------  | ----------------------------- |
+| mutate                    | assign                         |                               |
+| select                    | filter                         |                               |
+| df %>% select(-a,-b)      | df.drop(columns=['a', 'b'])    |                               |
+| rename                    | df.rename(columns={'a':'new'}) |                               |
+| filter                    | query                          |                               |
+| arrange                   | sort_values                    |                               |
+| group_by                  | groupby                        |                               |
+| summarize                 | agg                            |                               |
+| pivot_longer              | [melt]                         |                               |
+| pivot_wider               | [pivot]                        |                               |
+| unnest                    | [explode]                      | [unnest in pandas][so_unnest] |
 
 [melt]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html
 [pivot]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html

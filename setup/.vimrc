@@ -24,8 +24,8 @@ Plugin 'tpope/vim-fugitive'
 Plugin 'lervag/vimtex'
 " Markdown toc navigation
 Plugin 'godlygeek/tabular'
+" Markdown table of content 
 Plugin 'vim-voom/VOoM'
-"Plugin 'plasticboy/vim-markdown'
 " Python autocompletion 
 Plugin 'davidhalter/jedi-vim'
 " Python linter
@@ -157,8 +157,6 @@ let g:vimtex_view_method = 'zathura'
 " Key combination to insert citation and references using the vimtex plugin
 " Note: ctrl-space appears as ctrl-@ in my terminal
 au BufRead,BufNewFile *.tex inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
-" Define a shorter command name for the `Toc`
-au BufRead,BufNewFile *.tex command! Toc VimtexTocOpen
 
 " Use zathura as a PDF viewer
 let g:vimtex_view_method = 'zathura'
@@ -187,8 +185,14 @@ au BufRead,BufNewFile *.md setlocal textwidth=88
 set nojoinspaces
 
 " Voom 
-let voom_ft_modes = {'markdown': 'pandoc', 'rmd': 'pandoc', 'rnoweb': 'latex'}
-au BufRead,BufNewFile *.Rmd command! Toc Voom 
+let voom_ft_modes = {'markdown': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex'}
+
+" Create a Toc command
+augroup Toc
+    autocmd!
+    autocmd Filetype rmd   command! -buffer Toc Voom
+    autocmd Filetype tex   command! -buffer Toc VimtexTocOpen
+augroup END
 
 """"""""""""""""""""""""
 " Python configuration "

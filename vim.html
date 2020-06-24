@@ -458,120 +458,6 @@ div.tocify {
 
 
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my blog post on Vim commands</a>.</p>
-<div id="help" class="section level1">
-<h1>Help</h1>
-<pre><code>:help - vim help
-:help commandname - help on a particular command
-:h commandname - help on a particular command
-CTRL+] - jump to a highlighted topic
-CTRL+T - jump backwards</code></pre>
-<p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
-</div>
-<div id="enter-commands-save-and-quit" class="section level1">
-<h1>Enter commands, save and quit</h1>
-<p>To enter edit mode:</p>
-<pre><code>i</code></pre>
-<p>To enter command mode:</p>
-<pre><code>escape</code></pre>
-<p>To exit vim, go in command mode and enter the following command:</p>
-<pre><code>:q</code></pre>
-<p>To exit without saving the content of the file:</p>
-<pre><code>:q!</code></pre>
-<p>To save the content of the file:</p>
-<pre><code>:w</code></pre>
-<p>If you accidentally press CTRL+S the <a href="https://askubuntu.com/a/264253/315347">terminal will hang</a> Press <code>CTRL+Q</code> to regain control. See also <a href="https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator">Ctrl-s hang terminal emulator?</a> which provides a workaround: entering <code>stty -ixon</code> in .bashrc.</p>
-<p>To save content and exit:</p>
-<pre><code>:wq</code></pre>
-</div>
-<div id="navigate" class="section level1">
-<h1>Navigate</h1>
-<div id="display-line-numbers" class="section level2">
-<h2>Display line numbers</h2>
-<p>Display line numbers</p>
-<pre><code>:set nu</code></pre>
-<p>Disable line numbers</p>
-<pre><code>:set nonu</code></pre>
-<p>Enter <code>:line number</code> to jump to a particular line number.</p>
-</div>
-<div id="explore-files" class="section level2">
-<h2>Explore files</h2>
-<p>Vim comes with a file explorer:</p>
-<pre><code>:E</code></pre>
-<p>or</p>
-<pre><code>:Explorer</code></pre>
-<p>Pressing <code>s</code>changes the way files are sorted. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system.</p>
-<p>To create a new file in the current directory visible in the explorer, press:</p>
-<pre><code>%</code></pre>
-<p>This is also works to create a new directory and file.</p>
-<p>To move or rename a file within the explorer:</p>
-<pre><code>R</code></pre>
-<p>A blog post on <a href="https://shapeshed.com/vim-netrw/">netrw</a>, vim’s file browser. Explains how to turn the banner off:</p>
-<pre><code>let g:netrw_banner = 0</code></pre>
-<p>You can put the banner back on by pressing <code>I</code>.</p>
-</div>
-<div id="jump-back-and-forth" class="section level2">
-<h2>Jump back and forth</h2>
-<p>Vim wiki <a href="https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations">jumping to previously visited locations</a> &gt; “Like a web browser, you can go back, then forward:”</p>
-<pre><code>Press Ctrl-O to jump back to the previous (older) location.
-Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code></pre>
-</div>
-<div id="markdown" class="section level2">
-<h2>Markdown</h2>
-<p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
-<pre><code>:g/^# /#</code></pre>
-<p>See also :</p>
-<ul>
-<li>The markdown TOC extension for vim.</li>
-<li><a href="https://github.com/euclio/vim-markdown-composer/blob/master/README.md">Vim markdown composer</a> a plugin that adds asynchronous Markdown preview to Neovim and Vim.</li>
-</ul>
-<p>In <a href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this question</a>, I managed to create an auto command to activate vim-markdown for Rmd files. But now that I start using Nvim-R more intensively, I hit <a href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown issue 263</a>: activating vim-markdown removes syntax highlighting and auto completion of the R code chunks. That issue hasn’t been resolved since 2016, so I guess it will be hard to make both plugins work in parallel.</p>
-</div>
-<div id="move-up-down-left-right" class="section level2">
-<h2>Move up, down, left, right</h2>
-<p>In command mode, the following motions are activated:</p>
-<pre><code>:help left-right-motion
-j,k move up down
-h,l move left right
-b,w move previous or next word
-ctrl+b, ctrl+d move page up or page down
-{number} G go to line number </code></pre>
-<p>Note on motion with wrapped lines: <a href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move cursor by display lines when wrapping</a></p>
-</div>
-<div id="quick-fix-window" class="section level2">
-<h2>Quick fix window</h2>
-<p>Help</p>
-<pre><code>:help quickfix</code></pre>
-</div>
-<div id="search-in-a-file" class="section level2">
-<h2>Search in a file</h2>
-<p>Use “/” to search, then n forward and N backwards &quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
-<p>Use <code>:g/patter</code> to display a list of all search result in the document.</p>
-</div>
-<div id="search-in-multiple-files" class="section level2">
-<h2>Search in multiple files</h2>
-<p><a href="https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep">open files on the match lines given by grep</a></p>
-<pre><code>:copen
-:grep -r pattern .</code></pre>
-<p>or specify specific files extensions</p>
-<pre><code>:grep -r pattern *.py</code></pre>
-<p>Or use git grep with the fugitive plugin:</p>
-<pre><code>:copen
-:Ggrep pattern</code></pre>
-</div>
-<div id="working-directory" class="section level2">
-<h2>Working directory</h2>
-<p>Display the present working directory</p>
-<pre><code>:pwd</code></pre>
-<p><a href="http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file">Set working directory to the current file</a> (for all windows):</p>
-<pre><code>:cd %:p:h</code></pre>
-<p>Set working directory to the current file, for the current window only</p>
-<pre><code>:lcd %:p:h</code></pre>
-<p>In these commands, % gives the name of the current file, %:p gives its full path, and %:p:h gives its directory (the “head” of the full path).</p>
-<p>Automatically change the working directory to the file currently edited</p>
-<pre><code>set autochdir</code></pre>
-<p>autochdir conflicts with the ctags plugin taglist <a href="https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set">as explained here</a> so I deactivated it.</p>
-</div>
-</div>
 <div id="configure-vim-in-.vimrc" class="section level1">
 <h1>Configure vim in .vimrc</h1>
 <p>See also my vimrc file stored in <a href="setup/.vimrc" class="uri">setup/.vimrc</a>. Many configuration options are mentioned throughout this document.</p>
@@ -646,6 +532,14 @@ augroup END</code></pre>
 </div>
 <div id="edit-a-file" class="section level1">
 <h1>Edit a file</h1>
+<div id="align-columns" class="section level2">
+<h2>Align columns</h2>
+<p>The tabular plugin provides a Tabular command which can be abbreviated to <code>:Tab</code>. To align a latex table with the tabular package. Select a few lines, then press:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;Tab /&amp;</code></pre>
+<p>Similarly to align a markdown table, select a few lines, then call:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;Tab /|</code></pre>
+<p>For more, see <code>help tabular</code>.</p>
+</div>
 <div id="undo-redo" class="section level2">
 <h2>Undo redo</h2>
 <pre><code>u: undo last change (can be repeated to undo preceding commands)
@@ -781,6 +675,31 @@ filetype indent on </code></pre>
 <pre><code>gq</code></pre>
 </div>
 </div>
+<div id="enter-commands-save-and-quit" class="section level1">
+<h1>Enter commands, save and quit</h1>
+<p>To enter edit mode:</p>
+<pre><code>i</code></pre>
+<p>To enter command mode:</p>
+<pre><code>escape</code></pre>
+<p>To exit vim, go in command mode and enter the following command:</p>
+<pre><code>:q</code></pre>
+<p>To exit without saving the content of the file:</p>
+<pre><code>:q!</code></pre>
+<p>To save the content of the file:</p>
+<pre><code>:w</code></pre>
+<p>If you accidentally press CTRL+S the <a href="https://askubuntu.com/a/264253/315347">terminal will hang</a> Press <code>CTRL+Q</code> to regain control. See also <a href="https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator">Ctrl-s hang terminal emulator?</a> which provides a workaround: entering <code>stty -ixon</code> in .bashrc.</p>
+<p>To save content and exit:</p>
+<pre><code>:wq</code></pre>
+</div>
+<div id="help" class="section level1">
+<h1>Help</h1>
+<pre><code>:help - vim help
+:help commandname - help on a particular command
+:h commandname - help on a particular command
+CTRL+] - jump to a highlighted topic
+CTRL+T - jump backwards</code></pre>
+<p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
+</div>
 <div id="multiple-files-buffers-and-windows" class="section level1">
 <h1>Multiple files, buffers and windows</h1>
 <div id="buffers" class="section level2">
@@ -830,6 +749,98 @@ set splitright</code></pre>
 <p><a href="https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl">vim-tmux-navigator to use tmux prefix instead of C-[hjkl]</a></p>
 <p>busnag.com <a href="https://www.bugsnag.com/blog/tmux-and-vim">tmux and vim</a> &gt; &quot; like many vim users, I edited my .vimrc to simplify split navigation, so &gt; that I can jump between vim splits using ctrl-j, ctrl-k, etc.</p>
 <p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a> &gt; “Finally, I have Ctrl+[hjkl] setup such that I can navigate seamlessly between vim and tmux panes.”</p>
+</div>
+</div>
+<div id="navigate" class="section level1">
+<h1>Navigate</h1>
+<div id="display-line-numbers" class="section level2">
+<h2>Display line numbers</h2>
+<p>Display line numbers</p>
+<pre><code>:set nu</code></pre>
+<p>Disable line numbers</p>
+<pre><code>:set nonu</code></pre>
+<p>Enter <code>:line number</code> to jump to a particular line number.</p>
+</div>
+<div id="explore-files" class="section level2">
+<h2>Explore files</h2>
+<p>Vim comes with a file explorer:</p>
+<pre><code>:E</code></pre>
+<p>or</p>
+<pre><code>:Explorer</code></pre>
+<p>Pressing <code>s</code>changes the way files are sorted. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system.</p>
+<p>To create a new file in the current directory visible in the explorer, press:</p>
+<pre><code>%</code></pre>
+<p>This is also works to create a new directory and file.</p>
+<p>To move or rename a file within the explorer:</p>
+<pre><code>R</code></pre>
+<p>A blog post on <a href="https://shapeshed.com/vim-netrw/">netrw</a>, vim’s file browser. Explains how to turn the banner off:</p>
+<pre><code>let g:netrw_banner = 0</code></pre>
+<p>You can put the banner back on by pressing <code>I</code>.</p>
+</div>
+<div id="jump-back-and-forth" class="section level2">
+<h2>Jump back and forth</h2>
+<p>Vim wiki <a href="https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations">jumping to previously visited locations</a> &gt; “Like a web browser, you can go back, then forward:”</p>
+<pre><code>Press Ctrl-O to jump back to the previous (older) location.
+Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code></pre>
+</div>
+<div id="markdown-table-of-content" class="section level2">
+<h2>Markdown Table of Content</h2>
+<p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
+<pre><code>:g/^# /#</code></pre>
+<p>See also :</p>
+<ul>
+<li>The markdown TOC extension for vim.</li>
+<li><a href="https://github.com/euclio/vim-markdown-composer/blob/master/README.md">Vim markdown composer</a> a plugin that adds asynchronous Markdown preview to Neovim and Vim.</li>
+</ul>
+<p>In <a href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this question</a>, I managed to create an auto command to activate vim-markdown for Rmd files. But now that I start using Nvim-R more intensively, I hit <a href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown issue 263</a>: activating vim-markdown removes syntax highlighting and auto completion of the R code chunks. I first extracted the Toc function into a small plugin. Then chose to create the table of content with the <a href="https://github.com/vim-voom/VOoM">Voom plugin</a> based on a suggestion on <a href="https://github.com/jalvesaq/Nvim-R/issues/505">Nvim-R issue 505</a>. I have this in my <code>.vimrc</code>:</p>
+<pre><code>let voom_ft_modes = {&#39;markdown&#39;: &#39;pandoc&#39;, &#39;rmd&#39;: &#39;pandoc&#39;, &#39;tex&#39;: &#39;latex&#39;}
+au BufRead,BufNewFile *.Rmd command! Toc Voom </code></pre>
+<p>In the outline pane, press enter once to display the corresponding header in the body pane. Press enter a second time to move the cursor to the body pane. In the body pane, press enter once to display the position of the cursor in the outline pane. Press enter a second time to move to the corresponding place in the outline pane.</p>
+</div>
+<div id="move-up-down-left-right" class="section level2">
+<h2>Move up, down, left, right</h2>
+<p>In command mode, the following motions are activated:</p>
+<pre><code>:help left-right-motion
+j,k move up down
+h,l move left right
+b,w move previous or next word
+ctrl+b, ctrl+d move page up or page down
+{number} G go to line number </code></pre>
+<p>Note on motion with wrapped lines: <a href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move cursor by display lines when wrapping</a></p>
+</div>
+<div id="quick-fix-window" class="section level2">
+<h2>Quick fix window</h2>
+<p>Help</p>
+<pre><code>:help quickfix</code></pre>
+</div>
+<div id="search-in-a-file" class="section level2">
+<h2>Search in a file</h2>
+<p>Use “/” to search, then n forward and N backwards &quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
+<p>Use <code>:g/patter</code> to display a list of all search result in the document.</p>
+</div>
+<div id="search-in-multiple-files" class="section level2">
+<h2>Search in multiple files</h2>
+<p><a href="https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep">open files on the match lines given by grep</a></p>
+<pre><code>:copen
+:grep -r pattern .</code></pre>
+<p>or specify specific files extensions</p>
+<pre><code>:grep -r pattern *.py</code></pre>
+<p>Or use git grep with the fugitive plugin:</p>
+<pre><code>:copen
+:Ggrep pattern</code></pre>
+</div>
+<div id="working-directory" class="section level2">
+<h2>Working directory</h2>
+<p>Display the present working directory</p>
+<pre><code>:pwd</code></pre>
+<p><a href="http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file">Set working directory to the current file</a> (for all windows):</p>
+<pre><code>:cd %:p:h</code></pre>
+<p>Set working directory to the current file, for the current window only</p>
+<pre><code>:lcd %:p:h</code></pre>
+<p>In these commands, % gives the name of the current file, %:p gives its full path, and %:p:h gives its directory (the “head” of the full path).</p>
+<p>Automatically change the working directory to the file currently edited</p>
+<pre><code>set autochdir</code></pre>
+<p>autochdir conflicts with the ctags plugin taglist <a href="https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set">as explained here</a> so I deactivated it.</p>
 </div>
 </div>
 <div id="plugins" class="section level1">
@@ -925,11 +936,133 @@ filetype plugin indent on    &quot; required
 </div>
 <div id="creating-a-plugin" class="section level2">
 <h2>Creating a plugin</h2>
+<ul>
+<li><a href="https://learnvimscriptthehardway.stevelosh.com/chapters/42.html">plugin layout in the dark ages</a> explains how to create file type plugins.</li>
+</ul>
 <p>I’m trying to extract a table of content functionality from a plugin that does many other things I don’t need.</p>
 <ul>
 <li><a href="https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin" class="uri">https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin</a></li>
 </ul>
 <p>I extracted the function into a plugin called <a href="https://github.com/paulrougieux/markdown-toc-toc">markdown-toc-toc</a> I placed the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my issue. I now have both Nvim-R autocompletion and syntax highlight working correctly in R markdown chunks as well as a table of content for the markdown titles.</p>
+</div>
+</div>
+<div id="programming-languages" class="section level1">
+<h1>Programming languages</h1>
+<div id="latex-editing" class="section level2">
+<h2>Latex editing</h2>
+<div id="vim-latex" class="section level3">
+<h3>vim Latex</h3>
+<p><a href="https://github.com/vim-latex/vim-latex">vim-latex</a> the one I used first.</p>
+<ul>
+<li>Was complaining about my makefile, that it didn’t include a dvi section</li>
+<li>Was creating nice taglist but with duplicated tags.</li>
+</ul>
+</div>
+<div id="vimtex" class="section level3">
+<h3>Vimtex</h3>
+<p><a href="https://github.com/lervag/vimtex#alternatives">vimtex</a> is more recent compared to vim-latex</p>
+<ul>
+<li>Completion uses omni completion, see <code>:help compl-omni</code> with CTRL-X CTRL-O</li>
+<li>doesn’t complain about my minimalistic makefile</li>
+<li>doesn’t add anything to the taglist (maybe I should use gutentag?) but there is a table of content buffer.</li>
+</ul>
+<p>Usage as explained in ̀<code>:help vimtex-default-mappings</code>:</p>
+<p>———————————————————————~ LHS RHS MODE<sub> ———————————————————————</sub> <localleader>lv |<plug>(vimtex-view)| <code>n</code> <localleader>lr |<plug>(vimtex-reverse-search)| <code>n</code> <localleader>ll |<plug>(vimtex-compile)| <code>n</code> ———————————————————————~</p>
+<p>I mapped <code>&lt;localleader&gt;</code> to <code>;</code>.</p>
+<p>Display a table of content:</p>
+<pre><code>:VimtexTocOpen
+:VimtexTocToggle</code></pre>
+<p>Define a shorter command name <code>Toc</code>, by placing this in the .vimrc</p>
+<pre><code>au BufRead,BufNewFile *.tex command! Toc VimtexTocOpen</code></pre>
+<p>I first ran into this error when viewing git diffs or when jumping back to the tex file with Ctrl-O</p>
+<pre><code>Error detected while processing BufRead Autocommands for &quot;*.tex&quot;:
+E174: Command already exists: add ! to replace it: Toc VimtexTocOpen</code></pre>
+<p>Because I had the autocommand defined this way:</p>
+<pre><code>au BufRead,BufNewFile *.tex command Toc VimtexTocOpen</code></pre>
+<p>Compile</p>
+<pre><code>:VimtexCompile</code></pre>
+<p>Install prerequisite to view pdf files with forward (from vim to the pdf viewer) and backward (from the pdf viewer to vim) search. Note: Forward and backward search are not available for evince <a href="https://github.com/lervag/vimtex/issues/179">issue 179</a>.</p>
+<pre><code>sudo apt install zathura
+sudo apt install xdotool</code></pre>
+<p>This bug report pushed me to learn about xdotool and xprop.</p>
+<p>There was a issue with the focus not moving to the zathura viewer. I reported it as <a href="https://github.com/lervag/vimtex/issues/1719">issue #1719</a>. The first step was to add client server support to vim. I asked a question on <a href="https://vi.stackexchange.com/questions/26025/how-to-install-vim-with-clientserver-on-debian">how to install vim with clientserver support</a>. But the issue remained even with client server enabled in vim.</p>
+<p>The second step was related to the fact that Debian 10 Buster uses wayland as a window manager. To force the use of x11 for zathura, in debian a zathura wrapper script containing:</p>
+<pre><code>#!/usr/bin/bash
+GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
+<p>Can be placed under the default user bin located at ~/.local/bin. This is one of the first element of the <code>$PATH</code> environment variable.</p>
+</div>
+</div>
+<div id="python-programming" class="section level2">
+<h2>Python programming</h2>
+<p>Plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the Jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a> * [vim-test] see also the tests section below.</p>
+<p>Blog posts</p>
+<ul>
+<li>wiki.python.org <a href="https://wiki.python.org/moin/Vim">vim</a> mentions:
+<ul>
+<li><a href="https://200ok.ch/posts/vim-as-python-ide.html">vim as a python IDE</a></li>
+</ul></li>
+<li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
+<li>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</li>
+<li>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</li>
+<li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
+<li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
+<li>full stack python <a href="https://www.fullstackpython.com/vim.html">vim</a></li>
+<li><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></li>
+</ul>
+<p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
+<blockquote>
+<p>&quot;I run my scripts using</p>
+<p>ipython -i script.py</p>
+<p>That way I drop to an ipython shell whenever it breaks or finishes running. I also insert</p>
+<p>from ipython import embed; embed();</p>
+<p>Instead of using pdb. Its really neat.&quot;</p>
+</blockquote>
+<div id="jedi-vim" class="section level3">
+<h3>Jedi vim</h3>
+<ul>
+<li><a href="https://github.com/davidhalter/jedi">Jedi</a> autocompletion, also used by ipython.</li>
+<li><a href="https://github.com/davidhalter/jedi-vim/blob/master/doc/jedi-vim.txt">Jedi vim documentation</a></li>
+</ul>
+<p>Jedi Installation required enabling python mode in vim, available inside this Debian package:</p>
+<pre><code>sudo apt install vim-nox</code></pre>
+<p>Autocomplete is turned on to complete a word, press:</p>
+<pre><code>Ctrl+Space</code></pre>
+<p>To cycle through proposition you can use <code>Ctrl+space</code> again or:</p>
+<pre><code>Ctrl+P
+Ctrl+N</code></pre>
+<p>Enter for example a module name, then use Ctrl+N and Ctrl+P to choose among the objects and functions in that module.</p>
+<p>Jump to definition:</p>
+<pre><code>&lt;leader&gt;d</code></pre>
+<p>I remapped the <code>&lt;leader&gt;</code> key to <code>,</code> in my .vimrc</p>
+<pre><code>:let mapleader = &quot;,&quot;</code></pre>
+<p>See above section on navigation, you can use <code>Ctrl-O</code> to jump back and <code>Ctrl-I</code>to jump forward.</p>
+</div>
+</div>
+<div id="r-programming" class="section level2">
+<h2>R programming</h2>
+<ul>
+<li>Medium Xiaoou WANG <a href="https://medium.com/@xiaoouwang/how-to-turn-vim-into-a-perfect-better-r-ide-and-rmarkdown-writer-than-rstudio-part-i-48e1293c9c05">How to turn vim into a perfect, better R IDE and Rmarkdown writer than Rstudio (part I)</a></li>
+<li>reddit <a href="https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/">R programmers, do you prefer vim or Rstudio?</a> &gt; “Vim with fzf helps open these subsection code files super easily, ag helps &gt; me find keywords across all the files in my code folder, ctags helps me find &gt; functions I’ve defined, ale tells where I’ve made some trivial mistake, &gt; gitgutter tells me where I’ve made changes I’d maybe like to revisit later. I &gt; find these plugins alone make coding in vim much easier than R studio and &gt; they aren’t even R specific.”</li>
+<li>free code camp <a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a> Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</li>
+</ul>
+<div id="nvim-r" class="section level3">
+<h3>Nvim-R</h3>
+<p>Nvim-R supports knitr and mappings can be defined for example:</p>
+<p>RSendChunk RDSendChunk</p>
+<p>I mapped the local leader key to “;”</p>
+<p>Start R</p>
+<p>Start R (default) <localleader>rf</p>
+<p>Sending code to R:</p>
+<p>. Line  . Line (and down) </p>
+<p>View data</p>
+<p>. Open/Close the object browser </p>
+<p>On the code, in a data frame:</p>
+<p>. View data.frame (cur) in horizontal split  . View data.frame (cur) in vertical split </p>
+<p>Setting up tags as explained in :help Nvim-R</p>
+<blockquote>
+<p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands: &gt; rtags(path = “/path/to/R/source/code”, recursive = TRUE, ofile = “RTAGS”) etags2ctags(“RTAGS”, “Rtags”) &lt; Then, you would quit R and do the following command in the terminal emulator: &gt; ctags –languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code &lt; Finally, you would put the following in your |vimrc|, optionally inside an |autocmd-group|: &gt; autocmd FileType r set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags autocmd FileType rnoweb set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags</p>
+</blockquote>
+</div>
 </div>
 </div>
 <div id="programming-tools" class="section level1">
@@ -1024,118 +1157,6 @@ let g:tagbar_compact = 1</code></pre>
 <p><a href="https://github.com/alfredodeza/pytest.vim">pytest vim</a> Run pytest from within vim.</p>
 </div>
 </div>
-<div id="programming-languages" class="section level1">
-<h1>Programming languages</h1>
-<div id="latex-editing" class="section level2">
-<h2>Latex editing</h2>
-<div id="vim-latex" class="section level3">
-<h3>vim Latex</h3>
-<p><a href="https://github.com/vim-latex/vim-latex">vim-latex</a> the one I used first.</p>
-<ul>
-<li>Was complaining about my makefile, that it didn’t include a dvi section</li>
-<li>Was creating nice taglist but with duplicated tags.</li>
-</ul>
-</div>
-<div id="vimtex" class="section level3">
-<h3>Vimtex</h3>
-<p><a href="https://github.com/lervag/vimtex#alternatives">vimtex</a> is more recent compared to vim-latex</p>
-<ul>
-<li>Completion uses omni completion, see <code>:help compl-omni</code> with CTRL-X CTRL-O</li>
-<li>doesn’t complain about my minimalistic makefile</li>
-<li>doesn’t add anything to the taglist (maybe I should use gutentag?) but there is a table of content buffer.</li>
-</ul>
-<p>Display a table of content:</p>
-<pre><code>:VimtexTocOpen
-:VimtexTocToggle</code></pre>
-<p>Define a shorter command name <code>Toc</code>, by placing this in the .vimrc</p>
-<pre><code>au BufRead,BufNewFile *.tex command! Toc VimtexTocOpen</code></pre>
-<p>I first ran into this error when viewing git diffs or when jumping back to the tex file with Ctrl-O</p>
-<pre><code>Error detected while processing BufRead Autocommands for &quot;*.tex&quot;:
-E174: Command already exists: add ! to replace it: Toc VimtexTocOpen</code></pre>
-<p>Because I had the autocommand defined this way:</p>
-<pre><code>au BufRead,BufNewFile *.tex command Toc VimtexTocOpen</code></pre>
-<p>Compile</p>
-<pre><code>:VimtexCompile</code></pre>
-<p>Install prerequisite to view pdf files with forward (from vim to the pdf viewer) and backward (from the pdf viewer to vim) search. Note: Forward and backward search are not available for evince <a href="https://github.com/lervag/vimtex/issues/179">issue 179</a>.</p>
-<pre><code>sudo apt install zathura
-sudo apt install xdotool</code></pre>
-<p>This bug report pushed me to learn about xdotool and xprop.</p>
-<p>There was a issue with the focus not moving to the zathura viewer. I reported it as <a href="https://github.com/lervag/vimtex/issues/1719">issue #1719</a>. The first step was to add client server support to vim. I asked a question on <a href="https://vi.stackexchange.com/questions/26025/how-to-install-vim-with-clientserver-on-debian">how to install vim with clientserver support</a>. But the issue remained even with client server enabled in vim.</p>
-<p>The second step was related to the fact that Debian 10 Buster uses wayland as a window manager. To force the use of x11 for zathura, in debian a zathura wrapper script containing:</p>
-<pre><code>#!/usr/bin/bash
-GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
-<p>Can be placed under the default user bin located at ~/.local/bin. This is one of the first element of the <code>$PATH</code> environment variable.</p>
-</div>
-</div>
-<div id="python-programming" class="section level2">
-<h2>Python programming</h2>
-<p>Plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the Jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a> * [vim-test] see also the tests section below.</p>
-<p>Blog posts</p>
-<ul>
-<li>wiki.python.org <a href="https://wiki.python.org/moin/Vim">vim</a> mentions:
-<ul>
-<li><a href="https://200ok.ch/posts/vim-as-python-ide.html">vim as a python IDE</a></li>
-</ul></li>
-<li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
-<li>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</li>
-<li>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</li>
-<li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
-<li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
-<li>full stack python <a href="https://www.fullstackpython.com/vim.html">vim</a></li>
-<li><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></li>
-</ul>
-<p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
-<blockquote>
-<p>&quot;I run my scripts using</p>
-<p>ipython -i script.py</p>
-<p>That way I drop to an ipython shell whenever it breaks or finishes running. I also insert</p>
-<p>from ipython import embed; embed();</p>
-<p>Instead of using pdb. Its really neat.&quot;</p>
-</blockquote>
-<div id="jedi-vim" class="section level3">
-<h3>Jedi vim</h3>
-<ul>
-<li><a href="https://github.com/davidhalter/jedi">Jedi</a> autocompletion, also used by ipython.</li>
-<li><a href="https://github.com/davidhalter/jedi-vim/blob/master/doc/jedi-vim.txt">Jedi vim documentation</a></li>
-</ul>
-<p>Jedi Installation required enabling python mode in vim, available inside this Debian package:</p>
-<pre><code>sudo apt install vim-nox</code></pre>
-<p>Autocomplete is turned on to complete a word, press:</p>
-<pre><code>Ctrl+Space</code></pre>
-<p>To cycle through proposition you can use <code>Ctrl+space</code> again or:</p>
-<pre><code>Ctrl+P
-Ctrl+N</code></pre>
-<p>Enter for example a module name, then use Ctrl+N and Ctrl+P to choose among the objects and functions in that module.</p>
-<p>Jump to definition:</p>
-<pre><code>&lt;leader&gt;d</code></pre>
-<p>I remapped the <code>&lt;leader&gt;</code> key to <code>,</code> in my .vimrc</p>
-<pre><code>:let mapleader = &quot;,&quot;</code></pre>
-<p>See above section on navigation, you can use <code>Ctrl-O</code> to jump back and <code>Ctrl-I</code>to jump forward.</p>
-</div>
-</div>
-<div id="r-programming" class="section level2">
-<h2>R programming</h2>
-<ul>
-<li>Medium Xiaoou WANG <a href="https://medium.com/@xiaoouwang/how-to-turn-vim-into-a-perfect-better-r-ide-and-rmarkdown-writer-than-rstudio-part-i-48e1293c9c05">How to turn vim into a perfect, better R IDE and Rmarkdown writer than Rstudio (part I)</a></li>
-<li>reddit <a href="https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/">R programmers, do you prefer vim or Rstudio?</a> &gt; “Vim with fzf helps open these subsection code files super easily, ag helps &gt; me find keywords across all the files in my code folder, ctags helps me find &gt; functions I’ve defined, ale tells where I’ve made some trivial mistake, &gt; gitgutter tells me where I’ve made changes I’d maybe like to revisit later. I &gt; find these plugins alone make coding in vim much easier than R studio and &gt; they aren’t even R specific.”</li>
-<li>free code camp <a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a> Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</li>
-</ul>
-<div id="nvim-r" class="section level3">
-<h3>Nvim-R</h3>
-<p>Nvim-R supports knitr and mappings can be defined for example:</p>
-<p>RSendChunk RDSendChunk</p>
-<p>I mapped the local leader key to “;”</p>
-<p>Start R</p>
-<p>Start R (default) <localleader>rf</p>
-<p>Sending code to R:</p>
-<p>. Line  . Line (and down) </p>
-<p>Setting up tags as explained in :help Nvim-R</p>
-<blockquote>
-<p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands: &gt; rtags(path = “/path/to/R/source/code”, recursive = TRUE, ofile = “RTAGS”) etags2ctags(“RTAGS”, “Rtags”) &lt; Then, you would quit R and do the following command in the terminal emulator: &gt; ctags –languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code &lt; Finally, you would put the following in your |vimrc|, optionally inside an |autocmd-group|: &gt; autocmd FileType r set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags autocmd FileType rnoweb set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags</p>
-</blockquote>
-</div>
-</div>
-</div>
 <div id="terminal-interaction" class="section level1">
 <h1>Terminal interaction</h1>
 <div id="bang-commands" class="section level2">
@@ -1169,13 +1190,12 @@ Ctrl+N</code></pre>
 </div>
 <div id="tools" class="section level1">
 <h1>Tools</h1>
-<div id="vim-diff" class="section level2">
-<h2>Vim diff</h2>
-<p>View differences between <code>file1</code> and <code>file2</code> (vim documentation)</p>
-<pre><code>vimdiff file1 file2</code></pre>
+<div id="count-words" class="section level2">
+<h2>Count words</h2>
+<p><a href="https://vim.fandom.com/wiki/Word_count">Word coung</a>: &gt; To count the number of words in the current buffer, press g then Ctrl-g. To &gt; count the number of words in a block, select the block (for example, type V5j &gt; to select 6 lines) and again press g then Ctrl-g.</p>
 </div>
 <div id="spell-check" class="section level2">
-<h2>spell check</h2>
+<h2>Spell check</h2>
 <p><a href="https://superuser.com/questions/911412/how-to-configure-vim-spellcheck-to-use-two-languages">How to configure vim spellcheck to use two languages</a> To use the spellcheck for two languages, add this to your <code>~/.vimrc</code>:</p>
 <pre><code>set spell spelllang=en_gb,fr</code></pre>
 <p>On the first use, vim may give a warning that some word lists are missing. <a href="https://www.monolune.com/how-to-make-vim-download-missing-word-lists/">How to make vim download missing word lists</a> To solve this issue, turn spell check off</p>
@@ -1191,6 +1211,11 @@ Ctrl+N</code></pre>
 <pre><code>zg </code></pre>
 <p>Mark word as incorrect</p>
 <pre><code>zw</code></pre>
+</div>
+<div id="vim-diff" class="section level2">
+<h2>Vim diff</h2>
+<p>View differences between <code>file1</code> and <code>file2</code> (vim documentation)</p>
+<pre><code>vimdiff file1 file2</code></pre>
 </div>
 </div>
 <div id="blogs" class="section level1">
