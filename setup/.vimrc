@@ -190,8 +190,9 @@ let voom_ft_modes = {'markdown': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex'}
 " Create a Toc command
 augroup Toc
     autocmd!
-    autocmd Filetype rmd   command! -buffer Toc Voom
-    autocmd Filetype tex   command! -buffer Toc VimtexTocOpen
+    autocmd Filetype markdown command! -buffer Toc Voom
+    autocmd Filetype rmd command! -buffer Toc Voom
+    autocmd Filetype tex command! -buffer Toc VimtexTocOpen
 augroup END
 
 """"""""""""""""""""""""

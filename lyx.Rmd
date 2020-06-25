@@ -37,7 +37,7 @@ See also the setup directory where I saved a bind file.
 
 # Bibliography
 
-## Encoding
+## Bibliography encoding
 
 bib file have an old encoding format. It's possible to use utf8 in bibtex, but for compatibility reason I stick with the old format. 
 
@@ -77,6 +77,23 @@ I have written an article in Lyx which cites 2 bibliographies and a colleague as
 
 I have done it 3 times already. Could I create a script that does all this automatically?
 
+
+# Encoding
+
+Lyx wiki [unicode](https://wiki.lyx.org/LyX/Unicode)
+
+> Since version 1.5, LyX uses Unicode internally; the LyX file is always encoded in utf8.
+
+> The Menu Document>Settings>Language offers the Tab Encoding to specify the
+> encoding of the LaTeX-file LyX produces. It is described in the UserGuide in
+> Attachment A.6 "The Document Menu": The encoding specifies how the document
+> content is exported to LaTeX 
+
+# Conversion from lyx to Markdown
+
+I use the encoding option mentionned above to convert to latex, exported from lyx using the pdflatex format option.
+Then used pandoc to convert from latex to markdown. 
+It keeps the citation references which is the most important thing I wanted to keep.
 
 # Install dependencies
 

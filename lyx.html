@@ -473,8 +473,8 @@ statistics to Ctrl+Alt+T</code></pre>
 </div>
 <div id="bibliography" class="section level1">
 <h1>Bibliography</h1>
-<div id="encoding" class="section level2">
-<h2>Encoding</h2>
+<div id="bibliography-encoding" class="section level2">
+<h2>Bibliography encoding</h2>
 <p>bib file have an old encoding format. It’s possible to use utf8 in bibtex, but for compatibility reason I stick with the old format.</p>
 <p><a href="https://tex.stackexchange.com/a/57745/44254">How to write “ä” and other umlauts and accented letters in bibliography?</a></p>
 <pre><code>{\&quot;a} {\aa} 
@@ -505,6 +505,20 @@ bibexport -o short.bib article.aux
 Replace long.bib by short.bib in the .tex file.</code></pre>
 <p>I have done it 3 times already. Could I create a script that does all this automatically?</p>
 </div>
+</div>
+<div id="encoding" class="section level1">
+<h1>Encoding</h1>
+<p>Lyx wiki <a href="https://wiki.lyx.org/LyX/Unicode">unicode</a></p>
+<blockquote>
+<p>Since version 1.5, LyX uses Unicode internally; the LyX file is always encoded in utf8.</p>
+</blockquote>
+<blockquote>
+<p>The Menu Document&gt;Settings&gt;Language offers the Tab Encoding to specify the encoding of the LaTeX-file LyX produces. It is described in the UserGuide in Attachment A.6 “The Document Menu”: The encoding specifies how the document content is exported to LaTeX</p>
+</blockquote>
+</div>
+<div id="conversion-from-lyx-to-markdown" class="section level1">
+<h1>Conversion from lyx to Markdown</h1>
+<p>I use the encoding option mentionned above to convert to latex, exported from lyx using the pdflatex format option. Then used pandoc to convert from latex to markdown. It keeps the citation references which is the most important thing I wanted to keep.</p>
 </div>
 <div id="install-dependencies" class="section level1">
 <h1>Install dependencies</h1>

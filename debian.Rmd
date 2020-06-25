@@ -365,6 +365,13 @@ Add the following line to that file:
 
     XKBOPTIONS="caps:escape"
 
+
+## Zathura
+
+Usage
+
+    Tab    Show index and switch to Index mode
+
 ## Zoom
 
 [Zoom install on
@@ -587,11 +594,16 @@ Attention, I had another sources.list file under a subdirectory
 I had to comment the sources mention there as well, otherwise the system wouldn't uprgade most packages. 
 
     sudo vim  /etc/apt/sources.list.d/base.list
-    
-
-
     sudo apt update
     sudo apt upgrade
     sudo apt dist-upgrade
+
+# Blogs
+
+Uses this "A collection of nerdy interviews asking people from all walks of
+life what they use to get the job done".
+
+* [John Mac Farlane](https://usesthis.com/interviews/john.macfarlane/), the
+  author of pandoc uses Debian and Vim.
 
 

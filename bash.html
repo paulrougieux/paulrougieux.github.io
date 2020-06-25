@@ -469,12 +469,13 @@ div.tocify {
 <h1>Count</h1>
 <div id="number-of-files" class="section level2">
 <h2>Number of files</h2>
-<p><a href="https://stackoverflow.com/a/9157162/2641825">Recursively counting files</a></p>
-<pre><code>find DIR_NAME -type f | wc -l</code></pre>
 <p><a href="https://askubuntu.com/a/370717/315347">Recursively count the number of files in a directory</a>, limiting the maximum depth</p>
 <pre><code>find -maxdepth 1 -type f | wc -l</code></pre>
 <p>Counting files with a specific extension</p>
-<pre><code>find -name &#39;*.csv&#39; |wc -l</code></pre>
+<pre><code>find -name &#39;*.csv&#39; |wc -l
+find -name &#39;*.ogg&#39; |wc -l</code></pre>
+<p><a href="https://stackoverflow.com/a/9157162/2641825">Recursively counting files</a></p>
+<pre><code>find DIR_NAME -type f | wc -l</code></pre>
 </div>
 <div id="number-of-lines-in-a-text-file" class="section level2">
 <h2>Number of lines in a text file</h2>
@@ -777,9 +778,11 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 <p>This section is about converting from one document format into another. For example converting a text file into a pdf file and vice-versa.</p>
 <div id="pandoc" class="section level2">
 <h2>Pandoc</h2>
-<p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another.</p>
+<p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another. <a href="https://pandoc.org/MANUAL.html">Pandoc user guide</a></p>
 <p>Convert a markdown document to pdf</p>
-<pre><code>pandoc filname.md -o filename.pdf</code></pre>
+<pre><code>pandoc filname.md -o filename.pdf
+# If there are utf-8 encoding issues, use another engine
+pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
 <p>Convert an odf document to markdown</p>
 <pre><code>pandoc filename.odt -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
@@ -788,6 +791,8 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 <pre><code>pandoc --extract-media ./figures input.docx -o output.md</code></pre>
 <p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> Use ATX style headers in markdown output. The default is to use setext-style headers for levels 1-2, and then ATX headers.</p>
 <pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
+<div id="yaml-front-matter-for-styles" class="section level3">
+<h3>Yaml front matter for styles</h3>
 <p>Adding headers and footers to pandoc suggests using:</p>
 <pre><code>---
 title: Test
@@ -800,6 +805,31 @@ header-includes: |
     \fancyfoot[LE,RO]{\thepage}
 abstract: This is a pandoc test . . . 
 ---</code></pre>
+<p>Custom yaml front matter for readings file</p>
+<pre><code>---
+title: Reading notes
+author: Paul Rougieux
+bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
+abstract: Reading notes at the JRC
+header-includes: |
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[CO,CE]{Reading notes}
+    \fancyfoot[CO,CE]{JRC}
+    \fancyfoot[LE,RO]{\thepage}
+---
+\tableofcontents{}
+...file content... this is probably not the way to do it    
+\bibliography{../bibliography/jrc_ispra}
+\bibliographystyle{apalike}</code></pre>
+<p>This is probably not the way to do it, the bibliography should be included in the pandoc call? Note this requires citeproc</p>
+<pre><code>sudo apt install pandoc-citeproc</code></pre>
+<p>Then this should work :</p>
+<pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
+<p>There is still an issue with the encoding of the bibliography.</p>
+</div>
+<div id="makefile" class="section level3">
+<h3>Makefile</h3>
 <p>Generic <a href="https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69">makefile for pandoc</a></p>
 <p><a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">Bash script for pandoc</a></p>
 <pre><code>for mdfile in *.md; do
@@ -813,6 +843,8 @@ echo &quot;converting $docxfile to $mdfile&quot;
 pandoc &quot;$docxfile&quot; -o &quot;$mdfile&quot;
 done</code></pre>
 <p>Pandoc can convert to PDF, but not from PDF.</p>
+<p>You can also create template files as explained in super user <a href="https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044">markdown to latex conversion with a custom preamble</a></p>
+</div>
 </div>
 <div id="pdfminer" class="section level2">
 <h2>pdfminer</h2>
@@ -910,6 +942,9 @@ sudo chmod -R 770 scenarios</code></pre>
 <pre><code>Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as &quot;rwxr-xr-x&quot; in ls -l. 
 The default for document files on Debian seems to be chmod 644, visible as &quot;-rw-r--r--&quot; in ls -l.</code></pre>
 </div>
+</div>
+<div id="dot-files" class="section level1">
+<h1>Dot files</h1>
 <div id="alias" class="section level2">
 <h2>Alias</h2>
 <pre><code>alias ll=&quot;ls -lh&quot; </code></pre>
@@ -919,6 +954,8 @@ The default for document files on Debian seems to be chmod 644, visible as &quot
 <blockquote>
 <p>“You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly.”</p>
 </blockquote>
+<p>Alias from other persons:</p>
+<p><a href="https://github.com/statox/dotfiles/blob/master/bash_aliases" class="uri">https://github.com/statox/dotfiles/blob/master/bash_aliases</a></p>
 </div>
 <div id="profile-.bash_profile-and-.bashrc" class="section level2">
 <h2>Profile .bash_profile and .bashrc</h2>

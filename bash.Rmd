@@ -26,10 +26,6 @@ that are not part of the GNU project.
 
 ## Number of files
 
-[Recursively counting files](https://stackoverflow.com/a/9157162/2641825)
-
-    find DIR_NAME -type f | wc -l
-
 [Recursively count the number of files in a
 directory](https://askubuntu.com/a/370717/315347), limiting the maximum depth
 
@@ -38,6 +34,11 @@ directory](https://askubuntu.com/a/370717/315347), limiting the maximum depth
 Counting files with a specific extension
 
     find -name '*.csv' |wc -l
+    find -name '*.ogg' |wc -l
+
+[Recursively counting files](https://stackoverflow.com/a/9157162/2641825)
+
+    find DIR_NAME -type f | wc -l
 
 ## Number of lines in a text file
 Count the number of lines in a file
@@ -385,10 +386,13 @@ example converting a text file into a pdf file and vice-versa.
 
 [Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
 to convert text files from one format to another.
+[Pandoc user guide](https://pandoc.org/MANUAL.html)
 
 Convert a markdown document to pdf
 
     pandoc filname.md -o filename.pdf
+    # If there are utf-8 encoding issues, use another engine
+    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex
 
 Convert an odf document to markdown
 
@@ -402,12 +406,17 @@ Convert a Microsoft Word document to markdown keep images
 
     pandoc --extract-media ./figures input.docx -o output.md
 
+
+
 [Markdown has two different header
 styles](https://pandoc.org/MANUAL.html#headers) Use ATX style headers in
 markdown output. The default is to use setext-style headers for levels 1-2, and
 then ATX headers.
 
     pandoc --atx-headers filename.docx -o filename.md 
+
+
+### Yaml front matter for styles
 
 Adding headers and footers to pandoc suggests using:
 
@@ -423,6 +432,37 @@ Adding headers and footers to pandoc suggests using:
     abstract: This is a pandoc test . . . 
     ---
 
+Custom yaml front matter for readings file
+
+    ---
+    title: Reading notes
+    author: Paul Rougieux
+    bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
+    abstract: Reading notes at the JRC
+    header-includes: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[CO,CE]{Reading notes}
+        \fancyfoot[CO,CE]{JRC}
+        \fancyfoot[LE,RO]{\thepage}
+    ---
+    \tableofcontents{}
+    ...file content... this is probably not the way to do it    
+    \bibliography{../bibliography/jrc_ispra}
+    \bibliographystyle{apalike}
+
+This is probably not the way to do it, the bibliography should be included in the pandoc call? 
+Note this requires citeproc
+
+    sudo apt install pandoc-citeproc
+
+Then this should work :
+
+    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib
+
+There is still an issue with the encoding of the bibliography.
+
+### Makefile
 Generic [makefile for
 pandoc](https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69)
 
@@ -442,6 +482,8 @@ Convert all docx documents to markdown in the current folder
     done
 
 Pandoc can convert to PDF, but not from PDF.
+
+You can also create template files as explained in super user [markdown to latex conversion with a custom preamble](https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044)
 
 ## pdfminer
 
@@ -591,6 +633,9 @@ Chmod instructions can be given with characters or numbers, chmod 777 or chmod a
     Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as "rwxr-xr-x" in ls -l. 
     The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
 
+
+# Dot files
+
 ## Alias
 
     alias ll="ls -lh" 
@@ -605,6 +650,10 @@ You can place those commands in your ~/.bashrc to create a permanent alias.
 bashrc:
 
 >    "You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly."
+
+Alias from other persons: 
+
+https://github.com/statox/dotfiles/blob/master/bash_aliases
 
 ## Profile .bash_profile and .bashrc
 These are places where a user can turn of the system BEEP :
