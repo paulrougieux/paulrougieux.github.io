@@ -68,6 +68,15 @@ Skype was purchased by Microsoft.
 Screen sharing has a poor quality on Linux desktop.
 
 
+## Teams
+
+A Microsoft product.
+
+I use second-hand laptop computers with open source software on them. They cost
+less than a fifth of new computers and I run them for years. This is not
+possible with Microsoft windows, because they have this different world-view/
+incentives to build planed obsolescence into their products.
+
 ## Telegram
 
 Another chat application. 

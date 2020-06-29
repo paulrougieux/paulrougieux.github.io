@@ -372,6 +372,26 @@ Usage
 
     Tab    Show index and switch to Index mode
 
+The configuration file is located at ~/.config/zathura/zathurarc.
+More information in `man zathurarc`.
+
+[Invert color](https://www.noudaldenhoven.nl/wordpress/?p=166)
+is map to Ctrl+r by default, to map it to Ctrl+i, 
+edit the configuration file 
+
+    map <C-i> recolor
+
+[Copy to
+clipboard](https://unix.stackexchange.com/questions/339487/how-to-enable-copy-to-clipboard-with-zathura-pdf-poppler)
+(instead of middle mouse button clipboard)
+
+    set selection-clipboard clipboard
+
+Scroll
+
+    set scroll-full-overlap 0.08
+
+
 ## Zoom
 
 [Zoom install on
@@ -445,6 +465,10 @@ Or
 [Differences between systemctl and service commands](https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands). 
 [What is the difference between service and systemctl](https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl)
 > "[...], service is designed as a high-level wrapper to "abstract" out various service managers like init.d, initctl, and (of course) systemctl."
+
+# Printer
+
+[Disable automatic remote printer installation](https://askubuntu.com/questions/345083/how-do-i-disable-automatic-remote-printer-installation)
 
 # Screen display
 

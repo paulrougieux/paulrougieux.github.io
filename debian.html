@@ -677,6 +677,13 @@ sudo apt install riot-web</code></pre>
 <h2>Zathura</h2>
 <p>Usage</p>
 <pre><code>Tab    Show index and switch to Index mode</code></pre>
+<p>The configuration file is located at ~/.config/zathura/zathurarc. More information in <code>man zathurarc</code>.</p>
+<p><a href="https://www.noudaldenhoven.nl/wordpress/?p=166">Invert color</a> is map to Ctrl+r by default, to map it to Ctrl+i, edit the configuration file</p>
+<pre><code>map &lt;C-i&gt; recolor</code></pre>
+<p><a href="https://unix.stackexchange.com/questions/339487/how-to-enable-copy-to-clipboard-with-zathura-pdf-poppler">Copy to clipboard</a> (instead of middle mouse button clipboard)</p>
+<pre><code>set selection-clipboard clipboard</code></pre>
+<p>Scroll</p>
+<pre><code>set scroll-full-overlap 0.08</code></pre>
 </div>
 <div id="zoom" class="section level2">
 <h2>Zoom</h2>
@@ -732,6 +739,10 @@ sudo apt install fonts-deva-extra</code></pre>
 <p>Or</p>
 <pre><code>sudo systemctl restart NetworkManager</code></pre>
 <p><a href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences between systemctl and service commands</a>. <a href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What is the difference between service and systemctl</a> &gt; “[…], service is designed as a high-level wrapper to”abstract&quot; out various service managers like init.d, initctl, and (of course) systemctl.&quot;</p>
+</div>
+<div id="printer" class="section level1">
+<h1>Printer</h1>
+<p><a href="https://askubuntu.com/questions/345083/how-do-i-disable-automatic-remote-printer-installation">Disable automatic remote printer installation</a></p>
 </div>
 <div id="screen-display" class="section level1">
 <h1>Screen display</h1>

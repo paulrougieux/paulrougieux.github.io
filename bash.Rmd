@@ -12,10 +12,12 @@ knitr::opts_chunk$set(eval=FALSE)
 
 
 # Introduction
-This page is the continuation of [my blog post on GNU-Linux bash shell commands](https://paulremote.blogspot.de/2014/01/linux-shell-commands.html).
 
+This page is the continuation of [my blog post on GNU-Linux bash shell
+commands](https://paulremote.blogspot.de/2014/01/linux-shell-commands.html).
 
-Linux is the kernel of the operating system on top of which other programs are built. A detailed list of GNU core utilities is available under the command :
+Linux is the kernel of the operating system on top of which other programs are
+built. A detailed list of GNU core utilities is available under the command :
 
     info coreutils 
 
@@ -53,8 +55,9 @@ Count the number of lines in all files, and give the total line count.
 # Find
 
 ## Find files
-Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion).
-Find files of a specific extension:
+
+Find files in subdirectories of the current directory (Quotes are requited to
+prevent shell command expansion). Find files of a specific extension:
 
     find . -name "*.pdf" 
 
@@ -77,6 +80,7 @@ Find files in the whole system
     locate filename
 
 ## Get information about a file
+
 Determine file type and encoding. The -i option shows the mime type strings.
 
     file filename

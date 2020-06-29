@@ -26,6 +26,9 @@ Plugin 'lervag/vimtex'
 Plugin 'godlygeek/tabular'
 " Markdown table of content 
 Plugin 'vim-voom/VOoM'
+" Markdown citation and syntax
+Plugin 'vim-pandoc/vim-pandoc'
+Plugin 'vim-pandoc/vim-pandoc-syntax' 
 " Python autocompletion 
 Plugin 'davidhalter/jedi-vim'
 " Python linter
@@ -154,7 +157,7 @@ let g:vimtex_complete_bib = { 'simple': 1 }
 let g:vimtex_view_method = 'zathura'
 
 " Settings only implemented for .tex files
-" Key combination to insert citation and references using the vimtex plugin
+" Key combination to insert citation and references using the vimtex plugin or
 " Note: ctrl-space appears as ctrl-@ in my terminal
 au BufRead,BufNewFile *.tex inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
@@ -179,13 +182,17 @@ let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 """"""""""""""""""""""""""
 " Markdown configuration "
 """"""""""""""""""""""""""
+" Shortcut to align the current paragraph
+map <C-P> vipgq
 " Wrap markdown text to 88 characters like psf/black
 au BufRead,BufNewFile *.md setlocal textwidth=88
 " Do not use double spaces after points
 set nojoinspaces
+" Disable folding of vim-pandoc plugin
+let g:pandoc#modules#disabled = ["folding"]
 
-" Voom 
-let voom_ft_modes = {'markdown': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex'}
+" Voom plugin 
+let voom_ft_modes = {'markdown': 'pandoc', 'pandoc': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex'}
 
 " Create a Toc command
 augroup Toc
@@ -194,6 +201,12 @@ augroup Toc
     autocmd Filetype rmd command! -buffer Toc Voom
     autocmd Filetype tex command! -buffer Toc VimtexTocOpen
 augroup END
+
+" Insert citations with Ctrl-Space, 
+" Might conflict with python plugin Jedi's autocomplete when editing a python
+" file in parallel?
+au BufRead,BufNewFile *.md inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
+au BufRead,BufNewFile *.Rmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
 """"""""""""""""""""""""
 " Python configuration "
