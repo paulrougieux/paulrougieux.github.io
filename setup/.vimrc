@@ -255,6 +255,9 @@ let R_assign = 0
 " Chunk current echo and down
 "nnoremap <LocalLeader>cq <LocalLeader>ca
 
+" Set working directory to project root in knitr
+map <silent> <LocalLeader>wd  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>
+
 " See :help R_external_term
 " Run R in an external terminal emulator
 " let R_external_term = 1

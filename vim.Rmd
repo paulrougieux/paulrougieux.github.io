@@ -577,6 +577,9 @@ In command mode, the following motions are activated:
     b,w move previous or next word
     ctrl+b, ctrl+d move page up or page down
     {number} G go to line number 
+    H,L,M move to top, bottom and middle of visible window
+    ^, $ move to the begining or end of a line
+    in addition, I mapped m to $
 
 Note on motion with wrapped lines:
 [Move cursor by display lines when wrapping](https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping)
@@ -985,6 +988,22 @@ Setting up tags as explained in :help Nvim-R
 
 Config example 
 https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899
+
+
+## Knitr issue
+
+TODO: post this to https://github.com/jalvesaq/Nvim-R/issues/509
+
+One solution based on `:help Nvim-R-key-bindings`, is to use `SendCmdToR` as such:
+
+    :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")
+
+I mapped this to `<localleader>wd` by editing my `.vimrc` as follows:
+
+    map <silent> <LocalLeader>wd  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>
+
+To use it, I run the setup chunk with `<localleader>ca`, then I call `<localleader>wd`.
+
 
 # Programming tools
 
