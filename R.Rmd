@@ -353,6 +353,14 @@ piris$plot[2]
 
 * Gavin Simpson [My aversion to pipers](http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/) shows an Hadley tweet explaining that pipe might not be good in package development.
 
+## Stackoverflow
+
+* [Stack overflow question
+  checklist](https://codeblog.jonskeet.uk/2012/11/24/stack-overflow-question-checklist/)
+  general programming
+* [How to make a great R reproducible
+  example](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) 
+
 
 # Teaching R
 
