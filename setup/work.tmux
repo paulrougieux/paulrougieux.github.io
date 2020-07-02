@@ -10,6 +10,8 @@ neww
 rename-window music 
 neww
 rename-window server 
+neww
+rename-window todo
 select-window -t :1 
 
 # Tools used on desktop
