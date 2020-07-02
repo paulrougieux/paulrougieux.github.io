@@ -252,12 +252,6 @@ Split a pdf in two
     # if necessary, install mutool with 
     apt install mupdf-tools
 
-Extract tables from a pdf with [tabula](https://tabula.technology/)
-
-    cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
-    java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar
-
-Then visit http://127.0.0.1:8080/
 
 
 ## Replace strings in text files
@@ -279,7 +273,7 @@ This was necessary for a Latex to Lyx document conversion.
 The Latex file had problematic characters in href links. 
 Conversion  worked fine without the href links, to keep the links
 
-I quoted them in \begin{verbatim} statements.
+I quoted them in `\begin{verbatim}` statements.
 [sed add # before a line containing a pattern](https://stackoverflow.com/a/24230154/2641825)
 [sed performing several substitutions](https://unix.stackexchange.com/questions/97428/sed-how-to-do-several-consecutive-substitutions-but-process-file-only-once)
 
@@ -501,6 +495,15 @@ Convert all pdf documents to text files in the current folder:
     done
 
 See also a utility to extract tables from pdf documents.
+
+## Tabula
+
+Extract tables from a pdf with [tabula](https://tabula.technology/)
+
+    cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
+    java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar
+
+Then visit http://127.0.0.1:8080/
 
 # Download 
 
