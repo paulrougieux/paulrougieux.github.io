@@ -141,6 +141,8 @@ autocmd FileType netrw setl bufhidden=delete
 """""""""""""""""""""
 " Open git grep in a quickfix window
 autocmd QuickFixCmdPost *grep* cwindow
+" Display a word diff
+command! Gwd term git diff --word-diff
 
 """""""""""""""""""""""
 " Latex configuration "
@@ -190,6 +192,7 @@ au BufRead,BufNewFile *.md setlocal textwidth=88
 set nojoinspaces
 " Disable folding of vim-pandoc plugin
 let g:pandoc#modules#disabled = ["folding"]
+let g:pandoc#formatting#mode = "ha"
 
 " Voom plugin 
 let voom_ft_modes = {'markdown': 'pandoc', 'pandoc': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex'}
@@ -243,15 +246,18 @@ let g:ale_pattern_options = {
 \   '.*\.Rmd$': {'ale_enabled': 0},
 \}
 
-
 """""""""""""""""""
 " R configuration "
 """""""""""""""""""
 " Nvim-R options
 " disable auto replacement of _ to <- by Nvim-R
 let R_assign = 0
-" Run R in a tmux buffer
-"let R_in_buffer = 0
+" Chunk current echo and down
+"nnoremap <LocalLeader>cq <LocalLeader>ca
+
+" See :help R_external_term
+" Run R in an external terminal emulator
+" let R_external_term = 1
 
 """"""""""""""""""""""
 " Tmux configuration "
@@ -269,6 +275,5 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " Handle indentation correctly  https://github.com/jpalardy/vim-slime/issues/54
 " let g:slime_python_ipython = 1
-
 
 " To reload :source ~/.vimrc
