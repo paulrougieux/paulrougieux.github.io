@@ -740,6 +740,21 @@ nnoremap &lt;C-H&gt; &lt;C-W&gt;&lt;C-H&gt; </code></pre>
 <p>Natural split opening</p>
 <pre><code>set splitbelow
 set splitright</code></pre>
+<div id="split-resize" class="section level3">
+<h3>Split resize</h3>
+<p>See <code>:help resize</code></p>
+<p>Change the height of the current window by increments of 10:</p>
+<pre><code>:res +10</code></pre>
+<p>Change the with of the current window by increments of 10:</p>
+<pre><code>:vert res +10</code></pre>
+</div>
+<div id="split-zoom-in-and-out" class="section level3">
+<h3>Split zoom in and out</h3>
+<p><a href="https://stackoverflow.com/a/30362564/2641825">zoom windows in vim</a></p>
+<pre><code>c-w-| to have window take over (if using vsplits). 
+c-w-_ for horizontal splits
+c-w-= to restore. </code></pre>
+</div>
 </div>
 <div id="vim-and-tmux" class="section level2">
 <h2>Vim and Tmux</h2>
@@ -792,10 +807,25 @@ Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code>
 <li>The markdown TOC extension for vim.</li>
 <li><a href="https://github.com/euclio/vim-markdown-composer/blob/master/README.md">Vim markdown composer</a> a plugin that adds asynchronous Markdown preview to Neovim and Vim.</li>
 </ul>
-<p>In <a href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this question</a>, I managed to create an auto command to activate vim-markdown for Rmd files. But now that I start using Nvim-R more intensively, I hit <a href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown issue 263</a>: activating vim-markdown removes syntax highlighting and auto completion of the R code chunks. I first extracted the Toc function into a small plugin. Then chose to create the table of content with the <a href="https://github.com/vim-voom/VOoM">Voom plugin</a> based on a suggestion on <a href="https://github.com/jalvesaq/Nvim-R/issues/505">Nvim-R issue 505</a>. I have this in my <code>.vimrc</code>:</p>
+<div id="vim-markdown-not-used" class="section level3">
+<h3>Vim-markdown (not used)</h3>
+<p>In <a href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this question</a>, I managed to create an auto command to activate vim-markdown for Rmd files. But now that I start using Nvim-R more intensively, I hit <a href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown issue 263</a>: activating vim-markdown removes syntax highlighting and auto completion of the R code chunks. I first extracted the Toc function into a small plugin. Then started using the Voom plugin.</p>
+</div>
+<div id="vim-pandoc" class="section level3">
+<h3>Vim-pandoc</h3>
+<p>The vim-pandoc plugin also provides a table of content for markdown files, accessible through the <code>:TOC</code> command.</p>
+</div>
+<div id="voom" class="section level3">
+<h3>Voom</h3>
+<p>I chose to create the table of content with the <a href="https://github.com/vim-voom/VOoM">Voom plugin</a> based on a suggestion on <a href="https://github.com/jalvesaq/Nvim-R/issues/505">Nvim-R issue 505</a>. I have this in my <code>.vimrc</code>:</p>
 <pre><code>let voom_ft_modes = {&#39;markdown&#39;: &#39;pandoc&#39;, &#39;rmd&#39;: &#39;pandoc&#39;, &#39;tex&#39;: &#39;latex&#39;}
 au BufRead,BufNewFile *.Rmd command! Toc Voom </code></pre>
 <p>In the outline pane, press enter once to display the corresponding header in the body pane. Press enter a second time to move the cursor to the body pane. In the body pane, press enter once to display the position of the cursor in the outline pane. Press enter a second time to move to the corresponding place in the outline pane.</p>
+<p>Key mappings in the outline pane:</p>
+<pre><code>O Recursively expand the current node and its siblings.
+C Recursively contract the current node and its siblings.</code></pre>
+<p>It’s also possible to move nodes and to promote/demote them.</p>
+</div>
 </div>
 <div id="move-up-down-left-right" class="section level2">
 <h2>Move up, down, left, right</h2>
@@ -1049,19 +1079,35 @@ Ctrl+N</code></pre>
 <h3>Nvim-R</h3>
 <p>Nvim-R supports knitr and mappings can be defined for example:</p>
 <p>RSendChunk RDSendChunk</p>
-<p>I mapped the local leader key to “;”</p>
+<p>I mapped the local leader key to “;” by adding the following to my .vimrc:</p>
+<pre><code>let maplocalleader = &quot;;&quot;</code></pre>
 <p>Start R</p>
-<p>Start R (default) <localleader>rf</p>
+<p>Start R (default) ;rf</p>
 <p>Sending code to R:</p>
-<p>. Line  . Line (and down) </p>
+<ul>
+<li>Line ;l</li>
+<li>Line (and down) ;d</li>
+<li>Chunk (cur, echo and down) ;ca</li>
+<li>Chunk (cur) ;cc</li>
+<li>Chunk (cur, echo) ;ce</li>
+<li>Chunk (cur, down) ;cd</li>
+<li>Chunk (from first to here) ;ch</li>
+</ul>
 <p>View data</p>
-<p>. Open/Close the object browser </p>
+<ul>
+<li>Open/Close the object browser ;ro</li>
+</ul>
 <p>On the code, in a data frame:</p>
-<p>. View data.frame (cur) in horizontal split  . View data.frame (cur) in vertical split </p>
+<ul>
+<li>View data.frame (cur) in horizontal split ;vs</li>
+<li>View data.frame (cur) in vertical split ;vv</li>
+</ul>
+<p>Help on a function ;rh</p>
 <p>Setting up tags as explained in :help Nvim-R</p>
 <blockquote>
 <p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands: &gt; rtags(path = “/path/to/R/source/code”, recursive = TRUE, ofile = “RTAGS”) etags2ctags(“RTAGS”, “Rtags”) &lt; Then, you would quit R and do the following command in the terminal emulator: &gt; ctags –languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code &lt; Finally, you would put the following in your |vimrc|, optionally inside an |autocmd-group|: &gt; autocmd FileType r set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags autocmd FileType rnoweb set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags</p>
 </blockquote>
+<p>Config example <a href="https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899" class="uri">https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899</a></p>
 </div>
 </div>
 </div>

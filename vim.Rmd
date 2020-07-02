@@ -10,8 +10,7 @@ This page is the continuation of [my blog post on Vim commands](https://paulremo
 
 # Configure vim in .vimrc
 
-See also my vimrc file stored in [setup/.vimrc](setup/.vimrc).
-Many configuration options are mentioned throughout this document. 
+See also my vimrc file stored in [setup/.vimrc](setup/.vimrc). Many configuration options are mentioned throughout this document. 
 
 Reload the configuration after editing it: 
 
@@ -31,8 +30,8 @@ I used it to display markdown files as text files:
 
     au BufNewFile,BufRead *.md set filetype=txt
 
-Make a key combination specific to latex files, to insert a citation key using the vimtex plugin.
-Note: ctrl-space appears as ctrl-@ in my terminal
+Make a key combination specific to latex files, to insert a citation key using
+the vimtex plugin. Note: ctrl-space appears as ctrl-@ in my terminal
 
     au BufRead,BufNewFile *.tex inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
@@ -423,6 +422,27 @@ Natural split opening
     set splitbelow
     set splitright
 
+### Split resize
+
+See `:help resize`
+
+Change the height of the current window by increments of 10:
+
+    :res +10
+
+Change the with of the current window by increments of 10:
+
+    :vert res +10
+
+### Split zoom in and out
+
+[zoom windows in vim](https://stackoverflow.com/a/30362564/2641825)
+
+    c-w-| to have window take over (if using vsplits). 
+    c-w-_ for horizontal splits
+    c-w-= to restore. 
+
+
 ## Vim and Tmux
 
 See the [bash](bash.html) page for the tmux side of the configuration.
@@ -508,15 +528,26 @@ See also :
 * [Vim markdown composer](https://github.com/euclio/vim-markdown-composer/blob/master/README.md)
     a plugin that adds asynchronous Markdown preview to Neovim and Vim.
 
+###  Vim-markdown (not used)
+
 In [this
 question](https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md),
 I managed to create an auto command to activate vim-markdown for Rmd files. But
 now that I start using Nvim-R more intensively, I hit [vim-markdown issue
 263](https://github.com/plasticboy/vim-markdown/issues/263): activating
 vim-markdown removes syntax highlighting and auto completion of the R code
-chunks. I first extracted the Toc function into a small plugin. 
-Then chose to create the table of content
-with the [Voom plugin](https://github.com/vim-voom/VOoM) based on a suggestion on [Nvim-R
+chunks. I first extracted the Toc function into a small plugin. Then started
+using the Voom plugin.
+
+### Vim-pandoc
+
+The vim-pandoc plugin also provides a table of content for markdown files,
+accessible through the `:TOC` command.
+
+### Voom
+
+I chose to create the table of content with the [Voom
+plugin](https://github.com/vim-voom/VOoM) based on a suggestion on [Nvim-R
 issue 505](https://github.com/jalvesaq/Nvim-R/issues/505). I have this in my
 `.vimrc`: 
 
@@ -528,6 +559,13 @@ the body pane. Press enter a second time to move the cursor to the body pane.
 In the body pane, press enter once to display the position of the cursor in the
 outline pane. Press enter a second time to move to the corresponding place in
 the outline pane. 
+
+Key mappings in the outline pane:
+
+    O Recursively expand the current node and its siblings.
+    C Recursively contract the current node and its siblings.
+
+It's also possible to move nodes and to promote/demote them.
 
 ## Move up, down, left, right
 
@@ -897,26 +935,34 @@ Nvim-R supports knitr and mappings can be defined for example:
    RSendChunk
    RDSendChunk
 
-I mapped the local leader key to ";"
+I mapped the local leader key to ";" by adding the following to my .vimrc:
+
+    let maplocalleader = ";"
 
 Start R
 
-  Start R (default)                                  <localleader>rf
+  Start R (default)                                    ;rf
 
 Sending code to R:
 
-  . Line                                                \l
-  . Line (and down)                                     \d
+* Line                                               ;l
+* Line (and down)                                    ;d
+* Chunk (cur, echo and down)                         ;ca
+* Chunk (cur)                                        ;cc
+* Chunk (cur, echo)                                  ;ce
+* Chunk (cur, down)                                  ;cd
+* Chunk (from first to here)                         ;ch
   
 View data
     
-  . Open/Close the object browser                      \ro
+* Open/Close the object browser                      ;ro
 
 On the code, in a data frame:
 
-  . View data.frame (cur) in horizontal split          \vs
-  . View data.frame (cur) in vertical split            \vv
+* View data.frame (cur) in horizontal split          ;vs
+* View data.frame (cur) in vertical split            ;vv
 
+Help on a function ;rh
 
 Setting up tags as explained in :help Nvim-R
 
@@ -937,6 +983,8 @@ Setting up tags as explained in :help Nvim-R
 >    autocmd FileType rnoweb set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
 > 
 
+Config example 
+https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899
 
 # Programming tools
 
