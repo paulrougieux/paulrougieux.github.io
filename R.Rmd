@@ -177,6 +177,8 @@ Arguments can be extracted one by one with args[1]
 commandArgs() returns a **character vector** containing the name of the executable and the user-supplied command line arguments.
 
 # Tidyverse
+
+
 ## dplyr
 pipes
 
@@ -227,6 +229,23 @@ forestEU <- forestEU_wide  %>%
       # select everything except the Year, then pivot all columns and put the value in area
       gather(-Year, key = "Country", value = "Area")
 ```
+
+## Tricks
+
+David Robinson [Ten tricks in the tidyverse](https://www.youtube.com/watch?v=NDHSBUN_rVU)
+
+1. count with weight, sort and renamining 
+   count(x, ..., wt = NULL, sort = FALSE, name = "n")
+2. creating variables in count()
+3. add_count()
+4. summarize with a list column (to create many models for example)
+5. fct_reorder() + geom_col() + coord_flip()
+6. fct_lump() to lump less frequent values together
+7. use a log scale scale_x/y_log10
+8. crossing()
+9. separate()
+10. extract() use a regular expression such as `S(.*)E(.*)` to extract series
+    and episode from a string of the form "S32E44".
 
 # Interpolate for one country
 ```{r eval=FALSE}

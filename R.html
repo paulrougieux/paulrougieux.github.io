@@ -711,6 +711,22 @@ forestEU &lt;- forestEU_wide  %&gt;%
       gather(-Year, key = &quot;Country&quot;, value = &quot;Area&quot;)</code></pre>
 </div>
 </div>
+<div id="tricks" class="section level2">
+<h2>Tricks</h2>
+<p>David Robinson <a href="https://www.youtube.com/watch?v=NDHSBUN_rVU">Ten tricks in the tidyverse</a></p>
+<ol style="list-style-type: decimal">
+<li>count with weight, sort and renamining count(x, …, wt = NULL, sort = FALSE, name = “n”)</li>
+<li>creating variables in count()</li>
+<li>add_count()</li>
+<li>summarize with a list column (to create many models for example)</li>
+<li>fct_reorder() + geom_col() + coord_flip()</li>
+<li>fct_lump() to lump less frequent values together</li>
+<li>use a log scale scale_x/y_log10</li>
+<li>crossing()</li>
+<li>separate()</li>
+<li>extract() use a regular expression such as <code>S(.*)E(.*)</code> to extract series and episode from a string of the form “S32E44”.</li>
+</ol>
+</div>
 </div>
 <div id="interpolate-for-one-country" class="section level1">
 <h1>Interpolate for one country</h1>
