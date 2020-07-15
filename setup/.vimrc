@@ -260,6 +260,10 @@ let R_assign = 0
 " Add tags as explained in :help Nvim-R-tagsfile
 autocmd FileType r set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
 autocmd FileType rmd set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+" https://vi.stackexchange.com/questions/2350/how-to-map-alt-key
+execute "set <M-m>=\em"
+autocmd FileType r inoremap <M-m> %>%<CR>
+autocmd FileType rmd inoremap <M-m> %>%<CR>
 
 " Set working directory to project root in knitr
 map <silent> <LocalLeader>wd  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>

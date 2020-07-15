@@ -73,6 +73,13 @@ See
 Show all mappings including <leader> commands:
 
    :map
+[How to map the ALT
+key](https://vi.stackexchange.com/questions/2350/how-to-map-alt-key)
+
+[different mappings for CTRL+A and
+CTRL+SHIFT+A](https://stackoverflow.com/questions/1506764/how-to-map-ctrla-and-ctrlshifta-differently)
+It's generally not possible.
+
 
 ## Minimal .vimrc for bug reports
 
