@@ -1,3 +1,5 @@
+alias bookmark="vim ~/rp/bookmarkdown/bookmark.md"
+alias overflow="vim ~/rp/bookmarkdown/overflow.md"
 alias ll='ls -lah'
 alias tmuxw='tmux new-session -s work "tmux source-file ~/.tmux/work"'
 alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
@@ -22,3 +24,4 @@ export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
 # https://vi.stackexchange.com/questions/25311/how-to-activate-bracketed-paste-mode-in-gnome-terminal-for-vim?noredirect=1#comment44475_25311
 # It's actually better to enable this in the gnome shell in fact https://superuser.com/a/870547/419414
 # export TERM=xterm-256color
+alias vpn=expressvpn

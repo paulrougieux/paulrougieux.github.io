@@ -185,7 +185,9 @@ let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 " Markdown configuration "
 """"""""""""""""""""""""""
 " Shortcut to align the current paragraph
-map <C-P> vipgq
+au BufRead,BufNewFile *.md map <C-P> vipgq
+au BufRead,BufNewFile *.Rmd map <C-P> vipgq
+
 " Wrap markdown text to 88 characters like psf/black
 au BufRead,BufNewFile *.md setlocal textwidth=88
 " Do not use double spaces after points
@@ -254,6 +256,10 @@ let g:ale_pattern_options = {
 let R_assign = 0
 " Chunk current echo and down
 "nnoremap <LocalLeader>cq <LocalLeader>ca
+
+" Add tags as explained in :help Nvim-R-tagsfile
+autocmd FileType r set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+autocmd FileType rmd set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
 
 " Set working directory to project root in knitr
 map <silent> <LocalLeader>wd  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>
