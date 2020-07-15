@@ -457,7 +457,10 @@ div.tocify {
 </div>
 
 
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my blog post on Vim commands</a>.</p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>People that I admire use vim.</p>
+</div>
 <div id="configure-vim-in-.vimrc" class="section level1">
 <h1>Configure vim in .vimrc</h1>
 <p>See also my vimrc file stored in <a href="setup/.vimrc" class="uri">setup/.vimrc</a>. Many configuration options are mentioned throughout this document.</p>
@@ -700,6 +703,16 @@ CTRL+] - jump to a highlighted topic
 CTRL+T - jump backwards</code></pre>
 <p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
 </div>
+<div id="insert" class="section level1">
+<h1>Insert</h1>
+<div id="current-file-name" class="section level2">
+<h2>Current file name</h2>
+<p><a href="https://unix.stackexchange.com/questions/57555/how-do-i-insert-the-current-filename-into-the-contents-in-vim">Insert the current file name in VIM</a> In insert mode press:</p>
+<pre><code>&lt;c-r&gt;%</code></pre>
+<p>In normal mode:</p>
+<pre><code>:r! echo %</code></pre>
+</div>
+</div>
 <div id="multiple-files-buffers-and-windows" class="section level1">
 <h1>Multiple files, buffers and windows</h1>
 <div id="buffers" class="section level2">
@@ -824,7 +837,9 @@ au BufRead,BufNewFile *.Rmd command! Toc Voom </code></pre>
 <p>Key mappings in the outline pane:</p>
 <pre><code>O Recursively expand the current node and its siblings.
 C Recursively contract the current node and its siblings.</code></pre>
-<p>It’s also possible to move nodes and to promote/demote them.</p>
+<p>It’s also possible to move nodes with cut and paste behaviour and to promote/demote them as such:</p>
+<pre><code>&lt;LocalLeader&gt;l Move node(s) left, that is promote.
+&lt;LocalLeader&gt;r Move node(s) right, that is demote.</code></pre>
 </div>
 </div>
 <div id="move-up-down-left-right" class="section level2">
@@ -835,7 +850,10 @@ j,k move up down
 h,l move left right
 b,w move previous or next word
 ctrl+b, ctrl+d move page up or page down
-{number} G go to line number </code></pre>
+{number} G go to line number 
+H,L,M move to top, bottom and middle of visible window
+^, $ move to the begining or end of a line
+in addition, I mapped m to $</code></pre>
 <p>Note on motion with wrapped lines: <a href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move cursor by display lines when wrapping</a></p>
 </div>
 <div id="quick-fix-window" class="section level2">
@@ -845,7 +863,7 @@ ctrl+b, ctrl+d move page up or page down
 </div>
 <div id="search-in-a-file" class="section level2">
 <h2>Search in a file</h2>
-<p>Use “/” to search, then n forward and N backwards &quot;*&quot; to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
+<p>Use <code>&quot;/&quot;</code> to search, then n forward and N backwards <code>&quot;*&quot;</code> to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
 <p>Use <code>:g/patter</code> to display a list of all search result in the document.</p>
 </div>
 <div id="search-in-multiple-files" class="section level2">
@@ -1109,6 +1127,28 @@ Ctrl+N</code></pre>
 </blockquote>
 <p>Config example <a href="https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899" class="uri">https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899</a></p>
 </div>
+<div id="tags" class="section level3">
+<h3>Tags</h3>
+<p>Move to the /R subfolder of a project, then generate tag files with:</p>
+<pre><code>:RBuildTags</code></pre>
+<p>Display tag files currently seen by vim:</p>
+<pre><code>:set tags</code></pre>
+<p>Navigate tag files with <code>CTRL+]</code> (<code>CTRL+ù</code> on my setup).</p>
+<p><a href="https://stackoverflow.com/a/14465438/2641825" class="uri">https://stackoverflow.com/a/14465438/2641825</a></p>
+<p>An NVim-R issue about displaying a nice <a href="https://github.com/jalvesaq/Nvim-R/issues/517">list of tags for R functions</a>.</p>
+<p>I have added some of my packages to the tag files always seen by vim:</p>
+<pre><code>autocmd FileType r set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags</code></pre>
+</div>
+<div id="knitr-issue" class="section level3">
+<h3>Knitr issue</h3>
+<p>Posted this to <a href="https://github.com/jalvesaq/Nvim-R/issues/509" class="uri">https://github.com/jalvesaq/Nvim-R/issues/509</a></p>
+<p>One solution based on <code>:help Nvim-R-key-bindings</code>, is to use <code>SendCmdToR</code> as such:</p>
+<pre><code>:call g:SendCmdToR(&quot;setwd(opts_knit$get()$root.dir)&quot;)</code></pre>
+<p>I mapped this to <code>&lt;localleader&gt;wd</code> by editing my <code>.vimrc</code> as follows:</p>
+<pre><code>map &lt;silent&gt; &lt;LocalLeader&gt;wd  :call g:SendCmdToR(&quot;setwd(opts_knit$get()$root.dir)&quot;)&lt;CR&gt;</code></pre>
+<p>To use it, I run the setup chunk with <code>&lt;localleader&gt;ca</code>, then I call <code>&lt;localleader&gt;wd</code>.</p>
+</div>
 </div>
 </div>
 <div id="programming-tools" class="section level1">
@@ -1161,6 +1201,12 @@ Ctrl+N</code></pre>
 <p>This is the old version called exhuberant ctags (not updated since 2009):</p>
 <pre><code># not needed if above is installed
 sudo apt install ctags </code></pre>
+<p>Reddit <a href="https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/">comparison of taglist and tagbar</a></p>
+<div id="base-vim" class="section level3">
+<h3>Base vim</h3>
+<p>:help RBuildTags</p>
+<p>:he</p>
+</div>
 <div id="taglist" class="section level3">
 <h3>Taglist</h3>
 <p>Install the taglist plugin with vundle</p>
@@ -1225,6 +1271,8 @@ let g:tagbar_compact = 1</code></pre>
 <h2>Terminal buffer</h2>
 <p>You can start a terminal inside a vim split by entering the command:</p>
 <pre><code>:terminal</code></pre>
+<p>To <a href="https://vi.stackexchange.com/questions/20643/how-to-enter-normal-mode-while-in-terminal-buffer">enter the normal mode in a terminal buffer</a>:</p>
+<pre><code>CTRL+W+N</code></pre>
 <p>Reddit <a href="https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/">does anybody use terminal instead of tmux and a normal terminal?</a> Some users prefer tmux panes and windows, others prefer vim terminal. I have not used vim terminal buffers enough to know how to use them properly. For example <a href="https://vimawesome.com/plugin/vim-slime#vim-terminal">slime is also working with vim’s terminal</a></p>
 <p>To start a vertical terminal:</p>
 <pre><code>:vert term</code></pre>
@@ -1272,6 +1320,7 @@ let g:tagbar_compact = 1</code></pre>
 </blockquote>
 <p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a> I tried slime.</p>
 <p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a> <a href="https://github.com/tridactyl/tridactyl">Browse the web in vim mode</a></p>
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my 2014 blog post on Vim commands</a>.</p>
 <div id="learning-vim" class="section level2">
 <h2>Learning vim</h2>
 <ul>

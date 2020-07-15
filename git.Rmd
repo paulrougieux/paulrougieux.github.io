@@ -667,6 +667,17 @@ The output of git push -v shows that it is now pushing to both repositories
     updating local tracking ref 'refs/remotes/origin/master'
     Everything up-to-date
 
+# TO DO lists
+
+In one repo:
+
+    git grep TODO
+
+In multiple repos (using git run):
+
+    gr git grep "^TODO "
+
+
 # Autocompletion
 
 git has an [auto complete](https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion) 

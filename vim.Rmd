@@ -6,7 +6,10 @@ output:
     toc_float: true
 ---
 
-This page is the continuation of [my blog post on Vim commands](https://paulremote.blogspot.de/2014/07/vim-commands.html).
+
+# Introduction
+
+People that I admire use vim.
 
 # Configure vim in .vimrc
 
@@ -371,6 +374,20 @@ To save content and exit:
 kept up-to-date automatically from the 
 [Vim source repository](https://github.com/vim/vim).
 
+# Insert 
+
+## Current file name
+
+
+[Insert the current file name in VIM](https://unix.stackexchange.com/questions/57555/how-do-i-insert-the-current-filename-into-the-contents-in-vim)
+In insert mode press: 
+    
+    <c-r>%
+
+In normal mode: 
+
+    :r! echo %
+
 # Multiple files, buffers and windows
 
 ## Buffers
@@ -565,7 +582,11 @@ Key mappings in the outline pane:
     O Recursively expand the current node and its siblings.
     C Recursively contract the current node and its siblings.
 
-It's also possible to move nodes and to promote/demote them.
+It's also possible to move nodes with cut and paste behaviour and to
+promote/demote them as such:
+
+    <LocalLeader>l Move node(s) left, that is promote.
+    <LocalLeader>r Move node(s) right, that is demote.
 
 ## Move up, down, left, right
 
@@ -592,7 +613,7 @@ Help
 
 ## Search in a file 
 
-Use "/" to search, then n forward and N backwards "*" to search for the word
+Use `"/"` to search, then n forward and N backwards `"*"` to search for the word
 under the cursor (you can also create a mapping to search for a selected text)
 
 Use `:g/patter` to display a list of all search result in the document. 
@@ -989,10 +1010,31 @@ Setting up tags as explained in :help Nvim-R
 Config example 
 https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899
 
+### Tags
 
-## Knitr issue
+Move to the /R subfolder of a project, then generate tag files with:
 
-TODO: post this to https://github.com/jalvesaq/Nvim-R/issues/509
+    :RBuildTags
+
+Display tag files currently seen by vim: 
+
+    :set tags
+
+Navigate tag files with `CTRL+]` (`CTRL+ù` on my setup).
+
+https://stackoverflow.com/a/14465438/2641825
+
+An NVim-R issue about displaying a nice [list of tags for R
+functions](https://github.com/jalvesaq/Nvim-R/issues/517).
+
+I have added some of my packages to the tag files always seen by vim:
+
+    autocmd FileType r set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+    autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+
+### Knitr issue
+
+Posted this to https://github.com/jalvesaq/Nvim-R/issues/509
 
 One solution based on `:help Nvim-R-key-bindings`, is to use `SendCmdToR` as such:
 
@@ -1092,6 +1134,14 @@ This is the old version called exhuberant ctags (not updated since 2009):
 
     # not needed if above is installed
     sudo apt install ctags 
+
+Reddit [comparison of taglist and tagbar](https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/)
+
+### Base vim
+
+:help RBuildTags
+
+:he
 
 ### Taglist 
 
@@ -1197,6 +1247,10 @@ You can start a terminal inside a vim split by entering the command:
 
     :terminal
 
+To [enter the normal mode in a terminal buffer](https://vi.stackexchange.com/questions/20643/how-to-enter-normal-mode-while-in-terminal-buffer): 
+
+    CTRL+W+N
+
 Reddit [does anybody use terminal instead of tmux and a normal terminal?](https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/)
 Some users prefer tmux panes and windows, others prefer vim terminal. 
 I have not used vim terminal buffers enough to know how to use them properly. 
@@ -1280,6 +1334,8 @@ I tried slime.
 
 [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
 [Browse the web in vim mode](https://github.com/tridactyl/tridactyl)
+
+This page is the continuation of [my 2014 blog post on Vim commands](https://paulremote.blogspot.de/2014/07/vim-commands.html).
 
 ## Learning vim
 * [Should I introduce vim tomy kid](https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/)
