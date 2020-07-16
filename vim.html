@@ -504,6 +504,22 @@ div.tocify {
 <pre><code>:help map</code></pre>
 <p>Show all mappings including <leader> commands:</p>
 <p>:map</p>
+<p><a href="https://vi.stackexchange.com/questions/2350/how-to-map-alt-key">How to map the ALT key</a> Explains who to see what key combination is actually seen by the console:</p>
+<pre><code>sed -n l</code></pre>
+<p>I used this mapping “ALT-;” to insert the pipe “%&gt;%” in R documents:</p>
+<pre><code>&quot; The ALT key is mapped to escape in the terminal, remap it
+&quot; https://vi.stackexchange.com/questions/2350/how-to-map-alt-key
+execute &quot;set &lt;M-;&gt;=\e;&quot;
+autocmd FileType r inoremap &lt;M-;&gt; &lt;space&gt;%&gt;%&lt;CR&gt;
+autocmd FileType rmd inoremap &lt;M-;&gt; &lt;space&gt;%&gt;%&lt;CR&gt;</code></pre>
+<p>This didn’t work because the CTRL-; is seen as ; by the terminal:</p>
+<pre><code>&quot; Try to map the CTRL+;
+autocmd FileType r inoremap &lt;C-;&gt; &lt;space&gt;%&gt;%&lt;CR&gt;
+autocmd FileType rmd inoremap &lt;C-;&gt; &lt;space&gt;%&gt;%&lt;CR&gt;</code></pre>
+<p>In the end I changed the mapping &gt; to %&gt;% <a href="https://github.com/jalvesaq/Nvim-R/issues/85">as explained in NVimR issue 85</a>:</p>
+<pre><code>autocmd FileType r inoremap &lt;buffer&gt; &gt; &lt;Esc&gt;:normal! a %&gt;%&lt;CR&gt;a 
+autocmd FileType rmd inoremap &lt;buffer&gt; &gt; &lt;Esc&gt;:normal! a %&gt;%&lt;CR&gt;a </code></pre>
+<p><a href="https://stackoverflow.com/questions/1506764/how-to-map-ctrla-and-ctrlshifta-differently">different mappings for CTRL+A and CTRL+SHIFT+A</a> It’s generally not possible.</p>
 </div>
 <div id="minimal-.vimrc-for-bug-reports" class="section level2">
 <h2>Minimal .vimrc for bug reports</h2>
@@ -795,7 +811,7 @@ c-w-= to restore. </code></pre>
 <pre><code>:E</code></pre>
 <p>or</p>
 <pre><code>:Explorer</code></pre>
-<p>Pressing <code>s</code>changes the way files are sorted. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system.</p>
+<p>Pressing <code>s</code> changes the way files are sorted by name, time, size. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system. Pressing <code>x</code> on a folder name opens the files explorer. The <code>i</code> key switches between different view types, tree view, detailed view, summarised view. To rename a file press <code>R</code> and to delete a file press <code>D</code>.</p>
 <p>To create a new file in the current directory visible in the explorer, press:</p>
 <pre><code>%</code></pre>
 <p>This is also works to create a new directory and file.</p>

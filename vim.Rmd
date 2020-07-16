@@ -73,13 +73,35 @@ See
 Show all mappings including <leader> commands:
 
    :map
+
 [How to map the ALT
 key](https://vi.stackexchange.com/questions/2350/how-to-map-alt-key)
+Explains who to see what key combination is actually seen by the console:
+
+    sed -n l
+
+I used this mapping "ALT-;" to insert the pipe "%>%" in R documents:
+
+    " The ALT key is mapped to escape in the terminal, remap it
+    " https://vi.stackexchange.com/questions/2350/how-to-map-alt-key
+    execute "set <M-;>=\e;"
+    autocmd FileType r inoremap <M-;> <space>%>%<CR>
+    autocmd FileType rmd inoremap <M-;> <space>%>%<CR>
+
+This didn't work because the CTRL-; is seen as ; by the terminal:
+
+    " Try to map the CTRL+;
+    autocmd FileType r inoremap <C-;> <space>%>%<CR>
+    autocmd FileType rmd inoremap <C-;> <space>%>%<CR>
+
+In the end I changed the mapping > to %>% [as explained in NVimR issue 85](https://github.com/jalvesaq/Nvim-R/issues/85):
+
+    autocmd FileType r inoremap <buffer> > <Esc>:normal! a %>%<CR>a 
+    autocmd FileType rmd inoremap <buffer> > <Esc>:normal! a %>%<CR>a 
 
 [different mappings for CTRL+A and
 CTRL+SHIFT+A](https://stackoverflow.com/questions/1506764/how-to-map-ctrla-and-ctrlshifta-differently)
 It's generally not possible.
-
 
 ## Minimal .vimrc for bug reports
 
@@ -509,9 +531,12 @@ or
 
     :Explorer
 
-Pressing `s`changes the way files are sorted. Pressing `x` on a file name opens
-that file with the relevant system program associated with it. For example
-pressing `x` on a pdf file opens that file in the evince reader on my system.
+Pressing `s` changes the way files are sorted by name, time, size. Pressing `x`
+on a file name opens that file with the relevant system program associated with
+it. For example pressing `x` on a pdf file opens that file in the evince reader
+on my system. Pressing `x` on a folder name opens the files explorer. The `i`
+key switches between different view types, tree view, detailed view, summarised
+view. To rename a file press `R` and to delete a file press `D`.
 
 To create a new file in the current directory visible in the explorer, press:
 
