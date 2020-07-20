@@ -262,11 +262,20 @@ autocmd FileType r set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows
 autocmd FileType rmd set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
 
 " NVim-R set working directory to project root in knitr
-map <silent> <LocalLeader>wd  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>
+map <silent> <LocalLeader>w  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>
+" R's working directory to be the same as Vim's working directory
+let R_nvim_wd = 1
 
 " Map > to %>% in insert mode https://github.com/jalvesaq/Nvim-R/issues/85
-autocmd FileType r inoremap <buffer> > <Esc>:normal! a %>%<CR>a 
-autocmd FileType rmd inoremap <buffer> > <Esc>:normal! a %>%<CR>a 
+autocmd FileType r inoremap <buffer> > <Esc>:normal! a %>%<CR>a
+autocmd FileType rmd inoremap <buffer> > <Esc>:normal! a %>%<CR>a
+tnoremap > <space>%>%
+
+" No wrap in csv files, also affects the data frame view of ;vs
+autocmd FileType csv set nowrap 
+
+" Press `gz` in Normal mode to emulate Tmux ^bz
+" see help Nvim-R tips 
 
 " See :help R_external_term
 " Run R in an external terminal emulator

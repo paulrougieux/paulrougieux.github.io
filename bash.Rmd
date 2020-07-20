@@ -207,6 +207,7 @@ There is a feedback of all the currently active options at the bottom right of
 the cums screen.
 
 # Edit
+
 ## Edit Image files
 
 Resize a picture to 2000 px wide using ImageMagick:
@@ -228,7 +229,15 @@ Batch processing, resize all jpg images and place the resized images in a new fo
     mogrify -resize 2000 -path ./newfolder *.jpg
     mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg
 
+## Edit music files
+
+[Mp3 tags from file names](https://askubuntu.com/questions/664698/mp3-tags-from-file-names)
+[tagpy](https://pypi.org/project/tagpy/#history)
+
+
+
 ## Edit PDF files
+
 Commands based on the poppler library for PDF manipulation.
 Search a text pattern in all PDF files present in a directory:
 

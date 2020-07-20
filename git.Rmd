@@ -266,7 +266,7 @@ To go back to this state for only one file, see git checkout
 
 No commit hash to get to get the file back to the latest commit.
 
-Chekout the older revision of a file under a new name
+Checkout the older revision of a file under a new name
 
     git show commit_sha:filename > new_file_name
 

@@ -43,6 +43,7 @@ Can be solved by installing these dependencies:
     sudo apt install libssl-dev
 
 # Information about your R system
+
 ```{r eval=FALSE}
 sessionInfo()
 installed.packages()

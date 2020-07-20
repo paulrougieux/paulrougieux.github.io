@@ -728,6 +728,14 @@ CTRL+T - jump backwards</code></pre>
 <p>In normal mode:</p>
 <pre><code>:r! echo %</code></pre>
 </div>
+<div id="content-of-another-file" class="section level2">
+<h2>Content of another file</h2>
+<p>In normal mode, insert the content of another file:</p>
+<pre><code>:read /tmp/newdir/file1.txt</code></pre>
+<p>Insert the content of a file from the network:</p>
+<pre><code>:Nread https://www.wikipedia.org/</code></pre>
+<p>For more, see <code>:help Nread</code>.</p>
+</div>
 </div>
 <div id="multiple-files-buffers-and-windows" class="section level1">
 <h1>Multiple files, buffers and windows</h1>
@@ -749,6 +757,10 @@ CTRL+T - jump backwards</code></pre>
 <div id="tabs-should-be-called-workspaces" class="section level2">
 <h2>Tabs should be called workspaces</h2>
 <p><a href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why do vim experts prefer buffers over tabs?</a> &gt; &quot;“Vim experts” don’t prefer buffers over tabs: they use buffers as the file &gt; proxies they are and tab pages as the workspaces they are. Buffers and tab &gt; pages have different purposes&quot;</p>
+<p>Move to the next tab</p>
+<pre><code>gt</code></pre>
+<p>Move to the previous tab</p>
+<pre><code>gT</code></pre>
 </div>
 <div id="window-split" class="section level2">
 <h2>Window split</h2>
@@ -784,6 +796,11 @@ set splitright</code></pre>
 c-w-_ for horizontal splits
 c-w-= to restore. </code></pre>
 </div>
+<div id="split-and-buffers" class="section level3">
+<h3>Split and buffers</h3>
+<p><a href="https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window">Delete buffer without losing the split window</a></p>
+<pre><code>bp|bd #</code></pre>
+</div>
 </div>
 <div id="vim-and-tmux" class="section level2">
 <h2>Vim and Tmux</h2>
@@ -811,7 +828,10 @@ c-w-= to restore. </code></pre>
 <pre><code>:E</code></pre>
 <p>or</p>
 <pre><code>:Explorer</code></pre>
-<p>Pressing <code>s</code> changes the way files are sorted by name, time, size. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system. Pressing <code>x</code> on a folder name opens the files explorer. The <code>i</code> key switches between different view types, tree view, detailed view, summarised view. To rename a file press <code>R</code> and to delete a file press <code>D</code>.</p>
+<p>To <a href="https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file">return to file editing without opening any file</a> (and to switch back and forth between editing and explorer):</p>
+<pre><code>:Rex
+:Re</code></pre>
+<p>In the file explorer, also called “netrw”, pressing <code>s</code> changes the way files are sorted by name, time, size. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system. Pressing <code>x</code> on a folder name opens the files explorer. The <code>i</code> key switches between different view types, tree view, detailed view, summarised view. To rename a file press <code>R</code> and to delete a file press <code>D</code>.</p>
 <p>To create a new file in the current directory visible in the explorer, press:</p>
 <pre><code>%</code></pre>
 <p>This is also works to create a new directory and file.</p>
@@ -1126,6 +1146,12 @@ Ctrl+N</code></pre>
 <li>Chunk (cur, echo) ;ce</li>
 <li>Chunk (cur, down) ;cd</li>
 <li>Chunk (from first to here) ;ch</li>
+<li>Selection ;ss</li>
+<li>Selection (echo) ;se</li>
+<li>Selection (evaluate and insert output in new tab) ;so</li>
+<li>File ;aa</li>
+<li>File (echo) ;ae</li>
+<li>File (open .Rout) ;ao</li>
 </ul>
 <p>View data</p>
 <ul>
@@ -1133,8 +1159,12 @@ Ctrl+N</code></pre>
 </ul>
 <p>On the code, in a data frame:</p>
 <ul>
+<li>Names (cur) ;rn</li>
+<li>Structure (cur) ;rt</li>
+<li>View data.frame (cur) in new tab ;rv</li>
 <li>View data.frame (cur) in horizontal split ;vs</li>
 <li>View data.frame (cur) in vertical split ;vv</li>
+<li>Selection (evaluate and insert output in new tab) ;so</li>
 </ul>
 <p>Help on a function ;rh</p>
 <p>Setting up tags as explained in :help Nvim-R</p>

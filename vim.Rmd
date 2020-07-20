@@ -417,6 +417,18 @@ In normal mode:
 
     :r! echo %
 
+## Content of another file
+
+In normal mode, insert the content of another file:
+
+    :read /tmp/newdir/file1.txt
+
+Insert the content of a file from the network:
+
+    :Nread https://www.wikipedia.org/
+
+For more, see `:help Nread`.
+
 # Multiple files, buffers and windows
 
 ## Buffers
@@ -443,6 +455,14 @@ fix window.
 > ""Vim experts" don't prefer buffers over tabs: they use buffers as the file
 > proxies they are and tab pages as the workspaces they are. Buffers and tab
 > pages have different purposes"
+
+Move to the next tab
+
+    gt
+
+Move to the previous tab
+
+    gT
 
 ## Window split
 
@@ -488,6 +508,12 @@ Change the with of the current window by increments of 10:
     c-w-_ for horizontal splits
     c-w-= to restore. 
 
+### Split and buffers
+
+[Delete buffer without losing the split
+window](https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window)
+
+    bp|bd #
 
 ## Vim and Tmux
 
@@ -531,12 +557,20 @@ or
 
     :Explorer
 
-Pressing `s` changes the way files are sorted by name, time, size. Pressing `x`
-on a file name opens that file with the relevant system program associated with
-it. For example pressing `x` on a pdf file opens that file in the evince reader
-on my system. Pressing `x` on a folder name opens the files explorer. The `i`
-key switches between different view types, tree view, detailed view, summarised
-view. To rename a file press `R` and to delete a file press `D`.
+To [return to file editing without opening any
+file](https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file)
+(and to switch back and forth between editing and explorer):
+
+    :Rex
+    :Re
+
+In the file explorer, also called "netrw", pressing `s` changes the way files
+are sorted by name, time, size. Pressing `x` on a file name opens that file
+with the relevant system program associated with it. For example pressing `x`
+on a pdf file opens that file in the evince reader on my system. Pressing `x`
+on a folder name opens the files explorer. The `i` key switches between
+different view types, tree view, detailed view, summarised view. To rename a
+file press `R` and to delete a file press `D`.
 
 To create a new file in the current directory visible in the explorer, press:
 
@@ -1008,6 +1042,12 @@ Sending code to R:
 * Chunk (cur, echo)                                  ;ce
 * Chunk (cur, down)                                  ;cd
 * Chunk (from first to here)                         ;ch
+* Selection                                          ;ss
+* Selection (echo)                                   ;se
+* Selection (evaluate and insert output in new tab)  ;so
+* File                                               ;aa
+* File (echo)                                        ;ae
+* File (open .Rout)                                  ;ao
   
 View data
     
@@ -1015,8 +1055,12 @@ View data
 
 On the code, in a data frame:
 
+* Names (cur)                                        ;rn
+* Structure (cur)                                    ;rt
+* View data.frame (cur) in new tab                   ;rv
 * View data.frame (cur) in horizontal split          ;vs
 * View data.frame (cur) in vertical split            ;vv
+* Selection (evaluate and insert output in new tab)  ;so
 
 Help on a function ;rh
 
