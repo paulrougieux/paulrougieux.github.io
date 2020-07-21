@@ -22,7 +22,7 @@ Plugin 'yegappan/taglist'
 Plugin 'tpope/vim-fugitive'
 " Latex editing
 Plugin 'lervag/vimtex'
-" Markdown toc navigation
+" line up text
 Plugin 'godlygeek/tabular'
 " Markdown table of content 
 Plugin 'vim-voom/VOoM'
@@ -90,6 +90,9 @@ tnoremap <C-H> <C-W><C-H>
 set splitbelow
 set splitright
 " See also tmux configuration
+
+" Recursively search all files in pwd for the word under the cursor 
+nmap <F3> :vimgrep /<C-R><C-W>/ **<CR>
 
 " Toggle taglist
 nnoremap <silent> <F8> :TlistToggle<CR>
@@ -273,6 +276,9 @@ tnoremap > <space>%>%
 
 " No wrap in csv files, also affects the data frame view of ;vs
 autocmd FileType csv set nowrap 
+
+" Map send line and down to j (avoid deleting stuff with d)
+nmap <LocalLeader>j <Plug>RDSendLine
 
 " Press `gz` in Normal mode to emulate Tmux ^bz
 " see help Nvim-R tips 

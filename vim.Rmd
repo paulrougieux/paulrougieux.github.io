@@ -152,6 +152,11 @@ Similarly to align a markdown table, select a few lines, then call:
 
     :'<,'>Tab /|
 
+Align tab separated text in the current buffer (to view tsv files generated
+from data frames by NVim-R for example): 
+
+    :Tab /\t
+
 For more, see `help tabular`.
 
 ## Undo redo
