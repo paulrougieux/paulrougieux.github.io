@@ -22,7 +22,7 @@ Plugin 'yegappan/taglist'
 Plugin 'tpope/vim-fugitive'
 " Latex editing
 Plugin 'lervag/vimtex'
-" line up text
+" Line up text in tables
 Plugin 'godlygeek/tabular'
 " Markdown table of content 
 Plugin 'vim-voom/VOoM'

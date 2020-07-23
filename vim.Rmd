@@ -288,12 +288,16 @@ Copy and paste with the following instructions
     Position the cursor where you want to begin cutting.
     Press v (or upper case V if you want to cut whole lines).
     Move the cursor to the end of what you want to cut.
-    Press d to cut or y to copy.
+    Press d to cut or y to yank (copy into the `"0` register).
     Move to where you would like to paste.
     Press P to paste before the cursor, or p to paste after. 
 
+### Paste from the system register
+
 When pasting from the system register i.e. with `Ctrl+Shift+V` you need to prevent auto indent
-otherwise vim will mess with the indentation. 
+otherwise vim will mess with the indentation. This can be solved with bracketed
+paste, see further down below.
+
 As explained in [Paste without autoindent](https://stackoverflow.com/a/2545242/2641825)
 You can either read from the shell with:
 
@@ -312,12 +316,49 @@ Set up a shortcut to toggle paste mode on and off with:
     set pastetoggle=<F3>
 
 
-### Bracketed paste
+#### Bracketed paste
 
 [Enable bracketed paste in a session](https://stackoverflow.com/a/44507798/2641825)
 
     bind 'set enable-bracketed-paste on'    
 
+
+### Registers
+
+To display the content of all registers:
+
+    :registers
+
+For example yank the word "yank", delete the word "delete" and copy the word
+"system" outside of vim in any program will give you the following registers: 
+
+    :registers
+    --- Registers ---
+    ""   delete
+    "0   yank
+    "-   delete
+    "*   system
+    "+   system
+    ".   ^@yank^@delete^@
+
+### Replace a word
+
+[How can I do a change word in vim using the current paste
+buffer](https://unix.stackexchange.com/questions/88714/how-can-i-do-a-change-word-in-vim-using-the-current-paste-buffer)
+
+
+Select the current word, then select the word to replace and paste
+
+    ye
+    vep
+
+Or select the current word, then paste and delete the word to replace
+
+    ye
+    Plde
+
+Note this works only for one replacement because the yank register is then
+replaced with the deleted word.
 
 ## Indent
 
@@ -1435,4 +1476,26 @@ This page is the continuation of [my 2014 blog post on Vim commands](https://pau
 > staff that then spend their money in the country, thus indirectly it helps
 > others. And in the end seeing the children grow up, finish their studies and
 > find a job is wonderful. "
+
+* [Vi](https://en.wikipedia.org/wiki/Vi)
+> "The original code for vi was written by Bill Joy in 1976, as the visual mode
+> for a line editor called ex that Joy had written with Chuck Haley.[3] Bill
+> Joy's ex 1.1 was released as part of the first Berkeley Software Distribution
+> (BSD) Unix release in March 1978. It was not until version 2.0 of ex,
+> released as part of Second BSD in May 1979 that the editor was installed
+> under the name "vi" (which took users straight into ex's visual mode),[4] and
+> the name by which it is known today. 
+[...]
+On the free software process
+
+
+* Vim is based on vi, itself based on the [ex
+  editor](https://en.wikipedia.org/wiki/Ex_(text_editor))
+> "The core ex commands which relate to search and replace are essential to vi.
+> For instance, the ex command :%s/XXX/YYY/g replaces every instance of XXX
+> with YYY, and works in vi too. The % means every line in the file. The 'g'
+> stands for global and means replace every instance on every line (if it was
+> not specified, then only the first instance on each line would be replaced).
+> "
+
 
