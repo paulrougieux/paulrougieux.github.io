@@ -459,8 +459,7 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Vim is a modal editor, to learn how to switch modes, start by the section <code>Switch between navigation and editing mode</code>.</p>
-<p>Large part of this documents have been copied from the vim help accessible through:</p>
+<p>Vim is a modal text editor, to learn how to switch modes, start by the section <a href="#navigation_edit">Switch between navigation and editing mode</a>. Large part of this documents have been copied from the vim help accessible through:</p>
 <pre><code>:help &lt;topic&gt;</code></pre>
 <p>People that I admire use vim.</p>
 </div>
@@ -552,8 +551,44 @@ augroup END</code></pre>
 <p>The solution was to use 2 file types for Rmd files: <code>set ft=rmd.markdown</code>.</p>
 </div>
 </div>
-<div id="edit-a-file" class="section level1">
-<h1>Edit a file</h1>
+<div id="edit-a-text-file" class="section level1">
+<h1>Edit a text file</h1>
+<div id="navigation_edit" class="section level2">
+<h2>Switch between navigation and editing mode</h2>
+<p>Enter editing mode with i, a, o. Use escape to switch to navigation mode. Note: I remapped the caps lock key to escape at a system level.</p>
+<pre><code>i - Insert text before the cursor.
+I - Insert text before the first non-blank in the line.
+gi - Insert text in the same position as where insert mode
+     was stopped last time in the current buffer.
+a - Append text after the cursor.
+A - Move to the end of the line and switch to editing mode .
+o - Begin a new line below the cursor and insert text.
+O - Begin a new line above the cursor and insert text.
+alt+h alt+j alt+k alt+l - Switch to navigation mode and move.
+alt+: - Switch to navigation mode and send a command.</code></pre>
+</div>
+<div id="edit-a-whole-line" class="section level2">
+<h2>Edit a whole line</h2>
+<p>To edit a whole line:</p>
+<pre><code>dd to delete a whole line
+yy to copy a whole line
+p to paste the copied or deleted text after the current line or 
+P to paste the copied or deleted text before the current line </code></pre>
+</div>
+<div id="edit-multiple-lines" class="section level2">
+<h2>Edit multiple lines</h2>
+<p>You can edit multiple lines simultaneously by <a href="https://stackoverflow.com/a/253391">inserting text inside a multi-line selection in Vim</a> :</p>
+<pre><code>Use Ctrl+V to enter visual block mode
+Move down with jj to select the columns of text in the lines you want to comment.
+Then hit Shift+I and type the text you want to insert.
+Then press Escape, the inserted text will appear on all lines.</code></pre>
+<p>Similarly to enter text at the end of multiple lines (<a href="http://vim.wikia.com/wiki/Inserting_text_in_multiple_lines">vim.wikia</a>)</p>
+<pre><code>Use Ctrl+V to enter visual block mode
+Move down with jj to select the columns of text in the lines you want to comment.
+Then hit $ to select all lines until the end of the line.
+Then press Shift+A and type the text you want to insert.
+The press Escape, the inserted text will appear at the end of all lines.</code></pre>
+</div>
 <div id="align-columns" class="section level2">
 <h2>Align columns</h2>
 <p>The tabular plugin provides a Tabular command which can be abbreviated to <code>:Tab</code>. To align a latex table with the tabular package. Select a few lines, then press:</p>
@@ -571,19 +606,6 @@ Ctrl-R: Redo changes which were undone (undo the undos).
 Compare to &#39;.&#39; to repeat a previous change, at the current cursor position.
 Ctrl-R will redo a previously undone change, wherever the change occurred. </code></pre>
 </div>
-<div id="switch-between-navigation-and-editing-mode" class="section level2">
-<h2>Switch between navigation and editing mode</h2>
-<p>Enter editing mode with i, I, a, A, o. Use escape to switch to navigation mode. Note: I remapped the caps lock key to escape at a system level.</p>
-<pre><code>i - Insert text before the cursor
-I - Insert text before the first non-blank in the line
-gi - Insert text in the same position as where insert mode was stopped last time in the current buffer.
-a - Append text after the cursor
-A - Move to the end of the line and switch to editing mode 
-o - Begin a new line below the cursor and insert text
-O - Begin a new line above the cursor and insert text
-alt+h alt+j alt+k alt+l - Switch to navigation mode and move
-alt+: - Switch to navigation mode and send a command</code></pre>
-</div>
 <div id="replace-characters" class="section level2">
 <h2>Replace characters</h2>
 <p>Vim wiki on search and replace Find each occurrence of ‘red’ (in the current line only), and replace it with ‘green’:</p>
@@ -597,7 +619,7 @@ alt+: - Switch to navigation mode and send a command</code></pre>
 <pre><code>:%s/red/green/g </code></pre>
 <p>Find each occurence of foo but don’t perform the replacement, only count the number of occurences</p>
 <pre><code>:%s/foo/bar/n</code></pre>
-<p>To replace by a new line character, use instead of . For example to insert a new line after each comma in a selection:</p>
+<p>To replace by a new line character, use <code>\r</code> instead of <code>\n</code>. For example to insert a new line after each comma in a selection:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/,/,\r/g</code></pre>
 <p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
@@ -624,28 +646,6 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <pre><code>:&#39;&lt;,&#39;&gt;s/[^\s]\zs\s\+/ /g</code></pre>
 <p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
 <pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
-</div>
-<div id="edit-a-whole-line" class="section level2">
-<h2>Edit a whole line</h2>
-<p>To edit a whole line:</p>
-<pre><code>dd to delete a whole line
-yy to copy a whole line
-p to paste the copied or deleted text after the current line or 
-P to paste the copied or deleted text before the current line </code></pre>
-</div>
-<div id="edit-multiple-lines" class="section level2">
-<h2>Edit multiple lines</h2>
-<p>You can edit multiple lines simultaneously by <a href="https://stackoverflow.com/a/253391">inserting text inside a multi-line selection in Vim</a> :</p>
-<pre><code>Use Ctrl+V to enter visual block mode
-Move down with jj to select the columns of text in the lines you want to comment.
-Then hit Shift+I and type the text you want to insert.
-Then press Escape, the inserted text will appear on all lines.</code></pre>
-<p>Similarly to enter text at the end of multiple lines (<a href="http://vim.wikia.com/wiki/Inserting_text_in_multiple_lines">vim.wikia</a>)</p>
-<pre><code>Use Ctrl+V to enter visual block mode
-Move down with jj to select the columns of text in the lines you want to comment.
-Then hit $ to select all lines until the end of the line.
-Then press Shift+A and type the text you want to insert.
-The press Escape, the inserted text will appear at the end of all lines.</code></pre>
 </div>
 <div id="copy-cut-and-paste" class="section level2">
 <h2>Copy, cut and paste</h2>
