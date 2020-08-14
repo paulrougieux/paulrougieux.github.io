@@ -459,6 +459,9 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
+<p>Vim is a modal editor, to learn how to switch modes, start by the section <code>Switch between navigation and editing mode</code>.</p>
+<p>Large part of this documents have been copied from the vim help accessible through:</p>
+<pre><code>:help &lt;topic&gt;</code></pre>
 <p>People that I admire use vim.</p>
 </div>
 <div id="configure-vim-in-.vimrc" class="section level1">
@@ -570,11 +573,16 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 </div>
 <div id="switch-between-navigation-and-editing-mode" class="section level2">
 <h2>Switch between navigation and editing mode</h2>
-<pre><code>A - move to the end of the line and switch to editing mode 
-I - switch to editing mode at the current place
-Escape - switch to navigation mode
-alt+h alt+j alt+k alt+l - switch to navigation mode and move
-alt+: - switch to navigation mode and send a command</code></pre>
+<p>Enter editing mode with i, I, a, A, o. Use escape to switch to navigation mode. Note: I remapped the caps lock key to escape at a system level.</p>
+<pre><code>i - Insert text before the cursor
+I - Insert text before the first non-blank in the line
+gi - Insert text in the same position as where insert mode was stopped last time in the current buffer.
+a - Append text after the cursor
+A - Move to the end of the line and switch to editing mode 
+o - Begin a new line below the cursor and insert text
+O - Begin a new line above the cursor and insert text
+alt+h alt+j alt+k alt+l - Switch to navigation mode and move
+alt+: - Switch to navigation mode and send a command</code></pre>
 </div>
 <div id="replace-characters" class="section level2">
 <h2>Replace characters</h2>
@@ -907,6 +915,9 @@ C Recursively contract the current node and its siblings.</code></pre>
 <p>It’s also possible to move nodes with cut and paste behaviour and to promote/demote them as such:</p>
 <pre><code>&lt;LocalLeader&gt;l Move node(s) left, that is promote.
 &lt;LocalLeader&gt;r Move node(s) right, that is demote.</code></pre>
+<blockquote>
+<p>By default, commands Cut, Copy, Paste use the &quot;+ register, that is the system clipboard (|registers|, |quote+|). This means you can move nodes between outlines in different instances of Vim, or copy/paste in other applications.</p>
+</blockquote>
 </div>
 </div>
 <div id="move-up-down-left-right" class="section level2">
@@ -1167,7 +1178,9 @@ Ctrl+N</code></pre>
 <p>I mapped the local leader key to “;” by adding the following to my .vimrc:</p>
 <pre><code>let maplocalleader = &quot;;&quot;</code></pre>
 <p>Start R</p>
-<p>Start R (default) ;rf</p>
+<ul>
+<li>Start R (default) ;rf</li>
+</ul>
 <p>Sending code to R:</p>
 <ul>
 <li>Line ;l</li>
@@ -1184,11 +1197,14 @@ Ctrl+N</code></pre>
 <li>File (echo) ;ae</li>
 <li>File (open .Rout) ;ao</li>
 </ul>
-<p>View data</p>
+<p>Object browser</p>
 <ul>
 <li>Open/Close the object browser ;ro</li>
+<li>Expand (all lists) ;r=</li>
+<li>Collapse (all lists) ;r-</li>
+<li>Toggle (cur) Enter</li>
 </ul>
-<p>On the code, in a data frame:</p>
+<p>On the code, when the cursor is on a data frame:</p>
 <ul>
 <li>Names (cur) ;rn</li>
 <li>Structure (cur) ;rt</li>
@@ -1197,11 +1213,26 @@ Ctrl+N</code></pre>
 <li>View data.frame (cur) in vertical split ;vv</li>
 <li>Selection (evaluate and insert output in new tab) ;so</li>
 </ul>
+<p>Edit code</p>
+<ul>
+<li>Toggle comment (line, sel) ;xx</li>
+</ul>
 <p>Help on a function ;rh</p>
 <p>Setting up tags as explained in :help Nvim-R</p>
 <blockquote>
-<p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands: &gt; rtags(path = “/path/to/R/source/code”, recursive = TRUE, ofile = “RTAGS”) etags2ctags(“RTAGS”, “Rtags”) &lt; Then, you would quit R and do the following command in the terminal emulator: &gt; ctags –languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code &lt; Finally, you would put the following in your |vimrc|, optionally inside an |autocmd-group|: &gt; autocmd FileType r set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags autocmd FileType rnoweb set tags+=<sub>/.cache/Nvim-R/Rtags,</sub>/.cache/Nvim-R/RsrcTags</p>
+<p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands:</p>
 </blockquote>
+<pre><code> rtags(path = &quot;/path/to/R/source/code&quot;, recursive = TRUE, ofile = &quot;RTAGS&quot;)
+ etags2ctags(&quot;RTAGS&quot;, &quot;Rtags&quot;)</code></pre>
+<blockquote>
+<p>Then, you would quit R and do the following command in the terminal emulator:</p>
+</blockquote>
+<pre><code> ctags --languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code</code></pre>
+<blockquote>
+<p>Finally, you would put the following in your |vimrc|, optionally inside an |autocmd-group|:</p>
+</blockquote>
+<pre><code> autocmd FileType r set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
+ autocmd FileType rnoweb set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags</code></pre>
 <p>Config example <a href="https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899" class="uri">https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899</a></p>
 </div>
 <div id="tags" class="section level3">

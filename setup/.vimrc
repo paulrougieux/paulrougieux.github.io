@@ -109,7 +109,9 @@ noremap µ #
 noremap ' <C-]>
 " Move into wrapped lines with arrow keys
 nnoremap <Up> gk
+vnoremap <Up> gk
 nnoremap <Down> gj
+vnoremap <Down> gj
 
 """"""""""""""""
 " Colour theme "
@@ -142,7 +144,8 @@ autocmd FileType netrw setl bufhidden=delete
 """""""""""""""""""""
 " Git configuration "
 """""""""""""""""""""
-" Open git grep in a quickfix window
+" Configure the fugitive plugin
+" Open git grep in a quickfix window with 'G grep'
 autocmd QuickFixCmdPost *grep* cwindow
 " Display a word diff
 command! Gwd term git diff --word-diff
@@ -188,8 +191,9 @@ let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 " Markdown configuration "
 """"""""""""""""""""""""""
 " Shortcut to align the current paragraph
-au BufRead,BufNewFile *.md map <C-P> vipgq
-au BufRead,BufNewFile *.Rmd map <C-P> vipgq
+" J added to format also quoted paragraph correctly
+au BufRead,BufNewFile *.md map <C-P> vipJgqk
+au BufRead,BufNewFile *.Rmd map <C-P> vipJgqk
 
 " Wrap markdown text to 88 characters like psf/black
 au BufRead,BufNewFile *.md setlocal textwidth=88

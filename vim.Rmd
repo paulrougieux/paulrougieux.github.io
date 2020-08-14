@@ -9,6 +9,12 @@ output:
 
 # Introduction
 
+Vim is a modal editor, to learn how to switch modes, start by the section
+`Switch between navigation and editing mode`. Large part of this documents have
+been copied from the vim help accessible through:
+
+    :help <topic>
+
 People that I admire use vim.
 
 # Configure vim in .vimrc
@@ -168,11 +174,18 @@ For more, see `help tabular`.
 
 ## Switch between navigation and editing mode
 
-    A - move to the end of the line and switch to editing mode 
-    I - switch to editing mode at the current place
-    Escape - switch to navigation mode
-    alt+h alt+j alt+k alt+l - switch to navigation mode and move
-    alt+: - switch to navigation mode and send a command
+Enter editing mode with i, I, a, A, o. Use escape to switch to navigation mode.
+Note: I remapped the caps lock key to escape at a system level.
+
+    i - Insert text before the cursor
+    I - Insert text before the first non-blank in the line
+    gi - Insert text in the same position as where insert mode was stopped last time in the current buffer.
+    a - Append text after the cursor
+    A - Move to the end of the line and switch to editing mode 
+    o - Begin a new line below the cursor and insert text
+    O - Begin a new line above the cursor and insert text
+    alt+h alt+j alt+k alt+l - Switch to navigation mode and move
+    alt+: - Switch to navigation mode and send a command
 
 ## Replace characters
 
@@ -700,6 +713,10 @@ promote/demote them as such:
     <LocalLeader>l Move node(s) left, that is promote.
     <LocalLeader>r Move node(s) right, that is demote.
 
+> By default, commands Cut, Copy, Paste use the "+ register, that is the system
+> clipboard (|registers|, |quote+|). This means you can move nodes between
+> outlines in different instances of Vim, or copy/paste in other applications.
+
 ## Move up, down, left, right
 
 In command mode, the following motions are activated:
@@ -1077,7 +1094,7 @@ I mapped the local leader key to ";" by adding the following to my .vimrc:
 
 Start R
 
-  Start R (default)                                    ;rf
+* Start R (default)                                  ;rf
 
 Sending code to R:
 
@@ -1095,11 +1112,14 @@ Sending code to R:
 * File (echo)                                        ;ae
 * File (open .Rout)                                  ;ao
   
-View data
+Object browser
     
 * Open/Close the object browser                      ;ro
+* Expand (all lists)                                 ;r=
+* Collapse (all lists)                               ;r-
+* Toggle (cur)                                     Enter
 
-On the code, in a data frame:
+On the code, when the cursor is on a data frame:
 
 * Names (cur)                                        ;rn
 * Structure (cur)                                    ;rt
@@ -1108,26 +1128,29 @@ On the code, in a data frame:
 * View data.frame (cur) in vertical split            ;vv
 * Selection (evaluate and insert output in new tab)  ;so
 
+Edit code
+
+* Toggle comment (line, sel)                         ;xx
+
 Help on a function ;rh
 
 Setting up tags as explained in :help Nvim-R
 
 > You could, for example, download and unpack R's source code, start R inside
 > the ~/.cache/Nvim-R directory and do the following commands:
-> >
->    rtags(path = "/path/to/R/source/code", recursive = TRUE, ofile = "RTAGS")
->    etags2ctags("RTAGS", "Rtags")
-> <
+
+     rtags(path = "/path/to/R/source/code", recursive = TRUE, ofile = "RTAGS")
+     etags2ctags("RTAGS", "Rtags")
+
 > Then, you would quit R and do the following command in the terminal emulator:
-> >
->    ctags --languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code
-> <
+
+     ctags --languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code
+
 > Finally, you would put the following in your |vimrc|, optionally inside an
 > |autocmd-group|:
-> >
->    autocmd FileType r set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
->    autocmd FileType rnoweb set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
-> 
+
+     autocmd FileType r set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
+     autocmd FileType rnoweb set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
 
 Config example 
 https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899

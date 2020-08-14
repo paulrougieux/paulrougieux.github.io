@@ -1,5 +1,6 @@
 alias bookmark="vim ~/rp/bookmarkdown/bookmark.md"
 alias overflow="vim ~/rp/bookmarkdown/overflow.md"
+alias matrix="vim ~/rp/bookmarkdown/matrix.md"
 alias ll='ls -lah'
 alias tmuxw='tmux new-session -s work "tmux source-file ~/.tmux/work"'
 alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"

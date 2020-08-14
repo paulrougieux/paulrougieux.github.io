@@ -88,6 +88,28 @@ Note the Species column has to be present in the csv files, otherwise we would l
 `write_csv` returned an `Error in write_delim(...) is.data.frame(x) is not TRUE`
 That's why we used `write.csv` instead.
 
+# Find
+
+## Longest contiguous stretch of non-NAs:
+
+    na.contiguous(c(NA,1:3,NA,NA,3:5,NA,NA))
+    ] 1 2 3
+    tr(,"na.action")
+    ]  1  5  6  7  8  9 10 11
+    tr(,"class")
+    ] "omit"
+    tr(,"tsp")
+    ] 2 4 1
+    na.contiguous(c(NA,1:3,NA,NA,3:6,NA,NA))
+    ] 3 4 5 6
+    tr(,"na.action")
+    ]  1  2  3  4  5  6 11 12
+    tr(,"class")
+    ] "omit"
+    tr(,"tsp")
+    ]  7 10  1
+
+
 # Vectors
 
 [SO answer concerning indexing up to end of vector/matrix](https://stackoverflow.com/a/7500961/2641825) "Sometimes it's easier to tell R what you don't want"
