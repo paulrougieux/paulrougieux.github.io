@@ -366,6 +366,10 @@ Add the following line to that file:
     XKBOPTIONS="caps:escape"
 
 
+## Wajig
+
+Debian and ubuntu system administration [wajig docs](https://wajig.readthedocs.io/en/latest/)
+
 ## Zathura
 
 Usage
