@@ -155,7 +155,14 @@ See tab and end of line characters in a text file
 Install a software synthesizer to play midi files.
 [VideoLan Wiki](https://wiki.videolan.org/Midi/)
 
-> If the FluidSynth codec is not shown in VLC's preferences, you have to install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and fluid-soundfont-gm packages install some sound 
+> If the FluidSynth codec is not shown in VLC's preferences, you have to
+> install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is
+> in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and
+> fluid-soundfont-gm packages install some sound 
+
+Installation instruction:
+
+    sudo apt install vlc-plugin-fluidsynth fluid-soundfont-gs fluid-soundfont-gm
 
 
 ## Play music with cmus
