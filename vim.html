@@ -733,6 +733,13 @@ filetype indent on </code></pre>
 <pre><code>gq</code></pre>
 </div>
 </div>
+<div id="select-mode" class="section level1">
+<h1>Select mode</h1>
+<p><a href="https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it">Difference between visual and select mode</a></p>
+<p>Various ways to select text in visual mode</p>
+<pre><code>vt&lt;char&gt; - till before a given character
+vf&lt;char&gt; - till a given character</code></pre>
+</div>
 <div id="enter-commands-save-and-quit" class="section level1">
 <h1>Enter commands, save and quit</h1>
 <p>To enter edit mode:</p>
@@ -1218,6 +1225,23 @@ Ctrl+N</code></pre>
 <li>Toggle comment (line, sel) ;xx</li>
 </ul>
 <p>Help on a function ;rh</p>
+</div>
+<div id="tags" class="section level3">
+<h3>Tags</h3>
+<p>To generate tags for R files contained in an R project, call the following from R:</p>
+<pre><code>setwd(&quot;R&quot;)
+rtags(ofile = &quot;etags&quot;); etags2ctags(&quot;etags&quot;, &quot;tags&quot;); unlink(&quot;etags&quot;)
+setwd(&quot;..&quot;)</code></pre>
+<p>Move to the /R subfolder of a project, then generate tag files with:</p>
+<pre><code>:RBuildTags</code></pre>
+<p>Display tag files currently seen by vim:</p>
+<pre><code>:set tags</code></pre>
+<p>Navigate tag files with <code>CTRL+]</code> (<code>CTRL+ù</code> on my setup).</p>
+<p><a href="https://stackoverflow.com/a/14465438/2641825" class="uri">https://stackoverflow.com/a/14465438/2641825</a></p>
+<p>An NVim-R issue about displaying a nice <a href="https://github.com/jalvesaq/Nvim-R/issues/517">list of tags for R functions</a>.</p>
+<p>I have added some of my packages to the tag files always seen by vim:</p>
+<pre><code>autocmd FileType r set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags</code></pre>
 <p>Setting up tags as explained in :help Nvim-R</p>
 <blockquote>
 <p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands:</p>
@@ -1234,19 +1258,6 @@ Ctrl+N</code></pre>
 <pre><code> autocmd FileType r set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
  autocmd FileType rnoweb set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags</code></pre>
 <p>Config example <a href="https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899" class="uri">https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899</a></p>
-</div>
-<div id="tags" class="section level3">
-<h3>Tags</h3>
-<p>Move to the /R subfolder of a project, then generate tag files with:</p>
-<pre><code>:RBuildTags</code></pre>
-<p>Display tag files currently seen by vim:</p>
-<pre><code>:set tags</code></pre>
-<p>Navigate tag files with <code>CTRL+]</code> (<code>CTRL+ù</code> on my setup).</p>
-<p><a href="https://stackoverflow.com/a/14465438/2641825" class="uri">https://stackoverflow.com/a/14465438/2641825</a></p>
-<p>An NVim-R issue about displaying a nice <a href="https://github.com/jalvesaq/Nvim-R/issues/517">list of tags for R functions</a>.</p>
-<p>I have added some of my packages to the tag files always seen by vim:</p>
-<pre><code>autocmd FileType r set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
-autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags</code></pre>
 </div>
 <div id="knitr-issue" class="section level3">
 <h3>Knitr issue</h3>

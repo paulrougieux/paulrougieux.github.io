@@ -420,6 +420,16 @@ To format the text, select it with v and up or down movements, and press
 
     gq
 
+# Select mode
+
+[Difference between visual and select
+mode](https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it) 
+
+Various ways to select text in visual mode
+
+    vt<char> - till before a given character
+    vf<char> - till a given character
+
 # Enter commands, save and quit
 
 To enter edit mode:
@@ -1135,6 +1145,34 @@ Edit code
 
 Help on a function ;rh
 
+### Tags
+
+To generate tags for R files contained in an R project, call the following from R: 
+
+    setwd("R")
+    rtags(ofile = "etags"); etags2ctags("etags", "tags"); unlink("etags")
+    setwd("..")
+
+Move to the /R subfolder of a project, then generate tag files with:
+
+    :RBuildTags
+
+Display tag files currently seen by vim: 
+
+    :set tags
+
+Navigate tag files with `CTRL+]` (`CTRL+ù` on my setup).
+
+https://stackoverflow.com/a/14465438/2641825
+
+An NVim-R issue about displaying a nice [list of tags for R
+functions](https://github.com/jalvesaq/Nvim-R/issues/517).
+
+I have added some of my packages to the tag files always seen by vim:
+
+    autocmd FileType r set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+    autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+
 Setting up tags as explained in :help Nvim-R
 
 > You could, for example, download and unpack R's source code, start R inside
@@ -1156,27 +1194,6 @@ Setting up tags as explained in :help Nvim-R
 Config example 
 https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899
 
-### Tags
-
-Move to the /R subfolder of a project, then generate tag files with:
-
-    :RBuildTags
-
-Display tag files currently seen by vim: 
-
-    :set tags
-
-Navigate tag files with `CTRL+]` (`CTRL+ù` on my setup).
-
-https://stackoverflow.com/a/14465438/2641825
-
-An NVim-R issue about displaying a nice [list of tags for R
-functions](https://github.com/jalvesaq/Nvim-R/issues/517).
-
-I have added some of my packages to the tag files always seen by vim:
-
-    autocmd FileType r set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
-    autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
 
 ### Knitr issue
 
