@@ -191,6 +191,20 @@ Sets the options for chunk, within a knitr chunk inside the .Rmd document
 Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
 
 
+## Flextable and officer package
+
+The officer package makes it possible to create improved word and powerpoint
+documents. The flextable package has a few functions to generate tables for
+word documents (otherwise they look funny).
+
+The following system dependencies were required:
+
+    sudo apt install libcairo2-dev libjpeg-dev libgif-dev
+
+Installation in R:
+
+    install.packages("flextable")
+
 # Rscript
 Capture arguments in an Rscript on windows and write them to a file
 ```
