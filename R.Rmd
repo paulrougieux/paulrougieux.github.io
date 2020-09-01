@@ -205,6 +205,25 @@ Installation in R:
 
     install.packages("flextable")
 
+This is to work with colleagues who are not in the latex/pdf world.
+
+```{r insert_landscape_section, eval=FALSE}
+library(officer)
+library(flextable)
+ft_iris <- iris %>%
+    head() %>%
+    flextable() %>%
+    autofit()
+# Add a flex table in landscape format 
+# Supply document name here, otherwise start an empty doc
+doc <- read_docx() %>% 
+  body_add_flextable(value = ft_iris, split = TRUE) %>%
+  body_end_section_landscape() %>% # a landscape section is ending here
+  # Does't work this way, seems to work in existing document though
+  # Maybe it can be added as a post-processing step?
+  print(target = "/tmp/iris.docx")
+```
+
 # Rscript
 Capture arguments in an Rscript on windows and write them to a file
 ```

@@ -473,6 +473,12 @@ To save content and exit:
 kept up-to-date automatically from the 
 [Vim source repository](https://github.com/vim/vim).
 
+## Messages
+
+Did you see warning messages but they disappeared before you have had time to
+read them? Type the command |:messages| in Normal mode to see them again.
+(copied from nvim-r help)
+
 # Insert 
 
 ## Current file name
