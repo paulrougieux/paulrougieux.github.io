@@ -162,6 +162,7 @@ List all available methods for a class:
 
 
 # One liners
+
 Remove all objects in the workspace except one :
 
     rm(list=ls()[!ls()=="object_to_keep"]) 
@@ -169,6 +170,30 @@ Remove all objects in the workspace except one :
 
 
 # knitr
+
+
+## Cross references
+
+[R markdown cross
+ref](https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html)
+
+> "Cross-referencing is not provided directly within the base rmarkdown
+> package, but is provided as an extension in bookdown (Xie 2020c). We must
+> therefore use an output format from bookdown (e.g., html_document2,
+> pdf_document2, and word_document2, etc.) in the YAML output field."
+
+* Bookdown issue with flextable [Table and figure cross references in word](https://github.com/rstudio/bookdown/issues/746)
+Now solved with the following implementation
+
+```{r irishead, ft.align="left", tab.cap="Edgar Anderson's Iris Data"}
+iris %>% head() %>% flextable()
+```
+
+This is a reference to flextable \@ref(tab:irishead).
+
+See more flextable caption examples in `system.file(package = "flextable", "examples", "rmd", "captions")`
+
+
 ## kable to create tables
 ```{r }
 cat(kable(head(iris, 1), format = "html"))
@@ -197,7 +222,7 @@ The officer package makes it possible to create improved word and powerpoint
 documents. The flextable package has a few functions to generate tables for
 word documents (otherwise they look funny).
 
-The following system dependencies were required:
+Before installing flextable, the following system dependencies were required:
 
     sudo apt install libcairo2-dev libjpeg-dev libgif-dev
 
@@ -207,6 +232,7 @@ Installation in R:
 
 This is to work with colleagues who are not in the latex/pdf world.
 
+### Landscape pages
 ```{r insert_landscape_section, eval=FALSE}
 library(officer)
 library(flextable)
@@ -217,10 +243,12 @@ ft_iris <- iris %>%
 # Add a flex table in landscape format 
 # Supply document name here, otherwise start an empty doc
 doc <- read_docx() %>% 
+  # Portait and landscape sections are defined by their ending
+  # A portrait section is ending here
+  body_end_section_portrait() %>%
   body_add_flextable(value = ft_iris, split = TRUE) %>%
-  body_end_section_landscape() %>% # a landscape section is ending here
-  # Does't work this way, seems to work in existing document though
-  # Maybe it can be added as a post-processing step?
+  # A landscape section is ending here
+  body_end_section_landscape() %>% 
   print(target = "/tmp/iris.docx")
 ```
 

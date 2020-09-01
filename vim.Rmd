@@ -420,7 +420,7 @@ To format the text, select it with v and up or down movements, and press
 
     gq
 
-# Select mode
+# Select and visual mode
 
 [Difference between visual and select
 mode](https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it) 
@@ -429,6 +429,10 @@ Various ways to select text in visual mode
 
     vt<char> - till before a given character
     vf<char> - till a given character
+
+Select the current paragraph:
+
+    vip
 
 # Enter commands, save and quit
 
