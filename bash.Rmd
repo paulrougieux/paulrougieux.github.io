@@ -171,11 +171,20 @@ Installation instruction:
 
     man cmus-tutorial
 
-When starting cmus for the first time 
-press 5 to go to the file-browser panel, choose a folder and press "a" to
-add it to the cmus library. 
-Then press "2" to go to the simple library view 
-or press "1" to go to the artist/album view.
+Cmus has several view modes. When starting cmus for the first time press 5 to
+go to the file-browser panel, choose a folder and press "a" to add it to the
+cmus library. Then press "2" to go to the simple library view or press "1" to
+go to the artist/album view.
+
+Here is the list of view modes:
+
+    1 view tree
+    2 view sorted
+    3 view playlist
+    4 view queue
+    5 view browser
+    6 view filters
+    7 view settings
 
 |Common Context |Remote Command | Description                        |
 |---------------|---------------|------------------------------------|
@@ -212,6 +221,28 @@ Follow currently playing son `f` see [issue 206](https://github.com/cmus/cmus/is
 
 There is a feedback of all the currently active options at the bottom right of
 the cums screen.
+
+### Playlist
+
+Create a playlist file, in bash:
+
+    find -name '*.ogg'> playlist.m3u
+
+Open a playlist in the playlist view (4), in the cmus command pane:
+
+    :load playlist.m3u
+
+Add a song from the library view (2) to the playlist view (4):
+
+    y
+
+Delete a song from the playlist view (4):
+
+    suppr
+
+Save the modified playlist file:
+
+    save
 
 # Edit
 

@@ -185,11 +185,12 @@ ref](https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html)
 * Bookdown issue with flextable [Table and figure cross references in word](https://github.com/rstudio/bookdown/issues/746)
 Now solved with the following implementation
 
-```{r irishead, ft.align="left", tab.cap="Edgar Anderson's Iris Data"}
+```{r irishead, ft.align="left", tab.cap="Edgar Anderson's Iris Data", eval=FALSE}
 iris %>% head() %>% flextable()
 ```
-
 This is a reference to flextable \@ref(tab:irishead).
+The chunk name should not contain an underscore, otherwise the cross reference
+will not work. See [bookdown issue 941](https://github.com/rstudio/bookdown/issues/941).
 
 See more flextable caption examples in `system.file(package = "flextable", "examples", "rmd", "captions")`
 

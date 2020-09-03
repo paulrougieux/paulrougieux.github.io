@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -238,6 +237,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -266,6 +266,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -733,12 +739,14 @@ filetype indent on </code></pre>
 <pre><code>gq</code></pre>
 </div>
 </div>
-<div id="select-mode" class="section level1">
-<h1>Select mode</h1>
+<div id="select-and-visual-mode" class="section level1">
+<h1>Select and visual mode</h1>
 <p><a href="https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it">Difference between visual and select mode</a></p>
 <p>Various ways to select text in visual mode</p>
 <pre><code>vt&lt;char&gt; - till before a given character
 vf&lt;char&gt; - till a given character</code></pre>
+<p>Select the current paragraph:</p>
+<pre><code>vip</code></pre>
 </div>
 <div id="enter-commands-save-and-quit" class="section level1">
 <h1>Enter commands, save and quit</h1>
@@ -764,6 +772,10 @@ vf&lt;char&gt; - till a given character</code></pre>
 CTRL+] - jump to a highlighted topic
 CTRL+T - jump backwards</code></pre>
 <p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
+<div id="messages" class="section level2">
+<h2>Messages</h2>
+<p>Did you see warning messages but they disappeared before you have had time to read them? Type the command |:messages| in Normal mode to see them again. (copied from nvim-r help)</p>
+</div>
 </div>
 <div id="insert" class="section level1">
 <h1>Insert</h1>
@@ -1508,7 +1520,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0

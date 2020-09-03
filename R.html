@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
@@ -240,6 +239,7 @@ $(document).ready(function () {
   border: none;
   display: inline-block;
   border-radius: 4px;
+  background-color: transparent;
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li {
@@ -268,6 +268,12 @@ $(document).ready(function () {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -598,6 +604,19 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 </div>
 <div id="knitr" class="section level1">
 <h1>knitr</h1>
+<div id="cross-references" class="section level2">
+<h2>Cross references</h2>
+<p><a href="https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html">R markdown cross ref</a></p>
+<blockquote>
+<p>“Cross-referencing is not provided directly within the base rmarkdown package, but is provided as an extension in bookdown (Xie 2020c). We must therefore use an output format from bookdown (e.g., html_document2, pdf_document2, and word_document2, etc.) in the YAML output field.”</p>
+</blockquote>
+<ul>
+<li>Bookdown issue with flextable <a href="https://github.com/rstudio/bookdown/issues/746">Table and figure cross references in word</a> Now solved with the following implementation</li>
+</ul>
+<pre class="r"><code>iris %&gt;% head() %&gt;% flextable()</code></pre>
+<p>This is a reference to flextable @ref(tab:irishead). The chunk name should not contain an underscore, otherwise the cross reference will not work.</p>
+<p>See more flextable caption examples in <code>system.file(package = &quot;flextable&quot;, &quot;examples&quot;, &quot;rmd&quot;, &quot;captions&quot;)</code></p>
+</div>
 <div id="kable-to-create-tables" class="section level2">
 <h2>kable to create tables</h2>
 <pre class="r"><code>cat(kable(head(iris, 1), format = &quot;html&quot;))</code></pre>
@@ -647,10 +666,30 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 <div id="flextable-and-officer-package" class="section level2">
 <h2>Flextable and officer package</h2>
 <p>The officer package makes it possible to create improved word and powerpoint documents. The flextable package has a few functions to generate tables for word documents (otherwise they look funny).</p>
-<p>The following system dependencies were required:</p>
+<p>Before installing flextable, the following system dependencies were required:</p>
 <pre><code>sudo apt install libcairo2-dev libjpeg-dev libgif-dev</code></pre>
 <p>Installation in R:</p>
 <pre><code>install.packages(&quot;flextable&quot;)</code></pre>
+<p>This is to work with colleagues who are not in the latex/pdf world.</p>
+<div id="landscape-pages" class="section level3">
+<h3>Landscape pages</h3>
+<pre class="r"><code>library(officer)
+library(flextable)
+ft_iris &lt;- iris %&gt;%
+    head() %&gt;%
+    flextable() %&gt;%
+    autofit()
+# Add a flex table in landscape format 
+# Supply document name here, otherwise start an empty doc
+doc &lt;- read_docx() %&gt;% 
+  # Portait and landscape sections are defined by their ending
+  # A portrait section is ending here
+  body_end_section_portrait() %&gt;%
+  body_add_flextable(value = ft_iris, split = TRUE) %&gt;%
+  # A landscape section is ending here
+  body_end_section_landscape() %&gt;% 
+  print(target = &quot;/tmp/iris.docx&quot;)</code></pre>
+</div>
 </div>
 </div>
 <div id="rscript" class="section level1">
@@ -1070,7 +1109,7 @@ $(document).ready(function ()  {
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
       },
       ignoreSelector: ".toc-ignore",
       scrollTo: 0
