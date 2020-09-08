@@ -509,6 +509,15 @@ Insert the content of a file from the network:
 
 For more, see `:help Nread`.
 
+## Date or time
+
+Vim wiki [insert date or
+time](https://vim.fandom.com/wiki/Insert_current_date_or_time)
+
+I added the following command to my .vimrc:
+
+    command! Date put =strftime('%Y-%m-%d')
+
 # Multiple files, buffers and windows
 
 ## Buffers

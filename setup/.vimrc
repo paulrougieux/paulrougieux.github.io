@@ -97,6 +97,11 @@ nmap <F3> :vimgrep /<C-R><C-W>/ **<CR>
 " Toggle taglist
 nnoremap <silent> <F8> :TlistToggle<CR>
 
+" Add date 
+"command! Date i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+"command! Date "=strftime('%Y-%m-%d')<CR>P
+command! Date put =strftime('%Y-%m-%d')
+
 """"""""""""""""""
 " AZERTY keyboard "
 """"""""""""""""""
