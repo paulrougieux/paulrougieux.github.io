@@ -52,6 +52,24 @@ Count the number of lines in all files, and give the total line count.
     find . -name '*.py' | xargs wc -l # python code
     find . -name '*.R' | xargs wc -l # R code
 
+
+# Cron
+
+[Use two differet /etc/hosts depending upon the
+time](https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time)
+
+    0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
+    0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts
+
+I added the following to /etc/hosts_worktime:
+
+    0.0.0.1 www.youtube.com
+    0.0.0.1 youtube.com
+
+To restart networking and clear the DNS cache:
+
+    sudo /etc/init.d/networking restart
+
 # Find
 
 ## Find files

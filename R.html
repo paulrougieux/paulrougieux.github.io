@@ -614,7 +614,7 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 <li>Bookdown issue with flextable <a href="https://github.com/rstudio/bookdown/issues/746">Table and figure cross references in word</a> Now solved with the following implementation</li>
 </ul>
 <pre class="r"><code>iris %&gt;% head() %&gt;% flextable()</code></pre>
-<p>This is a reference to flextable @ref(tab:irishead). The chunk name should not contain an underscore, otherwise the cross reference will not work.</p>
+<p>This is a reference to flextable @ref(tab:irishead). The chunk name should not contain an underscore, otherwise the cross reference will not work. See <a href="https://github.com/rstudio/bookdown/issues/941">bookdown issue 941</a>.</p>
 <p>See more flextable caption examples in <code>system.file(package = &quot;flextable&quot;, &quot;examples&quot;, &quot;rmd&quot;, &quot;captions&quot;)</code></p>
 </div>
 <div id="kable-to-create-tables" class="section level2">

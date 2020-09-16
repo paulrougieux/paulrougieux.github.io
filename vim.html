@@ -794,6 +794,12 @@ CTRL+T - jump backwards</code></pre>
 <pre><code>:Nread https://www.wikipedia.org/</code></pre>
 <p>For more, see <code>:help Nread</code>.</p>
 </div>
+<div id="date-or-time" class="section level2">
+<h2>Date or time</h2>
+<p>Vim wiki <a href="https://vim.fandom.com/wiki/Insert_current_date_or_time">insert date or time</a></p>
+<p>I added the following command to my .vimrc:</p>
+<pre><code>command! Date put =strftime(&#39;%Y-%m-%d&#39;)</code></pre>
+</div>
 </div>
 <div id="multiple-files-buffers-and-windows" class="section level1">
 <h1>Multiple files, buffers and windows</h1>
@@ -1423,6 +1429,8 @@ let g:tagbar_compact = 1</code></pre>
 <h2>Spell check</h2>
 <p><a href="https://superuser.com/questions/911412/how-to-configure-vim-spellcheck-to-use-two-languages">How to configure vim spellcheck to use two languages</a> To use the spellcheck for two languages, add this to your <code>~/.vimrc</code>:</p>
 <pre><code>set spell spelllang=en_gb,fr</code></pre>
+<p>To use the spellcheck only temporary for an additional language (italian in this case):</p>
+<pre><code>set spell spelllang=it</code></pre>
 <p>On the first use, vim may give a warning that some word lists are missing. <a href="https://www.monolune.com/how-to-make-vim-download-missing-word-lists/">How to make vim download missing word lists</a> To solve this issue, turn spell check off</p>
 <pre><code>:set nospell </code></pre>
 <p>Turn spell check on</p>

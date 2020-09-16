@@ -406,7 +406,8 @@ Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Li
     wget https://zoom.us/client/latest/zoom_amd64.deb
 
     # Check public key fingerprint
-    wget https://zoom.us/linux/download/pubkey zoom_pubkey
+    rm ~/downloads/pubkey
+    wget https://zoom.us/linux/download/pubkey
     cat pubkey | gpg --import-options show-only --import
 
     # Install

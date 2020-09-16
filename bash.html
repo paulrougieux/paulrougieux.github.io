@@ -492,6 +492,17 @@ find -name &#39;*.ogg&#39; |wc -l</code></pre>
 find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </div>
 </div>
+<div id="cron" class="section level1">
+<h1>Cron</h1>
+<p><a href="https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time">Use two differet /etc/hosts depending upon the time</a></p>
+<pre><code>0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
+0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts</code></pre>
+<p>I added the following to /etc/hosts_worktime:</p>
+<pre><code>0.0.0.1 www.youtube.com
+0.0.0.1 youtube.com</code></pre>
+<p>To restart networking and clear the DNS cache:</p>
+<pre><code>sudo /etc/init.d/networking restart</code></pre>
+</div>
 <div id="find" class="section level1">
 <h1>Find</h1>
 <div id="find-files" class="section level2">
@@ -564,7 +575,15 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 <h2>Play music with cmus</h2>
 <p><a href="https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt">Cmus tutorial</a>:</p>
 <pre><code>man cmus-tutorial</code></pre>
-<p>When starting cmus for the first time press 5 to go to the file-browser panel, choose a folder and press “a” to add it to the cmus library. Then press “2” to go to the simple library view or press “1” to go to the artist/album view.</p>
+<p>Cmus has several view modes. When starting cmus for the first time press 5 to go to the file-browser panel, choose a folder and press “a” to add it to the cmus library. Then press “2” to go to the simple library view or press “1” to go to the artist/album view.</p>
+<p>Here is the list of view modes:</p>
+<pre><code>1 view tree
+2 view sorted
+3 view playlist
+4 view queue
+5 view browser
+6 view filters
+7 view settings</code></pre>
 <table>
 <thead>
 <tr class="header">
@@ -660,6 +679,19 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 </table>
 <p>Jump to currently playing song <code>i</code>. Follow currently playing son <code>f</code> see <a href="https://github.com/cmus/cmus/issues/206">issue 206</a></p>
 <p>There is a feedback of all the currently active options at the bottom right of the cums screen.</p>
+<div id="playlist" class="section level3">
+<h3>Playlist</h3>
+<p>Create a playlist file, in bash:</p>
+<pre><code>find -name &#39;*.ogg&#39;&gt; playlist.m3u</code></pre>
+<p>Open a playlist in the playlist view (4), in the cmus command pane:</p>
+<pre><code>:load playlist.m3u</code></pre>
+<p>Add a song from the library view (2) to the playlist view (4):</p>
+<pre><code>y</code></pre>
+<p>Delete a song from the playlist view (4):</p>
+<pre><code>suppr</code></pre>
+<p>Save the modified playlist file:</p>
+<pre><code>save</code></pre>
+</div>
 </div>
 </div>
 <div id="edit" class="section level1">

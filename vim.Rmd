@@ -1466,6 +1466,11 @@ To use the spellcheck for two languages, add this to your `~/.vimrc`:
 
     set spell spelllang=en_gb,fr
 
+To use the spellcheck only temporary for an additional language (italian in
+this case):
+
+    set spell spelllang=it
+
 On the first use, vim may give a warning that some word lists are missing. 
 [How to make vim download missing word lists](https://www.monolune.com/how-to-make-vim-download-missing-word-lists/)
 To solve this issue, turn spell check off
