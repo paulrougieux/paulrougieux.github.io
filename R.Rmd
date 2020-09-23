@@ -253,7 +253,23 @@ doc <- read_docx() %>%
   print(target = "/tmp/iris.docx")
 ```
 
+# Reproducibility
+
+## Rocker
+
+[rocker-org/rocker](https://github.com/rocker-org/rocker) provides a series of
+docker images for various R development purposes.
+
+Bioconductor [docker intro](https://www.bioconductor.org/help/docker/#intro)
+
+> "With Bioconductor containers, we hope to enhance Reproducibility: If you run
+> some code in a container today, you can run it again in the same container
+> (with the same tag) years later and know that nothing in the container has
+> changed. You should always take note of the tag you used if you think you
+> might want to reproduce some work later."
+
 # Rscript
+
 Capture arguments in an Rscript on windows and write them to a file
 ```
 "C:\Program Files\R\R-3.5.0\bin\Rscript.exe" --verbose -e "args = commandArgs(trailingOnly=TRUE)" -e "writeLines(args,'C:\\Dev\\args.txt')" "file1.csv" "file2.csv" "file3.csv"

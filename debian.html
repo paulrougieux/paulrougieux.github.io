@@ -513,8 +513,8 @@ sudo umount &quot;/media/gabriele/Debian Inst&quot;</code></pre>
 <p><a href="https://unix.stackexchange.com/a/518564/85530">Also after boot</a></p>
 <p>Default matrix:</p>
 <p>vim /etc/udev/hwdb.d/60-sensor.hwdb</p>
-<pre><code>sensor:modalias:*
-  ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1</code></pre>
+<p>sensor:modalias:* ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1</p>
+<p>I used this setting to fix the orientation of an HP Elitebook laptop.</p>
 <p>or</p>
 <pre><code>sensor:modalias:*
   ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1</code></pre>

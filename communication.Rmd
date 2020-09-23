@@ -67,6 +67,8 @@ my desktop.
 Skype was purchased by Microsoft. 
 Screen sharing has a poor quality on Linux desktop.
 
+[How to transfer credits and contacts to another skype
+account](https://answers.microsoft.com/en-us/skype/forum/all/linking-old-skype-with-current-hotmailms-account/9f6c21e4-c074-466c-9606-d50ad651662b)
 
 ## Teams
 

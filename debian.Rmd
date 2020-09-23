@@ -111,10 +111,12 @@ Also mentioned in [reddit incorrect display orientation after bootup](https://ww
 Default matrix:
 
 
-vim  /etc/udev/hwdb.d/60-sensor.hwdb
+vim  /etc/udev/hwdb.d/60-sensor.hwdb 
 
-    sensor:modalias:*
+sensor:modalias:*
       ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
+
+I used this setting to fix the orientation of an HP Elitebook laptop.
 
 or
 
