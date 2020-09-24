@@ -53,23 +53,6 @@ Count the number of lines in all files, and give the total line count.
     find . -name '*.R' | xargs wc -l # R code
 
 
-# Cron
-
-[Use two differet /etc/hosts depending upon the
-time](https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time)
-
-    0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
-    0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts
-
-I added the following to /etc/hosts_worktime:
-
-    0.0.0.1 www.youtube.com
-    0.0.0.1 youtube.com
-
-To restart networking and clear the DNS cache:
-
-    sudo /etc/init.d/networking restart
-
 # Find
 
 ## Find files
@@ -350,6 +333,37 @@ I quoted them in `\begin{verbatim}` statements.
 
     awk '!a[$0]++' input.txt 
 
+# Events
+
+## Calendar
+
+Reddit [CLI calendar
+applications](https://www.reddit.com/r/commandline/comments/iupqui/github_command_line_app_10_launched/)
+
+* [calcurse](https://calcurse.org/) github page:
+  [calcurse](https://github.com/lfos/calcurse)
+* [calendar.vim](https://github.com/itchyny/calendar.vim), only Google cal no CalDAV
+  support [issue 133](https://github.com/itchyny/calendar.vim/issues/133)
+* [khal](https://lostpackets.de/khal/)
+
+
+## Cron
+
+[Use two differet /etc/hosts depending upon the
+time](https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time)
+
+    0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
+    0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts
+
+I added the following to /etc/hosts_worktime:
+
+    0.0.0.1 www.youtube.com
+    0.0.0.1 youtube.com
+
+To restart networking and clear the DNS cache:
+
+    sudo /etc/init.d/networking restart
+
 # Refactor
 
 [A one liner to replace strings with perl in a git repository](https://stackoverflow.com/a/21685766/2641825).
@@ -438,6 +452,14 @@ Copy a file
 For example to rename all upper-case .JPG extension into lower-case .jpg extension.
 
     rename 's/\.JPG$/\.jpg/' *.JPG
+
+## To do lists
+
+[Taskwarrior](https://taskwarrior.org/docs/best-practices.html)
+
+To add a small unit of work in the Kitchen project:
+
+    task add project:Kitchen Select floor tiles
 
 
 # Convert
