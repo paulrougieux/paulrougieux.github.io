@@ -492,17 +492,6 @@ find -name &#39;*.ogg&#39; |wc -l</code></pre>
 find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </div>
 </div>
-<div id="cron" class="section level1">
-<h1>Cron</h1>
-<p><a href="https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time">Use two differet /etc/hosts depending upon the time</a></p>
-<pre><code>0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
-0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts</code></pre>
-<p>I added the following to /etc/hosts_worktime:</p>
-<pre><code>0.0.0.1 www.youtube.com
-0.0.0.1 youtube.com</code></pre>
-<p>To restart networking and clear the DNS cache:</p>
-<pre><code>sudo /etc/init.d/networking restart</code></pre>
-</div>
 <div id="find" class="section level1">
 <h1>Find</h1>
 <div id="find-files" class="section level2">
@@ -750,6 +739,29 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 <pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 </div>
 </div>
+<div id="events" class="section level1">
+<h1>Events</h1>
+<div id="calendar" class="section level2">
+<h2>Calendar</h2>
+<p>Reddit <a href="https://www.reddit.com/r/commandline/comments/iupqui/github_command_line_app_10_launched/">CLI calendar applications</a></p>
+<ul>
+<li><a href="https://calcurse.org/">calcurse</a> github page: <a href="https://github.com/lfos/calcurse">calcurse</a></li>
+<li><a href="https://github.com/itchyny/calendar.vim">calendar.vim</a>, only Google cal no CalDAV support <a href="https://github.com/itchyny/calendar.vim/issues/133">issue 133</a></li>
+<li><a href="https://lostpackets.de/khal/">khal</a></li>
+</ul>
+</div>
+<div id="cron" class="section level2">
+<h2>Cron</h2>
+<p><a href="https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time">Use two differet /etc/hosts depending upon the time</a></p>
+<pre><code>0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
+0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts</code></pre>
+<p>I added the following to /etc/hosts_worktime:</p>
+<pre><code>0.0.0.1 www.youtube.com
+0.0.0.1 youtube.com</code></pre>
+<p>To restart networking and clear the DNS cache:</p>
+<pre><code>sudo /etc/init.d/networking restart</code></pre>
+</div>
+</div>
 <div id="refactor" class="section level1">
 <h1>Refactor</h1>
 <p><a href="https://stackoverflow.com/a/21685766/2641825">A one liner to replace strings with perl in a git repository</a>. The examples below replace all occurrences of the first string with the second string, for all files under git version control.</p>
@@ -812,6 +824,12 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 <p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
 <pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
 </div>
+<div id="to-do-lists" class="section level2">
+<h2>To do lists</h2>
+<p><a href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
+<p>To add a small unit of work in the Kitchen project:</p>
+<pre><code>task add project:Kitchen Select floor tiles</code></pre>
+</div>
 </div>
 <div id="convert" class="section level1">
 <h1>Convert</h1>
@@ -827,9 +845,14 @@ pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
 <pre><code>pandoc filename.odt -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
 <pre><code>pandoc filename.docx -o filename.md </code></pre>
-<p>Convert a Microsoft Word document to markdown keep images</p>
+<p>Convert a Microsoft Word document to markdown and keep images</p>
 <pre><code>pandoc --extract-media ./figures input.docx -o output.md</code></pre>
-<p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> Use ATX style headers in markdown output. The default is to use setext-style headers for levels 1-2, and then ATX headers.</p>
+<p>Convert an html code snippets to markdown and display the output at the command line</p>
+<pre><code>echo &quot;Link: &lt;a href=&quot;https://www.linphone.org/&quot;&gt;Linphone&lt;/a&gt;&quot;| pandoc -f html -t markdown
+# Link: [Linphone](https://www.linphone.org/)</code></pre>
+<p>Convert an entire web page to markdown</p>
+<pre><code>pandoc https://pandoc.org/help.html -t markdown</code></pre>
+<p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> The default is to use setext-style headers for levels 1-2, and then ATX headers. To use ATX style headers only in markdown output:</p>
 <pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
 <div id="yaml-front-matter-for-styles" class="section level3">
 <h3>Yaml front matter for styles</h3>

@@ -50,6 +50,38 @@ been recycled.
 
 
 # Chat, calls and video calls
+
+What happened to the [VOIP software on
+Linux](https://www.linuxlinks.com/VoIP/)?
+Why is there such a reliance on proprietary platforms?
+Is it because of technical constraints or are there other political reasons for
+it?
+
+Free programs recommended by Richard Stallmann on his [skype
+page](https://stallman.org/skype.html): [Jami](https://jami.net/),
+[Linphone](https://www.linphone.org/),
+[Mumble](https://wiki.mumble.info/wiki/Main_Page), [Jitsi](https://jitsi.org/).
+
+
+## Ekiga
+
+[Ekiga](https://en.wikipedia.org/wiki/Ekiga) is/was a softphone for gnome Linux
+desktop. Development has stopped since the last release in What happened to it?
+Why has development stopped? According to wikipedia, the original developer
+[Damien Sandras](https://en.wikipedia.org/wiki/Damien_Sandras) is now working
+for be.ip on open source voip software. 
+
+## Linphone
+
+[Linphone](https://www.linphone.org/technical-corner/linphone?qt-technical_corner=2#qt-technical_corner)
+Development and support available from Belledonne-communications, a company
+based in Bordeaux, France. 
+
+[Linphone desktop](https://gitlab.linphone.org/BC/public/linphone-desktop) is
+programmed mostly in C++ the
+[sdk](https://gitlab.linphone.org/BC/public/linphone-sdk) has some java code in
+it. 
+
 ## Riot
 
 Riot-web is a chat application based on the matrix decentralised communication
