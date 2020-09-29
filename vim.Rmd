@@ -734,10 +734,11 @@ the outline pane.
 
 Key mappings in the outline pane:
 
+    <space> fold/unfold a node
     O Recursively expand the current node and its siblings.
     C Recursively contract the current node and its siblings.
 
-It's also possible to move nodes with cut and paste behaviour and to
+It's also possible to move nodes with cut `dd` and paste behaviour `pp` and to
 promote/demote them as such:
 
     <LocalLeader>l Move node(s) left, that is promote.
@@ -1166,18 +1167,17 @@ Help on a function ;rh
 
 ### Tags
 
-To generate tags for R files contained in a project's R/ subfolder, call the
+To generate tags for R files contained in a project's `R/` subfolder, call the
 following from the R session. Usually when working in a project the session
 working directory is at the project root.
 
 ```{r eval=FALSE}
-rtags(path="R", ofile = "R/etags"); etags2ctags("R/etags", "R/tags"); unlink("R/etags")
+rtags(path="R", ofile = "etags"); etags2ctags("etags", "tags"); unlink("etags")
 ```
 
-Try 'du --help' for more information.
 Alternatively, you can call the line starting with `rtags` above from within
-Vim with `:RBuildTags`. Therefore I need to move to the /R subfolder
-first and move back to the project root after having created the tags:
+Vim with `:RBuildTags`. But tihs requires moving to the `/R` subfolder
+first and moving back to the project root after having created the tags:
 
     R > setwd("R") # R command
 
