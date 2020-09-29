@@ -1001,8 +1001,17 @@ Search for a pattern in python and R files:
 
 # Authentification and security
 
-## Generate SSH keys and add them to the agent 
+## Generate passwords
 
+[apg](https://packages.debian.org/buster/apg) is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as "a maintained software with a comparable feature set becomes available".
+Usage:
+
+    apg
+
+
+
+## Generate SSH keys and add them to the agent 
+Mon Sep 28 09:36:26 CEST 2020
 Generate a new key
 
     cd ~/.ssh

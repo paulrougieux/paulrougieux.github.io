@@ -1166,15 +1166,24 @@ Help on a function ;rh
 
 ### Tags
 
-To generate tags for R files contained in an R project, call the following from R: 
+To generate tags for R files contained in a project's R/ subfolder, call the
+following from the R session. Usually when working in a project the session
+working directory is at the project root.
 
-    setwd("R")
-    rtags(ofile = "etags"); etags2ctags("etags", "tags"); unlink("etags")
-    setwd("..")
+```{r eval=FALSE}
+rtags(path="R", ofile = "R/etags"); etags2ctags("R/etags", "R/tags"); unlink("R/etags")
+```
 
-Move to the /R subfolder of a project, then generate tag files with:
+Try 'du --help' for more information.
+Alternatively, you can call the line starting with `rtags` above from within
+Vim with `:RBuildTags`. Therefore I need to move to the /R subfolder
+first and move back to the project root after having created the tags:
 
-    :RBuildTags
+    R > setwd("R") # R command
+
+    :RBuildTags # VIM command
+
+    R > setwd("..") # R command
 
 Display tag files currently seen by vim: 
 
