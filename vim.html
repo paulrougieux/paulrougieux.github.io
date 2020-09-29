@@ -935,9 +935,10 @@ Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code>
 au BufRead,BufNewFile *.Rmd command! Toc Voom </code></pre>
 <p>In the outline pane, press enter once to display the corresponding header in the body pane. Press enter a second time to move the cursor to the body pane. In the body pane, press enter once to display the position of the cursor in the outline pane. Press enter a second time to move to the corresponding place in the outline pane.</p>
 <p>Key mappings in the outline pane:</p>
-<pre><code>O Recursively expand the current node and its siblings.
+<pre><code>&lt;space&gt; fold/unfold a node
+O Recursively expand the current node and its siblings.
 C Recursively contract the current node and its siblings.</code></pre>
-<p>It’s also possible to move nodes with cut and paste behaviour and to promote/demote them as such:</p>
+<p>It’s also possible to move nodes with cut <code>dd</code> and paste behaviour <code>pp</code> and to promote/demote them as such:</p>
 <pre><code>&lt;LocalLeader&gt;l Move node(s) left, that is promote.
 &lt;LocalLeader&gt;r Move node(s) right, that is demote.</code></pre>
 <blockquote>
@@ -1246,12 +1247,18 @@ Ctrl+N</code></pre>
 </div>
 <div id="tags" class="section level3">
 <h3>Tags</h3>
-<p>To generate tags for R files contained in an R project, call the following from R:</p>
-<pre><code>setwd(&quot;R&quot;)
-rtags(ofile = &quot;etags&quot;); etags2ctags(&quot;etags&quot;, &quot;tags&quot;); unlink(&quot;etags&quot;)
-setwd(&quot;..&quot;)</code></pre>
-<p>Move to the /R subfolder of a project, then generate tag files with:</p>
-<pre><code>:RBuildTags</code></pre>
+<p>To generate tags for R files contained in a project’s <code>R/</code> subfolder, define the following bash function:</p>
+<pre class="bash"><code>rtags() {
+    Rscript -e &quot;rtags(ofile = &#39;et&#39;); nvimcom::etags2ctags(&#39;et&#39;, &#39;tags&#39;); unlink(&#39;et&#39;)&quot;  &amp;&amp; cat tags
+}</code></pre>
+<p>Usage:</p>
+<pre><code>cd ~/rp/eutradeflows/R  &amp;&amp; rtags</code></pre>
+<p>The bash function above was inspired by NVimR’s <code>:RBuildTags</code> command. Alternatively, you can call the line starting with <code>rtags</code> above from within Vim with <code>:RBuildTags</code>. But this requires moving to the <code>/R</code> subfolder first and moving back to the project root after having created the tags:</p>
+<pre><code>R &gt; setwd(&quot;R&quot;) # R command
+
+:RBuildTags # VIM command
+
+R &gt; setwd(&quot;..&quot;) # R command</code></pre>
 <p>Display tag files currently seen by vim:</p>
 <pre><code>:set tags</code></pre>
 <p>Navigate tag files with <code>CTRL+]</code> (<code>CTRL+ù</code> on my setup).</p>

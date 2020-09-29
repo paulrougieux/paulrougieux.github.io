@@ -1182,9 +1182,14 @@ echo $message</code></pre>
 </div>
 <div id="authentification-and-security" class="section level1">
 <h1>Authentification and security</h1>
+<div id="generate-passwords" class="section level2">
+<h2>Generate passwords</h2>
+<p><a href="https://packages.debian.org/buster/apg">apg</a> is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as “a maintained software with a comparable feature set becomes available”. Usage:</p>
+<pre><code>apg</code></pre>
+</div>
 <div id="generate-ssh-keys-and-add-them-to-the-agent" class="section level2">
 <h2>Generate SSH keys and add them to the agent</h2>
-<p>Generate a new key</p>
+<p>Mon Sep 28 09:36:26 CEST 2020 Generate a new key</p>
 <pre><code>cd ~/.ssh
 ssh-keygen &lt;id_rsa_keyname&gt;</code></pre>
 <p>Temporarily add a key to ssh</p>
