@@ -29,7 +29,8 @@ export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
 # Create tag files for an R project
 rtags() {
-    Rscript -e "rtags(ofile = 'et'); nvimcom::etags2ctags('et', 'tags'); unlink('et')"  && cat tags
+    Rscript -e "rtags(ofile = 'et'); nvimcom::etags2ctags('et', 'tags'); unlink('et')"  
+    echo $'\n\nTags in ' $PWD && cat tags
 }
 # Create tag files for the most commonly used R projects
 rtagsall() {

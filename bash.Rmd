@@ -333,6 +333,12 @@ I quoted them in `\begin{verbatim}` statements.
 
     awk '!a[$0]++' input.txt 
 
+## Select an editor
+
+To select a preferred editor, used for example by `crontab -e`, run:
+
+    select-editor
+
 # Events
 
 ## Calendar
@@ -349,18 +355,27 @@ applications](https://www.reddit.com/r/commandline/comments/iupqui/github_comman
 
 ## Cron
 
-[Use two differet /etc/hosts depending upon the
-time](https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time)
-
-    0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
-    0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts
-
+In order to [use two differet /etc/hosts depending upon the
+time](https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time),
 I added the following to /etc/hosts_worktime:
 
     0.0.0.1 www.youtube.com
     0.0.0.1 youtube.com
 
-To restart networking and clear the DNS cache:
+I then created a cron job that copies that files to /etc/hosts at 9am. Start
+the crontab editor:
+
+    crontab -e
+
+Add these lines:
+
+    0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
+    0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts
+
+I noticed that youtube.com was still available for a little while after I
+blocked it. I'm not sure it's necessary or if you simply need to wait a little
+bit for the change to the hosts file to take effect. Anyway here is an
+instruction to restart networking and clear the DNS cache: 
 
     sudo /etc/init.d/networking restart
 
@@ -998,6 +1013,23 @@ Search for a pattern in python and R files:
 
     grep -n <pattern> *{py,R}
 
+## Make the bash shell by default for a user
+
+[No path, or command history through SSH when logged in to server as someone other than 
+root](https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485)
+
+Edit the users file
+
+    sudo vim /etc/passwd
+
+Change
+
+    paul:x:1000:1000::/home/paul:/bin/sh
+
+to
+
+    paul:x:1000:1000::/home/paul:/bin/bash
+
 
 # Authentification and security
 
@@ -1011,6 +1043,7 @@ Usage:
 
 
 ## Generate SSH keys and add them to the agent 
+
 Mon Sep 28 09:36:26 CEST 2020
 Generate a new key
 
@@ -1044,10 +1077,26 @@ you can [test a few password you might remember with](https://stackoverflow.com/
 Note if you copy keys from one machine to another, you might 
 encounter this error:
 [ssh “permissions are too open” error](https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error)
+
 Change the permission so only the current user has access to the file:
 
     chmod 600 id_rsa
 
+## Load SSH keys into the remote server
+
+Based on [Install the public key in remote
+server](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/)
+Once you have an ssh key on your local machine, you need to load it into the
+remote server's authorized keys as such: 
+
+    ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@server
+
+OR just copy the public key in remote server as authorized_keys in ~/.ssh/ directory:
+
+    scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys
+
+The remainder of the [cybercity.biz document](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/) explains how to disable the password based login
+on a server.
 
 ## Check a key's fingerprint
 

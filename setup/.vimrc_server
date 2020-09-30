@@ -1,0 +1,88 @@
+
+"""""""""""""""""""""""""
+" General configuration "
+"""""""""""""""""""""""""
+" Determine the type of the current file
+filetype on
+syntax enable
+
+" change leader key from \ (the default) to ,
+let mapleader = ","
+let maplocalleader = ";"
+
+" Case insensitive search
+set ignorecase
+set smartcase
+
+" Spelling
+set spell spelllang=en_gb
+
+" Split settings
+" Commented out because I use tmux-navigator in normal mode
+"nnoremap <C-J> <C-W><C-J>
+"nnoremap <C-K> <C-W><C-K>
+"nnoremap <C-L> <C-W><C-L>
+"nnoremap <C-H> <C-W><C-H>
+" Mappings for terminal buffer similar to tmux navigator
+tnoremap <C-J> <C-W><C-J>
+tnoremap <C-K> <C-W><C-K>
+tnoremap <C-L> <C-W><C-L>
+tnoremap <C-H> <C-W><C-H>
+set splitbelow
+set splitright
+" See also tmux configuration
+
+" Recursively search all files in pwd for the word under the cursor 
+nmap <F3> :vimgrep /<C-R><C-W>/ **<CR>
+
+" Toggle taglist
+nnoremap <silent> <F8> :TlistToggle<CR>
+
+" Add date 
+"command! Date i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
+"command! Date "=strftime('%Y-%m-%d')<CR>P
+command! Date put =strftime('%Y-%m-%d')
+
+""""""""""""""""""
+" AZERTY keyboard "
+""""""""""""""""""
+" Shared on https://stackoverflow.com/a/62195253/2641825
+" Move to the end of the line
+noremap m $
+" Search backward for the word under the cursor
+noremap µ #
+" Navigate to the help tag under the cursor with ctrl-ù
+noremap ' <C-]>
+" Move into wrapped lines with arrow keys
+nnoremap <Up> gk
+vnoremap <Up> gk
+nnoremap <Down> gj
+vnoremap <Down> gj
+
+""""""""""""""""
+" Colour theme "
+""""""""""""""""
+set t_Co=256
+" terminal’s color palette #444444 is suggested by jellybeans.vim,
+" I used 353131
+" This is suggested by a stackoverflow answer
+set background=dark
+"autocmd vimenter * colorscheme gruvbox
+
+" Underline bad spelling instead of highlighting it
+" this should be placed after colorscheme and background colour
+hi clear SpellBad
+"hi SpellBad cterm=underline
+hi SpellBad cterm=underline ctermbg=black
+
+"""""""""""""""""
+" File Explorer "
+"""""""""""""""""
+" Tree list view
+let g:netrw_liststyle = 3
+" Remove the banner
+let g:netrw_banner = 0
+" Per default, netrw leaves unmodified buffers open. This autocommand
+" deletes netrw's buffer once it's hidden (using ':q', for example)
+autocmd FileType netrw setl bufhidden=delete
+
