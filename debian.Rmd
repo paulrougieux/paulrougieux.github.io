@@ -260,8 +260,30 @@ explains how to install lyx 2.3 from the backports on Debian stretch.
     sudo apt-get -t stretch-backports install lyx
 
 
-## Python
+## Mutt and Neomutt
 
+packages.debian.org [Neomutt](https://packages.debian.org/buster/neomutt) 
+
+The Arch Linux [setup
+page](https://wiki.archlinux.org/index.php/Mutt#Installation) explains that : 
+
+> "The NeoMutt project aims to bring together all the patches for Mutt. It adds
+> a large set of features. Lots of old Mutt patches have been brought
+> up-to-date, tidied and documented."
+
+It also has a section on setting up the vim editor with Mutt.
+
+[How do I set up posteo in an email 
+client?](https://posteo.de/en/help/how-do-i-set-up-posteo-in-an-email-client-pop3-imap-and-smtp)
+
+Mutt configuration example [in a
+dotfile](https://github.com/manuel-io/dotfiles/blob/master/muttrc) with
+connection to posteo and vim editor.
+
+Example of Mutt setup for professional email coming from an Exchange server. 
+
+
+## Python
 
 Install editor
 
@@ -276,7 +298,6 @@ see [Cran mirror of Debian packages](https://cran.r-project.org/bin/linux/debian
 
 Add the following to /etc/apt/sources.list
 
-    deb https://cran.stat.unipd.it/bin/linux/debian stretch-cran35/
     deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/
 
 In case you get an error:
@@ -565,6 +586,9 @@ Find out which Debian version is running
 
     cat /etc/issue
 
+Display the OS release
+
+    cat /etc/os-release 
 
 # Tools
 

@@ -391,6 +391,9 @@ div.tocify {
       <a href="mysql.html">MySQL</a>
     </li>
     <li>
+      <a href="postgresql.html">PostgreSQL</a>
+    </li>
+    <li>
       <a href="python.html">Python</a>
     </li>
     <li>
@@ -801,12 +804,15 @@ removed from your working tree are ignored with this version of Git.
 <h2>Searching text</h2>
 <p>Search all files in the subdirectory “subdir” for lines containing the words “factor” and “item”. Show 2 lines of context (2 leading and 2 trailing lines).</p>
 <pre><code>git grep -e item --and -e factor -C 2 -- subdir/</code></pre>
+<p>Search all R markdown files containing the word lyx ignore the case:</p>
+<pre><code>git grep -i lyx -- *.Rmd</code></pre>
 <p>Stackoverflow: How to search committed code in the git history?</p>
 </div>
 <div id="replacing-strings" class="section level2">
 <h2>Replacing strings</h2>
 <p>Use git grep to replace strings in many files in the directory :</p>
 <pre><code>git grep -l &#39;original_text&#39; | xargs sed -i &#39;s/original_text/new_text/g&#39;</code></pre>
+<p>See also the refactor function in the <a href="bash.html">bash</a> page.</p>
 </div>
 </div>
 <div id="gitignore" class="section level1">

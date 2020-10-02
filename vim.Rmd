@@ -465,6 +465,12 @@ To save content and exit:
 
     :wq
 
+# Email with Mutt
+
+See also the [debian.html] page. The Arch Linux [wiki page on
+Mutt](https://wiki.archlinux.org/index.php/Mutt#Installation) has a section
+explaining how to set it up with vim.
+
 # Help
 
     :help - vim help

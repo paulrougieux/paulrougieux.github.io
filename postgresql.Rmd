@@ -1,0 +1,107 @@
+---
+title: "PostgreSQL Commands"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+This document explains the installation and configuration of the PostgreSQL database engine.
+
+# Install PostgreSQL
+
+Install PostgreSQL
+
+    sudo apt install postgresql postgresql-client
+
+Debian wiki explains [how to install and set up
+PostgreSQL](https://wiki.debian.org/PostgreSql).
+
+
+# Create a user and a database
+
+Add system users at the regular bash shell before you can add them in
+postgresql. I call this user "rdb" because I plan to use R to connect to the
+database and "R" cannot be used as a user name according to system policy.
+
+    sudo adduser rdb --disabled-password 
+
+Login as the default user postgres
+
+    sudo -u postgres bash
+
+Now logged in as `postgres@machine_name` in the regular bash shell 
+
+1. Create a user with the same name as the system user created above
+
+        createuser --pwprompt rdb
+
+2. Create a database owned by that user
+
+        createdb -O rdb tradeflows
+
+# Connect to a database
+
+## Configuration file .pgpass
+
+This is the prefered way to connect to the database for scripts. Create a
+`~/.pgpass` file to store the connection details for that user:
+
+    echo 'localhost:5432:tradeflows:rdb:localhost' >> ~/.pgpass
+
+Secure the file:
+
+    chmod 600 ~/.pgpass
+
+Connect to the database:
+
+    psql -d tradeflows -h localhost -U rdb
+
+## As a system user
+
+Login as the user who is the owner of that database
+
+    sudo su rdb
+
+Connect to the database
+
+    psql tradeflows
+
+
+# Show information about databases, tables, columns
+
+List databases
+
+    \l
+
+Connect to a database
+
+    \c db_name
+
+List tables
+
+    \dt
+
+
+# Database operations
+
+## Drop
+
+Delete a database
+
+    postgres=# drop database databasename;
+
+
+# Comparison MariaDB/MySQL and PostgreSQL
+
+Compare common commands between MariaDB and PostgreSQL.
+
+| MariaDB/MySQL    | PostgreSQL   |
+| ---------------  | ------------ |
+| show databases;  | \\l          |
+| connect db_name; | \\c db_name  |
+| show tables;     | \\dt         |
+|                  |              |
+|                  |              |
+
+

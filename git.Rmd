@@ -576,9 +576,13 @@ Alternatively clean in interactive mode:
 
 ## Searching text
 
- Search all files in the subdirectory "subdir" for lines containing the words "factor" and "item". Show 2 lines of context (2 leading and 2 trailing lines).
+Search all files in the subdirectory "subdir" for lines containing the words "factor" and "item". Show 2 lines of context (2 leading and 2 trailing lines).
 
     git grep -e item --and -e factor -C 2 -- subdir/
+
+Search all R markdown files containing the word lyx ignore the case:
+
+    git grep -i lyx -- *.Rmd
 
 Stackoverflow:  How to search committed code in the git history?
 
@@ -588,6 +592,8 @@ Stackoverflow:  How to search committed code in the git history?
 Use git grep to replace strings in many files in the directory :
 
     git grep -l 'original_text' | xargs sed -i 's/original_text/new_text/g'
+
+See also the refactor function in the [bash](bash.html) page.
 
 # .gitignore
 

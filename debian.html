@@ -391,6 +391,9 @@ div.tocify {
       <a href="mysql.html">MySQL</a>
     </li>
     <li>
+      <a href="postgresql.html">PostgreSQL</a>
+    </li>
+    <li>
       <a href="python.html">Python</a>
     </li>
     <li>
@@ -607,6 +610,18 @@ sudo apt install texlive-latex-extra</code></pre>
 sudo apt update
 sudo apt-get -t stretch-backports install lyx</code></pre>
 </div>
+<div id="mutt-and-neomutt" class="section level2">
+<h2>Mutt and Neomutt</h2>
+<p>packages.debian.org <a href="https://packages.debian.org/buster/neomutt">Neomutt</a></p>
+<p>The Arch Linux <a href="https://wiki.archlinux.org/index.php/Mutt#Installation">setup page</a> explains that :</p>
+<blockquote>
+<p>“The NeoMutt project aims to bring together all the patches for Mutt. It adds a large set of features. Lots of old Mutt patches have been brought up-to-date, tidied and documented.”</p>
+</blockquote>
+<p>It also has a section on setting up the vim editor with Mutt.</p>
+<p><a href="https://posteo.de/en/help/how-do-i-set-up-posteo-in-an-email-client-pop3-imap-and-smtp">How do I set up posteo in an email client?</a></p>
+<p>Mutt configuration example <a href="https://github.com/manuel-io/dotfiles/blob/master/muttrc">in a dotfile</a> with connection to posteo and vim editor.</p>
+<p>Example of Mutt setup for professional email coming from an Exchange server.</p>
+</div>
 <div id="python" class="section level2">
 <h2>Python</h2>
 <p>Install editor</p>
@@ -618,8 +633,7 @@ sudo apt-get -t stretch-backports install lyx</code></pre>
 <h3>Installing R from the CRAN mirror</h3>
 <p>Install R from the CRAN repository, see <a href="https://cran.r-project.org/bin/linux/debian/#debian-stretch-stable">Cran mirror of Debian packages</a></p>
 <p>Add the following to /etc/apt/sources.list</p>
-<pre><code>deb https://cran.stat.unipd.it/bin/linux/debian stretch-cran35/
-deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/</code></pre>
+<pre><code>deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/</code></pre>
 <p>In case you get an error:</p>
 <pre><code>The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY FCAE2A0E115C3D8A</code></pre>
 <p>Add the PGP key so that this server is trusted :</p>
@@ -802,6 +816,8 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 <h1>System information</h1>
 <p>Find out which Debian version is running</p>
 <pre><code>cat /etc/issue</code></pre>
+<p>Display the OS release</p>
+<pre><code>cat /etc/os-release </code></pre>
 </div>
 <div id="tools" class="section level1">
 <h1>Tools</h1>

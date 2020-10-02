@@ -391,6 +391,9 @@ div.tocify {
       <a href="mysql.html">MySQL</a>
     </li>
     <li>
+      <a href="postgresql.html">PostgreSQL</a>
+    </li>
+    <li>
       <a href="python.html">Python</a>
     </li>
     <li>
@@ -738,6 +741,11 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 <h2>Remove duplicated lines from a file</h2>
 <pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
 </div>
+<div id="select-an-editor" class="section level2">
+<h2>Select an editor</h2>
+<p>To choose your preferred text editor, used for example by <code>crontab -e</code>, run:</p>
+<pre><code>select-editor</code></pre>
+</div>
 </div>
 <div id="events" class="section level1">
 <h1>Events</h1>
@@ -752,13 +760,15 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 </div>
 <div id="cron" class="section level2">
 <h2>Cron</h2>
-<p><a href="https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time">Use two differet /etc/hosts depending upon the time</a></p>
-<pre><code>0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
-0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts</code></pre>
-<p>I added the following to /etc/hosts_worktime:</p>
+<p>In order to <a href="https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time">use two differet /etc/hosts depending upon the time</a>, I added the following to /etc/hosts_worktime:</p>
 <pre><code>0.0.0.1 www.youtube.com
 0.0.0.1 youtube.com</code></pre>
-<p>To restart networking and clear the DNS cache:</p>
+<p>I then created a cron job that copies that files to /etc/hosts at 9am. Start the crontab editor:</p>
+<pre><code>crontab -e</code></pre>
+<p>Add these lines:</p>
+<pre><code>0  9 * * 1-5 ln -f /etc/hosts_worktime /etc/hosts
+0 17 * * 1-5 ln -f /etc/hosts_playtime /etc/hosts</code></pre>
+<p>I initially used <code>cp</code> instead of <code>ln -f</code>, but it’s better to make a hard link so any subsequent modification of /etc/hosts will actually be kept in one of the file, and not overwritten by the <code>cp</code>. I noticed that youtube.com was still available for a little while after I blocked it. I’m not sure it’s necessary or if you simply need to wait a little bit for the change to the hosts file to take effect. Anyway here is an instruction to restart networking and clear the DNS cache:</p>
 <pre><code>sudo /etc/init.d/networking restart</code></pre>
 </div>
 </div>
@@ -1179,6 +1189,16 @@ echo $message</code></pre>
 <p>Search for a pattern in python and R files:</p>
 <pre><code>grep -n &lt;pattern&gt; *{py,R}</code></pre>
 </div>
+<div id="make-the-bash-shell-by-default-for-a-user" class="section level2">
+<h2>Make the bash shell by default for a user</h2>
+<p><a href="https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485">No path, or command history through SSH when logged in to server as someone other than root</a></p>
+<p>Edit the users file</p>
+<pre><code>sudo vim /etc/passwd</code></pre>
+<p>Change</p>
+<pre><code>paul:x:1000:1000::/home/paul:/bin/sh</code></pre>
+<p>to</p>
+<pre><code>paul:x:1000:1000::/home/paul:/bin/bash</code></pre>
+</div>
 </div>
 <div id="authentification-and-security" class="section level1">
 <h1>Authentification and security</h1>
@@ -1203,8 +1223,17 @@ eval `ssh-agent`</code></pre>
 <pre><code>IdentityFile ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
 <p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
 <pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
-<p>Note if you copy keys from one machine to another, you might encounter this error: <a href="https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error">ssh “permissions are too open” error</a> Change the permission so only the current user has access to the file:</p>
+<p>Note if you copy keys from one machine to another, you might encounter this error: <a href="https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error">ssh “permissions are too open” error</a></p>
+<p>Change the permission so only the current user has access to the file:</p>
 <pre><code>chmod 600 id_rsa</code></pre>
+</div>
+<div id="load-ssh-keys-into-the-remote-server" class="section level2">
+<h2>Load SSH keys into the remote server</h2>
+<p>Based on <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">Install the public key in remote server</a> Once you have an ssh key on your local machine, you need to load it into the remote server’s authorized keys as such:</p>
+<pre><code>ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@server</code></pre>
+<p>OR just copy the public key in remote server as authorized_keys in ~/.ssh/ directory:</p>
+<pre><code>scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys</code></pre>
+<p>The remainder of the <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">cybercity.biz document</a> explains how to disable the password based login on a server.</p>
 </div>
 <div id="check-a-keys-fingerprint" class="section level2">
 <h2>Check a key’s fingerprint</h2>

@@ -391,6 +391,9 @@ div.tocify {
       <a href="mysql.html">MySQL</a>
     </li>
     <li>
+      <a href="postgresql.html">PostgreSQL</a>
+    </li>
+    <li>
       <a href="python.html">Python</a>
     </li>
     <li>
@@ -464,7 +467,7 @@ div.tocify {
 
 
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/12/mysql-commands.html">my blog post on MySQL commands</a></p>
-<p>I currently use the MariaDB client on Debian GNU/Linux. I have kept `mysql&gt;̀ prompts below.</p>
+<p>I currently use the MariaDB client on Debian GNU/Linux. I have kept <code>mysql &gt;</code> prompts below.</p>
 <div id="as-root-setup-users-and-create-databases" class="section level1">
 <h1>As root, setup users and create databases</h1>
 <p>As root, create a database and grant permissions to a new user To connect to the mysql client as root, in the shell</p>
@@ -489,6 +492,7 @@ mysql -u root -p </code></pre>
 <div id="graphical-clients" class="section level1">
 <h1>Graphical clients</h1>
 <p>On Ubuntu, I used mysql navigator by shi bok jang. On Debian, I used mysql workbench</p>
+<p>Lately I mostly use the command line client.</p>
 </div>
 <div id="user-operations" class="section level1">
 <h1>User operations</h1>
@@ -529,7 +533,7 @@ database = dbname</code></pre>
 </div>
 <div id="database-operations" class="section level1">
 <h1>Database operations</h1>
-<p>mysqldump<code>and</code>mysqladmin<code>commands below work if your shell user name is the same as your mysql user name. If it's different add -u username to the command. If you have configured</code>~/.my.cnf<code>(see below)  you don't even need the</code>-p` switch.</p>
+<p><code>mysqldump</code> and <code>mysqladmin</code> commands below work if your shell user name is the same as your mysql user name. If it’s different add -u username to the command. If you have configured <code>~/.my.cnf</code> (see below) you don’t even need the <code>-p</code> switch.</p>
 <div id="show-information-about-databases-tables-columns" class="section level2">
 <h2>Show information about databases, tables, columns</h2>
 <p>List all databases (in mysql client)</p>

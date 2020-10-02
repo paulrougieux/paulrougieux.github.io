@@ -26,6 +26,8 @@ navbar:
           href: lyx.html
         - text: "MySQL"
           href: mysql.html
+        - text: "PostgreSQL"
+          href: postgresql.html
         - text: "Python"
           href: python.html
         - text: "R"

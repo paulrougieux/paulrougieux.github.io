@@ -11,7 +11,7 @@
 
 
 
-<title>Web APIs</title>
+<title>PostgreSQL Commands</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -461,18 +461,101 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Web APIs</h1>
+<h1 class="title toc-ignore">PostgreSQL Commands</h1>
 
 </div>
 
 
-<p>This document is a collection of parameters to various Application Programming Interfaces available on the web.</p>
-<div id="comtrade" class="section level1">
-<h1>Comtrade</h1>
+<p>This document explains the installation and configuration of the PostgreSQL database engine.</p>
+<div id="install-postgresql" class="section level1">
+<h1>Install PostgreSQL</h1>
+<p>Install PostgreSQL</p>
+<pre><code>sudo apt install postgresql postgresql-client</code></pre>
+<p>Debian wiki explains <a href="https://wiki.debian.org/PostgreSql">how to install and set up PostgreSQL</a>.</p>
 </div>
-<div id="google" class="section level1">
-<h1>Google</h1>
-<p>I noticed that Google uses a URL parameter called <code>tbm</code> to change the nature of the search. A Stackoverflow question: <a href="https://webapps.stackexchange.com/questions/58550/what-does-tbm-mean-in-google-search">What does “tbm” mean in Google Search</a> explains that tbm indicates a search parameter, for example <code>tbm=isch</code> changes to an image search. A blogger described the various tbm parameters in <a href="https://stenevang.wordpress.com/2013/02/22/google-advanced-power-search-url-request-parameters/">Google Search URL Request Parameters</a> The official documentation is available at <a href="https://developers.google.com/custom-search/docs/xml_results">Google XML API reference</a></p>
+<div id="create-a-user-and-a-database" class="section level1">
+<h1>Create a user and a database</h1>
+<p>Add system users at the regular bash shell before you can add them in postgresql. I call this user “rdb” because I plan to use R to connect to the database and “R” cannot be used as a user name according to system policy.</p>
+<pre><code>sudo adduser rdb --disabled-password </code></pre>
+<p>Login as the default user postgres</p>
+<pre><code>sudo -u postgres bash</code></pre>
+<p>Now logged in as <code>postgres@machine_name</code> in the regular bash shell</p>
+<ol style="list-style-type: decimal">
+<li><p>Create a user with the same name as the system user created above</p>
+<pre><code> createuser --pwprompt rdb</code></pre></li>
+<li><p>Create a database owned by that user</p>
+<pre><code> createdb -O rdb tradeflows</code></pre></li>
+</ol>
+</div>
+<div id="connect-to-a-database" class="section level1">
+<h1>Connect to a database</h1>
+<div id="configuration-file-.pgpass" class="section level2">
+<h2>Configuration file .pgpass</h2>
+<p>This is the prefered way to connect to the database for scripts. Create a <code>~/.pgpass</code> file to store the connection details for that user:</p>
+<pre><code>echo &#39;localhost:5432:tradeflows:rdb:localhost&#39; &gt;&gt; ~/.pgpass</code></pre>
+<p>Secure the file:</p>
+<pre><code>chmod 600 ~/.pgpass</code></pre>
+<p>Connect to the database:</p>
+<pre><code>psql -d tradeflows -h localhost -U rdb</code></pre>
+</div>
+<div id="as-a-system-user" class="section level2">
+<h2>As a system user</h2>
+<p>Login as the user who is the owner of that database</p>
+<pre><code>sudo su rdb</code></pre>
+<p>Connect to the database</p>
+<pre><code>psql tradeflows</code></pre>
+</div>
+</div>
+<div id="show-information-about-databases-tables-columns" class="section level1">
+<h1>Show information about databases, tables, columns</h1>
+<p>List databases</p>
+<pre><code>\l</code></pre>
+<p>Connect to a database</p>
+<pre><code>\c db_name</code></pre>
+<p>List tables</p>
+<pre><code>\dt</code></pre>
+</div>
+<div id="database-operations" class="section level1">
+<h1>Database operations</h1>
+<div id="drop" class="section level2">
+<h2>Drop</h2>
+<p>Delete a database</p>
+<pre><code>postgres=# drop database databasename;</code></pre>
+</div>
+</div>
+<div id="comparison-mariadbmysql-and-postgresql" class="section level1">
+<h1>Comparison MariaDB/MySQL and PostgreSQL</h1>
+<p>Compare common commands between MariaDB and PostgreSQL.</p>
+<table>
+<thead>
+<tr class="header">
+<th>MariaDB/MySQL</th>
+<th>PostgreSQL</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>show databases;</td>
+<td>\l</td>
+</tr>
+<tr class="even">
+<td>connect db_name;</td>
+<td>\c db_name</td>
+</tr>
+<tr class="odd">
+<td>show tables;</td>
+<td>\dt</td>
+</tr>
+<tr class="even">
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 </div>
 
 

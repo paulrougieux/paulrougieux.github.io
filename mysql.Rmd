@@ -9,9 +9,10 @@ output:
 This page is the continuation of [my blog post on MySQL commands](https://paulremote.blogspot.de/2013/12/mysql-commands.html)
 
 I currently use the MariaDB client on Debian GNU/Linux.
-I have kept `mysql>̀  prompts below. 
+I have kept `mysql >` prompts below. 
 
 # As root, setup users and create databases
+
  As root, create a database and grant permissions to a new user
 To connect to the mysql client as root, in the shell
 
@@ -49,9 +50,11 @@ Then you can log out of mysql
 
 
 # Graphical clients
+
 On Ubuntu, I used mysql navigator by shi bok jang.
 On Debian, I used  mysql workbench
 
+Lately I mostly use the command line client.
 
 # User operations
 Change password, as the user itself or as root:
@@ -107,7 +110,7 @@ Rename a table
 
 # Database operations
 
-mysqldump` and `mysqladmin` commands below work if your shell user name is the same as your mysql user name. If it's different add -u username to the command.
+`mysqldump` and `mysqladmin` commands below work if your shell user name is the same as your mysql user name. If it's different add -u username to the command.
 If you have configured `~/.my.cnf` (see below)  you don't even need the `-p` switch.
 
 

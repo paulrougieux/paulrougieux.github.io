@@ -335,7 +335,7 @@ I quoted them in `\begin{verbatim}` statements.
 
 ## Select an editor
 
-To select a preferred editor, used for example by `crontab -e`, run:
+To choose your preferred text editor, used for example by `crontab -e`, run:
 
     select-editor
 
@@ -369,9 +369,12 @@ the crontab editor:
 
 Add these lines:
 
-    0  9 * * 1-5 cp /etc/hosts_worktime /etc/hosts
-    0 17 * * 1-5 cp /etc/hosts_playtime /etc/hosts
+    0  9 * * 1-5 ln -f /etc/hosts_worktime /etc/hosts
+    0 17 * * 1-5 ln -f /etc/hosts_playtime /etc/hosts
 
+I initially used `cp` instead of `ln -f`, but it's better to make a hard link
+so any subsequent modification of /etc/hosts will actually be kept in one of
+the file, and not overwritten by the `cp`.
 I noticed that youtube.com was still available for a little while after I
 blocked it. I'm not sure it's necessary or if you simply need to wait a little
 bit for the change to the hosts file to take effect. Anyway here is an
@@ -789,6 +792,7 @@ In .bashrc a user can set environment variables, define alias (see above).
 
 
 # System
+
 OS release
 
     less /etc/os-release 
@@ -811,7 +815,7 @@ Install a program
 
     sudo apt-get install 
 
- System name
+System name
 
     uname -a
 
