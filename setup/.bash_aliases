@@ -15,7 +15,7 @@ alias youtubeplaylist="youtube-dl --extract-audio --audio-format vorbis --sleep-
 
 # Tools
 alias ll='ls -lah'
-alias tmuxw='tmux new-session -s work "tmux source-file ~/.tmux/work"'
+alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work"'
 # disk usage sorted
 alias dus='du -hd1|sort -hr'
 # Disable Ctrl-S ctrl-Q in terminals
