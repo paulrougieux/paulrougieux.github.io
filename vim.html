@@ -560,6 +560,19 @@ augroup END</code></pre>
 <p>The solution was to use 2 file types for Rmd files: <code>set ft=rmd.markdown</code>.</p>
 </div>
 </div>
+<div id="convert" class="section level1">
+<h1>Convert</h1>
+<div id="markdown-with-pandoc" class="section level2">
+<h2>Markdown with pandoc</h2>
+<p>Convert markdown documents to other formats such as pdf with pandoc.</p>
+<p>Convert the current document to pdf</p>
+<pre><code>:Pandoc </code></pre>
+<p>Convert the current document to word</p>
+<pre><code>:Pandoc docx</code></pre>
+<p>Other output -t options from man pandoc:</p>
+<p>• docx (Word docx) • html or html5 (HTML, i.e. HTML5/XHTML polyglot markup) • latex (LaTeX) • odt (OpenOffice text document) • pptx (PowerPoint slide show)</p>
+</div>
+</div>
 <div id="edit-a-text-file" class="section level1">
 <h1>Edit a text file</h1>
 <div id="navigation_edit" class="section level2">
@@ -617,9 +630,13 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 </div>
 <div id="replace-characters" class="section level2">
 <h2>Replace characters</h2>
-<p>Vim wiki on search and replace Find each occurrence of ‘red’ (in the current line only), and replace it with ‘green’:</p>
+<p>Vim help on search and replace <code>:help :s</code></p>
+<blockquote>
+<p><code>[range]s[ubstitute]/{pattern}/{string}/[flags] [count]</code> For each line in <code>[range]</code> replace a match of <code>{pattern}</code> with <code>{string}</code>.</p>
+</blockquote>
+<p>For example find each occurrence of ‘red’ (in the current line only), and replace it with ‘green’:</p>
 <pre><code>:s/red/green/g</code></pre>
-<p>The <code>s</code>command means “substitute”. The <code>g</code> means “greedy”, it will replace all occurences of the word on a line (not just the first occurence).</p>
+<p>The <code>s</code> command means “substitute”. The <code>g</code> means “greedy”, it will replace all occurrences of the word on a line (not just the first occurrence).</p>
 <p>When <a href="http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection">text is visually selected</a>, press : to enter a command. The command line will automatically enter the range:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;</code></pre>
 <p>Then you can enter a replacement command such as <code>s/red/green/g</code> to replace each occurence of “red” with “green” in all lines of the visual selection. The command will appear as:</p>
@@ -643,9 +660,8 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <p>To change the current line from upper to lower case:</p>
 <pre><code>guu</code></pre>
 </div>
-</div>
-<div id="replace-spaces-and-new-lines" class="section level2">
-<h2>Replace spaces and new lines</h2>
+<div id="replace-spaces-and-new-lines" class="section level3">
+<h3>Replace spaces and new lines</h3>
 <p>Vim wiki <a href="https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace">Remove unwanted spaces</a>:</p>
 <blockquote>
 <p>In a search, finds white space (a space or a tab), and + finds one or more occurrences. Command to replace repeated white spaces by a single white space in a selection:</p>
@@ -655,6 +671,9 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <pre><code>:&#39;&lt;,&#39;&gt;s/[^\s]\zs\s\+/ /g</code></pre>
 <p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
 <pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
+<p>This pattern replaces one or more white spaces with a pipe, to create markdown tables:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\s\+/|/g</code></pre>
+</div>
 </div>
 <div id="copy-cut-and-paste" class="section level2">
 <h2>Copy, cut and paste</h2>
@@ -927,16 +946,16 @@ Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code>
 <li>The markdown TOC extension for vim.</li>
 <li><a href="https://github.com/euclio/vim-markdown-composer/blob/master/README.md">Vim markdown composer</a> a plugin that adds asynchronous Markdown preview to Neovim and Vim.</li>
 </ul>
-<div id="vim-markdown-not-used" class="section level3">
-<h3>Vim-markdown (not used)</h3>
+<div id="vim-markdown-toc-not-used" class="section level3">
+<h3>Vim-markdown TOC (not used)</h3>
 <p>In <a href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this question</a>, I managed to create an auto command to activate vim-markdown for Rmd files. But now that I start using Nvim-R more intensively, I hit <a href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown issue 263</a>: activating vim-markdown removes syntax highlighting and auto completion of the R code chunks. I first extracted the Toc function into a small plugin. Then started using the Voom plugin.</p>
 </div>
-<div id="vim-pandoc" class="section level3">
-<h3>Vim-pandoc</h3>
+<div id="vim-pandoc-toc-not-used" class="section level3">
+<h3>Vim-pandoc TOC (not used)</h3>
 <p>The vim-pandoc plugin also provides a table of content for markdown files, accessible through the <code>:TOC</code> command.</p>
 </div>
-<div id="voom" class="section level3">
-<h3>Voom</h3>
+<div id="voom-toc-used" class="section level3">
+<h3>Voom TOC (used)</h3>
 <p>I chose to create the table of content with the <a href="https://github.com/vim-voom/VOoM">Voom plugin</a> based on a suggestion on <a href="https://github.com/jalvesaq/Nvim-R/issues/505">Nvim-R issue 505</a>. I have this in my <code>.vimrc</code>:</p>
 <pre><code>let voom_ft_modes = {&#39;markdown&#39;: &#39;pandoc&#39;, &#39;rmd&#39;: &#39;pandoc&#39;, &#39;tex&#39;: &#39;latex&#39;}
 au BufRead,BufNewFile *.Rmd command! Toc Voom </code></pre>

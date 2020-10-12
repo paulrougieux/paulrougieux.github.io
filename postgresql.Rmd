@@ -27,18 +27,25 @@ database and "R" cannot be used as a user name according to system policy.
     sudo adduser rdb --disabled-password 
 
 Login as the default user postgres
+Now logged in as `postgres@machine_name` in the regular bash shell 
 
     sudo -u postgres bash
 
-Now logged in as `postgres@machine_name` in the regular bash shell 
+    # or 
+    sudo su postgres
 
 1. Create a user with the same name as the system user created above
 
-        createuser --pwprompt rdb
+    createuser --pwprompt rdb
+
+    # Create a user for myself
+    createuser paul 
 
 2. Create a database owned by that user
 
-        createdb -O rdb tradeflows
+    createdb -O rdb tradeflows
+
+    createdb -O paul tradeflows_migrated
 
 # Connect to a database
 
@@ -67,8 +74,62 @@ Connect to the database
 
     psql tradeflows
 
+# Data types
 
-# Show information about databases, tables, columns
+
+## Character
+
+[Datatype
+character](https://www.postgresql.org/docs/8.4/datatype-character.html):
+
+| Name                             | Description                |
+| -------------------------------- | -------------------------- |
+| character varying(n), varchar(n) | variable-length with limit |
+| character(n), char(n)            | fixed-length, blank padded |
+| text                             | variable unlimited length  |
+
+Tip: 
+
+> "There is no performance difference among these three types, apart from
+> increased storage space when using the blank-padded type, and a few extra CPU
+> cycles to check the length when storing into a length-constrained column.
+> While character(n) has performance advantages in some other database systems,
+> there is no such advantage in PostgreSQL; in fact character(n) is usually the
+> slowest of the three because of its additional storage costs. In most
+> situations text or character varying should be used instead." 
+
+
+# Drop
+
+Delete a database
+
+    postgres=# drop database databasename;
+
+
+# Dump
+
+Examples copied from `man pg_dump`. To dump a database called mydb into a SQL-script file:
+
+   $ pg_dump mydb > db.sql
+
+To reload such a script into a (freshly created) database named newdb:
+
+   $ psql -d newdb -f db.sql
+
+
+
+# Help
+
+Help about psql commands:
+
+   \? 
+
+Help about SQL commands:
+
+    \h
+    \h select
+
+# Information about databases, tables, columns
 
 List databases
 
@@ -83,16 +144,9 @@ List tables
     \dt
 
 
-# Database operations
+# MariaDB/MySQL and PostgreSQL 
 
-## Drop
-
-Delete a database
-
-    postgres=# drop database databasename;
-
-
-# Comparison MariaDB/MySQL and PostgreSQL
+## Compare commands
 
 Compare common commands between MariaDB and PostgreSQL.
 
@@ -103,5 +157,43 @@ Compare common commands between MariaDB and PostgreSQL.
 | show tables;     | \\dt         |
 |                  |              |
 |                  |              |
+
+## Migrate from MySQL into PostgreSQL
+
+* ipostgresql.org [converting from other databases to
+  postgreSQL](https://wiki.postgresql.org/wiki/Converting_from_other_Databases_to_PostgreSQL#MySQL)
+* [pgloader](https://github.com/dimitri/pgloader)
+
+Transfer data from MySQL to PostgreSQL:
+
+    pgloader mysql://user@localhost/sakila postgresql:///pagila
+
+For my own database I used:
+
+    sudo su postgres
+    createdb -O paul tradeflows_migrated
+    exit # Go back to user "paul"
+    pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated
+
+
+# Blogs
+
+Dimitri Fontaine 2014 [Why is pgloader faster
+?](https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/)
+
+> "in searching for a modern programming language the best candidate I found was actually Common Lisp."
+
+> "Not only is Common Lisp code compiled to machine code when using most Common
+> Lisp Implementations such as SBCL or Clozure Common Lisp; it’s also possible
+> to actually benefit from parallel computing and threads in Common Lisp. In
+> the pgloader case I’ve been using the lparallel utilities, in particular its
+> queuing facility to be able to implement asynchronous IOs where a thread
+> reads the source data and preprocess it, fills up a batch at a time in a
+> buffer that is then pushed down to the writer thread, that handles the COPY
+> protocol and operations. So my current analysis is that the new thread based
+> architecture used with a very powerful compiler for the Common Lisp
+> high-level language are allowing pgloader to enter a whole new field of data
+> loading performances." 
+
 
 

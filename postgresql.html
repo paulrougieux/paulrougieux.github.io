@@ -477,14 +477,18 @@ div.tocify {
 <h1>Create a user and a database</h1>
 <p>Add system users at the regular bash shell before you can add them in postgresql. I call this user “rdb” because I plan to use R to connect to the database and “R” cannot be used as a user name according to system policy.</p>
 <pre><code>sudo adduser rdb --disabled-password </code></pre>
-<p>Login as the default user postgres</p>
-<pre><code>sudo -u postgres bash</code></pre>
-<p>Now logged in as <code>postgres@machine_name</code> in the regular bash shell</p>
+<p>Login as the default user postgres Now logged in as <code>postgres@machine_name</code> in the regular bash shell</p>
+<pre><code>sudo -u postgres bash
+
+# or 
+sudo su postgres</code></pre>
 <ol style="list-style-type: decimal">
 <li><p>Create a user with the same name as the system user created above</p>
-<pre><code> createuser --pwprompt rdb</code></pre></li>
+<p>createuser –pwprompt rdb</p>
+<p># Create a user for myself createuser paul</p></li>
 <li><p>Create a database owned by that user</p>
-<pre><code> createdb -O rdb tradeflows</code></pre></li>
+<p>createdb -O rdb tradeflows</p>
+<p>createdb -O paul tradeflows_migrated</p></li>
 </ol>
 </div>
 <div id="connect-to-a-database" class="section level1">
@@ -506,8 +510,61 @@ div.tocify {
 <pre><code>psql tradeflows</code></pre>
 </div>
 </div>
-<div id="show-information-about-databases-tables-columns" class="section level1">
-<h1>Show information about databases, tables, columns</h1>
+<div id="data-types" class="section level1">
+<h1>Data types</h1>
+<div id="character" class="section level2">
+<h2>Character</h2>
+<p><a href="https://www.postgresql.org/docs/8.4/datatype-character.html">Datatype character</a>:</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>character varying(n), varchar(n)</td>
+<td>variable-length with limit</td>
+</tr>
+<tr class="even">
+<td>character(n), char(n)</td>
+<td>fixed-length, blank padded</td>
+</tr>
+<tr class="odd">
+<td>text</td>
+<td>variable unlimited length</td>
+</tr>
+</tbody>
+</table>
+<p>Tip:</p>
+<blockquote>
+<p>“There is no performance difference among these three types, apart from increased storage space when using the blank-padded type, and a few extra CPU cycles to check the length when storing into a length-constrained column. While character(n) has performance advantages in some other database systems, there is no such advantage in PostgreSQL; in fact character(n) is usually the slowest of the three because of its additional storage costs. In most situations text or character varying should be used instead.”</p>
+</blockquote>
+</div>
+</div>
+<div id="drop" class="section level1">
+<h1>Drop</h1>
+<p>Delete a database</p>
+<pre><code>postgres=# drop database databasename;</code></pre>
+</div>
+<div id="dump" class="section level1">
+<h1>Dump</h1>
+<p>Examples copied from <code>man pg_dump</code>. To dump a database called mydb into a SQL-script file:</p>
+<p>$ pg_dump mydb &gt; db.sql</p>
+<p>To reload such a script into a (freshly created) database named newdb:</p>
+<p>$ psql -d newdb -f db.sql</p>
+</div>
+<div id="help" class="section level1">
+<h1>Help</h1>
+<p>Help about psql commands:</p>
+<p>?</p>
+<p>Help about SQL commands:</p>
+<pre><code>\h
+\h select</code></pre>
+</div>
+<div id="information-about-databases-tables-columns" class="section level1">
+<h1>Information about databases, tables, columns</h1>
 <p>List databases</p>
 <pre><code>\l</code></pre>
 <p>Connect to a database</p>
@@ -515,16 +572,10 @@ div.tocify {
 <p>List tables</p>
 <pre><code>\dt</code></pre>
 </div>
-<div id="database-operations" class="section level1">
-<h1>Database operations</h1>
-<div id="drop" class="section level2">
-<h2>Drop</h2>
-<p>Delete a database</p>
-<pre><code>postgres=# drop database databasename;</code></pre>
-</div>
-</div>
-<div id="comparison-mariadbmysql-and-postgresql" class="section level1">
-<h1>Comparison MariaDB/MySQL and PostgreSQL</h1>
+<div id="mariadbmysql-and-postgresql" class="section level1">
+<h1>MariaDB/MySQL and PostgreSQL</h1>
+<div id="compare-commands" class="section level2">
+<h2>Compare commands</h2>
 <p>Compare common commands between MariaDB and PostgreSQL.</p>
 <table>
 <thead>
@@ -556,6 +607,31 @@ div.tocify {
 </tr>
 </tbody>
 </table>
+</div>
+<div id="migrate-from-mysql-into-postgresql" class="section level2">
+<h2>Migrate from MySQL into PostgreSQL</h2>
+<ul>
+<li>ipostgresql.org <a href="https://wiki.postgresql.org/wiki/Converting_from_other_Databases_to_PostgreSQL#MySQL">converting from other databases to postgreSQL</a></li>
+<li><a href="https://github.com/dimitri/pgloader">pgloader</a></li>
+</ul>
+<p>Transfer data from MySQL to PostgreSQL:</p>
+<pre><code>pgloader mysql://user@localhost/sakila postgresql:///pagila</code></pre>
+<p>For my own database I used:</p>
+<pre><code>sudo su postgres
+createdb -O paul tradeflows_migrated
+exit # Go back to user &quot;paul&quot;
+pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated</code></pre>
+</div>
+</div>
+<div id="blogs" class="section level1">
+<h1>Blogs</h1>
+<p>Dimitri Fontaine 2014 <a href="https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/">Why is pgloader faster ?</a></p>
+<blockquote>
+<p>“in searching for a modern programming language the best candidate I found was actually Common Lisp.”</p>
+</blockquote>
+<blockquote>
+<p>“Not only is Common Lisp code compiled to machine code when using most Common Lisp Implementations such as SBCL or Clozure Common Lisp; it’s also possible to actually benefit from parallel computing and threads in Common Lisp. In the pgloader case I’ve been using the lparallel utilities, in particular its queuing facility to be able to implement asynchronous IOs where a thread reads the source data and preprocess it, fills up a batch at a time in a buffer that is then pushed down to the writer thread, that handles the COPY protocol and operations. So my current analysis is that the new thread based architecture used with a very powerful compiler for the Common Lisp high-level language are allowing pgloader to enter a whole new field of data loading performances.”</p>
+</blockquote>
 </div>
 
 
