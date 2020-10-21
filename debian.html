@@ -469,9 +469,9 @@ div.tocify {
 <p>This page is the continuation of <a href="https://paulremote.blogspot.fr/search/label/Debian">several blog posts related to Debian</a></p>
 <div id="installing-debian" class="section level1">
 <h1>Installing Debian</h1>
-<p>The Debian GNU Linux operating system is available as a torent download or a http download at <a href="https://www.debian.org/CD/">debian.org/CD</a>:</p>
+<p>The Debian GNU Linux operating system is available as a torrent download or a http download at <a href="https://www.debian.org/CD/">debian.org/CD</a>:</p>
 <ul>
-<li>The <a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/">net install CD</a> is sufficient to install debian</li>
+<li>The <a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/">net install CD</a> is sufficient to install Debian.</li>
 <li>On <a href="https://www.debian.org/CD/live/">debian.org/CD/live/</a> you can get “Live images which you can use to try Debian first and then install the contents of the image.”</li>
 </ul>
 <p>Verify the checksum</p>
@@ -483,7 +483,9 @@ div.tocify {
 <p>Unmount the USB key</p>
 <pre><code>sudo umount /dev/sdb1
 # or
-sudo umount &quot;/media/gabriele/Debian Inst&quot;</code></pre>
+sudo umount &quot;/media/gabriele/Debian Inst&quot;
+# or
+sudo umount &quot;/media/paul/Debian 10.1.0 amd64 n&quot;</code></pre>
 <p>Transfer the iso image to the key</p>
 <p>sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb # or sudo cp debian-10.1.0-amd64-netinst.iso /dev/sdb</p>
 <p>The iso should be copied to <code>sdb</code> and not to <code>sdb1</code> ! Then the USB drive can be used to boot a laptop.</p>
@@ -764,6 +766,10 @@ sudo apt install fonts-deva-extra</code></pre>
 <p>Or</p>
 <pre><code>sudo systemctl restart NetworkManager</code></pre>
 <p><a href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences between systemctl and service commands</a>. <a href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What is the difference between service and systemctl</a> &gt; “[…], service is designed as a high-level wrapper to”abstract&quot; out various service managers like init.d, initctl, and (of course) systemctl.&quot;</p>
+</div>
+<div id="mouse-and-touchpad" class="section level1">
+<h1>Mouse and Touchpad</h1>
+<p>Under Gnome Settings / Mouse and Touchpad, I set Natural scrolling off under the mouse and the touchpad sections.</p>
 </div>
 <div id="printer" class="section level1">
 <h1>Printer</h1>

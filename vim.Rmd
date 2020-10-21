@@ -457,6 +457,10 @@ To format the text, select it with v and up or down movements, and press
 
 # Select and visual mode
 
+Vim documentation
+
+    :help visual-use
+
 [Difference between visual and select
 mode](https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it) 
 
@@ -468,6 +472,20 @@ Various ways to select text in visual mode
 Select the current paragraph:
 
     vip
+
+Select the current word:
+
+    viw
+
+Select what is in the current parenthesis block
+
+    vi(
+
+Select what is inside the current quote block
+
+    vi"
+
+These selection methods can also be used to delete `diw` and yank `yiw`.
 
 # Enter commands, save and quit
 
@@ -1579,11 +1597,17 @@ I tried slime.
 
 This page is the continuation of [my 2014 blog post on Vim commands](https://paulremote.blogspot.de/2014/07/vim-commands.html).
 
+
 ## Learning vim
-* [Should I introduce vim tomy kid](https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/)
+
+* [Should I introduce vim to my kid](https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/)
 > "Learn to support, not to shoehorn."
+
 * [Vim adventures](https://vim-adventures.com/)
 * [Learn vim basic featurs](https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/)
+* [Vim Galore](https://github.com/mhinz/vim-galore#the-vim-philosophy)
+  introduction to vim maintained by a group of users
+
 
 ## The history of vim
 

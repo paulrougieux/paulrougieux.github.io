@@ -763,12 +763,21 @@ filetype indent on </code></pre>
 </div>
 <div id="select-and-visual-mode" class="section level1">
 <h1>Select and visual mode</h1>
+<p>Vim documentation</p>
+<pre><code>:help visual-use</code></pre>
 <p><a href="https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it">Difference between visual and select mode</a></p>
 <p>Various ways to select text in visual mode</p>
 <pre><code>vt&lt;char&gt; - till before a given character
 vf&lt;char&gt; - till a given character</code></pre>
 <p>Select the current paragraph:</p>
 <pre><code>vip</code></pre>
+<p>Select the current word:</p>
+<pre><code>viw</code></pre>
+<p>Select what is in the current parenthesis block</p>
+<pre><code>vi(</code></pre>
+<p>Select what is inside the current quote block</p>
+<pre><code>vi&quot;</code></pre>
+<p>These selection methods can also be used to delete <code>diw</code> and yank <code>yiw</code>.</p>
 </div>
 <div id="enter-commands-save-and-quit" class="section level1">
 <h1>Enter commands, save and quit</h1>
@@ -1496,9 +1505,10 @@ let g:tagbar_compact = 1</code></pre>
 <div id="learning-vim" class="section level2">
 <h2>Learning vim</h2>
 <ul>
-<li><a href="https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/">Should I introduce vim tomy kid</a> &gt; “Learn to support, not to shoehorn.”</li>
+<li><p><a href="https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/">Should I introduce vim to my kid</a> &gt; “Learn to support, not to shoehorn.”</p></li>
 <li><a href="https://vim-adventures.com/">Vim adventures</a></li>
 <li><a href="https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/">Learn vim basic featurs</a></li>
+<li><p><a href="https://github.com/mhinz/vim-galore#the-vim-philosophy">Vim Galore</a> introduction to vim maintained by a group of users</p></li>
 </ul>
 </div>
 <div id="the-history-of-vim" class="section level2">

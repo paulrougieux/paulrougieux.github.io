@@ -11,12 +11,14 @@ This page is the continuation of
 
 # Installing Debian 
 
-The Debian GNU Linux operating system is available as a torent download or a http download at
-[debian.org/CD](https://www.debian.org/CD/): 
+The Debian GNU Linux operating system is available as a torrent download or a
+http download at [debian.org/CD](https://www.debian.org/CD/): 
 
- * The [net install CD](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/) is sufficient to install debian
- * On [debian.org/CD/live/](https://www.debian.org/CD/live/) you can get 
-   "Live images which you can use to try Debian first and then install the contents of the image."
+* The [net install CD](https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/) 
+  is sufficient to install Debian.
+* On [debian.org/CD/live/](https://www.debian.org/CD/live/) you can get 
+   "Live images which you can use to try Debian first 
+   and then install the contents of the image."
 
 Verify the checksum 
 
@@ -35,6 +37,8 @@ Unmount the USB key
     sudo umount /dev/sdb1
     # or
     sudo umount "/media/gabriele/Debian Inst"
+    # or
+    sudo umount "/media/paul/Debian 10.1.0 amd64 n"
 
 Transfer the iso image to the key
 
@@ -493,6 +497,11 @@ Or
 [Differences between systemctl and service commands](https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands). 
 [What is the difference between service and systemctl](https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl)
 > "[...], service is designed as a high-level wrapper to "abstract" out various service managers like init.d, initctl, and (of course) systemctl."
+
+# Mouse and Touchpad
+
+Under Gnome Settings / Mouse and Touchpad, I set Natural scrolling off under
+the mouse and the touchpad sections. 
 
 # Printer
 

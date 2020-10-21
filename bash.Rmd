@@ -1155,6 +1155,8 @@ which provides a workaround: entering `stty -ixon` in .bashrc.
 
 # Networking
 
+## Show IP addresses 
+
 Show the IP address 
 
     ip addr show
@@ -1166,6 +1168,16 @@ Show the state of network interfaces
 Check open ports on a system
 
     nmap -Pn <hostname or IP address>
+
+## Show domain name and host name
+
+Show the domain name
+
+    domainname
+
+Show the host name
+
+    hostname
 
 # Terminal multiplexers
 

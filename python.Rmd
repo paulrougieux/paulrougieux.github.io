@@ -26,6 +26,24 @@ or
 
     pip3 install --user pandas==0.24.2
 
+## Packages and modules
+
+[What is the difference between a python module and a python
+package](https://stackoverflow.com/questions/7948494/whats-the-difference-between-a-python-module-and-a-python-package)
+
+> "A package is a collection of modules in directories that give a package
+> hierarchy."
+
+[What is
+setup.py?](https://stackoverflow.com/questions/1471994/what-is-setup-py)
+
+### Authorship
+
+It's only possible to specify one author field in setup.py.
+The recommendation is to use a mailing list when there are multiple authors and
+to set separate files for attribution. 
+
+[How to specify multiple authords in setup.py?](https://stackoverflow.com/questions/9999829/how-to-specify-multiple-authors-emails-in-setup-py)
 
 ## Virtual environments
 

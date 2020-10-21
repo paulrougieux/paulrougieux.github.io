@@ -110,13 +110,27 @@ Delete a database
 
 Examples copied from `man pg_dump`. To dump a database called mydb into a SQL-script file:
 
-   $ pg_dump mydb > db.sql
+    $ pg_dump mydb > db.sql
 
 To reload such a script into a (freshly created) database named newdb:
 
-   $ psql -d newdb -f db.sql
+    $ psql -d newdb -f db.sql
 
+## Remove statements
 
+The dump contained the following two statements which I removed:
+
+    SET default_tablespace = '';
+
+    SET default_with_oids = false;
+
+I removed default table space because the official documentation for [table
+spaces](https://www.postgresql.org/docs/current/manage-ag-tablespaces.html)
+says it doesn't make sense to have more than one table space per system.
+
+I removed default_with_oids because [this
+posrt](https://dba.stackexchange.com/questions/101281/what-is-the-relevance-of-set-default-with-oids-true-in-a-postgresql-dump)
+explains that it's used to enable a legacy feature.
 
 # Help
 
@@ -143,6 +157,14 @@ List tables
 
     \dt
 
+List schemas
+
+    \dn
+
+List tables for a particular schema i[list all tables in
+schema](https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql)
+
+    \dt raw_comext.*;
 
 # MariaDB/MySQL and PostgreSQL 
 
@@ -175,13 +197,42 @@ For my own database I used:
     exit # Go back to user "paul"
     pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated
 
+# Road map
+
+postgresql.org [Roadmap](https://www.postgresql.org/developer/roadmap/)
+
+
+
+# Schema
+
+Official documentation postgresql.org
+[schemas](https://www.postgresql.org/docs/current/ddl-schemas.html)
+
+> "A database contains one or more named schemas, which in turn contain tables.
+> Schemas also contain other kinds of named objects, including data types,
+> functions, and operators. The same object name can be used in different
+> schemas without conflict; for example, both schema1 and myschema can contain
+> tables named mytable. Unlike databases, schemas are not rigidly separated: a
+> user can access objects in any of the schemas in the database they are
+> connected to, if they have privileges to do so." 
+
+> "There are several reasons why one might want to use schemas:"
+
+* "To allow many users to use one database without interfering with each
+  other."
+* "To organize database objects into logical groups to make them more manageable."
+* "Third-party applications can be put into separate schemas so they do not collide
+  with the names of other objects." 
+
+> "Schemas are analogous to directories at the operating system level, except
+> that schemas cannot be nested." 
 
 # Blogs
 
 Dimitri Fontaine 2014 [Why is pgloader faster
 ?](https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/)
 
-> "in searching for a modern programming language the best candidate I found was actually Common Lisp."
+> "In searching for a modern programming language the best candidate I found was actually Common Lisp."
 
 > "Not only is Common Lisp code compiled to machine code when using most Common
 > Lisp Implementations such as SBCL or Clozure Common Lisp; it’s also possible
