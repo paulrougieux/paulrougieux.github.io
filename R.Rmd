@@ -480,6 +480,27 @@ piris$plot[2]
     geom_bar
     geom_tile + a gradient produce heat maps
 
+### Legend
+
+Place the legend at the bottom of the plot:
+
+    library(ggplot2)
+    ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) + 
+        geom_point() + 
+        theme(legend.position="bottom")
+
+Change the name of a particular sub element in the legend:
+
+    labs(color="Iris Species")
+    labs(linetype="Sawnwood product group")
+
+### Themes
+
+Minimal theme
+
+    theme_minimal()
+
+
 ## Choropleth maps
 
 [Choropleth map](https://www.r-graph-gallery.com/choropleth-map.html)

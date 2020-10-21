@@ -916,6 +916,22 @@ piris$plot[2]</code></pre>
 <h2>Plotting with ggplot2</h2>
 <pre><code>geom_bar
 geom_tile + a gradient produce heat maps</code></pre>
+<div id="legend" class="section level3">
+<h3>Legend</h3>
+<p>Place the legend at the bottom of the plot:</p>
+<pre><code>library(ggplot2)
+ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) + 
+    geom_point() + 
+    theme(legend.position=&quot;bottom&quot;)</code></pre>
+<p>Change the name of a particular sub element in the legend:</p>
+<pre><code>labs(color=&quot;Iris Species&quot;)
+labs(linetype=&quot;Sawnwood product group&quot;)</code></pre>
+</div>
+<div id="themes" class="section level3">
+<h3>Themes</h3>
+<p>Minimal theme</p>
+<pre><code>theme_minimal()</code></pre>
+</div>
 </div>
 <div id="choropleth-maps" class="section level2">
 <h2>Choropleth maps</h2>
