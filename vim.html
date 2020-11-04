@@ -562,8 +562,8 @@ augroup END</code></pre>
 </div>
 <div id="convert" class="section level1">
 <h1>Convert</h1>
-<div id="markdown-with-pandoc" class="section level2">
-<h2>Markdown with pandoc</h2>
+<div id="from-markdown-to-other-formats-with-pandoc" class="section level2">
+<h2>From markdown to other formats with pandoc</h2>
 <p>Convert markdown documents to other formats such as pdf with pandoc.</p>
 <p>Convert the current document to pdf</p>
 <pre><code>:Pandoc </code></pre>
@@ -571,6 +571,16 @@ augroup END</code></pre>
 <pre><code>:Pandoc docx</code></pre>
 <p>Other output -t options from man pandoc:</p>
 <p>• docx (Word docx) • html or html5 (HTML, i.e. HTML5/XHTML polyglot markup) • latex (LaTeX) • odt (OpenOffice text document) • pptx (PowerPoint slide show)</p>
+<div id="bibliography" class="section level3">
+<h3>bibliography</h3>
+<p>To use a bibliography with the pandoc extension insert the following in the header of the markdown file:</p>
+<pre><code>bibliography: /path/to/bibliography/papers.bib</code></pre>
+<p>Then the bibliography file should be added to the vim variable <code>b:pandoc_biblio_bibs</code>. You can check it was added correctly by calling:</p>
+<pre><code>:echo b:pandoc_biblio_bibs</code></pre>
+<p>Once the bibliography files is activated, autocomplete can be called by pressing <code>CTRL-X CTRL-O</code> (or ctrl+space in my case) after <code>@</code>. For more see:</p>
+<pre><code>:help vim-pandoc-bibliographies-module</code></pre>
+<p>Bibliography also works with R markdown documents, see rmarkdown documentation <a href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">authoring bibliographies and citations</a>.</p>
+</div>
 </div>
 </div>
 <div id="edit-a-text-file" class="section level1">
@@ -649,6 +659,24 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 <pre><code>:&#39;&lt;,&#39;&gt;s/,/,\r/g</code></pre>
 <p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
+<div id="character-classes" class="section level3">
+<h3>Character classes</h3>
+<p>See <code>:help character-classes</code> for a list of classes accepted in Vim with their equivalent regex pattern, for example <code>\w</code> is equivalent to <code>[0-9A-Za-z_]</code>. Replace all word characters by a dash (to create a markdown table division see also collection below)</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\w/-/g</code></pre>
+<p>Note that this only works with ASCII characters and doesn’t work with accentuated characters. For example <code>smöl</code> gets replaced by <code>--ö-</code>. To replace all identifier characters, use</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\i/-/g</code></pre>
+<p>And then <code>smöl</code> gets replaced by <code>----</code>.</p>
+</div>
+<div id="collection" class="section level3">
+<h3>Collection</h3>
+<p>See <code>:help collection</code>: “A collection is a sequence of characters enclosed in brackets.”</p>
+<pre><code>Example     matches ~
+[xyz]       any &#39;x&#39;, &#39;y&#39; or &#39;z&#39;
+[^xyz]&quot;     anything but &#39;x&#39;, &#39;y&#39; and &#39;z&#39;
+[a-zA-Z]$   any alphabetic character at the end of a line</code></pre>
+<p>For example to replace all characters but the pipe (to create a separation in a markdown table):</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/[^\|]/-/g</code></pre>
+</div>
 <div id="convert-to-lower-case" class="section level3">
 <h3>Convert to lower-case</h3>
 <p><a href="https://vim.fandom.com/wiki/Switching_case_of_characters">Switching case of characters</a>:</p>
@@ -940,6 +968,13 @@ c-w-= to restore. </code></pre>
 <pre><code>let g:netrw_banner = 0</code></pre>
 <p>You can put the banner back on by pressing <code>I</code>.</p>
 </div>
+<div id="go-to-file" class="section level2">
+<h2>Go to file</h2>
+<p>Open the file under the cursor, in the current window:</p>
+<pre><code>gF</code></pre>
+<p>Open the file under the cursor, in a new window:</p>
+<pre><code>gf</code></pre>
+</div>
 <div id="jump-back-and-forth" class="section level2">
 <h2>Jump back and forth</h2>
 <p>Vim wiki <a href="https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations">jumping to previously visited locations</a> &gt; “Like a web browser, you can go back, then forward:”</p>
@@ -1003,7 +1038,9 @@ in addition, I mapped m to $</code></pre>
 <div id="search-in-a-file" class="section level2">
 <h2>Search in a file</h2>
 <p>Use <code>&quot;/&quot;</code> to search, then n forward and N backwards <code>&quot;*&quot;</code> to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
-<p>Use <code>:g/patter</code> to display a list of all search result in the document.</p>
+<p>Use <code>:g/pattern</code> to display a list of all search result in the document.</p>
+<p>Search all occurrences of a pattern and populate the quick fix window:</p>
+<pre><code>:vim /pattern/ % | cw</code></pre>
 </div>
 <div id="search-in-multiple-files" class="section level2">
 <h2>Search in multiple files</h2>
@@ -1246,6 +1283,7 @@ Ctrl+N</code></pre>
 <ul>
 <li>Line ;l</li>
 <li>Line (and down) ;d</li>
+<li>Line (and write output as a comment) ;o</li>
 <li>Chunk (cur, echo and down) ;ca</li>
 <li>Chunk (cur) ;cc</li>
 <li>Chunk (cur, echo) ;ce</li>
@@ -1434,17 +1472,22 @@ let g:tagbar_compact = 1</code></pre>
 <h2>Bang commands</h2>
 <p>Use a Bang! to run a command directly, for example to see how many words are in the file, run:</p>
 <pre><code>:! wc %</code></pre>
+<p>To insert the word count directly in the file, run:</p>
+<pre><code>!! wc %</code></pre>
 <p>You can copy (<code>y $</code>) and paste a command in the vim command line with <code>CTRL + R + &quot;</code>.</p>
 <p>Insert text from a specified file into the current buffer:</p>
 <pre><code>:r textfile</code></pre>
-<p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using this read command:</p>
+<p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using a read command:</p>
 <pre><code>:r ! ls -1 /home/user/directory</code></pre>
+<p>Or simply using the double bang</p>
+<pre><code> !! ls</code></pre>
 </div>
 <div id="shell" class="section level2">
 <h2>Shell</h2>
 <p><a href="https://www.linux.com/learn/vim-tips-working-external-commands">Working with external commands</a> explains how to start a shell:</p>
 <pre><code>:shell</code></pre>
 <p>Then exit the shell normally with <code>exit</code>.</p>
+<p>See also terminal buffer below.</p>
 </div>
 <div id="terminal-buffer" class="section level2">
 <h2>Terminal buffer</h2>

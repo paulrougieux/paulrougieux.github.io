@@ -279,9 +279,8 @@ map <silent> <LocalLeader>w  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)
 let R_nvim_wd = 1
 
 " Map > to %>% in insert mode https://github.com/jalvesaq/Nvim-R/issues/85
-autocmd FileType r inoremap <buffer> > <Esc>:normal! a %>%<CR>a
-autocmd FileType rmd inoremap <buffer> > <Esc>:normal! a %>%<CR>a
-tnoremap > <space>%>%
+autocmd FileType r inoremap <buffer> > <Esc>:normal! a%>%<CR>a
+autocmd FileType rmd inoremap <buffer> > <Esc>:normal! a%>%<CR>a
 
 " No wrap in csv files, also affects the data frame view of ;vs
 autocmd FileType csv set nowrap 

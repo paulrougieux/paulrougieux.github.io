@@ -261,12 +261,24 @@ Convert to [black and white](http://www.imagemagick.org/discourse-server/viewtop
 (tricky to get the threshold right): 
 
     convert picture1.jpg -threshold 40% picture2.jpg 
-    
+
+Other option to convert to black and white [good black and white bimodal
+images](https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images):
+
+    convert -monochrome in.png out.png
+
 Batch processing, resize all jpg images and place the resized images in a new folder
 
     mkdir newfolder
     mogrify -resize 2000 -path ./newfolder *.jpg
+    mogrify -resize 2000 -path ./small/ *.JPG
     mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg
+
+Batch processing, rotate all images clockwise or counter clockwise
+
+    mogrify -rotate 90 ../small/ *.JPG
+    mogrify -rotate 270 ../small/ *.JPG
+
 
 ## Edit music files
 
@@ -543,6 +555,7 @@ Adding headers and footers to pandoc suggests using:
     ---
 
 Custom yaml front matter for readings file
+See also the vim.Rmd document on pandoc bibliographies.
 
     ---
     title: Reading notes

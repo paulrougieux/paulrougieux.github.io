@@ -696,10 +696,16 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 <pre><code>convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg </code></pre>
 <p>Convert to <a href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279">black and white</a> (tricky to get the threshold right):</p>
 <pre><code>convert picture1.jpg -threshold 40% picture2.jpg </code></pre>
+<p>Other option to convert to black and white <a href="https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images">good black and white bimodal images</a>:</p>
+<pre><code>convert -monochrome in.png out.png</code></pre>
 <p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
 <pre><code>mkdir newfolder
 mogrify -resize 2000 -path ./newfolder *.jpg
+mogrify -resize 2000 -path ./small/ *.JPG
 mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg</code></pre>
+<p>Batch processing, rotate all images clockwise or counter clockwise</p>
+<pre><code>mogrify -rotate 90 ../small/ *.JPG
+mogrify -rotate 270 ../small/ *.JPG</code></pre>
 </div>
 <div id="edit-music-files" class="section level2">
 <h2>Edit music files</h2>
@@ -878,7 +884,7 @@ header-includes: |
     \fancyfoot[LE,RO]{\thepage}
 abstract: This is a pandoc test . . . 
 ---</code></pre>
-<p>Custom yaml front matter for readings file</p>
+<p>Custom yaml front matter for readings file See also the vim.Rmd document on pandoc bibliographies.</p>
 <pre><code>---
 title: Reading notes
 author: Paul Rougieux

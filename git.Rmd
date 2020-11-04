@@ -124,6 +124,17 @@ Go back to the development branch
 
 Continue to modify files in the repository.
 
+# Commit messages
+
+Example of a long commit message (like a letter) torvalds/uemacs [Stop using
+'short' for line and allocation sizes
+](https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61). 
+
+Extract:
+
+> "I really should just learn another editor, rather than continue to polish
+> this turd."
+
 # Illustrations
 
 [Data flows and storage levels in the Git revision control system](https://en.wikipedia.org/wiki/File:Git_operations.svg).
@@ -184,11 +195,12 @@ Then I deleted the branch locally and remotely:
 # Going back in time 
 
 ## Log
+
 Display the modification log
 
     git log 
 
-In the log, you can copy the begining of a commit hash for use as `commit_sha` in the reset commands below.
+In the log, you can copy the beginning of a commit hash for use as `commit_sha` in the reset commands below.
 
 Display the log of a particular branch (after a fetch for example)
 
@@ -198,8 +210,45 @@ Display a compact log for one file or one directory only
 
     git log --abbrev-commit --pretty=oneline path_to_file
 
+Edit `~/.gitconfig` to define an alias that shows the last 10 log entries in a compact way:
+
+    lkj    = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit -10
+
+### Show commit statistics
+
+Show the number of lines modified in each files for each commit: 
+
+    git log --numstat 
+
+A one liner version showing the number of files changes, number of lines inserted
+and deleted [how to get log with short stat in one line](https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line):
+
+    git log --pretty="@%h"  --shortstat |  tr "\n" " " | tr "@" "\n"
+
+### Export the log to csv
+
+SO [Export git log as
+csv](https://stackoverflow.com/questions/10418056/how-do-i-generate-a-git-commit-log-for-the-last-month-and-export-it-as-csv/10418356):
+
+    git log --pretty=format:'%h,%an,%ad,"%s"' --date=iso -10
+
+Edit `~/.gitconfig` to define it as an alias:
+
+    logcsv = log --pretty=format:'%h,%an,%ad,\"%s\"' --date=iso
+
+Another version adding stats on the number of files changes, number of lines
+inserted and deleted based on [how to get log with short stat in one line](https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line):
+
+    git log --pretty=format:'linebegin%h,%an,%ad,"%s"' --shortstat --date=iso |  tr "\n" "," | sed -E 's/linebegin|,*$/\n/g'
+
+Simpler solution using paste to glue lines together (there is an issue with
+extra spaces at the beginning and in the middle of some lines):
+
+    git log --pretty=format:'%h,%an,%ad,"%s",' --shortstat --date=iso | paste - - - #> /tmp/gitlog.csv
+
 
 ## Rewriting history
+
 In case you entered a wrong commit message, you can edit the last commit message with:
 
     git commit --amend 
@@ -279,7 +328,8 @@ Revert an unwanted comming with a new comming doing exactly the reverse operatio
     git revert <commit hash>
 
 
-# Keeping uncommited changes in the current branch while working quickly in another branch
+# Stash to Keep uncommitted changes in the current branch while working quickly in another branch
+
 For example you edit a file in branch develop
 
     git checkout develop

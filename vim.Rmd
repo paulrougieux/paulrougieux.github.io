@@ -148,7 +148,7 @@ The solution was to use 2 file types for Rmd files: `set ft=rmd.markdown`.
 # Convert 
 
 
-## Markdown with pandoc
+## From markdown to other formats with pandoc
 
 Convert markdown documents to other formats such as pdf with pandoc.
 
@@ -168,6 +168,25 @@ Other output -t options from man pandoc:
       • odt (OpenOffice text document)
 • pptx (PowerPoint slide show)
 
+### bibliography
+
+To use a bibliography with the pandoc extension insert the following in the
+header of the markdown file:
+
+    bibliography: /path/to/bibliography/papers.bib
+
+Then the bibliography file should be added to the vim variable
+`b:pandoc_biblio_bibs`. You can check it was added correctly by calling: 
+
+    :echo b:pandoc_biblio_bibs
+
+Once the bibliography files is activated, autocomplete can be called by pressing `CTRL-X CTRL-O` (or
+ctrl+space in my case) after `@`. For more see:
+
+    :help vim-pandoc-bibliographies-module
+
+Bibliography also works with R markdown documents, see
+rmarkdown documentation [authoring bibliographies and citations](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html).
 
 # Edit a text file
 
@@ -284,6 +303,38 @@ You can use replacement to remove text.
 For example to [remove the last 2 characters of each line in a selection](https://stackoverflow.com/a/36264759/2641825) :
 
     :'<,'>s/..$//
+
+### Character classes
+
+See `:help character-classes` for a list of classes accepted in Vim with their
+equivalent regex pattern, for example `\w` is equivalent to `[0-9A-Za-z_]`.
+Replace all word characters by a dash (to create a markdown table division see
+also collection below)
+
+    :'<,'>s/\w/-/g
+
+Note that this only works with ASCII characters and doesn't work with accentuated characters.
+For example `smöl` gets replaced by `--ö-`.
+To replace all identifier characters, use
+
+    :'<,'>s/\i/-/g
+
+And then `smöl` gets replaced by `----`.
+
+### Collection 
+
+See `:help collection`: "A collection is a sequence of characters enclosed in brackets."
+
+	Example		matches ~
+	[xyz]		any 'x', 'y' or 'z'
+    [^xyz]"     anything but 'x', 'y' and 'z'
+    [a-zA-Z]$	any alphabetic character at the end of a line
+
+For example to replace all characters but the pipe (to create a separation in a
+markdown table):
+
+    :'<,'>s/[^\|]/-/g
+
 
 ### Convert to lower-case
 
@@ -738,6 +789,16 @@ Explains how to turn the banner off:
 
 You can put the banner back on by pressing `I`.
 
+## Go to file
+
+Open the file under the cursor, in the current window:
+
+    gF
+
+Open the file under the cursor, in a new window:
+
+    gf
+
 ## Jump back and forth
 
 Vim wiki [jumping to previously visited
@@ -835,7 +896,11 @@ Help
 Use `"/"` to search, then n forward and N backwards `"*"` to search for the word
 under the cursor (you can also create a mapping to search for a selected text)
 
-Use `:g/patter` to display a list of all search result in the document. 
+Use `:g/pattern` to display a list of all search result in the document. 
+
+Search all occurrences of a pattern and populate the quick fix window:
+
+    :vim /pattern/ % | cw
 
 ## Search in multiple files
 
@@ -1190,6 +1255,7 @@ Sending code to R:
 
 * Line                                               ;l
 * Line (and down)                                    ;d
+* Line (and write output as a comment)               ;o
 * Chunk (cur, echo and down)                         ;ca
 * Chunk (cur)                                        ;cc
 * Chunk (cur, echo)                                  ;ce
@@ -1475,6 +1541,10 @@ see how many words are in the file, run:
 
     :! wc %
 
+To insert the word count directly in the file, run:
+
+    !! wc %
+
 You can copy (`y $`) and paste a command in the vim command line with `CTRL + R + "`.
 
 Insert text from a specified file into the current buffer:
@@ -1483,9 +1553,13 @@ Insert text from a specified file into the current buffer:
 
 You can also read in the output of shell applications. For example, if you
 wanted to include a list of files from a specific directory, you could include
-them using this read command:
+them using a read command:
 
     :r ! ls -1 /home/user/directory
+
+Or simply using the double bang
+
+     !! ls
 
 ## Shell
 
@@ -1495,6 +1569,8 @@ explains how to start a shell:
     :shell
 
 Then exit the shell normally with `exit`.
+
+See also terminal buffer below.
 
 ## Terminal buffer
 

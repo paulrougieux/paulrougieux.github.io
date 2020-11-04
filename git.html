@@ -525,6 +525,14 @@ git merge develop</code></pre>
 <p>Continue to modify files in the repository.</p>
 </div>
 </div>
+<div id="commit-messages" class="section level1">
+<h1>Commit messages</h1>
+<p>Example of a long commit message (like a letter) torvalds/uemacs <a href="https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61">Stop using ‘short’ for line and allocation sizes</a>.</p>
+<p>Extract:</p>
+<blockquote>
+<p>“I really should just learn another editor, rather than continue to polish this turd.”</p>
+</blockquote>
+</div>
 <div id="illustrations" class="section level1">
 <h1>Illustrations</h1>
 <p><a href="https://en.wikipedia.org/wiki/File:Git_operations.svg">Data flows and storage levels in the Git revision control system</a>.</p>
@@ -567,11 +575,31 @@ git push origin --delete key</code></pre>
 <h2>Log</h2>
 <p>Display the modification log</p>
 <pre><code>git log </code></pre>
-<p>In the log, you can copy the begining of a commit hash for use as <code>commit_sha</code> in the reset commands below.</p>
+<p>In the log, you can copy the beginning of a commit hash for use as <code>commit_sha</code> in the reset commands below.</p>
 <p>Display the log of a particular branch (after a fetch for example)</p>
 <pre><code>git log origin/master </code></pre>
 <p>Display a compact log for one file or one directory only</p>
 <pre><code>git log --abbrev-commit --pretty=oneline path_to_file</code></pre>
+<p>Edit <code>~/.gitconfig</code> to define an alias that shows the last 10 log entries in a compact way:</p>
+<pre><code>lkj    = log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)&lt;%an&gt;%Creset&#39; --abbrev-commit -10</code></pre>
+<div id="show-commit-statistics" class="section level3">
+<h3>Show commit statistics</h3>
+<p>Show the number of lines modified in each files for each commit:</p>
+<pre><code>git log --numstat </code></pre>
+<p>A one liner version showing the number of files changes, number of lines inserted and deleted <a href="https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line">how to get log with short stat in one line</a>:</p>
+<pre><code>git log --pretty=&quot;@%h&quot;  --shortstat |  tr &quot;\n&quot; &quot; &quot; | tr &quot;@&quot; &quot;\n&quot;</code></pre>
+</div>
+<div id="export-the-log-to-csv" class="section level3">
+<h3>Export the log to csv</h3>
+<p>SO <a href="https://stackoverflow.com/questions/10418056/how-do-i-generate-a-git-commit-log-for-the-last-month-and-export-it-as-csv/10418356">Export git log as csv</a>:</p>
+<pre><code>git log --pretty=format:&#39;%h,%an,%ad,&quot;%s&quot;&#39; --date=iso -10</code></pre>
+<p>Edit <code>~/.gitconfig</code> to define it as an alias:</p>
+<pre><code>logcsv = log --pretty=format:&#39;%h,%an,%ad,\&quot;%s\&quot;&#39; --date=iso</code></pre>
+<p>Another version adding stats on the number of files changes, number of lines inserted and deleted based on <a href="https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line">how to get log with short stat in one line</a>:</p>
+<pre><code>git log --pretty=format:&#39;linebegin%h,%an,%ad,&quot;%s&quot;&#39; --shortstat --date=iso |  tr &quot;\n&quot; &quot;,&quot; | sed -E &#39;s/linebegin|,*$/\n/g&#39;</code></pre>
+<p>Simpler solution using paste to glue lines together (there is an issue with extra spaces at the beginning and in the middle of some lines):</p>
+<pre><code>git log --pretty=format:&#39;%h,%an,%ad,&quot;%s&quot;,&#39; --shortstat --date=iso | paste - - - #&gt; /tmp/gitlog.csv</code></pre>
+</div>
 </div>
 <div id="rewriting-history" class="section level2">
 <h2>Rewriting history</h2>
@@ -623,8 +651,8 @@ git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
 <pre><code>git revert &lt;commit hash&gt;</code></pre>
 </div>
 </div>
-<div id="keeping-uncommited-changes-in-the-current-branch-while-working-quickly-in-another-branch" class="section level1">
-<h1>Keeping uncommited changes in the current branch while working quickly in another branch</h1>
+<div id="stash-to-keep-uncommitted-changes-in-the-current-branch-while-working-quickly-in-another-branch" class="section level1">
+<h1>Stash to Keep uncommitted changes in the current branch while working quickly in another branch</h1>
 <p>For example you edit a file in branch develop</p>
 <pre><code>git checkout develop
 echo &quot;blabla&quot; &gt; newfile.txt</code></pre>
