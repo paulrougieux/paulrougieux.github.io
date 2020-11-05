@@ -288,6 +288,14 @@ autocmd FileType csv set nowrap
 " Map send line and down to j (avoid deleting stuff with d)
 nmap <LocalLeader>j <Plug>RDSendLine
 
+" Table of content of R functions in a file
+" Create a Rfunc command
+augroup  Rfunc
+    autocmd!
+    autocmd Filetype r command! -buffer Rfunc vim /function(/ % | cw
+augroup END
+
+
 " Press `gz` in Normal mode to emulate Tmux ^bz
 " see help Nvim-R tips 
 

@@ -1,7 +1,7 @@
 # Taking notes
 alias bookmark="vim ~/rp/bookmarkdown/bookmark.md"
 alias overflow="vim ~/rp/bookmarkdown/overflow.md"
-alias matrix="vim -u ~/rp/paulrougieux.github.io/setup/.vimrc_server ~/rp/bookmarkdown/matrix.Rmd"
+alias matrix="cd ~/rp/bookmarkdown/ && vim -u ~/rp/paulrougieux.github.io/setup/.vimrc_server matrix.Rmd"
 alias reading_jrc="vim ~/rp/bioeconomy_papers/notes/readings_jrc.md"
 
 # Music
