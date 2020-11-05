@@ -65,8 +65,9 @@ I updated the debian mirror to a nearby mirror
 ## Debian on a HP Elitbook
 
 Note: on a HP laptop make sure that the "legacy boot" is enabled 
-and that the "secure boot" is disabled.
-The boot devices can be choosen by pressing ESC at startup, then F9.
+and that the "secure boot" is disabled. On another HP laptop, I had to disable
+the fast boot so that I could boot from a USB device.
+The boot devices can be chosen by pressing ESC at start up, then F9.
 
 Debian installation went smoothly. 
 
@@ -112,17 +113,16 @@ Also mentioned in [reddit incorrect display orientation after bootup](https://ww
 
 [Also after boot](https://unix.stackexchange.com/a/518564/85530)
 
-Default matrix:
+Edit this file:
 
+    vim  /etc/udev/hwdb.d/60-sensor.hwdb 
 
-vim  /etc/udev/hwdb.d/60-sensor.hwdb 
+The default matrix is:
 
-sensor:modalias:*
-      ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
+    sensor:modalias:*
+          ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1
 
 I used this setting to fix the orientation of an HP Elitebook laptop.
-
-or
 
     sensor:modalias:*
       ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1
@@ -645,7 +645,6 @@ Send this command for all packages
 * debian.org [buster upgrading](https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading)
 * tecadmin.net [upgrade debian 9 to debian 10 buster](https://tecadmin.net/upgrade-debian-9-to-debian-10-buster/)
 
-
     sudo apt update 
     sudo apt upgrade
 
@@ -661,6 +660,20 @@ I had to comment the sources mention there as well, otherwise the system wouldn'
     sudo apt update
     sudo apt upgrade
     sudo apt dist-upgrade
+
+The update steps mentioned above worked well in October 2019, but one year
+later, in October 2020 I tried to update another laptop from Debian 9 to 10 and
+many Debian packages were kept back. The GNOME desktop became unstable and I
+couldn't log in any longer. I could still log into the command line to make a
+proper backup of all the data to a USB drive. I ended up reinstalling a fresh
+version of Debian buster 10 to that laptop. The lesson I learned from this, is
+that it's better to update to a new stable release pretty soon after it's
+released.
+
+[Debian releases](https://www.debian.org/releases/):
+> "Debian is version 10, codenamed buster was initially released as version
+> 10 on July 6th, 2019 and its latest update, version 10.6, was released on
+> September 26th, 2020."
 
 # Blogs
 
