@@ -595,15 +595,8 @@ str(l1)</code></pre>
 </div>
 <div id="s3-methods" class="section level1">
 <h1>S3 methods</h1>
-<p>x&lt;-1</p>
 <p>List all available methods for a class:</p>
 <pre><code>methods(class=&quot;lm&quot;) </code></pre>
-</div>
-<div id="one-liners" class="section level1">
-<h1>One liners</h1>
-<p>Remove all objects in the workspace except one :</p>
-<pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) 
-rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection</code></pre>
 </div>
 <div id="knitr" class="section level1">
 <h1>knitr</h1>
@@ -695,6 +688,84 @@ doc &lt;- read_docx() %&gt;%
 </div>
 </div>
 </div>
+<div id="one-liners" class="section level1">
+<h1>One liners</h1>
+<p>Remove all objects in the workspace except one :</p>
+<pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) 
+rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection</code></pre>
+</div>
+<div id="plots" class="section level1">
+<h1>Plots</h1>
+<div id="plotting-with-ggplot2" class="section level2">
+<h2>Plotting with ggplot2</h2>
+<pre><code>geom_bar
+geom_tile + a gradient produce heat maps</code></pre>
+<div id="legend" class="section level3">
+<h3>Legend</h3>
+<p>Place the legend at the bottom of the plot:</p>
+<pre><code>library(ggplot2)
+ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) + 
+    geom_point() + 
+    theme(legend.position=&quot;bottom&quot;)</code></pre>
+<p>Change the name of a particular sub element in the legend:</p>
+<pre><code>labs(color=&quot;Iris Species&quot;)
+labs(linetype=&quot;Sawnwood product group&quot;)</code></pre>
+</div>
+<div id="save-plots-to-pdf" class="section level3">
+<h3>Save plots to pdf</h3>
+<p>Use <a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a>:</p>
+<pre><code>ggplot(mtcars, aes(mpg, wt)) + geom_point()
+ggsave(&quot;mtcars.pdf&quot;)</code></pre>
+</div>
+<div id="themes" class="section level3">
+<h3>Themes</h3>
+<p>Minimal theme</p>
+<pre><code>theme_minimal()</code></pre>
+<div id="axes" class="section level4">
+<h4>Axes</h4>
+<p>Rotate the tick text of the X axis. SO question <a href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2">rotating axis labels in ggplot2</a></p>
+<pre><code>theme(axis.text.x=element_text(angle = 90, hjust=0))</code></pre>
+</div>
+</div>
+</div>
+<div id="choropleth-maps" class="section level2">
+<h2>Choropleth maps</h2>
+<p><a href="https://www.r-graph-gallery.com/choropleth-map.html">Choropleth map</a></p>
+<p>Shape files to make choropleth maps of Europe: <a href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts">GISCO: Geographical Information and maps</a></p>
+</div>
+<div id="palettes" class="section level2">
+<h2>Palettes</h2>
+<p><a href="https://data.library.virginia.edu/setting-up-color-palettes-in-r/">Setting up colour palettes in R</a></p>
+<blockquote>
+<p>To create a RColorBrewer palette, use the brewer.pal function. It takes two arguments: n, the number of colors in the palette; and name, the name of the palette. Let’s make a palette of 8 colors from the qualitative palette, “Set2”.</p>
+</blockquote>
+<pre><code>library(RColorBrewer)
+brewer.pal(n = 8, name = &quot;Set2&quot;) 
+[1] &quot;#66C2A5&quot; &quot;#FC8D62&quot; &quot;#8DA0CB&quot; &quot;#E78AC3&quot;
+&quot;#A6D854&quot; &quot;#FFD92F&quot; &quot;#E5C494&quot; &quot;#B3B3B3&quot; 
+palette(brewer.pal(n = 8, name = &quot;Set2&quot;))</code></pre>
+<p>Use this palette in ggplot2</p>
+<pre><code>ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
+    geom_point() +
+    scale_color_brewer(palette = &quot;Set2&quot;)</code></pre>
+<p>Use a named vector to set a palette in ggplot2 as explained in <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">ggplot2 scale_manual</a></p>
+<pre><code>p &lt;- ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) +
+        geom_point() 
+p + scale_colour_manual(values = c(setosa=&#39;black&#39;, versicolor=&#39;red&#39;, virginica=&#39;green&#39;))</code></pre>
+<p>Create a named palette using R colour brewer:</p>
+<pre><code>species_names &lt;- c(&quot;setosa&quot;, &quot;versicolor&quot;, &quot;virginica&quot;) 
+iris_palette &lt;- setNames(brewer.pal(n=length(species_names), name=&#39;Set2&#39;), 
+                         species_names)
+p + scale_colour_manual(values = iris_palette)</code></pre>
+<div id="display-palettes" class="section level3">
+<h3>Display palettes</h3>
+<p>Display qualitative palettes:</p>
+<pre><code>display.brewer.all(type=&quot;qual&quot;) </code></pre>
+<p>Display all palettes</p>
+<pre><code>display.brewer.all()</code></pre>
+</div>
+</div>
+</div>
 <div id="reproducibility" class="section level1">
 <h1>Reproducibility</h1>
 <div id="rocker" class="section level2">
@@ -711,6 +782,10 @@ doc &lt;- read_docx() %&gt;%
 <p>Capture arguments in an Rscript on windows and write them to a file</p>
 <pre><code>&quot;C:\Program Files\R\R-3.5.0\bin\Rscript.exe&quot; --verbose -e &quot;args = commandArgs(trailingOnly=TRUE)&quot; -e &quot;writeLines(args,&#39;C:\\Dev\\args.txt&#39;)&quot; &quot;file1.csv&quot; &quot;file2.csv&quot; &quot;file3.csv&quot;</code></pre>
 <p>Arguments can be extracted one by one with args[1] commandArgs() returns a <strong>character vector</strong> containing the name of the executable and the user-supplied command line arguments.</p>
+</div>
+<div id="shiny" class="section level1">
+<h1>Shiny</h1>
+<p><a href="https://shiny.rstudio.com/gallery/kmeans-example.html">K means example</a></p>
 </div>
 <div id="tidyverse" class="section level1">
 <h1>Tidyverse</h1>
@@ -810,9 +885,11 @@ forestEU &lt;- forestEU_wide  %&gt;%
 <li>extract() use a regular expression such as <code>S(.*)E(.*)</code> to extract series and episode from a string of the form “S32E44”.</li>
 </ol>
 </div>
-</div>
-<div id="interpolate-for-one-country" class="section level1">
-<h1>Interpolate for one country</h1>
+<div id="purrr-1" class="section level2">
+<h2>Purrr</h2>
+<div id="interpolation" class="section level3">
+<h3>Interpolation</h3>
+<p>Interpolate for one country</p>
 <pre class="r"><code>country_interpolation &lt;- function(df) {
       df &lt;- data.frame(approx(df$Year, df$Area, method = &quot;linear&quot;, n=71))
   df &lt;- rename(df, Year = x, Area = y)
@@ -833,12 +910,14 @@ forestEU %&gt;%  filter(Country==&quot;Austria&quot;) %&gt;% country_interpolati
 # Unnest the interpolated data to look at it and plotting
 forestEU_interpolated &lt;- forestEU_nested %&gt;% unnest(interpolated)</code></pre>
 </div>
-<div id="write-to-many-csv" class="section level1">
-<h1>Write to many csv</h1>
+<div id="write-to-many-csv" class="section level3">
+<h3>Write to many csv</h3>
 <pre class="r"><code>#dir.create(&quot;output&quot;)
 forestEU_nested &lt;- forestEU_nested %&gt;% 
     mutate(filename = paste0(&quot;output/&quot;, Country, &quot;.csv&quot;),
     wrote_stuff = map2(interpolated, filename, write.csv))</code></pre>
+</div>
+</div>
 <div id="tidy-evaluation" class="section level2">
 <h2>tidy evaluation</h2>
 <ul>
@@ -887,99 +966,6 @@ piris &lt;- iris %&gt;%
 piris$plot[1]
 piris$plot[3]
 piris$plot[2]</code></pre>
-</div>
-</div>
-<div id="discussions" class="section level1">
-<h1>Discussions</h1>
-<ul>
-<li>Gavin Simpson <a href="http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/">My aversion to pipers</a> shows an Hadley tweet explaining that pipe might not be good in package development.</li>
-</ul>
-<div id="stackoverflow" class="section level2">
-<h2>Stackoverflow</h2>
-<ul>
-<li><a href="https://codeblog.jonskeet.uk/2012/11/24/stack-overflow-question-checklist/">Stack overflow question checklist</a> general programming</li>
-<li><a href="https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example">How to make a great R reproducible example</a></li>
-</ul>
-</div>
-</div>
-<div id="teaching-r" class="section level1">
-<h1>Teaching R</h1>
-<ul>
-<li><p><a href="http://varianceexplained.org/r/teach-tidyverse/">Teach the tidyverse to beginners</a></p></li>
-<li><p><a href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">Vectorization in R, Why?</a></p></li>
-<li><p><a href="https://github.com/carpentries/conversations/issues/18">Recommendations for resources for after workshops</a></p></li>
-</ul>
-</div>
-<div id="plots" class="section level1">
-<h1>Plots</h1>
-<div id="plotting-with-ggplot2" class="section level2">
-<h2>Plotting with ggplot2</h2>
-<pre><code>geom_bar
-geom_tile + a gradient produce heat maps</code></pre>
-<div id="legend" class="section level3">
-<h3>Legend</h3>
-<p>Place the legend at the bottom of the plot:</p>
-<pre><code>library(ggplot2)
-ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) + 
-    geom_point() + 
-    theme(legend.position=&quot;bottom&quot;)</code></pre>
-<p>Change the name of a particular sub element in the legend:</p>
-<pre><code>labs(color=&quot;Iris Species&quot;)
-labs(linetype=&quot;Sawnwood product group&quot;)</code></pre>
-</div>
-<div id="save-plots-to-pdf" class="section level3">
-<h3>Save plots to pdf</h3>
-<p>Use <a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a>:</p>
-<pre><code>ggplot(mtcars, aes(mpg, wt)) + geom_point()
-ggsave(&quot;mtcars.pdf&quot;)</code></pre>
-</div>
-<div id="themes" class="section level3">
-<h3>Themes</h3>
-<p>Minimal theme</p>
-<pre><code>theme_minimal()</code></pre>
-<div id="axes" class="section level4">
-<h4>Axes</h4>
-<p>Rotate the tick text of the X axis. SO question <a href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2">rotating axis labels in ggplot2</a></p>
-<pre><code>theme(axis.text.x=element_text(angle = 90, hjust=0))</code></pre>
-</div>
-</div>
-</div>
-<div id="choropleth-maps" class="section level2">
-<h2>Choropleth maps</h2>
-<p><a href="https://www.r-graph-gallery.com/choropleth-map.html">Choropleth map</a></p>
-<p>Shape files to make choropleth maps of Europe: <a href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts">GISCO: Geographical Information and maps</a></p>
-</div>
-<div id="palettes" class="section level2">
-<h2>Palettes</h2>
-<p><a href="https://data.library.virginia.edu/setting-up-color-palettes-in-r/">Setting up colour palettes in R</a></p>
-<blockquote>
-<p>To create a RColorBrewer palette, use the brewer.pal function. It takes two arguments: n, the number of colors in the palette; and name, the name of the palette. Let’s make a palette of 8 colors from the qualitative palette, “Set2”.</p>
-</blockquote>
-<pre><code>library(RColorBrewer)
-brewer.pal(n = 8, name = &quot;Set2&quot;) 
-[1] &quot;#66C2A5&quot; &quot;#FC8D62&quot; &quot;#8DA0CB&quot; &quot;#E78AC3&quot;
-&quot;#A6D854&quot; &quot;#FFD92F&quot; &quot;#E5C494&quot; &quot;#B3B3B3&quot; 
-palette(brewer.pal(n = 8, name = &quot;Set2&quot;))</code></pre>
-<p>Use this palette in ggplot2</p>
-<pre><code>ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
-    geom_point() +
-    scale_color_brewer(palette = &quot;Set2&quot;)</code></pre>
-<p>Use a named vector to set a palette in ggplot2 as explained in <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">ggplot2 scale_manual</a></p>
-<pre><code>p &lt;- ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) +
-        geom_point() 
-p + scale_colour_manual(values = c(setosa=&#39;black&#39;, versicolor=&#39;red&#39;, virginica=&#39;green&#39;))</code></pre>
-<p>Create a named palette using R colour brewer:</p>
-<pre><code>species_names &lt;- c(&quot;setosa&quot;, &quot;versicolor&quot;, &quot;virginica&quot;) 
-iris_palette &lt;- setNames(brewer.pal(n=length(species_names), name=&#39;Set2&#39;), 
-                         species_names)
-p + scale_colour_manual(values = iris_palette)</code></pre>
-<div id="display-palettes" class="section level3">
-<h3>Display palettes</h3>
-<p>Display qualitative palettes:</p>
-<pre><code>display.brewer.all(type=&quot;qual&quot;) </code></pre>
-<p>Display all palettes</p>
-<pre><code>display.brewer.all()</code></pre>
-</div>
 </div>
 </div>
 <div id="creating-a-package" class="section level1">
@@ -1064,6 +1050,7 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 </div>
 <div id="differences-between-python-and-r" class="section level1">
 <h1>Differences between python and R</h1>
+<p>See also the <a href="python.html">python</a> page for a comparison between pandas methods and R data frames functions.</p>
 <pre><code>l = c(1,2,3)
 s = l
 s[3]
@@ -1099,6 +1086,30 @@ bli = paste(bli, &quot;sdf&quot;)
 address(bli)
 [1] &quot;0x38d1d60&quot;</code></pre>
 <p>TODO Compare to the same code in python to see the difference between the above and passing by reference.</p>
+</div>
+<div id="further-resources" class="section level1">
+<h1>Further resources</h1>
+<div id="blogs" class="section level2">
+<h2>Blogs</h2>
+<ul>
+<li>Gavin Simpson <a href="http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/">My aversion to pipers</a> shows an Hadley tweet explaining that pipe might not be good in package development.</li>
+</ul>
+</div>
+<div id="stackoverflow" class="section level2">
+<h2>Stackoverflow</h2>
+<ul>
+<li><a href="https://codeblog.jonskeet.uk/2012/11/24/stack-overflow-question-checklist/">Stack overflow question checklist</a> general programming</li>
+<li><a href="https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example">How to make a great R reproducible example</a></li>
+</ul>
+</div>
+<div id="teaching-r" class="section level2">
+<h2>Teaching R</h2>
+<ul>
+<li><p><a href="http://varianceexplained.org/r/teach-tidyverse/">Teach the tidyverse to beginners</a></p></li>
+<li><p><a href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">Vectorization in R, Why?</a></p></li>
+<li><p><a href="https://github.com/carpentries/conversations/issues/18">Recommendations for resources for after workshops</a></p></li>
+</ul>
+</div>
 </div>
 
 

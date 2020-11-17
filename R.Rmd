@@ -152,21 +152,10 @@ Cf. https://en.wikipedia.org/wiki/Levenshtein_distance
     adist("kitten", "sitting")
 
 # S3 methods
-x<-1
-
-
 
 List all available methods for a class:
 
     methods(class="lm") 
-
-
-# One liners
-
-Remove all objects in the workspace except one :
-
-    rm(list=ls()[!ls()=="object_to_keep"]) 
-    rm(list=ls()[!ls()=="con"]) # Remove all except a database connection
 
 
 # knitr
@@ -253,223 +242,12 @@ doc <- read_docx() %>%
   print(target = "/tmp/iris.docx")
 ```
 
-# Reproducibility
+# One liners
 
-## Rocker
+Remove all objects in the workspace except one :
 
-[rocker-org/rocker](https://github.com/rocker-org/rocker) provides a series of
-docker images for various R development purposes.
-
-Bioconductor [docker intro](https://www.bioconductor.org/help/docker/#intro)
-
-> "With Bioconductor containers, we hope to enhance Reproducibility: If you run
-> some code in a container today, you can run it again in the same container
-> (with the same tag) years later and know that nothing in the container has
-> changed. You should always take note of the tag you used if you think you
-> might want to reproduce some work later."
-
-# Rscript
-
-Capture arguments in an Rscript on windows and write them to a file
-```
-"C:\Program Files\R\R-3.5.0\bin\Rscript.exe" --verbose -e "args = commandArgs(trailingOnly=TRUE)" -e "writeLines(args,'C:\\Dev\\args.txt')" "file1.csv" "file2.csv" "file3.csv"
-```
-Arguments can be extracted one by one with args[1]
-commandArgs() returns a **character vector** containing the name of the executable and the user-supplied command line arguments.
-
-# Tidyverse
-
-
-## dplyr
-pipes
-
-```{r warning=FALSE, message=FALSE}
-library(dplyr)
-cars %>%
-    group_by(speed) %>%
-    print() %>% # works because the print function returns its argument
-    summarise(numberofcars = n(),
-              min = min(dist),
-              mean = mean(dist),
-              max = max(dist)) 
-```
-
-
-
-group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.
-
-
-### Mutate
-
-Mutate multiple variables in the dataframe at once using the `vars()` helper function to scope the mutation:
-```{r} 
-iris %>%
-    mutate_at(vars(starts_with("Petal")), round) %>%
-    head()
-```
-
-## purrr
-
-Hadley Wickham's answer to a SO question 
-[Why use purrr::map instead of lapply?](https://stackoverflow.com/a/47123420/2641825)
-
-
-### Map a function to nested data sets
-
-Load data
-
-```{r eval=FALSE}
-list.files(getwd())
-forestEU_wide <- read.csv("Forest-R-EU.csv", stringsAsFactors = FALSE)
-head(forestEU)
-```
-Pivot to long format
-```{r eval=FALSE}
-# at some pointin the future this will be called pivot_long
-forestEU <- forestEU_wide  %>% 
-      # select everything except the Year, then pivot all columns and put the value in area
-      gather(-Year, key = "Country", value = "Area")
-```
-
-## Tricks
-
-David Robinson [Ten tricks in the tidyverse](https://www.youtube.com/watch?v=NDHSBUN_rVU)
-
-1. count with weight, sort and renamining 
-   count(x, ..., wt = NULL, sort = FALSE, name = "n")
-2. creating variables in count()
-3. add_count()
-4. summarize with a list column (to create many models for example)
-5. fct_reorder() + geom_col() + coord_flip()
-6. fct_lump() to lump less frequent values together
-7. use a log scale scale_x/y_log10
-8. crossing()
-9. separate()
-10. extract() use a regular expression such as `S(.*)E(.*)` to extract series
-    and episode from a string of the form "S32E44".
-
-# Interpolate for one country
-```{r eval=FALSE}
-country_interpolation <- function(df) {
-      df <- data.frame(approx(df$Year, df$Area, method = "linear", n=71))
-  df <- rename(df, Year = x, Area = y)
-    return(df)
-}
-
-forestEU %>%  filter(Country=="Austria") %>% country_interpolation()
-```
-
-
-Interpolate for all countries
-Perform the Interpolation on all countries
-
-
-See documentation in 
-* many models https://r4ds.had.co.nz/many-models.html
-* blog https://emoriebeck.github.io/R-tutorials/purrr/
-
-
-```{r eval=FALSE}
-
-forestEU_nested <- forestEU %>%
-      # Remove empty area
-      filter(!is.na(Area)) %>% 
-      group_by(Country) %>%  
-      nest() %>% 
-      mutate(interpolated = map(data, country_interpolation))
-
-# forestEU_nested %>% unnest(data)
-# Unnest the interpolated data to look at it and plotting
-forestEU_interpolated <- forestEU_nested %>% unnest(interpolated)
-```
-
-
-# Write to many csv
-```{r eval=FALSE}
-#dir.create("output")
-forestEU_nested <- forestEU_nested %>% 
-    mutate(filename = paste0("output/", Country, ".csv"),
-    wrote_stuff = map2(interpolated, filename, write.csv))
-```
-
-
-## tidy evaluation
-
-* Advanced R [metaprogramming section](https://adv-r.hadley.nz/meta.html)
-* [Examples of tidy evaluation with plots](https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/)
-
-```{r eval = FALSE}
-scatter_plot <- function(data, x, y) {
-    x <- enquo(x)
-    y <- enquo(y)
-    ggplot(data) + geom_point(aes(!!x, !!y))
-}
-scatter_plot(mtcars, disp, drat)
-```
-
-Another example use of metaprogramming to change variables
-```{r eval = FALSE}
-add1000 <- function(dtf, var){
-      varright <- enquo(var)
-  varleft <- quo_name(enquo(var))
-    dtf %>% 
-            mutate(!!varleft := 1000 + (!!varright))
-}
-add1000(iris, Sepal.Length)
-```
-
-
-* [Tidy evaluation explained in French](https://thinkr.fr/tidyeval/)
-
-## tidyr
-
-[tidyr vignette on tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) 
-In the section on "Multiple types in one table":
-
-> Datasets often involve values collected at multiple levels, on different types of observational units. During tidying, each type of observational unit should be stored in its own table. This is closely related to the idea of database normalisation, where each fact is expressed in only one place. It’s important because otherwise inconsistencies can arise.
-
-> Normalisation is useful for tidying and eliminating inconsistencies. However, there are few data analysis tools that work directly with relational data, so analysis usually also requires denormalisation or the merging the datasets back into one table.
-
-Example use of `tidyr::nest()` to generate a group of plots: 
-[make ggplot2 purrr](http://www.brodrigues.co/blog/2017-03-29-make-ggplot2-purrr/).
-
-```{r eval=FALSE}
-library(tidyr)
-library(dplyr)
-library(purrr)
-library(ggplot2)
-piris <- iris %>%  
-    group_by(Species) %>% 
-    nest() %>% 
-    mutate(plot = map2(data, Species, 
-                       ~ggplot(data = .x, 
-                               aes(x = Petal.Length, y = Petal.Width)) + 
-                           geom_point() + ggtitle(.y)))
-piris$plot[1]
-piris$plot[3]
-piris$plot[2]
-```
-
-# Discussions
-
-* Gavin Simpson [My aversion to pipers](http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/) shows an Hadley tweet explaining that pipe might not be good in package development.
-
-## Stackoverflow
-
-* [Stack overflow question
-  checklist](https://codeblog.jonskeet.uk/2012/11/24/stack-overflow-question-checklist/)
-  general programming
-* [How to make a great R reproducible
-  example](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) 
-
-
-# Teaching R
-
-* [Teach the tidyverse to beginners](http://varianceexplained.org/r/teach-tidyverse/)
-
-* [Vectorization in R, Why?](http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html)
-
-* [Recommendations for resources for after workshops](https://github.com/carpentries/conversations/issues/18)
+    rm(list=ls()[!ls()=="object_to_keep"]) 
+    rm(list=ls()[!ls()=="con"]) # Remove all except a database connection
 
 
 # Plots
@@ -571,6 +349,214 @@ Display qualitative palettes:
 Display all palettes 
 
     display.brewer.all()
+
+# Reproducibility
+
+## Rocker
+
+[rocker-org/rocker](https://github.com/rocker-org/rocker) provides a series of
+docker images for various R development purposes.
+
+Bioconductor [docker intro](https://www.bioconductor.org/help/docker/#intro)
+
+> "With Bioconductor containers, we hope to enhance Reproducibility: If you run
+> some code in a container today, you can run it again in the same container
+> (with the same tag) years later and know that nothing in the container has
+> changed. You should always take note of the tag you used if you think you
+> might want to reproduce some work later."
+
+# Rscript
+
+Capture arguments in an Rscript on windows and write them to a file
+```
+"C:\Program Files\R\R-3.5.0\bin\Rscript.exe" --verbose -e "args = commandArgs(trailingOnly=TRUE)" -e "writeLines(args,'C:\\Dev\\args.txt')" "file1.csv" "file2.csv" "file3.csv"
+```
+Arguments can be extracted one by one with args[1]
+commandArgs() returns a **character vector** containing the name of the executable and the user-supplied command line arguments.
+
+
+# Shiny
+
+[K means example](https://shiny.rstudio.com/gallery/kmeans-example.html)
+
+
+
+# Tidyverse
+
+
+## dplyr
+pipes
+
+```{r warning=FALSE, message=FALSE}
+library(dplyr)
+cars %>%
+    group_by(speed) %>%
+    print() %>% # works because the print function returns its argument
+    summarise(numberofcars = n(),
+              min = min(dist),
+              mean = mean(dist),
+              max = max(dist)) 
+```
+
+
+
+group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.
+
+
+### Mutate
+
+Mutate multiple variables in the dataframe at once using the `vars()` helper function to scope the mutation:
+```{r} 
+iris %>%
+    mutate_at(vars(starts_with("Petal")), round) %>%
+    head()
+```
+
+## purrr
+
+Hadley Wickham's answer to a SO question 
+[Why use purrr::map instead of lapply?](https://stackoverflow.com/a/47123420/2641825)
+
+
+### Map a function to nested data sets
+
+Load data
+
+```{r eval=FALSE}
+list.files(getwd())
+forestEU_wide <- read.csv("Forest-R-EU.csv", stringsAsFactors = FALSE)
+head(forestEU)
+```
+Pivot to long format
+```{r eval=FALSE}
+# at some pointin the future this will be called pivot_long
+forestEU <- forestEU_wide  %>% 
+      # select everything except the Year, then pivot all columns and put the value in area
+      gather(-Year, key = "Country", value = "Area")
+```
+
+## Tricks
+
+David Robinson [Ten tricks in the tidyverse](https://www.youtube.com/watch?v=NDHSBUN_rVU)
+
+1. count with weight, sort and renamining 
+   count(x, ..., wt = NULL, sort = FALSE, name = "n")
+2. creating variables in count()
+3. add_count()
+4. summarize with a list column (to create many models for example)
+5. fct_reorder() + geom_col() + coord_flip()
+6. fct_lump() to lump less frequent values together
+7. use a log scale scale_x/y_log10
+8. crossing()
+9. separate()
+10. extract() use a regular expression such as `S(.*)E(.*)` to extract series
+    and episode from a string of the form "S32E44".
+
+
+## Purrr
+
+### Interpolation
+
+Interpolate for one country
+```{r eval=FALSE}
+country_interpolation <- function(df) {
+      df <- data.frame(approx(df$Year, df$Area, method = "linear", n=71))
+  df <- rename(df, Year = x, Area = y)
+    return(df)
+}
+
+forestEU %>%  filter(Country=="Austria") %>% country_interpolation()
+```
+
+
+Interpolate for all countries
+Perform the Interpolation on all countries
+
+
+See documentation in 
+* many models https://r4ds.had.co.nz/many-models.html
+* blog https://emoriebeck.github.io/R-tutorials/purrr/
+
+
+```{r eval=FALSE}
+forestEU_nested <- forestEU %>%
+      # Remove empty area
+      filter(!is.na(Area)) %>% 
+      group_by(Country) %>%  
+      nest() %>% 
+      mutate(interpolated = map(data, country_interpolation))
+
+# forestEU_nested %>% unnest(data)
+# Unnest the interpolated data to look at it and plotting
+forestEU_interpolated <- forestEU_nested %>% unnest(interpolated)
+```
+
+### Write to many csv
+
+```{r eval=FALSE}
+#dir.create("output")
+forestEU_nested <- forestEU_nested %>% 
+    mutate(filename = paste0("output/", Country, ".csv"),
+    wrote_stuff = map2(interpolated, filename, write.csv))
+```
+
+
+## tidy evaluation
+
+* Advanced R [metaprogramming section](https://adv-r.hadley.nz/meta.html)
+* [Examples of tidy evaluation with plots](https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/)
+
+```{r eval = FALSE}
+scatter_plot <- function(data, x, y) {
+    x <- enquo(x)
+    y <- enquo(y)
+    ggplot(data) + geom_point(aes(!!x, !!y))
+}
+scatter_plot(mtcars, disp, drat)
+```
+
+Another example use of metaprogramming to change variables
+```{r eval = FALSE}
+add1000 <- function(dtf, var){
+      varright <- enquo(var)
+  varleft <- quo_name(enquo(var))
+    dtf %>% 
+            mutate(!!varleft := 1000 + (!!varright))
+}
+add1000(iris, Sepal.Length)
+```
+
+
+* [Tidy evaluation explained in French](https://thinkr.fr/tidyeval/)
+
+## tidyr
+
+[tidyr vignette on tidy data](https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html) 
+In the section on "Multiple types in one table":
+
+> Datasets often involve values collected at multiple levels, on different types of observational units. During tidying, each type of observational unit should be stored in its own table. This is closely related to the idea of database normalisation, where each fact is expressed in only one place. It’s important because otherwise inconsistencies can arise.
+
+> Normalisation is useful for tidying and eliminating inconsistencies. However, there are few data analysis tools that work directly with relational data, so analysis usually also requires denormalisation or the merging the datasets back into one table.
+
+Example use of `tidyr::nest()` to generate a group of plots: 
+[make ggplot2 purrr](http://www.brodrigues.co/blog/2017-03-29-make-ggplot2-purrr/).
+
+```{r eval=FALSE}
+library(tidyr)
+library(dplyr)
+library(purrr)
+library(ggplot2)
+piris <- iris %>%  
+    group_by(Species) %>% 
+    nest() %>% 
+    mutate(plot = map2(data, Species, 
+                       ~ggplot(data = .x, 
+                               aes(x = Petal.Length, y = Petal.Width)) + 
+                           geom_point() + ggtitle(.y)))
+piris$plot[1]
+piris$plot[3]
+piris$plot[2]
+```
 
 # Creating a package
 You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).
@@ -686,6 +672,9 @@ package before or during the submission process.
 
 # Differences between python and R
 
+See also the [python](python.html) page for a comparison between pandas methods and R data frames
+functions.
+
     l = c(1,2,3)
     s = l
     s[3]
@@ -733,5 +722,29 @@ Checking string objects
 TODO Compare to the same code in python
 to see the difference between the above and passing by reference.
 
+
+
+# Further resources
+
+## Blogs
+
+* Gavin Simpson [My aversion to pipers](http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/) shows an Hadley tweet explaining that pipe might not be good in package development.
+
+## Stackoverflow
+
+* [Stack overflow question
+  checklist](https://codeblog.jonskeet.uk/2012/11/24/stack-overflow-question-checklist/)
+  general programming
+* [How to make a great R reproducible
+  example](https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example) 
+
+
+## Teaching R
+
+* [Teach the tidyverse to beginners](http://varianceexplained.org/r/teach-tidyverse/)
+
+* [Vectorization in R, Why?](http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html)
+
+* [Recommendations for resources for after workshops](https://github.com/carpentries/conversations/issues/18)
 
 
