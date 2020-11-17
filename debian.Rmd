@@ -369,7 +369,14 @@ I needed to remove it as explained [here](https://github.com/vector-im/riot-web/
 
 > "You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that"
 
-## Skype
+
+
+## Microsoft
+
+Yes I know, these software shouldn't be here, but I have to use these things for work and
+study.
+
+### Skype
 
 Debian wiki [skype](https://wiki.debian.org/skype):
 Download .deb file from https://www.skype.com/en/get-skype/
@@ -378,7 +385,26 @@ Download .deb file from https://www.skype.com/en/get-skype/
 
 Install
 
-        sudo apt install ./skypeforlinux-64.deb
+    sudo apt install ./skypeforlinux-64.deb
+
+### Teams
+
+
+    wget https://teams.microsoft.com/downloads/desktopurl?env=production&plat=linux&arch=x64&download=true&linuxArchiveType=deb
+
+Install 
+
+    sudo apt install ./teams_1.3.00.25560_amd64.deb
+
+[Microphone stopped working in
+teams](https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html)
+I had a sound issue. I managed to reactivate the sound under Debian settings /
+sound / applications there by reactivating the sound for cmus this somehow also
+affected teams and I could hear the audio again in teams after that. Or maybe I
+also change the settings for Skype? In any case I have sound again in teams
+now. Yes, after looking at another laptop with teams only (no Skype) I'm sure
+that teams appears as "Skype" in that Debian settings / sound / applications
+menu. 
 
 ## Vim 
 

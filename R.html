@@ -927,10 +927,21 @@ ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) +
 <pre><code>labs(color=&quot;Iris Species&quot;)
 labs(linetype=&quot;Sawnwood product group&quot;)</code></pre>
 </div>
+<div id="save-plots-to-pdf" class="section level3">
+<h3>Save plots to pdf</h3>
+<p>Use <a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a>:</p>
+<pre><code>ggplot(mtcars, aes(mpg, wt)) + geom_point()
+ggsave(&quot;mtcars.pdf&quot;)</code></pre>
+</div>
 <div id="themes" class="section level3">
 <h3>Themes</h3>
 <p>Minimal theme</p>
 <pre><code>theme_minimal()</code></pre>
+<div id="axes" class="section level4">
+<h4>Axes</h4>
+<p>Rotate the tick text of the X axis. SO question <a href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2">rotating axis labels in ggplot2</a></p>
+<pre><code>theme(axis.text.x=element_text(angle = 90, hjust=0))</code></pre>
+</div>
 </div>
 </div>
 <div id="choropleth-maps" class="section level2">
@@ -1048,6 +1059,7 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 <li>Step 3 (Confirmation)</li>
 </ul>
 <p>The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review.</p>
+<p>In general enter the Git tag after the submission has been completed, because it is very likely that additional information will need to be added to the package before or during the submission process.</p>
 </div>
 </div>
 <div id="differences-between-python-and-r" class="section level1">

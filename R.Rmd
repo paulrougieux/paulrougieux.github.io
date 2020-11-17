@@ -494,12 +494,27 @@ Change the name of a particular sub element in the legend:
     labs(color="Iris Species")
     labs(linetype="Sawnwood product group")
 
+### Save plots to pdf
+
+
+Use [ggsave](https://ggplot2.tidyverse.org/reference/ggsave.html):
+
+    ggplot(mtcars, aes(mpg, wt)) + geom_point()
+    ggsave("mtcars.pdf")
+
 ### Themes
 
 Minimal theme
 
     theme_minimal()
 
+
+#### Axes
+
+Rotate the tick text of the X axis. SO question [rotating axis labels in
+ggplot2](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2) 
+
+    theme(axis.text.x=element_text(angle = 90, hjust=0))
 
 ## Choropleth maps
 
@@ -664,6 +679,10 @@ The second page will ask to
 * Step 3 (Confirmation)
 
 The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review. 
+
+In general enter the Git tag after the submission has been completed, because
+it is very likely that additional information will need to be added to the
+package before or during the submission process.
 
 # Differences between python and R
 

@@ -682,12 +682,23 @@ sudo apt install riot-web</code></pre>
 <p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that”</p>
 </blockquote>
 </div>
-<div id="skype" class="section level2">
-<h2>Skype</h2>
+<div id="microsoft" class="section level2">
+<h2>Microsoft</h2>
+<p>Yes I know, these software shouldn’t be here, but I have to use these things for work and study.</p>
+<div id="skype" class="section level3">
+<h3>Skype</h3>
 <p>Debian wiki <a href="https://wiki.debian.org/skype">skype</a>: Download .deb file from <a href="https://www.skype.com/en/get-skype/" class="uri">https://www.skype.com/en/get-skype/</a></p>
 <pre><code>wget https://go.skype.com/skypeforlinux-64.deb</code></pre>
 <p>Install</p>
-<pre><code>    sudo apt install ./skypeforlinux-64.deb</code></pre>
+<pre><code>sudo apt install ./skypeforlinux-64.deb</code></pre>
+</div>
+<div id="teams" class="section level3">
+<h3>Teams</h3>
+<pre><code>wget https://teams.microsoft.com/downloads/desktopurl?env=production&amp;plat=linux&amp;arch=x64&amp;download=true&amp;linuxArchiveType=deb</code></pre>
+<p>Install</p>
+<pre><code>sudo apt install ./teams_1.3.00.25560_amd64.deb</code></pre>
+<p><a href="https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html">Microphone stopped working in teams</a> I had a sound issue. I managed to reactivate the sound under Debian settings / sound / applications there by reactivating the sound for cmus this somehow also affected teams and I could hear the audio again in teams after that. Or maybe I also change the settings for Skype? In any case I have sound again in teams now. Yes, after looking at another laptop with teams only (no Skype) I’m sure that teams appears as “Skype” in that Debian settings / sound / applications menu.</p>
+</div>
 </div>
 <div id="vim" class="section level2">
 <h2>Vim</h2>
