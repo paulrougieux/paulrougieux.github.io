@@ -1380,7 +1380,10 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 <pre><code>:G status
 :G pull 
 :G log</code></pre>
-<p>The output of these command may appear in a vim buffer, or it may appear in a terminal, depending on whether or not fugitive has a special way to handle the output of git. You can also call the command alone to open a fugitive summary buffer:</p>
+<p>The output of these command may appear in a vim buffer, or it may appear in a terminal, depending on whether or not fugitive has a special way to handle the output of git.</p>
+<div id="summary-buffer" class="section level3">
+<h3>Summary buffer</h3>
+<p>You can also call the command alone to open a fugitive summary buffer:</p>
 <pre><code>:G</code></pre>
 <p>Within this summary buffer many things can be done with mappings. Move to the next file and expand inline diffs:</p>
 <pre><code>i</code></pre>
@@ -1397,6 +1400,18 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 -</code></pre>
 <p>Create a commit</p>
 <pre><code>cc</code></pre>
+</div>
+<div id="git-commands-within-vim" class="section level3">
+<h3>Git commands within vim</h3>
+<p>Blame the current file</p>
+<pre><code>:G blame</code></pre>
+<p>Git log of the current file only</p>
+<pre><code>:G log %</code></pre>
+<p>I created an alias to display a word diff</p>
+<pre><code>:Gwdiff</code></pre>
+<p>It’s defined in .vimrc as:</p>
+<pre><code>command! Gwdiff vert term git diff --word-diff</code></pre>
+</div>
 </div>
 <div id="linter" class="section level2">
 <h2>Linter</h2>

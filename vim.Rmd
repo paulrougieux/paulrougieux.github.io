@@ -1386,7 +1386,11 @@ command, such as:
 
 The output of these command may appear in a vim buffer, or it may appear in a
 terminal, depending on whether or not fugitive has a special way to handle the
-output of git. You can also call the command alone to open a fugitive summary
+output of git.
+
+### Summary buffer
+
+You can also call the command alone to open a fugitive summary
 buffer:
 
     :G
@@ -1421,6 +1425,23 @@ Create a commit
 
     cc
 
+### Git commands within vim
+
+Blame the current file
+
+    :G blame
+
+Git log of the current file only
+
+    :G log %
+
+I created an alias to display a word diff
+
+    :Gwdiff
+
+It's defined in .vimrc as:
+
+    command! Gwdiff vert term git diff --word-diff
 
 ## Linter
 

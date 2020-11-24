@@ -153,7 +153,12 @@ autocmd FileType netrw setl bufhidden=delete
 " Open git grep in a quickfix window with 'G grep'
 autocmd QuickFixCmdPost *grep* cwindow
 " Display a word diff
-command! Gwd term git diff --word-diff
+command! Gwdiff vert term git diff --word-diff
+
+" An attempt to add arguments the issue is that I don't how to tell vim that
+" the argument is optional
+"command! -nargs=1 Gwdiff vert term git diff --word-diff <q-args>
+
 
 """""""""""""""""""""""
 " Latex configuration "
