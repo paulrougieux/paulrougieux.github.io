@@ -82,10 +82,12 @@ programmed mostly in C++ the
 [sdk](https://gitlab.linphone.org/BC/public/linphone-sdk) has some java code in
 it. 
 
-## Riot
+## Element
 
-Riot-web is a chat application based on the matrix decentralised communication
-protocol. Matrix is an open protocol meant to avoid communication silos.
+[Element](https://element.io/get-started), previously called Riot-web is a chat
+application based on the matrix decentralised communication protocol. Matrix is
+an open protocol meant to avoid communication silos.
+
 
 ## Signal 
 
