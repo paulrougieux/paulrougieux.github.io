@@ -468,6 +468,12 @@ List content of an archive
 
     7zr l <filename.7z>
 
+### Zip archive
+
+Create the zip archive of a directory
+
+    zip dir.zip -r dir
+
 ## Move and copy files
 
 Copy a file
@@ -766,6 +772,24 @@ Chmod instructions can be given with characters or numbers, chmod 777 or chmod a
     The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
 
 
+## Make the bash shell by default for a user
+
+[No path, or command history through SSH when logged in to server as someone other than 
+root](https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485)
+
+Edit the users file
+
+    sudo vim /etc/passwd
+
+Change
+
+    paul:x:1000:1000::/home/paul:/bin/sh
+
+to
+
+    paul:x:1000:1000::/home/paul:/bin/bash
+
+
 # Dot files
 
 ## Alias
@@ -1017,6 +1041,19 @@ Kill a graphical program, by clicking on it:
 
 # Bash Programming
 
+## Try catch
+
+[Is there a try catch command in
+bash](https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-in-bash)
+
+> There is no try/catch in bash; however, one can achieve similar behavior using && or ||.
+
+> Using ||: if command1 fails then command2 runs as follows
+
+    command1 || command2
+
+> Similarly, using &&, command2 will run if command1 is successful
+
 ## Variables
 
 [Variables](https://www.shellscript.sh/variables1.html)
@@ -1029,24 +1066,6 @@ Kill a graphical program, by clicking on it:
 Search for a pattern in python and R files:
 
     grep -n <pattern> *{py,R}
-
-## Make the bash shell by default for a user
-
-[No path, or command history through SSH when logged in to server as someone other than 
-root](https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485)
-
-Edit the users file
-
-    sudo vim /etc/passwd
-
-Change
-
-    paul:x:1000:1000::/home/paul:/bin/sh
-
-to
-
-    paul:x:1000:1000::/home/paul:/bin/bash
-
 
 # Authentification and security
 

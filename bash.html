@@ -827,6 +827,11 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 7zr x &lt;filename.7z&gt;  </code></pre>
 <p>List content of an archive</p>
 <pre><code>7zr l &lt;filename.7z&gt;</code></pre>
+<div id="zip-archive" class="section level3">
+<h3>Zip archive</h3>
+<p>Create the zip archive of a directory</p>
+<pre><code>zip dir.zip -r dir</code></pre>
+</div>
 </div>
 <div id="move-and-copy-files" class="section level2">
 <h2>Move and copy files</h2>
@@ -1028,6 +1033,16 @@ sudo chmod -R 770 scenarios</code></pre>
 <pre><code>Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as &quot;rwxr-xr-x&quot; in ls -l. 
 The default for document files on Debian seems to be chmod 644, visible as &quot;-rw-r--r--&quot; in ls -l.</code></pre>
 </div>
+<div id="make-the-bash-shell-by-default-for-a-user" class="section level2">
+<h2>Make the bash shell by default for a user</h2>
+<p><a href="https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485">No path, or command history through SSH when logged in to server as someone other than root</a></p>
+<p>Edit the users file</p>
+<pre><code>sudo vim /etc/passwd</code></pre>
+<p>Change</p>
+<pre><code>paul:x:1000:1000::/home/paul:/bin/sh</code></pre>
+<p>to</p>
+<pre><code>paul:x:1000:1000::/home/paul:/bin/bash</code></pre>
+</div>
 </div>
 <div id="dot-files" class="section level1">
 <h1>Dot files</h1>
@@ -1184,6 +1199,20 @@ kill -9 process_it # -9 forces the kill</code></pre>
 </div>
 <div id="bash-programming" class="section level1">
 <h1>Bash Programming</h1>
+<div id="try-catch" class="section level2">
+<h2>Try catch</h2>
+<p><a href="https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-in-bash">Is there a try catch command in bash</a></p>
+<blockquote>
+<p>There is no try/catch in bash; however, one can achieve similar behavior using &amp;&amp; or ||.</p>
+</blockquote>
+<blockquote>
+<p>Using ||: if command1 fails then command2 runs as follows</p>
+</blockquote>
+<pre><code>command1 || command2</code></pre>
+<blockquote>
+<p>Similarly, using &amp;&amp;, command2 will run if command1 is successful</p>
+</blockquote>
+</div>
 <div id="variables" class="section level2">
 <h2>Variables</h2>
 <p><a href="https://www.shellscript.sh/variables1.html">Variables</a></p>
@@ -1194,16 +1223,6 @@ echo $message</code></pre>
 <h2>Wild cards</h2>
 <p>Search for a pattern in python and R files:</p>
 <pre><code>grep -n &lt;pattern&gt; *{py,R}</code></pre>
-</div>
-<div id="make-the-bash-shell-by-default-for-a-user" class="section level2">
-<h2>Make the bash shell by default for a user</h2>
-<p><a href="https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485">No path, or command history through SSH when logged in to server as someone other than root</a></p>
-<p>Edit the users file</p>
-<pre><code>sudo vim /etc/passwd</code></pre>
-<p>Change</p>
-<pre><code>paul:x:1000:1000::/home/paul:/bin/sh</code></pre>
-<p>to</p>
-<pre><code>paul:x:1000:1000::/home/paul:/bin/bash</code></pre>
 </div>
 </div>
 <div id="authentification-and-security" class="section level1">
