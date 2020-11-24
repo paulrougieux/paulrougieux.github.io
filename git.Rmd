@@ -206,6 +206,10 @@ Display the log of a particular branch (after a fetch for example)
 
     git log origin/master 
 
+Display the log of a particular file
+
+    git log path/filename
+
 Display a compact log for one file or one directory only
 
     git log --abbrev-commit --pretty=oneline path_to_file
@@ -213,6 +217,11 @@ Display a compact log for one file or one directory only
 Edit `~/.gitconfig` to define an alias that shows the last 10 log entries in a compact way:
 
     lkj    = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit -10
+
+This alias also works with the log of one file only
+
+    git lkj path/filename
+
 
 ### Show commit statistics
 
@@ -274,6 +283,7 @@ Explained in this [Stackoverflow Answer](https://stackoverflow.com/a/457396/2641
 
 
 ### Rebase
+
 It is safe to use rebase as long as the commits have not been pushed 
 to another repository. 
 To rename older commits, simply run:
@@ -292,7 +302,17 @@ See also :
 [How to modify a specified commit?](https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit).
  * [10 things I hate about git](https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/) Translation of the man page which he considers hard to understand: "git-rebase – Sequentially regenerate a series of commits so they can be applied directly to the head node"
 
+
+## Clean
+
+Remove all files also those not tracked by git because they are in .gitignore.
+For example output pdf files and auxiliary files generated from latex or from pandoc.
+
+    git clean -xf
+
+
 ## Reset whole folder
+
 Identify the commit identity in the log and copy its sha number. 
 Then to go back to this state for the whole folder: 
 
@@ -309,6 +329,7 @@ I used [how to remove a too large file in a commit](https://stackoverflow.com/a/
 Then added the large file to .gitignore and committed again. 
 
 ## Reset only one file
+
 To go back to this state for only one file, see git checkout
 
     git checkout commit_hash  path_to_file/file_name

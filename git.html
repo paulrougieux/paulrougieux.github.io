@@ -578,10 +578,14 @@ git push origin --delete key</code></pre>
 <p>In the log, you can copy the beginning of a commit hash for use as <code>commit_sha</code> in the reset commands below.</p>
 <p>Display the log of a particular branch (after a fetch for example)</p>
 <pre><code>git log origin/master </code></pre>
+<p>Display the log of a particular file</p>
+<pre><code>git log path/filename</code></pre>
 <p>Display a compact log for one file or one directory only</p>
 <pre><code>git log --abbrev-commit --pretty=oneline path_to_file</code></pre>
 <p>Edit <code>~/.gitconfig</code> to define an alias that shows the last 10 log entries in a compact way:</p>
 <pre><code>lkj    = log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)&lt;%an&gt;%Creset&#39; --abbrev-commit -10</code></pre>
+<p>This alias also works with the log of one file only</p>
+<pre><code>git lkj path/filename</code></pre>
 <div id="show-commit-statistics" class="section level3">
 <h3>Show commit statistics</h3>
 <p>Show the number of lines modified in each files for each commit:</p>
@@ -626,6 +630,11 @@ git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
 <li><a href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10 things I hate about git</a> Translation of the man page which he considers hard to understand: “git-rebase – Sequentially regenerate a series of commits so they can be applied directly to the head node”</li>
 </ul>
 </div>
+</div>
+<div id="clean" class="section level2">
+<h2>Clean</h2>
+<p>Remove all files also those not tracked by git because they are in .gitignore. For example output pdf files and auxiliary files generated from latex or from pandoc.</p>
+<pre><code>git clean -xf</code></pre>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>
