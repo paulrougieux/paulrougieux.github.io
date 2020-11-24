@@ -110,7 +110,14 @@ That's why we used `write.csv` instead.
     ]  7 10  1
 
 
-# Vectors
+# Data types
+
+
+## Everything is a vector
+
+There are no scalar values in R, only vectors, this makes it very natural to
+process times series or cross sectional data over many N observations as if we
+were processing only one instance.
 
 [SO answer concerning indexing up to end of vector/matrix](https://stackoverflow.com/a/7500961/2641825) "Sometimes it's easier to tell R what you don't want"
 
@@ -118,7 +125,7 @@ That's why we used `write.csv` instead.
     x[-(1:3)]
     x[-c(1,3,6)]
 
-## Set operations
+### Set operations
 
 ```{r}
 x = letters[1:3]
@@ -130,7 +137,38 @@ setdiff(y, x)
 setequal(x, y)
 ```
 
-# Lists
+## Factors
+
+[My answer to the question how to reorder factor levels the tidy
+way](https://stackoverflow.com/questions/45148897/how-to-reorder-factor-levels-in-a-tidy-way/59246372#59246372) 
+
+If you happen to have a character vector to order, for example:
+
+    iris2 <- iris %>%
+        mutate(Species = as.character(Species)) %>%
+        group_by(Species) %>%
+        mutate(mean_sepal_width = mean(Sepal.Width)) %>%
+        ungroup()
+
+You can also order the factor level using the behavior of the forcats::as_factor function :
+
+    "Compared to base R, this function creates levels in the order in which they appear"
+
+    library(forcats)
+    iris2 %>%
+        # Change the order
+        arrange(mean_sepal_width) %>%
+        # Create factor levels in the order in which they appear
+        mutate(Species = as_factor(Species)) %>%
+        ggplot() +
+        aes(Species, Sepal.Width, color = Species) +
+        geom_point()
+
+Notice how the species names on the x axis are not ordered alphabetically but
+by increasing value of their mean_sepal_width. Remove the line containing
+as_factor to see the difference. 
+
+## Lists
 Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.
 ```{r}
 l1 <- list(a="a", b="2,", c="pi+2i")
@@ -139,19 +177,19 @@ unlist(l1) # a character vector
 str(unlist(l1))
 ```
 
-# Strings
+## Strings
 
 ```{r}
 message("Using the following letters: ", paste(letters, collapse=","), ".")
 ```
 
-## Levenshtein distance between words
+### Levenshtein distance between words
 
 Cf. https://en.wikipedia.org/wiki/Levenshtein_distance
 
     adist("kitten", "sitting")
 
-# S3 methods
+## S3 methods
 
 List all available methods for a class:
 
@@ -379,6 +417,16 @@ commandArgs() returns a **character vector** containing the name of the executab
 
 [K means example](https://shiny.rstudio.com/gallery/kmeans-example.html)
 
+## App.R
+
+[Shiny tutorial lesson 1](https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/)
+
+> "Note: Prior to version 0.10.2, Shiny did not support single-file apps and
+> the ui object and server function needed to be contained in separate scripts
+> called ui.R and server.R, respectively. This functionality is still supported
+> in Shiny, however the tutorial and much of the supporting documentation focus
+> on single-file apps."
+
 
 
 # Tidyverse
@@ -490,6 +538,19 @@ forestEU_nested <- forestEU %>%
 # Unnest the interpolated data to look at it and plotting
 forestEU_interpolated <- forestEU_nested %>% unnest(interpolated)
 ```
+
+
+### Read many csv
+
+See iris_csv file created in the csv section of this document. Read these csv
+files into one data frame. Note the Species column has to be present in the csv
+files, otherwise we would loose that information. 
+
+```{r eval=FALSE}
+iris_csv <- list.files(data_folder, full.names = TRUE) %>% 
+    map_dfr(read_csv)
+```
+
 
 ### Write to many csv
 

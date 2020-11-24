@@ -545,14 +545,17 @@ tr(,&quot;tsp&quot;)
 ]  7 10  1</code></pre>
 </div>
 </div>
-<div id="vectors" class="section level1">
-<h1>Vectors</h1>
+<div id="data-types" class="section level1">
+<h1>Data types</h1>
+<div id="everything-is-a-vector" class="section level2">
+<h2>Everything is a vector</h2>
+<p>There are no scalar values in R, only vectors, this makes it very natural to process times series or cross sectional data over many N observations as if we were processing only one instance.</p>
 <p><a href="https://stackoverflow.com/a/7500961/2641825">SO answer concerning indexing up to end of vector/matrix</a> “Sometimes it’s easier to tell R what you don’t want”</p>
 <pre><code>x &lt;- c(5,5,4,3,2,1)
 x[-(1:3)]
 x[-c(1,3,6)]</code></pre>
-<div id="set-operations" class="section level2">
-<h2>Set operations</h2>
+<div id="set-operations" class="section level3">
+<h3>Set operations</h3>
 <pre class="r"><code>x = letters[1:3]
 y = letters[3:5]
 union(x, y)</code></pre>
@@ -567,8 +570,31 @@ union(x, y)</code></pre>
 <pre><code>## [1] FALSE</code></pre>
 </div>
 </div>
-<div id="lists" class="section level1">
-<h1>Lists</h1>
+<div id="factors" class="section level2">
+<h2>Factors</h2>
+<p><a href="https://stackoverflow.com/questions/45148897/how-to-reorder-factor-levels-in-a-tidy-way/59246372#59246372">My answer to the question how to reorder factor levels the tidy way</a></p>
+<p>If you happen to have a character vector to order, for example:</p>
+<pre><code>iris2 &lt;- iris %&gt;%
+    mutate(Species = as.character(Species)) %&gt;%
+    group_by(Species) %&gt;%
+    mutate(mean_sepal_width = mean(Sepal.Width)) %&gt;%
+    ungroup()</code></pre>
+<p>You can also order the factor level using the behavior of the forcats::as_factor function :</p>
+<pre><code>&quot;Compared to base R, this function creates levels in the order in which they appear&quot;
+
+library(forcats)
+iris2 %&gt;%
+    # Change the order
+    arrange(mean_sepal_width) %&gt;%
+    # Create factor levels in the order in which they appear
+    mutate(Species = as_factor(Species)) %&gt;%
+    ggplot() +
+    aes(Species, Sepal.Width, color = Species) +
+    geom_point()</code></pre>
+<p>Notice how the species names on the x axis are not ordered alphabetically but by increasing value of their mean_sepal_width. Remove the line containing as_factor to see the difference.</p>
+</div>
+<div id="lists" class="section level2">
+<h2>Lists</h2>
 <p>Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.</p>
 <pre class="r"><code>l1 &lt;- list(a=&quot;a&quot;, b=&quot;2,&quot;, c=&quot;pi+2i&quot;)
 str(l1)</code></pre>
@@ -583,20 +609,21 @@ str(l1)</code></pre>
 <pre><code>##  Named chr [1:3] &quot;a&quot; &quot;2,&quot; &quot;pi+2i&quot;
 ##  - attr(*, &quot;names&quot;)= chr [1:3] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
 </div>
-<div id="strings" class="section level1">
-<h1>Strings</h1>
+<div id="strings" class="section level2">
+<h2>Strings</h2>
 <pre class="r"><code>message(&quot;Using the following letters: &quot;, paste(letters, collapse=&quot;,&quot;), &quot;.&quot;)</code></pre>
 <pre><code>## Using the following letters: a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z.</code></pre>
-<div id="levenshtein-distance-between-words" class="section level2">
-<h2>Levenshtein distance between words</h2>
+<div id="levenshtein-distance-between-words" class="section level3">
+<h3>Levenshtein distance between words</h3>
 <p>Cf. <a href="https://en.wikipedia.org/wiki/Levenshtein_distance" class="uri">https://en.wikipedia.org/wiki/Levenshtein_distance</a></p>
 <pre><code>adist(&quot;kitten&quot;, &quot;sitting&quot;)</code></pre>
 </div>
 </div>
-<div id="s3-methods" class="section level1">
-<h1>S3 methods</h1>
+<div id="s3-methods" class="section level2">
+<h2>S3 methods</h2>
 <p>List all available methods for a class:</p>
 <pre><code>methods(class=&quot;lm&quot;) </code></pre>
+</div>
 </div>
 <div id="knitr" class="section level1">
 <h1>knitr</h1>
@@ -786,6 +813,13 @@ p + scale_colour_manual(values = iris_palette)</code></pre>
 <div id="shiny" class="section level1">
 <h1>Shiny</h1>
 <p><a href="https://shiny.rstudio.com/gallery/kmeans-example.html">K means example</a></p>
+<div id="app.r" class="section level2">
+<h2>App.R</h2>
+<p><a href="https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/">Shiny tutorial lesson 1</a></p>
+<blockquote>
+<p>“Note: Prior to version 0.10.2, Shiny did not support single-file apps and the ui object and server function needed to be contained in separate scripts called ui.R and server.R, respectively. This functionality is still supported in Shiny, however the tutorial and much of the supporting documentation focus on single-file apps.”</p>
+</blockquote>
+</div>
 </div>
 <div id="tidyverse" class="section level1">
 <h1>Tidyverse</h1>
@@ -909,6 +943,12 @@ forestEU %&gt;%  filter(Country==&quot;Austria&quot;) %&gt;% country_interpolati
 # forestEU_nested %&gt;% unnest(data)
 # Unnest the interpolated data to look at it and plotting
 forestEU_interpolated &lt;- forestEU_nested %&gt;% unnest(interpolated)</code></pre>
+</div>
+<div id="read-many-csv" class="section level3">
+<h3>Read many csv</h3>
+<p>See iris_csv file created in the csv section of this document. Read these csv files into one data frame. Note the Species column has to be present in the csv files, otherwise we would loose that information.</p>
+<pre class="r"><code>iris_csv &lt;- list.files(data_folder, full.names = TRUE) %&gt;% 
+    map_dfr(read_csv)</code></pre>
 </div>
 <div id="write-to-many-csv" class="section level3">
 <h3>Write to many csv</h3>
