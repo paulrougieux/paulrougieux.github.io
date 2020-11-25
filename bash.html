@@ -474,6 +474,107 @@ div.tocify {
 <pre><code>info coreutils </code></pre>
 <p>The page below also contains many commands from external tools that are not part of the GNU project.</p>
 </div>
+<div id="command-history" class="section level1">
+<h1>Command history</h1>
+<p>To search within previous commands, press CTRL+R and start typing words contained in the previous command.</p>
+<p>If you accidentally press CTRL+S the <a href="https://askubuntu.com/a/264253/315347">terminal will hang</a> Press <code>CTRL+Q</code> to regain control. See also <a href="https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator">Ctrl-s hang terminal emulator?</a> which provides a workaround: entering <code>stty -ixon</code> in .bashrc.</p>
+</div>
+<div id="convert" class="section level1">
+<h1>Convert</h1>
+<p>This section is about converting from one document format into another. For example converting a text file into a pdf file and vice-versa.</p>
+<div id="pandoc" class="section level2">
+<h2>Pandoc</h2>
+<p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another. <a href="https://pandoc.org/MANUAL.html">Pandoc user guide</a></p>
+<p>Convert a markdown document to pdf</p>
+<pre><code>pandoc filname.md -o filename.pdf
+# If there are utf-8 encoding issues, use another engine
+pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
+<p>Convert an odf document to markdown</p>
+<pre><code>pandoc filename.odt -o filename.md </code></pre>
+<p>Convert a Microsoft Word document to markdown</p>
+<pre><code>pandoc filename.docx -o filename.md </code></pre>
+<p>Convert a Microsoft Word document to markdown and keep images</p>
+<pre><code>pandoc --extract-media ./figures input.docx -o output.md</code></pre>
+<p>Convert an html code snippets to markdown and display the output at the command line</p>
+<pre><code>echo &quot;Link: &lt;a href=&quot;https://www.linphone.org/&quot;&gt;Linphone&lt;/a&gt;&quot;| pandoc -f html -t markdown
+# Link: [Linphone](https://www.linphone.org/)</code></pre>
+<p>Convert an entire web page to markdown</p>
+<pre><code>pandoc https://pandoc.org/help.html -t markdown</code></pre>
+<p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> The default is to use setext-style headers for levels 1-2, and then ATX headers. To use ATX style headers only in markdown output:</p>
+<pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
+<div id="yaml-front-matter-for-styles" class="section level3">
+<h3>Yaml front matter for styles</h3>
+<p>Adding headers and footers to pandoc suggests using:</p>
+<pre><code>---
+title: Test
+author: Author Name
+header-includes: |
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[CO,CE]{This is fancy}
+    \fancyfoot[CO,CE]{So is this}
+    \fancyfoot[LE,RO]{\thepage}
+abstract: This is a pandoc test . . . 
+---</code></pre>
+<p>Custom yaml front matter for readings file See also the vim.Rmd document on pandoc bibliographies.</p>
+<pre><code>---
+title: Reading notes
+author: Paul Rougieux
+bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
+abstract: Reading notes at the JRC
+header-includes: |
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[CO,CE]{Reading notes}
+    \fancyfoot[CO,CE]{JRC}
+    \fancyfoot[LE,RO]{\thepage}
+---
+\tableofcontents{}
+...file content... this is probably not the way to do it    
+\bibliography{../bibliography/jrc_ispra}
+\bibliographystyle{apalike}</code></pre>
+<p>This is probably not the way to do it, the bibliography should be included in the pandoc call? Note this requires citeproc</p>
+<pre><code>sudo apt install pandoc-citeproc</code></pre>
+<p>Then this should work :</p>
+<pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
+<p>There is still an issue with the encoding of the bibliography.</p>
+</div>
+<div id="makefile" class="section level3">
+<h3>Makefile</h3>
+<p>Generic <a href="https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69">makefile for pandoc</a></p>
+<p><a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">Bash script for pandoc</a></p>
+<pre><code>for mdfile in *.md; do
+pdffile=${mdfile%.md}.pdf
+echo $pdffile
+done</code></pre>
+<p>Convert all docx documents to markdown in the current folder</p>
+<pre><code>for docxfile in *.docx; do
+mdfile=${docxfile%.docx}.md
+echo &quot;converting $docxfile to $mdfile&quot;
+pandoc &quot;$docxfile&quot; -o &quot;$mdfile&quot;
+done</code></pre>
+<p>Pandoc can convert to PDF, but not from PDF.</p>
+<p>You can also create template files as explained in super user <a href="https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044">markdown to latex conversion with a custom preamble</a></p>
+</div>
+</div>
+<div id="pdfminer" class="section level2">
+<h2>pdfminer</h2>
+<p>(pdfminer](<a href="https://github.com/pdfminer/pdfminer.six" class="uri">https://github.com/pdfminer/pdfminer.six</a>) Convert all pdf documents to text files in the current folder:</p>
+<pre><code>for pdffile in *.pdf; do
+txtfile=${pdffile%.pdf}.txt
+echo &quot;converting $pdffile to $txtfile&quot;
+pdf2txt.py $pdffile &gt; $txtfile
+done</code></pre>
+<p>See also a utility to extract tables from pdf documents.</p>
+</div>
+<div id="tabula" class="section level2">
+<h2>Tabula</h2>
+<p>Extract tables from a pdf with <a href="https://tabula.technology/">tabula</a></p>
+<pre><code>cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
+java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
+<p>Then visit <a href="http://127.0.0.1:8080/" class="uri">http://127.0.0.1:8080/</a></p>
+</div>
+</div>
 <div id="count" class="section level1">
 <h1>Count</h1>
 <div id="number-of-files" class="section level2">
@@ -493,6 +594,162 @@ find -name &#39;*.ogg&#39; |wc -l</code></pre>
 <p>Count the number of lines in all files, and give the total line count.</p>
 <pre><code>find . -name &#39;*.py&#39; | xargs wc -l # python code
 find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
+</div>
+</div>
+<div id="dot-files" class="section level1">
+<h1>Dot files</h1>
+<div id="alias" class="section level2">
+<h2>Alias</h2>
+<pre><code>alias ll=&quot;ls -lh&quot; </code></pre>
+<p>Based on how can i sort du-h output by size</p>
+<pre><code>alias du=&#39;du -hd1 | sort -h -r&#39;</code></pre>
+<p>You can place those commands in your ~/.bashrc to create a permanent alias. bashrc:</p>
+<blockquote>
+<p>“You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly.”</p>
+</blockquote>
+<p>Alias from other persons:</p>
+<p><a href="https://github.com/statox/dotfiles/blob/master/bash_aliases" class="uri">https://github.com/statox/dotfiles/blob/master/bash_aliases</a></p>
+</div>
+<div id="profile-.bash_profile-and-.bashrc" class="section level2">
+<h2>Profile .bash_profile and .bashrc</h2>
+<p>These are places where a user can turn of the system BEEP :</p>
+<pre><code>setterm -blength 0</code></pre>
+<p>.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.</p>
+<p>Debian Dotfiles</p>
+<pre><code>&quot;Now, since bash is being invoked as a login shell (with name &quot;-bash&quot;, a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that.&quot;
+
+[...] &quot;You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  &quot;</code></pre>
+<p>In .bashrc a user can set environment variables, define alias (see above).</p>
+</div>
+</div>
+<div id="download" class="section level1">
+<h1>Download</h1>
+<div id="download-with-curl" class="section level2">
+<h2>Download with Curl</h2>
+<p>Load a file from a URL, using the file name from the URL</p>
+<pre><code>curl -O &lt;url_including_a_file_name&gt;</code></pre>
+</div>
+<div id="download-videos-and-audio" class="section level2">
+<h2>Download videos and audio</h2>
+<p>Install youtube-dl using pip:</p>
+<pre><code> sudo pip install --upgrade youtube_dl</code></pre>
+<p>You may also need to install the ffmpeg package:</p>
+<pre><code>sudo apt-get install ffmpeg</code></pre>
+<p>Download a video from youtube :</p>
+<pre><code>youtube-dl video_url</code></pre>
+<p>Download only the audio in an OGG Vorbis format</p>
+<pre><code>youtube-dl --extract-audio --audio-format vorbis video_url</code></pre>
+<p>Download only the audio in an .mp3 format</p>
+<pre><code>youtube-dl --extract-audio --audio-format mp3 video_url</code></pre>
+<p>Create bash aliases to download various audio formats from youtube</p>
+<pre><code>alias youtubevorbis=&quot;youtube-dl --extract-audio --audio-format vorbis&quot;
+alias youtubemp3=&quot;youtube-dl --extract-audio --audio-format mp3&quot;</code></pre>
+<p>If you encounter some Errors 403 forbidden, removing the cache might help</p>
+<p><a href="https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by">error 403 with youtube-dl</a></p>
+<pre><code>youtube-dl --rm-cache-dir</code></pre>
+</div>
+<div id="parse-html-files-for-urls" class="section level2">
+<h2>Parse html files for URLS</h2>
+<p><a href="https://unix.stackexchange.com/questions/181254/how-to-use-grep-and-cut-in-script-to-obtain-website-urls-from-an-html-file">How to use grep and cut in script to obtain website URLs from an HTML file</a> Nice examples such as this one with decomposition</p>
+<pre><code>grep -Eoi &#39;&lt;a [^&gt;]+&gt;&#39; source.html |
+grep -Eo &#39;href=&quot;[^\&quot;]+&quot;&#39; | 
+grep -Eo &#39;(http|https)://[^/&quot;]+&#39;</code></pre>
+<p>and this one which extracts all top level domain present in an html page</p>
+<pre><code>cat urls.html | grep -Eo &quot;(http|https)://[a-zA-Z0-9./?=_-]*&quot; | sort -u</code></pre>
+<p>This is how I extracted all links from an html file:</p>
+<pre><code>grep -Eo &#39;(http|https)://[^&quot;]+&#39; Musicwelistento.html | sed -e  &#39;s/https:\/\/www.google.com\/url?q=//g&#39; &gt; song_links.txt</code></pre>
+</div>
+</div>
+<div id="edit" class="section level1">
+<h1>Edit</h1>
+<div id="edit-image-files" class="section level2">
+<h2>Edit Image files</h2>
+<p>Resize a picture to 2000 px wide using ImageMagick:</p>
+<pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
+<p>Resize a picture to 2000 px wide and also convert it to gray scale:</p>
+<pre><code>convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg </code></pre>
+<p>Convert to <a href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279">black and white</a> (tricky to get the threshold right):</p>
+<pre><code>convert picture1.jpg -threshold 40% picture2.jpg </code></pre>
+<p>Other option to convert to black and white <a href="https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images">good black and white bimodal images</a>:</p>
+<pre><code>convert -monochrome in.png out.png</code></pre>
+<p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
+<pre><code>mkdir newfolder
+mogrify -resize 2000 -path ./newfolder *.jpg
+mogrify -resize 2000 -path ./small/ *.JPG
+mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg</code></pre>
+<p>Batch processing, rotate all images clockwise or counter clockwise</p>
+<pre><code>mogrify -rotate 90 ../small/ *.JPG
+mogrify -rotate 270 ../small/ *.JPG</code></pre>
+</div>
+<div id="edit-music-files" class="section level2">
+<h2>Edit music files</h2>
+<p><a href="https://askubuntu.com/questions/664698/mp3-tags-from-file-names">Mp3 tags from file names</a> <a href="https://pypi.org/project/tagpy/#history">tagpy</a></p>
+</div>
+<div id="edit-pdf-files" class="section level2">
+<h2>Edit PDF files</h2>
+<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
+<pre><code>pdfgrep pattern *.pdf</code></pre>
+<p>Merge multiple PDF into one:</p>
+<pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
+<p>Alternatively, pdftk can be used to merge PDF files</p>
+<pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
+<p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
+<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf</code></pre>
+<p>Split a pdf in two</p>
+<pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
+# if necessary, install mutool with 
+apt install mupdf-tools</code></pre>
+</div>
+<div id="replace-strings-in-text-files" class="section level2">
+<h2>Replace strings in text files</h2>
+<p>Replace strings</p>
+<pre><code>first=&quot;I love Suzy and Mary&quot;
+second=&quot;Sara&quot;
+first=${first/Suzy/$second}</code></pre>
+<p>Replace strings with sed</p>
+<pre><code>sed -i  &#39;s/pattern/replacement/g&#39; bli.txt 
+
+sed -i  &#39;s/^.*\://g&#39; input_file.txt # edit file in place
+grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code></pre>
+<p>Add a line above and below a line that contains a particular string. This was necessary for a Latex to Lyx document conversion. The Latex file had problematic characters in href links. Conversion worked fine without the href links, to keep the links</p>
+<p>I quoted them in <code>\begin{verbatim}</code> statements. <a href="https://stackoverflow.com/a/24230154/2641825">sed add # before a line containing a pattern</a> <a href="https://unix.stackexchange.com/questions/97428/sed-how-to-do-several-consecutive-substitutions-but-process-file-only-once">sed performing several substitutions</a></p>
+<pre><code># Test output to stdout placing # before and after a matching line
+sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
+ # Modify the file in place</code></pre>
+</div>
+<div id="remove-duplicated-lines-from-a-file" class="section level2">
+<h2>Remove duplicated lines from a file</h2>
+<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
+</div>
+<div id="select-an-editor" class="section level2">
+<h2>Select an editor</h2>
+<p>To choose your preferred text editor, used for example by <code>crontab -e</code>, run:</p>
+<pre><code>select-editor</code></pre>
+</div>
+</div>
+<div id="events" class="section level1">
+<h1>Events</h1>
+<div id="calendar" class="section level2">
+<h2>Calendar</h2>
+<p>Reddit <a href="https://www.reddit.com/r/commandline/comments/iupqui/github_command_line_app_10_launched/">CLI calendar applications</a></p>
+<ul>
+<li><a href="https://calcurse.org/">calcurse</a> github page: <a href="https://github.com/lfos/calcurse">calcurse</a></li>
+<li><a href="https://github.com/itchyny/calendar.vim">calendar.vim</a>, only Google cal no CalDAV support <a href="https://github.com/itchyny/calendar.vim/issues/133">issue 133</a></li>
+<li><a href="https://lostpackets.de/khal/">khal</a></li>
+</ul>
+</div>
+<div id="cron" class="section level2">
+<h2>Cron</h2>
+<p>In order to <a href="https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time">use two differet /etc/hosts depending upon the time</a>, I added the following to /etc/hosts_worktime:</p>
+<pre><code>0.0.0.1 www.youtube.com
+0.0.0.1 youtube.com</code></pre>
+<p>I then created a cron job that copies that files to /etc/hosts at 9am. Start the crontab editor:</p>
+<pre><code>crontab -e</code></pre>
+<p>Add these lines:</p>
+<pre><code>0  9 * * 1-5 ln -f /etc/hosts_worktime /etc/hosts
+0 17 * * 1-5 ln -f /etc/hosts_playtime /etc/hosts</code></pre>
+<p>I initially used <code>cp</code> instead of <code>ln -f</code>, but it’s better to make a hard link so any subsequent modification of /etc/hosts will actually be kept in one of the file, and not overwritten by the <code>cp</code>. I noticed that youtube.com was still available for a little while after I blocked it. I’m not sure it’s necessary or if you simply need to wait a little bit for the change to the hosts file to take effect. Anyway here is an instruction to restart networking and clear the DNS cache:</p>
+<pre><code>sudo /etc/init.d/networking restart</code></pre>
 </div>
 </div>
 <div id="find" class="section level1">
@@ -550,6 +807,141 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 <pre><code>tail -f</code></pre>
 <p>See tab and end of line characters in a text file</p>
 <pre><code>cat -te filename |less </code></pre>
+</div>
+</div>
+<div id="list-files" class="section level1">
+<h1>List files</h1>
+<p>List all files in a directory</p>
+<pre><code>ls</code></pre>
+<p>List a file with its full path</p>
+<pre><code>realpath README.md</code></pre>
+<p>To include dot files, pipe the output of <code>ls -a</code> to realpath:</p>
+<pre><code>ls -a | xargs realpath</code></pre>
+<p>To list subdirectories recursively:</p>
+<pre><code>ls -aR | xargs realpath</code></pre>
+<p>In case of you have spaces in file names, xargs recomments using the <code>-o</code> option to prevent file names from being processed incorrectly, this works best with the output of <code>find -print0</code> and it starts to look a lot more complex than other answers:</p>
+<pre><code>find -print0 |xargs -0 realpath</code></pre>
+<p>The above is an <a href="https://stackoverflow.com/a/65002323/2641825">answer</a> I posted on Stackoverflow. See also a Unix and Linux stackexchange <a href="https://unix.stackexchange.com/questions/268474/how-to-list-all-files-in-a-directory-with-absolute-paths">question on how to list all files in a directory with absolute path</a>.</p>
+<p>List contents of a directories in a tree like format</p>
+<pre><code>tree
+tree -d # List directories only, no files</code></pre>
+</div>
+<div id="networking" class="section level1">
+<h1>Networking</h1>
+<div id="show-ip-addresses" class="section level2">
+<h2>Show IP addresses</h2>
+<p>Show the IP address</p>
+<pre><code>ip addr show</code></pre>
+<p>Show the state of network interfaces</p>
+<pre><code>ip link</code></pre>
+<p>Check open ports on a system</p>
+<pre><code>nmap -Pn &lt;hostname or IP address&gt;</code></pre>
+</div>
+<div id="show-domain-name-and-host-name" class="section level2">
+<h2>Show domain name and host name</h2>
+<p>Show the domain name</p>
+<pre><code>domainname</code></pre>
+<p>Show the host name</p>
+<pre><code>hostname</code></pre>
+</div>
+</div>
+<div id="organise" class="section level1">
+<h1>Organise</h1>
+<div id="compress-and-decompress-files" class="section level2">
+<h2>Compress and decompress files</h2>
+<p>Compress a file using gzip or 7z compression</p>
+<pre><code>gzip &lt;filename&gt;
+7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
+<p>Decompress a single file from several archive formats:</p>
+<pre><code>bzip2 -d &lt;filename.bz2&gt;
+gunzip &lt;filename.gz&gt;</code></pre>
+<p><a href="https://askubuntu.com/a/499809/315347">Askubuntu to extract a .tgz file with tar you need to use,</a></p>
+<pre><code>tar -xvzf /path/to/file.tgz
+tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
+# Extract in a folder that has the archive name
+tar --extract -f /path/to/file.tgz --one-top-leve
+7zr e &lt;filename.7z&gt; # extract all files in the same directory 
+7zr x &lt;filename.7z&gt; # keep directory structure (see also multiple files below)</code></pre>
+<p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>
+<pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
+</div>
+<div id="compress-multiple-files" class="section level2">
+<h2>Compress multiple files</h2>
+<p>How do I compress a whole directory?</p>
+<pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
+<p>Where</p>
+<pre><code>-z: Compress archive using gzip program
+-c: Create archive
+-v: Verbose i.e display progress while creating archive
+-f: Archive File name</code></pre>
+<p>Decompress an archive containing multiple files Keep full path of files within the archive To extract content from the archive in the current directory</p>
+<pre><code>tar -zxvf archive-name.tar.gz 
+7zr x &lt;filename.7z&gt;  </code></pre>
+<p>List content of an archive</p>
+<pre><code>7zr l &lt;filename.7z&gt;</code></pre>
+<div id="zip-archive" class="section level3">
+<h3>Zip archive</h3>
+<p>Create the zip archive of a directory</p>
+<pre><code>zip dir.zip -r dir</code></pre>
+</div>
+</div>
+<div id="move-and-copy-files" class="section level2">
+<h2>Move and copy files</h2>
+<p>Copy a file</p>
+<pre><code>cp file1 file2</code></pre>
+<p><a href="https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure">Recursive copy some files while keeping the directory structure</a></p>
+<pre><code>find . -name &#39;*.csv&#39; -exec cp --parents \{\} /target \;</code></pre>
+</div>
+<div id="rename-files" class="section level2">
+<h2>Rename files</h2>
+<p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
+<pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
+</div>
+<div id="to-do-lists" class="section level2">
+<h2>To do lists</h2>
+<p><a href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
+<p>To add a small unit of work in the Kitchen project:</p>
+<pre><code>task add project:Kitchen Select floor tiles</code></pre>
+</div>
+</div>
+<div id="program-with-bash" class="section level1">
+<h1>Program with bash</h1>
+<div id="pipe" class="section level2">
+<h2>Pipe</h2>
+<p>Pipe the output of ls to grep</p>
+<pre><code>ls | grep &quot;.md$&quot;</code></pre>
+<p>When the command doesn’t read from stdin by default, use xargs</p>
+<pre><code>echo README.md | xargs ls -lah
+ls -a | xargs realpath</code></pre>
+<p>Based on an <a href="https://superuser.com/a/890349/419414">explanation of xargs and pipes</a>. When piped to cat, this command simply displays the text “README.md”</p>
+<pre><code>echo README.md | cat</code></pre>
+<p>Using <code>xargs</code>, the output of echo is interpreted as a file name</p>
+<pre><code>echo README.md | xargs cat</code></pre>
+</div>
+<div id="try-catch" class="section level2">
+<h2>Try catch</h2>
+<p><a href="https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-in-bash">Is there a try catch command in bash</a></p>
+<blockquote>
+<p>There is no try/catch in bash; however, one can achieve similar behavior using &amp;&amp; or ||.</p>
+</blockquote>
+<blockquote>
+<p>Using ||: if command1 fails then command2 runs as follows</p>
+</blockquote>
+<pre><code>command1 || command2</code></pre>
+<blockquote>
+<p>Similarly, using &amp;&amp;, command2 will run if command1 is successful</p>
+</blockquote>
+</div>
+<div id="variables" class="section level2">
+<h2>Variables</h2>
+<p><a href="https://www.shellscript.sh/variables1.html">Variables</a></p>
+<pre><code>message = &quot;Hello World&quot;
+echo $message</code></pre>
+</div>
+<div id="wild-cards" class="section level2">
+<h2>Wild cards</h2>
+<p>Search for a pattern in python and R files:</p>
+<pre><code>grep -n &lt;pattern&gt; *{py,R}</code></pre>
 </div>
 </div>
 <div id="read" class="section level1">
@@ -686,98 +1078,6 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 </div>
 </div>
 </div>
-<div id="edit" class="section level1">
-<h1>Edit</h1>
-<div id="edit-image-files" class="section level2">
-<h2>Edit Image files</h2>
-<p>Resize a picture to 2000 px wide using ImageMagick:</p>
-<pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
-<p>Resize a picture to 2000 px wide and also convert it to gray scale:</p>
-<pre><code>convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg </code></pre>
-<p>Convert to <a href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279">black and white</a> (tricky to get the threshold right):</p>
-<pre><code>convert picture1.jpg -threshold 40% picture2.jpg </code></pre>
-<p>Other option to convert to black and white <a href="https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images">good black and white bimodal images</a>:</p>
-<pre><code>convert -monochrome in.png out.png</code></pre>
-<p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
-<pre><code>mkdir newfolder
-mogrify -resize 2000 -path ./newfolder *.jpg
-mogrify -resize 2000 -path ./small/ *.JPG
-mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg</code></pre>
-<p>Batch processing, rotate all images clockwise or counter clockwise</p>
-<pre><code>mogrify -rotate 90 ../small/ *.JPG
-mogrify -rotate 270 ../small/ *.JPG</code></pre>
-</div>
-<div id="edit-music-files" class="section level2">
-<h2>Edit music files</h2>
-<p><a href="https://askubuntu.com/questions/664698/mp3-tags-from-file-names">Mp3 tags from file names</a> <a href="https://pypi.org/project/tagpy/#history">tagpy</a></p>
-</div>
-<div id="edit-pdf-files" class="section level2">
-<h2>Edit PDF files</h2>
-<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
-<pre><code>pdfgrep pattern *.pdf</code></pre>
-<p>Merge multiple PDF into one:</p>
-<pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
-<p>Alternatively, pdftk can be used to merge PDF files</p>
-<pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
-<p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
-<pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf</code></pre>
-<p>Split a pdf in two</p>
-<pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
-# if necessary, install mutool with 
-apt install mupdf-tools</code></pre>
-</div>
-<div id="replace-strings-in-text-files" class="section level2">
-<h2>Replace strings in text files</h2>
-<p>Replace strings</p>
-<pre><code>first=&quot;I love Suzy and Mary&quot;
-second=&quot;Sara&quot;
-first=${first/Suzy/$second}</code></pre>
-<p>Replace strings with sed</p>
-<pre><code>sed -i  &#39;s/pattern/replacement/g&#39; bli.txt 
-
-sed -i  &#39;s/^.*\://g&#39; input_file.txt # edit file in place
-grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code></pre>
-<p>Add a line above and below a line that contains a particular string. This was necessary for a Latex to Lyx document conversion. The Latex file had problematic characters in href links. Conversion worked fine without the href links, to keep the links</p>
-<p>I quoted them in <code>\begin{verbatim}</code> statements. <a href="https://stackoverflow.com/a/24230154/2641825">sed add # before a line containing a pattern</a> <a href="https://unix.stackexchange.com/questions/97428/sed-how-to-do-several-consecutive-substitutions-but-process-file-only-once">sed performing several substitutions</a></p>
-<pre><code># Test output to stdout placing # before and after a matching line
-sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
- # Modify the file in place</code></pre>
-</div>
-<div id="remove-duplicated-lines-from-a-file" class="section level2">
-<h2>Remove duplicated lines from a file</h2>
-<pre><code>awk &#39;!a[$0]++&#39; input.txt </code></pre>
-</div>
-<div id="select-an-editor" class="section level2">
-<h2>Select an editor</h2>
-<p>To choose your preferred text editor, used for example by <code>crontab -e</code>, run:</p>
-<pre><code>select-editor</code></pre>
-</div>
-</div>
-<div id="events" class="section level1">
-<h1>Events</h1>
-<div id="calendar" class="section level2">
-<h2>Calendar</h2>
-<p>Reddit <a href="https://www.reddit.com/r/commandline/comments/iupqui/github_command_line_app_10_launched/">CLI calendar applications</a></p>
-<ul>
-<li><a href="https://calcurse.org/">calcurse</a> github page: <a href="https://github.com/lfos/calcurse">calcurse</a></li>
-<li><a href="https://github.com/itchyny/calendar.vim">calendar.vim</a>, only Google cal no CalDAV support <a href="https://github.com/itchyny/calendar.vim/issues/133">issue 133</a></li>
-<li><a href="https://lostpackets.de/khal/">khal</a></li>
-</ul>
-</div>
-<div id="cron" class="section level2">
-<h2>Cron</h2>
-<p>In order to <a href="https://unix.stackexchange.com/questions/41496/two-different-etc-hosts-depending-upon-the-time">use two differet /etc/hosts depending upon the time</a>, I added the following to /etc/hosts_worktime:</p>
-<pre><code>0.0.0.1 www.youtube.com
-0.0.0.1 youtube.com</code></pre>
-<p>I then created a cron job that copies that files to /etc/hosts at 9am. Start the crontab editor:</p>
-<pre><code>crontab -e</code></pre>
-<p>Add these lines:</p>
-<pre><code>0  9 * * 1-5 ln -f /etc/hosts_worktime /etc/hosts
-0 17 * * 1-5 ln -f /etc/hosts_playtime /etc/hosts</code></pre>
-<p>I initially used <code>cp</code> instead of <code>ln -f</code>, but it’s better to make a hard link so any subsequent modification of /etc/hosts will actually be kept in one of the file, and not overwritten by the <code>cp</code>. I noticed that youtube.com was still available for a little while after I blocked it. I’m not sure it’s necessary or if you simply need to wait a little bit for the change to the hosts file to take effect. Anyway here is an instruction to restart networking and clear the DNS cache:</p>
-<pre><code>sudo /etc/init.d/networking restart</code></pre>
-</div>
-</div>
 <div id="refactor" class="section level1">
 <h1>Refactor</h1>
 <p><a href="https://stackoverflow.com/a/21685766/2641825">A one liner to replace strings with perl in a git repository</a>. The examples below replace all occurrences of the first string with the second string, for all files under git version control.</p>
@@ -793,281 +1093,65 @@ git grep -lz &#39;RMySQL::&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/RMySQL::
 <pre><code>refactor word sword
 git diff</code></pre>
 </div>
-<div id="organise" class="section level1">
-<h1>Organise</h1>
-<div id="compress-and-decompress-files" class="section level2">
-<h2>Compress and decompress files</h2>
-<p>Compress a file using gzip or 7z compression</p>
-<pre><code>gzip &lt;filename&gt;
-7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
-<p>Decompress a single file from several archive formats:</p>
-<pre><code>bzip2 -d &lt;filename.bz2&gt;
-gunzip &lt;filename.gz&gt;</code></pre>
-<p><a href="https://askubuntu.com/a/499809/315347">Askubuntu to extract a .tgz file with tar you need to use,</a></p>
-<pre><code>tar -xvzf /path/to/file.tgz
-tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
-# Extract in a folder that has the archive name
-tar --extract -f /path/to/file.tgz --one-top-leve
-7zr e &lt;filename.7z&gt; # extract all files in the same directory 
-7zr x &lt;filename.7z&gt; # keep directory structure (see also multiple files below)</code></pre>
-<p>Convert a 7z file to gz using a pipe similar to <a href="https://superuser.com/a/357980/419414">this answer</a>.</p>
-<pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
+<div id="security-and-authentication" class="section level1">
+<h1>Security and authentication</h1>
+<div id="generate-passwords" class="section level2">
+<h2>Generate passwords</h2>
+<p><a href="https://packages.debian.org/buster/apg">apg</a> is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as “a maintained software with a comparable feature set becomes available”. Usage:</p>
+<pre><code>apg</code></pre>
 </div>
-<div id="compress-multiple-files" class="section level2">
-<h2>Compress multiple files</h2>
-<p>How do I compress a whole directory?</p>
-<pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
-<p>Where</p>
-<pre><code>-z: Compress archive using gzip program
--c: Create archive
--v: Verbose i.e display progress while creating archive
--f: Archive File name</code></pre>
-<p>Decompress an archive containing multiple files Keep full path of files within the archive To extract content from the archive in the current directory</p>
-<pre><code>tar -zxvf archive-name.tar.gz 
-7zr x &lt;filename.7z&gt;  </code></pre>
-<p>List content of an archive</p>
-<pre><code>7zr l &lt;filename.7z&gt;</code></pre>
-<div id="zip-archive" class="section level3">
-<h3>Zip archive</h3>
-<p>Create the zip archive of a directory</p>
-<pre><code>zip dir.zip -r dir</code></pre>
+<div id="generate-ssh-keys-and-add-them-to-the-agent" class="section level2">
+<h2>Generate SSH keys and add them to the agent</h2>
+<p>Mon Sep 28 09:36:26 CEST 2020 Generate a new key</p>
+<pre><code>cd ~/.ssh
+ssh-keygen &lt;id_rsa_keyname&gt;</code></pre>
+<p>Temporarily add a key to ssh</p>
+<pre><code>ssh-add ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
+<p>List keys</p>
+<pre><code>ssh-add -l</code></pre>
+<p>After a restart of the ssh agent</p>
+<pre><code>killall ssh-agent
+eval `ssh-agent`</code></pre>
+<p>This key will not be available anymore to <a href="https://stackoverflow.com/a/4246809/2641825">permanently add a key to the ssh config file</a> (SO) Edit your <code>~/.ssh/config</code> file:</p>
+<pre><code>IdentityFile ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
+<p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
+<pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
+<p>Note if you copy keys from one machine to another, you might encounter this error: <a href="https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error">ssh “permissions are too open” error</a></p>
+<p>Change the permission so only the current user has access to the file:</p>
+<pre><code>chmod 600 id_rsa</code></pre>
 </div>
+<div id="load-ssh-keys-into-the-remote-server" class="section level2">
+<h2>Load SSH keys into the remote server</h2>
+<p>Based on <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">Install the public key in remote server</a> Once you have an ssh key on your local machine, you need to load it into the remote server’s authorized keys as such:</p>
+<pre><code>ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@server</code></pre>
+<p>OR just copy the public key in remote server as authorized_keys in ~/.ssh/ directory:</p>
+<pre><code>scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys</code></pre>
+<p>The remainder of the <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">cybercity.biz document</a> explains how to disable the password based login on a server.</p>
 </div>
-<div id="move-and-copy-files" class="section level2">
-<h2>Move and copy files</h2>
-<p>Copy a file</p>
-<pre><code>cp file1 file2</code></pre>
-<p><a href="https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure">Recursive copy some files while keeping the directory structure</a></p>
-<pre><code>find . -name &#39;*.csv&#39; -exec cp --parents \{\} /target \;</code></pre>
+<div id="check-a-keys-fingerprint" class="section level2">
+<h2>Check a key’s fingerprint</h2>
+<p>On github, ssh key fingerprints are displayed in md5format. To display the fingerprint in md5format, enter:</p>
+<pre><code>ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub</code></pre>
+<p><a href="https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated">How to generate an SSH key fingerprint</a></p>
 </div>
-<div id="rename-files" class="section level2">
-<h2>Rename files</h2>
-<p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
-<pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
+<div id="secure-shell-and-secure-copy" class="section level2">
+<h2>Secure shell and secure copy</h2>
+<p>log into a remote machine</p>
+<pre><code>ssh user@remote_machine</code></pre>
+<p>Copy a local file to a file on the remote machine</p>
+<pre><code>scp local_file_name user@remote_machine:path_to_file/file_name</code></pre>
+<p>Copy a file from the remote machine to a local file</p>
+<pre><code>scp user@remote_machine:path_to_file/file_name  local_file_name</code></pre>
+<p>Copy a full directory (dmouraty) from the remote machine:</p>
+<pre><code> scp -rp user@dest:/path destdirectory</code></pre>
 </div>
-<div id="to-do-lists" class="section level2">
-<h2>To do lists</h2>
-<p><a href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
-<p>To add a small unit of work in the Kitchen project:</p>
-<pre><code>task add project:Kitchen Select floor tiles</code></pre>
-</div>
-</div>
-<div id="convert" class="section level1">
-<h1>Convert</h1>
-<p>This section is about converting from one document format into another. For example converting a text file into a pdf file and vice-versa.</p>
-<div id="pandoc" class="section level2">
-<h2>Pandoc</h2>
-<p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another. <a href="https://pandoc.org/MANUAL.html">Pandoc user guide</a></p>
-<p>Convert a markdown document to pdf</p>
-<pre><code>pandoc filname.md -o filename.pdf
-# If there are utf-8 encoding issues, use another engine
-pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
-<p>Convert an odf document to markdown</p>
-<pre><code>pandoc filename.odt -o filename.md </code></pre>
-<p>Convert a Microsoft Word document to markdown</p>
-<pre><code>pandoc filename.docx -o filename.md </code></pre>
-<p>Convert a Microsoft Word document to markdown and keep images</p>
-<pre><code>pandoc --extract-media ./figures input.docx -o output.md</code></pre>
-<p>Convert an html code snippets to markdown and display the output at the command line</p>
-<pre><code>echo &quot;Link: &lt;a href=&quot;https://www.linphone.org/&quot;&gt;Linphone&lt;/a&gt;&quot;| pandoc -f html -t markdown
-# Link: [Linphone](https://www.linphone.org/)</code></pre>
-<p>Convert an entire web page to markdown</p>
-<pre><code>pandoc https://pandoc.org/help.html -t markdown</code></pre>
-<p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two different header styles</a> The default is to use setext-style headers for levels 1-2, and then ATX headers. To use ATX style headers only in markdown output:</p>
-<pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
-<div id="yaml-front-matter-for-styles" class="section level3">
-<h3>Yaml front matter for styles</h3>
-<p>Adding headers and footers to pandoc suggests using:</p>
-<pre><code>---
-title: Test
-author: Author Name
-header-includes: |
-    \usepackage{fancyhdr}
-    \pagestyle{fancy}
-    \fancyhead[CO,CE]{This is fancy}
-    \fancyfoot[CO,CE]{So is this}
-    \fancyfoot[LE,RO]{\thepage}
-abstract: This is a pandoc test . . . 
----</code></pre>
-<p>Custom yaml front matter for readings file See also the vim.Rmd document on pandoc bibliographies.</p>
-<pre><code>---
-title: Reading notes
-author: Paul Rougieux
-bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
-abstract: Reading notes at the JRC
-header-includes: |
-    \usepackage{fancyhdr}
-    \pagestyle{fancy}
-    \fancyhead[CO,CE]{Reading notes}
-    \fancyfoot[CO,CE]{JRC}
-    \fancyfoot[LE,RO]{\thepage}
----
-\tableofcontents{}
-...file content... this is probably not the way to do it    
-\bibliography{../bibliography/jrc_ispra}
-\bibliographystyle{apalike}</code></pre>
-<p>This is probably not the way to do it, the bibliography should be included in the pandoc call? Note this requires citeproc</p>
-<pre><code>sudo apt install pandoc-citeproc</code></pre>
-<p>Then this should work :</p>
-<pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
-<p>There is still an issue with the encoding of the bibliography.</p>
-</div>
-<div id="makefile" class="section level3">
-<h3>Makefile</h3>
-<p>Generic <a href="https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69">makefile for pandoc</a></p>
-<p><a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">Bash script for pandoc</a></p>
-<pre><code>for mdfile in *.md; do
-pdffile=${mdfile%.md}.pdf
-echo $pdffile
-done</code></pre>
-<p>Convert all docx documents to markdown in the current folder</p>
-<pre><code>for docxfile in *.docx; do
-mdfile=${docxfile%.docx}.md
-echo &quot;converting $docxfile to $mdfile&quot;
-pandoc &quot;$docxfile&quot; -o &quot;$mdfile&quot;
-done</code></pre>
-<p>Pandoc can convert to PDF, but not from PDF.</p>
-<p>You can also create template files as explained in super user <a href="https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044">markdown to latex conversion with a custom preamble</a></p>
-</div>
-</div>
-<div id="pdfminer" class="section level2">
-<h2>pdfminer</h2>
-<p>(pdfminer](<a href="https://github.com/pdfminer/pdfminer.six" class="uri">https://github.com/pdfminer/pdfminer.six</a>) Convert all pdf documents to text files in the current folder:</p>
-<pre><code>for pdffile in *.pdf; do
-txtfile=${pdffile%.pdf}.txt
-echo &quot;converting $pdffile to $txtfile&quot;
-pdf2txt.py $pdffile &gt; $txtfile
-done</code></pre>
-<p>See also a utility to extract tables from pdf documents.</p>
-</div>
-<div id="tabula" class="section level2">
-<h2>Tabula</h2>
-<p>Extract tables from a pdf with <a href="https://tabula.technology/">tabula</a></p>
-<pre><code>cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
-java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
-<p>Then visit <a href="http://127.0.0.1:8080/" class="uri">http://127.0.0.1:8080/</a></p>
-</div>
-</div>
-<div id="download" class="section level1">
-<h1>Download</h1>
-<div id="download-with-curl" class="section level2">
-<h2>Download with Curl</h2>
-<p>Load a file from a URL, using the file name from the URL</p>
-<pre><code>curl -O &lt;url_including_a_file_name&gt;</code></pre>
-</div>
-<div id="download-videos-and-audio" class="section level2">
-<h2>Download videos and audio</h2>
-<p>Install youtube-dl using pip:</p>
-<pre><code> sudo pip install --upgrade youtube_dl</code></pre>
-<p>You may also need to install the ffmpeg package:</p>
-<pre><code>sudo apt-get install ffmpeg</code></pre>
-<p>Download a video from youtube :</p>
-<pre><code>youtube-dl video_url</code></pre>
-<p>Download only the audio in an OGG Vorbis format</p>
-<pre><code>youtube-dl --extract-audio --audio-format vorbis video_url</code></pre>
-<p>Download only the audio in an .mp3 format</p>
-<pre><code>youtube-dl --extract-audio --audio-format mp3 video_url</code></pre>
-<p>Create bash aliases to download various audio formats from youtube</p>
-<pre><code>alias youtubevorbis=&quot;youtube-dl --extract-audio --audio-format vorbis&quot;
-alias youtubemp3=&quot;youtube-dl --extract-audio --audio-format mp3&quot;</code></pre>
-<p>If you encounter some Errors 403 forbidden, removing the cache might help</p>
-<p><a href="https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by">error 403 with youtube-dl</a></p>
-<pre><code>youtube-dl --rm-cache-dir</code></pre>
-</div>
-<div id="parse-html-files-for-urls" class="section level2">
-<h2>Parse html files for URLS</h2>
-<p><a href="https://unix.stackexchange.com/questions/181254/how-to-use-grep-and-cut-in-script-to-obtain-website-urls-from-an-html-file">How to use grep and cut in script to obtain website URLs from an HTML file</a> Nice examples such as this one with decomposition</p>
-<pre><code>grep -Eoi &#39;&lt;a [^&gt;]+&gt;&#39; source.html |
-grep -Eo &#39;href=&quot;[^\&quot;]+&quot;&#39; | 
-grep -Eo &#39;(http|https)://[^/&quot;]+&#39;</code></pre>
-<p>and this one which extracts all top level domain present in an html page</p>
-<pre><code>cat urls.html | grep -Eo &quot;(http|https)://[a-zA-Z0-9./?=_-]*&quot; | sort -u</code></pre>
-<p>This is how I extracted all links from an html file:</p>
-<pre><code>grep -Eo &#39;(http|https)://[^&quot;]+&#39; Musicwelistento.html | sed -e  &#39;s/https:\/\/www.google.com\/url?q=//g&#39; &gt; song_links.txt</code></pre>
-</div>
-</div>
-<div id="users" class="section level1">
-<h1>Users</h1>
-<div id="manager-users-and-groups" class="section level2">
-<h2>Manager users and groups</h2>
-<p>Check your user id</p>
-<pre><code>id 
-echo $UID
-echo $USER</code></pre>
-<p>What group do you belong to as a user</p>
-<pre><code>groups</code></pre>
-<p>Add a new user</p>
-<pre><code>useradd username</code></pre>
-<p>Set a password for the new user</p>
-<pre><code>passwd username </code></pre>
-<p>Delete a user</p>
-<pre><code>userdel username</code></pre>
-<p>Temporary log in as a given user</p>
-<pre><code>su username</code></pre>
-<p>Add a user to the super users</p>
-<pre><code>adduser username sudo</code></pre>
-<p>That user needs to re-log into the shell for the change to take effect.</p>
-<p>Show all users</p>
-<pre><code>getent passwd</code></pre>
-<p>Show all groups</p>
-<pre><code>getent group </code></pre>
-</div>
-<div id="change-file-permission" class="section level2">
-<h2>Change file permission</h2>
-<p>Change user and group of a file</p>
-<pre><code>chown groupname:username filename</code></pre>
-<p>Change user and group of all files in a folder, recursively</p>
-<pre><code># In one command
-sudo chown -R paul:paul scenarios
-# In two commands
-sudo chown -R paul scenarios
-sudo chgrp -R paul scenarios</code></pre>
-<p>Change file permission</p>
-<pre><code>chmod a=rwx filename
-chmod 777 filename # all permissions to every one</code></pre>
-<p>Change file permissions recursively:</p>
-<pre><code>chmod 755 directoryname # all permissions to the user, only read and execute for other users
-sudo chmod -R 770 scenarios</code></pre>
-<p><a href="https://stackoverflow.com/a/58449179/2641825">nice illustration</a> of read, write execute permission codes on Linux.</p>
-<p>Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.</p>
-<pre><code>Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as &quot;rwxr-xr-x&quot; in ls -l. 
-The default for document files on Debian seems to be chmod 644, visible as &quot;-rw-r--r--&quot; in ls -l.</code></pre>
-</div>
-<div id="make-the-bash-shell-by-default-for-a-user" class="section level2">
-<h2>Make the bash shell by default for a user</h2>
-<p><a href="https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485">No path, or command history through SSH when logged in to server as someone other than root</a></p>
-<p>Edit the users file</p>
-<pre><code>sudo vim /etc/passwd</code></pre>
-<p>Change</p>
-<pre><code>paul:x:1000:1000::/home/paul:/bin/sh</code></pre>
-<p>to</p>
-<pre><code>paul:x:1000:1000::/home/paul:/bin/bash</code></pre>
-</div>
-</div>
-<div id="dot-files" class="section level1">
-<h1>Dot files</h1>
-<div id="alias" class="section level2">
-<h2>Alias</h2>
-<pre><code>alias ll=&quot;ls -lh&quot; </code></pre>
-<p>Based on how can i sort du-h output by size</p>
-<pre><code>alias du=&#39;du -hd1 | sort -h -r&#39;</code></pre>
-<p>You can place those commands in your ~/.bashrc to create a permanent alias. bashrc:</p>
-<blockquote>
-<p>“You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly.”</p>
-</blockquote>
-<p>Alias from other persons:</p>
-<p><a href="https://github.com/statox/dotfiles/blob/master/bash_aliases" class="uri">https://github.com/statox/dotfiles/blob/master/bash_aliases</a></p>
-</div>
-<div id="profile-.bash_profile-and-.bashrc" class="section level2">
-<h2>Profile .bash_profile and .bashrc</h2>
-<p>These are places where a user can turn of the system BEEP :</p>
-<pre><code>setterm -blength 0</code></pre>
-<p>.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.</p>
-<p>Debian Dotfiles</p>
-<pre><code>&quot;Now, since bash is being invoked as a login shell (with name &quot;-bash&quot;, a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that.&quot;
-
-[...] &quot;You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  &quot;</code></pre>
-<p>In .bashrc a user can set environment variables, define alias (see above).</p>
+<div id="gpg-signing-keys" class="section level2">
+<h2>GPG signing keys</h2>
+<p>Generate a pgp key</p>
+<pre><code>gpg --gen-key</code></pre>
+<p>To submit your key to a server, export the key</p>
+<pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
+<p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
 </div>
 </div>
 <div id="system" class="section level1">
@@ -1197,119 +1281,6 @@ kill -9 process_it # -9 forces the kill</code></pre>
 <pre><code> xkill</code></pre>
 </div>
 </div>
-<div id="bash-programming" class="section level1">
-<h1>Bash Programming</h1>
-<div id="try-catch" class="section level2">
-<h2>Try catch</h2>
-<p><a href="https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-in-bash">Is there a try catch command in bash</a></p>
-<blockquote>
-<p>There is no try/catch in bash; however, one can achieve similar behavior using &amp;&amp; or ||.</p>
-</blockquote>
-<blockquote>
-<p>Using ||: if command1 fails then command2 runs as follows</p>
-</blockquote>
-<pre><code>command1 || command2</code></pre>
-<blockquote>
-<p>Similarly, using &amp;&amp;, command2 will run if command1 is successful</p>
-</blockquote>
-</div>
-<div id="variables" class="section level2">
-<h2>Variables</h2>
-<p><a href="https://www.shellscript.sh/variables1.html">Variables</a></p>
-<pre><code>message = &quot;Hello World&quot;
-echo $message</code></pre>
-</div>
-<div id="wild-cards" class="section level2">
-<h2>Wild cards</h2>
-<p>Search for a pattern in python and R files:</p>
-<pre><code>grep -n &lt;pattern&gt; *{py,R}</code></pre>
-</div>
-</div>
-<div id="authentification-and-security" class="section level1">
-<h1>Authentification and security</h1>
-<div id="generate-passwords" class="section level2">
-<h2>Generate passwords</h2>
-<p><a href="https://packages.debian.org/buster/apg">apg</a> is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as “a maintained software with a comparable feature set becomes available”. Usage:</p>
-<pre><code>apg</code></pre>
-</div>
-<div id="generate-ssh-keys-and-add-them-to-the-agent" class="section level2">
-<h2>Generate SSH keys and add them to the agent</h2>
-<p>Mon Sep 28 09:36:26 CEST 2020 Generate a new key</p>
-<pre><code>cd ~/.ssh
-ssh-keygen &lt;id_rsa_keyname&gt;</code></pre>
-<p>Temporarily add a key to ssh</p>
-<pre><code>ssh-add ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
-<p>List keys</p>
-<pre><code>ssh-add -l</code></pre>
-<p>After a restart of the ssh agent</p>
-<pre><code>killall ssh-agent
-eval `ssh-agent`</code></pre>
-<p>This key will not be available anymore to <a href="https://stackoverflow.com/a/4246809/2641825">permanently add a key to the ssh config file</a> (SO) Edit your <code>~/.ssh/config</code> file:</p>
-<pre><code>IdentityFile ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
-<p>If the key was generated with a password,and you don’t exactly remember the password, you can <a href="https://stackoverflow.com/a/23666831/2641825">test a few password you might remember with</a>:</p>
-<pre><code>ssh-keygen -y -f &lt;private_key_file_name&gt;</code></pre>
-<p>Note if you copy keys from one machine to another, you might encounter this error: <a href="https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error">ssh “permissions are too open” error</a></p>
-<p>Change the permission so only the current user has access to the file:</p>
-<pre><code>chmod 600 id_rsa</code></pre>
-</div>
-<div id="load-ssh-keys-into-the-remote-server" class="section level2">
-<h2>Load SSH keys into the remote server</h2>
-<p>Based on <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">Install the public key in remote server</a> Once you have an ssh key on your local machine, you need to load it into the remote server’s authorized keys as such:</p>
-<pre><code>ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@server</code></pre>
-<p>OR just copy the public key in remote server as authorized_keys in ~/.ssh/ directory:</p>
-<pre><code>scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys</code></pre>
-<p>The remainder of the <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">cybercity.biz document</a> explains how to disable the password based login on a server.</p>
-</div>
-<div id="check-a-keys-fingerprint" class="section level2">
-<h2>Check a key’s fingerprint</h2>
-<p>On github, ssh key fingerprints are displayed in md5format. To display the fingerprint in md5format, enter:</p>
-<pre><code>ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub</code></pre>
-<p><a href="https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated">How to generate an SSH key fingerprint</a></p>
-</div>
-<div id="secure-shell-and-secure-copy" class="section level2">
-<h2>Secure shell and secure copy</h2>
-<p>log into a remote machine</p>
-<pre><code>ssh user@remote_machine</code></pre>
-<p>Copy a local file to a file on the remote machine</p>
-<pre><code>scp local_file_name user@remote_machine:path_to_file/file_name</code></pre>
-<p>Copy a file from the remote machine to a local file</p>
-<pre><code>scp user@remote_machine:path_to_file/file_name  local_file_name</code></pre>
-<p>Copy a full directory (dmouraty) from the remote machine:</p>
-<pre><code> scp -rp user@dest:/path destdirectory</code></pre>
-</div>
-<div id="gpg-signing-keys" class="section level2">
-<h2>GPG signing keys</h2>
-<p>Generate a pgp key</p>
-<pre><code>gpg --gen-key</code></pre>
-<p>To submit your key to a server, export the key</p>
-<pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
-<p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
-</div>
-</div>
-<div id="navigate" class="section level1">
-<h1>Navigate</h1>
-<p>To search within previous commands, press CTRL+R and start typing words contained in the previous command.</p>
-<p>If you accidentally press CTRL+S the <a href="https://askubuntu.com/a/264253/315347">terminal will hang</a> Press <code>CTRL+Q</code> to regain control. See also <a href="https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator">Ctrl-s hang terminal emulator?</a> which provides a workaround: entering <code>stty -ixon</code> in .bashrc.</p>
-</div>
-<div id="networking" class="section level1">
-<h1>Networking</h1>
-<div id="show-ip-addresses" class="section level2">
-<h2>Show IP addresses</h2>
-<p>Show the IP address</p>
-<pre><code>ip addr show</code></pre>
-<p>Show the state of network interfaces</p>
-<pre><code>ip link</code></pre>
-<p>Check open ports on a system</p>
-<pre><code>nmap -Pn &lt;hostname or IP address&gt;</code></pre>
-</div>
-<div id="show-domain-name-and-host-name" class="section level2">
-<h2>Show domain name and host name</h2>
-<p>Show the domain name</p>
-<pre><code>domainname</code></pre>
-<p>Show the host name</p>
-<pre><code>hostname</code></pre>
-</div>
-</div>
 <div id="terminal-multiplexers" class="section level1">
 <h1>Terminal multiplexers</h1>
 <p>Superuser.com <a href="https://superuser.com/questions/236158/tmux-vs-screen">tmux or screen</a></p>
@@ -1401,6 +1372,64 @@ bind-key -n &#39;C-j&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-j&#39;  
 bind-key -n &#39;C-k&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-k&#39;  &#39;select-pane -U&#39;
 bind-key -n &#39;C-l&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-l&#39;  &#39;select-pane -R&#39;</code></pre>
 </div>
+</div>
+</div>
+<div id="users" class="section level1">
+<h1>Users</h1>
+<div id="manager-users-and-groups" class="section level2">
+<h2>Manager users and groups</h2>
+<p>Check your user id</p>
+<pre><code>id 
+echo $UID
+echo $USER</code></pre>
+<p>What group do you belong to as a user</p>
+<pre><code>groups</code></pre>
+<p>Add a new user</p>
+<pre><code>useradd username</code></pre>
+<p>Set a password for the new user</p>
+<pre><code>passwd username </code></pre>
+<p>Delete a user</p>
+<pre><code>userdel username</code></pre>
+<p>Temporary log in as a given user</p>
+<pre><code>su username</code></pre>
+<p>Add a user to the super users</p>
+<pre><code>adduser username sudo</code></pre>
+<p>That user needs to re-log into the shell for the change to take effect.</p>
+<p>Show all users</p>
+<pre><code>getent passwd</code></pre>
+<p>Show all groups</p>
+<pre><code>getent group </code></pre>
+</div>
+<div id="change-file-permission" class="section level2">
+<h2>Change file permission</h2>
+<p>Change user and group of a file</p>
+<pre><code>chown groupname:username filename</code></pre>
+<p>Change user and group of all files in a folder, recursively</p>
+<pre><code># In one command
+sudo chown -R paul:paul scenarios
+# In two commands
+sudo chown -R paul scenarios
+sudo chgrp -R paul scenarios</code></pre>
+<p>Change file permission</p>
+<pre><code>chmod a=rwx filename
+chmod 777 filename # all permissions to every one</code></pre>
+<p>Change file permissions recursively:</p>
+<pre><code>chmod 755 directoryname # all permissions to the user, only read and execute for other users
+sudo chmod -R 770 scenarios</code></pre>
+<p><a href="https://stackoverflow.com/a/58449179/2641825">nice illustration</a> of read, write execute permission codes on Linux.</p>
+<p>Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.</p>
+<pre><code>Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as &quot;rwxr-xr-x&quot; in ls -l. 
+The default for document files on Debian seems to be chmod 644, visible as &quot;-rw-r--r--&quot; in ls -l.</code></pre>
+</div>
+<div id="make-the-bash-shell-by-default-for-a-user" class="section level2">
+<h2>Make the bash shell by default for a user</h2>
+<p><a href="https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485">No path, or command history through SSH when logged in to server as someone other than root</a></p>
+<p>Edit the users file</p>
+<pre><code>sudo vim /etc/passwd</code></pre>
+<p>Change</p>
+<pre><code>paul:x:1000:1000::/home/paul:/bin/sh</code></pre>
+<p>to</p>
+<pre><code>paul:x:1000:1000::/home/paul:/bin/bash</code></pre>
 </div>
 </div>
 <div id="vpn" class="section level1">

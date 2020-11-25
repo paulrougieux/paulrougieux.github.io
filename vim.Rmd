@@ -1710,6 +1710,7 @@ This page is the continuation of [my 2014 blog post on Vim commands](https://pau
 
 * [Vim creator Bram Moolenaar
     interview](https://www.binpress.com/vim-creator-bram-moolenaar-interview/)
+
 > "The project I encountered in Kibaale is completely different. The foreigners
 > who work there are volunteers, they have sponsors themselves to make it
 > possible to live and work there. All the donations for children go to the
@@ -1719,6 +1720,7 @@ This page is the continuation of [my 2014 blog post on Vim commands](https://pau
 > find a job is wonderful. "
 
 * [Vi](https://en.wikipedia.org/wiki/Vi)
+
 > "The original code for vi was written by Bill Joy in 1976, as the visual mode
 > for a line editor called ex that Joy had written with Chuck Haley.[3] Bill
 > Joy's ex 1.1 was released as part of the first Berkeley Software Distribution
@@ -1732,6 +1734,7 @@ On the free software process
 
 * Vim is based on vi, itself based on the [ex
   editor](https://en.wikipedia.org/wiki/Ex_(text_editor))
+
 > "The core ex commands which relate to search and replace are essential to vi.
 > For instance, the ex command :%s/XXX/YYY/g replaces every instance of XXX
 > with YYY, and works in vi too. The % means every line in the file. The 'g'

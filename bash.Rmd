@@ -24,6 +24,153 @@ built. A detailed list of GNU core utilities is available under the command :
 The page below also contains many commands from external tools 
 that are not part of the GNU project.
 
+# Command history
+
+To search within previous commands, press CTRL+R and start typing words contained in the previous command. 
+
+If you accidentally press CTRL+S the [terminal will hang](https://askubuntu.com/a/264253/315347)
+Press `CTRL+Q` to regain control.
+See also [Ctrl-s hang terminal emulator?](https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator)
+which provides a workaround: entering `stty -ixon` in .bashrc. 
+
+# Convert
+
+This section is about converting from one document format into another. For
+example converting a text file into a pdf file and vice-versa.
+
+## Pandoc
+
+[Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
+to convert text files from one format to another.
+[Pandoc user guide](https://pandoc.org/MANUAL.html)
+
+Convert a markdown document to pdf
+
+    pandoc filname.md -o filename.pdf
+    # If there are utf-8 encoding issues, use another engine
+    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex
+
+Convert an odf document to markdown
+
+    pandoc filename.odt -o filename.md 
+
+Convert a Microsoft Word document to markdown
+
+    pandoc filename.docx -o filename.md 
+
+Convert a Microsoft Word document to markdown and keep images
+
+    pandoc --extract-media ./figures input.docx -o output.md
+
+Convert an html code snippets to markdown and display the output at the command line
+
+    echo "Link: <a href="https://www.linphone.org/">Linphone</a>"| pandoc -f html -t markdown
+    # Link: [Linphone](https://www.linphone.org/)
+
+Convert an entire web page to markdown
+
+    pandoc https://pandoc.org/help.html -t markdown
+
+[Markdown has two different header
+styles](https://pandoc.org/MANUAL.html#headers) The default is to use
+setext-style headers for levels 1-2, and then ATX headers. To use ATX style
+headers only in markdown output:
+
+    pandoc --atx-headers filename.docx -o filename.md 
+
+
+### Yaml front matter for styles
+
+Adding headers and footers to pandoc suggests using:
+
+    ---
+    title: Test
+    author: Author Name
+    header-includes: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[CO,CE]{This is fancy}
+        \fancyfoot[CO,CE]{So is this}
+        \fancyfoot[LE,RO]{\thepage}
+    abstract: This is a pandoc test . . . 
+    ---
+
+Custom yaml front matter for readings file
+See also the vim.Rmd document on pandoc bibliographies.
+
+    ---
+    title: Reading notes
+    author: Paul Rougieux
+    bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
+    abstract: Reading notes at the JRC
+    header-includes: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[CO,CE]{Reading notes}
+        \fancyfoot[CO,CE]{JRC}
+        \fancyfoot[LE,RO]{\thepage}
+    ---
+    \tableofcontents{}
+    ...file content... this is probably not the way to do it    
+    \bibliography{../bibliography/jrc_ispra}
+    \bibliographystyle{apalike}
+
+This is probably not the way to do it, the bibliography should be included in the pandoc call? 
+Note this requires citeproc
+
+    sudo apt install pandoc-citeproc
+
+Then this should work :
+
+    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib
+
+There is still an issue with the encoding of the bibliography.
+
+### Makefile
+Generic [makefile for
+pandoc](https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69)
+
+[Bash script for pandoc](https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs)
+
+    for mdfile in *.md; do
+    pdffile=${mdfile%.md}.pdf
+    echo $pdffile
+    done
+
+Convert all docx documents to markdown in the current folder
+
+    for docxfile in *.docx; do
+    mdfile=${docxfile%.docx}.md
+    echo "converting $docxfile to $mdfile"
+    pandoc "$docxfile" -o "$mdfile"
+    done
+
+Pandoc can convert to PDF, but not from PDF.
+
+You can also create template files as explained in super user [markdown to latex conversion with a custom preamble](https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044)
+
+## pdfminer
+
+(pdfminer](https://github.com/pdfminer/pdfminer.six)
+Convert all pdf documents to text files in the current folder:
+
+    for pdffile in *.pdf; do
+    txtfile=${pdffile%.pdf}.txt
+    echo "converting $pdffile to $txtfile"
+    pdf2txt.py $pdffile > $txtfile
+    done
+
+See also a utility to extract tables from pdf documents.
+
+## Tabula
+
+Extract tables from a pdf with [tabula](https://tabula.technology/)
+
+    cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
+    java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar
+
+Then visit http://127.0.0.1:8080/
+
 # Count
 
 ## Number of files
@@ -53,197 +200,102 @@ Count the number of lines in all files, and give the total line count.
     find . -name '*.R' | xargs wc -l # R code
 
 
-# Find
+# Dot files
 
-## Find files
+## Alias
 
-Find files in subdirectories of the current directory (Quotes are requited to
-prevent shell command expansion). Find files of a specific extension:
+    alias ll="ls -lh" 
 
-    find . -name "*.pdf" 
 
-Find files of a specific modification time:
+Based on how can i sort du-h output by size
 
-    find . -mtime 0 # modified in the last 24 hours
+    alias du='du -hd1 | sort -h -r'
 
-Find files [not having a specific extension](https://stackoverflow.com/questions/1341467/find-filenames-not-ending-in-specific-extensions-on-unix):
 
-    find . -type f -not -name '*.csv'
-    # Alternative syntax
-    find . -type f ! \( -name '*.csv' \)
+You can place those commands in your ~/.bashrc to create a permanent alias.
+bashrc:
 
-Limit the depth of the search 
+>    "You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly."
 
-    find . -maxdepth 1 -name "*.pdf" 
+Alias from other persons: 
 
-Find files in the whole system
+https://github.com/statox/dotfiles/blob/master/bash_aliases
 
-    locate filename
+## Profile .bash_profile and .bashrc
+These are places where a user can turn of the system BEEP :
 
-## Get information about a file
+    setterm -blength 0
 
-Determine file type and encoding. The -i option shows the mime type strings.
+.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.
 
-    file filename
-    file -i filename
+Debian Dotfiles
 
-list a directory
-```{bash}
-ls
-ls -R # list subdirectories recursively
-ls -lh # sizes in human readable format
-```
+    "Now, since bash is being invoked as a login shell (with name "-bash", a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that."
 
-Display the [last modification date of a file](https://stackoverflow.com/questions/16391208/print-a-files-last-modified-date-in-bash)
+    [...] "You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  "
 
-    date -r <filename>
-    ls -l <filename>
+In .bashrc a user can set environment variables, define alias (see above).
 
-More file information
 
-    stat <filename>
 
-## Search and filter text files
-Search with Grep
+# Download 
 
-    grep "text" file.txt
+## Download with Curl
 
-Recursive search (-r) in all files in the directory for a given pattern, case insensitive (-i)
+Load a file from a URL, using the file name from the URL
 
-    grep -ri "pattern" .
+    curl -O <url_including_a_file_name>
 
-Give 1 line of context before and 2 lines of context after:
+## Download videos and audio
 
-    grep -B 1 -A 2 pattern README.md
+Install youtube-dl using pip:
 
-Search for lines containing "Done" or "encountered" only in specific log files recursively in a directory.
-Also displays the line count at the end.
+     sudo pip install --upgrade youtube_dl
 
-    grep -r Done --include runner.log | tee /dev/tty |wc -l
-    grep -r encountered --include runner.log | tee /dev/tty |wc -l
+You may also need to install the ffmpeg package:
 
-Note: [How to pipe stdout while keeping it on screen](https://stackoverflow.com/questions/5677201/how-to-pipe-stdout-while-keeping-it-on-screen-and-not-to-a-output-file)
+    sudo apt-get install ffmpeg
 
-Show all csv files mentioned in a source code (supposing the csv file name contain only alphanumeric characters).
-Use Extended regular expression (-E) to search for alphanumeric characters, 
-only show the matching result (-o), not the full line 
-and show the line number (-n) where the string occurs:
+Download a video from youtube :
 
-    grep -Eon "[[:alnum:]]+.csv" file.txt
+    youtube-dl video_url
 
-Count occurrences of a word in a file
+Download only the audio in an OGG Vorbis format
 
-    grep -roh word filename.txt  | wc -w
+    youtube-dl --extract-audio --audio-format vorbis video_url
 
-[Awk tutorial](http://www.grymoire.com/Unix/Awk.html#uh-11), for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
+Download only the audio in an .mp3 format
 
-    awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
+    youtube-dl --extract-audio --audio-format mp3 video_url
 
-Regexp match beginning of and end of line with ^ and \$.
+Create bash aliases to download various audio formats from youtube
 
-Follow the end of a log file as it is written 
+    alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
+    alias youtubemp3="youtube-dl --extract-audio --audio-format mp3"
 
-    tail -f
+If you encounter some Errors 403 forbidden, removing the cache might help
 
-See tab and end of line characters in a text file
+[error 403 with youtube-dl](https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by)
 
-    cat -te filename |less 
+    youtube-dl --rm-cache-dir
 
-# Read 
+## Parse html files for URLS
 
-## Play Midi files
+[How to use grep and cut in script to obtain website URLs from an HTML file](https://unix.stackexchange.com/questions/181254/how-to-use-grep-and-cut-in-script-to-obtain-website-urls-from-an-html-file)
+Nice examples such as this one with decomposition 
 
-Install a software synthesizer to play midi files.
-[VideoLan Wiki](https://wiki.videolan.org/Midi/)
+    grep -Eoi '<a [^>]+>' source.html |
+    grep -Eo 'href="[^\"]+"' | 
+    grep -Eo '(http|https)://[^/"]+'
 
-> If the FluidSynth codec is not shown in VLC's preferences, you have to
-> install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is
-> in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and
-> fluid-soundfont-gm packages install some sound 
+and this one which extracts all top level domain present in an html page 
 
-Installation instruction:
+    cat urls.html | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort -u
 
-    sudo apt install vlc-plugin-fluidsynth fluid-soundfont-gs fluid-soundfont-gm
+This is how I extracted all links from an html file: 
 
+    grep -Eo '(http|https)://[^"]+' Musicwelistento.html | sed -e  's/https:\/\/www.google.com\/url?q=//g' > song_links.txt
 
-## Play music with cmus
-
-[Cmus tutorial](https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt):
-
-    man cmus-tutorial
-
-Cmus has several view modes. When starting cmus for the first time press 5 to
-go to the file-browser panel, choose a folder and press "a" to add it to the
-cmus library. Then press "2" to go to the simple library view or press "1" to
-go to the artist/album view.
-
-Here is the list of view modes:
-
-    1 view tree
-    2 view sorted
-    3 view playlist
-    4 view queue
-    5 view browser
-    6 view filters
-    7 view settings
-
-|Common Context |Remote Command | Description                        |
-|---------------|---------------|------------------------------------|
-| b             |player-next    |                                    |
-| c             |player-pause   |                                    |
-| C             |               | Continue at end of track           |
-| q             |quit -i        |                                    |
-| s             |shuffle        |                                    |
-| v             |player-stop    |                                    |
-| x             |player-play    |                                    |
-| z             |player-prev    |                                    |
-
-Commands can be sent through a command line with cmus-remote, for example
-to pause a running instance of cmus (and restart it):
-
-    cmus-remote -C player-pause
-
-I use this in the pomodoro gnome app to pause music at breaks.
-
-Volume control
-
-|Common Context |Description                                         |
-|---------------|----------------------------------------------------|
-| =             |:vol +10%                                           |
-| +             |:vol +10%                                           |
-| -             |:vol -10%                                           |
-| [             |:vol +1% +0%                                        |
-| ]             |:vol +0% +1%                                        |
-| {             |:vol -1% -0%                                        |
-| }             |:vol -0% -1%                                        |
-
-Jump to currently playing song `i`.
-Follow currently playing son `f` see [issue 206](https://github.com/cmus/cmus/issues/206)
-
-There is a feedback of all the currently active options at the bottom right of
-the cums screen.
-
-### Playlist
-
-Create a playlist file, in bash:
-
-    find -name '*.ogg'> playlist.m3u
-
-Open a playlist in the playlist view (4), in the cmus command pane:
-
-    :load playlist.m3u
-
-Add a song from the library view (2) to the playlist view (4):
-
-    y
-
-Delete a song from the playlist view (4):
-
-    suppr
-
-Save the modified playlist file:
-
-    save
 
 # Edit
 
@@ -394,28 +446,159 @@ instruction to restart networking and clear the DNS cache:
 
     sudo /etc/init.d/networking restart
 
-# Refactor
+# Find
 
-[A one liner to replace strings with perl in a git repository](https://stackoverflow.com/a/21685766/2641825).
-The examples below replace all occurrences of the first string with the second string, for all 
-files under git version control. 
+## Find files
 
-    git grep -lz 'first_string'| xargs -0 perl -i'' -pE "s/first_string/second_string/g"
-    git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
-    git grep -lz 'RMySQL::'| xargs -0 perl -i'' -pE "s/RMySQL::/RMariaDB::/g"
+Find files in subdirectories of the current directory (Quotes are requited to
+prevent shell command expansion). Find files of a specific extension:
 
-Alias to refactor:
+    find . -name "*.pdf" 
 
-    refactor() {
-        echo "Replacing $1 by $2 in all files in this git repository."
-        git grep -lz $1| xargs -0 perl -i'' -pE "s/$1/$2/g"
-    }
+Find files of a specific modification time:
 
-Usage, for example replace 'word' with 'sword':
+    find . -mtime 0 # modified in the last 24 hours
 
-    refactor word sword
-    git diff
+Find files [not having a specific extension](https://stackoverflow.com/questions/1341467/find-filenames-not-ending-in-specific-extensions-on-unix):
 
+    find . -type f -not -name '*.csv'
+    # Alternative syntax
+    find . -type f ! \( -name '*.csv' \)
+
+Limit the depth of the search 
+
+    find . -maxdepth 1 -name "*.pdf" 
+
+Find files in the whole system
+
+    locate filename
+
+## Get information about a file
+
+Determine file type and encoding. The -i option shows the mime type strings.
+
+    file filename
+    file -i filename
+
+list a directory
+```{bash}
+ls
+ls -R # list subdirectories recursively
+ls -lh # sizes in human readable format
+```
+
+Display the [last modification date of a file](https://stackoverflow.com/questions/16391208/print-a-files-last-modified-date-in-bash)
+
+    date -r <filename>
+    ls -l <filename>
+
+More file information
+
+    stat <filename>
+
+## Search and filter text files
+Search with Grep
+
+    grep "text" file.txt
+
+Recursive search (-r) in all files in the directory for a given pattern, case insensitive (-i)
+
+    grep -ri "pattern" .
+
+Give 1 line of context before and 2 lines of context after:
+
+    grep -B 1 -A 2 pattern README.md
+
+Search for lines containing "Done" or "encountered" only in specific log files recursively in a directory.
+Also displays the line count at the end.
+
+    grep -r Done --include runner.log | tee /dev/tty |wc -l
+    grep -r encountered --include runner.log | tee /dev/tty |wc -l
+
+Note: [How to pipe stdout while keeping it on screen](https://stackoverflow.com/questions/5677201/how-to-pipe-stdout-while-keeping-it-on-screen-and-not-to-a-output-file)
+
+Show all csv files mentioned in a source code (supposing the csv file name contain only alphanumeric characters).
+Use Extended regular expression (-E) to search for alphanumeric characters, 
+only show the matching result (-o), not the full line 
+and show the line number (-n) where the string occurs:
+
+    grep -Eon "[[:alnum:]]+.csv" file.txt
+
+Count occurrences of a word in a file
+
+    grep -roh word filename.txt  | wc -w
+
+[Awk tutorial](http://www.grymoire.com/Unix/Awk.html#uh-11), for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
+
+    awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
+
+Regexp match beginning of and end of line with ^ and \$.
+
+Follow the end of a log file as it is written 
+
+    tail -f
+
+See tab and end of line characters in a text file
+
+    cat -te filename |less 
+
+# List files
+
+List all files in a directory
+
+    ls
+
+List a file with its full path
+
+    realpath README.md
+
+To include dot files, pipe the output of `ls -a` to realpath:
+
+    ls -a | xargs realpath
+
+To list subdirectories recursively:
+
+    ls -aR | xargs realpath
+
+In case of you have spaces in file names, xargs recomments using the `-o` option to prevent file names from being processed incorrectly, this works best with the output of `find -print0` and it starts to look a lot more complex than other answers:
+
+    find -print0 |xargs -0 realpath
+
+The above is an [answer](https://stackoverflow.com/a/65002323/2641825) I posted
+on Stackoverflow. See also a Unix and Linux stackexchange [question on how to
+list all files in a directory with absolute
+path](https://unix.stackexchange.com/questions/268474/how-to-list-all-files-in-a-directory-with-absolute-paths).
+
+List contents of a directories in a tree like format
+
+    tree
+    tree -d # List directories only, no files
+
+# Networking
+
+## Show IP addresses 
+
+Show the IP address 
+
+    ip addr show
+
+Show the state of network interfaces
+
+    ip link
+
+Check open ports on a system
+
+    nmap -Pn <hostname or IP address>
+
+## Show domain name and host name
+
+Show the domain name
+
+    domainname
+
+Show the host name
+
+    hostname
 
 # Organise
 
@@ -498,335 +681,280 @@ To add a small unit of work in the Kitchen project:
     task add project:Kitchen Select floor tiles
 
 
-# Convert
+# Program with bash
 
-This section is about converting from one document format into another. For
-example converting a text file into a pdf file and vice-versa.
+## Pipe
 
-## Pandoc
+Pipe the output of ls to grep
 
-[Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
-to convert text files from one format to another.
-[Pandoc user guide](https://pandoc.org/MANUAL.html)
+    ls | grep ".md$"
 
-Convert a markdown document to pdf
+When the command doesn't read from stdin by default, use xargs
 
-    pandoc filname.md -o filename.pdf
-    # If there are utf-8 encoding issues, use another engine
-    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex
+    echo README.md | xargs ls -lah
+    ls -a | xargs realpath
 
-Convert an odf document to markdown
+Based on an [explanation of xargs and pipes](https://superuser.com/a/890349/419414).
+When piped to cat, this command simply displays the text "README.md"
 
-    pandoc filename.odt -o filename.md 
+    echo README.md | cat
 
-Convert a Microsoft Word document to markdown
+Using `xargs`, the output of echo is interpreted as a file name
 
-    pandoc filename.docx -o filename.md 
+    echo README.md | xargs cat
 
-Convert a Microsoft Word document to markdown and keep images
+## Try catch
 
-    pandoc --extract-media ./figures input.docx -o output.md
+[Is there a try catch command in
+bash](https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-in-bash)
 
-Convert an html code snippets to markdown and display the output at the command line
+> There is no try/catch in bash; however, one can achieve similar behavior using && or ||.
 
-    echo "Link: <a href="https://www.linphone.org/">Linphone</a>"| pandoc -f html -t markdown
-    # Link: [Linphone](https://www.linphone.org/)
+> Using ||: if command1 fails then command2 runs as follows
 
-Convert an entire web page to markdown
+    command1 || command2
 
-    pandoc https://pandoc.org/help.html -t markdown
+> Similarly, using &&, command2 will run if command1 is successful
 
-[Markdown has two different header
-styles](https://pandoc.org/MANUAL.html#headers) The default is to use
-setext-style headers for levels 1-2, and then ATX headers. To use ATX style
-headers only in markdown output:
+## Variables
 
-    pandoc --atx-headers filename.docx -o filename.md 
+[Variables](https://www.shellscript.sh/variables1.html)
 
+    message = "Hello World"
+    echo $message
 
-### Yaml front matter for styles
+## Wild cards
 
-Adding headers and footers to pandoc suggests using:
+Search for a pattern in python and R files:
 
-    ---
-    title: Test
-    author: Author Name
-    header-includes: |
-        \usepackage{fancyhdr}
-        \pagestyle{fancy}
-        \fancyhead[CO,CE]{This is fancy}
-        \fancyfoot[CO,CE]{So is this}
-        \fancyfoot[LE,RO]{\thepage}
-    abstract: This is a pandoc test . . . 
-    ---
+    grep -n <pattern> *{py,R}
 
-Custom yaml front matter for readings file
-See also the vim.Rmd document on pandoc bibliographies.
+# Read 
 
-    ---
-    title: Reading notes
-    author: Paul Rougieux
-    bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
-    abstract: Reading notes at the JRC
-    header-includes: |
-        \usepackage{fancyhdr}
-        \pagestyle{fancy}
-        \fancyhead[CO,CE]{Reading notes}
-        \fancyfoot[CO,CE]{JRC}
-        \fancyfoot[LE,RO]{\thepage}
-    ---
-    \tableofcontents{}
-    ...file content... this is probably not the way to do it    
-    \bibliography{../bibliography/jrc_ispra}
-    \bibliographystyle{apalike}
+## Play Midi files
 
-This is probably not the way to do it, the bibliography should be included in the pandoc call? 
-Note this requires citeproc
+Install a software synthesizer to play midi files.
+[VideoLan Wiki](https://wiki.videolan.org/Midi/)
 
-    sudo apt install pandoc-citeproc
+> If the FluidSynth codec is not shown in VLC's preferences, you have to
+> install it as well as sound fonts. E.g. on Ubuntu 14.04 and derivatives it is
+> in the vlc-plugin-fluidsynth package, while the fluid-soundfont-gs and
+> fluid-soundfont-gm packages install some sound 
 
-Then this should work :
+Installation instruction:
 
-    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib
+    sudo apt install vlc-plugin-fluidsynth fluid-soundfont-gs fluid-soundfont-gm
 
-There is still an issue with the encoding of the bibliography.
 
-### Makefile
-Generic [makefile for
-pandoc](https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69)
+## Play music with cmus
 
-[Bash script for pandoc](https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs)
+[Cmus tutorial](https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt):
 
-    for mdfile in *.md; do
-    pdffile=${mdfile%.md}.pdf
-    echo $pdffile
-    done
+    man cmus-tutorial
 
-Convert all docx documents to markdown in the current folder
+Cmus has several view modes. When starting cmus for the first time press 5 to
+go to the file-browser panel, choose a folder and press "a" to add it to the
+cmus library. Then press "2" to go to the simple library view or press "1" to
+go to the artist/album view.
 
-    for docxfile in *.docx; do
-    mdfile=${docxfile%.docx}.md
-    echo "converting $docxfile to $mdfile"
-    pandoc "$docxfile" -o "$mdfile"
-    done
+Here is the list of view modes:
 
-Pandoc can convert to PDF, but not from PDF.
+    1 view tree
+    2 view sorted
+    3 view playlist
+    4 view queue
+    5 view browser
+    6 view filters
+    7 view settings
 
-You can also create template files as explained in super user [markdown to latex conversion with a custom preamble](https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044)
+|Common Context |Remote Command | Description                        |
+|---------------|---------------|------------------------------------|
+| b             |player-next    |                                    |
+| c             |player-pause   |                                    |
+| C             |               | Continue at end of track           |
+| q             |quit -i        |                                    |
+| s             |shuffle        |                                    |
+| v             |player-stop    |                                    |
+| x             |player-play    |                                    |
+| z             |player-prev    |                                    |
 
-## pdfminer
+Commands can be sent through a command line with cmus-remote, for example
+to pause a running instance of cmus (and restart it):
 
-(pdfminer](https://github.com/pdfminer/pdfminer.six)
-Convert all pdf documents to text files in the current folder:
+    cmus-remote -C player-pause
 
-    for pdffile in *.pdf; do
-    txtfile=${pdffile%.pdf}.txt
-    echo "converting $pdffile to $txtfile"
-    pdf2txt.py $pdffile > $txtfile
-    done
+I use this in the pomodoro gnome app to pause music at breaks.
 
-See also a utility to extract tables from pdf documents.
+Volume control
 
-## Tabula
+|Common Context |Description                                         |
+|---------------|----------------------------------------------------|
+| =             |:vol +10%                                           |
+| +             |:vol +10%                                           |
+| -             |:vol -10%                                           |
+| [             |:vol +1% +0%                                        |
+| ]             |:vol +0% +1%                                        |
+| {             |:vol -1% -0%                                        |
+| }             |:vol -0% -1%                                        |
 
-Extract tables from a pdf with [tabula](https://tabula.technology/)
+Jump to currently playing song `i`.
+Follow currently playing son `f` see [issue 206](https://github.com/cmus/cmus/issues/206)
 
-    cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
-    java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar
+There is a feedback of all the currently active options at the bottom right of
+the cums screen.
 
-Then visit http://127.0.0.1:8080/
+### Playlist
 
-# Download 
+Create a playlist file, in bash:
 
-## Download with Curl
+    find -name '*.ogg'> playlist.m3u
 
-Load a file from a URL, using the file name from the URL
+Open a playlist in the playlist view (4), in the cmus command pane:
 
-    curl -O <url_including_a_file_name>
+    :load playlist.m3u
 
-## Download videos and audio
+Add a song from the library view (2) to the playlist view (4):
 
-Install youtube-dl using pip:
+    y
 
-     sudo pip install --upgrade youtube_dl
+Delete a song from the playlist view (4):
 
-You may also need to install the ffmpeg package:
+    suppr
 
-    sudo apt-get install ffmpeg
+Save the modified playlist file:
 
-Download a video from youtube :
+    save
 
-    youtube-dl video_url
+# Refactor
 
-Download only the audio in an OGG Vorbis format
+[A one liner to replace strings with perl in a git repository](https://stackoverflow.com/a/21685766/2641825).
+The examples below replace all occurrences of the first string with the second string, for all 
+files under git version control. 
 
-    youtube-dl --extract-audio --audio-format vorbis video_url
+    git grep -lz 'first_string'| xargs -0 perl -i'' -pE "s/first_string/second_string/g"
+    git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
+    git grep -lz 'RMySQL::'| xargs -0 perl -i'' -pE "s/RMySQL::/RMariaDB::/g"
 
-Download only the audio in an .mp3 format
+Alias to refactor:
 
-    youtube-dl --extract-audio --audio-format mp3 video_url
+    refactor() {
+        echo "Replacing $1 by $2 in all files in this git repository."
+        git grep -lz $1| xargs -0 perl -i'' -pE "s/$1/$2/g"
+    }
 
-Create bash aliases to download various audio formats from youtube
+Usage, for example replace 'word' with 'sword':
 
-    alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
-    alias youtubemp3="youtube-dl --extract-audio --audio-format mp3"
+    refactor word sword
+    git diff
 
-If you encounter some Errors 403 forbidden, removing the cache might help
 
-[error 403 with youtube-dl](https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by)
+# Security and authentication
 
-    youtube-dl --rm-cache-dir
+## Generate passwords
 
-## Parse html files for URLS
+[apg](https://packages.debian.org/buster/apg) is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as "a maintained software with a comparable feature set becomes available".
+Usage:
 
-[How to use grep and cut in script to obtain website URLs from an HTML file](https://unix.stackexchange.com/questions/181254/how-to-use-grep-and-cut-in-script-to-obtain-website-urls-from-an-html-file)
-Nice examples such as this one with decomposition 
+    apg
 
-    grep -Eoi '<a [^>]+>' source.html |
-    grep -Eo 'href="[^\"]+"' | 
-    grep -Eo '(http|https)://[^/"]+'
 
-and this one which extracts all top level domain present in an html page 
+## Generate SSH keys and add them to the agent 
 
-    cat urls.html | grep -Eo "(http|https)://[a-zA-Z0-9./?=_-]*" | sort -u
+Mon Sep 28 09:36:26 CEST 2020
+Generate a new key
 
-This is how I extracted all links from an html file: 
+    cd ~/.ssh
+    ssh-keygen <id_rsa_keyname>
 
-    grep -Eo '(http|https)://[^"]+' Musicwelistento.html | sed -e  's/https:\/\/www.google.com\/url?q=//g' > song_links.txt
+Temporarily add a key to ssh
 
+    ssh-add ~/.ssh/<id_rsa_keyname>
 
-# Users
+List keys
 
-## Manager users and groups
-Check your user id
+    ssh-add -l
 
-    id 
-    echo $UID
-    echo $USER
+After a restart of the ssh agent
 
-What group do you belong to as a user
+    killall ssh-agent
+    eval `ssh-agent`
 
-    groups
+This key will not be available anymore
+to [permanently add a key to the ssh config file](https://stackoverflow.com/a/4246809/2641825) (SO)
+Edit your `~/.ssh/config` file:
+ 
+    IdentityFile ~/.ssh/<id_rsa_keyname>
 
-Add a new user
+If the key was generated with a password,and you don't exactly remember the password,
+you can [test a few password you might remember with](https://stackoverflow.com/a/23666831/2641825):
 
-    useradd username
+    ssh-keygen -y -f <private_key_file_name>
 
-Set a password for the new user
+Note if you copy keys from one machine to another, you might 
+encounter this error:
+[ssh “permissions are too open” error](https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error)
 
-    passwd username 
+Change the permission so only the current user has access to the file:
 
-Delete a user
+    chmod 600 id_rsa
 
-    userdel username
+## Load SSH keys into the remote server
 
-Temporary log in as a given user
+Based on [Install the public key in remote
+server](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/)
+Once you have an ssh key on your local machine, you need to load it into the
+remote server's authorized keys as such: 
 
-    su username
+    ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@server
 
-Add a user to the super users
+OR just copy the public key in remote server as authorized_keys in ~/.ssh/ directory:
 
-    adduser username sudo
+    scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys
 
-That user needs to re-log into the shell for the change to take effect.
+The remainder of the [cybercity.biz document](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/) explains how to disable the password based login
+on a server.
 
-Show all users
+## Check a key's fingerprint
 
-    getent passwd
+On github, ssh key fingerprints are displayed in md5format.
+To display the fingerprint in md5format, enter:
 
-Show all groups
+    ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub
 
-    getent group 
+[How to generate an SSH key fingerprint](https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated)
 
-## Change file permission
 
 
-Change user and group of a file
+## Secure shell and secure copy
 
-    chown groupname:username filename
+log into a remote machine
 
-Change user and group of all files in a folder, recursively
+    ssh user@remote_machine
 
-    # In one command
-    sudo chown -R paul:paul scenarios
-    # In two commands
-    sudo chown -R paul scenarios
-    sudo chgrp -R paul scenarios
+Copy a local file to a file on the remote machine
 
-Change file permission
+    scp local_file_name user@remote_machine:path_to_file/file_name
 
-    chmod a=rwx filename
-    chmod 777 filename # all permissions to every one
+Copy a file from the remote machine to a local file
 
-Change file permissions recursively:
+    scp user@remote_machine:path_to_file/file_name  local_file_name
 
-    chmod 755 directoryname # all permissions to the user, only read and execute for other users
-    sudo chmod -R 770 scenarios
+Copy a full directory (dmouraty) from the remote machine:
 
-[nice illustration](https://stackoverflow.com/a/58449179/2641825)
-of read, write execute permission codes on Linux. 
+     scp -rp user@dest:/path destdirectory
 
-Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.
+## GPG signing keys
 
-    Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as "rwxr-xr-x" in ls -l. 
-    The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
+Generate a pgp key
 
+    gpg --gen-key
 
-## Make the bash shell by default for a user
+To submit your key to a server, export the key
 
-[No path, or command history through SSH when logged in to server as someone other than 
-root](https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485)
+    gpg -a --export name@emailserver.com > public_key_sender.asc 
 
-Edit the users file
-
-    sudo vim /etc/passwd
-
-Change
-
-    paul:x:1000:1000::/home/paul:/bin/sh
-
-to
-
-    paul:x:1000:1000::/home/paul:/bin/bash
-
-
-# Dot files
-
-## Alias
-
-    alias ll="ls -lh" 
-
-
-Based on how can i sort du-h output by size
-
-    alias du='du -hd1 | sort -h -r'
-
-
-You can place those commands in your ~/.bashrc to create a permanent alias.
-bashrc:
-
->    "You may want to put all your additions into a separate file like ~/.bash_aliases, instead of adding them here directly."
-
-Alias from other persons: 
-
-https://github.com/statox/dotfiles/blob/master/bash_aliases
-
-## Profile .bash_profile and .bashrc
-These are places where a user can turn of the system BEEP :
-
-    setterm -blength 0
-
-.bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.
-
-Debian Dotfiles
-
-    "Now, since bash is being invoked as a login shell (with name "-bash", a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that."
-
-    [...] "You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  "
-
-In .bashrc a user can set environment variables, define alias (see above).
-
-
+My keys are visible on pgp.mit.edu 
+[search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
 
 # System
 
@@ -1039,178 +1167,6 @@ Kill a graphical program, by clicking on it:
      xkill
 
 
-# Bash Programming
-
-## Try catch
-
-[Is there a try catch command in
-bash](https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-in-bash)
-
-> There is no try/catch in bash; however, one can achieve similar behavior using && or ||.
-
-> Using ||: if command1 fails then command2 runs as follows
-
-    command1 || command2
-
-> Similarly, using &&, command2 will run if command1 is successful
-
-## Variables
-
-[Variables](https://www.shellscript.sh/variables1.html)
-
-    message = "Hello World"
-    echo $message
-
-## Wild cards
-
-Search for a pattern in python and R files:
-
-    grep -n <pattern> *{py,R}
-
-# Authentification and security
-
-## Generate passwords
-
-[apg](https://packages.debian.org/buster/apg) is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as "a maintained software with a comparable feature set becomes available".
-Usage:
-
-    apg
-
-
-
-## Generate SSH keys and add them to the agent 
-
-Mon Sep 28 09:36:26 CEST 2020
-Generate a new key
-
-    cd ~/.ssh
-    ssh-keygen <id_rsa_keyname>
-
-Temporarily add a key to ssh
-
-    ssh-add ~/.ssh/<id_rsa_keyname>
-
-List keys
-
-    ssh-add -l
-
-After a restart of the ssh agent
-
-    killall ssh-agent
-    eval `ssh-agent`
-
-This key will not be available anymore
-to [permanently add a key to the ssh config file](https://stackoverflow.com/a/4246809/2641825) (SO)
-Edit your `~/.ssh/config` file:
- 
-    IdentityFile ~/.ssh/<id_rsa_keyname>
-
-If the key was generated with a password,and you don't exactly remember the password,
-you can [test a few password you might remember with](https://stackoverflow.com/a/23666831/2641825):
-
-    ssh-keygen -y -f <private_key_file_name>
-
-Note if you copy keys from one machine to another, you might 
-encounter this error:
-[ssh “permissions are too open” error](https://stackoverflow.com/questions/9270734/ssh-permissions-are-too-open-error)
-
-Change the permission so only the current user has access to the file:
-
-    chmod 600 id_rsa
-
-## Load SSH keys into the remote server
-
-Based on [Install the public key in remote
-server](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/)
-Once you have an ssh key on your local machine, you need to load it into the
-remote server's authorized keys as such: 
-
-    ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@server
-
-OR just copy the public key in remote server as authorized_keys in ~/.ssh/ directory:
-
-    scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys
-
-The remainder of the [cybercity.biz document](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/) explains how to disable the password based login
-on a server.
-
-## Check a key's fingerprint
-
-On github, ssh key fingerprints are displayed in md5format.
-To display the fingerprint in md5format, enter:
-
-    ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub
-
-[How to generate an SSH key fingerprint](https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated)
-
-
-
-## Secure shell and secure copy
-
-log into a remote machine
-
-    ssh user@remote_machine
-
-Copy a local file to a file on the remote machine
-
-    scp local_file_name user@remote_machine:path_to_file/file_name
-
-Copy a file from the remote machine to a local file
-
-    scp user@remote_machine:path_to_file/file_name  local_file_name
-
-Copy a full directory (dmouraty) from the remote machine:
-
-     scp -rp user@dest:/path destdirectory
-
-## GPG signing keys
-
-Generate a pgp key
-
-    gpg --gen-key
-
-To submit your key to a server, export the key
-
-    gpg -a --export name@emailserver.com > public_key_sender.asc 
-
-My keys are visible on pgp.mit.edu 
-[search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
-
-# Navigate
-
-To search within previous commands, press CTRL+R and start typing words contained in the previous command. 
-
-If you accidentally press CTRL+S the [terminal will hang](https://askubuntu.com/a/264253/315347)
-Press `CTRL+Q` to regain control.
-See also [Ctrl-s hang terminal emulator?](https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator)
-which provides a workaround: entering `stty -ixon` in .bashrc. 
-
-# Networking
-
-## Show IP addresses 
-
-Show the IP address 
-
-    ip addr show
-
-Show the state of network interfaces
-
-    ip link
-
-Check open ports on a system
-
-    nmap -Pn <hostname or IP address>
-
-## Show domain name and host name
-
-Show the domain name
-
-    domainname
-
-Show the host name
-
-    hostname
-
 # Terminal multiplexers
 
 Superuser.com [tmux or screen](https://superuser.com/questions/236158/tmux-vs-screen)
@@ -1350,6 +1306,101 @@ See: https://github.com/christoomey/vim-tmux-navigator
     bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
     bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
     bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+
+# Users
+
+## Manager users and groups
+Check your user id
+
+    id 
+    echo $UID
+    echo $USER
+
+What group do you belong to as a user
+
+    groups
+
+Add a new user
+
+    useradd username
+
+Set a password for the new user
+
+    passwd username 
+
+Delete a user
+
+    userdel username
+
+Temporary log in as a given user
+
+    su username
+
+Add a user to the super users
+
+    adduser username sudo
+
+That user needs to re-log into the shell for the change to take effect.
+
+Show all users
+
+    getent passwd
+
+Show all groups
+
+    getent group 
+
+## Change file permission
+
+
+Change user and group of a file
+
+    chown groupname:username filename
+
+Change user and group of all files in a folder, recursively
+
+    # In one command
+    sudo chown -R paul:paul scenarios
+    # In two commands
+    sudo chown -R paul scenarios
+    sudo chgrp -R paul scenarios
+
+Change file permission
+
+    chmod a=rwx filename
+    chmod 777 filename # all permissions to every one
+
+Change file permissions recursively:
+
+    chmod 755 directoryname # all permissions to the user, only read and execute for other users
+    sudo chmod -R 770 scenarios
+
+[nice illustration](https://stackoverflow.com/a/58449179/2641825)
+of read, write execute permission codes on Linux. 
+
+Chmod instructions can be given with characters or numbers, chmod 777 or chmod a=rwx is a question of preference.
+
+    Some prefer 755 over 777 because giving write access to group and other users could be a security risk. 755 leaves read and execute rights to groups and other users. 755 is visible as "rwxr-xr-x" in ls -l. 
+    The default for document files on Debian seems to be chmod 644, visible as "-rw-r--r--" in ls -l.
+
+
+## Make the bash shell by default for a user
+
+[No path, or command history through SSH when logged in to server as someone other than 
+root](https://superuser.com/questions/904425/no-path-or-command-history-through-ssh-when-logged-in-to-server-as-someone-othe/904485#904485)
+
+Edit the users file
+
+    sudo vim /etc/passwd
+
+Change
+
+    paul:x:1000:1000::/home/paul:/bin/sh
+
+to
+
+    paul:x:1000:1000::/home/paul:/bin/bash
+
 
 # VPN
 
