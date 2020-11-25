@@ -126,9 +126,7 @@ Then this should work :
 
 There is still an issue with the encoding of the bibliography.
 
-### Makefile
-Generic [makefile for
-pandoc](https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69)
+### Bash script for bulk conversion
 
 [Bash script for pandoc](https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs)
 
@@ -148,6 +146,9 @@ Convert all docx documents to markdown in the current folder
 Pandoc can convert to PDF, but not from PDF.
 
 You can also create template files as explained in super user [markdown to latex conversion with a custom preamble](https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044)
+
+See also the makefile for pandoc in the programming with bash / makefile
+section below.
 
 ## pdfminer
 
@@ -682,6 +683,95 @@ To add a small unit of work in the Kitchen project:
 
 
 # Program with bash
+
+## Makefile
+
+I use GNU make and the following simple make file to generate all pages in this website:
+
+    render:
+         Rscript -e "rmarkdown::render_site()"
+
+
+### Build an R package
+
+The makefile below builds the FAOSTAT R package. I modified it from knitr's makefile.
+
+    # Usage:
+    # build the package's tarball, check and remove the ../FAOSTAT.Rcheck folder:
+    # make
+    # build the package's tarball and check (keep the ../FAOSTAT.Rcheck folder):
+    # make check
+    # generate the documentation:
+    # make docs
+    #
+    # This makefile was copied and apdapted from  yihui / knitr 
+    # https://github.com/yihui/knitr/blob/master/Makefile
+
+    # prepare the package for release
+    PKGNAME := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
+    PKGVERS := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
+    PKGSRC  := $(shell basename `pwd`)
+
+    all: docs check clean
+
+    deps:
+        tlmgr install pgf preview xcolor;\
+        Rscript -e 'if (!require("Rd2roxygen")) install.packages("Rd2roxygen", repos="http://cran.rstudio.com")'
+
+    docs:
+        R -q -e "devtools::document(roclets = c('rd', 'collate', 'namespace', 'vignette'))"
+
+    build:
+        cd ..;\
+        R CMD build $(PKGSRC)
+
+    install: build
+        cd ..;\
+        R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
+
+    check: build
+        cd ..;\
+        R CMD check $(PKGNAME)_$(PKGVERS).tar.gz --as-cran
+
+    clean:
+        cd ..;\
+        $(RM) -r $(PKGNAME).Rcheck/
+        
+
+### Compile a latex article
+
+This make file compiles a latex article to pdf and generate a zip file
+containing all documents necessary to generate the article and another zip file
+containing the figures.
+
+    # Usage:
+    # make        # Generate the pdf and zip files for the submission. 
+    # make render # Render the pdf, keep all automatically generated files for Latex diagnostics.
+    # make clean  # Keep a copy of the pdf one level above and remove automatically generated files.
+    # make zip    # Generate the zip archive of the article and figures for the submission process.
+    #
+    all: render clean zip
+
+    render:
+         latexmk -pdf -bibtex -use-make template.tex
+
+    clean:
+         cp template.pdf ../manuscript.pdf || echo "Template.pdf not there."
+         git clean -xf
+
+    zip: # Remove the zip archive otherwise deleted files will remain in the archive and it will be simply updated
+         rm ../manuscript.zip ../figures.zip || echo "No existing zip archive to delete."
+         zip ../manuscript.zip -r *
+         zip ../figures.zip -r figures/*
+         echo "Verify that the pdf and zip archives have been updated by checking their update time."
+         ls -lh ../*.zip
+         l
+
+### Convert documents with pandoc
+
+Generic [makefile for
+pandoc](https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69)
+
 
 ## Pipe
 

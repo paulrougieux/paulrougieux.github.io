@@ -539,9 +539,8 @@ header-includes: |
 <pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
 <p>There is still an issue with the encoding of the bibliography.</p>
 </div>
-<div id="makefile" class="section level3">
-<h3>Makefile</h3>
-<p>Generic <a href="https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69">makefile for pandoc</a></p>
+<div id="bash-script-for-bulk-conversion" class="section level3">
+<h3>Bash script for bulk conversion</h3>
 <p><a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">Bash script for pandoc</a></p>
 <pre><code>for mdfile in *.md; do
 pdffile=${mdfile%.md}.pdf
@@ -555,6 +554,7 @@ pandoc &quot;$docxfile&quot; -o &quot;$mdfile&quot;
 done</code></pre>
 <p>Pandoc can convert to PDF, but not from PDF.</p>
 <p>You can also create template files as explained in super user <a href="https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044">markdown to latex conversion with a custom preamble</a></p>
+<p>See also the makefile for pandoc in the programming with bash / makefile section below.</p>
 </div>
 </div>
 <div id="pdfminer" class="section level2">
@@ -906,6 +906,87 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 </div>
 <div id="program-with-bash" class="section level1">
 <h1>Program with bash</h1>
+<div id="makefile" class="section level2">
+<h2>Makefile</h2>
+<p>I use GNU make and the following simple make file to generate all pages in this website:</p>
+<pre><code>render:
+     Rscript -e &quot;rmarkdown::render_site()&quot;</code></pre>
+<div id="build-an-r-package" class="section level3">
+<h3>Build an R package</h3>
+<p>The makefile below builds the FAOSTAT R package. I modified it from knitr’s makefile.</p>
+<pre><code># Usage:
+# build the package&#39;s tarball, check and remove the ../FAOSTAT.Rcheck folder:
+# make
+# build the package&#39;s tarball and check (keep the ../FAOSTAT.Rcheck folder):
+# make check
+# generate the documentation:
+# make docs
+#
+# This makefile was copied and apdapted from  yihui / knitr 
+# https://github.com/yihui/knitr/blob/master/Makefile
+
+# prepare the package for release
+PKGNAME := $(shell sed -n &quot;s/Package: *\([^ ]*\)/\1/p&quot; DESCRIPTION)
+PKGVERS := $(shell sed -n &quot;s/Version: *\([^ ]*\)/\1/p&quot; DESCRIPTION)
+PKGSRC  := $(shell basename `pwd`)
+
+all: docs check clean
+
+deps:
+    tlmgr install pgf preview xcolor;\
+    Rscript -e &#39;if (!require(&quot;Rd2roxygen&quot;)) install.packages(&quot;Rd2roxygen&quot;, repos=&quot;http://cran.rstudio.com&quot;)&#39;
+
+docs:
+    R -q -e &quot;devtools::document(roclets = c(&#39;rd&#39;, &#39;collate&#39;, &#39;namespace&#39;, &#39;vignette&#39;))&quot;
+
+build:
+    cd ..;\
+    R CMD build $(PKGSRC)
+
+install: build
+    cd ..;\
+    R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
+
+check: build
+    cd ..;\
+    R CMD check $(PKGNAME)_$(PKGVERS).tar.gz --as-cran
+
+clean:
+    cd ..;\
+    $(RM) -r $(PKGNAME).Rcheck/
+    </code></pre>
+</div>
+<div id="compile-a-latex-article" class="section level3">
+<h3>Compile a latex article</h3>
+<p>This make file compiles a latex article to pdf and generate a zip file containing all documents necessary to generate the article and another zip file containing the figures.</p>
+<pre><code># Usage:
+# make        # Generate the pdf and zip files for the submission. 
+# make render # Render the pdf, keep all automatically generated files for Latex diagnostics.
+# make clean  # Keep a copy of the pdf one level above and remove automatically generated files.
+# make zip    # Generate the zip archive of the article and figures for the submission process.
+#
+all: render clean zip
+
+render:
+     latexmk -pdf -bibtex -use-make template.tex
+
+clean:
+     cp template.pdf ../manuscript.pdf || echo &quot;Template.pdf not there.&quot;
+     git clean -xf
+
+zip: # Remove the zip archive otherwise deleted files will remain in the archive and it will be simply updated
+     rm ../manuscript.zip ../figures.zip || echo &quot;No existing zip archive to delete.&quot;
+     zip ../manuscript.zip -r *
+     zip ../figures.zip -r figures/*
+     echo &quot;Verify that the pdf and zip archives have been updated by checking their update time.&quot;
+     ls -lh ../*.zip
+     l</code></pre>
+</div>
+<div id="convert-documents-with-pandoc" class="section level3">
+<h3>Convert documents with pandoc</h3>
+<p>Generic <a href="https://gist.github.com/famuvie/dc6ff6c0a0155e0e2d7f281f1a6d4d69">makefile for pandoc</a></p>
+</div>
+</div>
 <div id="pipe" class="section level2">
 <h2>Pipe</h2>
 <p>Pipe the output of ls to grep</p>
