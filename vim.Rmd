@@ -854,7 +854,10 @@ the outline pane.
 
 Key mappings in the outline pane:
 
-    <space> fold/unfold a node
+    jk  move up and down in the outline pane. The view pane doesn't move.
+    up/down arrow move and display the corresponding sections in the view pane.
+    <space> fold/unfold the current node.
+    left/right arrow fold/unfold the current node.
     O Recursively expand the current node and its siblings.
     C Recursively contract the current node and its siblings.
 

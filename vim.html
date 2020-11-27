@@ -1005,7 +1005,10 @@ Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code>
 au BufRead,BufNewFile *.Rmd command! Toc Voom </code></pre>
 <p>In the outline pane, press enter once to display the corresponding header in the body pane. Press enter a second time to move the cursor to the body pane. In the body pane, press enter once to display the position of the cursor in the outline pane. Press enter a second time to move to the corresponding place in the outline pane.</p>
 <p>Key mappings in the outline pane:</p>
-<pre><code>&lt;space&gt; fold/unfold a node
+<pre><code>jk  move up and down in the outline pane. The view pane doesn&#39;t move.
+up/down arrow move and display the corresponding sections in the view pane.
+&lt;space&gt; fold/unfold the current node.
+left/right arrow fold/unfold the current node.
 O Recursively expand the current node and its siblings.
 C Recursively contract the current node and its siblings.</code></pre>
 <p>It’s also possible to move nodes with cut <code>dd</code> and paste behaviour <code>pp</code> and to promote/demote them as such:</p>

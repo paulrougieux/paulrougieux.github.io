@@ -38,6 +38,16 @@ which provides a workaround: entering `stty -ixon` in .bashrc.
 This section is about converting from one document format into another. For
 example converting a text file into a pdf file and vice-versa.
 
+## Clipboard
+
+[Pipe to from the clipboard in bash
+script](https://stackoverflow.com/questions/749544/pipe-to-from-the-clipboard-in-bash-script)
+
+For example copy the readme file to the clipboard used by CTRL+C CTRL+V:
+
+    xclip -selection c README.md
+
+
 ## Pandoc
 
 [Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
@@ -765,7 +775,7 @@ containing the figures.
          zip ../figures.zip -r figures/*
          echo "Verify that the pdf and zip archives have been updated by checking their update time."
          ls -lh ../*.zip
-         l
+	     ls -lh ../*.pdf
 
 ### Convert documents with pandoc
 

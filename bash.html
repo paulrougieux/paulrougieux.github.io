@@ -482,6 +482,12 @@ div.tocify {
 <div id="convert" class="section level1">
 <h1>Convert</h1>
 <p>This section is about converting from one document format into another. For example converting a text file into a pdf file and vice-versa.</p>
+<div id="clipboard" class="section level2">
+<h2>Clipboard</h2>
+<p><a href="https://stackoverflow.com/questions/749544/pipe-to-from-the-clipboard-in-bash-script">Pipe to from the clipboard in bash script</a></p>
+<p>For example copy the readme file to the clipboard used by CTRL+C CTRL+V:</p>
+<pre><code>xclip -selection c README.md</code></pre>
+</div>
 <div id="pandoc" class="section level2">
 <h2>Pandoc</h2>
 <p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another. <a href="https://pandoc.org/MANUAL.html">Pandoc user guide</a></p>
@@ -980,7 +986,7 @@ zip: # Remove the zip archive otherwise deleted files will remain in the archive
      zip ../figures.zip -r figures/*
      echo &quot;Verify that the pdf and zip archives have been updated by checking their update time.&quot;
      ls -lh ../*.zip
-     l</code></pre>
+     ls -lh ../*.pdf</code></pre>
 </div>
 <div id="convert-documents-with-pandoc" class="section level3">
 <h3>Convert documents with pandoc</h3>
