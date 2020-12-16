@@ -105,6 +105,17 @@ Delete a database
 
     postgres=# drop database databasename;
 
+Delete a schema
+
+    psql -d tradeflows -h localhost -U rdb -c "DROP SCHEMA raw_comext"
+    ERROR:  cannot drop schema raw_comext because other objects depend on it
+    DETAIL:  table raw_comext.monthly depends on schema raw_comext
+    HINT:  Use DROP ... CASCADE to drop the dependent objects too.
+
+Here is the command with a drop in cascade
+
+    psql -d tradeflows -h localhost -U rdb -c "DROP SCHEMA raw_comext CASCADE"
+
 
 # Dump
 
@@ -115,6 +126,7 @@ Examples copied from `man pg_dump`. To dump a database called mydb into a SQL-sc
 To reload such a script into a (freshly created) database named newdb:
 
     $ psql -d newdb -f db.sql
+
 
 ## Remove statements
 
@@ -132,6 +144,7 @@ I removed default_with_oids because [this
 posrt](https://dba.stackexchange.com/questions/101281/what-is-the-relevance-of-set-default-with-oids-true-in-a-postgresql-dump)
 explains that it's used to enable a legacy feature.
 
+
 # Help
 
 Help about psql commands:
@@ -142,6 +155,7 @@ Help about SQL commands:
 
     \h
     \h select
+
 
 # Information about databases, tables, columns
 
@@ -165,6 +179,7 @@ List tables for a particular schema i[list all tables in
 schema](https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql)
 
     \dt raw_comext.*;
+
 
 # MariaDB/MySQL and PostgreSQL 
 

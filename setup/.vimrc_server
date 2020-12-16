@@ -43,6 +43,9 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 "command! Date "=strftime('%Y-%m-%d')<CR>P
 command! Date put =strftime('%Y-%m-%d')
 
+" Pomodoro entry
+nmap <LocalLeader>m $4b
+
 """"""""""""""""""
 " AZERTY keyboard "
 """"""""""""""""""

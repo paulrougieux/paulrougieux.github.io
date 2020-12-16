@@ -102,6 +102,9 @@ nnoremap <silent> <F8> :TlistToggle<CR>
 "command! Date "=strftime('%Y-%m-%d')<CR>P
 command! Date put =strftime('%Y-%m-%d')
 
+" Pomodoro entry
+nmap <LocalLeader>m $4b
+
 """"""""""""""""""
 " AZERTY keyboard "
 """"""""""""""""""
@@ -278,8 +281,8 @@ let R_assign = 0
 autocmd FileType r set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
 autocmd FileType rmd set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
 
-" NVim-R set working directory to project root in knitr
-map <silent> <LocalLeader>w  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>
+" NVim-R command to set the working directory to the project root in knitr
+" map <silent> <LocalLeader>w  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>
 " R's working directory to be the same as Vim's working directory
 let R_nvim_wd = 1
 

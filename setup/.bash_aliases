@@ -27,8 +27,9 @@ export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
-# Create tag files for an R project
+# Create tag files for an R project, from within an R project's R folder
 rtags() {
+    echo "This function should be called from within an R project's R folder."
     Rscript -e "rtags(ofile = 'et'); nvimcom::etags2ctags('et', 'tags'); unlink('et')"  
     echo $'\n\nTags in ' $PWD && cat tags
 }

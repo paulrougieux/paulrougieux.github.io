@@ -547,6 +547,13 @@ sudo su postgres</code></pre>
 <h1>Drop</h1>
 <p>Delete a database</p>
 <pre><code>postgres=# drop database databasename;</code></pre>
+<p>Delete a schema</p>
+<pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext&quot;
+ERROR:  cannot drop schema raw_comext because other objects depend on it
+DETAIL:  table raw_comext.monthly depends on schema raw_comext
+HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
+<p>Here is the command with a drop in cascade</p>
+<pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext CASCADE&quot;</code></pre>
 </div>
 <div id="dump" class="section level1">
 <h1>Dump</h1>
