@@ -559,6 +559,26 @@ str(l1)</code></pre>
 <pre><code>methods(class=&quot;lm&quot;) </code></pre>
 </div>
 </div>
+<div id="debug" class="section level1">
+<h1>Debug</h1>
+<div id="debug-with-base-r" class="section level2">
+<h2>Debug with base R</h2>
+<p>Print the call stack of the last error:</p>
+<pre><code>traceback()</code></pre>
+</div>
+<div id="debug-with-rlang" class="section level2">
+<h2>Debug with rlang</h2>
+<p>Print the call stack of the last error in simplified form:</p>
+<pre><code>rlang::last_error()</code></pre>
+<p>Print the full call stack of the last error:</p>
+<pre><code>rlang::last_trace()</code></pre>
+<p>More information on the behaviour of backtrace:</p>
+<pre><code>help(trace_back, package=rlang)</code></pre>
+<blockquote>
+<p>“Because of lazy evaluation, the call stack in R is actually a tree, which the ‘summary()’ method of this object will reveal.”</p>
+</blockquote>
+</div>
+</div>
 <div id="environement" class="section level1">
 <h1>Environement</h1>
 <p>List objects in the global environment:</p>
@@ -569,6 +589,8 @@ ls(&quot;package:stats&quot;, pattern=&quot;smooth&quot;)</code></pre>
 <p>Remove all objects in the environement except one:</p>
 <pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) 
 rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection</code></pre>
+<p>Get the current environment</p>
+<pre><code>rlang::current_env()</code></pre>
 </div>
 <div id="files-input-output" class="section level1">
 <h1>Files input output</h1>
@@ -961,30 +983,23 @@ address(bli)
 <h1>Tidyverse</h1>
 <div id="dplyr" class="section level2">
 <h2>dplyr</h2>
-<p>pipes</p>
+<div id="group_by-and-summarise" class="section level3">
+<h3>Group_by and summarise</h3>
 <pre class="r"><code>library(dplyr)
 cars %&gt;%
     group_by(speed) %&gt;%
-    print() %&gt;% # works because the print function returns its argument
+    print(n=2) %&gt;% # works because the print function returns its argument
     summarise(numberofcars = n(),
               min = min(dist),
               mean = mean(dist),
               max = max(dist)) </code></pre>
 <pre><code>## # A tibble: 50 x 2
 ## # Groups:   speed [19]
-##    speed  dist
-##    &lt;dbl&gt; &lt;dbl&gt;
-##  1     4     2
-##  2     4    10
-##  3     7     4
-##  4     7    22
-##  5     8    16
-##  6     9    10
-##  7    10    18
-##  8    10    26
-##  9    10    34
-## 10    11    17
-## # … with 40 more rows</code></pre>
+##   speed  dist
+##   &lt;dbl&gt; &lt;dbl&gt;
+## 1     4     2
+## 2     4    10
+## # … with 48 more rows</code></pre>
 <pre><code>## # A tibble: 19 x 5
 ##    speed numberofcars   min  mean   max
 ##    &lt;dbl&gt;        &lt;int&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
@@ -1008,9 +1023,63 @@ cars %&gt;%
 ## 18    24            4    70  93.8   120
 ## 19    25            1    85  85      85</code></pre>
 <p>group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.</p>
+</div>
+<div id="across" class="section level3">
+<h3>Across</h3>
+<p>Apply the same transformation to multiple columns, allowing to use select semantics inside summarise and mutate.</p>
+<pre class="r"><code>cars %&gt;%
+    group_by(speed) %&gt;%
+    summarise(across(dist, list(n = length , min = min, mean = mean, max = max)))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 19 x 5
+##    speed dist_n dist_min dist_mean dist_max
+##    &lt;dbl&gt;  &lt;int&gt;    &lt;dbl&gt;     &lt;dbl&gt;    &lt;dbl&gt;
+##  1     4      2        2       6         10
+##  2     7      2        4      13         22
+##  3     8      1       16      16         16
+##  4     9      1       10      10         10
+##  5    10      3       18      26         34
+##  6    11      2       17      22.5       28
+##  7    12      4       14      21.5       28
+##  8    13      4       26      35         46
+##  9    14      4       26      50.5       80
+## 10    15      3       20      33.3       54
+## 11    16      2       32      36         40
+## 12    17      3       32      40.7       50
+## 13    18      4       42      64.5       84
+## 14    19      3       36      50         68
+## 15    20      5       32      50.4       64
+## 16    22      1       66      66         66
+## 17    23      1       54      54         54
+## 18    24      4       70      93.8      120
+## 19    25      1       85      85         85</code></pre>
+<p>Other examples from the help of the across function</p>
+<pre class="r"><code># A purrr-style formula
+iris %&gt;%
+    group_by(Species) %&gt;%
+    summarise(across(starts_with(&quot;Sepal&quot;), ~mean(.x, na.rm = TRUE)))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 3 x 3
+##   Species    Sepal.Length Sepal.Width
+##   &lt;fct&gt;             &lt;dbl&gt;       &lt;dbl&gt;
+## 1 setosa             5.01        3.43
+## 2 versicolor         5.94        2.77
+## 3 virginica          6.59        2.97</code></pre>
+<pre class="r"><code># A named list of functions
+iris %&gt;%
+    group_by(Species) %&gt;%
+    summarise(across(starts_with(&quot;Sepal&quot;), list(mean = mean, sd = sd)))</code></pre>
+<pre><code>## `summarise()` ungrouping output (override with `.groups` argument)</code></pre>
+<pre><code>## # A tibble: 3 x 5
+##   Species    Sepal.Length_mean Sepal.Length_sd Sepal.Width_mean Sepal.Width_sd
+##   &lt;fct&gt;                  &lt;dbl&gt;           &lt;dbl&gt;            &lt;dbl&gt;          &lt;dbl&gt;
+## 1 setosa                  5.01           0.352             3.43          0.379
+## 2 versicolor              5.94           0.516             2.77          0.314
+## 3 virginica               6.59           0.636             2.97          0.322</code></pre>
+</div>
 <div id="mutate" class="section level3">
 <h3>Mutate</h3>
-<p>Mutate multiple variables in the dataframe at once using the <code>vars()</code> helper function to scope the mutation:</p>
+<p>Mutate multiple variables in the dataframe at once using the <code>vars()</code> helper function to scope the mutation: Note <code>mutate_at</code> has been superseded by the across function.</p>
 <pre class="r"><code>iris %&gt;%
     mutate_at(vars(starts_with(&quot;Petal&quot;)), round) %&gt;%
     head()</code></pre>

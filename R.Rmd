@@ -106,6 +106,33 @@ List all available methods for a class:
     methods(class="lm") 
 
 
+# Debug
+
+## Debug with base R
+
+Print the call stack of the last error:
+
+    traceback()
+
+
+## Debug with rlang
+
+Print the call stack of the last error in simplified form:
+
+    rlang::last_error()
+
+Print the full call stack of the last error:
+
+    rlang::last_trace()
+
+More information on the behaviour of backtrace:
+
+    help(trace_back, package=rlang)
+
+> "Because of lazy evaluation, the call stack in R is actually a tree, which
+> the ‘summary()’ method of this object will reveal." 
+
+
 # Environement
 
 List objects in the global environment:
@@ -121,6 +148,10 @@ Remove all objects in the environement except one:
 
     rm(list=ls()[!ls()=="object_to_keep"]) 
     rm(list=ls()[!ls()=="con"]) # Remove all except a database connection
+
+Get the current environment
+
+    rlang::current_env()
 
 
 # Files input output
@@ -622,27 +653,54 @@ commandArgs() returns a **character vector** containing the name of the executab
 
 
 ## dplyr
-pipes
+
+### Group_by and summarise
 
 ```{r warning=FALSE, message=FALSE}
 library(dplyr)
 cars %>%
     group_by(speed) %>%
-    print() %>% # works because the print function returns its argument
+    print(n=2) %>% # works because the print function returns its argument
     summarise(numberofcars = n(),
               min = min(dist),
               mean = mean(dist),
               max = max(dist)) 
 ```
 
-
-
 group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.
+
+
+### Across
+
+Apply the same transformation to multiple columns, allowing to use select
+semantics inside summarise and mutate.
+
+```{r}
+cars %>%
+    group_by(speed) %>%
+    summarise(across(dist, list(n = length , min = min, mean = mean, max = max)))
+```
+
+Other examples from the help of the across function
+
+```{r}
+# A purrr-style formula
+iris %>%
+    group_by(Species) %>%
+    summarise(across(starts_with("Sepal"), ~mean(.x, na.rm = TRUE)))
+
+# A named list of functions
+iris %>%
+    group_by(Species) %>%
+    summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd)))
+```
 
 
 ### Mutate
 
 Mutate multiple variables in the dataframe at once using the `vars()` helper function to scope the mutation:
+Note `mutate_at` has been superseded by the across function.
+
 ```{r} 
 iris %>%
     mutate_at(vars(starts_with("Petal")), round) %>%
