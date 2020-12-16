@@ -690,6 +690,14 @@ mogrify -rotate 270 ../small/ *.JPG</code></pre>
 <div id="edit-music-files" class="section level2">
 <h2>Edit music files</h2>
 <p><a href="https://askubuntu.com/questions/664698/mp3-tags-from-file-names">Mp3 tags from file names</a> <a href="https://pypi.org/project/tagpy/#history">tagpy</a></p>
+<div id="crop-or-trim-music-files" class="section level3">
+<h3>Crop or trim music files</h3>
+<p>Cut or crop a music file, to start only from the 6th second</p>
+<pre><code>ffmpeg -i hungarian_dance.ogg -ss 6 -c copy file-2.ogg</code></pre>
+<p>Stack exchange question <a href="https://unix.stackexchange.com/q/182602/85530">trim audio file using start and stop times</a></p>
+<pre><code>ffmpeg -i file.mkv -ss 20 -to 40 -c copy file-2.mkv
+ffmpeg -i file.mkv -ss 00:00:20 -to 00:00:40 -c copy file-2.mkv</code></pre>
+</div>
 </div>
 <div id="edit-pdf-files" class="section level2">
 <h2>Edit PDF files</h2>
@@ -701,6 +709,8 @@ mogrify -rotate 270 ../small/ *.JPG</code></pre>
 <pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
 <p><a href="https://askubuntu.com/a/282455/315347">Extract pages from a pdf</a></p>
 <pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf</code></pre>
+<p>Also works with several distant groups of pages</p>
+<pre><code>pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf</code></pre>
 <p>Split a pdf in two</p>
 <pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
 # if necessary, install mutool with 
@@ -764,6 +774,8 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 <h2>Find files</h2>
 <p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion). Find files of a specific extension:</p>
 <pre><code>find . -name &quot;*.pdf&quot; </code></pre>
+<p>Like -name, but the match is case insensitive</p>
+<pre><code>find -iname &quot;*phd*&quot;</code></pre>
 <p>Find files of a specific modification time:</p>
 <pre><code>find . -mtime 0 # modified in the last 24 hours</code></pre>
 <p>Find files <a href="https://stackoverflow.com/questions/1341467/find-filenames-not-ending-in-specific-extensions-on-unix">not having a specific extension</a>:</p>
@@ -1070,14 +1082,14 @@ echo $message</code></pre>
 <td></td>
 </tr>
 <tr class="even">
-<td>c</td>
-<td>player-pause</td>
-<td></td>
-</tr>
-<tr class="odd">
 <td>C</td>
 <td></td>
 <td>Continue at end of track</td>
+</tr>
+<tr class="odd">
+<td>c</td>
+<td>player-pause</td>
+<td></td>
 </tr>
 <tr class="even">
 <td>q</td>
@@ -1090,16 +1102,21 @@ echo $message</code></pre>
 <td></td>
 </tr>
 <tr class="even">
+<td>t</td>
+<td></td>
+<td>toggle show_remaining_time</td>
+</tr>
+<tr class="odd">
 <td>v</td>
 <td>player-stop</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>x</td>
 <td>player-play</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>z</td>
 <td>player-prev</td>
 <td></td>
@@ -1152,16 +1169,16 @@ echo $message</code></pre>
 <p>There is a feedback of all the currently active options at the bottom right of the cums screen.</p>
 <div id="playlist" class="section level3">
 <h3>Playlist</h3>
-<p>Create a playlist file, in bash:</p>
+<p>Create a playlist file, in bash</p>
 <pre><code>find -name &#39;*.ogg&#39;&gt; playlist.m3u</code></pre>
-<p>Open a playlist in the playlist view (4), in the cmus command pane:</p>
+<p>Open a playlist in the playlist view (4), in the cmus command pane</p>
 <pre><code>:load playlist.m3u</code></pre>
-<p>Add a song from the library view (2) to the playlist view (4):</p>
+<p>Add a song from the library view (2) to the playlist view (4)</p>
 <pre><code>y</code></pre>
-<p>Delete a song from the playlist view (4):</p>
-<pre><code>suppr</code></pre>
-<p>Save the modified playlist file:</p>
-<pre><code>save</code></pre>
+<p>Delete a song from the playlist view (4)</p>
+<pre><code>:suppr</code></pre>
+<p>Save the modified playlist file</p>
+<pre><code>:save</code></pre>
 </div>
 </div>
 </div>
@@ -1459,6 +1476,23 @@ bind-key -n &#39;C-j&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-j&#39;  
 bind-key -n &#39;C-k&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-k&#39;  &#39;select-pane -U&#39;
 bind-key -n &#39;C-l&#39; if-shell &quot;$is_vim&quot; &#39;send-keys C-l&#39;  &#39;select-pane -R&#39;</code></pre>
 </div>
+</div>
+</div>
+<div id="time" class="section level1">
+<h1>Time</h1>
+<div id="current-date" class="section level2">
+<h2>Current date</h2>
+<p>Display the current data</p>
+<pre><code>date</code></pre>
+</div>
+<div id="countdown-timer" class="section level2">
+<h2>Countdown timer</h2>
+<p>A <a href="https://superuser.com/questions/611538/is-there-a-way-to-display-a-countdown-or-stopwatch-timer-in-a-terminal">superuser question</a> gives a basic loop</p>
+<pre><code>N=100; while [[ $((--N)) &gt;  0 ]]; do echo $N &amp;&amp; sleep 1; done</code></pre>
+<p>There are many more elaborate answers under that question. One of them suggests the python based termdown</p>
+<pre><code>pip3 install termdown
+termdown 10
+termdown 25m</code></pre>
 </div>
 </div>
 <div id="users" class="section level1">

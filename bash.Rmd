@@ -349,6 +349,18 @@ Batch processing, rotate all images clockwise or counter clockwise
 [tagpy](https://pypi.org/project/tagpy/#history)
 
 
+### Crop or trim music files
+
+Cut or crop a music file, to start only from the 6th second
+
+    ffmpeg -i hungarian_dance.ogg -ss 6 -c copy file-2.ogg
+
+Stack exchange question [trim audio file using start and stop
+times](https://unix.stackexchange.com/q/182602/85530)
+
+    ffmpeg -i file.mkv -ss 20 -to 40 -c copy file-2.mkv
+    ffmpeg -i file.mkv -ss 00:00:20 -to 00:00:40 -c copy file-2.mkv
+
 
 ## Edit PDF files
 
@@ -369,12 +381,15 @@ Alternatively, pdftk can be used to merge PDF files
 
     pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf
 
+Also works with several distant groups of pages
+
+    pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf
+
 Split a pdf in two
 
     mutool poster -x 2 cbmflow.pdf output.pdf
     # if necessary, install mutool with 
     apt install mupdf-tools
-
 
 
 ## Replace strings in text files
@@ -465,6 +480,10 @@ Find files in subdirectories of the current directory (Quotes are requited to
 prevent shell command expansion). Find files of a specific extension:
 
     find . -name "*.pdf" 
+
+Like -name, but the match is case insensitive
+
+    find -iname "*phd*"
 
 Find files of a specific modification time:
 
@@ -870,10 +889,11 @@ Here is the list of view modes:
 |Common Context |Remote Command | Description                        |
 |---------------|---------------|------------------------------------|
 | b             |player-next    |                                    |
-| c             |player-pause   |                                    |
 | C             |               | Continue at end of track           |
+| c             |player-pause   |                                    |
 | q             |quit -i        |                                    |
 | s             |shuffle        |                                    |
+| t             |               | toggle show_remaining_time         |
 | v             |player-stop    |                                    |
 | x             |player-play    |                                    |
 | z             |player-prev    |                                    |
@@ -905,25 +925,25 @@ the cums screen.
 
 ### Playlist
 
-Create a playlist file, in bash:
+Create a playlist file, in bash
 
     find -name '*.ogg'> playlist.m3u
 
-Open a playlist in the playlist view (4), in the cmus command pane:
+Open a playlist in the playlist view (4), in the cmus command pane
 
     :load playlist.m3u
 
-Add a song from the library view (2) to the playlist view (4):
+Add a song from the library view (2) to the playlist view (4)
 
     y
 
-Delete a song from the playlist view (4):
+Delete a song from the playlist view (4)
 
-    suppr
+    :suppr
 
-Save the modified playlist file:
+Save the modified playlist file
 
-    save
+    :save
 
 # Refactor
 
@@ -1406,6 +1426,31 @@ See: https://github.com/christoomey/vim-tmux-navigator
     bind-key -n 'C-j' if-shell "$is_vim" 'send-keys C-j'  'select-pane -D'
     bind-key -n 'C-k' if-shell "$is_vim" 'send-keys C-k'  'select-pane -U'
     bind-key -n 'C-l' if-shell "$is_vim" 'send-keys C-l'  'select-pane -R'
+
+# Time
+
+
+## Current date
+
+Display the current data
+
+    date
+
+
+## Countdown timer
+
+A [superuser question](https://superuser.com/questions/611538/is-there-a-way-to-display-a-countdown-or-stopwatch-timer-in-a-terminal)
+gives a basic loop
+
+    N=100; while [[ $((--N)) >  0 ]]; do echo $N && sleep 1; done
+
+There are many more elaborate answers under that question. 
+One of them suggests the python based termdown
+
+    pip3 install termdown
+    termdown 10
+    termdown 25m
+
 
 # Users
 
