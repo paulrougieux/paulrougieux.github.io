@@ -2,7 +2,7 @@
 alias bookmark="vim ~/rp/bookmarkdown/bookmark.md"
 alias overflow="vim ~/rp/bookmarkdown/overflow.md"
 alias matrix="cd ~/rp/bookmarkdown/ && vim -u ~/rp/paulrougieux.github.io/setup/.vimrc_server matrix.Rmd"
-alias reading_jrc="vim ~/rp/bioeconomy_papers/notes/readings_jrc.md"
+alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && vim readings_jrc.md"
 
 # Music
 alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"

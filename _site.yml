@@ -28,6 +28,8 @@ navbar:
           href: mysql.html
         - text: "PostgreSQL"
           href: postgresql.html
+        - text: "Publish"
+          href: publish.html
         - text: "Python"
           href: python.html
         - text: "R"

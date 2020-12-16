@@ -1,0 +1,140 @@
+
+
+# Academic editing
+
+## Conjunctions
+
+### Linking words
+
+Example [50 linking words to use in academic 
+writting](https://www.eliteediting.com.au/50-linking-words-to-use-in-academic-writing/)
+
+> **Describing similarities**: likewise, correspondingly, equally, not only…
+> but also, in the same way, similarly
+
+> **Showing cause and effect**: consequently, as a result, thus, hence (never
+> ‘hence why’), since (try to avoid ‘as’ when showing cause and effect),
+> because, therefore, accordingly, this suggests that, it follows that, for
+> this reason 
+
+> **Comparing and contrasting**: alternatively, however, conversely, on the
+> other hand, instead, yet, on the contrary
+
+> **Showing limitation or contradiction**: despite/in spite of, while (not
+> whilst!), even so, on the contrary, nevertheless, nonetheless, although,
+> admittedly 
+
+> **Emphasis, addition or examples**: to illustrate, to clarify, further (not
+> ‘furthermore’), first, second and third (not firstly, secondly and thirdly),
+> for instance, moreover, typically, especially, in fact, namely, in addition
+
+> **Concluding**: to summarise, it can be concluded that, as can be seen,
+> ultimately, given the above, as described, finally
+
+
+### Coordinating conjunctions
+
+academicguides.waldenu.edu 
+[conjunctions](https://academicguides.waldenu.edu/writingcenter/grammar/conjunctions)
+
+> "Coordinating conjunctions connect words or phrases that serve the same grammatical purpose in a sentence. There are seven main coordinating conjunctions in English, which form the acronym FANBOYS:
+
+> F: for: The teachers were frustrated, for the school had cut funding for all 
+>    enrichment programs.
+
+> A: and: In this course, I will write a literature review, a case study, and a final 
+>    paper.
+
+> N: nor: The students did not complete their homework, nor did they pass the test.
+
+> B: but: The study is several years old but still valuable to this study.
+
+> O: or: At the end of the class, the students can choose to write an essay or take a test.
+
+> Y: yet: The patient complained of chronic pain, yet she refused treatment.
+
+> S: so: I have only been a nurse for one year, so I have little experience with paper 
+     charting.*
+
+
+### Subordinating conjunctions
+
+academicguides.waldenu.edu 
+[conjunctions](https://academicguides.waldenu.edu/writingcenter/grammar/conjunctions)
+
+Subordinating conjunctions join a subordinate clause to a main clause and establishes a relationship between the two. There are many subordinating clauses, but here are some of the most common:
+
+    after, although, as much as/as soon as/as long as, as though, because, before, how, 
+    if, in order to/in order that, once, since, than, that, though, unless, until, 
+    when/whenever, where/wherever, whether, while
+
+
+### That as a conjunction for noun clauses
+
+academicguides.waldenu.edu 
+[conjunctions](https://academicguides.waldenu.edu/writingcenter/grammar/conjunctions)
+
+> "For example,
+>
+>    Smith (2015) reported that more research was necessary.
+>        Smith (2015) = subject
+>        reported = verb
+>        that more research was necessary = dependent clause, direct object of the verb "reported"
+>    The authors hypothesized that there would be significant results.
+>        The authors = subject
+>        hypothesized = verb
+>        that there would be significant results = dependent clause, direct object of the verb "hypothesized"
+>    Jones (2014) asserted that confidentiality was maintained throughout the study.
+>        Jones (2014) = subject
+>        asserted = verb
+>        that confidentiality was maintained throughout the study = dependent clause, direct object of the verb "asserted"
+>    Rephrasing these sentences into questions and answers is one way to see that the "that" clauses are acting as direct objects.
+>        What did Smith (2015) report?
+>            Answer: that more research was necessary
+>        What did the authors hypothesize?
+>            Answer: that there would be significant results
+>        What did Jones (2014) assert?
+>            Answer: that confidentiality was maintained throughout the study
+>
+> In formal written English, for clarity, most academic writers choose to keep "that" 
+> when it introduces a noun clause (Caplan, 2012). Leaving out "that" can cause the 
+> reader to misread (at first anyway) the subject of the dependent clause as being the 
+> object of the reporting verb (Jamieson, 2012).
+>
+> For example, if readers see the sentence, "Smith (2015) reported more research was 
+> necessary (without 'that')," they may understand “more research” as the thing Smith 
+> reported and then have to backtrack and reread upon seeing “was necessary.”
+> Any structure that leads to misinterpretation, even temporarily, can be an unwanted 
+> distraction from the writer’s message.
+> In spoken English, however, "that" may be dropped in such sentences. (Intonation 
+> patterns—rising and falling pitch—give the listener clues that may not be present in 
+> writing.)"
+
+
+## Verbs
+
+
+editage.com [impressive verbs to use in your research 
+paper](https://www.editage.com/all-about-publication/research/impressive-Verbs-to-use-in-your-Research-Paper.html)
+
+| Purpose                                                        | Verbs                                                                                         |  
+| :------------------------------------------------------------: | :-------------------------------------------------------------------------------------------: |
+| To show analysis                                               | analyse, appraise, define, diagnose, explore, identify, investigate, observe                  |
+| To summarize                                                   | assess, conclude, feature, highlight                                                          |
+| To indicate control (to be stable or to maintain at a level)   | constrain, control, govern, influence, inhibit, limit, maintain, prohibit, regulate, secure   |
+| To  discuss findings                                           | attest, confirm, contend, demonstrate,document, indicate, reveal                              |
+| To  state                                                      | comment, convey, elaborate, establish,identify, propose                                       |
+| To  show increase                                              | advance, development, enlarge, exceed, extend, facilitate, improve,increment, maximize        |
+| To show decrease                                               | alleviate, cease, decline, depress, descent, deteriorate, minimize, subside, reduce           |
+| To show change                                                 | alter, accommodate, difference, evolve, fluctuate, generate, transform, transition, vary      |
+| To indicate information in a figure                            | depict, display, illustrate, portray, reveal                                                  |
+| To  indicate information in a table                            | classify, enumerate, gives, lists, presents, summarizes                                       |
+| To  stress that a task has been performed in-depth             | adequately, comprehensively, exhaustively, extensively, thoroughly                            |
+| To  show parts                                                 | comprises, compose of, constitutes, encompasses,includes, incorporates                        |
+| To  indicate negative stand                                    | challenge, contradict, disagree, dispute, reject, question                                    |
+| To  indicate positive stand                                    | confirm, compliment, corroborate, substantiate, support, uphold, validate, verify             |
+| To  show approximation                                         | approximate, estimate, resemble, predict                                                      |
+
+
+
+
