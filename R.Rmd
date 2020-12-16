@@ -20,96 +20,6 @@ See also documentation at:
  * The Comprehensive R Archive Network [manuals](https://cran.r-project.org/manuals.html)
  * Tidyverse [packages](http://www.tidyverse.org/packages/)
 
-# Installing R and packages
-
-To install R and Rstudio on Debian, see the 
-[debian.html#r_and_rstudio](debian.html#r_and_rstudio) page on this site.
-
-To install packages simply enter the following at an R command prompt:
-
-    install.packages("package_name")
-
-Some packages have dependencies that need to be installed at the OS level.
-Error messages:
-
-    "Configuration failed because libcurl was not found." 
-    "Configuration failed because libxml-2.0 was not found."
-    "Configuration failed because openssl was not found."
-
-Can be solved by installing these dependencies: 
-
-    sudo apt install libcurl4-openssl-dev 
-    sudo apt install libxml2-dev 
-    sudo apt install libssl-dev
-
-# Information about your R system
-
-```{r eval=FALSE}
-sessionInfo()
-installed.packages()
-```
-
-# Files input output
-
-    getwd()
-    list.files(tempdir()) 
-    dir.create("blabla")
-
-## CSV files
-
-Read one csv file with default R function.
-
-    read.csv("data.csv", )
-
-Read many csv files with functions from the tidyverse packages.
-
-First write sample csv files to a temporary directory.
-It's more complicated than I thought it would be.
-
-    data_folder <- file.path(tempdir(), "iris")
-    dir.create(data_folder)
-    iris %>%
-        # Keep the Species column in the output
-        # Create a new column that will be used as the grouping variable
-        mutate(species_group = Species) %>% 
-        group_by(species_group) %>%
-        nest() %>%
-        by_row(~write.csv(.$data, 
-                          file = file.path(data_folder, paste0(.$species_group, ".csv")),
-                          row.names = FALSE))
-
-
-Read these csv files into one data frame.
-Note the Species column has to be present in the csv files, otherwise we would loose that information. 
-
-    iris_csv <- list.files(data_folder, full.names = TRUE) %>% 
-        map_dfr(read_csv)
-
-`write_csv` returned an `Error in write_delim(...) is.data.frame(x) is not TRUE`
-That's why we used `write.csv` instead.
-
-# Find
-
-## Longest contiguous stretch of non-NAs:
-
-    na.contiguous(c(NA,1:3,NA,NA,3:5,NA,NA))
-    ] 1 2 3
-    tr(,"na.action")
-    ]  1  5  6  7  8  9 10 11
-    tr(,"class")
-    ] "omit"
-    tr(,"tsp")
-    ] 2 4 1
-    na.contiguous(c(NA,1:3,NA,NA,3:6,NA,NA))
-    ] 3 4 5 6
-    tr(,"na.action")
-    ]  1  2  3  4  5  6 11 12
-    tr(,"class")
-    ] "omit"
-    tr(,"tsp")
-    ]  7 10  1
-
-
 # Data types
 
 
@@ -196,6 +106,130 @@ List all available methods for a class:
     methods(class="lm") 
 
 
+# Environement
+
+List objects in the global environment:
+
+    ls
+
+List objects coming from a specific loaded package:
+
+    ls("package:stats")
+    ls("package:stats", pattern="smooth")
+ 
+Remove all objects in the environement except one:
+
+    rm(list=ls()[!ls()=="object_to_keep"]) 
+    rm(list=ls()[!ls()=="con"]) # Remove all except a database connection
+
+
+# Files input output
+
+    getwd()
+    list.files(tempdir()) 
+    dir.create("blabla")
+
+## CSV files
+
+Read one csv file with default R function.
+
+    read.csv("data.csv", )
+
+Read many csv files with functions from the tidyverse packages.
+
+First write sample csv files to a temporary directory.
+It's more complicated than I thought it would be.
+
+    data_folder <- file.path(tempdir(), "iris")
+    dir.create(data_folder)
+    iris %>%
+        # Keep the Species column in the output
+        # Create a new column that will be used as the grouping variable
+        mutate(species_group = Species) %>% 
+        group_by(species_group) %>%
+        nest() %>%
+        by_row(~write.csv(.$data, 
+                          file = file.path(data_folder, paste0(.$species_group, ".csv")),
+                          row.names = FALSE))
+
+
+Read these csv files into one data frame.
+Note the Species column has to be present in the csv files, otherwise we would loose that information. 
+
+    iris_csv <- list.files(data_folder, full.names = TRUE) %>% 
+        map_dfr(read_csv)
+
+`write_csv` returned an `Error in write_delim(...) is.data.frame(x) is not TRUE`
+That's why we used `write.csv` instead.
+
+
+## RDS files
+
+RDS is a Serialization Interface for Single Objects. Objects are saved to
+binary data and compressed to the gzip format, see `help(saveRDS)` for more
+details.
+
+Write a dataset to an rds file:
+
+    saveRDS(iris, "/tmp/iris.rds")
+
+Read a dataset from an rds file
+
+    iris2 <- readRDS("/tmp/iris.rds")
+    identical(iris, iris2)
+
+
+# Find
+
+## Longest contiguous stretch of non-NAs:
+
+    na.contiguous(c(NA,1:3,NA,NA,3:5,NA,NA))
+    ] 1 2 3
+    tr(,"na.action")
+    ]  1  5  6  7  8  9 10 11
+    tr(,"class")
+    ] "omit"
+    tr(,"tsp")
+    ] 2 4 1
+    na.contiguous(c(NA,1:3,NA,NA,3:6,NA,NA))
+    ] 3 4 5 6
+    tr(,"na.action")
+    ]  1  2  3  4  5  6 11 12
+    tr(,"class")
+    ] "omit"
+    tr(,"tsp")
+    ]  7 10  1
+
+
+# Installing R and packages
+
+To install R and Rstudio on Debian, see the 
+[debian.html#r_and_rstudio](debian.html#r_and_rstudio) page on this site.
+
+To install packages simply enter the following at an R command prompt:
+
+    install.packages("package_name")
+
+Some packages have dependencies that need to be installed at the OS level.
+Error messages:
+
+    "Configuration failed because libcurl was not found." 
+    "Configuration failed because libxml-2.0 was not found."
+    "Configuration failed because openssl was not found."
+
+Can be solved by installing these dependencies: 
+
+    sudo apt install libcurl4-openssl-dev 
+    sudo apt install libxml2-dev 
+    sudo apt install libssl-dev
+
+# Information about your R system
+
+```{r eval=FALSE}
+sessionInfo()
+installed.packages()
+```
+
 # knitr
 
 
@@ -280,13 +314,118 @@ doc <- read_docx() %>%
   print(target = "/tmp/iris.docx")
 ```
 
-# One liners
 
-Remove all objects in the workspace except one :
+# Packages
+You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).
+See also Hadley's book on R package and its section on [Namespace](http://r-pkgs.had.co.nz/namespace.html)
 
-    rm(list=ls()[!ls()=="object_to_keep"]) 
-    rm(list=ls()[!ls()=="con"]) # Remove all except a database connection
+Use the devtools library to start a package folder structure:
 
+    devtools::create("package_name")
+
+Use git to track code modifications (shell commands):
+
+    $ cd package_name
+    $ git init
+
+## Documentation
+
+The roxygen2 package helps with function documentation.
+Documentation can be written in the form of comments #'
+tags such as `@param` and `@description` structure the documentation of each function.
+
+For an introcution to roxygen2, call
+`vignette("roxygen2", package = "roxygen2")` at the R prompt.
+
+Since roxygen2 version 6, markdown formating can be used in the documentation, 
+by specifying the `@md` tag.
+
+### Examples
+Examples are crucial to demonstrate the use of a fonction. 
+They can be specified in a roxygen block called `@examples`:
+
+	#' @examples
+
+Wrap the examples in donttest if you don't want R CMD check to test them at package building time.
+
+	#' \donttest{d
+
+It is also possible to wrap them in another statement called `dontrun`, but this is not recomended on CRAN
+according to this [Stackoverflow question](https://stackoverflow.com/a/44997778/2641825).
+
+### Vignettes
+
+[Vignettes: long-form documentation](http://r-pkgs.had.co.nz/vignettes.html)
+
+    devtools::use_vignette("my-vignette")
+
+[Where to put package vignettes for CRAN submission](https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission)
+
+> "You put the .Rnw sources in vignettes/ as you did, but you missed out a critical step; don't check the source tree. The expected workflow is to build the source tarball and then check that tarball. Building the tarball will create the vignette PDF."
+
+    R CMD build ../foo/pkg
+    R CMD check ./pkg-0.4.tar.gz
+
+Issues while building vignette for a packages:
+
+* sh: 1: /usr/bin/texi2dvi: not found
+
+    sudo apt-get install texinfo
+
+* [Warning about "vignette without corresponding PDF/HTML"?](https://github.com/clonghurst/Res.plotter/issues/3)
+
+> "Maybe you're running R CMD check using the directory name rather than the .tar.gz file?"
+
+* [Inconsolata missing to build R vignette](https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette)
+
+> "Installing texlive-fonts-extra should take care of it."
+
+
+R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings 
+No solution for this one but I guess it's ok since it concerns country names? 
+
+## Unit tests
+Back in R, add testing infrastructure:
+
+    devtools::use_testthat()
+
+When checking the package with R CMD CHECK, 
+[How can I handle R CMD check “no visible binding for global variable”?](https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when) 
+These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.
+
+
+## Continuous Integration
+It is good to know if your package can be installed on a fresh system. 
+Continuous integration systems make this possible each time you submit a modification to your repository. 
+I have used travis-ci which is free for open github repositories. 
+[Instructions to build an R project on travis](https://docs.travis-ci.com/user/languages/r/).
+Unit tests are also run on travis, in addition to R CMD CHECK.
+
+Package dependencies can be configured in a `.travis.yml`
+file that is read by the travis machine performing the build.
+For package that are not on Cran, it's possible to specify a dependency field under `r_github_packages`.
+
+## Make file
+
+* kbroman [minimal make](https://kbroman.org/minimal_make/)
+* Cran [how to use make files with R CMD build](https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build)
+
+I copied the make file from the knitr package.
+
+## Submitting to CRAN
+
+[Submit package to CRAN](https://cran.r-project.org/submit.html)
+The second page will ask to 
+
+* Step 1 (Upload) the `*.tar.gz` file.
+* Step 2 (Submission) review information from the package's DESCRIPTION file. 
+* Step 3 (Confirmation)
+
+The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review. 
+
+In general enter the Git tag after the submission has been completed, because
+it is very likely that additional information will need to be added to the
+package before or during the submission process.
 
 # Plots
 
@@ -387,6 +526,56 @@ Display qualitative palettes:
 Display all palettes 
 
     display.brewer.all()
+
+# Python compared to R
+
+See also the [python](python.html) page for a comparison between pandas methods
+and R data frames functions.
+
+    l = c(1,2,3)
+    s = l
+    s[3]
+    [1] 3
+    s[3] = "a"
+    s
+    [1] "1" "2" "a"
+    l
+    [1] 1 2 3
+
+Using the address function to see the address of these objects in memory
+We can see that s and l share the same address. 
+The address only changes when we asign something to s. 
+
+    library(pryr)
+    l = c(1,2,3)
+    s = l
+    address(l)
+    [1] "0x316f718"
+    address(s)
+    [1] "0x316f718"
+    s[3] = "a"
+    address(s)
+    [1] "0x36a7d30"
+    s
+    [1] "1" "2" "a"
+    l
+    [1] 1 2 3
+
+Checking string objects
+
+    bla = "qsdfmlkj"
+    address(bla)
+    [1] "0x38e5120"
+    bli = bla
+    address(bli)
+    [1] "0x38e5120"
+    bli = paste(bli, "sdf")
+    address(bli)
+    [1] "0x38d1d60"
+
+TODO Compare to the same code in python
+to see the difference between the above and passing by reference.
+
 
 # Reproducibility
 
@@ -506,14 +695,16 @@ David Robinson [Ten tricks in the tidyverse](https://www.youtube.com/watch?v=NDH
 ### Interpolation
 
 Interpolate for one country
+
 ```{r eval=FALSE}
 country_interpolation <- function(df) {
-      df <- data.frame(approx(df$Year, df$Area, method = "linear", n=71))
-  df <- rename(df, Year = x, Area = y)
+    df <- data.frame(approx(df$Year, df$Area, method = "linear", n=71))
+    df <- rename(df, Year = x, Area = y)
     return(df)
 }
-
-forestEU %>%  filter(Country=="Austria") %>% country_interpolation()
+forestEU %>%
+    filter(Country=="Austria") %>%
+    country_interpolation()
 ```
 
 
@@ -548,7 +739,7 @@ files, otherwise we would loose that information.
 
 ```{r eval=FALSE}
 iris_csv <- list.files(data_folder, full.names = TRUE) %>% 
-    map_dfr(read_csv)
+    purrr::map_dfr(read_csv)
 ```
 
 
@@ -618,172 +809,6 @@ piris$plot[1]
 piris$plot[3]
 piris$plot[2]
 ```
-
-# Creating a package
-You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).
-See also Hadley's book on R package and its section on [Namespace](http://r-pkgs.had.co.nz/namespace.html)
-
-Use the devtools library to start a package folder structure:
-
-    devtools::create("package_name")
-
-Use git to track code modifications (shell commands):
-
-    $ cd package_name
-    $ git init
-
-## Documentation
-
-The roxygen2 package helps with function documentation.
-Documentation can be written in the form of comments #'
-tags such as `@param` and `@description` structure the documentation of each function.
-
-For an introcution to roxygen2, call
-`vignette("roxygen2", package = "roxygen2")` at the R prompt.
-
-Since roxygen2 version 6, markdown formating can be used in the documentation, 
-by specifying the `@md` tag.
-
-### Examples
-Examples are crucial to demonstrate the use of a fonction. 
-They can be specified in a roxygen block called `@examples`:
-
-	#' @examples
-
-Wrap the examples in donttest if you don't want R CMD check to test them at package building time.
-
-	#' \donttest{d
-
-It is also possible to wrap them in another statement called `dontrun`, but this is not recomended on CRAN
-according to this [Stackoverflow question](https://stackoverflow.com/a/44997778/2641825).
-
-### Vignettes
-
-[Vignettes: long-form documentation](http://r-pkgs.had.co.nz/vignettes.html)
-
-    devtools::use_vignette("my-vignette")
-
-[Where to put package vignettes for CRAN submission](https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission)
-
-> "You put the .Rnw sources in vignettes/ as you did, but you missed out a critical step; don't check the source tree. The expected workflow is to build the source tarball and then check that tarball. Building the tarball will create the vignette PDF."
-
-    R CMD build ../foo/pkg
-    R CMD check ./pkg-0.4.tar.gz
-
-Issues while building vignette for a packages:
-
-* sh: 1: /usr/bin/texi2dvi: not found
-
-    sudo apt-get install texinfo
-
-* [Warning about "vignette without corresponding PDF/HTML"?](https://github.com/clonghurst/Res.plotter/issues/3)
-
-> "Maybe you're running R CMD check using the directory name rather than the .tar.gz file?"
-
-* [Inconsolata missing to build R vignette](https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette)
-
-> "Installing texlive-fonts-extra should take care of it."
-
-
-R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings 
-No solution for this one but I guess it's ok since it concerns country names? 
-
-## Unit tests
-Back in R, add testing infrastructure:
-
-    devtools::use_testthat()
-
-When checking the package with R CMD CHECK, 
-[How can I handle R CMD check “no visible binding for global variable”?](https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when) 
-These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.
-
-
-## Continuous Integration
-It is good to know if your package can be installed on a fresh system. 
-Continuous integration systems make this possible each time you submit a modification to your repository. 
-I have used travis-ci which is free for open github repositories. 
-[Instructions to build an R project on travis](https://docs.travis-ci.com/user/languages/r/).
-Unit tests are also run on travis, in addition to R CMD CHECK.
-
-Package dependencies can be configured in a `.travis.yml`
-file that is read by the travis machine performing the build.
-For package that are not on Cran, it's possible to specify a dependency field under `r_github_packages`.
-
-## Make file
-
-* kbroman [minimal make](https://kbroman.org/minimal_make/)
-* Cran [how to use make files with R CMD build](https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build)
-
-I copied the make file from the knitr package.
-
-## Submitting to CRAN
-
-[Submit package to CRAN](https://cran.r-project.org/submit.html)
-The second page will ask to 
-
-* Step 1 (Upload) the `*.tar.gz` file.
-* Step 2 (Submission) review information from the package's DESCRIPTION file. 
-* Step 3 (Confirmation)
-
-The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review. 
-
-In general enter the Git tag after the submission has been completed, because
-it is very likely that additional information will need to be added to the
-package before or during the submission process.
-
-# Differences between python and R
-
-See also the [python](python.html) page for a comparison between pandas methods and R data frames
-functions.
-
-    l = c(1,2,3)
-    s = l
-    s[3]
-    [1] 3
-    s[3] = "a"
-    s
-    [1] "1" "2" "a"
-    l
-    [1] 1 2 3
-
-Using the address function to see the address of these objects in memory
-We can see that s and l share the same address. 
-The address only changes when we asign something to s. 
-
-    library(pryr)
-    l = c(1,2,3)
-    s = l
-    address(l)
-    [1] "0x316f718"
-    address(s)
-    [1] "0x316f718"
-    s[3] = "a"
-    address(s)
-    [1] "0x36a7d30"
-    s
-    [1] "1" "2" "a"
-    l
-    [1] 1 2 3
-
-Checking string objects
-
-    bla = "qsdfmlkj"
-    address(bla)
-    [1] "0x38e5120"
-    bli = bla
-    address(bli)
-    [1] "0x38e5120"
-    bli = paste(bli, "sdf")
-    address(bli)
-    [1] "0x38d1d60"
-
-
-
-
-TODO Compare to the same code in python
-to see the difference between the above and passing by reference.
-
-
 
 # Further resources
 

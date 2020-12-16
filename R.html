@@ -476,75 +476,6 @@ div.tocify {
 <li>The Comprehensive R Archive Network <a href="https://cran.r-project.org/manuals.html">manuals</a></li>
 <li>Tidyverse <a href="http://www.tidyverse.org/packages/">packages</a></li>
 </ul>
-<div id="installing-r-and-packages" class="section level1">
-<h1>Installing R and packages</h1>
-<p>To install R and Rstudio on Debian, see the <a href="debian.html#r_and_rstudio" class="uri">debian.html#r_and_rstudio</a> page on this site.</p>
-<p>To install packages simply enter the following at an R command prompt:</p>
-<pre><code>install.packages(&quot;package_name&quot;)</code></pre>
-<p>Some packages have dependencies that need to be installed at the OS level. Error messages:</p>
-<pre><code>&quot;Configuration failed because libcurl was not found.&quot; 
-&quot;Configuration failed because libxml-2.0 was not found.&quot;
-&quot;Configuration failed because openssl was not found.&quot;</code></pre>
-<p>Can be solved by installing these dependencies:</p>
-<pre><code>sudo apt install libcurl4-openssl-dev 
-sudo apt install libxml2-dev 
-sudo apt install libssl-dev</code></pre>
-</div>
-<div id="information-about-your-r-system" class="section level1">
-<h1>Information about your R system</h1>
-<pre class="r"><code>sessionInfo()
-installed.packages()</code></pre>
-</div>
-<div id="files-input-output" class="section level1">
-<h1>Files input output</h1>
-<pre><code>getwd()
-list.files(tempdir()) 
-dir.create(&quot;blabla&quot;)</code></pre>
-<div id="csv-files" class="section level2">
-<h2>CSV files</h2>
-<p>Read one csv file with default R function.</p>
-<pre><code>read.csv(&quot;data.csv&quot;, )</code></pre>
-<p>Read many csv files with functions from the tidyverse packages.</p>
-<p>First write sample csv files to a temporary directory. It’s more complicated than I thought it would be.</p>
-<pre><code>data_folder &lt;- file.path(tempdir(), &quot;iris&quot;)
-dir.create(data_folder)
-iris %&gt;%
-    # Keep the Species column in the output
-    # Create a new column that will be used as the grouping variable
-    mutate(species_group = Species) %&gt;% 
-    group_by(species_group) %&gt;%
-    nest() %&gt;%
-    by_row(~write.csv(.$data, 
-                      file = file.path(data_folder, paste0(.$species_group, &quot;.csv&quot;)),
-                      row.names = FALSE))</code></pre>
-<p>Read these csv files into one data frame. Note the Species column has to be present in the csv files, otherwise we would loose that information.</p>
-<pre><code>iris_csv &lt;- list.files(data_folder, full.names = TRUE) %&gt;% 
-    map_dfr(read_csv)</code></pre>
-<p><code>write_csv</code> returned an <code>Error in write_delim(...) is.data.frame(x) is not TRUE</code> That’s why we used <code>write.csv</code> instead.</p>
-</div>
-</div>
-<div id="find" class="section level1">
-<h1>Find</h1>
-<div id="longest-contiguous-stretch-of-non-nas" class="section level2">
-<h2>Longest contiguous stretch of non-NAs:</h2>
-<pre><code>na.contiguous(c(NA,1:3,NA,NA,3:5,NA,NA))
-] 1 2 3
-tr(,&quot;na.action&quot;)
-]  1  5  6  7  8  9 10 11
-tr(,&quot;class&quot;)
-] &quot;omit&quot;
-tr(,&quot;tsp&quot;)
-] 2 4 1
-na.contiguous(c(NA,1:3,NA,NA,3:6,NA,NA))
-] 3 4 5 6
-tr(,&quot;na.action&quot;)
-]  1  2  3  4  5  6 11 12
-tr(,&quot;class&quot;)
-] &quot;omit&quot;
-tr(,&quot;tsp&quot;)
-]  7 10  1</code></pre>
-</div>
-</div>
 <div id="data-types" class="section level1">
 <h1>Data types</h1>
 <div id="everything-is-a-vector" class="section level2">
@@ -624,6 +555,95 @@ str(l1)</code></pre>
 <p>List all available methods for a class:</p>
 <pre><code>methods(class=&quot;lm&quot;) </code></pre>
 </div>
+</div>
+<div id="environement" class="section level1">
+<h1>Environement</h1>
+<p>List objects in the global environment:</p>
+<pre><code>ls</code></pre>
+<p>List objects coming from a specific loaded package:</p>
+<pre><code>ls(&quot;package:stats&quot;)
+ls(&quot;package:stats&quot;, pattern=&quot;smooth&quot;)</code></pre>
+<p>Remove all objects in the environement except one:</p>
+<pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) 
+rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection</code></pre>
+</div>
+<div id="files-input-output" class="section level1">
+<h1>Files input output</h1>
+<pre><code>getwd()
+list.files(tempdir()) 
+dir.create(&quot;blabla&quot;)</code></pre>
+<div id="csv-files" class="section level2">
+<h2>CSV files</h2>
+<p>Read one csv file with default R function.</p>
+<pre><code>read.csv(&quot;data.csv&quot;, )</code></pre>
+<p>Read many csv files with functions from the tidyverse packages.</p>
+<p>First write sample csv files to a temporary directory. It’s more complicated than I thought it would be.</p>
+<pre><code>data_folder &lt;- file.path(tempdir(), &quot;iris&quot;)
+dir.create(data_folder)
+iris %&gt;%
+    # Keep the Species column in the output
+    # Create a new column that will be used as the grouping variable
+    mutate(species_group = Species) %&gt;% 
+    group_by(species_group) %&gt;%
+    nest() %&gt;%
+    by_row(~write.csv(.$data, 
+                      file = file.path(data_folder, paste0(.$species_group, &quot;.csv&quot;)),
+                      row.names = FALSE))</code></pre>
+<p>Read these csv files into one data frame. Note the Species column has to be present in the csv files, otherwise we would loose that information.</p>
+<pre><code>iris_csv &lt;- list.files(data_folder, full.names = TRUE) %&gt;% 
+    map_dfr(read_csv)</code></pre>
+<p><code>write_csv</code> returned an <code>Error in write_delim(...) is.data.frame(x) is not TRUE</code> That’s why we used <code>write.csv</code> instead.</p>
+</div>
+<div id="rds-files" class="section level2">
+<h2>RDS files</h2>
+<p>RDS is a Serialization Interface for Single Objects. Objects are saved to binary data and compressed to the gzip format, see <code>help(saveRDS)</code> for more details.</p>
+<p>Write a dataset to an rds file:</p>
+<pre><code>saveRDS(iris, &quot;/tmp/iris.rds&quot;)</code></pre>
+<p>Read a dataset from an rds file</p>
+<pre><code>iris2 &lt;- readRDS(&quot;/tmp/iris.rds&quot;)
+identical(iris, iris2)</code></pre>
+</div>
+</div>
+<div id="find" class="section level1">
+<h1>Find</h1>
+<div id="longest-contiguous-stretch-of-non-nas" class="section level2">
+<h2>Longest contiguous stretch of non-NAs:</h2>
+<pre><code>na.contiguous(c(NA,1:3,NA,NA,3:5,NA,NA))
+] 1 2 3
+tr(,&quot;na.action&quot;)
+]  1  5  6  7  8  9 10 11
+tr(,&quot;class&quot;)
+] &quot;omit&quot;
+tr(,&quot;tsp&quot;)
+] 2 4 1
+na.contiguous(c(NA,1:3,NA,NA,3:6,NA,NA))
+] 3 4 5 6
+tr(,&quot;na.action&quot;)
+]  1  2  3  4  5  6 11 12
+tr(,&quot;class&quot;)
+] &quot;omit&quot;
+tr(,&quot;tsp&quot;)
+]  7 10  1</code></pre>
+</div>
+</div>
+<div id="installing-r-and-packages" class="section level1">
+<h1>Installing R and packages</h1>
+<p>To install R and Rstudio on Debian, see the <a href="debian.html#r_and_rstudio" class="uri">debian.html#r_and_rstudio</a> page on this site.</p>
+<p>To install packages simply enter the following at an R command prompt:</p>
+<pre><code>install.packages(&quot;package_name&quot;)</code></pre>
+<p>Some packages have dependencies that need to be installed at the OS level. Error messages:</p>
+<pre><code>&quot;Configuration failed because libcurl was not found.&quot; 
+&quot;Configuration failed because libxml-2.0 was not found.&quot;
+&quot;Configuration failed because openssl was not found.&quot;</code></pre>
+<p>Can be solved by installing these dependencies:</p>
+<pre><code>sudo apt install libcurl4-openssl-dev 
+sudo apt install libxml2-dev 
+sudo apt install libssl-dev</code></pre>
+</div>
+<div id="information-about-your-r-system" class="section level1">
+<h1>Information about your R system</h1>
+<pre class="r"><code>sessionInfo()
+installed.packages()</code></pre>
 </div>
 <div id="knitr" class="section level1">
 <h1>knitr</h1>
@@ -715,11 +735,85 @@ doc &lt;- read_docx() %&gt;%
 </div>
 </div>
 </div>
-<div id="one-liners" class="section level1">
-<h1>One liners</h1>
-<p>Remove all objects in the workspace except one :</p>
-<pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) 
-rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection</code></pre>
+<div id="packages" class="section level1">
+<h1>Packages</h1>
+<p>You might want to read the CRAN manual on <a href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions</a>, and its section on <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies">Package dependencies</a>. See also Hadley’s book on R package and its section on <a href="http://r-pkgs.had.co.nz/namespace.html">Namespace</a></p>
+<p>Use the devtools library to start a package folder structure:</p>
+<pre><code>devtools::create(&quot;package_name&quot;)</code></pre>
+<p>Use git to track code modifications (shell commands):</p>
+<pre><code>$ cd package_name
+$ git init</code></pre>
+<div id="documentation" class="section level2">
+<h2>Documentation</h2>
+<p>The roxygen2 package helps with function documentation. Documentation can be written in the form of comments #’ tags such as <code>@param</code> and <code>@description</code> structure the documentation of each function.</p>
+<p>For an introcution to roxygen2, call <code>vignette(&quot;roxygen2&quot;, package = &quot;roxygen2&quot;)</code> at the R prompt.</p>
+<p>Since roxygen2 version 6, markdown formating can be used in the documentation, by specifying the <code>@md</code> tag.</p>
+<div id="examples" class="section level3">
+<h3>Examples</h3>
+<p>Examples are crucial to demonstrate the use of a fonction. They can be specified in a roxygen block called <code>@examples</code>:</p>
+<pre><code>#&#39; @examples</code></pre>
+<p>Wrap the examples in donttest if you don’t want R CMD check to test them at package building time.</p>
+<pre><code>#&#39; \donttest{d</code></pre>
+<p>It is also possible to wrap them in another statement called <code>dontrun</code>, but this is not recomended on CRAN according to this <a href="https://stackoverflow.com/a/44997778/2641825">Stackoverflow question</a>.</p>
+</div>
+<div id="vignettes" class="section level3">
+<h3>Vignettes</h3>
+<p><a href="http://r-pkgs.had.co.nz/vignettes.html">Vignettes: long-form documentation</a></p>
+<pre><code>devtools::use_vignette(&quot;my-vignette&quot;)</code></pre>
+<p><a href="https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission">Where to put package vignettes for CRAN submission</a></p>
+<blockquote>
+<p>“You put the .Rnw sources in vignettes/ as you did, but you missed out a critical step; don’t check the source tree. The expected workflow is to build the source tarball and then check that tarball. Building the tarball will create the vignette PDF.”</p>
+</blockquote>
+<pre><code>R CMD build ../foo/pkg
+R CMD check ./pkg-0.4.tar.gz</code></pre>
+<p>Issues while building vignette for a packages:</p>
+<ul>
+<li><p>sh: 1: /usr/bin/texi2dvi: not found</p>
+<p>sudo apt-get install texinfo</p></li>
+<li><p><a href="https://github.com/clonghurst/Res.plotter/issues/3">Warning about “vignette without corresponding PDF/HTML”?</a></p></li>
+</ul>
+<blockquote>
+<p>“Maybe you’re running R CMD check using the directory name rather than the .tar.gz file?”</p>
+</blockquote>
+<ul>
+<li><a href="https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette">Inconsolata missing to build R vignette</a></li>
+</ul>
+<blockquote>
+<p>“Installing texlive-fonts-extra should take care of it.”</p>
+</blockquote>
+<p>R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings No solution for this one but I guess it’s ok since it concerns country names?</p>
+</div>
+</div>
+<div id="unit-tests" class="section level2">
+<h2>Unit tests</h2>
+<p>Back in R, add testing infrastructure:</p>
+<pre><code>devtools::use_testthat()</code></pre>
+<p>When checking the package with R CMD CHECK, <a href="https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when">How can I handle R CMD check “no visible binding for global variable”?</a> These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.</p>
+</div>
+<div id="continuous-integration" class="section level2">
+<h2>Continuous Integration</h2>
+<p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository. I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK.</p>
+<p>Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
+</div>
+<div id="make-file" class="section level2">
+<h2>Make file</h2>
+<ul>
+<li>kbroman <a href="https://kbroman.org/minimal_make/">minimal make</a></li>
+<li>Cran <a href="https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build">how to use make files with R CMD build</a></li>
+</ul>
+<p>I copied the make file from the knitr package.</p>
+</div>
+<div id="submitting-to-cran" class="section level2">
+<h2>Submitting to CRAN</h2>
+<p><a href="https://cran.r-project.org/submit.html">Submit package to CRAN</a> The second page will ask to</p>
+<ul>
+<li>Step 1 (Upload) the <code>*.tar.gz</code> file.</li>
+<li>Step 2 (Submission) review information from the package’s DESCRIPTION file.</li>
+<li>Step 3 (Confirmation)</li>
+</ul>
+<p>The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review.</p>
+<p>In general enter the Git tag after the submission has been completed, because it is very likely that additional information will need to be added to the package before or during the submission process.</p>
+</div>
 </div>
 <div id="plots" class="section level1">
 <h1>Plots</h1>
@@ -792,6 +886,45 @@ p + scale_colour_manual(values = iris_palette)</code></pre>
 <pre><code>display.brewer.all()</code></pre>
 </div>
 </div>
+</div>
+<div id="python-compared-to-r" class="section level1">
+<h1>Python compared to R</h1>
+<p>See also the <a href="python.html">python</a> page for a comparison between pandas methods and R data frames functions.</p>
+<pre><code>l = c(1,2,3)
+s = l
+s[3]
+[1] 3
+s[3] = &quot;a&quot;
+s
+[1] &quot;1&quot; &quot;2&quot; &quot;a&quot;
+l
+[1] 1 2 3</code></pre>
+<p>Using the address function to see the address of these objects in memory We can see that s and l share the same address. The address only changes when we asign something to s.</p>
+<pre><code>library(pryr)
+l = c(1,2,3)
+s = l
+address(l)
+[1] &quot;0x316f718&quot;
+address(s)
+[1] &quot;0x316f718&quot;
+s[3] = &quot;a&quot;
+address(s)
+[1] &quot;0x36a7d30&quot;
+s
+[1] &quot;1&quot; &quot;2&quot; &quot;a&quot;
+l
+[1] 1 2 3</code></pre>
+<p>Checking string objects</p>
+<pre><code>bla = &quot;qsdfmlkj&quot;
+address(bla)
+[1] &quot;0x38e5120&quot;
+bli = bla
+address(bli)
+[1] &quot;0x38e5120&quot;
+bli = paste(bli, &quot;sdf&quot;)
+address(bli)
+[1] &quot;0x38d1d60&quot;</code></pre>
+<p>TODO Compare to the same code in python to see the difference between the above and passing by reference.</p>
 </div>
 <div id="reproducibility" class="section level1">
 <h1>Reproducibility</h1>
@@ -925,12 +1058,13 @@ forestEU &lt;- forestEU_wide  %&gt;%
 <h3>Interpolation</h3>
 <p>Interpolate for one country</p>
 <pre class="r"><code>country_interpolation &lt;- function(df) {
-      df &lt;- data.frame(approx(df$Year, df$Area, method = &quot;linear&quot;, n=71))
-  df &lt;- rename(df, Year = x, Area = y)
+    df &lt;- data.frame(approx(df$Year, df$Area, method = &quot;linear&quot;, n=71))
+    df &lt;- rename(df, Year = x, Area = y)
     return(df)
 }
-
-forestEU %&gt;%  filter(Country==&quot;Austria&quot;) %&gt;% country_interpolation()</code></pre>
+forestEU %&gt;%
+    filter(Country==&quot;Austria&quot;) %&gt;%
+    country_interpolation()</code></pre>
 <p>Interpolate for all countries Perform the Interpolation on all countries</p>
 <p>See documentation in * many models <a href="https://r4ds.had.co.nz/many-models.html" class="uri">https://r4ds.had.co.nz/many-models.html</a> * blog <a href="https://emoriebeck.github.io/R-tutorials/purrr/" class="uri">https://emoriebeck.github.io/R-tutorials/purrr/</a></p>
 <pre class="r"><code>forestEU_nested &lt;- forestEU %&gt;%
@@ -948,7 +1082,7 @@ forestEU_interpolated &lt;- forestEU_nested %&gt;% unnest(interpolated)</code></
 <h3>Read many csv</h3>
 <p>See iris_csv file created in the csv section of this document. Read these csv files into one data frame. Note the Species column has to be present in the csv files, otherwise we would loose that information.</p>
 <pre class="r"><code>iris_csv &lt;- list.files(data_folder, full.names = TRUE) %&gt;% 
-    map_dfr(read_csv)</code></pre>
+    purrr::map_dfr(read_csv)</code></pre>
 </div>
 <div id="write-to-many-csv" class="section level3">
 <h3>Write to many csv</h3>
@@ -1007,125 +1141,6 @@ piris$plot[1]
 piris$plot[3]
 piris$plot[2]</code></pre>
 </div>
-</div>
-<div id="creating-a-package" class="section level1">
-<h1>Creating a package</h1>
-<p>You might want to read the CRAN manual on <a href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions</a>, and its section on <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies">Package dependencies</a>. See also Hadley’s book on R package and its section on <a href="http://r-pkgs.had.co.nz/namespace.html">Namespace</a></p>
-<p>Use the devtools library to start a package folder structure:</p>
-<pre><code>devtools::create(&quot;package_name&quot;)</code></pre>
-<p>Use git to track code modifications (shell commands):</p>
-<pre><code>$ cd package_name
-$ git init</code></pre>
-<div id="documentation" class="section level2">
-<h2>Documentation</h2>
-<p>The roxygen2 package helps with function documentation. Documentation can be written in the form of comments #’ tags such as <code>@param</code> and <code>@description</code> structure the documentation of each function.</p>
-<p>For an introcution to roxygen2, call <code>vignette(&quot;roxygen2&quot;, package = &quot;roxygen2&quot;)</code> at the R prompt.</p>
-<p>Since roxygen2 version 6, markdown formating can be used in the documentation, by specifying the <code>@md</code> tag.</p>
-<div id="examples" class="section level3">
-<h3>Examples</h3>
-<p>Examples are crucial to demonstrate the use of a fonction. They can be specified in a roxygen block called <code>@examples</code>:</p>
-<pre><code>#&#39; @examples</code></pre>
-<p>Wrap the examples in donttest if you don’t want R CMD check to test them at package building time.</p>
-<pre><code>#&#39; \donttest{d</code></pre>
-<p>It is also possible to wrap them in another statement called <code>dontrun</code>, but this is not recomended on CRAN according to this <a href="https://stackoverflow.com/a/44997778/2641825">Stackoverflow question</a>.</p>
-</div>
-<div id="vignettes" class="section level3">
-<h3>Vignettes</h3>
-<p><a href="http://r-pkgs.had.co.nz/vignettes.html">Vignettes: long-form documentation</a></p>
-<pre><code>devtools::use_vignette(&quot;my-vignette&quot;)</code></pre>
-<p><a href="https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission">Where to put package vignettes for CRAN submission</a></p>
-<blockquote>
-<p>“You put the .Rnw sources in vignettes/ as you did, but you missed out a critical step; don’t check the source tree. The expected workflow is to build the source tarball and then check that tarball. Building the tarball will create the vignette PDF.”</p>
-</blockquote>
-<pre><code>R CMD build ../foo/pkg
-R CMD check ./pkg-0.4.tar.gz</code></pre>
-<p>Issues while building vignette for a packages:</p>
-<ul>
-<li><p>sh: 1: /usr/bin/texi2dvi: not found</p>
-<p>sudo apt-get install texinfo</p></li>
-<li><p><a href="https://github.com/clonghurst/Res.plotter/issues/3">Warning about “vignette without corresponding PDF/HTML”?</a></p></li>
-</ul>
-<blockquote>
-<p>“Maybe you’re running R CMD check using the directory name rather than the .tar.gz file?”</p>
-</blockquote>
-<ul>
-<li><a href="https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette">Inconsolata missing to build R vignette</a></li>
-</ul>
-<blockquote>
-<p>“Installing texlive-fonts-extra should take care of it.”</p>
-</blockquote>
-<p>R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings No solution for this one but I guess it’s ok since it concerns country names?</p>
-</div>
-</div>
-<div id="unit-tests" class="section level2">
-<h2>Unit tests</h2>
-<p>Back in R, add testing infrastructure:</p>
-<pre><code>devtools::use_testthat()</code></pre>
-<p>When checking the package with R CMD CHECK, <a href="https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when">How can I handle R CMD check “no visible binding for global variable”?</a> These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.</p>
-</div>
-<div id="continuous-integration" class="section level2">
-<h2>Continuous Integration</h2>
-<p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository. I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK.</p>
-<p>Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
-</div>
-<div id="make-file" class="section level2">
-<h2>Make file</h2>
-<ul>
-<li>kbroman <a href="https://kbroman.org/minimal_make/">minimal make</a></li>
-<li>Cran <a href="https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build">how to use make files with R CMD build</a></li>
-</ul>
-<p>I copied the make file from the knitr package.</p>
-</div>
-<div id="submitting-to-cran" class="section level2">
-<h2>Submitting to CRAN</h2>
-<p><a href="https://cran.r-project.org/submit.html">Submit package to CRAN</a> The second page will ask to</p>
-<ul>
-<li>Step 1 (Upload) the <code>*.tar.gz</code> file.</li>
-<li>Step 2 (Submission) review information from the package’s DESCRIPTION file.</li>
-<li>Step 3 (Confirmation)</li>
-</ul>
-<p>The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review.</p>
-<p>In general enter the Git tag after the submission has been completed, because it is very likely that additional information will need to be added to the package before or during the submission process.</p>
-</div>
-</div>
-<div id="differences-between-python-and-r" class="section level1">
-<h1>Differences between python and R</h1>
-<p>See also the <a href="python.html">python</a> page for a comparison between pandas methods and R data frames functions.</p>
-<pre><code>l = c(1,2,3)
-s = l
-s[3]
-[1] 3
-s[3] = &quot;a&quot;
-s
-[1] &quot;1&quot; &quot;2&quot; &quot;a&quot;
-l
-[1] 1 2 3</code></pre>
-<p>Using the address function to see the address of these objects in memory We can see that s and l share the same address. The address only changes when we asign something to s.</p>
-<pre><code>library(pryr)
-l = c(1,2,3)
-s = l
-address(l)
-[1] &quot;0x316f718&quot;
-address(s)
-[1] &quot;0x316f718&quot;
-s[3] = &quot;a&quot;
-address(s)
-[1] &quot;0x36a7d30&quot;
-s
-[1] &quot;1&quot; &quot;2&quot; &quot;a&quot;
-l
-[1] 1 2 3</code></pre>
-<p>Checking string objects</p>
-<pre><code>bla = &quot;qsdfmlkj&quot;
-address(bla)
-[1] &quot;0x38e5120&quot;
-bli = bla
-address(bli)
-[1] &quot;0x38e5120&quot;
-bli = paste(bli, &quot;sdf&quot;)
-address(bli)
-[1] &quot;0x38d1d60&quot;</code></pre>
-<p>TODO Compare to the same code in python to see the difference between the above and passing by reference.</p>
 </div>
 <div id="further-resources" class="section level1">
 <h1>Further resources</h1>
