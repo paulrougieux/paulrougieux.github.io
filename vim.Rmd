@@ -801,6 +801,9 @@ or
 
     :Explorer
 
+To open a file in vim press enter. To open a file better suited for other
+applications, such as a pdf, an html file or an image, press x.
+
 To [return to file editing without opening any
 file](https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file)
 (and to switch back and forth between editing and explorer):
@@ -843,6 +846,14 @@ Open the file under the cursor, in the current window:
 Open the file under the cursor, in a new window:
 
     gf
+
+If the file is a pdf, an image or a web link, use: 
+
+    gx
+
+See :help gx for more information on how vim handles the file opening in
+various operating systems.
+
 
 ## Jump back and forth
 
