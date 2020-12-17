@@ -521,7 +521,7 @@ iris2 %&gt;%
     # Change the order
     arrange(mean_sepal_width) %&gt;%
     # Create factor levels in the order in which they appear
-    mutate(Species = as_factor(Species)) %&gt;%
+    mutate(Species = forcats::as_factor(Species)) %&gt;%
     ggplot() +
     aes(Species, Sepal.Width, color = Species) +
     geom_point()</code></pre>
@@ -1076,6 +1076,12 @@ iris %&gt;%
 ## 1 setosa                  5.01           0.352             3.43          0.379
 ## 2 versicolor              5.94           0.516             2.77          0.314
 ## 3 virginica               6.59           0.636             2.97          0.322</code></pre>
+<p>More information in the vignette</p>
+<pre><code>vignette(&quot;colwise&quot;, package=&quot;dplyr&quot;)</code></pre>
+<p>The vignette mentions this about <code>rename</code>:</p>
+<blockquote>
+<p>“across() doesn’t work with select() or rename() because they already use tidy select syntax; if you want to transform column names with a function, you can use rename_with().”</p>
+</blockquote>
 </div>
 <div id="mutate" class="section level3">
 <h3>Mutate</h3>
@@ -1091,6 +1097,25 @@ iris %&gt;%
 ## 5          5.0         3.6            1           0  setosa
 ## 6          5.4         3.9            2           0  setosa</code></pre>
 </div>
+<div id="rename" class="section level3">
+<h3>Rename</h3>
+<p><code>rename_with</code> from the <code>dplyr</code> package can use either a function or a formula to rename a selection of columns given as the <code>.cols</code> argument. For example passing the function name <code>toupper</code>:</p>
+<pre><code>library(dplyr)
+rename_with(head(iris), toupper, starts_with(&quot;Petal&quot;))</code></pre>
+<p>Is equivalent to passing the formula <code>~ toupper(.x)</code>:</p>
+<pre><code>rename_with(head(iris), ~ toupper(.x), starts_with(&quot;Petal&quot;))</code></pre>
+<p>To rename all columns, you can also use <code>set_names</code> from the rlang package. We now use <code>paste0</code> as a renaming function. <code>pasteO</code> takes 2 arguments, as a result there are different ways to pass the second argument depending on whether we use a function or a formula.</p>
+<pre><code>rlang::set_names(head(iris), paste0, &quot;_hi&quot;)
+rlang::set_names(head(iris), ~ paste0(.x, &quot;_hi&quot;))</code></pre>
+<p>The same can be achieved with <code>rename_with</code> by passing the data frame as first argument <code>.data</code>, the function as second argument <code>.fn</code>, all columns as third argument <code>.cols=everything()</code> and the function parameters as the fourth argument <code>...</code>. Alternatively you can place the second, third and fourth arguments in a formula given as the second argument.</p>
+<pre><code>rename_with(head(iris), paste0, everything(), &quot;_hi&quot;)
+rename_with(head(iris), ~ paste0(.x, &quot;_hi&quot;))</code></pre>
+<p><code>rename_with</code> only works with data frames. <code>set_names</code> is more generic and can also perform vector renaming</p>
+<pre><code>rlang::set_names(1:4, c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;))</code></pre>
+</div>
+</div>
+<div id="pipes" class="section level2">
+<h2>Pipes</h2>
 </div>
 <div id="purrr" class="section level2">
 <h2>purrr</h2>

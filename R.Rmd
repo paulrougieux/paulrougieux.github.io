@@ -69,7 +69,7 @@ You can also order the factor level using the behavior of the forcats::as_factor
         # Change the order
         arrange(mean_sepal_width) %>%
         # Create factor levels in the order in which they appear
-        mutate(Species = as_factor(Species)) %>%
+        mutate(Species = forcats::as_factor(Species)) %>%
         ggplot() +
         aes(Species, Sepal.Width, color = Species) +
         geom_point()
@@ -695,6 +695,16 @@ iris %>%
     summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd)))
 ```
 
+More information in the vignette
+
+    vignette("colwise", package="dplyr")
+
+The vignette mentions this about `rename`: 
+
+> "across() doesn’t work with select() or rename() because they already use
+> tidy select syntax; if you want to transform column names with a function,
+> you can use rename_with()." 
+
 
 ### Mutate
 
@@ -706,6 +716,46 @@ iris %>%
     mutate_at(vars(starts_with("Petal")), round) %>%
     head()
 ```
+
+
+### Rename
+
+`rename_with` from the `dplyr` package can use either a function or a formula
+to rename a selection of columns given as the `.cols` argument. For example
+passing the function name `toupper`: 
+
+    library(dplyr)
+    rename_with(head(iris), toupper, starts_with("Petal"))
+
+Is equivalent to passing the formula `~ toupper(.x)`:
+
+    rename_with(head(iris), ~ toupper(.x), starts_with("Petal"))
+
+To rename all columns, you can also use `set_names` from the rlang package. We
+now use `paste0` as a renaming function. `pasteO` takes 2 arguments, as a
+result there are different ways to pass the second argument depending on
+whether we use a function or a formula. 
+
+    rlang::set_names(head(iris), paste0, "_hi")
+    rlang::set_names(head(iris), ~ paste0(.x, "_hi"))
+
+The same can be achieved with `rename_with` by passing the data frame as first
+argument `.data`, the function as second argument `.fn`, all columns as third
+argument `.cols=everything()` and the function parameters as the fourth
+argument `...`. Alternatively you can place the second, third and fourth
+arguments in a formula given as the second argument.
+
+    rename_with(head(iris), paste0, everything(), "_hi")
+    rename_with(head(iris), ~ paste0(.x, "_hi"))
+
+`rename_with` only works with data frames. `set_names` is more generic and can
+also perform vector renaming
+
+    rlang::set_names(1:4, c("a", "b", "c", "d"))
+
+
+## Pipes
+
 
 ## purrr
 
