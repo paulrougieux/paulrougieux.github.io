@@ -525,6 +525,18 @@ For example:
 [SubstitutingCalibriAndCambriaFonts](https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts)
 
 
+# Gnome
+
+[Gnome shell pressing the super key does not
+work](https://askubuntu.com/questions/69648/gnome-shell-pressing-the-super-key-does-not-work/1179193#1179193)
+
+> "You might have locked your super button.
+> Try unlock it on your keyboard. It usually has two icons - a window key and a lock."
+
+There is indeed a lock on my mechanical keyboard if I unlock it, the super
+key works again.
+
+
 # Keyboard
 
 * [A better AZERTY for developers](https://github.com/r03/azerty)
