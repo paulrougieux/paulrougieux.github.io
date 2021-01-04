@@ -48,7 +48,19 @@ For example copy the readme file to the clipboard used by CTRL+C CTRL+V:
     xclip -selection c README.md
 
 
-## Pandoc
+## Images to pdf
+
+Convert one or more images to pdf
+
+    img2pdf img.jpg -o output.pdf 
+
+Convert [all jpg images in the current
+directory](https://stackoverflow.com/questions/8955425/how-can-i-convert-a-series-of-images-to-a-pdf-from-the-command-line-on-linux)
+to a pdf 
+
+    img2pdf $(find . -iname '*.jpg' | sort -V) -o ./document.pdf  
+
+## Documents between various formats with Pandoc
 
 [Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
 to convert text files from one format to another.
@@ -60,7 +72,7 @@ Convert a markdown document to pdf
     # If there are utf-8 encoding issues, use another engine
     pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex
 
-Convert an odf document to markdown
+Convert an odt document to markdown
 
     pandoc filename.odt -o filename.md 
 
@@ -138,7 +150,8 @@ There is still an issue with the encoding of the bibliography.
 
 ### Bash script for bulk conversion
 
-[Bash script for pandoc](https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs)
+Convert many markdown files with this [bash script for
+pandoc](https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs) 
 
     for mdfile in *.md; do
     pdffile=${mdfile%.md}.pdf
@@ -365,11 +378,7 @@ times](https://unix.stackexchange.com/q/182602/85530)
 ## Edit PDF files
 
 Commands based on the poppler library for PDF manipulation.
-Search a text pattern in all PDF files present in a directory:
-
-    pdfgrep pattern *.pdf
-
- Merge multiple PDF into one:
+Merge multiple PDF into one:
 
     pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf
 
@@ -527,6 +536,7 @@ More file information
     stat <filename>
 
 ## Search and filter text files
+
 Search with Grep
 
     grep "text" file.txt
@@ -572,6 +582,14 @@ See tab and end of line characters in a text file
 
     cat -te filename |less 
 
+
+## Search in pdf files
+
+Search a text pattern in all PDF files present in a directory:
+
+    pdfgrep pattern *.pdf
+
+
 # List files
 
 List all files in a directory
@@ -590,7 +608,10 @@ To list subdirectories recursively:
 
     ls -aR | xargs realpath
 
-In case of you have spaces in file names, xargs recomments using the `-o` option to prevent file names from being processed incorrectly, this works best with the output of `find -print0` and it starts to look a lot more complex than other answers:
+In case of you have spaces in file names, xargs recomments using the `-o`
+option to prevent file names from being processed incorrectly, this works best
+with the output of `find -print0` and it starts to look a lot more complex than
+other answers: 
 
     find -print0 |xargs -0 realpath
 

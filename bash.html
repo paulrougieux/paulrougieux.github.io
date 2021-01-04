@@ -491,14 +491,21 @@ div.tocify {
 <p>For example copy the readme file to the clipboard used by CTRL+C CTRL+V:</p>
 <pre><code>xclip -selection c README.md</code></pre>
 </div>
-<div id="pandoc" class="section level2">
-<h2>Pandoc</h2>
+<div id="images-to-pdf" class="section level2">
+<h2>Images to pdf</h2>
+<p>Convert one or more images to pdf</p>
+<pre><code>img2pdf img.jpg -o output.pdf </code></pre>
+<p>Convert <a href="https://stackoverflow.com/questions/8955425/how-can-i-convert-a-series-of-images-to-a-pdf-from-the-command-line-on-linux">all jpg images in the current directory</a> to a pdf</p>
+<pre><code>img2pdf $(find . -iname &#39;*.jpg&#39; | sort -V) -o ./document.pdf  </code></pre>
+</div>
+<div id="documents-between-various-formats-with-pandoc" class="section level2">
+<h2>Documents between various formats with Pandoc</h2>
 <p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a lot of example commands to convert text files from one format to another. <a href="https://pandoc.org/MANUAL.html">Pandoc user guide</a></p>
 <p>Convert a markdown document to pdf</p>
 <pre><code>pandoc filname.md -o filename.pdf
 # If there are utf-8 encoding issues, use another engine
 pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
-<p>Convert an odf document to markdown</p>
+<p>Convert an odt document to markdown</p>
 <pre><code>pandoc filename.odt -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
 <pre><code>pandoc filename.docx -o filename.md </code></pre>
@@ -550,7 +557,7 @@ header-includes: |
 </div>
 <div id="bash-script-for-bulk-conversion" class="section level3">
 <h3>Bash script for bulk conversion</h3>
-<p><a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">Bash script for pandoc</a></p>
+<p>Convert many markdown files with this <a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">bash script for pandoc</a></p>
 <pre><code>for mdfile in *.md; do
 pdffile=${mdfile%.md}.pdf
 echo $pdffile
@@ -704,9 +711,7 @@ ffmpeg -i file.mkv -ss 00:00:20 -to 00:00:40 -c copy file-2.mkv</code></pre>
 </div>
 <div id="edit-pdf-files" class="section level2">
 <h2>Edit PDF files</h2>
-<p>Commands based on the poppler library for PDF manipulation. Search a text pattern in all PDF files present in a directory:</p>
-<pre><code>pdfgrep pattern *.pdf</code></pre>
-<p>Merge multiple PDF into one:</p>
+<p>Commands based on the poppler library for PDF manipulation. Merge multiple PDF into one:</p>
 <pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
 <p>Alternatively, pdftk can be used to merge PDF files</p>
 <pre><code>pdftk input1.pdf input2.pdf cat output output.pdf</code></pre>
@@ -828,6 +833,11 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 <pre><code>tail -f</code></pre>
 <p>See tab and end of line characters in a text file</p>
 <pre><code>cat -te filename |less </code></pre>
+</div>
+<div id="search-in-pdf-files" class="section level2">
+<h2>Search in pdf files</h2>
+<p>Search a text pattern in all PDF files present in a directory:</p>
+<pre><code>pdfgrep pattern *.pdf</code></pre>
 </div>
 </div>
 <div id="list-files" class="section level1">
