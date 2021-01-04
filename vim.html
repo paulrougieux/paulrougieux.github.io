@@ -1089,6 +1089,20 @@ in addition, I mapped m to $</code></pre>
 <p>Use <code>:g/pattern</code> to display a list of all search result in the document.</p>
 <p>Search all occurrences of a pattern and populate the quick fix window:</p>
 <pre><code>:vim /pattern/ % | cw</code></pre>
+<div id="highlight-search-matches" class="section level3">
+<h3>Highlight search matches</h3>
+<p>Define a new highlight group and use it to highlight matches</p>
+<pre><code>:highlight newgroup ctermbg=green guibg=green
+:match newgroup /TODO/</code></pre>
+<p>Clear the match pattern</p>
+<pre><code>:match</code></pre>
+<p>Display the list of all highlight groups</p>
+<pre><code>:highlight</code></pre>
+<p>Use existing highlight groups</p>
+<pre><code>:match String /i/
+:2match Character /o/
+:3match Label /a/</code></pre>
+</div>
 </div>
 <div id="search-in-multiple-files" class="section level2">
 <h2>Search in multiple files</h2>

@@ -961,6 +961,29 @@ Search all occurrences of a pattern and populate the quick fix window:
 
     :vim /pattern/ % | cw
 
+
+### Highlight search matches
+
+Define a new highlight group and use it to highlight matches
+
+    :highlight newgroup ctermbg=green guibg=green
+    :match newgroup /TODO/
+
+Clear the match pattern
+
+    :match
+
+Display the list of all highlight groups
+
+    :highlight
+
+Use existing highlight groups
+
+    :match String /i/
+    :2match Character /o/
+    :3match Label /a/
+
+
 ## Search in multiple files
 
 [open files on the match lines given by grep](https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep)
