@@ -911,6 +911,34 @@ p + scale_colour_manual(values = iris_palette)</code></pre>
 <pre><code>display.brewer.all()</code></pre>
 </div>
 </div>
+<div id="text-labels" class="section level2">
+<h2>Text labels</h2>
+<p>ggplot2 <a href="https://ggplot2.tidyverse.org/reference/geom_text.html">text</a></p>
+<p>Use position jitter</p>
+<pre class="r"><code>#  Reduce the number of points so it becomes more readable
+iris2 &lt;- iris %&gt;% 
+    group_by(Species, Petal.Width) %&gt;%
+    summarise(Sepal.Width = mean(Sepal.Width))
+ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
+    geom_text(aes(label = Species), position=position_jitter(width=0.5,height=0.3))</code></pre>
+<p>Use repulsive textual annotations</p>
+<pre class="r"><code>ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
+    ggrepel::geom_text_repel(aes(label = Species))</code></pre>
+<p>Change the text size</p>
+<pre class="r"><code>ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
+    ggrepel::geom_text_repel(aes(label = Species), size=8)</code></pre>
+<p><a href="https://ggrepel.slowkow.com/articles/examples.html">More ggrepel examples</a></p>
+<p>Justification</p>
+<pre class="r"><code>df &lt;- data.frame(
+  x = c(1, 1, 2, 2, 1.5),
+  y = c(1, 2, 1, 2, 1.5),
+  text = c(&quot;bottom-left&quot;, &quot;bottom-right&quot;, &quot;top-left&quot;, &quot;top-right&quot;, &quot;center&quot;)
+)
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = text))
+ggplot(df, aes(x, y)) +
+  geom_text(aes(label = text), vjust = &quot;inward&quot;, hjust = &quot;inward&quot;)</code></pre>
+</div>
 </div>
 <div id="python-compared-to-r" class="section level1">
 <h1>Python compared to R</h1>

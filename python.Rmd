@@ -1096,7 +1096,24 @@ Mentioned as a comment under [this answer](https://stackoverflow.com/a/56970556/
 
 # R and python
 
-See also the section above on pandas data frame / comparison with R. 
+See also the [R page](R.html) for more details on R.
+
+The central object in R is the data frame, that is why I mostly compare R to
+the python pandas package. R was created more than 40 years before the python
+pandas package.
+[R_(programming_language)](https://en.wikipedia.org/wiki/R_(programming_language))
+
+> "R is an implementation of the S programming language combined with lexical
+> scoping semantics, inspired by Scheme. S was created by John Chambers in
+> 1976 while at Bell Labs. A commercial version of S was offered as S-PLUS
+> starting in 1988. " 
+
+[Pandas_(software)](https://en.wikipedia.org/wiki/Pandas_(software)#History)
+
+> "Developer Wes McKinney started working on pandas in 2008 while at AQR
+> Capital Management out of the need for a high performance, flexible tool to
+> perform quantitative analysis on financial data. Before leaving AQR he was
+> able to convince management to allow him to open source the library. " 
 
 [Migrating from R to python](https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/)
 Python is a full fledge programming language but it is missing statistical and plotting libraries.
