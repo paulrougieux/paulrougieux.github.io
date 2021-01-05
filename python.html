@@ -887,7 +887,10 @@ a @ c
 <pre><code>m @ m
 # array([[ 2,  3],
 #        [ 6, 11]])</code></pre>
-<p>Linear algebra with numpy.linalg For example the norm of a matrix or vector:</p>
+</div>
+<div id="norm-of-a-matrix" class="section level2">
+<h2>Norm of a matrix</h2>
+<p>Linear algebra functionalities are provided by numpy.linalg For example the norm of a matrix or vector:</p>
 <pre><code>np.linalg.norm(x)
 # 16.3707055437449
 np.linalg.norm(np.array([3,4]))
@@ -1317,15 +1320,23 @@ g.fig.set_figheight(10) </code></pre>
 <div id="r-and-python" class="section level1">
 <h1>R and python</h1>
 <p>See also the <a href="R.html">R page</a> for more details on R.</p>
-<p>The central object in R is the data frame, that is why I mostly compare R to the python pandas package. R was created more than 40 years before the python pandas package. <a href="https://en.wikipedia.org/wiki/R_(programming_language)">R_(programming_language)</a></p>
+<div id="history" class="section level2">
+<h2>History</h2>
+<p>The central objects in R are vectors, matrices and data frames, that is why I mostly compare R to the python packages numpy and pandas. R was created almost 20 years before numpy and more than 40 years before pandas.</p>
+<p><a href="https://en.wikipedia.org/wiki/R_(programming_language)">R_(programming_language)</a></p>
 <blockquote>
 <p>“R is an implementation of the S programming language combined with lexical scoping semantics, inspired by Scheme. S was created by John Chambers in 1976 while at Bell Labs. A commercial version of S was offered as S-PLUS starting in 1988.”</p>
+</blockquote>
+<p><a href="https://en.wikipedia.org/wiki/NumPy#History">NumPy history</a></p>
+<blockquote>
+<p>“In 1995 the special interest group (SIG) matrix-sig was founded with the aim of defining an array computing package; among its members was Python designer and maintainer Guido van Rossum, who extended Python’s syntax (in particular the indexing syntax) to make array computing easier. […] An implementation of a matrix package was completed by Jim Fulton, then generalized by Jim Hugunin and called Numeric. […] new package called Numarray was written as a more flexible replacement for Numeric.[9] Like Numeric, it too is now deprecated. […] In early 2005, NumPy developer Travis Oliphant wanted to unify the community around a single array package and ported Numarray’s features to Numeric, releasing the result as NumPy 1.0 in 2006.”</p>
 </blockquote>
 <p><a href="https://en.wikipedia.org/wiki/Pandas_(software)#History">Pandas_(software)</a></p>
 <blockquote>
 <p>“Developer Wes McKinney started working on pandas in 2008 while at AQR Capital Management out of the need for a high performance, flexible tool to perform quantitative analysis on financial data. Before leaving AQR he was able to convince management to allow him to open source the library.”</p>
 </blockquote>
 <p><a href="https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/">Migrating from R to python</a> Python is a full fledge programming language but it is missing statistical and plotting libraries. Vectors are an after thought in python most functionality can be reproduced using operator overloading, but some functionality looks clumsy.</p>
+</div>
 <div id="pandas-comparison-with-r" class="section level2">
 <h2>Pandas comparison with R</h2>
 <ul>
