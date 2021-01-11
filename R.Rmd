@@ -154,6 +154,20 @@ Get the current environment
     rlang::current_env()
 
 
+# Editors
+
+I use Vim and the great [Nvim-R](https://github.com/jalvesaq/Nvim-R) plugin to
+edit R markdown documents and R scripts. I browse the table of content of R
+markdown files with the Voom plugin. I create R packages with Makefiles. I use
+the fugitive plugin to manage my git commits. See my [Vim page](Vim.html) for more
+information. 
+
+Rstudio is a great editors for those who prefer a graphical user interface.
+It has a Vim mode. In fact I trained my muscle memory for Vim movement keys inside
+RStudio initially. Rstudio also has a lot of menus and buttons to work with
+Rmarkdown documents, view the state of a git repository and build packages.
+
+
 # Files input output
 
     getwd()
@@ -210,7 +224,7 @@ Read a dataset from an rds file
     identical(iris, iris2)
 
 
-# Find
+# Find and replace
 
 ## Longest contiguous stretch of non-NAs:
 
@@ -230,6 +244,22 @@ Read a dataset from an rds file
     ] "omit"
     tr(,"tsp")
     ]  7 10  1
+
+## Replace text in column names
+
+Add the first row to the column name, useful for some double headed csv files
+coming from pandas.
+
+    paste(names(df), df[1,])
+
+Replace a regular expression with optional numerical pattern and final space
+
+    names(df) <- gsub(".per.hectare.[0-9]* *", "_", names(df))
+
+[And in a regular
+expression](https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-not/18239222)
+
+    |
 
 
 # Installing R and packages
@@ -533,6 +563,7 @@ Use this palette in ggplot2
         geom_point() +
         scale_color_brewer(palette = "Set2")
 
+### Manual colours
 
 Use a named vector to set a palette in ggplot2 as explained in 
 [ggplot2 scale_manual](https://ggplot2.tidyverse.org/reference/scale_manual.html)
@@ -987,4 +1018,5 @@ piris$plot[2]
 
 * [Recommendations for resources for after workshops](https://github.com/carpentries/conversations/issues/18)
 
+* [Rstudio education](https://education.rstudio.com/learn/)
 

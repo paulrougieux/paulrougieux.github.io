@@ -592,6 +592,11 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 <p>Get the current environment</p>
 <pre><code>rlang::current_env()</code></pre>
 </div>
+<div id="editors" class="section level1">
+<h1>Editors</h1>
+<p>I use Vim and the great <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> plugin to edit R markdown documents and R scripts. I browse the table of content of R markdown files with the Voom plugin. I create R packages with Makefiles. I use the fugitive plugin to manage my git commits. See my <a href="Vim.html">Vim page</a> for more information.</p>
+<p>Rstudio is a great editors for those who prefer a graphical user interface. It has a Vim mode. In fact I trained my muscle memory for Vim movement keys inside RStudio initially. Rstudio also has a lot of menus and buttons to work with Rmarkdown documents, view the state of a git repository and build packages.</p>
+</div>
 <div id="files-input-output" class="section level1">
 <h1>Files input output</h1>
 <pre><code>getwd()
@@ -629,8 +634,8 @@ iris %&gt;%
 identical(iris, iris2)</code></pre>
 </div>
 </div>
-<div id="find" class="section level1">
-<h1>Find</h1>
+<div id="find-and-replace" class="section level1">
+<h1>Find and replace</h1>
 <div id="longest-contiguous-stretch-of-non-nas" class="section level2">
 <h2>Longest contiguous stretch of non-NAs:</h2>
 <pre><code>na.contiguous(c(NA,1:3,NA,NA,3:5,NA,NA))
@@ -649,6 +654,15 @@ tr(,&quot;class&quot;)
 ] &quot;omit&quot;
 tr(,&quot;tsp&quot;)
 ]  7 10  1</code></pre>
+</div>
+<div id="replace-text-in-column-names" class="section level2">
+<h2>Replace text in column names</h2>
+<p>Add the first row to the column name, useful for some double headed csv files coming from pandas.</p>
+<pre><code>paste(names(df), df[1,])</code></pre>
+<p>Replace a regular expression with optional numerical pattern and final space</p>
+<pre><code>names(df) &lt;- gsub(&quot;.per.hectare.[0-9]* *&quot;, &quot;_&quot;, names(df))</code></pre>
+<p><a href="https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-not/18239222">And in a regular expression</a></p>
+<pre><code>|</code></pre>
 </div>
 </div>
 <div id="installing-r-and-packages" class="section level1">
@@ -894,6 +908,8 @@ palette(brewer.pal(n = 8, name = &quot;Set2&quot;))</code></pre>
 <pre><code>ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) + 
     geom_point() +
     scale_color_brewer(palette = &quot;Set2&quot;)</code></pre>
+<div id="manual-colours" class="section level3">
+<h3>Manual colours</h3>
 <p>Use a named vector to set a palette in ggplot2 as explained in <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">ggplot2 scale_manual</a></p>
 <pre><code>p &lt;- ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) +
         geom_point() 
@@ -903,6 +919,7 @@ p + scale_colour_manual(values = c(setosa=&#39;black&#39;, versicolor=&#39;red&#
 iris_palette &lt;- setNames(brewer.pal(n=length(species_names), name=&#39;Set2&#39;), 
                          species_names)
 p + scale_colour_manual(values = iris_palette)</code></pre>
+</div>
 <div id="display-palettes" class="section level3">
 <h3>Display palettes</h3>
 <p>Display qualitative palettes:</p>
@@ -1288,6 +1305,7 @@ piris$plot[2]</code></pre>
 <li><p><a href="http://varianceexplained.org/r/teach-tidyverse/">Teach the tidyverse to beginners</a></p></li>
 <li><p><a href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">Vectorization in R, Why?</a></p></li>
 <li><p><a href="https://github.com/carpentries/conversations/issues/18">Recommendations for resources for after workshops</a></p></li>
+<li><p><a href="https://education.rstudio.com/learn/">Rstudio education</a></p></li>
 </ul>
 </div>
 </div>
