@@ -91,6 +91,9 @@ set splitbelow
 set splitright
 " See also tmux configuration
 
+" Set the height of the terminal buffer to 10 lines
+set termwinsize=10x0
+
 " Recursively search all files in pwd for the word under the cursor 
 nmap <F3> :vimgrep /<C-R><C-W>/ **<CR>
 

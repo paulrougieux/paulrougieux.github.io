@@ -565,15 +565,26 @@ augroup END</code></pre>
 </div>
 <div id="convert" class="section level1">
 <h1>Convert</h1>
-<div id="from-markdown-to-other-formats-with-pandoc" class="section level2">
-<h2>From markdown to other formats with pandoc</h2>
+<div id="pandoc" class="section level2">
+<h2>Pandoc</h2>
+<div id="from-markdown-to-other-formats-with-pandoc" class="section level3">
+<h3>From markdown to other formats with pandoc</h3>
 <p>Convert markdown documents to other formats such as pdf with pandoc.</p>
-<p>Convert the current document to pdf</p>
+<p>Convert the current document to html</p>
 <pre><code>:Pandoc </code></pre>
+<p>Convert the current document to pdf</p>
+<pre><code>:Pandoc pdf</code></pre>
 <p>Convert the current document to word</p>
 <pre><code>:Pandoc docx</code></pre>
-<p>Other output -t options from man pandoc:</p>
+<p>Other output -t options from man pandoc</p>
 <p>• docx (Word docx) • html or html5 (HTML, i.e. HTML5/XHTML polyglot markup) • latex (LaTeX) • odt (OpenOffice text document) • pptx (PowerPoint slide show)</p>
+<p>Add a yaml front matter to specify more parameters</p>
+<pre><code>---
+title: &quot;Songs of freedom&quot;
+author: &quot;Bob Marley&quot;
+geometry: margin=0.5cm
+---</code></pre>
+</div>
 <div id="bibliography" class="section level3">
 <h3>bibliography</h3>
 <p>To use a bibliography with the pandoc extension insert the following in the header of the markdown file:</p>
@@ -698,6 +709,8 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 <pre><code>:%s/foo/bar/n</code></pre>
 <p>To replace by a new line character, use <code>\r</code> instead of <code>\n</code>. For example to insert a new line after each comma in a selection:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/,/,\r/g</code></pre>
+<p>To replace double line breaks by a single line brake</p>
+<pre><code>:%s/\n\n/\r/g</code></pre>
 <p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
 <div id="character-classes" class="section level3">
@@ -925,10 +938,20 @@ CTRL+T - jump backwards</code></pre>
 <div id="tabs-should-be-called-workspaces" class="section level2">
 <h2>Tabs should be called workspaces</h2>
 <p><a href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why do vim experts prefer buffers over tabs?</a> &gt; &quot;“Vim experts” don’t prefer buffers over tabs: they use buffers as the file &gt; proxies they are and tab pages as the workspaces they are. Buffers and tab &gt; pages have different purposes&quot;</p>
+<p>Open a file in a new tab</p>
+<pre><code>:tabnew {file}</code></pre>
 <p>Move to the next tab</p>
 <pre><code>gt</code></pre>
 <p>Move to the previous tab</p>
 <pre><code>gT</code></pre>
+<p>Open the file under the cursor in a new tab</p>
+<pre><code>CTRL-W gf   Open a new tab page and edit the file name under the cursor.
+        See |CTRL-W_gf|.
+
+CTRL-W gF   Open a new tab page and edit the file name under the cursor
+        and jump to the line number following the file name.
+        See |CTRL-W_gF|.</code></pre>
+<p>See <code>:help tabpage</code> for more instructions.</p>
 </div>
 <div id="window-split" class="section level2">
 <h2>Window split</h2>
@@ -951,11 +974,21 @@ nnoremap &lt;C-H&gt; &lt;C-W&gt;&lt;C-H&gt; </code></pre>
 set splitright</code></pre>
 <div id="split-resize" class="section level3">
 <h3>Split resize</h3>
-<p>See <code>:help resize</code></p>
+<p>Set current window height to 10 lines</p>
+<pre><code>res 10</code></pre>
+<p>Set current window width to 100 characters</p>
+<pre><code>vertical res 100</code></pre>
+<p>See <code>:help resize</code> for more commands. There are many possible key combinations to resize the window.</p>
+<pre><code>:res[ize] [N]
+CTRL-W CTRL-_                   *CTRL-W_CTRL-_* *CTRL-W__*
+CTRL-W _    Set current window height to N (default: highest possible).
+z{nr}&lt;CR&gt;   Set current window height to {nr}.</code></pre>
 <p>Change the height of the current window by increments of 10:</p>
 <pre><code>:res +10</code></pre>
 <p>Change the with of the current window by increments of 10:</p>
 <pre><code>:vert res +10</code></pre>
+<p>Set the height of the terminal buffer to 10 lines</p>
+<pre><code>:set termwinsize=10x0</code></pre>
 </div>
 <div id="split-zoom-in-and-out" class="section level3">
 <h3>Split zoom in and out</h3>
@@ -1333,7 +1366,7 @@ Ctrl+N</code></pre>
 </ul>
 <div id="nvim-r" class="section level3">
 <h3>Nvim-R</h3>
-<p>Nvim-R supports knitr and mappings can be defined for example:</p>
+<p><a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> supports knitr and mappings can be defined for example:</p>
 <p>RSendChunk RDSendChunk</p>
 <p>I mapped the local leader key to “;” by adding the following to my .vimrc:</p>
 <pre><code>let maplocalleader = &quot;;&quot;</code></pre>

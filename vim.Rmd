@@ -147,26 +147,40 @@ The solution was to use 2 file types for Rmd files: `set ft=rmd.markdown`.
 
 # Convert 
 
+## Pandoc 
 
-## From markdown to other formats with pandoc
+### From markdown to other formats with pandoc
 
 Convert markdown documents to other formats such as pdf with pandoc.
 
-Convert the current document to pdf
+Convert the current document to html
 
     :Pandoc 
+
+Convert the current document to pdf
+
+    :Pandoc pdf
 
 Convert the current document to word
 
     :Pandoc docx
 
-Other output -t options from man pandoc:
+Other output -t options from man pandoc
 
 • docx (Word docx)
 • html or html5 (HTML, i.e.  HTML5/XHTML polyglot markup)
          • latex (LaTeX)
       • odt (OpenOffice text document)
 • pptx (PowerPoint slide show)
+
+Add a yaml front matter to specify more parameters
+
+    ---
+    title: "Songs of freedom"
+    author: "Bob Marley"
+    geometry: margin=0.5cm
+    ---
+
 
 ### bibliography
 
@@ -343,6 +357,10 @@ To replace by a new line character, use `\r` instead of `\n`.
 For example to insert a new line after each comma in a selection:
 
     :'<,'>s/,/,\r/g
+
+To replace double line breaks by a single line brake
+
+    :%s/\n\n/\r/g
 
 You can use replacement to remove text. 
 For example to [remove the last 2 characters of each line in a selection](https://stackoverflow.com/a/36264759/2641825) :
@@ -700,6 +718,10 @@ fix window.
 > proxies they are and tab pages as the workspaces they are. Buffers and tab
 > pages have different purposes"
 
+Open a file in a new tab
+
+    :tabnew {file}
+
 Move to the next tab
 
     gt
@@ -707,6 +729,19 @@ Move to the next tab
 Move to the previous tab
 
     gT
+
+Open the file under the cursor in a new tab
+
+
+    CTRL-W gf	Open a new tab page and edit the file name under the cursor.
+            See |CTRL-W_gf|.
+
+    CTRL-W gF	Open a new tab page and edit the file name under the cursor
+            and jump to the line number following the file name.
+            See |CTRL-W_gF|.
+
+See `:help tabpage` for more instructions.
+
 
 ## Window split
 
@@ -732,9 +767,24 @@ Natural split opening
     set splitbelow
     set splitright
 
+
 ### Split resize
 
-See `:help resize`
+Set current window height to 10 lines
+
+    res 10
+
+Set current window width to 100 characters
+
+    vertical res 100
+
+See `:help resize` for more commands. There are many possible key combinations
+to resize the window. 
+
+    :res[ize] [N]
+    CTRL-W CTRL-_					*CTRL-W_CTRL-_* *CTRL-W__*
+    CTRL-W _	Set current window height to N (default: highest possible).
+    z{nr}<CR>	Set current window height to {nr}.
 
 Change the height of the current window by increments of 10:
 
@@ -743,6 +793,11 @@ Change the height of the current window by increments of 10:
 Change the with of the current window by increments of 10:
 
     :vert res +10
+
+Set the height of the terminal buffer to 10 lines
+
+    :set termwinsize=10x0
+
 
 ### Split zoom in and out
 
@@ -1320,7 +1375,8 @@ IDE](https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/)
 
 ### Nvim-R
 
-Nvim-R supports knitr and mappings can be defined for example:
+[Nvim-R](https://github.com/jalvesaq/Nvim-R) supports knitr and mappings can be
+defined for example: 
 
    RSendChunk
    RDSendChunk
