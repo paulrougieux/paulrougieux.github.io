@@ -389,8 +389,8 @@ Install
 
 ### Teams
 
-
-    wget https://teams.microsoft.com/downloads/desktopurl?env=production&plat=linux&arch=x64&download=true&linuxArchiveType=deb
+[Donwload teams from
+microsoft](https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/download-app#desktopAppDownloadregion)
 
 Install 
 
