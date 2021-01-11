@@ -130,7 +130,7 @@ paper](https://www.editage.com/all-about-publication/research/impressive-Verbs-t
 | To indicate information in a figure                            | depict, display, illustrate, portray, reveal                                                  |
 | To indicate information in a table                             | classify, enumerate, gives, lists, presents, summarizes                                       |
 | To stress that a task has been performed in-depth              | adequately, comprehensively, exhaustively, extensively, thoroughly                            |
-| To show parts                                                  | comprises, compose of, constitutes, encompasses,includes, incorporates                        |
+| To show parts                                                  | comprises, compose of, constitutes, encompasses, includes, incorporates                       |
 | To indicate negative stand                                     | challenge, contradict, disagree, dispute, reject, question                                    |
 | To indicate positive stand                                     | confirm, compliment, corroborate, substantiate, support, uphold, validate, verify             |
 | To show approximation                                          | approximate, estimate, resemble, predict                                                      |
