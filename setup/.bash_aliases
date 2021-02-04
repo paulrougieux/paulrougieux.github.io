@@ -1,8 +1,8 @@
 # Taking notes
-alias bookmark="vim ~/rp/bookmarkdown/bookmark.md"
+alias bookmark="vim -c 'syn off' ~/rp/bookmarkdown/bookmark.md"
 alias overflow="vim ~/rp/bookmarkdown/overflow.md"
 alias matrix="cd ~/rp/bookmarkdown/ && vim -u ~/rp/paulrougieux.github.io/setup/.vimrc_server matrix.Rmd"
-alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && vim readings_jrc.md"
+alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && vim -c 'syn off' readings_jrc.md"
 
 # Music
 alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"

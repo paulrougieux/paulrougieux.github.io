@@ -493,6 +493,19 @@ div.tocify {
 <blockquote>
 <p><strong>Concluding</strong>: to summarise, it can be concluded that, as can be seen, ultimately, given the above, as described, finally</p>
 </blockquote>
+<p>Blog explanation from Grammarly <a href="https://www.grammarly.com/blog/firstly/">on the use of firstly</a></p>
+<blockquote>
+<p>It is not wrong to use firstly, secondly, and so on to enumerate your points. Nor is it wrong to use the simpler first, second, etc.</p>
+</blockquote>
+<blockquote>
+<p>I have three reasons for wanting to visit Rome. Firstly, I would love to see the Colosseum. Secondly, I’m sure the pope is dying to meet me. Thirdly, they have great pizza.</p>
+</blockquote>
+<blockquote>
+<p>I have three reasons for wanting to visit Rome. First, I would love to see the Colosseum. Second, I’m sure the pope is dying to meet me. Third, I need better pizza.</p>
+</blockquote>
+<blockquote>
+<p>“These statements are equivalent in meaning. Nevertheless, there are good reasons for choosing the “first” sequence over the “firstly” sequence. First, using first is a sure win. If your writing is being published or evaluated, or even if you would like to seem proficient to your coworkers, use the construction that is never criticized rather than the one that is frequently criticized.&quot;</p>
+</blockquote>
 </div>
 <div id="coordinating-conjunctions" class="section level3">
 <h3>Coordinating conjunctions</h3>
@@ -630,6 +643,38 @@ when/whenever, where/wherever, whether, while</code></pre>
 </blockquote>
 <p>In the bst file, you can also check for chapter entries.</p>
 </div>
+<div id="diff" class="section level2">
+<h2>Diff</h2>
+<p>Install Latex diff on Debian:</p>
+<pre><code>sudo apt install latexdiff</code></pre>
+<p>Generate diff version of latex files. In the instructions below, the manuscript was made of 2 documents <code>template.tex </code> which called <code>\input{content.tex}</code>.</p>
+<p>Checkout contents from commit 9ce6b9 on 2020 December 1st and prepare the diff in the /tmp dir:</p>
+<pre><code># Delete and re-create a temp dir and copy everything in it
+rm -rf /tmp/article_diff/
+cp -r ~/repos/article_pub /tmp/article_diff
+# Copy the old and new versions of the manuscript to the tmp folder
+cd ~/repos/article_pub/latex_template
+git show 9ce6b9:./content.tex &gt; /tmp/article_diff/latex_template/content_before_review.tex
+git show 9ce6b9:./template.tex &gt; /tmp/article_diff/latex_template/template_before_review.tex
+cp content.tex /tmp/article_diff/latex_template/content_now.tex
+cp template.tex /tmp/article_diff/latex_template/template_now.tex</code></pre>
+<p>Generate the diff</p>
+<pre><code>cd /tmp/article_diff/latex_template
+latexdiff template_before_review.tex template_now.tex &gt; template.tex
+latexdiff content_before_review.tex content_now.tex &gt; content.tex</code></pre>
+<p>Compile the diff document, enter quiet mode with “Q” if there are error messages</p>
+<pre><code> latexmk -pdf -bibtex -use-make template.tex</code></pre>
+</div>
+</div>
+<div id="motivation" class="section level1">
+<h1>Motivation</h1>
+<p><a href="http://veekaybee.github.io/2020/06/09/ml-in-prod/#the-mystery-of-deploying-ml">Blog post on how to put machine learning models into production</a></p>
+<blockquote>
+<p>“One of my favorite books ever is Bird by Bird, by Anne Lamott. It’s about how to write. The story she tells in the book, of how the book got its title, is a book report her brother had to write.”</p>
+</blockquote>
+<blockquote>
+<p>“Thirty years ago my older brother, who was ten years old at the time, was trying to get a report on birds written that he’d had three months to write. [It] was due the next day. We were out at our family cabin in Bolinas, and he was at the kitchen table close to tears, surrounded by binder paper and pencils and unopened books on birds, immobilized by the hugeness of the task ahead. Then my father sat down beside him, put his arm around my brother’s shoulder, and said. ‘Bird by bird, buddy. Just take it bird by bird.’”</p>
+</blockquote>
 </div>
 
 

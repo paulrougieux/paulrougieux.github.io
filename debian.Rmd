@@ -371,10 +371,73 @@ I needed to remove it as explained [here](https://github.com/vector-im/riot-web/
 
 
 
+## Sane
+
+
+The Flatbed scanner
+  Canoscan lide 400 is supported on Linux according to the [sane 
+  backends](http://www.sane-project.org/sane-backends.html) page.
+
+Install sane from source following these instructions
+ http://forums.debian.net/viewtopic.php?f=16&t=141668
+
+Install build dependencies
+
+    sudo apt install sane
+    sudo apt install build-essential make autoconf-archive
+    sudo apt build-dep sane
+    sudo apt install libjpeg-dev
+
+Clone and build the latest version of sane
+
+    git clone https://gitlab.com/sane-project/backends
+    cd backends/
+    ./autogen.sh
+    ./configure
+    make -j9
+
+I tried the other instructions related to the pixma linking 
+
+
+    ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
+    sudo rm /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1.0.27
+    ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
+    sudo rm /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so
+    cd /usr/lib/x86_64-linux-gnu/sane/
+    ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
+    cd ~/rp/zz_forks/backends/
+    ls backend/libsane-pixma.la
+
+The problem is that the '.so.28' file doesn't exist, I tried with another file
+
+    sudo cp backend/libsane-pixma.la /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.la
+    sudo ln -s libsane-pixma.la /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1
+    ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
+
+I also tried these instructions:
+
+    make
+    make install
+
+The scanner is visible in the output of
+
+    lsusb | grep -i canon
+    #Bus 002 Device 115: ID 04a9:1912 Canon, Inc.
+
+I created this file
+
+    sudo vim /usr/lib/udev/rules.d/49-sane.rules
+
+Containing only one line
+
+    ATTRS{idVendor}=="04a9", ATTRS{idProduct}=="1912", MODE="0664", GROUP="scanner", ENV{libsane_matched}="yes"
+
+
 ## Microsoft
 
 Yes I know, these software shouldn't be here, but I have to use these things for work and
 study.
+
 
 ### Skype
 
@@ -489,6 +552,18 @@ Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Li
 # Audio
 
 ## Audio Setup
+
+To remove background noise edit the pulseaudio configuration file:
+
+    vim /etc/pulse.default.pa
+
+Add these lines
+
+    load-module module-echo-cancel source_name=logitechheadset
+    set-default-source logitechheadset
+
+Restart pulseaudio
+
 
 ## Audio Issues
 "dummy output" issue.

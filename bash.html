@@ -495,8 +495,34 @@ div.tocify {
 <h2>Images to pdf</h2>
 <p>Convert one or more images to pdf</p>
 <pre><code>img2pdf img.jpg -o output.pdf </code></pre>
+<p>The help page <code>man img3pd</code> explains the arguments</p>
+<blockquote>
+<p>Convert a directory of JPEG images into a PDF with printable A4 pages in landscape mode. On each page, the photo takes the maximum amount of space while preserving its aspect ratio and a print border of 2 cm on the top and bottom and 2.5 cm on the left and right hand side.</p>
+</blockquote>
+<pre><code>img2pdf --output out.pdf --pagesize A4^T --border 2cm:2.5cm *.jpg</code></pre>
+<blockquote>
+<p>Appending ^T (a caret/circumflex followed by the letter T) turns the paper size from portrait into land‐ scape.</p>
+</blockquote>
+<p>I used the following instruction to create an A4 page with 2 images one jpg and one png</p>
+<pre><code>img2pdf image1.jpg image2.png -o output.pdf --pagesize A4^T --border 1cm
+img2pdf image1.jpg image2.png -o output.pdf --pagesize A4 --border 1cm
+img2pdf *.jpg -o output.pdf --pagesize A4 --border 1cm</code></pre>
+<p>Interestingly when I asked for landscape mode, only the second image appeared in landscape. When I asked for portrait mode, only the second image appeared in portrait mode. The first jpg image contained exif orientation metadata (it was rotated vertically). Opening the first image in Gimp, rotating it and exporting it under a new name (without the exif metadata) solves the issue. Both pages are portrait A4.</p>
 <p>Convert <a href="https://stackoverflow.com/questions/8955425/how-can-i-convert-a-series-of-images-to-a-pdf-from-the-command-line-on-linux">all jpg images in the current directory</a> to a pdf</p>
 <pre><code>img2pdf $(find . -iname &#39;*.jpg&#39; | sort -V) -o ./document.pdf  </code></pre>
+<p>If there is an alpha layer in the image, it will not be added to the pdf. The Warning message suggests using imagemagick to remove the alpha layer.</p>
+<pre><code>WARNING:root:Image contains transparency which cannot be retained in PDF.
+WARNING:root:img2pdf will not perform a lossy operation.
+WARNING:root:You can remove the alpha channel using imagemagick:
+WARNING:root:  $ convert input.png -background white -alpha remove -alpha off output.png
+ERROR:root:error: Refusing to work on images with alpha channel</code></pre>
+</div>
+<div id="images-to-other-formats" class="section level2">
+<h2>Images to other formats</h2>
+<p>Convert a png image to a jpgeg image</p>
+<pre><code>convert canto_dei_sanfedisti.png canto_dei_sanfedisti.jpg</code></pre>
+<p>Convert a png image with an alpha layer to an image without alpha layer</p>
+<pre><code>convert input.png -background white -alpha remove -alpha off output.png</code></pre>
 </div>
 <div id="documents-between-various-formats-with-pandoc" class="section level2">
 <h2>Documents between various formats with Pandoc</h2>
@@ -510,7 +536,9 @@ pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
 <pre><code>pandoc filename.docx -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown and keep images</p>
-<pre><code>pandoc --extract-media ./figures input.docx -o output.md</code></pre>
+<pre><code>pandoc --extract-media figures input.docx -o output.md</code></pre>
+<p>Images are contained in a <code>media</code> subfolder in Word documents, the instruction above leads to a <code>figure/media</code> sub folder. To avoid this <a href="https://stackoverflow.com/a/52593892/2641825">use the current directory path</a></p>
+<pre><code>pandoc --extract-media=. input.docx -o output.md</code></pre>
 <p>Convert an html code snippets to markdown and display the output at the command line</p>
 <pre><code>echo &quot;Link: &lt;a href=&quot;https://www.linphone.org/&quot;&gt;Linphone&lt;/a&gt;&quot;| pandoc -f html -t markdown
 # Link: [Linphone](https://www.linphone.org/)</code></pre>
@@ -520,6 +548,12 @@ pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
 <pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
 <div id="yaml-front-matter-for-styles" class="section level3">
 <h3>Yaml front matter for styles</h3>
+<p>Change the margin to 0.5 cm</p>
+<pre><code>---
+title: &quot;Songs of freedom&quot;
+author: &quot;Bob Marley&quot;
+geometry: margin=0.5cm
+---</code></pre>
 <p>Adding headers and footers to pandoc suggests using:</p>
 <pre><code>---
 title: Test
@@ -532,7 +566,23 @@ header-includes: |
     \fancyfoot[LE,RO]{\thepage}
 abstract: This is a pandoc test . . . 
 ---</code></pre>
-<p>Custom yaml front matter for readings file See also the vim.Rmd document on pandoc bibliographies.</p>
+<div id="table-of-content" class="section level4">
+<h4>Table of content</h4>
+<p>Add a table of content at the beginning of the document</p>
+<pre><code>---
+title: &quot;Work plan&quot;
+geometry: margin=2cm
+toc: yes
+---</code></pre>
+<p>When specified in the yaml front matter only, the table of content appears in pdf output but not in html output. This may be due to a difference in the latex and html templates? Display the content of the latex and html templates</p>
+<pre><code>pandoc -D latex
+pandoc -D html</code></pre>
+<p>However calling the –toc argument does create a table of content in the html file:</p>
+<pre><code>pandoc -s --toc notes.md -o notes.html</code></pre>
+</div>
+<div id="bibliography" class="section level4">
+<h4>Bibliography</h4>
+<p>Custom yaml front matter for a markdown document that contains reading notes with citations. See also the vim.Rmd document on pandoc bibliographies.</p>
 <pre><code>---
 title: Reading notes
 author: Paul Rougieux
@@ -555,6 +605,7 @@ header-includes: |
 <pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
 <p>There is still an issue with the encoding of the bibliography.</p>
 </div>
+</div>
 <div id="bash-script-for-bulk-conversion" class="section level3">
 <h3>Bash script for bulk conversion</h3>
 <p>Convert many markdown files with this <a href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">bash script for pandoc</a></p>
@@ -573,8 +624,8 @@ done</code></pre>
 <p>See also the makefile for pandoc in the programming with bash / makefile section below.</p>
 </div>
 </div>
-<div id="pdfminer" class="section level2">
-<h2>pdfminer</h2>
+<div id="pdf-to-text-with-pdfminer" class="section level2">
+<h2>Pdf to text with pdfminer</h2>
 <p>(pdfminer](<a href="https://github.com/pdfminer/pdfminer.six" class="uri">https://github.com/pdfminer/pdfminer.six</a>) Convert all pdf documents to text files in the current folder:</p>
 <pre><code>for pdffile in *.pdf; do
 txtfile=${pdffile%.pdf}.txt
@@ -583,12 +634,17 @@ pdf2txt.py $pdffile &gt; $txtfile
 done</code></pre>
 <p>See also a utility to extract tables from pdf documents.</p>
 </div>
-<div id="tabula" class="section level2">
-<h2>Tabula</h2>
+<div id="pdf-to-tables-with-tabula" class="section level2">
+<h2>Pdf to tables with tabula</h2>
 <p>Extract tables from a pdf with <a href="https://tabula.technology/">tabula</a></p>
 <pre><code>cd /home/paul/Downloads/tabula-jar-1.2.1/tabula
 java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
 <p>Then visit <a href="http://127.0.0.1:8080/" class="uri">http://127.0.0.1:8080/</a></p>
+</div>
+<div id="ascii-art" class="section level2">
+<h2>ASCII art</h2>
+<p>Convert text to large ascii art</p>
+<pre><code>figlet</code></pre>
 </div>
 </div>
 <div id="count" class="section level1">
@@ -781,7 +837,7 @@ sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep 
 <div id="find-files" class="section level2">
 <h2>Find files</h2>
 <p>Find files in subdirectories of the current directory (Quotes are requited to prevent shell command expansion). Find files of a specific extension:</p>
-<pre><code>find . -name &quot;*.pdf&quot; </code></pre>
+<pre><code>find -name &quot;*.pdf&quot; </code></pre>
 <p>Like -name, but the match is case insensitive</p>
 <pre><code>find -iname &quot;*phd*&quot;</code></pre>
 <p>Find files of a specific modification time:</p>
@@ -1192,6 +1248,10 @@ echo $message</code></pre>
 <pre><code>:suppr</code></pre>
 <p>Save the modified playlist file</p>
 <pre><code>:save</code></pre>
+</div>
+<div id="cmus-and-other-audio-programs" class="section level3">
+<h3>Cmus and other audio programs</h3>
+<p>Some programs such as Skype or MS teams (based on Skype and chromium) turn off the volume of cmus when entering into a phone call. They sometimes forget to put it back on. You can turn the volume back on into Gnome’s sound configuration menu, under the applications tab.</p>
 </div>
 </div>
 </div>

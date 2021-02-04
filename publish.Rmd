@@ -31,6 +31,27 @@ writting](https://www.eliteediting.com.au/50-linking-words-to-use-in-academic-wr
 > **Concluding**: to summarise, it can be concluded that, as can be seen,
 > ultimately, given the above, as described, finally
 
+Blog explanation from Grammarly [on the use of
+firstly](https://www.grammarly.com/blog/firstly/)
+
+> It is not wrong to use firstly, secondly, and so on to enumerate your points.
+> Nor is it wrong to use the simpler first, second, etc. 
+
+> I have three reasons for wanting to visit Rome. Firstly, I would love to see
+> the Colosseum. Secondly, I’m sure the pope is dying to meet me. Thirdly, they
+> have great pizza. 
+
+> I have three reasons for wanting to visit Rome. First, I would love to see
+> the Colosseum. Second, I’m sure the pope is dying to meet me. Third, I need
+> better pizza. 
+
+> "These statements are equivalent in meaning. Nevertheless, there are good
+> reasons for choosing the “first” sequence over the “firstly” sequence. First,
+> using first is a sure win. If your writing is being published or evaluated,
+> or even if you would like to seem proficient to your coworkers, use the
+> construction that is never criticized rather than the one that is frequently
+> criticized."
+
 
 ### Coordinating conjunctions
 
@@ -154,3 +175,51 @@ entry.](https://tex.stackexchange.com/questions/373754/how-to-add-page-numbers-t
 
 In the bst file, you can also check for chapter entries.
 
+
+## Diff
+
+Install Latex diff on Debian: 
+
+    sudo apt install latexdiff
+
+Generate diff version of latex files. In the instructions below, the manuscript was made of 2
+documents `template.tex ` which called `\input{content.tex}`.
+
+Checkout contents from commit 9ce6b9 on 2020 December 1st and prepare the diff in the /tmp dir:
+
+    # Delete and re-create a temp dir and copy everything in it
+    rm -rf /tmp/article_diff/
+    cp -r ~/repos/article_pub /tmp/article_diff
+    # Copy the old and new versions of the manuscript to the tmp folder
+    cd ~/repos/article_pub/latex_template
+    git show 9ce6b9:./content.tex > /tmp/article_diff/latex_template/content_before_review.tex
+    git show 9ce6b9:./template.tex > /tmp/article_diff/latex_template/template_before_review.tex
+    cp content.tex /tmp/article_diff/latex_template/content_now.tex
+    cp template.tex /tmp/article_diff/latex_template/template_now.tex
+
+Generate the diff
+
+    cd /tmp/article_diff/latex_template
+    latexdiff template_before_review.tex template_now.tex > template.tex
+    latexdiff content_before_review.tex content_now.tex > content.tex
+
+Compile the diff document, enter quiet mode with “Q” if there are error messages
+
+     latexmk -pdf -bibtex -use-make template.tex
+
+# Motivation
+
+[Blog post on how to put machine learning models into
+production](http://veekaybee.github.io/2020/06/09/ml-in-prod/#the-mystery-of-deploying-ml)
+
+> "One of my favorite books ever is Bird by Bird, by Anne Lamott. It’s about
+> how to write. The story she tells in the book, of how the book got its title,
+> is a book report her brother had to write."
+
+> “Thirty years ago my older brother, who was ten years old at the time, was
+> trying to get a report on birds written that he’d had three months to write.
+> [It] was due the next day. We were out at our family cabin in Bolinas, and he
+> was at the kitchen table close to tears, surrounded by binder paper and
+> pencils and unopened books on birds, immobilized by the hugeness of the task
+> ahead. Then my father sat down beside him, put his arm around my brother’s
+> shoulder, and said. ‘Bird by bird, buddy. Just take it bird by bird.’” 

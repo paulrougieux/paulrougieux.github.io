@@ -972,6 +972,10 @@ nnoremap &lt;C-H&gt; &lt;C-W&gt;&lt;C-H&gt; </code></pre>
 <p>Natural split opening</p>
 <pre><code>set splitbelow
 set splitright</code></pre>
+<p>Open an existing buffer (from the buffer list) in a new split</p>
+<pre><code>:sb buffername</code></pre>
+<p>For a vertical split</p>
+<pre><code>:vert sb buffername</code></pre>
 <div id="split-resize" class="section level3">
 <h3>Split resize</h3>
 <p>Set current window height to 10 lines</p>
@@ -1029,7 +1033,8 @@ c-w-= to restore. </code></pre>
 <pre><code>:E</code></pre>
 <p>or</p>
 <pre><code>:Explorer</code></pre>
-<p>To open a file in vim press enter. To open a file better suited for other applications, such as a pdf, an html file or an image, press x.</p>
+<p>To open a file in vim press enter. To open a file better suited for other applications, such as a pdf, an html file or an image, press</p>
+<pre><code>x</code></pre>
 <p>To <a href="https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file">return to file editing without opening any file</a> (and to switch back and forth between editing and explorer):</p>
 <pre><code>:Rex
 :Re</code></pre>
@@ -1208,15 +1213,53 @@ vim-tmux-navigator</code></pre>
 <li><a href="https://vim.spf13.com/">distribution spf13</a> probably not recommended but the home page contains a list of interesting plugins.</li>
 <li>See also the section programming with vim below for language specific plugins.</li>
 </ul>
-<div id="installing-plugins-with-vims-built-in-plugin-support" class="section level2">
-<h2>Installing plugins with vim’s built-in plugin support</h2>
+<div id="create-a-plugin" class="section level2">
+<h2>Create a plugin</h2>
+<ul>
+<li><a href="https://learnvimscriptthehardway.stevelosh.com/chapters/42.html">plugin layout in the dark ages</a> explains how to create file type plugins.</li>
+</ul>
+<p>I’m trying to extract a table of content functionality from a plugin that does many other things I don’t need.</p>
+<ul>
+<li><a href="https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin" class="uri">https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin</a></li>
+</ul>
+<p>I extracted the function into a plugin called <a href="https://github.com/paulrougieux/markdown-toc-toc">markdown-toc-toc</a> I placed the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my issue. I now have both Nvim-R autocompletion and syntax highlight working correctly in R markdown chunks as well as a table of content for the markdown titles. Later on, I moved to the Voom plugin for the table of content.</p>
+</div>
+<div id="deactivate-a-plugin" class="section level2">
+<h2>Deactivate a plugin</h2>
+<p>To temporarily deactivate a plugin in a session.</p>
+</div>
+<div id="detect-slow-plugins" class="section level2">
+<h2>Detect slow plugins</h2>
+<p><a href="https://stackoverflow.com/questions/12213597/how-to-see-which-plugins-are-making-vim-slow">How to see which plugins are making Vim slow?</a></p>
+<blockquote>
+<p>“You can use built-in profiling support: after launching vim do”</p>
+</blockquote>
+<pre><code>:profile start profile.log
+:profile func *
+:profile file *
+&quot; At this point do slow actions
+:profile pause
+:noautocmd qall!</code></pre>
+<blockquote>
+<p>“If you’re having problems with screen update operations (^L, scrolling, etc) being slow, your problem may be an inefficient syntax highlighting file. You can test this by temporarily disabling syntax highlighting”</p>
+</blockquote>
+<pre><code>:syn off</code></pre>
+<p>To profile the syntax file</p>
+<pre><code>Open a file that causes syntax highlighting performance issues.
+Run :syntime on to start profiling.
+Scroll through the file a bit.
+Run :syntime report to generate a report. The patterns listed first in the report are the ones which took the most time to process.</code></pre>
+<p>The matchparen plugin seemed to be slow on large markdown documents. It’s part of the vim distribution and loaded by default. vi.stackexchange <a href="https://vi.stackexchange.com/questions/5128/matchpairs-makes-vim-slow">matchpairs makes vim slow</a>. But it was called by the Pandoc syntax highlight file.</p>
+</div>
+<div id="install-plugins-with-vims-built-in-plugin-support" class="section level2">
+<h2>Install plugins with vim’s built-in plugin support</h2>
 <p>Install slime with Vim’s built-in package support (since Vim 7.4.1528):</p>
 <pre><code> mkdir -p ~/.vim/pack/plugins/start
  cd ~/.vim/pack/plugins/start
  git clone https://github.com/jpalardy/vim-slime.git</code></pre>
 </div>
-<div id="installing-plugins-with-vundle" class="section level2">
-<h2>Installing plugins with Vundle</h2>
+<div id="install-plugins-with-vundle" class="section level2">
+<h2>Install plugins with Vundle</h2>
 <p>Since there is a built-in plugin support, maybe I don’t need Vundle after all?</p>
 <p>Edit your .vimrc and add the following at the beginning</p>
 <pre><code>set nocompatible              &quot; be iMproved, required
@@ -1252,17 +1295,6 @@ filetype plugin indent on    &quot; required
 &quot; Put your non-Plugin stuff after this line</code></pre>
 <p>Install all plugins configured in your <code>.vimrc</code>.</p>
 <pre><code>:PluginInstall</code></pre>
-</div>
-<div id="creating-a-plugin" class="section level2">
-<h2>Creating a plugin</h2>
-<ul>
-<li><a href="https://learnvimscriptthehardway.stevelosh.com/chapters/42.html">plugin layout in the dark ages</a> explains how to create file type plugins.</li>
-</ul>
-<p>I’m trying to extract a table of content functionality from a plugin that does many other things I don’t need.</p>
-<ul>
-<li><a href="https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin" class="uri">https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin</a></li>
-</ul>
-<p>I extracted the function into a plugin called <a href="https://github.com/paulrougieux/markdown-toc-toc">markdown-toc-toc</a> I placed the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my issue. I now have both Nvim-R autocompletion and syntax highlight working correctly in R markdown chunks as well as a table of content for the markdown titles.</p>
 </div>
 </div>
 <div id="programming-languages" class="section level1">
@@ -1502,7 +1534,7 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 <pre><code>:G blame</code></pre>
 <p>Git log of the current file only</p>
 <pre><code>:G log %</code></pre>
-<p>I created an alias to display a word diff</p>
+<p>Since the word diff provided by fugitive is not colourized, I created an alias to display a word diff</p>
 <pre><code>:Gwdiff</code></pre>
 <p>It’s defined in .vimrc as:</p>
 <pre><code>command! Gwdiff vert term git diff --word-diff</code></pre>
@@ -1569,6 +1601,14 @@ let g:tagbar_compact = 1</code></pre>
 <pre><code>let g:slime_target = &quot;tmux&quot;</code></pre>
 <p>Then add this to configure the sending of commands to a <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read Eval Print Loop</a>: in the general use case of vim in a split tmux window with a REPL in the other pane:</p>
 <pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
+</div>
+<div id="syntax-highlight" class="section level2">
+<h2>Syntax highlight</h2>
+<p>Turn off syntax highlight</p>
+<pre><code>syn off</code></pre>
+<p>Start Vim with syntax highlight turned off</p>
+<pre><code>vim -c &#39;syn off&#39;</code></pre>
+<p>You can also specify a rule that vim should turn off syntax highlight for large files <a href="https://stackoverflow.com/questions/53729940/how-do-i-start-vim-with-syntax-highlighting-off">Stackoverflow question</a>.</p>
 </div>
 <div id="tests" class="section level2">
 <h2>Tests</h2>

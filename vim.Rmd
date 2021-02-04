@@ -767,6 +767,13 @@ Natural split opening
     set splitbelow
     set splitright
 
+Open an existing buffer (from the buffer list) in a new split
+
+    :sb buffername
+
+For a vertical split
+
+    :vert sb buffername
 
 ### Split resize
 
@@ -857,7 +864,9 @@ or
     :Explorer
 
 To open a file in vim press enter. To open a file better suited for other
-applications, such as a pdf, an html file or an image, press x.
+applications, such as a pdf, an html file or an image, press 
+
+    x
 
 To [return to file editing without opening any
 file](https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file)
@@ -1134,7 +1143,66 @@ Potentially useful plugins
 *
 See also the section programming with vim below for language specific plugins. 
 
-## Installing plugins with vim's built-in plugin support
+## Create a plugin
+
+* [plugin layout in the dark ages](https://learnvimscriptthehardway.stevelosh.com/chapters/42.html)
+  explains how to create file type plugins.
+
+I'm trying to extract a table of content functionality from a plugin that does
+many other things I don't need. 
+
+* https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin
+
+I extracted the function into a plugin called
+[markdown-toc-toc](https://github.com/paulrougieux/markdown-toc-toc) I placed
+the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my
+issue. I now have both Nvim-R autocompletion and syntax highlight working
+correctly in R markdown chunks as well as a table of content for the markdown
+titles. Later on, I moved to the Voom plugin for the table of content.
+
+
+## Deactivate a plugin
+
+To temporarily deactivate a plugin in a session. 
+
+
+## Detect slow plugins
+
+[How to see which plugins are making Vim
+slow?](https://stackoverflow.com/questions/12213597/how-to-see-which-plugins-are-making-vim-slow)
+
+> "You can use built-in profiling support: after launching vim do"
+
+    :profile start profile.log
+    :profile func *
+    :profile file *
+    " At this point do slow actions
+    :profile pause
+    :noautocmd qall!
+
+> "If you're having problems with screen update operations (^L, scrolling, etc)
+> being slow, your problem may be an inefficient syntax highlighting file. You
+> can test this by temporarily disabling syntax highlighting"
+
+    :syn off
+
+To profile the syntax file 
+
+    Open a file that causes syntax highlighting performance issues.
+    Run :syntime on to start profiling.
+    Scroll through the file a bit.
+    Run :syntime report to generate a report. The patterns listed first in the report are the ones which took the most time to process.
+
+
+
+The matchparen plugin seemed to be slow on large markdown documents. It's part
+of the vim distribution and loaded by default. vi.stackexchange [matchpairs
+makes vim
+slow](https://vi.stackexchange.com/questions/5128/matchpairs-makes-vim-slow).
+But it was called by the Pandoc syntax highlight file.
+
+
+## Install plugins with vim's built-in plugin support
 
 Install slime with Vim's built-in package support (since Vim 7.4.1528):
 
@@ -1142,7 +1210,7 @@ Install slime with Vim's built-in package support (since Vim 7.4.1528):
      cd ~/.vim/pack/plugins/start
      git clone https://github.com/jpalardy/vim-slime.git
 
-## Installing plugins with Vundle
+## Install plugins with Vundle
 
 Since there is a built-in plugin support, maybe I don't need Vundle after all? 
 
@@ -1185,23 +1253,6 @@ Install all plugins configured in your `.vimrc`.
 
     :PluginInstall
 
-
-## Creating a plugin
-
-* [plugin layout in the dark ages](https://learnvimscriptthehardway.stevelosh.com/chapters/42.html)
-  explains how to create file type plugins.
-
-I'm trying to extract a table of content functionality from a plugin that does
-many other things I don't need. 
-
-* https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin
-
-I extracted the function into a plugin called
-[markdown-toc-toc](https://github.com/paulrougieux/markdown-toc-toc) I placed
-the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my
-issue. I now have both Nvim-R autocompletion and syntax highlight working
-correctly in R markdown chunks as well as a table of content for the markdown
-titles.
 
 # Programming languages 
 
@@ -1573,7 +1624,7 @@ Git log of the current file only
 
     :G log %
 
-I created an alias to display a word diff
+Since the word diff provided by fugitive is not colourized, I created an alias to display a word diff
 
     :Gwdiff
 
@@ -1680,6 +1731,21 @@ in the general use case of
 vim in a split tmux window with a REPL in the other pane:
 
     let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
+
+## Syntax highlight
+
+Turn off syntax highlight
+
+    syn off
+
+Start Vim with syntax highlight turned off
+
+    vim -c 'syn off'
+
+You can also specify a rule that vim should turn off syntax highlight for large
+files [Stackoverflow question](https://stackoverflow.com/questions/53729940/how-do-i-start-vim-with-syntax-highlighting-off).
+
 
 ## Tests
 

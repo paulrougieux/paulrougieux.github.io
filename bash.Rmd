@@ -54,11 +54,59 @@ Convert one or more images to pdf
 
     img2pdf img.jpg -o output.pdf 
 
+The help page `man img3pd` explains the arguments
+
+> Convert a directory of JPEG images into a PDF with printable A4 pages in
+> landscape mode. On each page, the photo takes the maximum amount of space
+> while preserving its aspect ratio and a print border of 2 cm on the top and
+> bottom and 2.5 cm on the left and right hand side.
+
+    img2pdf --output out.pdf --pagesize A4^T --border 2cm:2.5cm *.jpg
+ 
+>  Appending ^T (a caret/circumflex followed by the letter T) turns the paper
+>  size from portrait into land‐ scape.
+
+I used the following instruction to create an A4 page with 2 images one jpg and
+one png
+
+    img2pdf image1.jpg image2.png -o output.pdf --pagesize A4^T --border 1cm
+    img2pdf image1.jpg image2.png -o output.pdf --pagesize A4 --border 1cm
+    img2pdf *.jpg -o output.pdf --pagesize A4 --border 1cm
+
+Interestingly when I asked for landscape mode, only the second image appeared
+in landscape. When I asked for portrait mode, only the second image appeared in
+portrait mode. The first jpg image contained exif orientation metadata (it was
+rotated vertically). Opening the first image in Gimp, rotating it and exporting it
+under a new name (without the exif metadata) solves the issue. Both pages are
+portrait A4.
+
 Convert [all jpg images in the current
 directory](https://stackoverflow.com/questions/8955425/how-can-i-convert-a-series-of-images-to-a-pdf-from-the-command-line-on-linux)
 to a pdf 
 
     img2pdf $(find . -iname '*.jpg' | sort -V) -o ./document.pdf  
+
+If there is an alpha layer in the image, it will not be added to the pdf. The
+Warning message suggests using imagemagick to remove the alpha layer.
+
+    WARNING:root:Image contains transparency which cannot be retained in PDF.
+    WARNING:root:img2pdf will not perform a lossy operation.
+    WARNING:root:You can remove the alpha channel using imagemagick:
+    WARNING:root:  $ convert input.png -background white -alpha remove -alpha off output.png
+    ERROR:root:error: Refusing to work on images with alpha channel
+
+
+## Images to other formats
+
+Convert a png image to a jpgeg image
+
+    convert canto_dei_sanfedisti.png canto_dei_sanfedisti.jpg
+
+Convert a png image with an alpha layer to an image without alpha layer
+
+    convert input.png -background white -alpha remove -alpha off output.png
+
+
 
 ## Documents between various formats with Pandoc
 
@@ -82,7 +130,13 @@ Convert a Microsoft Word document to markdown
 
 Convert a Microsoft Word document to markdown and keep images
 
-    pandoc --extract-media ./figures input.docx -o output.md
+    pandoc --extract-media figures input.docx -o output.md
+
+Images are contained in a `media` subfolder in Word documents, the instruction
+above leads to a `figure/media` sub folder. To avoid this [use the current
+directory path](https://stackoverflow.com/a/52593892/2641825)
+
+    pandoc --extract-media=. input.docx -o output.md
 
 Convert an html code snippets to markdown and display the output at the command line
 
@@ -103,6 +157,14 @@ headers only in markdown output:
 
 ### Yaml front matter for styles
 
+Change the margin to 0.5 cm
+
+    ---
+    title: "Songs of freedom"
+    author: "Bob Marley"
+    geometry: margin=0.5cm
+    ---
+
 Adding headers and footers to pandoc suggests using:
 
     ---
@@ -117,8 +179,32 @@ Adding headers and footers to pandoc suggests using:
     abstract: This is a pandoc test . . . 
     ---
 
-Custom yaml front matter for readings file
-See also the vim.Rmd document on pandoc bibliographies.
+
+#### Table of content 
+
+Add a table of content at the beginning of the document
+
+    ---
+    title: "Work plan"
+    geometry: margin=2cm
+    toc: yes
+    ---
+
+When specified in the yaml front matter only, the table of content appears in pdf output but not in html output. This may be
+due to a difference in the latex and html templates? Display the
+content of the latex and html templates
+    
+    pandoc -D latex
+    pandoc -D html
+
+However calling the --toc argument does create a table of content in the html file:
+
+    pandoc -s --toc notes.md -o notes.html
+
+#### Bibliography
+
+Custom yaml front matter for a markdown document that contains reading notes
+with citations. See also the vim.Rmd document on pandoc bibliographies.
 
     ---
     title: Reading notes
@@ -173,7 +259,7 @@ You can also create template files as explained in super user [markdown to latex
 See also the makefile for pandoc in the programming with bash / makefile
 section below.
 
-## pdfminer
+## Pdf to text with pdfminer
 
 (pdfminer](https://github.com/pdfminer/pdfminer.six)
 Convert all pdf documents to text files in the current folder:
@@ -186,7 +272,7 @@ Convert all pdf documents to text files in the current folder:
 
 See also a utility to extract tables from pdf documents.
 
-## Tabula
+## Pdf to tables with tabula
 
 Extract tables from a pdf with [tabula](https://tabula.technology/)
 
@@ -194,6 +280,12 @@ Extract tables from a pdf with [tabula](https://tabula.technology/)
     java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar
 
 Then visit http://127.0.0.1:8080/
+
+## ASCII art
+
+Convert text to large ascii art
+
+    figlet
 
 # Count
 
@@ -488,7 +580,7 @@ instruction to restart networking and clear the DNS cache:
 Find files in subdirectories of the current directory (Quotes are requited to
 prevent shell command expansion). Find files of a specific extension:
 
-    find . -name "*.pdf" 
+    find -name "*.pdf" 
 
 Like -name, but the match is case insensitive
 
@@ -965,6 +1057,15 @@ Delete a song from the playlist view (4)
 Save the modified playlist file
 
     :save
+
+
+### Cmus and other audio programs
+
+Some programs such as Skype or MS teams (based on Skype and chromium) turn off
+the volume of cmus when entering into a phone call. They sometimes forget to
+put it back on. You can turn the volume back on into Gnome's sound
+configuration menu, under the applications tab.
+
 
 # Refactor
 

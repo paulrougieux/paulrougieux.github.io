@@ -685,6 +685,45 @@ sudo apt install riot-web</code></pre>
 <p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that”</p>
 </blockquote>
 </div>
+<div id="sane" class="section level2">
+<h2>Sane</h2>
+<p>The Flatbed scanner Canoscan lide 400 is supported on Linux according to the <a href="http://www.sane-project.org/sane-backends.html">sane backends</a> page.</p>
+<p>Install sane from source following these instructions <a href="http://forums.debian.net/viewtopic.php?f=16&amp;t=141668" class="uri">http://forums.debian.net/viewtopic.php?f=16&amp;t=141668</a></p>
+<p>Install build dependencies</p>
+<pre><code>sudo apt install sane
+sudo apt install build-essential make autoconf-archive
+sudo apt build-dep sane
+sudo apt install libjpeg-dev</code></pre>
+<p>Clone and build the latest version of sane</p>
+<pre><code>git clone https://gitlab.com/sane-project/backends
+cd backends/
+./autogen.sh
+./configure
+make -j9</code></pre>
+<p>I tried the other instructions related to the pixma linking</p>
+<pre><code>ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
+sudo rm /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1.0.27
+ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
+sudo rm /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so
+cd /usr/lib/x86_64-linux-gnu/sane/
+ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
+cd ~/rp/zz_forks/backends/
+ls backend/libsane-pixma.la</code></pre>
+<p>The problem is that the ‘.so.28’ file doesn’t exist, I tried with another file</p>
+<pre><code>sudo cp backend/libsane-pixma.la /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.la
+sudo ln -s libsane-pixma.la /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1
+ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*</code></pre>
+<p>I also tried these instructions:</p>
+<pre><code>make
+make install</code></pre>
+<p>The scanner is visible in the output of</p>
+<pre><code>lsusb | grep -i canon
+#Bus 002 Device 115: ID 04a9:1912 Canon, Inc.</code></pre>
+<p>I created this file</p>
+<pre><code>sudo vim /usr/lib/udev/rules.d/49-sane.rules</code></pre>
+<p>Containing only one line</p>
+<pre><code>ATTRS{idVendor}==&quot;04a9&quot;, ATTRS{idProduct}==&quot;1912&quot;, MODE=&quot;0664&quot;, GROUP=&quot;scanner&quot;, ENV{libsane_matched}=&quot;yes&quot;</code></pre>
+</div>
 <div id="microsoft" class="section level2">
 <h2>Microsoft</h2>
 <p>Yes I know, these software shouldn’t be here, but I have to use these things for work and study.</p>
@@ -760,6 +799,12 @@ sudo apt install ./zoom_amd64.deb </code></pre>
 <h1>Audio</h1>
 <div id="audio-setup" class="section level2">
 <h2>Audio Setup</h2>
+<p>To remove background noise edit the pulseaudio configuration file:</p>
+<pre><code>vim /etc/pulse.default.pa</code></pre>
+<p>Add these lines</p>
+<pre><code>load-module module-echo-cancel source_name=logitechheadset
+set-default-source logitechheadset</code></pre>
+<p>Restart pulseaudio</p>
 </div>
 <div id="audio-issues" class="section level2">
 <h2>Audio Issues</h2>
