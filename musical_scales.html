@@ -520,11 +520,11 @@ notes[major_heptatonic + 1,]</code></pre>
 display_scale &lt;- function(input_scale){
     display(input_scale)
     display(rep(&quot;---&quot;, length(input_scale)))
-    for (i in input_scale + 1){
+    for (i in major_heptatonic + 1){
         display(notes2$it[input_scale + i])
     }
 
-    for (i in input_scale + 1){
+    for (i in major_heptatonic + 1){
         display(notes2$en[input_scale + i])
     }
 }</code></pre>
@@ -715,13 +715,13 @@ display_scale &lt;- function(input_scale){
 <td>do</td>
 </tr>
 <tr class="odd">
-<td>mib</td>
-<td>fa</td>
+<td>mi</td>
 <td>fa#</td>
-<td>sol#</td>
-<td>sib</td>
+<td>sol</td>
+<td>la</td>
 <td>si</td>
-<td>do#</td>
+<td>do</td>
+<td>re</td>
 </tr>
 <tr class="even">
 <td>fa</td>
@@ -742,22 +742,22 @@ display_scale &lt;- function(input_scale){
 <td>fa</td>
 </tr>
 <tr class="even">
-<td>sol#</td>
-<td>sib</td>
+<td>la</td>
+<td>si</td>
+<td>do</td>
+<td>re</td>
+<td>mi</td>
+<td>fa</td>
+<td>sol</td>
+</tr>
+<tr class="odd">
 <td>si</td>
 <td>do#</td>
-<td>mib</td>
+<td>re</td>
 <td>mi</td>
 <td>fa#</td>
-</tr>
-<tr class="odd">
-<td>sib</td>
-<td>do</td>
-<td>do#</td>
-<td>mib</td>
-<td>fa</td>
-<td>fa#</td>
-<td>sol#</td>
+<td>sol</td>
+<td>la</td>
 </tr>
 <tr class="even">
 <td>C</td>
@@ -778,13 +778,13 @@ display_scale &lt;- function(input_scale){
 <td>C</td>
 </tr>
 <tr class="even">
-<td>Eb</td>
-<td>F</td>
+<td>E</td>
 <td>F#</td>
-<td>G#</td>
-<td>Bb</td>
+<td>G</td>
+<td>A</td>
 <td>B</td>
-<td>C#</td>
+<td>C</td>
+<td>D</td>
 </tr>
 <tr class="odd">
 <td>F</td>
@@ -805,22 +805,22 @@ display_scale &lt;- function(input_scale){
 <td>F</td>
 </tr>
 <tr class="odd">
-<td>G#</td>
-<td>Bb</td>
+<td>A</td>
 <td>B</td>
-<td>C#</td>
-<td>Eb</td>
+<td>C</td>
+<td>D</td>
 <td>E</td>
-<td>F#</td>
+<td>F</td>
+<td>G</td>
 </tr>
 <tr class="even">
-<td>Bb</td>
-<td>C</td>
+<td>B</td>
 <td>C#</td>
-<td>Eb</td>
-<td>F</td>
+<td>D</td>
+<td>E</td>
 <td>F#</td>
-<td>G#</td>
+<td>G</td>
+<td>A</td>
 </tr>
 </tbody>
 </table>
@@ -870,18 +870,32 @@ display_scale(major_pentatonic)</code></pre>
 <td>do#</td>
 </tr>
 <tr class="even">
+<td>fa</td>
+<td>sol</td>
+<td>la</td>
+<td>do</td>
+<td>re</td>
+</tr>
+<tr class="odd">
 <td>sol</td>
 <td>la</td>
 <td>si</td>
 <td>re</td>
 <td>mi</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>la</td>
 <td>si</td>
 <td>do#</td>
 <td>mi</td>
 <td>fa#</td>
+</tr>
+<tr class="odd">
+<td>si</td>
+<td>do#</td>
+<td>mib</td>
+<td>fa#</td>
+<td>sol#</td>
 </tr>
 <tr class="even">
 <td>C</td>
@@ -905,18 +919,32 @@ display_scale(major_pentatonic)</code></pre>
 <td>C#</td>
 </tr>
 <tr class="odd">
+<td>F</td>
+<td>G</td>
+<td>A</td>
+<td>C</td>
+<td>D</td>
+</tr>
+<tr class="even">
 <td>G</td>
 <td>A</td>
 <td>B</td>
 <td>D</td>
 <td>E</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>A</td>
 <td>B</td>
 <td>C#</td>
 <td>E</td>
 <td>F#</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>C#</td>
+<td>Eb</td>
+<td>F#</td>
+<td>G#</td>
 </tr>
 </tbody>
 </table>
@@ -947,32 +975,46 @@ display_scale(major_pentatonic)</code></pre>
 <td>sib</td>
 </tr>
 <tr class="even">
-<td>mib</td>
-<td>fa#</td>
-<td>sol#</td>
-<td>sib</td>
-<td>do#</td>
+<td>re</td>
+<td>fa</td>
+<td>sol</td>
+<td>la</td>
+<td>do</td>
 </tr>
 <tr class="odd">
+<td>mi</td>
+<td>sol</td>
+<td>la</td>
+<td>si</td>
+<td>re</td>
+</tr>
+<tr class="even">
 <td>fa</td>
 <td>sol#</td>
 <td>sib</td>
 <td>do</td>
 <td>mib</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>sol</td>
 <td>sib</td>
 <td>do</td>
 <td>re</td>
 <td>fa</td>
 </tr>
+<tr class="even">
+<td>la</td>
+<td>do</td>
+<td>re</td>
+<td>mi</td>
+<td>sol</td>
+</tr>
 <tr class="odd">
-<td>sib</td>
-<td>do#</td>
-<td>mib</td>
-<td>fa</td>
-<td>sol#</td>
+<td>si</td>
+<td>re</td>
+<td>mi</td>
+<td>fa#</td>
+<td>la</td>
 </tr>
 <tr class="even">
 <td>C</td>
@@ -982,32 +1024,46 @@ display_scale(major_pentatonic)</code></pre>
 <td>Bb</td>
 </tr>
 <tr class="odd">
-<td>Eb</td>
-<td>F#</td>
-<td>G#</td>
-<td>Bb</td>
-<td>C#</td>
+<td>D</td>
+<td>F</td>
+<td>G</td>
+<td>A</td>
+<td>C</td>
 </tr>
 <tr class="even">
+<td>E</td>
+<td>G</td>
+<td>A</td>
+<td>B</td>
+<td>D</td>
+</tr>
+<tr class="odd">
 <td>F</td>
 <td>G#</td>
 <td>Bb</td>
 <td>C</td>
 <td>Eb</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>G</td>
 <td>Bb</td>
 <td>C</td>
 <td>D</td>
 <td>F</td>
 </tr>
+<tr class="odd">
+<td>A</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>G</td>
+</tr>
 <tr class="even">
-<td>Bb</td>
-<td>C#</td>
-<td>Eb</td>
-<td>F</td>
-<td>G#</td>
+<td>B</td>
+<td>D</td>
+<td>E</td>
+<td>F#</td>
+<td>A</td>
 </tr>
 </tbody>
 </table>
@@ -1034,14 +1090,22 @@ display_scale(hexatonic)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td>re</td>
-<td>fa</td>
+<td>do#</td>
+<td>mi</td>
+<td>fa#</td>
 <td>sol</td>
 <td>sol#</td>
-<td>la</td>
-<td>do</td>
+<td>si</td>
 </tr>
 <tr class="even">
+<td>mib</td>
+<td>fa#</td>
+<td>sol#</td>
+<td>la</td>
+<td>sib</td>
+<td>do#</td>
+</tr>
+<tr class="odd">
 <td>fa</td>
 <td>sol#</td>
 <td>sib</td>
@@ -1049,15 +1113,15 @@ display_scale(hexatonic)</code></pre>
 <td>do</td>
 <td>mib</td>
 </tr>
-<tr class="odd">
-<td>sol</td>
-<td>sib</td>
+<tr class="even">
+<td>fa#</td>
+<td>la</td>
+<td>si</td>
 <td>do</td>
 <td>do#</td>
-<td>re</td>
-<td>fa</td>
+<td>mi</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>sol#</td>
 <td>si</td>
 <td>do#</td>
@@ -1065,15 +1129,15 @@ display_scale(hexatonic)</code></pre>
 <td>mib</td>
 <td>fa#</td>
 </tr>
-<tr class="odd">
-<td>la</td>
-<td>do</td>
-<td>re</td>
+<tr class="even">
+<td>sib</td>
+<td>do#</td>
 <td>mib</td>
 <td>mi</td>
-<td>sol</td>
+<td>fa</td>
+<td>sol#</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>do</td>
 <td>mib</td>
 <td>fa</td>
@@ -1081,13 +1145,21 @@ display_scale(hexatonic)</code></pre>
 <td>sol</td>
 <td>sib</td>
 </tr>
-<tr class="odd">
-<td>D</td>
-<td>F</td>
+<tr class="even">
+<td>C#</td>
+<td>E</td>
+<td>F#</td>
 <td>G</td>
 <td>G#</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>Eb</td>
+<td>F#</td>
+<td>G#</td>
 <td>A</td>
-<td>C</td>
+<td>Bb</td>
+<td>C#</td>
 </tr>
 <tr class="even">
 <td>F</td>
@@ -1098,12 +1170,12 @@ display_scale(hexatonic)</code></pre>
 <td>Eb</td>
 </tr>
 <tr class="odd">
-<td>G</td>
-<td>Bb</td>
+<td>F#</td>
+<td>A</td>
+<td>B</td>
 <td>C</td>
 <td>C#</td>
-<td>D</td>
-<td>F</td>
+<td>E</td>
 </tr>
 <tr class="even">
 <td>G#</td>
@@ -1114,12 +1186,12 @@ display_scale(hexatonic)</code></pre>
 <td>F#</td>
 </tr>
 <tr class="odd">
-<td>A</td>
-<td>C</td>
-<td>D</td>
+<td>Bb</td>
+<td>C#</td>
 <td>Eb</td>
 <td>E</td>
-<td>G</td>
+<td>F</td>
+<td>G#</td>
 </tr>
 <tr class="even">
 <td>C</td>

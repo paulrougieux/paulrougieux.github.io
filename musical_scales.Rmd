@@ -55,11 +55,11 @@ notes[major_heptatonic + 1,]
 display_scale <- function(input_scale){
     display(input_scale)
     display(rep("---", length(input_scale)))
-    for (i in input_scale + 1){
+    for (i in major_heptatonic + 1){
         display(notes2$it[input_scale + i])
     }
 
-    for (i in input_scale + 1){
+    for (i in major_heptatonic + 1){
         display(notes2$en[input_scale + i])
     }
 }
