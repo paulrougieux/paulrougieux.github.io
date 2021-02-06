@@ -11,7 +11,7 @@
 
 
 
-<title>Music theory</title>
+<title>Musical scales</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -467,7 +467,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Music theory</h1>
+<h1 class="title toc-ignore">Musical scales</h1>
 
 </div>
 
@@ -498,8 +498,7 @@ div.tocify {
 # Duplicate the notes so that increments of scale number below don&#39;t fall out of the range.
 notes2 &lt;- rbind(notes, notes)
 
-# A function to display a string as a markdown code indented by four space.
-#display &lt;- function(x){cat(&quot;    &quot;, x, &quot;\n&quot;)}
+# A function to generate the line of a markdown table separated by pipes &quot;|&quot;
 display &lt;- function(x){cat(&quot;&quot;, x, &quot;\n&quot;, sep=&quot;|&quot;)}
 
 # The scale corresponding to the white notes of the piano
@@ -1075,37 +1074,45 @@ display_scale(major_pentatonic)</code></pre>
 <blockquote>
 <p>“The hexatonic, or six-note, blues scale consists of the minor pentatonic scale plus the b5th degree of the original heptatonic scale.”</p>
 </blockquote>
-<pre class="r"><code>hexatonic &lt;- c(1, 4, 6, 7, 8, 11)
+<pre class="r"><code>hexatonic &lt;- c(0, 3, 5, 6, 7, 10)
 display_scale(hexatonic)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th>1</th>
-<th>4</th>
+<th>0</th>
+<th>3</th>
+<th>5</th>
 <th>6</th>
 <th>7</th>
-<th>8</th>
-<th>11</th>
+<th>10</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>do#</td>
-<td>mi</td>
+<td>do</td>
+<td>mib</td>
+<td>fa</td>
 <td>fa#</td>
 <td>sol</td>
-<td>sol#</td>
-<td>si</td>
+<td>sib</td>
 </tr>
 <tr class="even">
-<td>mib</td>
-<td>fa#</td>
+<td>re</td>
+<td>fa</td>
+<td>sol</td>
 <td>sol#</td>
 <td>la</td>
-<td>sib</td>
-<td>do#</td>
+<td>do</td>
 </tr>
 <tr class="odd">
+<td>mi</td>
+<td>sol</td>
+<td>la</td>
+<td>sib</td>
+<td>si</td>
+<td>re</td>
+</tr>
+<tr class="even">
 <td>fa</td>
 <td>sol#</td>
 <td>sib</td>
@@ -1113,55 +1120,55 @@ display_scale(hexatonic)</code></pre>
 <td>do</td>
 <td>mib</td>
 </tr>
-<tr class="even">
-<td>fa#</td>
-<td>la</td>
-<td>si</td>
-<td>do</td>
-<td>do#</td>
-<td>mi</td>
-</tr>
 <tr class="odd">
-<td>sol#</td>
-<td>si</td>
+<td>sol</td>
+<td>sib</td>
+<td>do</td>
 <td>do#</td>
 <td>re</td>
-<td>mib</td>
-<td>fa#</td>
+<td>fa</td>
 </tr>
 <tr class="even">
-<td>sib</td>
-<td>do#</td>
+<td>la</td>
+<td>do</td>
+<td>re</td>
 <td>mib</td>
 <td>mi</td>
-<td>fa</td>
-<td>sol#</td>
+<td>sol</td>
 </tr>
 <tr class="odd">
-<td>do</td>
-<td>mib</td>
+<td>si</td>
+<td>re</td>
+<td>mi</td>
 <td>fa</td>
 <td>fa#</td>
-<td>sol</td>
-<td>sib</td>
+<td>la</td>
 </tr>
 <tr class="even">
-<td>C#</td>
-<td>E</td>
+<td>C</td>
+<td>Eb</td>
+<td>F</td>
 <td>F#</td>
 <td>G</td>
-<td>G#</td>
-<td>B</td>
+<td>Bb</td>
 </tr>
 <tr class="odd">
-<td>Eb</td>
-<td>F#</td>
+<td>D</td>
+<td>F</td>
+<td>G</td>
 <td>G#</td>
 <td>A</td>
-<td>Bb</td>
-<td>C#</td>
+<td>C</td>
 </tr>
 <tr class="even">
+<td>E</td>
+<td>G</td>
+<td>A</td>
+<td>Bb</td>
+<td>B</td>
+<td>D</td>
+</tr>
+<tr class="odd">
 <td>F</td>
 <td>G#</td>
 <td>Bb</td>
@@ -1169,37 +1176,29 @@ display_scale(hexatonic)</code></pre>
 <td>C</td>
 <td>Eb</td>
 </tr>
-<tr class="odd">
-<td>F#</td>
-<td>A</td>
-<td>B</td>
-<td>C</td>
-<td>C#</td>
-<td>E</td>
-</tr>
 <tr class="even">
-<td>G#</td>
-<td>B</td>
+<td>G</td>
+<td>Bb</td>
+<td>C</td>
 <td>C#</td>
 <td>D</td>
-<td>Eb</td>
-<td>F#</td>
+<td>F</td>
 </tr>
 <tr class="odd">
-<td>Bb</td>
-<td>C#</td>
+<td>A</td>
+<td>C</td>
+<td>D</td>
 <td>Eb</td>
 <td>E</td>
-<td>F</td>
-<td>G#</td>
+<td>G</td>
 </tr>
 <tr class="even">
-<td>C</td>
-<td>Eb</td>
+<td>B</td>
+<td>D</td>
+<td>E</td>
 <td>F</td>
 <td>F#</td>
-<td>G</td>
-<td>Bb</td>
+<td>A</td>
 </tr>
 </tbody>
 </table>

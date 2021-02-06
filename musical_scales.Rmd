@@ -1,10 +1,11 @@
 ---
-title: "Music theory"
+title: "Musical scales"
 output: 
   html_document: 
     toc: yes
     toc_float: true
 ---
+
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
 # Generate this notebook to a pdf document
@@ -42,8 +43,7 @@ notes <- tribble(
 # Duplicate the notes so that increments of scale number below don't fall out of the range.
 notes2 <- rbind(notes, notes)
 
-# A function to display a string as a markdown code indented by four space.
-#display <- function(x){cat("    ", x, "\n")}
+# A function to generate the line of a markdown table separated by pipes "|"
 display <- function(x){cat("", x, "\n", sep="|")}
 
 # The scale corresponding to the white notes of the piano
@@ -134,7 +134,7 @@ display_scale(c(0, 3, 5, 7, 10))
 > scale plus the b5th degree of the original heptatonic scale." 
 
 ```{r,  results='asis'}
-hexatonic <- c(1, 4, 6, 7, 8, 11)
+hexatonic <- c(0, 3, 5, 6, 7, 10)
 display_scale(hexatonic)
 ```
 
