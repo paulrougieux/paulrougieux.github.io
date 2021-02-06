@@ -11,7 +11,7 @@
 
 
 
-<title>PostgreSQL Commands</title>
+<title>Music theory</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -467,219 +467,670 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">PostgreSQL Commands</h1>
+<h1 class="title toc-ignore">Music theory</h1>
 
 </div>
 
 
-<p>This document explains the installation and configuration of the PostgreSQL database engine.</p>
-<div id="install-postgresql" class="section level1">
-<h1>Install PostgreSQL</h1>
-<p>Install PostgreSQL</p>
-<pre><code>sudo apt install postgresql postgresql-client</code></pre>
-<p>Debian wiki explains <a href="https://wiki.debian.org/PostgreSql">how to install and set up PostgreSQL</a>.</p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>The purpose of this notebook is to display notes used in various music scales.</p>
 </div>
-<div id="create-a-user-and-a-database" class="section level1">
-<h1>Create a user and a database</h1>
-<p>Add system users at the regular bash shell before you can add them in postgresql. I call this user “rdb” because I plan to use R to connect to the database and “R” cannot be used as a user name according to system policy.</p>
-<pre><code>sudo adduser rdb --disabled-password </code></pre>
-<p>Login as the default user postgres Now logged in as <code>postgres@machine_name</code> in the regular bash shell</p>
-<pre><code>sudo -u postgres bash
+<div id="setup" class="section level1">
+<h1>Setup</h1>
+<p>Create a data frame that contains the twelve notes of the chromatic scale used later in the analysis.</p>
+<pre class="r"><code>notes &lt;- tribble(
+    ~it,   ~en,
+    &quot;do&quot;,  &quot;C&quot;,
+    &quot;do#&quot;, &quot;C#&quot; ,
+    &quot;re&quot;,  &quot;D&quot;,
+    &quot;mib&quot;, &quot;Eb&quot;,
+    &quot;mi&quot;,  &quot;E&quot;,
+    &quot;fa&quot;,  &quot;F&quot;,
+    &quot;fa#&quot;, &quot;F#&quot;,
+    &quot;sol&quot;, &quot;G&quot;,
+    &quot;sol#&quot;,&quot;G#&quot;,
+    &quot;la&quot;,  &quot;A&quot;,
+    &quot;sib&quot;, &quot;Bb&quot;,
+    &quot;si&quot;,  &quot;B&quot;,
+)
 
-# or 
-sudo su postgres</code></pre>
-<ol style="list-style-type: decimal">
-<li><p>Create a user with the same name as the system user created above</p>
-<p>createuser –pwprompt rdb</p>
-<p># Create a user for myself createuser paul</p></li>
-<li><p>Create a database owned by that user</p>
-<p>createdb -O rdb tradeflows</p>
-<p>createdb -O paul tradeflows_migrated</p></li>
-</ol>
+# Duplicate the notes so that increments of scale number below don&#39;t fall out of the range.
+notes2 &lt;- rbind(notes, notes)
+
+# A function to display a string as a markdown code indented by four space.
+#display &lt;- function(x){cat(&quot;    &quot;, x, &quot;\n&quot;)}
+display &lt;- function(x){cat(&quot;&quot;, x, &quot;\n&quot;, sep=&quot;|&quot;)}
+
+# The scale corresponding to the white notes of the piano
+major_heptatonic &lt;- c(0, 2, 4, 5, 7, 9, 11)
+notes[major_heptatonic + 1,]</code></pre>
+<pre><code>## # A tibble: 7 x 2
+##   it    en   
+##   &lt;chr&gt; &lt;chr&gt;
+## 1 do    C    
+## 2 re    D    
+## 3 mi    E    
+## 4 fa    F    
+## 5 sol   G    
+## 6 la    A    
+## 7 si    B</code></pre>
+<pre class="r"><code># A function to display a table with the given scale shifted to all the note of
+# the major heptatonic scale
+display_scale &lt;- function(input_scale){
+    display(input_scale)
+    display(rep(&quot;---&quot;, length(input_scale)))
+    for (i in input_scale + 1){
+        display(notes2$it[input_scale + i])
+    }
+
+    for (i in input_scale + 1){
+        display(notes2$en[input_scale + i])
+    }
+}</code></pre>
 </div>
-<div id="connect-to-a-database" class="section level1">
-<h1>Connect to a database</h1>
-<div id="configuration-file-.pgpass" class="section level2">
-<h2>Configuration file .pgpass</h2>
-<p>This is the prefered way to connect to the database for scripts. Create a <code>~/.pgpass</code> file to store the connection details for that user:</p>
-<pre><code>echo &#39;localhost:5432:tradeflows:rdb:localhost&#39; &gt;&gt; ~/.pgpass</code></pre>
-<p>Secure the file:</p>
-<pre><code>chmod 600 ~/.pgpass</code></pre>
-<p>Connect to the database:</p>
-<pre><code>psql -d tradeflows -h localhost -U rdb</code></pre>
-</div>
-<div id="as-a-system-user" class="section level2">
-<h2>As a system user</h2>
-<p>Login as the user who is the owner of that database</p>
-<pre><code>sudo su rdb</code></pre>
-<p>Connect to the database</p>
-<pre><code>psql tradeflows</code></pre>
-</div>
-</div>
-<div id="data-types" class="section level1">
-<h1>Data types</h1>
-<div id="character" class="section level2">
-<h2>Character</h2>
-<p><a href="https://www.postgresql.org/docs/8.4/datatype-character.html">Datatype character</a>:</p>
+<div id="heptatonic-scale" class="section level1">
+<h1>Heptatonic scale</h1>
+<p><a href="https://en.wikipedia.org/wiki/Heptatonic_scale">Heptatonic scale</a></p>
+<blockquote>
+<p>“A heptatonic scale is a musical scale that has seven pitches (a.k.a. tones) per octave.”</p>
+</blockquote>
+<div id="heptatonic-major-scale" class="section level2">
+<h2>Heptatonic major scale</h2>
+<pre class="r"><code>display_scale(major_heptatonic)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th>Name</th>
-<th>Description</th>
+<th>0</th>
+<th>2</th>
+<th>4</th>
+<th>5</th>
+<th>7</th>
+<th>9</th>
+<th>11</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>character varying(n), varchar(n)</td>
-<td>variable-length with limit</td>
+<td>do</td>
+<td>re</td>
+<td>mi</td>
+<td>fa</td>
+<td>sol</td>
+<td>la</td>
+<td>si</td>
 </tr>
 <tr class="even">
-<td>character(n), char(n)</td>
-<td>fixed-length, blank padded</td>
+<td>re</td>
+<td>mi</td>
+<td>fa#</td>
+<td>sol</td>
+<td>la</td>
+<td>si</td>
+<td>do#</td>
 </tr>
 <tr class="odd">
-<td>text</td>
-<td>variable unlimited length</td>
+<td>mi</td>
+<td>fa#</td>
+<td>sol#</td>
+<td>la</td>
+<td>si</td>
+<td>do#</td>
+<td>mib</td>
+</tr>
+<tr class="even">
+<td>fa</td>
+<td>sol</td>
+<td>la</td>
+<td>sib</td>
+<td>do</td>
+<td>re</td>
+<td>mi</td>
+</tr>
+<tr class="odd">
+<td>sol</td>
+<td>la</td>
+<td>si</td>
+<td>do</td>
+<td>re</td>
+<td>mi</td>
+<td>fa#</td>
+</tr>
+<tr class="even">
+<td>la</td>
+<td>si</td>
+<td>do#</td>
+<td>re</td>
+<td>mi</td>
+<td>fa#</td>
+<td>sol#</td>
+</tr>
+<tr class="odd">
+<td>si</td>
+<td>do#</td>
+<td>mib</td>
+<td>mi</td>
+<td>fa#</td>
+<td>sol#</td>
+<td>sib</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F</td>
+<td>G</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr class="odd">
+<td>D</td>
+<td>E</td>
+<td>F#</td>
+<td>G</td>
+<td>A</td>
+<td>B</td>
+<td>C#</td>
+</tr>
+<tr class="even">
+<td>E</td>
+<td>F#</td>
+<td>G#</td>
+<td>A</td>
+<td>B</td>
+<td>C#</td>
+<td>Eb</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>G</td>
+<td>A</td>
+<td>Bb</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+</tr>
+<tr class="even">
+<td>G</td>
+<td>A</td>
+<td>B</td>
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>F#</td>
+</tr>
+<tr class="odd">
+<td>A</td>
+<td>B</td>
+<td>C#</td>
+<td>D</td>
+<td>E</td>
+<td>F#</td>
+<td>G#</td>
+</tr>
+<tr class="even">
+<td>B</td>
+<td>C#</td>
+<td>Eb</td>
+<td>E</td>
+<td>F#</td>
+<td>G#</td>
+<td>Bb</td>
 </tr>
 </tbody>
 </table>
-<p>Tip:</p>
-<blockquote>
-<p>“There is no performance difference among these three types, apart from increased storage space when using the blank-padded type, and a few extra CPU cycles to check the length when storing into a length-constrained column. While character(n) has performance advantages in some other database systems, there is no such advantage in PostgreSQL; in fact character(n) is usually the slowest of the three because of its additional storage costs. In most situations text or character varying should be used instead.”</p>
-</blockquote>
 </div>
-</div>
-<div id="drop" class="section level1">
-<h1>Drop</h1>
-<p>Delete a database</p>
-<pre><code>postgres=# drop database databasename;</code></pre>
-<p>Delete a schema</p>
-<pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext&quot;
-ERROR:  cannot drop schema raw_comext because other objects depend on it
-DETAIL:  table raw_comext.monthly depends on schema raw_comext
-HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
-<p>Here is the command with a drop in cascade</p>
-<pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext CASCADE&quot;</code></pre>
-</div>
-<div id="dump" class="section level1">
-<h1>Dump</h1>
-<p>Examples copied from <code>man pg_dump</code>. To dump a database called mydb into a SQL-script file:</p>
-<pre><code>$ pg_dump mydb &gt; db.sql</code></pre>
-<p>To reload such a script into a (freshly created) database named newdb:</p>
-<pre><code>$ psql -d newdb -f db.sql</code></pre>
-<div id="remove-statements" class="section level2">
-<h2>Remove statements</h2>
-<p>The dump contained the following two statements which I removed:</p>
-<pre><code>SET default_tablespace = &#39;&#39;;
-
-SET default_with_oids = false;</code></pre>
-<p>I removed default table space because the official documentation for <a href="https://www.postgresql.org/docs/current/manage-ag-tablespaces.html">table spaces</a> says it doesn’t make sense to have more than one table space per system.</p>
-<p>I removed default_with_oids because <a href="https://dba.stackexchange.com/questions/101281/what-is-the-relevance-of-set-default-with-oids-true-in-a-postgresql-dump">this posrt</a> explains that it’s used to enable a legacy feature.</p>
-</div>
-</div>
-<div id="help" class="section level1">
-<h1>Help</h1>
-<p>Help about psql commands:</p>
-<p>?</p>
-<p>Help about SQL commands:</p>
-<pre><code>\h
-\h select</code></pre>
-</div>
-<div id="information-about-databases-tables-columns" class="section level1">
-<h1>Information about databases, tables, columns</h1>
-<p>List databases</p>
-<pre><code>\l</code></pre>
-<p>Connect to a database</p>
-<pre><code>\c db_name</code></pre>
-<p>List tables</p>
-<pre><code>\dt</code></pre>
-<p>List schemas</p>
-<pre><code>\dn</code></pre>
-<p>List tables for a particular schema i<a href="https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql">list all tables in schema</a></p>
-<pre><code>\dt raw_comext.*;</code></pre>
-</div>
-<div id="mariadbmysql-and-postgresql" class="section level1">
-<h1>MariaDB/MySQL and PostgreSQL</h1>
-<div id="compare-commands" class="section level2">
-<h2>Compare commands</h2>
-<p>Compare common commands between MariaDB and PostgreSQL.</p>
+<div id="heptatonic-minor-scale" class="section level2">
+<h2>Heptatonic minor scale</h2>
+<pre class="r"><code>display_scale(c(0, 2, 3, 5, 7, 8, 10))</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th>MariaDB/MySQL</th>
-<th>PostgreSQL</th>
+<th>0</th>
+<th>2</th>
+<th>3</th>
+<th>5</th>
+<th>7</th>
+<th>8</th>
+<th>10</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td>show databases;</td>
-<td>\l</td>
+<td>do</td>
+<td>re</td>
+<td>mib</td>
+<td>fa</td>
+<td>sol</td>
+<td>sol#</td>
+<td>sib</td>
 </tr>
 <tr class="even">
-<td>connect db_name;</td>
-<td>\c db_name</td>
+<td>re</td>
+<td>mi</td>
+<td>fa</td>
+<td>sol</td>
+<td>la</td>
+<td>sib</td>
+<td>do</td>
 </tr>
 <tr class="odd">
-<td>show tables;</td>
-<td>\dt</td>
+<td>mib</td>
+<td>fa</td>
+<td>fa#</td>
+<td>sol#</td>
+<td>sib</td>
+<td>si</td>
+<td>do#</td>
 </tr>
 <tr class="even">
-<td></td>
-<td></td>
+<td>fa</td>
+<td>sol</td>
+<td>sol#</td>
+<td>sib</td>
+<td>do</td>
+<td>do#</td>
+<td>mib</td>
 </tr>
 <tr class="odd">
-<td></td>
-<td></td>
+<td>sol</td>
+<td>la</td>
+<td>sib</td>
+<td>do</td>
+<td>re</td>
+<td>mib</td>
+<td>fa</td>
+</tr>
+<tr class="even">
+<td>sol#</td>
+<td>sib</td>
+<td>si</td>
+<td>do#</td>
+<td>mib</td>
+<td>mi</td>
+<td>fa#</td>
+</tr>
+<tr class="odd">
+<td>sib</td>
+<td>do</td>
+<td>do#</td>
+<td>mib</td>
+<td>fa</td>
+<td>fa#</td>
+<td>sol#</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>D</td>
+<td>Eb</td>
+<td>F</td>
+<td>G</td>
+<td>G#</td>
+<td>Bb</td>
+</tr>
+<tr class="odd">
+<td>D</td>
+<td>E</td>
+<td>F</td>
+<td>G</td>
+<td>A</td>
+<td>Bb</td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td>Eb</td>
+<td>F</td>
+<td>F#</td>
+<td>G#</td>
+<td>Bb</td>
+<td>B</td>
+<td>C#</td>
+</tr>
+<tr class="odd">
+<td>F</td>
+<td>G</td>
+<td>G#</td>
+<td>Bb</td>
+<td>C</td>
+<td>C#</td>
+<td>Eb</td>
+</tr>
+<tr class="even">
+<td>G</td>
+<td>A</td>
+<td>Bb</td>
+<td>C</td>
+<td>D</td>
+<td>Eb</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td>G#</td>
+<td>Bb</td>
+<td>B</td>
+<td>C#</td>
+<td>Eb</td>
+<td>E</td>
+<td>F#</td>
+</tr>
+<tr class="even">
+<td>Bb</td>
+<td>C</td>
+<td>C#</td>
+<td>Eb</td>
+<td>F</td>
+<td>F#</td>
+<td>G#</td>
+</tr>
+</tbody>
+</table>
+<p>Note how the notes of the C major scale are the same as the notes of the A minor scale. The notes of the F major scale are the same as the notes of the D minor scale. This is explained in <a href="https://en.wikipedia.org/wiki/Minor_scale">minor scale</a> and the correspondance between minor and major scales is visible on the <a href="https://en.wikipedia.org/wiki/Circle_of_fifths">circle of fifths</a>.</p>
+</div>
+</div>
+<div id="pentatonic-scales" class="section level1">
+<h1>Pentatonic scales</h1>
+<div id="major-pentatonic" class="section level2">
+<h2>Major pentatonic</h2>
+<p><a href="https://en.wikipedia.org/wiki/Pentatonic_scale#Major_pentatonic_scale">Major pentatonic scale</a></p>
+<blockquote>
+<p>“The major pentatonic scale may be thought of as a gapped or incomplete major scale.[8] However, the pentatonic scale has a unique character and is complete in terms of tonality. One construction takes five consecutive pitches from the circle of fifths;[9] starting on C, these are C, G, D, A, and E. Transposing the pitches to fit into one octave rearranges the pitches into the major pentatonic scale: C, D, E, G, A.”</p>
+</blockquote>
+<pre class="r"><code>major_pentatonic &lt;- c(0, 2, 4, 7, 9)
+display_scale(major_pentatonic)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>0</th>
+<th>2</th>
+<th>4</th>
+<th>7</th>
+<th>9</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>do</td>
+<td>re</td>
+<td>mi</td>
+<td>sol</td>
+<td>la</td>
+</tr>
+<tr class="even">
+<td>re</td>
+<td>mi</td>
+<td>fa#</td>
+<td>la</td>
+<td>si</td>
+</tr>
+<tr class="odd">
+<td>mi</td>
+<td>fa#</td>
+<td>sol#</td>
+<td>si</td>
+<td>do#</td>
+</tr>
+<tr class="even">
+<td>sol</td>
+<td>la</td>
+<td>si</td>
+<td>re</td>
+<td>mi</td>
+</tr>
+<tr class="odd">
+<td>la</td>
+<td>si</td>
+<td>do#</td>
+<td>mi</td>
+<td>fa#</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>D</td>
+<td>E</td>
+<td>G</td>
+<td>A</td>
+</tr>
+<tr class="odd">
+<td>D</td>
+<td>E</td>
+<td>F#</td>
+<td>A</td>
+<td>B</td>
+</tr>
+<tr class="even">
+<td>E</td>
+<td>F#</td>
+<td>G#</td>
+<td>B</td>
+<td>C#</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>A</td>
+<td>B</td>
+<td>D</td>
+<td>E</td>
+</tr>
+<tr class="even">
+<td>A</td>
+<td>B</td>
+<td>C#</td>
+<td>E</td>
+<td>F#</td>
 </tr>
 </tbody>
 </table>
 </div>
-<div id="migrate-from-mysql-into-postgresql" class="section level2">
-<h2>Migrate from MySQL into PostgreSQL</h2>
-<ul>
-<li>ipostgresql.org <a href="https://wiki.postgresql.org/wiki/Converting_from_other_Databases_to_PostgreSQL#MySQL">converting from other databases to postgreSQL</a></li>
-<li><a href="https://github.com/dimitri/pgloader">pgloader</a></li>
-</ul>
-<p>Transfer data from MySQL to PostgreSQL:</p>
-<pre><code>pgloader mysql://user@localhost/sakila postgresql:///pagila</code></pre>
-<p>For my own database I used:</p>
-<pre><code>sudo su postgres
-createdb -O paul tradeflows_migrated
-exit # Go back to user &quot;paul&quot;
-pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated</code></pre>
+<div id="minor-pentatonic" class="section level2">
+<h2>Minor pentatonic</h2>
+<p><a href="https://en.wikipedia.org/wiki/Pentatonic_scale#Minor_pentatonic_scale">Minor pentatonic scale</a></p>
+<blockquote>
+<p>&quot; It may also be considered a gapped blues scale. The C minor pentatonic is C, E-flat, F, G, B-flat. The A minor pentatonic, the relative minor of C pentatonic, comprises the same tones as the C major pentatonic, starting on A, giving A, C, D, E, G.&quot;</p>
+</blockquote>
+<pre class="r"><code>display_scale(c(0, 3, 5, 7, 10))</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>0</th>
+<th>3</th>
+<th>5</th>
+<th>7</th>
+<th>10</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>do</td>
+<td>mib</td>
+<td>fa</td>
+<td>sol</td>
+<td>sib</td>
+</tr>
+<tr class="even">
+<td>mib</td>
+<td>fa#</td>
+<td>sol#</td>
+<td>sib</td>
+<td>do#</td>
+</tr>
+<tr class="odd">
+<td>fa</td>
+<td>sol#</td>
+<td>sib</td>
+<td>do</td>
+<td>mib</td>
+</tr>
+<tr class="even">
+<td>sol</td>
+<td>sib</td>
+<td>do</td>
+<td>re</td>
+<td>fa</td>
+</tr>
+<tr class="odd">
+<td>sib</td>
+<td>do#</td>
+<td>mib</td>
+<td>fa</td>
+<td>sol#</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>Eb</td>
+<td>F</td>
+<td>G</td>
+<td>Bb</td>
+</tr>
+<tr class="odd">
+<td>Eb</td>
+<td>F#</td>
+<td>G#</td>
+<td>Bb</td>
+<td>C#</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>G#</td>
+<td>Bb</td>
+<td>C</td>
+<td>Eb</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>Bb</td>
+<td>C</td>
+<td>D</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>Bb</td>
+<td>C#</td>
+<td>Eb</td>
+<td>F</td>
+<td>G#</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
-<div id="road-map" class="section level1">
-<h1>Road map</h1>
-<p>postgresql.org <a href="https://www.postgresql.org/developer/roadmap/">Roadmap</a></p>
-</div>
-<div id="schema" class="section level1">
-<h1>Schema</h1>
-<p>Official documentation postgresql.org <a href="https://www.postgresql.org/docs/current/ddl-schemas.html">schemas</a></p>
+<div id="hexatonic-scales" class="section level1">
+<h1>Hexatonic scales</h1>
+<p><a href="https://en.wikipedia.org/wiki/Blues_scale#Hexatonic">Blues scale Hexatonic</a></p>
 <blockquote>
-<p>“A database contains one or more named schemas, which in turn contain tables. Schemas also contain other kinds of named objects, including data types, functions, and operators. The same object name can be used in different schemas without conflict; for example, both schema1 and myschema can contain tables named mytable. Unlike databases, schemas are not rigidly separated: a user can access objects in any of the schemas in the database they are connected to, if they have privileges to do so.”</p>
+<p>“The hexatonic, or six-note, blues scale consists of the minor pentatonic scale plus the b5th degree of the original heptatonic scale.”</p>
 </blockquote>
-<blockquote>
-<p>“There are several reasons why one might want to use schemas:”</p>
-</blockquote>
-<ul>
-<li>“To allow many users to use one database without interfering with each other.”</li>
-<li>“To organize database objects into logical groups to make them more manageable.”</li>
-<li>“Third-party applications can be put into separate schemas so they do not collide with the names of other objects.”</li>
-</ul>
-<blockquote>
-<p>“Schemas are analogous to directories at the operating system level, except that schemas cannot be nested.”</p>
-</blockquote>
-</div>
-<div id="blogs" class="section level1">
-<h1>Blogs</h1>
-<p>Dimitri Fontaine 2014 <a href="https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/">Why is pgloader faster ?</a></p>
-<blockquote>
-<p>“In searching for a modern programming language the best candidate I found was actually Common Lisp.”</p>
-</blockquote>
-<blockquote>
-<p>“Not only is Common Lisp code compiled to machine code when using most Common Lisp Implementations such as SBCL or Clozure Common Lisp; it’s also possible to actually benefit from parallel computing and threads in Common Lisp. In the pgloader case I’ve been using the lparallel utilities, in particular its queuing facility to be able to implement asynchronous IOs where a thread reads the source data and preprocess it, fills up a batch at a time in a buffer that is then pushed down to the writer thread, that handles the COPY protocol and operations. So my current analysis is that the new thread based architecture used with a very powerful compiler for the Common Lisp high-level language are allowing pgloader to enter a whole new field of data loading performances.”</p>
-</blockquote>
+<pre class="r"><code>hexatonic &lt;- c(1, 4, 6, 7, 8, 11)
+display_scale(hexatonic)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th>1</th>
+<th>4</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>11</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>re</td>
+<td>fa</td>
+<td>sol</td>
+<td>sol#</td>
+<td>la</td>
+<td>do</td>
+</tr>
+<tr class="even">
+<td>fa</td>
+<td>sol#</td>
+<td>sib</td>
+<td>si</td>
+<td>do</td>
+<td>mib</td>
+</tr>
+<tr class="odd">
+<td>sol</td>
+<td>sib</td>
+<td>do</td>
+<td>do#</td>
+<td>re</td>
+<td>fa</td>
+</tr>
+<tr class="even">
+<td>sol#</td>
+<td>si</td>
+<td>do#</td>
+<td>re</td>
+<td>mib</td>
+<td>fa#</td>
+</tr>
+<tr class="odd">
+<td>la</td>
+<td>do</td>
+<td>re</td>
+<td>mib</td>
+<td>mi</td>
+<td>sol</td>
+</tr>
+<tr class="even">
+<td>do</td>
+<td>mib</td>
+<td>fa</td>
+<td>fa#</td>
+<td>sol</td>
+<td>sib</td>
+</tr>
+<tr class="odd">
+<td>D</td>
+<td>F</td>
+<td>G</td>
+<td>G#</td>
+<td>A</td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td>F</td>
+<td>G#</td>
+<td>Bb</td>
+<td>B</td>
+<td>C</td>
+<td>Eb</td>
+</tr>
+<tr class="odd">
+<td>G</td>
+<td>Bb</td>
+<td>C</td>
+<td>C#</td>
+<td>D</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td>G#</td>
+<td>B</td>
+<td>C#</td>
+<td>D</td>
+<td>Eb</td>
+<td>F#</td>
+</tr>
+<tr class="odd">
+<td>A</td>
+<td>C</td>
+<td>D</td>
+<td>Eb</td>
+<td>E</td>
+<td>G</td>
+</tr>
+<tr class="even">
+<td>C</td>
+<td>Eb</td>
+<td>F</td>
+<td>F#</td>
+<td>G</td>
+<td>Bb</td>
+</tr>
+</tbody>
+</table>
 </div>
 
 

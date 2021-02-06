@@ -376,6 +376,13 @@ Download a video from youtube :
 
     youtube-dl video_url
 
+Download in a small format below 480 pixel height:
+
+    youtube-dl  -f 'bestvideo[height<=480]+bestaudio/best[height<=480]' https://www.youtube.com/watch?v=YAtLTLiqNwg
+
+The repetition of the hight in the audio part is needed, otherwise, there
+will be no sound.
+
 Download only the audio in an OGG Vorbis format
 
     youtube-dl --extract-audio --audio-format vorbis video_url

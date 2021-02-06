@@ -419,6 +419,9 @@ div.tocify {
     <li>
       <a href="clustering.html">Clustering</a>
     </li>
+    <li>
+      <a href="musical_scales.html">Musical scales</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -688,6 +691,9 @@ sudo apt install riot-web</code></pre>
 <div id="sane" class="section level2">
 <h2>Sane</h2>
 <p>The Flatbed scanner Canoscan lide 400 is supported on Linux according to the <a href="http://www.sane-project.org/sane-backends.html">sane backends</a> page.</p>
+<p>When the scanner is plugged in, I can see it’s USB id <code>0x04a9/0x1912</code> (mentioned in the sane backends web page) in the output of</p>
+<pre><code>lsusb | grep -i canon
+#Bus 002 Device 115: ID 04a9:1912 Canon, Inc.</code></pre>
 <p>Install sane from source following these instructions <a href="http://forums.debian.net/viewtopic.php?f=16&amp;t=141668" class="uri">http://forums.debian.net/viewtopic.php?f=16&amp;t=141668</a></p>
 <p>Install build dependencies</p>
 <pre><code>sudo apt install sane
@@ -716,13 +722,21 @@ ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*</code></pre>
 <p>I also tried these instructions:</p>
 <pre><code>make
 make install</code></pre>
-<p>The scanner is visible in the output of</p>
-<pre><code>lsusb | grep -i canon
-#Bus 002 Device 115: ID 04a9:1912 Canon, Inc.</code></pre>
 <p>I created this file</p>
 <pre><code>sudo vim /usr/lib/udev/rules.d/49-sane.rules</code></pre>
 <p>Containing only one line</p>
 <pre><code>ATTRS{idVendor}==&quot;04a9&quot;, ATTRS{idProduct}==&quot;1912&quot;, MODE=&quot;0664&quot;, GROUP=&quot;scanner&quot;, ENV{libsane_matched}=&quot;yes&quot;</code></pre>
+<p>This doesn’t seem to help, the scanner is not detected</p>
+<p>Sane shows a recent version</p>
+<pre><code>sane-config --version
+# 1.0.31</code></pre>
+<p>But the scanner is not detected, even when called as super user</p>
+<pre><code>sudo sane-find-scanner
+# No USB scanners found. If you expected something different, make sure that
+# you have loaded a kernel driver for your USB host controller and have setup
+# the USB system correctly. See man sane-usb for details.
+# SANE has been built without libusb support. This may be a reason
+# for not detecting USB scanners. Read README for more details.</code></pre>
 </div>
 <div id="microsoft" class="section level2">
 <h2>Microsoft</h2>

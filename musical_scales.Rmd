@@ -1,0 +1,140 @@
+---
+title: "Music theory"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+# Generate this notebook to a pdf document
+# cd ~/rp/paulrougieux.github.io && Rscript -e "rmarkdown::render('music_theory.Rmd', 'pdf_document')"
+library(dplyr)
+```
+
+# Introduction
+
+The purpose of this notebook is to display notes used in various music
+scales.
+
+
+# Setup
+
+Create a data frame that contains the twelve notes of the chromatic scale used later in the analysis.
+
+```{r}
+notes <- tribble(
+    ~it,   ~en,
+    "do",  "C",
+    "do#", "C#" ,
+    "re",  "D",
+    "mib", "Eb",
+    "mi",  "E",
+    "fa",  "F",
+    "fa#", "F#",
+    "sol", "G",
+    "sol#","G#",
+    "la",  "A",
+    "sib", "Bb",
+    "si",  "B",
+)
+
+# Duplicate the notes so that increments of scale number below don't fall out of the range.
+notes2 <- rbind(notes, notes)
+
+# A function to display a string as a markdown code indented by four space.
+#display <- function(x){cat("    ", x, "\n")}
+display <- function(x){cat("", x, "\n", sep="|")}
+
+# The scale corresponding to the white notes of the piano
+major_heptatonic <- c(0, 2, 4, 5, 7, 9, 11)
+notes[major_heptatonic + 1,]
+
+# A function to display a table with the given scale shifted to all the note of
+# the major heptatonic scale
+display_scale <- function(input_scale){
+    display(input_scale)
+    display(rep("---", length(input_scale)))
+    for (i in input_scale + 1){
+        display(notes2$it[input_scale + i])
+    }
+
+    for (i in input_scale + 1){
+        display(notes2$en[input_scale + i])
+    }
+}
+```
+
+# Heptatonic scale
+
+[Heptatonic scale](https://en.wikipedia.org/wiki/Heptatonic_scale)
+
+> "A heptatonic scale is a musical scale that has seven pitches (a.k.a. tones)
+> per octave. "
+
+## Heptatonic major scale
+
+```{r,  results='asis'}
+display_scale(major_heptatonic)
+```
+
+## Heptatonic minor scale
+
+```{r,  results='asis'}
+display_scale(c(0, 2, 3, 5, 7, 8, 10))
+```
+
+Note how the notes of the C major scale are the same as the notes of the A
+minor scale. The notes of the F major scale are the same as the notes of the D
+minor scale. This is explained in [minor
+scale](https://en.wikipedia.org/wiki/Minor_scale) and the correspondance
+between minor and major scales is visible on the [circle of
+fifths](https://en.wikipedia.org/wiki/Circle_of_fifths).
+
+
+# Pentatonic scales
+
+## Major pentatonic
+
+[Major pentatonic scale](https://en.wikipedia.org/wiki/Pentatonic_scale#Major_pentatonic_scale)
+
+> "The major pentatonic scale may be thought of as a gapped or incomplete major
+> scale.[8] However, the pentatonic scale has a unique character and is
+> complete in terms of tonality. One construction takes five consecutive
+> pitches from the circle of fifths;[9] starting on C, these are C, G, D, A,
+> and E. Transposing the pitches to fit into one octave rearranges the pitches
+> into the major pentatonic scale: C, D, E, G, A."
+
+
+```{r,  results='asis'}
+major_pentatonic <- c(0, 2, 4, 7, 9)
+display_scale(major_pentatonic)
+```
+
+## Minor pentatonic
+
+[Minor pentatonic
+scale](https://en.wikipedia.org/wiki/Pentatonic_scale#Minor_pentatonic_scale)
+
+> " It may also be considered a gapped blues scale. The C minor pentatonic
+> is C, E-flat, F, G, B-flat. The A minor pentatonic, the relative minor of C
+> pentatonic, comprises the same tones as the C major pentatonic, starting on
+> A, giving A, C, D, E, G."
+
+```{r,  results='asis'}
+display_scale(c(0, 3, 5, 7, 10))
+```
+
+
+# Hexatonic scales
+
+[Blues scale Hexatonic](https://en.wikipedia.org/wiki/Blues_scale#Hexatonic)
+
+> "The hexatonic, or six-note, blues scale consists of the minor pentatonic
+> scale plus the b5th degree of the original heptatonic scale." 
+
+```{r,  results='asis'}
+hexatonic <- c(1, 4, 6, 7, 8, 11)
+display_scale(hexatonic)
+```
+

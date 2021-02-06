@@ -378,6 +378,12 @@ The Flatbed scanner
   Canoscan lide 400 is supported on Linux according to the [sane 
   backends](http://www.sane-project.org/sane-backends.html) page.
 
+When the scanner is plugged in, I can see it's USB id `0x04a9/0x1912`
+(mentioned in the sane backends web page) in the output of
+
+    lsusb | grep -i canon
+    #Bus 002 Device 115: ID 04a9:1912 Canon, Inc.
+
 Install sane from source following these instructions
  http://forums.debian.net/viewtopic.php?f=16&t=141668
 
@@ -419,10 +425,6 @@ I also tried these instructions:
     make
     make install
 
-The scanner is visible in the output of
-
-    lsusb | grep -i canon
-    #Bus 002 Device 115: ID 04a9:1912 Canon, Inc.
 
 I created this file
 
@@ -431,6 +433,22 @@ I created this file
 Containing only one line
 
     ATTRS{idVendor}=="04a9", ATTRS{idProduct}=="1912", MODE="0664", GROUP="scanner", ENV{libsane_matched}="yes"
+
+This doesn't seem to help, the scanner is not detected
+
+Sane shows a recent version
+
+    sane-config --version
+    # 1.0.31
+
+But the scanner is not detected, even when called as super user
+
+    sudo sane-find-scanner
+    # No USB scanners found. If you expected something different, make sure that
+    # you have loaded a kernel driver for your USB host controller and have setup
+    # the USB system correctly. See man sane-usb for details.
+    # SANE has been built without libusb support. This may be a reason
+    # for not detecting USB scanners. Read README for more details.
 
 
 ## Microsoft

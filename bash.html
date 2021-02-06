@@ -419,6 +419,9 @@ div.tocify {
     <li>
       <a href="clustering.html">Clustering</a>
     </li>
+    <li>
+      <a href="musical_scales.html">Musical scales</a>
+    </li>
   </ul>
 </li>
 <li class="dropdown">
@@ -709,6 +712,9 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 <pre><code>sudo apt-get install ffmpeg</code></pre>
 <p>Download a video from youtube :</p>
 <pre><code>youtube-dl video_url</code></pre>
+<p>Download in a small format below 480 pixel height:</p>
+<pre><code>youtube-dl  -f &#39;bestvideo[height&lt;=480]+bestaudio/best[height&lt;=480]&#39; https://www.youtube.com/watch?v=YAtLTLiqNwg</code></pre>
+<p>The repetition of the hight in the audio part is needed, otherwise, there will be no sound.</p>
 <p>Download only the audio in an OGG Vorbis format</p>
 <pre><code>youtube-dl --extract-audio --audio-format vorbis video_url</code></pre>
 <p>Download only the audio in an .mp3 format</p>
