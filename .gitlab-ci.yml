@@ -4,7 +4,7 @@ before_script:
 pages:
   stage: deploy
   script:
-  - Rscript -e "Rscript -e 'rmarkdown::render_site()'"
+  - Rscript -e "rmarkdown::render_site()"
   - mkdir public
   - cp *.html public/
   - cp -r  site_libs/ public/
