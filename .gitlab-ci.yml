@@ -1,6 +1,6 @@
 image: rocker/verse:4.0.0
 before_script:
-  - R -e "install.packages('xaringanthemer')"
+  - R -e "install.packages('reticulate')"
 pages:
   stage: deploy
   script:
