@@ -302,10 +302,17 @@ This website is generated from R Markdown documents with:
 
 	 Rscript -e "rmarkdown::render_site()"
 
-For more elaborate sites, the bookdown package can be used.
+The advantage of the rmarkdown site generator is that it creates pages with a
+floating, foldable table of content. It's nice for pages that have a lot of
+subdivisions like this blog. The structure of a website can be created using a
+yaml file.
 
 
 ### Bookdown site generator
+
+For blogs that fit into a book structure, with chapters, the bookdown package
+create a single clickable table of content for the whole site. It can also
+export the content to pdf format.
 
 Specifying input from many sub directories in `_bookdown.yml`:
 

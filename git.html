@@ -964,13 +964,22 @@ sudo apt install build-essential</code></pre>
 <pre><code>gr git status
 gr git pull</code></pre>
 </div>
-<div id="publishing-project-documentation-on-github" class="section level1">
-<h1>Publishing project documentation on github</h1>
+<div id="publishing-project-documentation" class="section level1">
+<h1>Publishing project documentation</h1>
+<div id="on-github" class="section level2">
+<h2>On Github</h2>
+<p>Older content related to pages built from branches.</p>
 <p>SO answer to the question “How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)”: An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.</p>
 <p>In fact I didn’t use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).</p>
 <p>Then within the inst folder, I cloned only the gh-branch. To clone only one branch:</p>
 <pre><code>git clone -b mybranch --single-branch git://sub.domain.com/repo.git</code></pre>
 <p>Then I renamed the folder to “web”, so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.</p>
+</div>
+<div id="on-gitlab" class="section level2">
+<h2>On Gitlab</h2>
+<p>Gitlab has an integrated CI mechanism, * <a href="https://docs.gitlab.com/ee/user/project/pages/getting_started/pages_ci_cd_template.html">Create a pages website by using a CI / CD template</a> * <a href="https://www.r-bloggers.com/2020/09/rendering-an-r-markdown-presentation-to-gitlab-pages/">Rendering an R markdown presentation to gitlab pages</a> uses the <code>rocker/verse:4.0.0</code> docker image. Posted on September 16, 2020. * <a href="https://rlesur.gitlab.io/bookdown-gitlab-pages/">GitLab CI for your bookdown project</a> Uses the <code>rocker/verse:4.0.2</code> docker image. Posted on 2020-09-08. A setup generating pages for the master branch and also for merge requests.</p>
+<p>To generate html pages from markdown and publish them, I added a <code>.gitlab-ci.yml</code> to the repository. The CI deployment is visible on the <a href="https://gitlab.com/paulrougieux/paulrougieux/-/jobs">paulrougieux.jobs</a> page. Clicking on “running” displays the latest activity of an ongoing build. It starts with “Pulling docker image rocker/verse:4.0.0 …”. Once the build is finished, the completed page is visible at <a href="https://paulrougieux.gitlab.io/paulrougieux/" class="uri">https://paulrougieux.gitlab.io/paulrougieux/</a></p>
+</div>
 </div>
 <div id="subversion" class="section level1">
 <h1>Subversion</h1>

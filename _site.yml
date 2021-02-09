@@ -1,6 +1,5 @@
 name: "paulrougieux"
 output_dir: "."
-include: ["docs/tools/git.md"]
 navbar:
   title: "Paul Rougieux"
   left:
