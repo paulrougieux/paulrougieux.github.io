@@ -165,6 +165,16 @@ Change the margin to 0.5 cm
     geometry: margin=0.5cm
     ---
 
+Change the font to 12pt, the max available in the default template.
+
+    ---
+    fontsize: 12pt
+    ---
+
+To get bigger fonts (up to 20pt) as explained in this [SO
+answer](https://stackoverflow.com/a/46055046), you can use the `extsizes`
+package by adding `documentclass: extarticle`.
+
 Adding headers and footers to pandoc suggests using:
 
     ---

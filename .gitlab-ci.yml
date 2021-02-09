@@ -1,0 +1,16 @@
+image: rocker/verse:4.0.0
+before_script:
+  - R -e "install.packages('xaringanthemer')"
+pages:
+  stage: deploy
+  script:
+  - Rscript -e "Rscript -e 'rmarkdown::render_site()'"
+  - mkdir public
+  - cp *.html public/
+  - cp -r  site_libs/ public/
+  artifacts:
+    paths:
+    - public
+  only:
+  - master
+  interruptible: true
