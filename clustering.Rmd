@@ -28,7 +28,7 @@ to a few clustering algorithms implemented in python and R.
 * [K-means clustering with pytorch](https://www.kernel-operations.io/keops/_auto_tutorials/kmeans/plot_kmeans_torch.html)
 
 
-```{python}
+```{python eval=FALSE}
 from matplotlib import pyplot as plt
 plt.style.use('seaborn-whitegrid')
 import numpy as np
@@ -36,7 +36,7 @@ from sklearn.cluster import KMeans
 ```
 
 
-```{python}
+```{python eval=FALSE}
 np.random.seed(7)
 points = np.vstack(((np.random.randn(150, 2) * 0.75 + np.array([1, 0])),
                    (np.random.randn(50, 2) * 0.25 + np.array([-0.5, 0.5])),
@@ -44,6 +44,7 @@ points = np.vstack(((np.random.randn(150, 2) * 0.75 + np.array([1, 0])),
 ```
 
 ```{python eval=FALSE}
+from matplotlib import pyplot as plt
 fig = plt.figure()
 ax = plt.axes()
 ax.scatter(points[:,0], points[:,1])
