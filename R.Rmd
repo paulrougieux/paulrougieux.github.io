@@ -343,28 +343,6 @@ will not work. See [bookdown issue 941](https://github.com/rstudio/bookdown/issu
 See more flextable caption examples in `system.file(package = "flextable", "examples", "rmd", "captions")`
 
 
-## kable to create tables
-```{r }
-cat(kable(head(iris, 1), format = "html"))
-cat(kable(head(iris, 1), format = "latex"))
-cat(kable(head(iris, 1), format = "markdown"))
-```
-
-## Python engine
-
-Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
-
-
-## Set knitr options
-Those 2 commands are different.
-Sets the options for chunk, within a knitr chunk inside the .Rmd document
-
-    opts_chunk$set(fig.width=10)
-
- Sets the options for knitr outside the .Rmd document
-
-    opts_knit$set()
-
 ## Flextable and officer package
 
 The officer package makes it possible to create improved word and powerpoint
@@ -401,6 +379,28 @@ doc <- read_docx() %>%
   print(target = "/tmp/iris.docx")
 ```
 
+
+## kable to create tables
+```{r }
+cat(kable(head(iris, 1), format = "html"))
+cat(kable(head(iris, 1), format = "latex"))
+cat(kable(head(iris, 1), format = "markdown"))
+```
+
+## Python engine
+
+Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
+
+
+## Set knitr options
+Those 2 commands are different.
+Sets the options for chunk, within a knitr chunk inside the .Rmd document
+
+    opts_chunk$set(fig.width=10)
+
+ Sets the options for knitr outside the .Rmd document
+
+    opts_knit$set()
 
 # Packages
 You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).
