@@ -294,6 +294,32 @@ installed.packages()
 # knitr
 
 
+## Create websites
+
+### Rmarkdown site generator
+
+This website is generated from R Markdown documents with: 
+
+	 Rscript -e "rmarkdown::render_site()"
+
+For more elaborate sites, the bookdown package can be used.
+
+
+### Bookdown site generator
+
+Specifying input from many sub directories in `_bookdown.yml`:
+
+    rmd_files: ["index.Rmd", "chapters/chapt1.RMD", "chapters/chapt2.RMD"]
+
+Attention this will only work in the Merge and Knit strategy, as explained in
+the [book chapter on two rendering
+approaches](https://bookdown.org/yihui/bookdown/new-session.html) 
+
+> "We call these two approaches “Merge and Knit” (M-K) and “Knit and Merge”
+> (K-M), respectively." "K-M does not allow Rmd files to be in subdirectories,
+> but M-K does."
+
+
 ## Cross references
 
 [R markdown cross
@@ -324,7 +350,12 @@ cat(kable(head(iris, 1), format = "latex"))
 cat(kable(head(iris, 1), format = "markdown"))
 ```
 
-## Setting knitr options
+## Python engine
+
+Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
+
+
+## Set knitr options
 Those 2 commands are different.
 Sets the options for chunk, within a knitr chunk inside the .Rmd document
 
@@ -333,11 +364,6 @@ Sets the options for chunk, within a knitr chunk inside the .Rmd document
  Sets the options for knitr outside the .Rmd document
 
     opts_knit$set()
-
-## R markdown python engine
-
-Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
-
 
 ## Flextable and officer package
 
