@@ -175,6 +175,14 @@ entry.](https://tex.stackexchange.com/questions/373754/how-to-add-page-numbers-t
 
 In the bst file, you can also check for chapter entries.
 
+### Compilation errors
+
+[Error: LaTeX Error: Something's wrong--perhaps a missing \item](https://tex.stackexchange.com/a/561933/44254)
+
+> "In case the error keeps presenting even you already added a
+> `\cite{something}` in your paper, then you have to clear the auxiliary files.
+> In details, delete any files ended with .log .aux .bbl .blg."
+
 
 ## Diff
 
@@ -182,7 +190,21 @@ Install Latex diff on Debian:
 
     sudo apt install latexdiff
 
-Generate diff version of latex files. In the instructions below, the manuscript was made of 2
+
+### Latexdiff and git
+
+Latexdiff can handle files in version control systems. I didn't know this and
+checked out the old file by hand before performing the comparison. First I
+describe the way I should have done it as explained in man latexdiff-vc
+
+       latexdiff-vc -r rev1 file.tex ...
+           compares file.tex with revision rev1.
+
+       latexdiff-vc -r rev1 -r rev2 file.tex ...
+           compares revisions rev1 and rev2 of file.tex.
+
+Old way of doing things without using the latexdiff-vc helper. Generate diff
+version of latex files. In the instructions below, the manuscript was made of 2
 documents `template.tex ` which called `\input{content.tex}`.
 
 Checkout contents from commit 9ce6b9 on 2020 December 1st and prepare the diff in the /tmp dir:
@@ -206,6 +228,36 @@ Generate the diff
 Compile the diff document, enter quiet mode with “Q” if there are error messages
 
      latexmk -pdf -bibtex -use-make template.tex
+
+## Makefile
+
+Make can be use to automate the compilation of the latex file, place the
+supporting figures and documents in a zip archive and subsequently remove the
+intermediate files.
+
+    # Usage:
+    # make        # Generate the pdf and zip files for the submission. 
+    # make render # Render the pdf, keep all automatically generated files for Latex diagnostics.
+    # make clean  # Keep a copy of the pdf one level above and remove automatically generated files.
+    # make zip    # Generate the zip archive of the article and figures for the submission process.
+    #
+    all: render clean zip
+
+    render:
+         latexmk -pdf -bibtex -use-make forests-1032372-proofreading.tex
+
+    clean:
+         cp forests-1032372-proofreading.pdf ../manuscript.pdf || echo "forests-1032372-proofreading.tex not there."
+         git clean -xf
+
+    zip: # Remove the zip archive otherwise deleted files will remain in the archive and it will be simply updated
+         rm ../manuscript.zip ../figures.zip || echo "No existing zip archive to delete."
+         zip ../manuscript.zip -r *
+         zip ../figures.zip -r figures/*
+         echo "Verify that the pdf and zip archives have been updated by checking their update time."
+         ls -lh ../*.zip
+	     ls -lh ../*.pdf
+
 
 # Motivation
 

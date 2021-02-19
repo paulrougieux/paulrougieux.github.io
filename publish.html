@@ -645,12 +645,29 @@ when/whenever, where/wherever, whether, while</code></pre>
 <p>“Try using <span class="citation">@inbook</span> instead of <span class="citation">@book</span>. The .bst file of this journal has several definitions for citing books. When using <span class="citation">@book</span> in your .bib file you are implying that you are citing the whole book, and therefore there is no need for page numbergs. When using <span class="citation">@inbook</span> you mean to say that you are citing a certain part of the book. If you use <span class="citation">@inbook</span> the bibliography will show both pages and chapter of the book you are citing.”</p>
 </blockquote>
 <p>In the bst file, you can also check for chapter entries.</p>
+<div id="compilation-errors" class="section level3">
+<h3>Compilation errors</h3>
+[Error: LaTeX Error: Something’s wrong–perhaps a missing
+
+<p>](<a href="https://tex.stackexchange.com/a/561933/44254" class="uri">https://tex.stackexchange.com/a/561933/44254</a>)</p>
+<blockquote>
+<p>“In case the error keeps presenting even you already added a <code>\cite{something}</code> in your paper, then you have to clear the auxiliary files. In details, delete any files ended with .log .aux .bbl .blg.”</p>
+</blockquote>
+</div>
 </div>
 <div id="diff" class="section level2">
 <h2>Diff</h2>
 <p>Install Latex diff on Debian:</p>
 <pre><code>sudo apt install latexdiff</code></pre>
-<p>Generate diff version of latex files. In the instructions below, the manuscript was made of 2 documents <code>template.tex </code> which called <code>\input{content.tex}</code>.</p>
+<div id="latexdiff-and-git" class="section level3">
+<h3>Latexdiff and git</h3>
+<p>Latexdiff can handle files in version control systems. I didn’t know this and checked out the old file by hand before performing the comparison. First I describe the way I should have done it as explained in man latexdiff-vc</p>
+<pre><code>   latexdiff-vc -r rev1 file.tex ...
+       compares file.tex with revision rev1.
+
+   latexdiff-vc -r rev1 -r rev2 file.tex ...
+       compares revisions rev1 and rev2 of file.tex.</code></pre>
+<p>Old way of doing things without using the latexdiff-vc helper. Generate diff version of latex files. In the instructions below, the manuscript was made of 2 documents <code>template.tex </code> which called <code>\input{content.tex}</code>.</p>
 <p>Checkout contents from commit 9ce6b9 on 2020 December 1st and prepare the diff in the /tmp dir:</p>
 <pre><code># Delete and re-create a temp dir and copy everything in it
 rm -rf /tmp/article_diff/
@@ -667,6 +684,33 @@ latexdiff template_before_review.tex template_now.tex &gt; template.tex
 latexdiff content_before_review.tex content_now.tex &gt; content.tex</code></pre>
 <p>Compile the diff document, enter quiet mode with “Q” if there are error messages</p>
 <pre><code> latexmk -pdf -bibtex -use-make template.tex</code></pre>
+</div>
+</div>
+<div id="makefile" class="section level2">
+<h2>Makefile</h2>
+<p>Make can be use to automate the compilation of the latex file, place the supporting figures and documents in a zip archive and subsequently remove the intermediate files.</p>
+<pre><code># Usage:
+# make        # Generate the pdf and zip files for the submission. 
+# make render # Render the pdf, keep all automatically generated files for Latex diagnostics.
+# make clean  # Keep a copy of the pdf one level above and remove automatically generated files.
+# make zip    # Generate the zip archive of the article and figures for the submission process.
+#
+all: render clean zip
+
+render:
+     latexmk -pdf -bibtex -use-make forests-1032372-proofreading.tex
+
+clean:
+     cp forests-1032372-proofreading.pdf ../manuscript.pdf || echo &quot;forests-1032372-proofreading.tex not there.&quot;
+     git clean -xf
+
+zip: # Remove the zip archive otherwise deleted files will remain in the archive and it will be simply updated
+     rm ../manuscript.zip ../figures.zip || echo &quot;No existing zip archive to delete.&quot;
+     zip ../manuscript.zip -r *
+     zip ../figures.zip -r figures/*
+     echo &quot;Verify that the pdf and zip archives have been updated by checking their update time.&quot;
+     ls -lh ../*.zip
+     ls -lh ../*.pdf</code></pre>
 </div>
 </div>
 <div id="motivation" class="section level1">
