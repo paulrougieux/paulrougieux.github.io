@@ -482,6 +482,11 @@ div.tocify {
 <blockquote>
 <p>“pip is the package installer for Python. You can use pip to install packages from the Python Package Index and other indexes.”</p>
 </blockquote>
+<p><a href="https://stackoverflow.com/questions/7948494/whats-the-difference-between-a-python-module-and-a-python-package">What is the difference between a python module and a python package</a></p>
+<blockquote>
+<p>“A package is a collection of modules in directories that give a package hierarchy.”</p>
+</blockquote>
+<p><a href="https://stackoverflow.com/questions/1471994/what-is-setup-py">What is setup.py?</a></p>
 <div id="install-an-old-version" class="section level2">
 <h2>Install an old version</h2>
 <p>For example to install pandas 0.24.2</p>
@@ -489,13 +494,16 @@ div.tocify {
 <p>or</p>
 <pre><code>pip3 install --user pandas==0.24.2</code></pre>
 </div>
-<div id="packages-and-modules" class="section level2">
-<h2>Packages and modules</h2>
-<p><a href="https://stackoverflow.com/questions/7948494/whats-the-difference-between-a-python-module-and-a-python-package">What is the difference between a python module and a python package</a></p>
-<blockquote>
-<p>“A package is a collection of modules in directories that give a package hierarchy.”</p>
-</blockquote>
-<p><a href="https://stackoverflow.com/questions/1471994/what-is-setup-py">What is setup.py?</a></p>
+<div id="install-a-local-version" class="section level2">
+<h2>Install a local version</h2>
+<p>To <a href="https://stackoverflow.com/a/18021540/2641825">install the local version of a package with pip</a></p>
+<pre><code>pip install -e /develop/MyPackage</code></pre>
+<p>According to <code>man pip</code>, the <code>-e</code> option “installs a project in editable mode (i.e. setuptools”develop mode“) from a local project path or a VCS url”.</p>
+</div>
+<div id="upload-a-package-to-pypi" class="section level2">
+<h2>Upload a package to pypi</h2>
+<p>To upload a package to pypi, you need a pypi account. The <a href="https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives">instructions on uploading distribution archives explain how to upload the package to pypi</a>:</p>
+<pre><code>  python3 -m twine upload --repository testpypi dist/*</code></pre>
 <div id="authorship" class="section level3">
 <h3>Authorship</h3>
 <p>It’s only possible to specify one author field in setup.py. The recommendation is to use a mailing list when there are multiple authors and to set separate files for attribution.</p>

@@ -15,6 +15,15 @@ pypi.org [pip](https://pypi.org/project/pip/):
 > "pip is the package installer for Python. You can use pip to install packages
 > from the Python Package Index and other indexes."
 
+[What is the difference between a python module and a python
+package](https://stackoverflow.com/questions/7948494/whats-the-difference-between-a-python-module-and-a-python-package)
+
+> "A package is a collection of modules in directories that give a package
+> hierarchy."
+
+[What is
+setup.py?](https://stackoverflow.com/questions/1471994/what-is-setup-py)
+
 
 ## Install an old version
 
@@ -26,16 +35,26 @@ or
 
     pip3 install --user pandas==0.24.2
 
-## Packages and modules
 
-[What is the difference between a python module and a python
-package](https://stackoverflow.com/questions/7948494/whats-the-difference-between-a-python-module-and-a-python-package)
+## Install a local version
 
-> "A package is a collection of modules in directories that give a package
-> hierarchy."
+To [install the local version of a package with
+pip](https://stackoverflow.com/a/18021540/2641825)
 
-[What is
-setup.py?](https://stackoverflow.com/questions/1471994/what-is-setup-py)
+    pip install -e /develop/MyPackage
+
+According to `man pip`, the `-e` option "installs a project in editable mode
+(i.e. setuptools "develop mode") from a local project path or a VCS url".
+
+
+## Upload a package to pypi
+
+To upload a package to pypi, you need a pypi account. The [instructions on
+uploading distribution archives explain how to upload the package to pypi](
+https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives):
+    
+      python3 -m twine upload --repository testpypi dist/*
+
 
 ### Authorship
 
