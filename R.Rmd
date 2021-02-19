@@ -12,16 +12,30 @@ library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Introduction
+
 This page is the continuation of [my blog post on R commands](https://paulremote.blogspot.de/2014/04/r-commands.html). 
 On the blog, see also [why use R](http://paulremote.blogspot.fr/2013/10/why-r.html) and the [RSS feed of posts labelled R](http://paulremote.blogspot.com/feeds/posts/default/-/R).
 
 See also documentation at:
 
- * The Comprehensive R Archive Network [manuals](https://cran.r-project.org/manuals.html)
- * Tidyverse [packages](http://www.tidyverse.org/packages/)
+ * The Comprehensive R Archive Network CRAN [manuals](https://cran.r-project.org/manuals.html)
+ * The Tidyverse [packages](http://www.tidyverse.org/packages/)
+
+
+# Control flow
+
+dplyr::case_when is a generalised vectorised if. Example use:
+
+     x <- 1:50
+     case_when(
+       x %% 35 == 0 ~ "fizz buzz",
+       x %% 5 == 0 ~ "fizz",
+       x %% 7 == 0 ~ "buzz",
+       TRUE ~ as.character(x)
+     )
 
 # Data types
-
 
 ## Everything is a vector
 
@@ -79,6 +93,7 @@ by increasing value of their mean_sepal_width. Remove the line containing
 as_factor to see the difference. 
 
 ## Lists
+
 Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.
 ```{r}
 l1 <- list(a="a", b="2,", c="pi+2i")
@@ -86,6 +101,15 @@ str(l1)
 unlist(l1) # a character vector 
 str(unlist(l1))
 ```
+
+Extract the first element of a nested list [SO](https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list)
+
+```{r}
+minyearmaxyear <- list(c(2001, 2009), c(2010, 2014), c(2015, 2100))
+library(purrr)
+map(minyearmaxyear, 1)
+```
+
 
 ## Strings
 
@@ -304,8 +328,20 @@ This website is generated from R Markdown documents with:
 
 The advantage of the rmarkdown site generator is that it creates pages with a
 floating, foldable table of content. It's nice for pages that have a lot of
-subdivisions like this blog. The structure of a website can be created using a
-yaml file.
+subdivisions like this blog. The structure of a website is specified in a
+yaml file. For example, the code below creates a navigation bar:
+
+    navbar:
+      title: "Paul Rougieux"
+      left:
+        - text: "Home"
+          icon: fa-home 
+          href: index.html
+        - text: "Tools"
+          icon: fa-wrench
+          menu:
+            - text: "Bash"
+              href: bash.html
 
 
 ### Bookdown site generator
@@ -408,6 +444,39 @@ Sets the options for chunk, within a knitr chunk inside the .Rmd document
  Sets the options for knitr outside the .Rmd document
 
     opts_knit$set()
+
+# Manipulate vectors
+
+## Cut and split
+
+Cut a vector in smaller components
+
+    cut(0:16, 4)
+
+
+## Combine vectors
+
+Combine vectors with c()
+
+    x <- c(1, 2, 3)
+    y <- c(4, 5)
+    c(x, y)
+
+Unite multiple columns into one by pasting strings together
+
+    df <- expand_grid(x = c("a", NA), y = c("b", NA))
+    df
+    
+    df %>% unite("z", x:y, remove = FALSE)
+    # To remove missing values:
+    df %>% unite("z", x:y, na.rm = TRUE, remove = FALSE)
+    
+    # Separate is almost the complement of unite
+    df %>%
+      unite("xy", x:y) %>%
+      separate(xy, c("x", "y"))
+    # (but note `x` and `y` contain now "NA" not NA)
+
 
 # Packages
 You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).

@@ -476,12 +476,26 @@ div.tocify {
 </div>
 
 
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/04/r-commands.html">my blog post on R commands</a>. On the blog, see also <a href="http://paulremote.blogspot.fr/2013/10/why-r.html">why use R</a> and the <a href="http://paulremote.blogspot.com/feeds/posts/default/-/R">RSS feed of posts labelled R</a>.</p>
 <p>See also documentation at:</p>
 <ul>
-<li>The Comprehensive R Archive Network <a href="https://cran.r-project.org/manuals.html">manuals</a></li>
-<li>Tidyverse <a href="http://www.tidyverse.org/packages/">packages</a></li>
+<li>The Comprehensive R Archive Network CRAN <a href="https://cran.r-project.org/manuals.html">manuals</a></li>
+<li>The Tidyverse <a href="http://www.tidyverse.org/packages/">packages</a></li>
 </ul>
+</div>
+<div id="control-flow" class="section level1">
+<h1>Control flow</h1>
+<p>dplyr::case_when is a generalised vectorised if. Example use:</p>
+<pre><code> x &lt;- 1:50
+ case_when(
+   x %% 35 == 0 ~ &quot;fizz buzz&quot;,
+   x %% 5 == 0 ~ &quot;fizz&quot;,
+   x %% 7 == 0 ~ &quot;buzz&quot;,
+   TRUE ~ as.character(x)
+ )</code></pre>
+</div>
 <div id="data-types" class="section level1">
 <h1>Data types</h1>
 <div id="everything-is-a-vector" class="section level2">
@@ -545,6 +559,18 @@ str(l1)</code></pre>
 <pre class="r"><code>str(unlist(l1))</code></pre>
 <pre><code>##  Named chr [1:3] &quot;a&quot; &quot;2,&quot; &quot;pi+2i&quot;
 ##  - attr(*, &quot;names&quot;)= chr [1:3] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
+<p>Extract the first element of a nested list <a href="https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list">SO</a></p>
+<pre class="r"><code>minyearmaxyear &lt;- list(c(2001, 2009), c(2010, 2014), c(2015, 2100))
+library(purrr)
+map(minyearmaxyear, 1)</code></pre>
+<pre><code>## [[1]]
+## [1] 2001
+## 
+## [[2]]
+## [1] 2010
+## 
+## [[3]]
+## [1] 2015</code></pre>
 </div>
 <div id="strings" class="section level2">
 <h2>Strings</h2>
@@ -695,7 +721,18 @@ installed.packages()</code></pre>
 <h3>Rmarkdown site generator</h3>
 <p>This website is generated from R Markdown documents with:</p>
 <pre><code> Rscript -e &quot;rmarkdown::render_site()&quot;</code></pre>
-<p>The advantage of the rmarkdown site generator is that it creates pages with a floating, foldable table of content. It’s nice for pages that have a lot of subdivisions like this blog. The structure of a website can be created using a yaml file.</p>
+<p>The advantage of the rmarkdown site generator is that it creates pages with a floating, foldable table of content. It’s nice for pages that have a lot of subdivisions like this blog. The structure of a website is specified in a yaml file. For example, the code below creates a navigation bar:</p>
+<pre><code>navbar:
+  title: &quot;Paul Rougieux&quot;
+  left:
+    - text: &quot;Home&quot;
+      icon: fa-home 
+      href: index.html
+    - text: &quot;Tools&quot;
+      icon: fa-wrench
+      menu:
+        - text: &quot;Bash&quot;
+          href: bash.html</code></pre>
 </div>
 <div id="bookdown-site-generator" class="section level3">
 <h3>Bookdown site generator</h3>
@@ -794,6 +831,34 @@ doc &lt;- read_docx() %&gt;%
 <pre><code>opts_chunk$set(fig.width=10)</code></pre>
 <p>Sets the options for knitr outside the .Rmd document</p>
 <pre><code>opts_knit$set()</code></pre>
+</div>
+</div>
+<div id="manipulate-vectors" class="section level1">
+<h1>Manipulate vectors</h1>
+<div id="cut-and-split" class="section level2">
+<h2>Cut and split</h2>
+<p>Cut a vector in smaller components</p>
+<pre><code>cut(0:16, 4)</code></pre>
+</div>
+<div id="combine-vectors" class="section level2">
+<h2>Combine vectors</h2>
+<p>Combine vectors with c()</p>
+<pre><code>x &lt;- c(1, 2, 3)
+y &lt;- c(4, 5)
+c(x, y)</code></pre>
+<p>Unite multiple columns into one by pasting strings together</p>
+<pre><code>df &lt;- expand_grid(x = c(&quot;a&quot;, NA), y = c(&quot;b&quot;, NA))
+df
+
+df %&gt;% unite(&quot;z&quot;, x:y, remove = FALSE)
+# To remove missing values:
+df %&gt;% unite(&quot;z&quot;, x:y, na.rm = TRUE, remove = FALSE)
+
+# Separate is almost the complement of unite
+df %&gt;%
+  unite(&quot;xy&quot;, x:y) %&gt;%
+  separate(xy, c(&quot;x&quot;, &quot;y&quot;))
+# (but note `x` and `y` contain now &quot;NA&quot; not NA)</code></pre>
 </div>
 </div>
 <div id="packages" class="section level1">
