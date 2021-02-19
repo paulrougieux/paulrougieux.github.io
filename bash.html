@@ -488,6 +488,11 @@ div.tocify {
 <div id="convert" class="section level1">
 <h1>Convert</h1>
 <p>This section is about converting from one document format into another. For example converting a text file into a pdf file and vice-versa.</p>
+<div id="audio" class="section level2">
+<h2>Audio</h2>
+<p>Convert from Wav to mp3 <a href="https://gist.github.com/championofblocks/3982727">seen in this gist</a></p>
+<pre><code>for i in *.WAV; do test -f &quot;${i%.WAV}.mp3&quot; || lame -b 320 -h &quot;${i}&quot; &quot;${i%.WAV}.mp3&quot;; done</code></pre>
+</div>
 <div id="clipboard" class="section level2">
 <h2>Clipboard</h2>
 <p><a href="https://stackoverflow.com/questions/749544/pipe-to-from-the-clipboard-in-bash-script">Pipe to from the clipboard in bash script</a></p>
@@ -1245,7 +1250,7 @@ echo $message</code></pre>
 </tr>
 </tbody>
 </table>
-<p>Jump to currently playing song <code>i</code>. Follow currently playing son <code>f</code> see <a href="https://github.com/cmus/cmus/issues/206">issue 206</a></p>
+<p>Jump to currently playing song <code>i</code>. Follow currently playing song <code>f</code> see <a href="https://github.com/cmus/cmus/issues/206">issue 206</a></p>
 <p>There is a feedback of all the currently active options at the bottom right of the cums screen.</p>
 <div id="playlist" class="section level3">
 <h3>Playlist</h3>
@@ -1660,6 +1665,22 @@ ECDSA key fingerprint is SHA256:PTwO1p7Q3XqPE4Gs+KH37XqH88ePDYh5bNqKXyVpGAE.
 Are you sure you want to continue connecting (yes/no)? yes
 Warning: Permanently added &#39;[......eu-west-1.compute.amazonaws.com],[....]&#39; (ECDSA) to the list of known hosts.</code></pre>
 <p>Now the connection works.</p>
+<p>Some VPN access points caused issues when connecting to the corporate email server and intranet. The connection was blocked for the access point in Milan, Italy. It did work when using the access point in Strasbourg, France.</p>
+<p>The access point from Strasbourg prevented access to Elsevier publications. With the message: &gt; “There was a problem providing the content you requested”</p>
+<p>I complained to <a href="mailto:nlinfo@elsevier.com">nlinfo@elsevier.com</a> and received the following message::</p>
+<blockquote>
+<p>Dear Paul Thank you for your patience. My colleagues have informed me that the IP 92.118.13.115 where you are accessing from has been tagged with high amount of retrieving content from ScienceDirect.</p>
+</blockquote>
+<blockquote>
+<p>We do understand that your purpose of downloading and searching of content is for personal, non-commercial or scholarly use and it is difficult to be getting warnings every time you download content from the site. Please be advised that Elsevier cares about the integrity of our product and ensure data protection. With this, ScienceDirect continuously monitor signals of excessive downloading of content thus explains the warning you might have encountered. Please note as well that only the IP has been tagged and this concern may be resolved by using a different IP network.</p>
+</blockquote>
+<blockquote>
+<p>Please reach out to your institution’s or organization’s administrator or librarian for an alternate access in ScienceDirect.</p>
+</blockquote>
+<blockquote>
+<p>Thank you for your understanding. Please feel free to message us if you have any questions or require further assistance.</p>
+</blockquote>
+<p>Changing the VPN location to Frankfurt allowed me to see these Elsevier publications again.</p>
 <div id="vpn-software" class="section level2">
 <h2>VPN software</h2>
 <p><a href="https://www.wireguard.com/">wireguard</a> wikipedia article <a href="https://en.wikipedia.org/wiki/WireGuard">wireguard</a></p>

@@ -38,6 +38,14 @@ which provides a workaround: entering `stty -ixon` in .bashrc.
 This section is about converting from one document format into another. For
 example converting a text file into a pdf file and vice-versa.
 
+## Audio
+
+Convert from Wav to mp3 [seen in this
+gist](https://gist.github.com/championofblocks/3982727)
+
+    for i in *.WAV; do test -f "${i%.WAV}.mp3" || lame -b 320 -h "${i}" "${i%.WAV}.mp3"; done
+
+
 ## Clipboard
 
 [Pipe to from the clipboard in bash
@@ -1048,7 +1056,7 @@ Volume control
 | }             |:vol -0% -1%                                        |
 
 Jump to currently playing song `i`.
-Follow currently playing son `f` see [issue 206](https://github.com/cmus/cmus/issues/206)
+Follow currently playing song `f` see [issue 206](https://github.com/cmus/cmus/issues/206)
 
 There is a feedback of all the currently active options at the bottom right of
 the cums screen.
@@ -1717,6 +1725,40 @@ I try to reconnect to that server through SSH:
     Warning: Permanently added '[......eu-west-1.compute.amazonaws.com],[....]' (ECDSA) to the list of known hosts.
 
 Now the connection works. 
+
+Some VPN access points caused issues when connecting to the corporate email
+server and intranet. The connection was blocked for the access point in Milan,
+Italy. 
+It did work when using the access point in Strasbourg, France. 
+
+The access point from Strasbourg prevented access to Elsevier publications.
+With the message:
+> "There was a problem providing the content you requested "
+
+I complained to <nlinfo@elsevier.com> and received the following message::
+
+> Dear Paul Thank you for your patience. My colleagues have informed me that
+> the IP 92.118.13.115 where you are accessing from has been tagged with high
+> amount of retrieving content from ScienceDirect.
+
+> We do understand that your purpose of downloading and searching of content is
+> for personal, non-commercial or scholarly use and it is difficult to be
+> getting warnings every time you download content from the site. Please be
+> advised that Elsevier cares about the integrity of our product and ensure
+> data protection. With this, ScienceDirect continuously monitor signals of
+> excessive downloading of content thus explains the warning you might have
+> encountered. Please note as well that only the IP has been tagged and this
+> concern may be resolved by using a different IP network. 
+
+> Please reach out to your institution's or organization's administrator or
+> librarian for an alternate access in ScienceDirect. 
+
+> Thank you for your understanding. Please feel free to message us if you have
+> any questions or require further assistance. 
+
+Changing the VPN location to Frankfurt allowed me to see these Elsevier
+publications again.
+
 
 ## VPN software
 
