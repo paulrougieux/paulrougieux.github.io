@@ -220,13 +220,15 @@ let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#mode = "ha"
 
 " Voom plugin 
-let voom_ft_modes = {'markdown': 'pandoc', 'pandoc': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex'}
+let voom_ft_modes = {'markdown': 'pandoc', 'pandoc': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex', 'rnoweb' : 'latex'}
 
 " Create a Toc command
 augroup Toc
     autocmd!
     autocmd Filetype markdown command! -buffer Toc Voom
     autocmd Filetype rmd command! -buffer Toc Voom
+    " rnoweb are the Rnw notebooks mixing latex and R code
+    autocmd Filetype rnoweb command! -buffer Toc Voom
     autocmd Filetype tex command! -buffer Toc VimtexTocOpen
 augroup END
 
