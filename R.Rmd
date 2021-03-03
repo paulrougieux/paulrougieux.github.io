@@ -598,6 +598,25 @@ package before or during the submission process.
     geom_bar
     geom_tile + a gradient produce heat maps
 
+### Axes
+
+Rotate the tick text of the X axis. SO question [rotating axis labels in
+ggplot2](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2) 
+
+    theme(axis.text.x=element_text(angle = 90, hjust=0))
+
+Increase number of axis ticks by specifying an integer break vector
+
+    scale_x_continuous(breaks = 1:10)
+
+When dates are on the x axis, use a time scale and specify the breaks as a time vector
+
+    scale_x_date(breaks = lubridate::parse_date_time(2000:2020, "%y"))
+
+Alternatively breaks can be specified as an interval, and minor breaks as well
+
+    scale_x_datetime(date_breaks = "5 years", labels = scales::date_format("%Y"), date_minor_breaks = "1 year")
+
 ### Legend
 
 Place the legend at the bottom of the plot:
@@ -626,13 +645,6 @@ Minimal theme
 
     theme_minimal()
 
-
-#### Axes
-
-Rotate the tick text of the X axis. SO question [rotating axis labels in
-ggplot2](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2) 
-
-    theme(axis.text.x=element_text(angle = 90, hjust=0))
 
 ## Choropleth maps
 

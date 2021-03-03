@@ -947,6 +947,17 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 <h2>Plotting with ggplot2</h2>
 <pre><code>geom_bar
 geom_tile + a gradient produce heat maps</code></pre>
+<div id="axes" class="section level3">
+<h3>Axes</h3>
+<p>Rotate the tick text of the X axis. SO question <a href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2">rotating axis labels in ggplot2</a></p>
+<pre><code>theme(axis.text.x=element_text(angle = 90, hjust=0))</code></pre>
+<p>Increase number of axis ticks by specifying an integer break vector</p>
+<pre><code>scale_x_continuous(breaks = 1:10)</code></pre>
+<p>When dates are on the x axis, use a time scale and specify the breaks as a time vector</p>
+<pre><code>scale_x_date(breaks = lubridate::parse_date_time(2000:2020, &quot;%y&quot;))</code></pre>
+<p>Alternatively breaks can be specified as an interval, and minor breaks as well</p>
+<pre><code>scale_x_datetime(date_breaks = &quot;5 years&quot;, labels = scales::date_format(&quot;%Y&quot;), date_minor_breaks = &quot;1 year&quot;)</code></pre>
+</div>
 <div id="legend" class="section level3">
 <h3>Legend</h3>
 <p>Place the legend at the bottom of the plot:</p>
@@ -968,11 +979,6 @@ ggsave(&quot;mtcars.pdf&quot;)</code></pre>
 <h3>Themes</h3>
 <p>Minimal theme</p>
 <pre><code>theme_minimal()</code></pre>
-<div id="axes" class="section level4">
-<h4>Axes</h4>
-<p>Rotate the tick text of the X axis. SO question <a href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2">rotating axis labels in ggplot2</a></p>
-<pre><code>theme(axis.text.x=element_text(angle = 90, hjust=0))</code></pre>
-</div>
 </div>
 </div>
 <div id="choropleth-maps" class="section level2">
