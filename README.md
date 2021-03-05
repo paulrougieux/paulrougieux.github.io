@@ -16,4 +16,9 @@ Or simply use the `makefile`
 
     make
 
+To build the site on gitlab CI's pages, I specify the build instructions in
+`gitlab-ci.yml`. The site then becomes visible at 
+https://paulrougieux.gitlab.io/paulrougieux/
 
+For the gitub version, I build the site locally on my laptop and simply use git to
+upload all html files to github. The site then becomes visible at paulrougieux.github.io/
