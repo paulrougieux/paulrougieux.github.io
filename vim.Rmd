@@ -309,6 +309,12 @@ from data frames by NVim-R for example):
 
     :Tab /\t
 
+Or enter CTRL + V and press the TAB key for a literal tab.
+
+To have numbers right aligned
+
+    :Tab /\t/r0
+
 For more, see `help tabular`.
 
 ## Undo redo
@@ -366,6 +372,13 @@ You can use replacement to remove text.
 For example to [remove the last 2 characters of each line in a selection](https://stackoverflow.com/a/36264759/2641825) :
 
     :'<,'>s/..$//
+
+### Numbers
+
+Remove bracketed references from text copied from Wikipedia.
+
+    :'<,'>s/\[[0-9]\+\]//g
+
 
 ### Character classes
 
@@ -478,6 +491,7 @@ Set up a shortcut to toggle paste mode on and off with:
 
     set pastetoggle=<F3>
 
+Note: I don't use paste toggle any more, bracketed paste works well.
 
 #### Bracketed paste
 
@@ -1014,7 +1028,8 @@ Help
 
     :help quickfix
 
-## Search in a file 
+
+## Search in the current file 
 
 Use `"/"` to search, then n forward and N backwards `"*"` to search for the word
 under the cursor (you can also create a mapping to search for a selected text)
@@ -1050,6 +1065,18 @@ Use existing highlight groups
 
 ## Search in multiple files
 
+Define the `F3` shortcut in `.vimrc` to recursively search all
+files in the present working directory for the word under the cursor:
+
+    nmap <F3> :vimgrep /<C-R><C-W>/ **<CR>
+
+Alternatively, use git grep from the fugitive plugin:
+
+    :Ggrep pattern
+
+Both `vimgrep` and `Ggrep` will open a quick fix window displaying file names
+and line numbers for each matching character string.
+
 [open files on the match lines given by grep](https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep)
 
     :copen
@@ -1059,10 +1086,6 @@ or specify specific files extensions
 
     :grep -r pattern *.py
 
-Or use git grep with the fugitive plugin:
-
-    :copen
-    :Ggrep pattern
 
 ## Working directory
 
@@ -1824,6 +1847,7 @@ Start ipython3:
 
     :vert term ipython3
 
+
 # Tools
 
 ## Count words
@@ -1832,6 +1856,23 @@ Start ipython3:
 > To count the number of words in the current buffer, press g then Ctrl-g. To
 > count the number of words in a block, select the block (for example, type V5j
 > to select 6 lines) and again press g then Ctrl-g.  
+
+
+## Macros
+
+Vim wiki [Macros](https://vim.fandom.com/wiki/Macros)
+
+    qn 	start recording to register n
+    ... 	your complex series of commands
+    q 	stop recording
+    @n 	execute your macro
+    @@ 	execute your macro again 
+
+> "Suppose you have a macro which operates on the text in a single line. You
+> can run the macro on each line in a visual selection in a single operation:
+> Visually select some lines (for example, type vip to select the current
+> paragraph). Type :normal @q to run the macro from register q on each line."
+
 
 ## Spell check
 

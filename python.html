@@ -490,9 +490,11 @@ div.tocify {
 <div id="install-an-old-version" class="section level2">
 <h2>Install an old version</h2>
 <p>For example to install pandas 0.24.2</p>
-<pre><code> python3 -m pip install --user pandas==0.24.2 </code></pre>
+<pre><code>python3 -m pip install --user pandas==0.24.2 </code></pre>
 <p>or</p>
 <pre><code>pip3 install --user pandas==0.24.2</code></pre>
+<p>Sometimes you need to overwrite the existing version with I.</p>
+<pre><code>pip install -I  package==version</code></pre>
 </div>
 <div id="install-a-local-version" class="section level2">
 <h2>Install a local version</h2>
@@ -1359,13 +1361,6 @@ g.fig.set_figheight(10) </code></pre>
 </div>
 <div id="pandas-comparison-with-r" class="section level2">
 <h2>Pandas comparison with R</h2>
-<ul>
-<li>pandas.pydata.org <a href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison with R</a></li>
-<li><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a></li>
-</ul>
-<blockquote>
-<p>“Tidyverse allows a mix of quoted and unquoted references to variable names. In my (in)experience, the convenience this brings is accompanied by equal consternation. It seems to me a lot of the problems solved by tidyeval would not exist if all variables were quoted all the time, as in pandas, but there are likely deeper truths I’m missing here…”</p>
-</blockquote>
 <p>R data frame to be used for examples:</p>
 <pre><code>df = data.frame(x = 1:3, y = c(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;), stringsAsFactors = FALSE)</code></pre>
 <p>Pandas data frame to be used for examples:</p>
@@ -1504,6 +1499,21 @@ countries = self.by_country_year[&#39;country&#39;].drop_duplicates()
 years = range(1990, datetime.now().year)
 expand_grid = list(itertools.product(countries, years))
 df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))</code></pre>
+</div>
+<div id="blogs-and-quotes-on-pandas-and-r" class="section level3">
+<h3>Blogs and quotes on Pandas and R</h3>
+<ul>
+<li>pandas.pydata.org <a href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison with R</a></li>
+<li><a href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse style pandas</a></li>
+</ul>
+<blockquote>
+<p>“Tidyverse allows a mix of quoted and unquoted references to variable names. In my (in)experience, the convenience this brings is accompanied by equal consternation. It seems to me a lot of the problems solved by tidyeval would not exist if all variables were quoted all the time, as in pandas, but there are likely deeper truths I’m missing here…”</p>
+</blockquote>
+<p>Help of the R function unite from the tidyr package:</p>
+<blockquote>
+<p>“col: The name of the new column, as a string or symbol. This argument is passed by expression and supports quasiquotation (you can unquote strings and symbols). The name is captured from the expression with ‘rlang::ensym()’ (note that <strong>this kind of interface where symbols do not represent actual objects is now discouraged</strong> in the tidyverse; we support it here for backward compatibility).”</p>
+</blockquote>
+<p>The use of symbols which do not represent actual objects was was frustrating at first when using pandas, because we hat to use df[“x”] to assign vectors to new column names whereas we could use df.x to display them.</p>
 </div>
 </div>
 </div>

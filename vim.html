@@ -684,6 +684,9 @@ of each line: &gt;
 <pre><code>:&#39;&lt;,&#39;&gt;Tab /|</code></pre>
 <p>Align tab separated text in the current buffer (to view tsv files generated from data frames by NVim-R for example):</p>
 <pre><code>:Tab /\t</code></pre>
+<p>Or enter CTRL + V and press the TAB key for a literal tab.</p>
+<p>To have numbers right aligned</p>
+<pre><code>:Tab /\t/r0</code></pre>
 <p>For more, see <code>help tabular</code>.</p>
 </div>
 <div id="undo-redo" class="section level2">
@@ -716,6 +719,11 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 <pre><code>:%s/\n\n/\r/g</code></pre>
 <p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
+<div id="numbers" class="section level3">
+<h3>Numbers</h3>
+<p>Remove bracketed references from text copied from Wikipedia.</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
+</div>
 <div id="character-classes" class="section level3">
 <h3>Character classes</h3>
 <p>See <code>:help character-classes</code> for a list of classes accepted in Vim with their equivalent regex pattern, for example <code>\w</code> is equivalent to <code>[0-9A-Za-z_]</code>. Replace all word characters by a dash (to create a markdown table division see also collection below)</p>
@@ -780,6 +788,7 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 :set nopaste</code></pre>
 <p>Set up a shortcut to toggle paste mode on and off with:</p>
 <pre><code>set pastetoggle=&lt;F3&gt;</code></pre>
+<p>Note: I don’t use paste toggle any more, bracketed paste works well.</p>
 <div id="bracketed-paste" class="section level4">
 <h4>Bracketed paste</h4>
 <p><a href="https://stackoverflow.com/a/44507798/2641825">Enable bracketed paste in a session</a></p>
@@ -1124,8 +1133,8 @@ in addition, I mapped m to $</code></pre>
 <p>Help</p>
 <pre><code>:help quickfix</code></pre>
 </div>
-<div id="search-in-a-file" class="section level2">
-<h2>Search in a file</h2>
+<div id="search-in-the-current-file" class="section level2">
+<h2>Search in the current file</h2>
 <p>Use <code>&quot;/&quot;</code> to search, then n forward and N backwards <code>&quot;*&quot;</code> to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
 <p>Use <code>:g/pattern</code> to display a list of all search result in the document.</p>
 <p>Search all occurrences of a pattern and populate the quick fix window:</p>
@@ -1147,14 +1156,16 @@ in addition, I mapped m to $</code></pre>
 </div>
 <div id="search-in-multiple-files" class="section level2">
 <h2>Search in multiple files</h2>
+<p>Define the <code>F3</code> shortcut in <code>.vimrc</code> to recursively search all files in the present working directory for the word under the cursor:</p>
+<pre><code>nmap &lt;F3&gt; :vimgrep /&lt;C-R&gt;&lt;C-W&gt;/ **&lt;CR&gt;</code></pre>
+<p>Alternatively, use git grep from the fugitive plugin:</p>
+<pre><code>:Ggrep pattern</code></pre>
+<p>Both <code>vimgrep</code> and <code>Ggrep</code> will open a quick fix window displaying file names and line numbers for each matching character string.</p>
 <p><a href="https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep">open files on the match lines given by grep</a></p>
 <pre><code>:copen
 :grep -r pattern .</code></pre>
 <p>or specify specific files extensions</p>
 <pre><code>:grep -r pattern *.py</code></pre>
-<p>Or use git grep with the fugitive plugin:</p>
-<pre><code>:copen
-:Ggrep pattern</code></pre>
 </div>
 <div id="working-directory" class="section level2">
 <h2>Working directory</h2>
@@ -1662,6 +1673,18 @@ let g:tagbar_compact = 1</code></pre>
 <div id="count-words" class="section level2">
 <h2>Count words</h2>
 <p><a href="https://vim.fandom.com/wiki/Word_count">Word coung</a>: &gt; To count the number of words in the current buffer, press g then Ctrl-g. To &gt; count the number of words in a block, select the block (for example, type V5j &gt; to select 6 lines) and again press g then Ctrl-g.</p>
+</div>
+<div id="macros" class="section level2">
+<h2>Macros</h2>
+<p>Vim wiki <a href="https://vim.fandom.com/wiki/Macros">Macros</a></p>
+<pre><code>qn  start recording to register n
+...     your complex series of commands
+q   stop recording
+@n  execute your macro
+@@  execute your macro again </code></pre>
+<blockquote>
+<p>“Suppose you have a macro which operates on the text in a single line. You can run the macro on each line in a visual selection in a single operation: Visually select some lines (for example, type vip to select the current paragraph). Type :normal <span class="citation">@q</span> to run the macro from register q on each line.”</p>
+</blockquote>
 </div>
 <div id="spell-check" class="section level2">
 <h2>Spell check</h2>
