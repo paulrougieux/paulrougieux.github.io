@@ -843,13 +843,19 @@ removed from your working tree are ignored with this version of Git.
 <pre><code>git clean -f </code></pre>
 <p>Alternatively clean in interactive mode:</p>
 <pre><code>git clean -i</code></pre>
-<div id="searching-text" class="section level2">
-<h2>Searching text</h2>
+<div id="searching-text-with-grep" class="section level2">
+<h2>Searching text with grep</h2>
 <p>Search all files in the subdirectory “subdir” for lines containing the words “factor” and “item”. Show 2 lines of context (2 leading and 2 trailing lines).</p>
 <pre><code>git grep -e item --and -e factor -C 2 -- subdir/</code></pre>
 <p>Search all R markdown files containing the word lyx ignore the case:</p>
 <pre><code>git grep -i lyx -- *.Rmd</code></pre>
-<p>Stackoverflow: How to search committed code in the git history?</p>
+<p>Stackoverflow: <a href="https://stackoverflow.com/questions/2928584/how-to-grep-search-committed-code-in-the-git-history">How to search committed code in the git history?</a></p>
+<p>Search in all possible locations in all commits</p>
+<pre><code>git grep &lt;regexp&gt; $(git rev-list --all)</code></pre>
+<p>Search for a particular location in the git repo</p>
+<pre><code>git grep &lt;regexp&gt; $(git rev-list --all -- lib/util) -- lib/util</code></pre>
+<p>The above grep commands will give you a list of commit sha where the grep pattern was present in the repo. You can then checkout the older revision of a file under a new name</p>
+<pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
 </div>
 <div id="replacing-strings" class="section level2">
 <h2>Replacing strings</h2>

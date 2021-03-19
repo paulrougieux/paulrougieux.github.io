@@ -424,11 +424,24 @@ doc <- read_docx() %>%
 
 
 ## kable to create tables
+
 ```{r }
 cat(kable(head(iris, 1), format = "html"))
 cat(kable(head(iris, 1), format = "latex"))
 cat(kable(head(iris, 1), format = "markdown"))
 ```
+
+
+### Booktabs
+
+Booktabs tables look nicer in latex document, they can be created by specifying
+the argument `booktabs = TRUE` into the `kable()` call.
+
+Knitr adds an extra space every five lines into booktabs tables for
+readability. This is undesirable for short tables. To remove this space specify
+the `linesep = ""` argument to `kable()` as explained in this [SO
+answer](https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown). 
+
 
 ## Python engine
 

@@ -524,6 +524,17 @@ WARNING:root:img2pdf will not perform a lossy operation.
 WARNING:root:You can remove the alpha channel using imagemagick:
 WARNING:root:  $ convert input.png -background white -alpha remove -alpha off output.png
 ERROR:root:error: Refusing to work on images with alpha channel</code></pre>
+<div id="images-from-a-zip-folder-to-a-pdf-document" class="section level3">
+<h3>Images from a zip folder to a pdf document</h3>
+<p>Unzip the archive containing jpeg images into a temporary folder, reduce the image sizes to 2000 pixel wide and generate a pdf.</p>
+<pre><code>mkdir -p /tmp/bli/newfolder
+cd /tmp/bli/
+unzip ~/downloads/fwdbungenfrfrderunterrichtfrdienchstenstunden.zip
+mogrify -resize 2000 -path ./newfolder *.jpeg
+cd newfolder/
+img2pdf *.jpeg -o output.pdf --pagesize A4 --border 1cm
+echo &quot;The pdf document containing all images is located at: /tmp/bli/output.pdf&quot;</code></pre>
+</div>
 </div>
 <div id="images-to-other-formats" class="section level2">
 <h2>Images to other formats</h2>
@@ -531,6 +542,9 @@ ERROR:root:error: Refusing to work on images with alpha channel</code></pre>
 <pre><code>convert canto_dei_sanfedisti.png canto_dei_sanfedisti.jpg</code></pre>
 <p>Convert a png image with an alpha layer to an image without alpha layer</p>
 <pre><code>convert input.png -background white -alpha remove -alpha off output.png</code></pre>
+<p>Convert from png to jpg and change size</p>
+<pre><code>mogrify -resize 2000 -path ./newfolder -format jpg *.png</code></pre>
+<p>See also more image modification commands in the edit image files section below.</p>
 </div>
 <div id="documents-between-various-formats-with-pandoc" class="section level2">
 <h2>Documents between various formats with Pandoc</h2>
@@ -681,6 +695,14 @@ find -name &#39;*.ogg&#39; |wc -l</code></pre>
 find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </div>
 </div>
+<div id="dos" class="section level1">
+<h1>DOS</h1>
+<p>Here are some DOS commands because sometimes you need to work on windows.</p>
+<p>Remove directories recursively</p>
+<pre><code>rmdir /S </code></pre>
+<p>Show environmental variables</p>
+<pre><code>echo %Path%</code></pre>
+</div>
 <div id="dot-files" class="section level1">
 <h1>Dot files</h1>
 <div id="alias" class="section level2">
@@ -763,11 +785,22 @@ grep -Eo &#39;(http|https)://[^/&quot;]+&#39;</code></pre>
 <p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
 <pre><code>mkdir newfolder
 mogrify -resize 2000 -path ./newfolder *.jpg
+mogrify -resize 2000 -path ./newfolder *.jpeg
 mogrify -resize 2000 -path ./small/ *.JPG
 mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg</code></pre>
 <p>Batch processing, rotate all images clockwise or counter clockwise</p>
 <pre><code>mogrify -rotate 90 ../small/ *.JPG
 mogrify -rotate 270 ../small/ *.JPG</code></pre>
+<p>Error: “cache resources exhausted” can appear in conversion of large images.</p>
+<pre><code>sudo find / -name &quot;policy.xml&quot;</code></pre>
+<p><a href="https://stackoverflow.com/questions/31407010/cache-resources-exhausted-imagemagick">SO explanation</a> Edit the file as super user</p>
+<pre><code>sudo vim /etc/ImageMagick-6/policy.xml</code></pre>
+<p>Change</p>
+<p><policy domain="resource" name="disk" value="1GiB"/></p>
+<p>to</p>
+<p><policy domain="resource" name="disk" value="4GiB"/></p>
+<p>Convert from png to jpg and change size</p>
+<pre><code>mogrify -resize 2000 -path ./newfolder -format jpg *.png</code></pre>
 </div>
 <div id="edit-music-files" class="section level2">
 <h2>Edit music files</h2>
@@ -1205,6 +1238,16 @@ echo $message</code></pre>
 <td>z</td>
 <td>player-prev</td>
 <td></td>
+</tr>
+<tr class="even">
+<td>e</td>
+<td></td>
+<td>append tracks to the play queue</td>
+</tr>
+<tr class="odd">
+<td>E</td>
+<td></td>
+<td>prepend tracks to the play queue</td>
 </tr>
 </tbody>
 </table>

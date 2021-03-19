@@ -645,7 +645,7 @@ Alternatively clean in interactive mode:
 
     git clean -i
 
-## Searching text
+## Searching text with grep
 
 Search all files in the subdirectory "subdir" for lines containing the words "factor" and "item". Show 2 lines of context (2 leading and 2 trailing lines).
 
@@ -655,7 +655,22 @@ Search all R markdown files containing the word lyx ignore the case:
 
     git grep -i lyx -- *.Rmd
 
-Stackoverflow:  How to search committed code in the git history?
+Stackoverflow:  [How to search committed code in the git
+history?](https://stackoverflow.com/questions/2928584/how-to-grep-search-committed-code-in-the-git-history)
+
+Search in all possible locations in all commits
+
+    git grep <regexp> $(git rev-list --all)
+
+Search for a particular location in the git repo
+
+    git grep <regexp> $(git rev-list --all -- lib/util) -- lib/util
+
+The above grep commands will give you a list of commit sha where the grep
+pattern was present in the repo. You can then checkout the older revision of a
+file under a new name
+
+    git show commit_sha:filename > new_file_name
 
 
 ## Replacing strings

@@ -104,6 +104,20 @@ Warning message suggests using imagemagick to remove the alpha layer.
     ERROR:root:error: Refusing to work on images with alpha channel
 
 
+### Images from a zip folder to a pdf document
+
+Unzip the archive containing jpeg images into a temporary folder, reduce the
+image sizes to 2000 pixel wide and generate a pdf.
+
+    mkdir -p /tmp/bli/newfolder
+    cd /tmp/bli/
+    unzip ~/downloads/fwdbungenfrfrderunterrichtfrdienchstenstunden.zip
+    mogrify -resize 2000 -path ./newfolder *.jpeg
+    cd newfolder/
+    img2pdf *.jpeg -o output.pdf --pagesize A4 --border 1cm
+    echo "The pdf document containing all images is located at: /tmp/bli/output.pdf"
+
+
 ## Images to other formats
 
 Convert a png image to a jpgeg image
@@ -114,6 +128,11 @@ Convert a png image with an alpha layer to an image without alpha layer
 
     convert input.png -background white -alpha remove -alpha off output.png
 
+Convert from png to jpg and change size
+
+    mogrify -resize 2000 -path ./newfolder -format jpg *.png
+
+See also more image modification commands in the edit image files section below.
 
 
 ## Documents between various formats with Pandoc
@@ -333,6 +352,18 @@ Count the number of lines in all files, and give the total line count.
     find . -name '*.py' | xargs wc -l # python code
     find . -name '*.R' | xargs wc -l # R code
 
+# DOS
+
+Here are some DOS commands because sometimes you need to work on windows.
+
+Remove directories recursively
+
+    rmdir /S 
+
+Show environmental variables
+
+    echo %Path%
+
 
 # Dot files
 
@@ -464,6 +495,7 @@ Batch processing, resize all jpg images and place the resized images in a new fo
 
     mkdir newfolder
     mogrify -resize 2000 -path ./newfolder *.jpg
+    mogrify -resize 2000 -path ./newfolder *.jpeg
     mogrify -resize 2000 -path ./small/ *.JPG
     mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg
 
@@ -472,6 +504,29 @@ Batch processing, rotate all images clockwise or counter clockwise
     mogrify -rotate 90 ../small/ *.JPG
     mogrify -rotate 270 ../small/ *.JPG
 
+
+Error: "cache resources exhausted" can appear in conversion of large images.
+
+    sudo find / -name "policy.xml"
+
+[SO
+explanation](https://stackoverflow.com/questions/31407010/cache-resources-exhausted-imagemagick)
+Edit the file as super user 
+
+    sudo vim /etc/ImageMagick-6/policy.xml
+
+Change
+
+<policy domain="resource" name="disk" value="1GiB"/>
+
+to 
+
+<policy domain="resource" name="disk" value="4GiB"/>
+
+
+Convert from png to jpg and change size
+
+    mogrify -resize 2000 -path ./newfolder -format jpg *.png
 
 ## Edit music files
 
@@ -1024,17 +1079,20 @@ Here is the list of view modes:
     6 view filters
     7 view settings
 
-|Common Context |Remote Command | Description                        |
-|---------------|---------------|------------------------------------|
-| b             |player-next    |                                    |
-| C             |               | Continue at end of track           |
-| c             |player-pause   |                                    |
-| q             |quit -i        |                                    |
-| s             |shuffle        |                                    |
-| t             |               | toggle show_remaining_time         |
-| v             |player-stop    |                                    |
-| x             |player-play    |                                    |
-| z             |player-prev    |                                    |
+| Common Context  | Remote Command  | Description                          |
+| --------------- | --------------- | ------------------------------------ |
+| b               | player-next     |                                      |
+| C               |                 | Continue at end of track             |
+| c               | player-pause    |                                      |
+| q               | quit -i         |                                      |
+| s               | shuffle         |                                      |
+| t               |                 | toggle show_remaining_time           |
+| v               | player-stop     |                                      |
+| x               | player-play     |                                      |
+| z               | player-prev     |                                      |
+| e               |                 | append tracks to the play queue      |
+| E               |                 | prepend tracks to the play queue     |
+
 
 Commands can be sent through a command line with cmus-remote, for example
 to pause a running instance of cmus (and restart it):
