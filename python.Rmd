@@ -971,6 +971,12 @@ Using `drop_duplicates`
 
 # Plot
 
+[Python plotting for exploratory analysis](https://pythonplot.com/) is a great
+gallery of plot examples, each example is written in 5 different plotting
+libraries: pandas, plotnine, plotly, altair and R ggplot2. There is also one
+seaborn example.
+
+
 ## Matplotlib
 
 All matplotlib examples require the following imports:
