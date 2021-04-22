@@ -13,7 +13,7 @@ I have kept `mysql >` prompts below.
 
 # As root, setup users and create databases
 
- As root, create a database and grant permissions to a new user
+As root, create a database and grant permissions to a new user
 To connect to the mysql client as root, in the shell
 
     sudo mysql 
@@ -91,6 +91,7 @@ If you have the correct privileges, you can create a database with a pipe. How t
     echo "create database databasename" | mysql -u username -p 
 
 ## Configuration file my.cnf
+
 It's not desirable to share user name and password in software disseminated over the internet. User name, password and database names can be placed under groups in the configuration file. For example for a given project enter this group in ~/.my.cnf
 
     [project_name]

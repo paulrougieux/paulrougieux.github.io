@@ -661,12 +661,42 @@ when/whenever, where/wherever, whether, while</code></pre>
 <pre><code>sudo apt install latexdiff</code></pre>
 <div id="latexdiff-and-git" class="section level3">
 <h3>Latexdiff and git</h3>
+<div id="latexdiff-git" class="section level4">
+<h4>Latexdiff-git</h4>
 <p>Latexdiff can handle files in version control systems. I didn’t know this and checked out the old file by hand before performing the comparison. First I describe the way I should have done it as explained in man latexdiff-vc</p>
-<pre><code>   latexdiff-vc -r rev1 file.tex ...
-       compares file.tex with revision rev1.
-
-   latexdiff-vc -r rev1 -r rev2 file.tex ...
-       compares revisions rev1 and rev2 of file.tex.</code></pre>
+<pre><code>latexdiff-git -r rev1 -r rev2 eutr_impact.tex
+mv eutr_impact-diff*.tex eutr_impact.tex
+latexmk -pdf -bibtex -f template.tex</code></pre>
+<p>You can also use <code>--flatten</code>:</p>
+<blockquote>
+<p>“The generic usage of this function is :”latexdiff-vc –flatten -r rev1 [-r rev2] master.tex&quot; where master.tex is the project file containing the highest level of includes etc.&quot;</p>
+</blockquote>
+<pre><code>   latexdiff-git --flatten -r 5445bfd -r b47fefa template.tex
+   latexmk -pdf -bibtex -f template-diff5445bfd-b47fefa.tex</code></pre>
+<p>But that document didn’t compile for some reason. So I used the solution above with the diff made on the sub-document subsequently moved to another document.</p>
+<p><a href="https://tex.stackexchange.com/questions/15121/error-when-trying-to-generate-a-pdf-from-a-latexdiff-document">You may need to add some definiotniosn in the Latex preamble of the main document</a></p>
+<pre><code>%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF</code></pre>
+</div>
+<div id="without-latexdiff-git" class="section level4">
+<h4>Without latexdiff-git</h4>
 <p>Old way of doing things without using the latexdiff-vc helper. Generate diff version of latex files. In the instructions below, the manuscript was made of 2 documents <code>template.tex </code> which called <code>\input{content.tex}</code>.</p>
 <p>Checkout contents from commit 9ce6b9 on 2020 December 1st and prepare the diff in the /tmp dir:</p>
 <pre><code># Delete and re-create a temp dir and copy everything in it
@@ -684,6 +714,7 @@ latexdiff template_before_review.tex template_now.tex &gt; template.tex
 latexdiff content_before_review.tex content_now.tex &gt; content.tex</code></pre>
 <p>Compile the diff document, enter quiet mode with “Q” if there are error messages</p>
 <pre><code> latexmk -pdf -bibtex -use-make template.tex</code></pre>
+</div>
 </div>
 </div>
 <div id="makefile" class="section level2">

@@ -193,15 +193,58 @@ Install Latex diff on Debian:
 
 ### Latexdiff and git
 
+
+#### Latexdiff-git 
+
 Latexdiff can handle files in version control systems. I didn't know this and
 checked out the old file by hand before performing the comparison. First I
 describe the way I should have done it as explained in man latexdiff-vc
 
-       latexdiff-vc -r rev1 file.tex ...
-           compares file.tex with revision rev1.
+    latexdiff-git -r rev1 -r rev2 eutr_impact.tex
+    mv eutr_impact-diff*.tex eutr_impact.tex
+    latexmk -pdf -bibtex -f template.tex
 
-       latexdiff-vc -r rev1 -r rev2 file.tex ...
-           compares revisions rev1 and rev2 of file.tex.
+You can also use `--flatten`:
+
+> "The generic usage of this function is : "latexdiff-vc --flatten -r rev1 [-r
+> rev2] master.tex" where master.tex is the project file containing the highest
+> level of includes etc." 
+
+       latexdiff-git --flatten -r 5445bfd -r b47fefa template.tex
+       latexmk -pdf -bibtex -f template-diff5445bfd-b47fefa.tex
+
+But that document didn't compile for some reason. So I used the solution above
+with the diff made on the sub-document subsequently moved to another document.
+
+
+[You may need to add some definiotniosn in the Latex preamble of the main
+document](https://tex.stackexchange.com/questions/15121/error-when-trying-to-generate-a-pdf-from-a-latexdiff-document)
+
+
+    %DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+    %DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+    \RequirePackage[normalem]{ulem} %DIF PREAMBLE
+    \RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+    \providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+    \providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+    %DIF SAFE PREAMBLE %DIF PREAMBLE
+    \providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+    \providecommand{\DIFaddend}{} %DIF PREAMBLE
+    \providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+    \providecommand{\DIFdelend}{} %DIF PREAMBLE
+    %DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+    \providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+    \providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+    \providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+    \providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+    \providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+    \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+    %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+
+
+
+#### Without latexdiff-git
 
 Old way of doing things without using the latexdiff-vc helper. Generate diff
 version of latex files. In the instructions below, the manuscript was made of 2
