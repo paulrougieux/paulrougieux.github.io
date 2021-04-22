@@ -1637,6 +1637,15 @@ Create a commit
 
     cc
 
+Discard the change under the cursor.  This uses `checkout` or `clean` under the
+hood.  A command is echoed that shows how to undo the change.  Consult
+`:messages` to see it again.  You can use this during a merge conflict do
+discard "our" changes (--theirs) in the "Unstaged" section or discard "their"
+changes (--ours) in the "Staged" section.
+
+    X
+
+
 ### Git commands within vim
 
 Blame the current file

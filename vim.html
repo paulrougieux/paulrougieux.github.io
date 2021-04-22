@@ -1541,6 +1541,8 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 -</code></pre>
 <p>Create a commit</p>
 <pre><code>cc</code></pre>
+<p>Discard the change under the cursor. This uses <code>checkout</code> or <code>clean</code> under the hood. A command is echoed that shows how to undo the change. Consult <code>:messages</code> to see it again. You can use this during a merge conflict do discard “our” changes (–theirs) in the “Unstaged” section or discard “their” changes (–ours) in the “Staged” section.</p>
+<pre><code>X</code></pre>
 </div>
 <div id="git-commands-within-vim" class="section level3">
 <h3>Git commands within vim</h3>
