@@ -642,6 +642,48 @@ docker image rm  &lt;image-id&gt;</code></pre>
 <p>Docker hub <a href="https://hub.docker.com/_/r-base">R-base</a></p>
 </div>
 </div>
+<div id="related-services" class="section level1">
+<h1>Related services</h1>
+<div id="gitlab-ci" class="section level2">
+<h2>Gitlab CI</h2>
+<div id="use-mysql-or-postgresql-containers" class="section level3">
+<h3>Use MySQL or PostGreSQL containers</h3>
+<p>Documentation for <a href="https://docs.gitlab.com/ee/ci/services/postgres.html">PostgreSQL containers on gitlab-ci</a> Example use of a PostgreSQL container <a href="https://gitlab.com/gitlab-examples/postgres/-/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
+<pre><code>services:
+  - postgres
+
+variables:
+  # Configure postgres service (https://hub.docker.com/_/postgres/)
+  POSTGRES_DB: custom_db
+  POSTGRES_USER: custom_user
+  POSTGRES_PASSWORD: custom_pass
+
+connect:
+  image: postgres
+  script:
+  # official way to provide password to psql: http://www.postgresql.org/docs/9.3/static/libpq-envars.html
+  - export PGPASSWORD=$POSTGRES_PASSWORD
+  - psql -h &quot;postgres&quot; -U &quot;$POSTGRES_USER&quot; -d &quot;$POSTGRES_DB&quot; -c &quot;SELECT &#39;OK&#39; AS status;&quot;</code></pre>
+<p>Documentation for <a href="https://docs.gitlab.com/ee/ci/services/mysql.html">MySQl containers on gitlab-ci</a> Example use of a MySQL container <a href="https://gitlab.com/gitlab-examples/mysql/-/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a></p>
+<pre><code>services:
+- mysql
+
+variables:
+  # Configure mysql service (https://hub.docker.com/_/mysql/)
+  MYSQL_DATABASE: hello_world_test
+  MYSQL_ROOT_PASSWORD: mysql
+
+connect:
+  image: mysql
+  script:
+  - echo &quot;SELECT &#39;OK&#39;;&quot; | mysql --user=root --password=&quot;$MYSQL_ROOT_PASSWORD&quot; --host=mysql &quot;$MYSQL_DATABASE&quot;</code></pre>
+</div>
+<div id="use-rocker-containers" class="section level3">
+<h3>Use Rocker containers</h3>
+<p>I use the rocker container to generate this site on gitlab-ci, see the configuration file at <a href=".gitlab-ci.yml" class="uri">.gitlab-ci.yml</a>.</p>
+</div>
+</div>
+</div>
 <div id="security" class="section level1">
 <h1>Security</h1>
 <p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/secrets/">Manage sensitive data with Docker secrets</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service">Example use secrets with a Wordpress service</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose">Use secrets in compose</a> * Declare the location of secrets :</p>
