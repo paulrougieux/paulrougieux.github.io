@@ -644,6 +644,77 @@ Change the name of a particular sub element in the legend:
     labs(color="Iris Species")
     labs(linetype="Sawnwood product group")
 
+Make a multi column legend
+
+    library(scales)
+    
+    plot + # With a fill aeasthetic
+        guides(fill=guide_legend(ncol = 2))
+
+    plot + # with a color aesthetic 
+         guides(col = guide_legend(ncol = 1))
+
+See ggplot2 reference [guide
+legend](https://ggplot2.tidyverse.org/reference/guide_legend.html).
+
+
+### Math formulas in facet labels
+
+```{r}
+library(dplyr)
+library(ggplot2)
+
+# Create a first facet variable with examples of math formulas
+iris2 <- iris %>%
+    mutate(species_math = factor(Species,
+                            levels = c("setosa", "versicolor", "virginica"),
+                            labels = c("m^2",
+                                       expression(bar(x) == sum(frac(x[i], n), i==1, n) * beta * Q[t-1]),
+                                       bquote(pi == .(pi)))))
+
+# Create a second facet variable with mean lengths
+# This illustrates how to pass a numeric vector inside a formula
+iris_mean <- iris2 %>%
+    group_by(Species) %>%
+    summarise(across(ends_with("Length"), mean), .groups="drop")
+
+iris2$mean_length <- factor(iris2$Species,
+                           levels =  c("setosa", "versicolor", "virginica"),
+                           labels = mapply(function(p, s) bquote(bar(p) == .(p) ~ bar(s) ==.(s)),
+                                            round(iris_mean$Petal.Length,3), round(iris_mean$Sepal.Length,3)))
+
+# Create the faceted plot
+iris2 %>%
+    ggplot(aes(x = Petal.Length, y = Petal.Width)) +
+    geom_point() +
+    facet_wrap(species_math ~ mean_length + Species,
+               labeller = labeller(species_math = label_parsed, mean_length = label_parsed))
+
+```
+
+As shown in the example above, the labeller can parse:
+
+1. A character vector such as "m^2" for simple formulas
+
+2. An `expression` for more complex math with indices
+
+3. The output of `bquote` to include numerical values in the formula. See also
+   [this answer](https://stackoverflow.com/a/58048944/2641825) on how to use
+   `bquote` with numerical vectors of more than one value. 
+
+4. see [this other answer](https://stackoverflow.com/a/51863090/2641825) on how
+   to  apply the labeller to one of the faceting variables only. In our case we
+   apply it to the `species_math` variable only. 
+
+The syntax is different from Latex math formulas because `label_parsed`
+interprets labels as `plotmath` expressions. For example indices are written
+`x_i` in Latex and `x[i]` in plot math expressions, and Greek letters are
+written directly as `alpha` instead of `\alpha` in Latex. You can find many
+formulas in the help page of the
+[plotmath](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html)
+function. Good luck with the `plotmath` examples. 
+
+
 ### Save plots to pdf
 
 
@@ -812,7 +883,30 @@ TODO Compare to the same code in python
 to see the difference between the above and passing by reference.
 
 
-# Reproducibility
+# Reproducibility and cloud computing
+
+## Cloudyr project
+
+The [cloudyr project](https://cloudyr.github.io/packages/index.html) is a
+collection of R packages to enable cloud computing. 
+
+R packages that are actively maintained can be seen on the [github project page of
+cloudyr](https://github.com/cloudyr).
+
+- For example the
+  [googleCloudVisionR](https://github.com/cloudyr/googleCloudVisionR) package
+  gets the following image annotations for a picture of golden retriever
+  puppies
+
+          description     score topicality
+                  Dog 0.9953705  0.9953705
+               Mammal 0.9890478  0.9890478
+           Vertebrate 0.9851104  0.9851104
+              Canidae 0.9813780  0.9813780
+            Dog breed 0.9683250  0.9683250
+                Puppy 0.9400384  0.9400384
+     Golden retriever 0.8966703  0.8966703
+
 
 ## Rocker
 
@@ -910,7 +1004,7 @@ The vignette mentions this about `rename`:
 > you can use rename_with()." 
 
 
-### Mutate
+### Mutate to create a new vector
 
 Mutate multiple variables in the dataframe at once using the `vars()` helper function to scope the mutation:
 Note `mutate_at` has been superseded by the across function.
@@ -922,7 +1016,7 @@ iris %>%
 ```
 
 
-### Rename
+### Rename columns
 
 `rename_with` from the `dplyr` package can use either a function or a formula
 to rename a selection of columns given as the `.cols` argument. For example
@@ -956,6 +1050,14 @@ arguments in a formula given as the second argument.
 also perform vector renaming
 
     rlang::set_names(1:4, c("a", "b", "c", "d"))
+
+### Recode values in a vector
+
+> "Replace numeric values based on their position or their name, and character
+> or factor values only by their name." 
+
+    char_vec <- sample(c("a", "b", "c"), 10, replace = TRUE)
+    recode(char_vec, a = "Apple")
 
 
 ## Pipes
@@ -1121,6 +1223,17 @@ piris$plot[1]
 piris$plot[3]
 piris$plot[2]
 ```
+
+# Working directory
+
+Hadley Wickham on a [Stackoverflow
+comment](https://stackoverflow.com/questions/4216753/check-existence-of-directory-and-create-if-doesnt-exist):
+
+> "You should never use setwd() in R code - it basically defeats the idea of
+> using a working directory because you can no longer easily move your code
+> between computers. – hadley Nov 20 '10 at 23:44 "
+
+
 
 # Further resources
 
