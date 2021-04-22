@@ -82,11 +82,19 @@ programmed mostly in C++ the
 [sdk](https://gitlab.linphone.org/BC/public/linphone-sdk) has some java code in
 it. 
 
+
 ## Element
 
 [Element](https://element.io/get-started), previously called Riot-web is a chat
 application based on the matrix decentralised communication protocol. Matrix is
 an open protocol meant to avoid communication silos.
+
+Based on the Double Ratchet Cryptographic library called
+[Olm](https://gitlab.matrix.org/matrix-org/olm) specified in
+[whispersystems.org
+doubleratchet](https://whispersystems.org/docs/specifications/doubleratchet/)
+which now redirects to
+[signal.org doubleratchet](https://signal.org/docs/specifications/doubleratchet/).
 
 
 ## Signal 
@@ -96,6 +104,7 @@ started. As of January 2020 I still use a nokia 3010 phone. I cannot install
 the signal application on that phone and this means that I cannot use signal on
 my desktop.
 
+
 ## Skype
 
 Skype was purchased by Microsoft. 
@@ -103,6 +112,7 @@ Screen sharing has a poor quality on Linux desktop.
 
 [How to transfer credits and contacts to another skype
 account](https://answers.microsoft.com/en-us/skype/forum/all/linking-old-skype-with-current-hotmailms-account/9f6c21e4-c074-466c-9606-d50ad651662b)
+
 
 ## Teams
 
