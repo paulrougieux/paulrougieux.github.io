@@ -1313,6 +1313,10 @@ echo $message</code></pre>
 <p>Some programs such as Skype or MS teams (based on Skype and chromium) turn off the volume of cmus when entering into a phone call. They sometimes forget to put it back on. You can turn the volume back on into Gnome’s sound configuration menu, under the applications tab.</p>
 </div>
 </div>
+<div id="read-csv-in-bash" class="section level2">
+<h2>Read CSV in bash</h2>
+<p><a href="https://www.cyberciti.biz/faq/unix-linux-bash-read-comma-separated-cvsfile/">Read CSV in bash</a></p>
+</div>
 </div>
 <div id="refactor" class="section level1">
 <h1>Refactor</h1>
@@ -1324,6 +1328,11 @@ git grep -lz &#39;RMySQL::&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/RMySQL::
 <pre><code>refactor() {
     echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
     git grep -lz $1| xargs -0 perl -i&#39;&#39; -pE &quot;s/$1/$2/g&quot;
+}</code></pre>
+<p>When there are slashes in the patterns, use another separator</p>
+<pre><code>refactor() {
+    echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
+    git grep -lz $1| xargs -0 perl -i&#39;&#39; -pE &quot;s|$1|$2|g&quot;
 }</code></pre>
 <p>Usage, for example replace ‘word’ with ‘sword’:</p>
 <pre><code>refactor word sword
@@ -1533,12 +1542,16 @@ kill -9 process_it # -9 forces the kill</code></pre>
 </ul>
 <div id="sessions" class="section level3">
 <h3>Sessions</h3>
+<p>To start a session</p>
+<pre><code>tmux</code></pre>
 <p>To start and name a session:</p>
 <pre><code>tmux new -s session_name</code></pre>
 <p>To detach from a session:</p>
 <pre><code>tmux detach (CTRL + b + d)</code></pre>
 <p>To reattach to a session:</p>
 <pre><code>tmux attach -t session_name</code></pre>
+<p>If there is only one session it’s enough to call</p>
+<pre><code>tmux attach</code></pre>
 <p>To list current sessions:</p>
 <pre><code>tmux list-sessions</code></pre>
 <p>To switch to another session:</p>
