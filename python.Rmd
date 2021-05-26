@@ -386,6 +386,18 @@ Add syncing to a given notebook:
     # Python sync
     jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipynb
 
+
+# Errors and exceptions
+
+[Exception message capturing](https://stackoverflow.com/a/4690655/2641825)
+
+    for i in [1,0]:
+        try:
+            print(1/i)
+        except Exception as e:
+            print("Failed to compute:", str(e))
+         
+
 # Functions
 
 Functions in python can be defined with 
