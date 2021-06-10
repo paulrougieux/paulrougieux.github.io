@@ -236,7 +236,7 @@ augroup Toc
     autocmd Filetype tex command! -buffer Toc VimtexTocOpen
 augroup END
 
-" Insert citations with Ctrl-Space, 
+" Insert citations or autocomplete code with Ctrl-Space, 
 " Might conflict with python plugin Jedi's autocomplete when editing a python
 " file in parallel?
 au BufRead,BufNewFile *.md inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
@@ -285,6 +285,9 @@ let g:ale_pattern_options = {
 """""""""""""""""""
 " R configuration "
 """""""""""""""""""
+" Autocomplete with Ctrl-Space, 
+au BufRead,BufNewFile *.R inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
+
 " Nvim-R options
 " disable auto replacement of _ to <- by Nvim-R
 let R_assign = 0
@@ -346,5 +349,7 @@ let g:slime_target = "tmux"
 let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " Handle indentation correctly  https://github.com/jpalardy/vim-slime/issues/54
 " let g:slime_python_ipython = 1
+" https://github.com/jpalardy/vim-slime/issues/131
+let g:slime_python_ipython = 1
 
 " To reload :source ~/.vimrc
