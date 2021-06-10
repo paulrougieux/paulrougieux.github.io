@@ -570,43 +570,6 @@ pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
 <pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
 <div id="yaml-front-matter-for-styles" class="section level3">
 <h3>Yaml front matter for styles</h3>
-<p>Change the margin to 0.5 cm</p>
-<pre><code>---
-title: &quot;Songs of freedom&quot;
-author: &quot;Bob Marley&quot;
-geometry: margin=0.5cm
----</code></pre>
-<p>Change the font to 12pt, the max available in the default template.</p>
-<pre><code>---
-fontsize: 12pt
----</code></pre>
-<p>To get bigger fonts (up to 20pt) as explained in this <a href="https://stackoverflow.com/a/46055046">SO answer</a>, you can use the <code>extsizes</code> package by adding <code>documentclass: extarticle</code>.</p>
-<p>Adding headers and footers to pandoc suggests using:</p>
-<pre><code>---
-title: Test
-author: Author Name
-header-includes: |
-    \usepackage{fancyhdr}
-    \pagestyle{fancy}
-    \fancyhead[CO,CE]{This is fancy}
-    \fancyfoot[CO,CE]{So is this}
-    \fancyfoot[LE,RO]{\thepage}
-abstract: This is a pandoc test . . . 
----</code></pre>
-<div id="table-of-content" class="section level4">
-<h4>Table of content</h4>
-<p>Add a table of content at the beginning of the document</p>
-<pre><code>---
-title: &quot;Work plan&quot;
-geometry: margin=2cm
-toc: yes
----</code></pre>
-<p>When specified in the yaml front matter only, the table of content appears in pdf output but not in html output. This may be due to a difference in the latex and html templates? Display the content of the latex and html templates</p>
-<pre><code>pandoc -D latex
-pandoc -D html</code></pre>
-<p>However calling the –toc argument does create a table of content in the html file:</p>
-<pre><code>pandoc -s --toc notes.md -o notes.html</code></pre>
-</div>
 <div id="bibliography" class="section level4">
 <h4>Bibliography</h4>
 <p>Custom yaml front matter for a markdown document that contains reading notes with citations. See also the vim.Rmd document on pandoc bibliographies.</p>
@@ -631,6 +594,61 @@ header-includes: |
 <p>Then this should work :</p>
 <pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
 <p>There is still an issue with the encoding of the bibliography.</p>
+</div>
+<div id="margins-and-font-size" class="section level4">
+<h4>Margins and font size</h4>
+<p>Change the margin to 0.5 cm</p>
+<pre><code>---
+title: &quot;Songs of freedom&quot;
+author: &quot;Bob Marley&quot;
+geometry: margin=0.5cm
+---</code></pre>
+<p>Change the font to 12pt, the max available in the default template.</p>
+<pre><code>---
+fontsize: 12pt
+---</code></pre>
+<p>To get bigger fonts (up to 20pt) as explained in this <a href="https://stackoverflow.com/a/46055046">SO answer</a>, you can use the <code>extsizes</code> package by adding <code>documentclass: extarticle</code>.</p>
+</div>
+<div id="page-numbers" class="section level4">
+<h4>Page numbers</h4>
+<p>Adding headers and footers to pandoc suggests using:</p>
+<pre><code>---
+title: Test
+author: Author Name
+header-includes: |
+    \usepackage{fancyhdr}
+    \pagestyle{fancy}
+    \fancyhead[CO,CE]{This is fancy}
+    \fancyfoot[CO,CE]{So is this}
+    \fancyfoot[LE,RO]{\thepage}
+abstract: This is a pandoc test . . . 
+---</code></pre>
+</div>
+<div id="table-of-content" class="section level4">
+<h4>Table of content</h4>
+<p>Add a table of content at the beginning of the document</p>
+<pre><code>---
+title: &quot;Work plan&quot;
+geometry: margin=2cm
+toc: yes
+---</code></pre>
+<p>When specified in the yaml front matter only, the table of content appears in pdf output but not in html output. This may be due to a difference in the latex and html templates? Display the content of the latex and html templates</p>
+<pre><code>pandoc -D latex
+pandoc -D html</code></pre>
+<p>However calling the –toc argument does create a table of content in the html file:</p>
+<pre><code>pandoc -s --toc notes.md -o notes.html</code></pre>
+</div>
+<div id="two-column-layout-and-class-options" class="section level4">
+<h4>Two column layout and class options</h4>
+<p>The <code>openany</code> option for the book document class, allows opening a chapter on any page left or right, otherwise the book class forces chapter opening on the left page only and inserts a blank page.</p>
+<pre><code>---
+title: &quot;Songs&quot;
+geometry: margin=0.5cm
+documentclass: book
+classoption:
+- twocolumn
+- openany
+---</code></pre>
 </div>
 </div>
 <div id="bash-script-for-bulk-conversion" class="section level3">
@@ -783,11 +801,11 @@ grep -Eo &#39;(http|https)://[^/&quot;]+&#39;</code></pre>
 <p>Other option to convert to black and white <a href="https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images">good black and white bimodal images</a>:</p>
 <pre><code>convert -monochrome in.png out.png</code></pre>
 <p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
-<pre><code>mkdir newfolder
-mogrify -resize 2000 -path ./newfolder *.jpg
-mogrify -resize 2000 -path ./newfolder *.jpeg
+<pre><code>mkdir small
+mogrify -resize 2000 -path ./small *.jpg
+mogrify -resize 2000 -path ./small *.jpeg
 mogrify -resize 2000 -path ./small/ *.JPG
-mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg</code></pre>
+mogrify -resize 2000 -type Grayscale -path ./small *.jpg</code></pre>
 <p>Batch processing, rotate all images clockwise or counter clockwise</p>
 <pre><code>mogrify -rotate 90 ../small/ *.JPG
 mogrify -rotate 270 ../small/ *.JPG</code></pre>
@@ -816,6 +834,8 @@ ffmpeg -i file.mkv -ss 00:00:20 -to 00:00:40 -c copy file-2.mkv</code></pre>
 </div>
 <div id="edit-pdf-files" class="section level2">
 <h2>Edit PDF files</h2>
+<div id="combine-pdf" class="section level3">
+<h3>Combine PDF</h3>
 <p>Commands based on the poppler library for PDF manipulation. Merge multiple PDF into one:</p>
 <pre><code>pdfunite in-1.pdf in-2.pdf in-n.pdf out.pdf</code></pre>
 <p>Alternatively, pdftk can be used to merge PDF files</p>
@@ -824,10 +844,14 @@ ffmpeg -i file.mkv -ss 00:00:20 -to 00:00:40 -c copy file-2.mkv</code></pre>
 <pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf</code></pre>
 <p>Also works with several distant groups of pages</p>
 <pre><code>pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf</code></pre>
+</div>
+<div id="split-pdf" class="section level3">
+<h3>Split PDF</h3>
 <p>Split a pdf in two</p>
 <pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
 # if necessary, install mutool with 
 apt install mupdf-tools</code></pre>
+</div>
 </div>
 <div id="replace-strings-in-text-files" class="section level2">
 <h2>Replace strings in text files</h2>
@@ -1397,6 +1421,11 @@ eval `ssh-agent`</code></pre>
 <p>To submit your key to a server, export the key</p>
 <pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
 <p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
+<p>Sign a file</p>
+<pre><code>gpg --sign gpg.docx</code></pre>
+<p><a href="https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-private-key-and-public-key-to-a-file">Export GPG private and public key to a file</a></p>
+<p>Verify the signature</p>
+<pre><code>gpg --verify gpg.docx.gpg</code></pre>
 </div>
 </div>
 <div id="system" class="section level1">
@@ -1642,8 +1671,8 @@ termdown 25m</code></pre>
 </div>
 <div id="users" class="section level1">
 <h1>Users</h1>
-<div id="manager-users-and-groups" class="section level2">
-<h2>Manager users and groups</h2>
+<div id="manage-users-and-groups" class="section level2">
+<h2>Manage users and groups</h2>
 <p>Check your user id</p>
 <pre><code>id 
 echo $UID
@@ -1665,6 +1694,19 @@ echo $USER</code></pre>
 <pre><code>getent passwd</code></pre>
 <p>Show all groups</p>
 <pre><code>getent group </code></pre>
+</div>
+<div id="list-users-and-groups" class="section level2">
+<h2>List users and groups</h2>
+<p>List all users</p>
+<pre><code>less /etc/passwd</code></pre>
+<p>List all groups</p>
+<pre><code>less /etc/group
+getent group</code></pre>
+<p>List all groups a user is a member of</p>
+<pre><code>groups paul</code></pre>
+<p>List all members of a group</p>
+<pre><code>getent group www-data
+getent group sudo</code></pre>
 </div>
 <div id="change-file-permission" class="section level2">
 <h2>Change file permission</h2>

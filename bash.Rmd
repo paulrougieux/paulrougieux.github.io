@@ -184,6 +184,41 @@ headers only in markdown output:
 
 ### Yaml front matter for styles
 
+#### Bibliography
+
+Custom yaml front matter for a markdown document that contains reading notes
+with citations. See also the vim.Rmd document on pandoc bibliographies.
+
+    ---
+    title: Reading notes
+    author: Paul Rougieux
+    bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
+    abstract: Reading notes at the JRC
+    header-includes: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[CO,CE]{Reading notes}
+        \fancyfoot[CO,CE]{JRC}
+        \fancyfoot[LE,RO]{\thepage}
+    ---
+    \tableofcontents{}
+    ...file content... this is probably not the way to do it    
+    \bibliography{../bibliography/jrc_ispra}
+    \bibliographystyle{apalike}
+
+This is probably not the way to do it, the bibliography should be included in the pandoc call? 
+Note this requires citeproc
+
+    sudo apt install pandoc-citeproc
+
+Then this should work :
+
+    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib
+
+There is still an issue with the encoding of the bibliography.
+
+#### Margins and font size
+
 Change the margin to 0.5 cm
 
     ---
@@ -201,6 +236,8 @@ Change the font to 12pt, the max available in the default template.
 To get bigger fonts (up to 20pt) as explained in this [SO
 answer](https://stackoverflow.com/a/46055046), you can use the `extsizes`
 package by adding `documentclass: extarticle`.
+
+#### Page numbers
 
 Adding headers and footers to pandoc suggests using:
 
@@ -238,38 +275,21 @@ However calling the --toc argument does create a table of content in the html fi
 
     pandoc -s --toc notes.md -o notes.html
 
-#### Bibliography
+#### Two column layout and class options
 
-Custom yaml front matter for a markdown document that contains reading notes
-with citations. See also the vim.Rmd document on pandoc bibliographies.
+The `openany` option for the book document class, allows opening a chapter on any
+page left or right, otherwise the book class forces chapter opening on the left
+page only and inserts a blank page.
 
     ---
-    title: Reading notes
-    author: Paul Rougieux
-    bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
-    abstract: Reading notes at the JRC
-    header-includes: |
-        \usepackage{fancyhdr}
-        \pagestyle{fancy}
-        \fancyhead[CO,CE]{Reading notes}
-        \fancyfoot[CO,CE]{JRC}
-        \fancyfoot[LE,RO]{\thepage}
+    title: "Songs"
+    geometry: margin=0.5cm
+    documentclass: book
+    classoption:
+    - twocolumn
+    - openany
     ---
-    \tableofcontents{}
-    ...file content... this is probably not the way to do it    
-    \bibliography{../bibliography/jrc_ispra}
-    \bibliographystyle{apalike}
 
-This is probably not the way to do it, the bibliography should be included in the pandoc call? 
-Note this requires citeproc
-
-    sudo apt install pandoc-citeproc
-
-Then this should work :
-
-    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib
-
-There is still an issue with the encoding of the bibliography.
 
 ### Bash script for bulk conversion
 
@@ -493,11 +513,11 @@ images](https://superuser.com/questions/75373/convert-color-photos-of-documents-
 
 Batch processing, resize all jpg images and place the resized images in a new folder
 
-    mkdir newfolder
-    mogrify -resize 2000 -path ./newfolder *.jpg
-    mogrify -resize 2000 -path ./newfolder *.jpeg
+    mkdir small
+    mogrify -resize 2000 -path ./small *.jpg
+    mogrify -resize 2000 -path ./small *.jpeg
     mogrify -resize 2000 -path ./small/ *.JPG
-    mogrify -resize 2000 -type Grayscale -path ./newfolder *.jpg
+    mogrify -resize 2000 -type Grayscale -path ./small *.jpg
 
 Batch processing, rotate all images clockwise or counter clockwise
 
@@ -549,6 +569,8 @@ times](https://unix.stackexchange.com/q/182602/85530)
 
 ## Edit PDF files
 
+### Combine PDF
+
 Commands based on the poppler library for PDF manipulation.
 Merge multiple PDF into one:
 
@@ -565,6 +587,8 @@ Alternatively, pdftk can be used to merge PDF files
 Also works with several distant groups of pages
 
     pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf
+
+### Split PDF
 
 Split a pdf in two
 
@@ -1294,6 +1318,18 @@ To submit your key to a server, export the key
 My keys are visible on pgp.mit.edu 
 [search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
 
+Sign a file
+
+    gpg --sign gpg.docx
+
+[Export GPG private and public key to a
+file](https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-private-key-and-public-key-to-a-file)
+
+Verify the signature
+
+    gpg --verify gpg.docx.gpg
+
+
 # System
 
 OS release
@@ -1681,7 +1717,8 @@ One of them suggests the python based termdown
 
 # Users
 
-## Manager users and groups
+## Manage users and groups
+
 Check your user id
 
     id 
@@ -1722,8 +1759,29 @@ Show all groups
 
     getent group 
 
-## Change file permission
 
+## List users and groups
+
+List all users
+
+    less /etc/passwd
+
+List all groups
+
+    less /etc/group
+    getent group
+
+List all groups a user is a member of
+    
+    groups paul
+
+List all members of a group
+
+    getent group www-data
+    getent group sudo
+
+
+## Change file permission
 
 Change user and group of a file
 
