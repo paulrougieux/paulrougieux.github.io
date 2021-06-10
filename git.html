@@ -476,9 +476,6 @@ div.tocify {
 <h1>Introduction</h1>
 <p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog post on git commands</a>.</p>
 <p>My typical git use consists in archiving file modifications for personal projects. Sometimes I share these projects with a colleague. We are then 2 persons working concurrently on the same project, pushing and pulling changes several times per day.</p>
-</div>
-<div id="git-workflow" class="section level1">
-<h1>Git workflow</h1>
 <div id="simple-workflow-for-one-user" class="section level2">
 <h2>Simple workflow for one user</h2>
 <p>We suppose someone has helped you initialise a git repository. Before you modify files, get the latest version of files from the remote repository:</p>
@@ -499,6 +496,8 @@ div.tocify {
 <p>and then:</p>
 <pre><code>git push</code></pre>
 <p>This simple work flow works well for one user pulling from- and pushing to- a master branch on a remote repository.</p>
+<p>Sometimes the vi editor starts. To exit the vi editor:</p>
+<pre><code>ESC:q!</code></pre>
 </div>
 <div id="workflow-with-branches" class="section level2">
 <h2>Workflow with branches</h2>
@@ -610,6 +609,10 @@ git push origin --delete key</code></pre>
 <p>Simpler solution using paste to glue lines together (there is an issue with extra spaces at the beginning and in the middle of some lines):</p>
 <pre><code>git log --pretty=format:&#39;%h,%an,%ad,&quot;%s&quot;,&#39; --shortstat --date=iso | paste - - - #&gt; /tmp/gitlog.csv</code></pre>
 </div>
+<div id="tig" class="section level3">
+<h3>Tig</h3>
+<p>The tig utility is a repository browser for git log and git diff.</p>
+</div>
 </div>
 <div id="rewriting-history" class="section level2">
 <h2>Rewriting history</h2>
@@ -641,6 +644,13 @@ git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
 <h2>Clean</h2>
 <p>Remove all files also those not tracked by git because they are in .gitignore. For example output pdf files and auxiliary files generated from latex or from pandoc.</p>
 <pre><code>git clean -xf</code></pre>
+<p>Remove local (untracked) files from my current Git branch</p>
+<p>Show what will be deleted with the -n option:</p>
+<pre><code>git clean -f -n</code></pre>
+<p>Then - beware: this will delete files - run:</p>
+<pre><code>git clean -f </code></pre>
+<p>Alternatively clean in interactive mode:</p>
+<pre><code>git clean -i</code></pre>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>
@@ -655,7 +665,8 @@ git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
 <h2>Reset only one file</h2>
 <p>To go back to this state for only one file, see git checkout</p>
 <pre><code>git checkout commit_hash  path_to_file/file_name</code></pre>
-<p>No commit hash to get to get the file back to the latest commit.</p>
+<p>No need to enter the commit hash to get to get the file from the latest commit</p>
+<pre><code>git checkout path_to_file/file_name</code></pre>
 <p>Checkout the older revision of a file under a new name</p>
 <pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
 <p>See also alias and git grep below.</p>
@@ -810,20 +821,19 @@ git log --pretty=oneline </code></pre>
 <p>The new alias can then be used with</p>
 <pre><code>git lg </code></pre>
 <p>Use tags to specify important points in history, such as software versions.</p>
+<div id="blame" class="section level2">
+<h2>Blame</h2>
+<p>To see the commit number and author of each line in a file use</p>
+<pre><code>git blame filename</code></pre>
 </div>
-<div id="working-with-files" class="section level1">
-<h1>Working with files</h1>
-<p>Get back a file to the last commit</p>
-<pre><code>git checkout path_to_file/file_name</code></pre>
-<p>Get back a file to a previous commit, using the commit hash</p>
-<pre><code>git checkout 4fb987f175210c09daaa4d0240070ffc9641120b path_to_file/file_name</code></pre>
+</div>
+<div id="rename-and-delete-files" class="section level1">
+<h1>Rename and delete files</h1>
 <p>Rename a file</p>
 <pre><code>git mv file_name file_name_new</code></pre>
 <p>Change the case of a file on a windows FAT 32 system:</p>
 <pre><code>git mv load.r load2.R
 git mv load2.R load.R</code></pre>
-<p>Sometimes the vi editor starts. To exit the vi editor:</p>
-<pre><code>ESC:q!</code></pre>
 <p>If a file or folder has been renamed outside of git, I get this warning:</p>
 <pre><code>$ git add .
 warning: You ran &#39;git add&#39; with neither &#39;-A (--all)&#39; or &#39;--ignore-remo
@@ -835,14 +845,10 @@ removed from your working tree are ignored with this version of Git.
   ignores paths you removed from your working tree.
 
 * &#39;git add --all &#39; will let you also record the removals.</code></pre>
-<p>Therefore I think I should always run “git add –all”</p>
-<p>Remove local (untracked) files from my current Git branch</p>
-<p>Show what will be deleted with the -n option:</p>
-<pre><code>git clean -f -n</code></pre>
-<p>Then - beware: this will delete files - run:</p>
-<pre><code>git clean -f </code></pre>
-<p>Alternatively clean in interactive mode:</p>
-<pre><code>git clean -i</code></pre>
+<p>Therefore I think I should always run “git add –all” after I have removed or renamed files.</p>
+</div>
+<div id="replace-and-search-text" class="section level1">
+<h1>Replace and search text</h1>
 <div id="searching-text-with-grep" class="section level2">
 <h2>Searching text with grep</h2>
 <p>Search all files in the subdirectory “subdir” for lines containing the words “factor” and “item”. Show 2 lines of context (2 leading and 2 trailing lines).</p>

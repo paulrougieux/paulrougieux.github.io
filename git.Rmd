@@ -16,8 +16,6 @@ persons working concurrently on the same project, pushing and pulling changes
 several times per day. 
 
 
-# Git workflow
-
 ## Simple workflow for one user
 
 We suppose someone has helped you initialise a git repository. Before you
@@ -66,6 +64,11 @@ and then:
 
 This simple work flow works well for one user pulling from- and pushing to- a
 master branch on a remote repository.
+
+Sometimes the vi editor starts. To exit the vi editor:
+
+    ESC:q!
+
 
 ## Workflow with branches
 
@@ -256,6 +259,11 @@ extra spaces at the beginning and in the middle of some lines):
     git log --pretty=format:'%h,%an,%ad,"%s",' --shortstat --date=iso | paste - - - #> /tmp/gitlog.csv
 
 
+### Tig
+
+The tig utility is a repository browser for git log and git diff.
+
+
 ## Rewriting history
 
 In case you entered a wrong commit message, you can edit the last commit message with:
@@ -310,6 +318,20 @@ For example output pdf files and auxiliary files generated from latex or from pa
 
     git clean -xf
 
+Remove local (untracked) files from my current Git branch
+
+Show what will be deleted with the -n option:
+
+    git clean -f -n
+
+Then - beware: this will delete files - run:
+
+    git clean -f 
+
+Alternatively clean in interactive mode:
+
+    git clean -i
+
 
 ## Reset whole folder
 
@@ -334,13 +356,16 @@ To go back to this state for only one file, see git checkout
 
     git checkout commit_hash  path_to_file/file_name
 
-No commit hash to get to get the file back to the latest commit.
+No need to enter the commit hash to get to get the file from the latest commit
+
+    git checkout path_to_file/file_name
 
 Checkout the older revision of a file under a new name
 
     git show commit_sha:filename > new_file_name
 
 See also alias and git grep below.
+
 
 ## Revert
 
@@ -542,6 +567,7 @@ Configure git to use the key
 
      git config --global user.signingkey 0A46826A
 
+
 # Display changes
 
 To view modified files that have not been committed and to view commit history you can use: 
@@ -592,15 +618,16 @@ The new alias can then be used with
 Use tags to specify important points in history, such as software versions.
 
 
-# Working with files
+## Blame
 
-Get back a file to the last commit 
+To see the commit number and author of each line in a file use
 
-    git checkout path_to_file/file_name
+    git blame filename
 
-Get back a file to a previous commit, using the commit hash
 
-    git checkout 4fb987f175210c09daaa4d0240070ffc9641120b path_to_file/file_name
+
+
+# Rename and delete files
 
 Rename a file
 
@@ -610,10 +637,6 @@ Change the case of a file on a windows FAT 32 system:
 
     git mv load.r load2.R
     git mv load2.R load.R
-
-Sometimes the vi editor starts. To exit the vi editor:
-
-    ESC:q!
 
 If a file or folder has been renamed outside of git, I get this warning:
 
@@ -628,22 +651,11 @@ If a file or folder has been renamed outside of git, I get this warning:
 
     * 'git add --all ' will let you also record the removals.
 
-Therefore I think I should always run "git add --all "
+Therefore I think I should always run "git add --all" after I have removed or
+renamed files.
 
 
-Remove local (untracked) files from my current Git branch
-
-Show what will be deleted with the -n option:
-
-    git clean -f -n
-
-Then - beware: this will delete files - run:
-
-    git clean -f 
-
-Alternatively clean in interactive mode:
-
-    git clean -i
+# Replace and search text
 
 ## Searching text with grep
 
@@ -848,7 +860,6 @@ Show the status and pull from many repos:
 # Publishing project documentation 
 
 ## On Github
-
 
 Older content related to pages built from branches.
 
