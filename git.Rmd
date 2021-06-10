@@ -763,8 +763,9 @@ See also the refactor function in the [bash](bash.html) page.
 
 # Statistics
 
-Number of lines of code per language in a remote git repository according to
-this [stackoverflow answer](https://stackoverflow.com/a/29012789/2641825)
+Count the number of lines of code for each language in a remote git repository
+according to this [stackoverflow
+answer](https://stackoverflow.com/a/29012789/2641825)
 
     #!/usr/bin/env bash
     git clone --depth 1 "$1" temp-linecount-repo &&
@@ -773,11 +774,13 @@ this [stackoverflow answer](https://stackoverflow.com/a/29012789/2641825)
       rm -rf temp-linecount-repo
 
 > "This script requires CLOC (“Count Lines of Code”) to be installed. cloc can
-> probably be installed with your package manager – for example, brew install
-> cloc with Homebrew. There is also a docker image published under
-> mribeiro/cloc. You can install the script by saving its code to a file
-> cloc-git, running chmod +x cloc-git, and then moving the file to a folder in
-> your `$PATH` such as /usr/local/bin."
+> probably be installed with your package manager"
+
+    sudo apt install cloc
+
+> "You can install the script by saving its code to a file
+> `cloc-git`, running `chmod +x cloc-git`, and then moving the file to a folder in
+> your `$PATH` such as `/usr/local/bin`."
 
 Usage
 
