@@ -183,6 +183,13 @@ In the bst file, you can also check for chapter entries.
 > `\cite{something}` in your paper, then you have to clear the auxiliary files.
 > In details, delete any files ended with .log .aux .bbl .blg."
 
+Error message:
+
+    ! Argument of \UTFviii@two@octets has an extra }.
+
+Tex.stackexchange [answer](https://tex.stackexchange.com/a/372332/44254)
+Change ü to {\"u} in Düsseldorf in the bibliography.
+
 
 ## Diff
 
