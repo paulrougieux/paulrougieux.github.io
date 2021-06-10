@@ -1400,10 +1400,34 @@ how asyncio works with a simulated delay to fetch a web page.
 Podcast [talk python to me](https://talkpython.fm/)
  * [Data science year in review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
 
+
 ## Blogs
-* [Things I Learnt The Hard Way (in 30 Years of Software Development)](https://blog.juliobiason.me/thoughts/things-i-learnt-the-hard-way/)
+
+* [Things I Learnt The Hard Way (in 30 Years of Software
+  Development)](https://blog.juliobiason.me/thoughts/things-i-learnt-the-hard-way/) 
+
 * [I do not use a debugger](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/)
     >"“Debuggers don’t remove bugs. They only show them in slow motion.”
     [Linus Toarvald doesn't use a debugger](https://lwn.net/2000/0914/a/lt-debugger.php3)
+
+- Dotan Nahum [Functional Programming with Python for People Without Time](https://jondot.medium.com/functional-programming-with-python-for-people-without-time-1eebdbd9526c)
+
+> "Cracks in the Ice - We ended the previous part with stating that with a good
+> measure of abstraction, functional programming doesn’t offer a considerable
+> advantage over the “traditional” way of design, object oriented. It’s a lie.
+> [...] In our pipeline example above with our Executors — how do you feed in
+> the output of one executor as the input for the next one? well, you have to
+> build that infrastructure. With functional programming, those abstractions
+> are not abstractions that you have to custom build. They’re part of the
+> language, mindset, and ecosystem. Generically speaking — it’s all about
+> impedence mismatch and leaky abstractions and when it comes to data and
+> functions; there’s no mismatch because it’s built up from the core. The
+> thesis is — that to build a functional programming approach over an
+> object-oriented playground — is going to crash and burn at one point or
+> another: be it bad modeling of abstractions, performance problems, bad
+> developer ergonomics, and the worst — wrong mindset. Being able to model
+> problems and solutions in a functional way, transcends above traditional
+> abstraction; the object-oriented approach, in comparison, is crude,
+> inefficient and prone to maintenance problems."
 
 
