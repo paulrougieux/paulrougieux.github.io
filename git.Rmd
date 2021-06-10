@@ -127,6 +127,88 @@ Go back to the development branch
 
 Continue to modify files in the repository.
 
+# Autocompletion
+
+git has an [auto complete](https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion) 
+feature available in a script: `git-completion.bash`.
+
+That script can be loaded in bashrc at the start of the shell.
+A debian package was made to simply load git-completion.bash for you:
+
+    sudo apt install bash-completion
+
+
+# Branching
+
+To start work in a new branch:
+
+    git branch new_branch_name
+    git checkout new_branch_name
+
+To compare a file between 2 branches:
+
+    git diff branch1 branch2 file_name
+
+To compare the tip of 2 branches
+
+    git diff branch1..branch2
+
+To merge changes back to the master branch:
+
+    git checkout master
+
+    git merge branch1
+
+If there were conflicts, they will be presented in this way:
+
+    "The area where a pair of conflicting changes happened is marked with markers &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, and &gt;&gt;&gt;&gt;&gt;&gt;&gt;. The part before the ======= is typically your side, and the part afterwards is typically their side."
+
+
+I might need to delete a branch at some point:
+
+    git branch -d branchname 
+
+Delete a remote branch (stackoverflow question)
+
+    git push --delete origin temp
+
+Deleting your master branch.
+
+
+If I am on a detached head, it is recommended to create a temporary branch (stackoverflow).
+
+    git branch temp
+
+    git checkout temp
+
+    git add -a
+
+    git  commit -m "description of changes"
+
+    git checkout master
+
+    git merge temp
+
+Delete uncommitted changes in current working directory:
+
+    git checkout branch_name .
+
+See also below git clean.
+
+
+Add minor change to the previous commit (git commit --amend):
+
+    git commit --amend
+
+I use to have this branching strategy:
+
+> I never work in the master branch, always in a development branch called `develop`. 
+> I merge `develop` in `master`, only before pushing modifications back to my remote archive.
+> This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.
+
+
+But I have now changed to a simpler strategy where I work only on the master branch. 
+
 # Commit messages
 
 Example of a long commit message (like a letter) torvalds/uemacs [Stop using
@@ -138,61 +220,178 @@ Extract:
 > "I really should just learn another editor, rather than continue to polish
 > this turd."
 
+# Configuring git 
+
+## Configuring user name and email
+
+Display your user name, email and remote repositories
+
+    git config -l
+
+To change username and email globally
+
+    git config --global user.name "Your Name" 
+
+    git config --global user.email you@example.com
+
+Stackoverflow [git multiple user names for different projects](https://stackoverflow.com/a/9063238/2641825)
+explains how to change the email for the current repository only
+
+    git config user.email personal@example.org
+
+## Other config --global options
+
+[How do I make Git use the editor of my choice for commits?](https://stackoverflow.com/a/2596835/2641825)
+
+    git config --global core.editor "vim"
+
+## Remembering passwords
+
+[How to save user name and password in git](https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git)
+
+    git config credential.helper store
+
+Alternativelly, it's better to use ssh keys to connect to git repositories.
+
+# Display changes
+
+To view modified files that have not been committed and to view commit history you can use: 
+
+    git status
+    git log
+
+    git log --pretty=oneline 
+
+Shows the changes between the working directory and the index.
+
+    git diff
+
+Shows the changes between the index and the HEAD
+
+    git diff --cached
+
+Shows all the changes between the working directory and HEAD
+
+    git diff HEAD
+
+The 3 lines above were copied from this question on git diff.
+
+Show which change happened in a particular commit 
+
+    git show <commit-hash>
+
+Show when the tip of branches have been updated
+
+    git reflog
+
+ Alternatively, call the repository browser with:
+
+    gitk
+
+To view a shorter version of the log file, and get an idea at where I am in the history:
+
+    git log --graph --decorate --all --pretty=oneline
+
+You can define an alias for git log as explained be Fred here:
+
+    git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit" 
+
+The new alias can then be used with
+
+    git lg 
+
+Use tags to specify important points in history, such as software versions.
+
+
+## Blame
+
+To see the commit number and author of each line in a file use
+
+    git blame filename
+
+
+
+
 # Illustrations
 
 [Data flows and storage levels in the Git revision control system](https://en.wikipedia.org/wiki/File:Git_operations.svg).
 
-# Uploading content to online git platforms
+# .gitignore
 
-Git is useful as a version management on its own. 
-But it's even more usefull when code can be back-up online. 
- * Free public git storage is availble on [Github](http://github.com/). 
- * Free public and private git storage are available on 
-   [Bitbucket](http://bitbucket.org/),
-   with up to 5 collaborators per project.
- * Free public and private git storage are available on 
-   [Gitlab](https://gitlab.com/).
+To ignore all files in a folder but not the folder itself. Put this .gitignore into the folder, then git add .gitignore
 
-Commands I've used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:
-```
-    git remote add origin https://github.com/paul4forest/forestproductsdemand
-    git pull origin master
-    git add
-    git commit -m "Explanatory message"
-    git push origin master
-```
+    *
+    !.gitignore
 
-Commands to upload content to a fresh repository from bitbucket :
-```
-    mkdir /path/to/your/project
-    cd /path/to/your/project
-    git init
-    git remote add origin ssh://git@bitbucket.org/username/bbreponame.git
-    # Upload and set the local changes as upstream
-    git push -u origin master
-```
-See also this discussion on [why do I need to set upstream](http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time)?
+ To exclude everything except a specific directory foo/bar (note the /* - without the slash, the wildcard would also exclude everything within foo/bar):
 
-Commands to copy an existing repository from bitbucket :
+    /*
+    !/foo
+    /foo/*
+    !/foo/bar
 
-     git clone git@bitbucket.org/username/bbreponame.git
+# Git run 
 
-## Setting up SSH keys 
+Git run enables to pull from many repositories with a single command  
 
-See [Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
-and [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account)
+configuration was a bit complicated on debian
 
-To test if my new ssh key worked with github, 
-I created a branch and pushed it to github.
-Then I deleted the branch locally and remotely:
+Install nodejs and npm from the backports
 
-	git branch "key"
-	git checkout key
-	git push --set-upstream origin key
-	# Checked that the "key" branch became visible on github
-	git checkout master
-	git branch -d key
-	git push origin --delete key
+    sudo apt -t stretch-backports install nodejs
+    sudo apt -t stretch-backports install npm
+    sudo apt install build-essential
+
+Configure nmp to run only for the local user
+[configure npm to use a different directory](https://stackoverflow.com/a/40905762/2641825)
+citing 
+docs.npmjs.com [Manually change npm’s default directory](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
+
+in your home directory, create a directory for global installations:
+
+    mkdir ~/.npm-global
+
+Configure npm to use the new directory path:
+
+    npm config set prefix '~/.npm-global'
+
+Install Git run:
+
+    npm install -g git-run
+
+Edit your bash profile:
+
+    vim ~/.bash_aliases
+    
+and add this line:
+
+    export PATH=~/.npm-global/bin:$PATH
+
+Then the configuration file is a .json file on the home folder. 
+Edit it: 
+
+    vim ~/.grconfig.json
+
+For example:
+
+    {
+      "tags": {
+        "all": [
+          "/home/paul/repos/bioeconomy_notes",
+          "/home/paul/repos/bioeconomy_papers",
+          "/home/paul/repos/cbm3_python",
+          "/home/paul/repos/cbmcfs3_data",
+          "/home/paul/repos/cbmcfs3_pub",
+          "/home/paul/repos/cbmcfs3_runner",
+        ]
+      }
+    }
+
+
+Show the status and pull from many repos:
+
+    gr git status
+    gr git pull
 
 
 # Going back in time 
@@ -374,32 +573,6 @@ Revert an unwanted comming with a new comming doing exactly the reverse operatio
     git revert <commit hash>
 
 
-# Stash to Keep uncommitted changes in the current branch while working quickly in another branch
-
-For example you edit a file in branch develop
-
-    git checkout develop
-    echo "blabla" > newfile.txt
-
-Imagine you are in the middle of your work and need to do an urgent modification in 
-another branch. 
-To move to another branch, you would normaly need to commit this change.
-If you don't want to commit the change yet.
-You can store temporary changes with the command:
-
-    git stash
-
-Move to the master branch
-
-    git checkout master
-    # perform important operation in the master branch.
-
-Get back to the develop branch and reload uncommited changes
-
-    git checkout develop
-    git stash pop
-
-
 # Help
 
 Get help on a command (will start a web browser):
@@ -421,211 +594,106 @@ To force the line ending to be LF only, create a  .gitattributes file which cont
     text eol=lf
 
 
-# Configuring git 
+# Publishing project documentation 
 
-## Configuring user name and email
+## On Github
 
-Display your user name, email and remote repositories
+Older content related to pages built from branches.
 
-    git config -l
+SO answer to the question "How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)": An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.
 
-To change username and email globally
+In fact I didn't use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page  branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).
 
-    git config --global user.name "Your Name" 
+Then within the inst folder, I cloned only the gh-branch. To clone only one branch:
 
-    git config --global user.email you@example.com
+    git clone -b mybranch --single-branch git://sub.domain.com/repo.git
 
-Stackoverflow [git multiple user names for different projects](https://stackoverflow.com/a/9063238/2641825)
-explains how to change the email for the current repository only
+Then I renamed the folder to "web", so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.
 
-    git config user.email personal@example.org
+## On Gitlab
 
-## Other config --global options
+Gitlab has an integrated CI mechanism, 
+* [Create a pages website by using a CI / CD 
+  template](https://docs.gitlab.com/ee/user/project/pages/getting_started/pages_ci_cd_template.html)
+* [Rendering an R markdown presentation to gitlab 
+  pages](https://www.r-bloggers.com/2020/09/rendering-an-r-markdown-presentation-to-gitlab-pages/) 
+  uses the `rocker/verse:4.0.0` docker image. Posted on  September 16, 2020.
+* [GitLab CI for your bookdown project](https://rlesur.gitlab.io/bookdown-gitlab-pages/) 
+  Uses the `rocker/verse:4.0.2` docker image. Posted on 2020-09-08. A setup
+  generating pages for the master branch and also for merge requests.
 
-[How do I make Git use the editor of my choice for commits?](https://stackoverflow.com/a/2596835/2641825)
+To generate html pages from markdown and publish them, I added a
+`.gitlab-ci.yml` to the repository. The CI deployment is visible on the
+[paulrougieux.jobs](https://gitlab.com/paulrougieux/paulrougieux/-/jobs) page.
+Clicking on "running" displays the latest activity of an ongoing build. It
+starts with "Pulling docker image rocker/verse:4.0.0 ... ". Once the build is
+finished, the completed page is visible at
+https://paulrougieux.gitlab.io/paulrougieux/
 
-    git config --global core.editor "vim"
 
-## Remembering passwords
+# Remote
 
-[How to save user name and password in git](https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git)
+[Add a remote repository](https://git-scm.com/docs/git-remote#git-remote-emaddem)
+with:
 
-    git config credential.helper store
+    git remote add git@github.com:paulrougieux/paulrougieux.github.io.git
+    # or
+    git remote add reponame https://repositoryurl 
 
-Alternativelly, it's better to use ssh keys to connect to git repositories.
+[Change the url of a remote repository](https://git-scm.com/docs/git-remote#git-remote-emset-urlem)
 
-# Branching
+    git remote set-url origin git@github.com:paulrougieux/paulrougieux.github.io.git
 
-To start work in a new branch:
+When a repository is connected to several remote repositories, 
+you can push content to repositories by specifying their names
 
-    git branch new_branch_name
-    git checkout new_branch_name
+    git push -u origin master
+    git push -u anotherrepository master
 
-To compare a file between 2 branches:
+To change the default git remote, push with :
 
-    git diff branch1 branch2 file_name
+    git push -u origin master
 
-To compare the tip of 2 branches
+Then later push of that branch to that remote can be made simply with:
 
-    git diff branch1..branch2
+    git push
 
-To merge changes back to the master branch:
+Another command without specifying the remote and the branch
 
-    git checkout master
+    $ git push -u
 
-    git merge branch1
+    fatal: The current branch master has no upstream branch.
+    To push the current branch and set the remote as upstream, use
+        git push --set-upstream origin master
 
-If there were conflicts, they will be presented in this way:
+After I run this set upstream flag, I can push to the remote server. Then I get this message
 
-    "The area where a pair of conflicting changes happened is marked with markers &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, and &gt;&gt;&gt;&gt;&gt;&gt;&gt;. The part before the ======= is typically your side, and the part afterwards is typically their side."
+    [...]
+     * [new branch]      master -&gt; masterBranch master set up to track remote branch master from origin. 
 
+I'll have to figure out what this does.
 
-I might need to delete a branch at some point:
+## Push to multiple remotes
 
-    git branch -d branchname 
+Based on [this blog post](https://jigarius.com/blog/multiple-git-remote-repositories)
+I added the push remote twice to the origin repo as such :
 
-Delete a remote branch (stackoverflow question)
+    git remote set-url --add --push origin  git@gitlab.com:paulrougieux/paulrougieux.git
+    git remote set-url --add --push origin  git@github.com:paulrougieux/paulrougieux.github.io.git
 
-    git push --delete origin temp
+The output of git push -v shows that it is now pushing to both repositories
 
-Deleting your master branch.
-
-
-If I am on a detached head, it is recommended to create a temporary branch (stackoverflow).
-
-    git branch temp
-
-    git checkout temp
-
-    git add -a
-
-    git  commit -m "description of changes"
-
-    git checkout master
-
-    git merge temp
-
-Delete uncommitted changes in current working directory:
-
-    git checkout branch_name .
-
-See also below git clean.
-
-
-Add minor change to the previous commit (git commit --amend):
-
-    git commit --amend
-
-I use to have this branching strategy:
-
-> I never work in the master branch, always in a development branch called `develop`. 
-> I merge `develop` in `master`, only before pushing modifications back to my remote archive.
-> This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.
-
-
-But I have now changed to a simpler strategy where I work only on the master branch. 
-
-# Tagging
-
-Creating an annotated tag
-
-    git tag -a v1.4 -m 'my version 1.4'
-
-You can add a tag after the fact. To tag an earlier commit, specify the commit checksum or part of it:
-
-    git log --pretty=oneline
-
-    git tag -a v1.2 -m 'version 1.2' 9fceb02
-
-Delete a tag
-
-    git tag -d tag_name
-
-A regular push command won't push a tag (bitbucket), to push all your tags :
-
-    git push origin --tags
-
-Return all files in the repository to a particular tag:
-
-    git checkout tags/v0.1
-
-Optionally you cancheckout and create a new branch to commit your changes with:
-
-    git checkout tags/o.1 -b newbranchname
-
-Git tools [signing your work](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)Signed tags
-Generate a pgp key
-
-    gpg --gen-key
-
-More information on gpg key publishing in the [bash page](bash.html).
-Display what keys are available
-
-    gpg --list-keys
-
-Configure git to use the key
-
-     git config --global user.signingkey 0A46826A
-
-
-# Display changes
-
-To view modified files that have not been committed and to view commit history you can use: 
-
-    git status
-    git log
-
-    git log --pretty=oneline 
-
-Shows the changes between the working directory and the index.
-
-    git diff
-
-Shows the changes between the index and the HEAD
-
-    git diff --cached
-
-Shows all the changes between the working directory and HEAD
-
-    git diff HEAD
-
-The 3 lines above were copied from this question on git diff.
-
-Show which change happened in a particular commit 
-
-    git show <commit-hash>
-
-Show when the tip of branches have been updated
-
-    git reflog
-
- Alternatively, call the repository browser with:
-
-    gitk
-
-To view a shorter version of the log file, and get an idea at where I am in the history:
-
-    git log --graph --decorate --all --pretty=oneline
-
-You can define an alias for git log as explained be Fred here:
-
-    git config --global alias.lg "log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)&lt;%an&gt;%Creset' --abbrev-commit" 
-
-The new alias can then be used with
-
-    git lg 
-
-Use tags to specify important points in history, such as software versions.
-
-
-## Blame
-
-To see the commit number and author of each line in a file use
-
-    git blame filename
-
-
-
+    git push -v
+    Pushing to git@gitlab.com:paulrougieux/paulrougieux.git
+    To gitlab.com:paulrougieux/paulrougieux.git
+     = [up to date]      master -> master
+    updating local tracking ref 'refs/remotes/origin/master'
+    Everything up-to-date
+    Pushing to git@github.com:paulrougieux/paulrougieux.github.io.git
+    To github.com:paulrougieux/paulrougieux.github.io.git
+     = [up to date]      master -> master
+    updating local tracking ref 'refs/remotes/origin/master'
+    Everything up-to-date
 
 # Rename and delete files
 
@@ -693,83 +761,71 @@ Use git grep to replace strings in many files in the directory :
 
 See also the refactor function in the [bash](bash.html) page.
 
-# .gitignore
+# Statistics
 
-To ignore all files in a folder but not the folder itself. Put this .gitignore into the folder, then git add .gitignore
+Number of lines of code per language in a remote git repository according to
+this stackoverflow answer
 
-    *
-    !.gitignore
+    #!/usr/bin/env bash
+    git clone --depth 1 "$1" temp-linecount-repo &&
+      printf "('temp-linecount-repo' will be deleted automatically)\n\n\n" &&
+      cloc temp-linecount-repo &&
+      rm -rf temp-linecount-repo
 
- To exclude everything except a specific directory foo/bar (note the /* - without the slash, the wildcard would also exclude everything within foo/bar):
+> "This script requires CLOC (“Count Lines of Code”) to be installed. cloc can
+> probably be installed with your package manager – for example, brew install
+> cloc with Homebrew. There is also a docker image published under
+> mribeiro/cloc. You can install the script by saving its code to a file
+> cloc-git, running chmod +x cloc-git, and then moving the file to a folder in
+> your `$PATH` such as /usr/local/bin."
 
-    /*
-    !/foo
-    /foo/*
-    !/foo/bar
+Usage
 
-# Remote
+    cloc-git https://github.com/evalEmpire/perl5i.git
 
-[Add a remote repository](https://git-scm.com/docs/git-remote#git-remote-emaddem)
-with:
 
-    git remote add git@github.com:paulrougieux/paulrougieux.github.io.git
-    # or
-    git remote add reponame https://repositoryurl 
+# Tagging
 
-[Change the url of a remote repository](https://git-scm.com/docs/git-remote#git-remote-emset-urlem)
+Creating an annotated tag
 
-    git remote set-url origin git@github.com:paulrougieux/paulrougieux.github.io.git
+    git tag -a v1.4 -m 'my version 1.4'
 
-When a repository is connected to several remote repositories, 
-you can push content to repositories by specifying their names
+You can add a tag after the fact. To tag an earlier commit, specify the commit checksum or part of it:
 
-    git push -u origin master
-    git push -u anotherrepository master
+    git log --pretty=oneline
 
-To change the default git remote, push with :
+    git tag -a v1.2 -m 'version 1.2' 9fceb02
 
-    git push -u origin master
+Delete a tag
 
-Then later push of that branch to that remote can be made simply with:
+    git tag -d tag_name
 
-    git push
+A regular push command won't push a tag (bitbucket), to push all your tags :
 
-Another command without specifying the remote and the branch
+    git push origin --tags
 
-    $ git push -u
+Return all files in the repository to a particular tag:
 
-    fatal: The current branch master has no upstream branch.
-    To push the current branch and set the remote as upstream, use
-        git push --set-upstream origin master
+    git checkout tags/v0.1
 
-After I run this set upstream flag, I can push to the remote server. Then I get this message
+Optionally you cancheckout and create a new branch to commit your changes with:
 
-    [...]
-     * [new branch]      master -&gt; masterBranch master set up to track remote branch master from origin. 
+    git checkout tags/o.1 -b newbranchname
 
-I'll have to figure out what this does.
+Git tools [signing your work](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)Signed tags
+Generate a pgp key
 
-## Push to multiple remotes
+    gpg --gen-key
 
-Based on [this blog post](https://jigarius.com/blog/multiple-git-remote-repositories)
-I added the push remote twice to the origin repo as such :
+More information on gpg key publishing in the [bash page](bash.html).
+Display what keys are available
 
-    git remote set-url --add --push origin  git@gitlab.com:paulrougieux/paulrougieux.git
-    git remote set-url --add --push origin  git@github.com:paulrougieux/paulrougieux.github.io.git
+    gpg --list-keys
 
-The output of git push -v shows that it is now pushing to both repositories
+Configure git to use the key
 
-    git push -v
-    Pushing to git@gitlab.com:paulrougieux/paulrougieux.git
-    To gitlab.com:paulrougieux/paulrougieux.git
-     = [up to date]      master -> master
-    updating local tracking ref 'refs/remotes/origin/master'
-    Everything up-to-date
-    Pushing to git@github.com:paulrougieux/paulrougieux.github.io.git
-    To github.com:paulrougieux/paulrougieux.github.io.git
-     = [up to date]      master -> master
-    updating local tracking ref 'refs/remotes/origin/master'
-    Everything up-to-date
+     git config --global user.signingkey 0A46826A
+
 
 # TO DO lists
 
@@ -782,116 +838,83 @@ In multiple repos (using git run):
     gr git grep "^TODO "
 
 
-# Autocompletion
+# Uploading content to online git platforms
 
-git has an [auto complete](https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion) 
-feature available in a script: `git-completion.bash`.
+Git is useful as a version management on its own. 
+But it's even more usefull when code can be back-up online. 
+ * Free public git storage is availble on [Github](http://github.com/). 
+ * Free public and private git storage are available on 
+   [Bitbucket](http://bitbucket.org/),
+   with up to 5 collaborators per project.
+ * Free public and private git storage are available on 
+   [Gitlab](https://gitlab.com/).
 
-That script can be loaded in bashrc at the start of the shell.
-A debian package was made to simply load git-completion.bash for you:
+Commands I've used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:
+```
+    git remote add origin https://github.com/paul4forest/forestproductsdemand
+    git pull origin master
+    git add
+    git commit -m "Explanatory message"
+    git push origin master
+```
 
-    sudo apt install bash-completion
+Commands to upload content to a fresh repository from bitbucket :
+```
+    mkdir /path/to/your/project
+    cd /path/to/your/project
+    git init
+    git remote add origin ssh://git@bitbucket.org/username/bbreponame.git
+    # Upload and set the local changes as upstream
+    git push -u origin master
+```
+See also this discussion on [why do I need to set upstream](http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time)?
 
+Commands to copy an existing repository from bitbucket :
 
-# Git run 
+     git clone git@bitbucket.org/username/bbreponame.git
 
-Git run enables to pull from many repositories with a single command  
+## Setting up SSH keys 
 
-configuration was a bit complicated on debian
+See [Generating a new SSH key and adding it to the ssh-agent](https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent)
+and [Adding a new SSH key to your GitHub account](https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account)
 
-Install nodejs and npm from the backports
+To test if my new ssh key worked with github, 
+I created a branch and pushed it to github.
+Then I deleted the branch locally and remotely:
 
-    sudo apt -t stretch-backports install nodejs
-    sudo apt -t stretch-backports install npm
-    sudo apt install build-essential
-
-Configure nmp to run only for the local user
-[configure npm to use a different directory](https://stackoverflow.com/a/40905762/2641825)
-citing 
-docs.npmjs.com [Manually change npm’s default directory](https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory)
-
-in your home directory, create a directory for global installations:
-
-    mkdir ~/.npm-global
-
-Configure npm to use the new directory path:
-
-    npm config set prefix '~/.npm-global'
-
-Install Git run:
-
-    npm install -g git-run
-
-Edit your bash profile:
-
-    vim ~/.bash_aliases
-    
-and add this line:
-
-    export PATH=~/.npm-global/bin:$PATH
-
-Then the configuration file is a .json file on the home folder. 
-Edit it: 
-
-    vim ~/.grconfig.json
-
-For example:
-
-    {
-      "tags": {
-        "all": [
-          "/home/paul/repos/bioeconomy_notes",
-          "/home/paul/repos/bioeconomy_papers",
-          "/home/paul/repos/cbm3_python",
-          "/home/paul/repos/cbmcfs3_data",
-          "/home/paul/repos/cbmcfs3_pub",
-          "/home/paul/repos/cbmcfs3_runner",
-        ]
-      }
-    }
+	git branch "key"
+	git checkout key
+	git push --set-upstream origin key
+	# Checked that the "key" branch became visible on github
+	git checkout master
+	git branch -d key
+	git push origin --delete key
 
 
-Show the status and pull from many repos:
+# Stash to Keep uncommitted changes in the current branch while working quickly in another branch
 
-    gr git status
-    gr git pull
+For example you edit a file in branch develop
 
+    git checkout develop
+    echo "blabla" > newfile.txt
 
-# Publishing project documentation 
+Imagine you are in the middle of your work and need to do an urgent modification in 
+another branch. 
+To move to another branch, you would normaly need to commit this change.
+If you don't want to commit the change yet.
+You can store temporary changes with the command:
 
-## On Github
+    git stash
 
-Older content related to pages built from branches.
+Move to the master branch
 
-SO answer to the question "How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)": An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.
+    git checkout master
+    # perform important operation in the master branch.
 
-In fact I didn't use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page  branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).
+Get back to the develop branch and reload uncommited changes
 
-Then within the inst folder, I cloned only the gh-branch. To clone only one branch:
-
-    git clone -b mybranch --single-branch git://sub.domain.com/repo.git
-
-Then I renamed the folder to "web", so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.
-
-## On Gitlab
-
-Gitlab has an integrated CI mechanism, 
-* [Create a pages website by using a CI / CD 
-  template](https://docs.gitlab.com/ee/user/project/pages/getting_started/pages_ci_cd_template.html)
-* [Rendering an R markdown presentation to gitlab 
-  pages](https://www.r-bloggers.com/2020/09/rendering-an-r-markdown-presentation-to-gitlab-pages/) 
-  uses the `rocker/verse:4.0.0` docker image. Posted on  September 16, 2020.
-* [GitLab CI for your bookdown project](https://rlesur.gitlab.io/bookdown-gitlab-pages/) 
-  Uses the `rocker/verse:4.0.2` docker image. Posted on 2020-09-08. A setup
-  generating pages for the master branch and also for merge requests.
-
-To generate html pages from markdown and publish them, I added a
-`.gitlab-ci.yml` to the repository. The CI deployment is visible on the
-[paulrougieux.jobs](https://gitlab.com/paulrougieux/paulrougieux/-/jobs) page.
-Clicking on "running" displays the latest activity of an ongoing build. It
-starts with "Pulling docker image rocker/verse:4.0.0 ... ". Once the build is
-finished, the completed page is visible at
-https://paulrougieux.gitlab.io/paulrougieux/
+    git checkout develop
+    git stash pop
 
 
 # Subversion
