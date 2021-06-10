@@ -217,6 +217,10 @@ Note: I remapped the caps lock key to escape at a system level.
     A - Move to the end of the line and switch to editing mode .
     o - Begin a new line below the cursor and insert text.
     O - Begin a new line above the cursor and insert text.
+    R - Enter Replace mode: Each character you type replaces an existing character.
+
+When in editing mode you can use escape to enter the navigation mode or use:
+
     alt+h alt+j alt+k alt+l - Switch to navigation mode and move.
     alt+: - Switch to navigation mode and send a command.
 
@@ -382,6 +386,8 @@ Remove bracketed references from text copied from Wikipedia.
 
 ### Character classes
 
+See also patterns below.
+
 See `:help character-classes` for a list of classes accepted in Vim with their
 equivalent regex pattern, for example `\w` is equivalent to `[0-9A-Za-z_]`.
 Replace all word characters by a dash (to create a markdown table division see
@@ -427,6 +433,25 @@ For example to convert to lower case from the cursor to the end of the line:
 To change the current line from upper to lower case: 
 
     guu
+
+### Patterns
+
+To place quotes around variables that contain a dollar sign (otherwise
+interpreted as a formula start in markdown):
+
+    :'<,'>s/\(\w*\$\)/`\1`/g
+
+[add quotes at the start and end of each
+line](https://stackoverflow.com/a/3218805/2641825)
+
+    :%s/^\(.*\)$/"\1"/
+
+>    s/regex/replace/ is vim command for search n replace.
+>    % makes it apply throughout the file
+>    ^ and $ denotes start and end of the line respectively.
+>    `(.*)` captures everything in between. ( and ) needs to be escaped in vim regexes.
+>    \1 puts the captured content between two quotes.
+
 
 ### Replace spaces and new lines
 
@@ -674,10 +699,9 @@ read them? Type the command |:messages| in Normal mode to see them again.
 
 ## Current file name
 
-
 [Insert the current file name in VIM](https://unix.stackexchange.com/questions/57555/how-do-i-insert-the-current-filename-into-the-contents-in-vim)
 In insert mode press: 
-    
+
     <c-r>%
 
 In normal mode: 
@@ -1748,7 +1772,7 @@ Here are the settings I used when I tried tagbar:
     " Place lines closer together
     let g:tagbar_compact = 1
 
-## Send code to target terminal
+## Slime to send code to target terminal
 
 [vim slime](https://github.com/jpalardy/vim-slime)
 > "Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal"
@@ -1864,7 +1888,10 @@ Start ipython3:
 [Word coung](https://vim.fandom.com/wiki/Word_count):
 > To count the number of words in the current buffer, press g then Ctrl-g. To
 > count the number of words in a block, select the block (for example, type V5j
-> to select 6 lines) and again press g then Ctrl-g.  
+> to select 6 lines) or vip to select the current paragraph and again press 
+
+    g
+    Ctrl-g
 
 
 ## Macros
@@ -1882,6 +1909,17 @@ Vim wiki [Macros](https://vim.fandom.com/wiki/Macros)
 > Visually select some lines (for example, type vip to select the current
 > paragraph). Type :normal @q to run the macro from register q on each line."
 
+[Macro to add a new line below each
+line](https://stackoverflow.com/a/10414748/2641825)
+
+    qq     " start recording to register q (you could use any register from a to z)
+    o      " insert an empty line below cursor
+    <Esc>  " switch to normal mode
+    jjj    " move the cursor 3 lines downward
+    q      " stop recording
+
+Then just move to the start line and type 1000@q to execute your macro 1000 times.
+
 
 ## Spell check
 
@@ -1894,6 +1932,9 @@ To use the spellcheck only temporary for an additional language (italian in
 this case):
 
     set spell spelllang=it
+    set spell spelllang=de
+
+This might require installing addition Debian packages on the system.
 
 On the first use, vim may give a warning that some word lists are missing. 
 [How to make vim download missing word lists](https://www.monolune.com/how-to-make-vim-download-missing-word-lists/)

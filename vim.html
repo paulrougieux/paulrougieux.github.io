@@ -613,7 +613,9 @@ a - Append text after the cursor.
 A - Move to the end of the line and switch to editing mode .
 o - Begin a new line below the cursor and insert text.
 O - Begin a new line above the cursor and insert text.
-alt+h alt+j alt+k alt+l - Switch to navigation mode and move.
+R - Enter Replace mode: Each character you type replaces an existing character.</code></pre>
+<p>When in editing mode you can use escape to enter the navigation mode or use:</p>
+<pre><code>alt+h alt+j alt+k alt+l - Switch to navigation mode and move.
 alt+: - Switch to navigation mode and send a command.</code></pre>
 </div>
 <div id="edit-a-whole-line" class="section level2">
@@ -726,6 +728,7 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 </div>
 <div id="character-classes" class="section level3">
 <h3>Character classes</h3>
+<p>See also patterns below.</p>
 <p>See <code>:help character-classes</code> for a list of classes accepted in Vim with their equivalent regex pattern, for example <code>\w</code> is equivalent to <code>[0-9A-Za-z_]</code>. Replace all word characters by a dash (to create a markdown table division see also collection below)</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\w/-/g</code></pre>
 <p>Note that this only works with ASCII characters and doesn’t work with accentuated characters. For example <code>smöl</code> gets replaced by <code>--ö-</code>. To replace all identifier characters, use</p>
@@ -752,6 +755,16 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <pre><code>gu$</code></pre>
 <p>To change the current line from upper to lower case:</p>
 <pre><code>guu</code></pre>
+</div>
+<div id="patterns" class="section level3">
+<h3>Patterns</h3>
+<p>To place quotes around variables that contain a dollar sign (otherwise interpreted as a formula start in markdown):</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\(\w*\$\)/`\1`/g</code></pre>
+<p><a href="https://stackoverflow.com/a/3218805/2641825">add quotes at the start and end of each line</a></p>
+<pre><code>:%s/^\(.*\)$/&quot;\1&quot;/</code></pre>
+<blockquote>
+<p>s/regex/replace/ is vim command for search n replace. % makes it apply throughout the file ^ and $ denotes start and end of the line respectively. <code>(.*)</code> captures everything in between. ( and ) needs to be escaped in vim regexes. \1 puts the captured content between two quotes.</p>
+</blockquote>
 </div>
 <div id="replace-spaces-and-new-lines" class="section level3">
 <h3>Replace spaces and new lines</h3>
@@ -1610,8 +1623,8 @@ let g:tagbar_left = 1
 let g:tagbar_compact = 1</code></pre>
 </div>
 </div>
-<div id="send-code-to-target-terminal" class="section level2">
-<h2>Send code to target terminal</h2>
+<div id="slime-to-send-code-to-target-terminal" class="section level2">
+<h2>Slime to send code to target terminal</h2>
 <p><a href="https://github.com/jpalardy/vim-slime">vim slime</a> &gt; “Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal”</p>
 <p>Tmux is not the default, to use it you will have to add this line to your .vimrc:</p>
 <pre><code>let g:slime_target = &quot;tmux&quot;</code></pre>
@@ -1674,7 +1687,9 @@ let g:tagbar_compact = 1</code></pre>
 <h1>Tools</h1>
 <div id="count-words" class="section level2">
 <h2>Count words</h2>
-<p><a href="https://vim.fandom.com/wiki/Word_count">Word coung</a>: &gt; To count the number of words in the current buffer, press g then Ctrl-g. To &gt; count the number of words in a block, select the block (for example, type V5j &gt; to select 6 lines) and again press g then Ctrl-g.</p>
+<p><a href="https://vim.fandom.com/wiki/Word_count">Word coung</a>: &gt; To count the number of words in the current buffer, press g then Ctrl-g. To &gt; count the number of words in a block, select the block (for example, type V5j &gt; to select 6 lines) or vip to select the current paragraph and again press</p>
+<pre><code>g
+Ctrl-g</code></pre>
 </div>
 <div id="macros" class="section level2">
 <h2>Macros</h2>
@@ -1687,13 +1702,22 @@ q   stop recording
 <blockquote>
 <p>“Suppose you have a macro which operates on the text in a single line. You can run the macro on each line in a visual selection in a single operation: Visually select some lines (for example, type vip to select the current paragraph). Type :normal <span class="citation">@q</span> to run the macro from register q on each line.”</p>
 </blockquote>
+<p><a href="https://stackoverflow.com/a/10414748/2641825">Macro to add a new line below each line</a></p>
+<pre><code>qq     &quot; start recording to register q (you could use any register from a to z)
+o      &quot; insert an empty line below cursor
+&lt;Esc&gt;  &quot; switch to normal mode
+jjj    &quot; move the cursor 3 lines downward
+q      &quot; stop recording</code></pre>
+<p>Then just move to the start line and type <a href="mailto:1000@q">1000@q</a> to execute your macro 1000 times.</p>
 </div>
 <div id="spell-check" class="section level2">
 <h2>Spell check</h2>
 <p><a href="https://superuser.com/questions/911412/how-to-configure-vim-spellcheck-to-use-two-languages">How to configure vim spellcheck to use two languages</a> To use the spellcheck for two languages, add this to your <code>~/.vimrc</code>:</p>
 <pre><code>set spell spelllang=en_gb,fr</code></pre>
 <p>To use the spellcheck only temporary for an additional language (italian in this case):</p>
-<pre><code>set spell spelllang=it</code></pre>
+<pre><code>set spell spelllang=it
+set spell spelllang=de</code></pre>
+<p>This might require installing addition Debian packages on the system.</p>
 <p>On the first use, vim may give a warning that some word lists are missing. <a href="https://www.monolune.com/how-to-make-vim-download-missing-word-lists/">How to make vim download missing word lists</a> To solve this issue, turn spell check off</p>
 <pre><code>:set nospell </code></pre>
 <p>Turn spell check on</p>
