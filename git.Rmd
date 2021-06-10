@@ -764,7 +764,7 @@ See also the refactor function in the [bash](bash.html) page.
 # Statistics
 
 Number of lines of code per language in a remote git repository according to
-this stackoverflow answer
+this [stackoverflow answer](https://stackoverflow.com/a/29012789/2641825)
 
     #!/usr/bin/env bash
     git clone --depth 1 "$1" temp-linecount-repo &&
