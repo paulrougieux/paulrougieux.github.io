@@ -27,6 +27,10 @@ export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/libcbm_py/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/libcbm_runner/":$PYTHONPATH
+export LIBCBM_DATA="$HOME/repos/libcbm_data/"
+
 # Create tag files for an R project, from within an R project's R folder
 rtags() {
     echo "This function should be called from within an R project's R folder."
