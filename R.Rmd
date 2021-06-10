@@ -35,6 +35,13 @@ dplyr::case_when is a generalised vectorised if. Example use:
        TRUE ~ as.character(x)
      )
 
+
+# Data table
+
+[Database like operation benchmark](https://h2oai.github.io/db-benchmark/#task)
+between data table, dplyr, python pandas and other database like tools.
+
+
 # Data types
 
 ## Everything is a vector
@@ -192,7 +199,7 @@ RStudio initially. Rstudio also has a lot of menus and buttons to work with
 Rmarkdown documents, view the state of a git repository and build packages.
 
 
-# Files input output
+# Input output
 
     getwd()
     list.files(tempdir()) 
@@ -246,6 +253,11 @@ Read a dataset from an rds file
 
     iris2 <- readRDS("/tmp/iris.rds")
     identical(iris, iris2)
+
+## Databases
+
+Dplyr has databases backends  to MySQl (MariaDB) and PostgreSQL.
+
 
 
 # Find and replace
@@ -1194,6 +1206,33 @@ add1000(iris, Sepal.Length)
 
 
 * [Tidy evaluation explained in French](https://thinkr.fr/tidyeval/)
+
+
+## Tidy select
+
+Tidy select [selection
+language](https://tidyselect.r-lib.org/reference/language.html) explains the
+various selection function such as `all_of`, `contains` and `starts_with`.
+
+```{r eval=FALSE}
+library(dplyr)
+iris2 <- head(iris, 1)
+select(iris2, contains("w")) # Literal string
+select(iris2, matches("w")) # Regular expression
+select(iris2, starts_with("S"))
+select(iris2, all_of(c("Sepal.Length", "Petal.Width")))
+```
+The selection can be inverted by using s minus sign in front of it. Not it's
+not a question mark as explained in this  [SO
+answer](https://stackoverflow.com/a/45941792/2641825) because the selection
+fonctions return numerical vectors of integer column positions (not boolean
+values).
+
+```{r eval=FALSE}
+library(dplyr)
+select(head(iris), -matches("w") )
+```
+
 
 ## tidyr
 

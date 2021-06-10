@@ -496,6 +496,10 @@ div.tocify {
    TRUE ~ as.character(x)
  )</code></pre>
 </div>
+<div id="data-table" class="section level1">
+<h1>Data table</h1>
+<p><a href="https://h2oai.github.io/db-benchmark/#task">Database like operation benchmark</a> between data table, dplyr, python pandas and other database like tools.</p>
+</div>
 <div id="data-types" class="section level1">
 <h1>Data types</h1>
 <div id="everything-is-a-vector" class="section level2">
@@ -626,8 +630,8 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 <p>I use Vim and the great <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> plugin to edit R markdown documents and R scripts. I browse the table of content of R markdown files with the Voom plugin. I create R packages with Makefiles. I use the fugitive plugin to manage my git commits. See my <a href="Vim.html">Vim page</a> for more information.</p>
 <p>Rstudio is a great editors for those who prefer a graphical user interface. It has a Vim mode. In fact I trained my muscle memory for Vim movement keys inside RStudio initially. Rstudio also has a lot of menus and buttons to work with Rmarkdown documents, view the state of a git repository and build packages.</p>
 </div>
-<div id="files-input-output" class="section level1">
-<h1>Files input output</h1>
+<div id="input-output" class="section level1">
+<h1>Input output</h1>
 <pre><code>getwd()
 list.files(tempdir()) 
 dir.create(&quot;blabla&quot;)</code></pre>
@@ -661,6 +665,10 @@ iris %&gt;%
 <p>Read a dataset from an rds file</p>
 <pre><code>iris2 &lt;- readRDS(&quot;/tmp/iris.rds&quot;)
 identical(iris, iris2)</code></pre>
+</div>
+<div id="databases" class="section level2">
+<h2>Databases</h2>
+<p>Dplyr has databases backends to MySQl (MariaDB) and PostgreSQL.</p>
 </div>
 </div>
 <div id="find-and-replace" class="section level1">
@@ -1428,6 +1436,19 @@ add1000(iris, Sepal.Length)</code></pre>
 <ul>
 <li><a href="https://thinkr.fr/tidyeval/">Tidy evaluation explained in French</a></li>
 </ul>
+</div>
+<div id="tidy-select" class="section level2">
+<h2>Tidy select</h2>
+<p>Tidy select <a href="https://tidyselect.r-lib.org/reference/language.html">selection language</a> explains the various selection function such as <code>all_of</code>, <code>contains</code> and <code>starts_with</code>.</p>
+<pre class="r"><code>library(dplyr)
+iris2 &lt;- head(iris, 1)
+select(iris2, contains(&quot;w&quot;)) # Literal string
+select(iris2, matches(&quot;w&quot;)) # Regular expression
+select(iris2, starts_with(&quot;S&quot;))
+select(iris2, all_of(c(&quot;Sepal.Length&quot;, &quot;Petal.Width&quot;)))</code></pre>
+<p>The selection can be inverted by using s minus sign in front of it. Not it’s not a question mark as explained in this <a href="https://stackoverflow.com/a/45941792/2641825">SO answer</a> because the selection fonctions return numerical vectors of integer column positions (not boolean values).</p>
+<pre class="r"><code>library(dplyr)
+select(head(iris), -matches(&quot;w&quot;) )</code></pre>
 </div>
 <div id="tidyr" class="section level2">
 <h2>tidyr</h2>
