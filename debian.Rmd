@@ -506,7 +506,10 @@ Add the following line to that file:
 
 Download the software and signature file
 
-    cat expressvpn_3.3.0.21-1_amd64.deb.asc
+    cd downloads
+    curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.8.0.4-1_amd64.deb
+    curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.8.0.4-1_amd64.deb.asc
+    cat expressvpn_*_amd64.deb.asc
 
 [Check the
 signature](https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/)
@@ -514,10 +517,11 @@ signature](https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/)
     gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 0xAFF2A1415F6A3A38
     gpg --fingerprint release@expressvpn.com
     gpg --verify expressvpn_3.3.0.21-1_amd64.deb.asc
+    gpg --verify expressvpn_3.8.0.4-1_amd64.deb.asc
 
 Install 
 
-    sudo apt install ./expressvpn_3.3.0.21-1_amd64.deb
+    sudo apt install ./expressvpn_3.8.0.4-1_amd64.deb
 
 
 ## Wajig
