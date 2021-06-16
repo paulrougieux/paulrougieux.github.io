@@ -692,6 +692,33 @@ java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
 <pre><code>figlet</code></pre>
 </div>
 </div>
+<div id="copy-files" class="section level1">
+<h1>Copy files</h1>
+<p>To copy a file from /tmp/file.md to /tmp/file2.md</p>
+<pre><code>cp /tmp/file.md /tmp/file2.md</code></pre>
+<div id="rsync" class="section level2">
+<h2>Rsync</h2>
+<p>Rsync man page:</p>
+<blockquote>
+<p>Rsync is a fast and extraordinarily versatile file copying tool. It can copy locally, to/from another host over any remote shell, or to/from a remote rsync daemon. […] It is famous for its delta-transfer algorithm, which reduces the amount of data sent over the network by sending only the differences between the source files and the existing files in the destination. Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.</p>
+</blockquote>
+<p>The most important option is -a:</p>
+<pre><code>-a, --archive archive mode; equals -rlptgoD (no -H,-A,-X)</code></pre>
+<p>The option <code>-a</code> does all of the following:</p>
+<pre><code>-r, --recursive             recurse into directories
+-l, --links                 copy symlinks as symlinks
+-p, --perms                 preserve permissions
+-t, --times                 preserve modification times
+-g, --group                 preserve group
+-o, --owner                 preserve owner (super-user only)
+    --devices               preserve device files (super-user only)
+    --specials              preserve special files
+-D                          same as --devices --specials</code></pre>
+<p>Other options I have used:</p>
+<pre><code>-v, --verbose increase verbosity
+-z, --compress compress file data during the transfer</code></pre>
+</div>
+</div>
 <div id="count" class="section level1">
 <h1>Count</h1>
 <div id="number-of-files" class="section level2">
@@ -751,7 +778,14 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 <h1>Download</h1>
 <div id="download-with-curl" class="section level2">
 <h2>Download with Curl</h2>
-<p>Load a file from a URL, using the file name from the URL</p>
+<p>Curl man page:</p>
+<blockquote>
+<p>“curl is a tool to transfer data from or to a server, using one of the supported protocols (DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMB, SMBS, SMTP, SMTPS, TELNET and TFTP). The command is designed to work without user interaction.”</p>
+</blockquote>
+<p>The “remote-name” argument or capital “-O” loads a file from a URL, using the file name from the URL as explained in the curl man page.</p>
+<blockquote>
+<p>&quot; -O, –remote-name Write output to a local file named like the remote file we get. (Only the file part of the remote file is used, the path is cut off.)&quot;</p>
+</blockquote>
 <pre><code>curl -O &lt;url_including_a_file_name&gt;</code></pre>
 </div>
 <div id="download-videos-and-audio" class="section level2">

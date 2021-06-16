@@ -344,6 +344,48 @@ Convert text to large ascii art
 
     figlet
 
+
+# Copy files
+
+To copy a file from /tmp/file.md to /tmp/file2.md
+
+    cp /tmp/file.md /tmp/file2.md
+
+
+## Rsync 
+
+Rsync man page:
+
+> Rsync is a fast and extraordinarily versatile file copying tool. It can copy
+> locally, to/from another host over any remote shell, or to/from a remote
+> rsync daemon. [...] It is famous for its delta-transfer algorithm, which
+> reduces the amount of data sent over the network by sending only the
+> differences between the source files and the existing files in the
+> destination. Rsync is widely used for backups and mirroring and as an
+> improved copy command for everyday use.
+
+The most important option is -a:
+
+    -a, --archive archive mode; equals -rlptgoD (no -H,-A,-X)
+
+The option `-a` does all of the following:
+
+    -r, --recursive             recurse into directories
+    -l, --links                 copy symlinks as symlinks
+    -p, --perms                 preserve permissions
+    -t, --times                 preserve modification times
+    -g, --group                 preserve group
+    -o, --owner                 preserve owner (super-user only)
+        --devices               preserve device files (super-user only)
+        --specials              preserve special files
+    -D                          same as --devices --specials
+
+Other options I have used: 
+
+    -v, --verbose increase verbosity
+    -z, --compress compress file data during the transfer
+
+
 # Count
 
 ## Number of files
@@ -427,9 +469,22 @@ In .bashrc a user can set environment variables, define alias (see above).
 
 ## Download with Curl
 
-Load a file from a URL, using the file name from the URL
+Curl man page:
+
+> "curl is a tool to transfer data from or to a server, using one of the
+> supported protocols (DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS,
+> LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMB, SMBS, SMTP, SMTPS,
+> TELNET and TFTP). The command is designed to work without user interaction."
+
+The "remote-name" argument or capital "-O" loads a file from a URL, using the
+file name from the URL as explained in the curl man page.
+
+> " -O, --remote-name Write  output  to  a  local file named like the remote
+> file we get. (Only the file part of the remote file is used, the path is cut
+> off.)"
 
     curl -O <url_including_a_file_name>
+
 
 ## Download videos and audio
 
