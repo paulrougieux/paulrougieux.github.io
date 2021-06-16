@@ -156,6 +156,17 @@ paper](https://www.editage.com/all-about-publication/research/impressive-Verbs-t
 | To indicate positive stand                                     | confirm, compliment, corroborate, substantiate, support, uphold, validate, verify             |
 | To show approximation                                          | approximate, estimate, resemble, predict                                                      |
 
+# Frame
+
+Message from a colleague.
+
+> " the research problem needs to be framed very precisely"
+
+Paul's reply
+
+Yes I have the feeling the analysis can slip very quickly into a wider and
+wider questioning, leading nowhere. Hopefully some form of spinal chord comes
+out of our brain storming. 
 
 
 # Latex
