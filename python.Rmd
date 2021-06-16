@@ -256,22 +256,6 @@ Show available variable in the current context:
 # Jupyter notebooks
 
 
-## Install Jupyter
-
-To [install Jupyter](https://jupyter.org/install) notebooks on python3:
-
-    pip3 install jupyter notebook
-
-Then start the notebook server as such:
-
-    jupyter notebook
-
-
-## Help in a jupyter notebook 
-
-To get help on a function, enter `function_name?` in a cell. 
-Quick hep can also be obtained by pressing SHIFT + TAB.
-
 ## Call bash from a notebook
 
 Prefix the bash call with an exclamation mark, for example:
@@ -281,6 +265,34 @@ Prefix the bash call with an exclamation mark, for example:
 In fact the question mark also works from an ipython shell. 
 See also 
 [Difference between ! and % in Jupyter Notebooks](https://stackoverflow.com/questions/45784499/difference-between-and-in-jupyter-notebooks)
+
+
+## Dashboards and widgets
+
+- [Voila dashboard](https://github.com/voila-dashboards/voila)
+
+    - Examples dasboards and applications in the [Voilà
+      gallery](https://voila-gallery.org/)
+
+- [ipywidgets](https://github.com/jupyter-widgets/ipywidgets)
+  
+  > "interactive HTML widgets for Jupyter notebooks and the IPython kernel."
+
+
+## Display all rows and columns of a notebook 
+
+Display all columns
+
+    pandas.options.display.max_columns = None
+
+Display max rows
+
+    pandas.set_option('display.max_rows', 500)
+
+With a  context manager [as in this answer](https://stackoverflow.com/a/47113685/2641825)
+
+    with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
+    some pandas stuff
 
 ## Download data from a jupyter notebook    
 
@@ -306,20 +318,21 @@ To get a link to a csv file, enter the above function and the code below in a ju
 [Using jupyter to write documentation](https://hub.packtpub.com/using-jupyter-write-documentation/)
 
 
-## Display all rows and columns of a notebook 
+## Help in a jupyter notebook 
 
-Display all columns
+To get help on a function, enter `function_name?` in a cell. 
+Quick hep can also be obtained by pressing SHIFT + TAB.
 
-    pandas.options.display.max_columns = None
+## Install Jupyter
 
-Display max rows
+To [install Jupyter](https://jupyter.org/install) notebooks on python3:
 
-    pandas.set_option('display.max_rows', 500)
+    pip3 install jupyter notebook
 
-With a  context manager [as in this answer](https://stackoverflow.com/a/47113685/2641825)
+Then start the notebook server as such:
 
-    with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
-    some pandas stuff
+    jupyter notebook
+
 
 ## Table of content in your notebooks
 
@@ -342,15 +355,21 @@ This will make a configuration interface available at:
 
     http://localhost:8888/nbextensions
 
-
-
 Using the old Table of Content extension
 [jupyter table of content extension](https://github.com/minrk/ipython_extensions#table-of-contents)
-
 
     jupyter nbconvert --to markdown mynotebook.ipynb
     jupyter nbconvert --to html mynotebook.ipynb
 
+For a colleague using Anaconda [Installing
+jupyter_contrib_nbextensions](https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/install.html)
+specifies that 
+
+> "There are conda packages for the notebook extensions and the
+> jupyter_nbextensions_configurator available from conda-forge. You can install
+> both using" 
+
+    conda install -c conda-forge jupyter_contrib_nbextensions
 
 
 ## Version control the markdown version with git

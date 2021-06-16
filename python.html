@@ -667,22 +667,34 @@ set ^ other
 </div>
 <div id="jupyter-notebooks" class="section level1">
 <h1>Jupyter notebooks</h1>
-<div id="install-jupyter" class="section level2">
-<h2>Install Jupyter</h2>
-<p>To <a href="https://jupyter.org/install">install Jupyter</a> notebooks on python3:</p>
-<pre><code>pip3 install jupyter notebook</code></pre>
-<p>Then start the notebook server as such:</p>
-<pre><code>jupyter notebook</code></pre>
-</div>
-<div id="help-in-a-jupyter-notebook" class="section level2">
-<h2>Help in a jupyter notebook</h2>
-<p>To get help on a function, enter <code>function_name?</code> in a cell. Quick hep can also be obtained by pressing SHIFT + TAB.</p>
-</div>
 <div id="call-bash-from-a-notebook" class="section level2">
 <h2>Call bash from a notebook</h2>
 <p>Prefix the bash call with an exclamation mark, for example:</p>
 <pre><code>!df -h</code></pre>
 <p>In fact the question mark also works from an ipython shell. See also <a href="https://stackoverflow.com/questions/45784499/difference-between-and-in-jupyter-notebooks">Difference between ! and % in Jupyter Notebooks</a></p>
+</div>
+<div id="dashboards-and-widgets" class="section level2">
+<h2>Dashboards and widgets</h2>
+<ul>
+<li><p><a href="https://github.com/voila-dashboards/voila">Voila dashboard</a></p>
+<ul>
+<li>Examples dasboards and applications in the <a href="https://voila-gallery.org/">Voilà gallery</a></li>
+</ul></li>
+<li><p><a href="https://github.com/jupyter-widgets/ipywidgets">ipywidgets</a></p>
+<blockquote>
+<p>“interactive HTML widgets for Jupyter notebooks and the IPython kernel.”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="display-all-rows-and-columns-of-a-notebook" class="section level2">
+<h2>Display all rows and columns of a notebook</h2>
+<p>Display all columns</p>
+<pre><code>pandas.options.display.max_columns = None</code></pre>
+<p>Display max rows</p>
+<pre><code>pandas.set_option(&#39;display.max_rows&#39;, 500)</code></pre>
+<p>With a context manager <a href="https://stackoverflow.com/a/47113685/2641825">as in this answer</a></p>
+<pre><code>with pd.option_context(&#39;display.max_rows&#39;, 100, &#39;display.max_columns&#39;, 10):
+some pandas stuff</code></pre>
 </div>
 <div id="download-data-from-a-jupyter-notebook" class="section level2">
 <h2>Download data from a jupyter notebook</h2>
@@ -703,15 +715,16 @@ set ^ other
 <h2>Documentation with Jupyter</h2>
 <p><a href="https://hub.packtpub.com/using-jupyter-write-documentation/">Using jupyter to write documentation</a></p>
 </div>
-<div id="display-all-rows-and-columns-of-a-notebook" class="section level2">
-<h2>Display all rows and columns of a notebook</h2>
-<p>Display all columns</p>
-<pre><code>pandas.options.display.max_columns = None</code></pre>
-<p>Display max rows</p>
-<pre><code>pandas.set_option(&#39;display.max_rows&#39;, 500)</code></pre>
-<p>With a context manager <a href="https://stackoverflow.com/a/47113685/2641825">as in this answer</a></p>
-<pre><code>with pd.option_context(&#39;display.max_rows&#39;, 100, &#39;display.max_columns&#39;, 10):
-some pandas stuff</code></pre>
+<div id="help-in-a-jupyter-notebook" class="section level2">
+<h2>Help in a jupyter notebook</h2>
+<p>To get help on a function, enter <code>function_name?</code> in a cell. Quick hep can also be obtained by pressing SHIFT + TAB.</p>
+</div>
+<div id="install-jupyter" class="section level2">
+<h2>Install Jupyter</h2>
+<p>To <a href="https://jupyter.org/install">install Jupyter</a> notebooks on python3:</p>
+<pre><code>pip3 install jupyter notebook</code></pre>
+<p>Then start the notebook server as such:</p>
+<pre><code>jupyter notebook</code></pre>
 </div>
 <div id="table-of-content-in-your-notebooks" class="section level2">
 <h2>Table of content in your notebooks</h2>
@@ -728,6 +741,11 @@ jupyter nbextensions_configurator enable --user</code></pre>
 <p>Using the old Table of Content extension <a href="https://github.com/minrk/ipython_extensions#table-of-contents">jupyter table of content extension</a></p>
 <pre><code>jupyter nbconvert --to markdown mynotebook.ipynb
 jupyter nbconvert --to html mynotebook.ipynb</code></pre>
+<p>For a colleague using Anaconda <a href="https://jupyter-contrib-nbextensions.readthedocs.io/en/latest/install.html">Installing jupyter_contrib_nbextensions</a> specifies that</p>
+<blockquote>
+<p>“There are conda packages for the notebook extensions and the jupyter_nbextensions_configurator available from conda-forge. You can install both using”</p>
+</blockquote>
+<pre><code>conda install -c conda-forge jupyter_contrib_nbextensions</code></pre>
 </div>
 <div id="version-control-the-markdown-version-with-git" class="section level2">
 <h2>Version control the markdown version with git</h2>
