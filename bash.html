@@ -544,6 +544,8 @@ echo &quot;The pdf document containing all images is located at: /tmp/bli/output
 <pre><code>convert input.png -background white -alpha remove -alpha off output.png</code></pre>
 <p>Convert from png to jpg and change size</p>
 <pre><code>mogrify -resize 2000 -path ./newfolder -format jpg *.png</code></pre>
+<p>Only change format</p>
+<pre><code>mogrify  -path ./newfolder -format jpg *.png</code></pre>
 <p>See also more image modification commands in the edit image files section below.</p>
 </div>
 <div id="documents-between-various-formats-with-pandoc" class="section level2">
@@ -715,8 +717,13 @@ java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
     --specials              preserve special files
 -D                          same as --devices --specials</code></pre>
 <p>Other options I have used:</p>
-<pre><code>-v, --verbose increase verbosity
+<pre><code>-v, --verbose increase verbosity, use -vv for more verbose.
 -z, --compress compress file data during the transfer</code></pre>
+<p>To sync <a href="https://stackoverflow.com/a/11111793/2641825">only some file extensions</a></p>
+<blockquote>
+<p>“So if we only want <code>*.sh</code> files we have to exclude all files <code>--exclude=&quot;*&quot;</code>, include all directories <code>--include=&quot;*/&quot;</code> and include all <code>*.sh</code> files <code>--include=&quot;*.sh&quot;</code>.”</p>
+</blockquote>
+<pre><code>rsync -zav --include=&quot;*/&quot; --include=&quot;*.mdb&quot; --exclude=&quot;*&quot;  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/</code></pre>
 </div>
 </div>
 <div id="count" class="section level1">
@@ -826,20 +833,26 @@ grep -Eo &#39;(http|https)://[^/&quot;]+&#39;</code></pre>
 <h1>Edit</h1>
 <div id="edit-image-files" class="section level2">
 <h2>Edit Image files</h2>
+<div id="resize" class="section level3">
+<h3>Resize</h3>
 <p>Resize a picture to 2000 px wide using ImageMagick:</p>
 <pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
 <p>Resize a picture to 2000 px wide and also convert it to gray scale:</p>
 <pre><code>convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg </code></pre>
-<p>Convert to <a href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279">black and white</a> (tricky to get the threshold right):</p>
-<pre><code>convert picture1.jpg -threshold 40% picture2.jpg </code></pre>
-<p>Other option to convert to black and white <a href="https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images">good black and white bimodal images</a>:</p>
-<pre><code>convert -monochrome in.png out.png</code></pre>
 <p>Batch processing, resize all jpg images and place the resized images in a new folder</p>
 <pre><code>mkdir small
 mogrify -resize 2000 -path ./small *.jpg
 mogrify -resize 2000 -path ./small *.jpeg
 mogrify -resize 2000 -path ./small/ *.JPG
 mogrify -resize 2000 -type Grayscale -path ./small *.jpg</code></pre>
+</div>
+<div id="convert-1" class="section level3">
+<h3>Convert</h3>
+<p>Convert to different color scheme, other file format or rotate images.</p>
+<p>Convert to <a href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279">black and white</a> (tricky to get the threshold right):</p>
+<pre><code>convert picture1.jpg -threshold 40% picture2.jpg </code></pre>
+<p>Other option to convert to black and white <a href="https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images">good black and white bimodal images</a>:</p>
+<pre><code>convert -monochrome in.png out.png</code></pre>
 <p>Batch processing, rotate all images clockwise or counter clockwise</p>
 <pre><code>mogrify -rotate 90 ../small/ *.JPG
 mogrify -rotate 270 ../small/ *.JPG</code></pre>
@@ -853,6 +866,7 @@ mogrify -rotate 270 ../small/ *.JPG</code></pre>
 <p><policy domain="resource" name="disk" value="4GiB"/></p>
 <p>Convert from png to jpg and change size</p>
 <pre><code>mogrify -resize 2000 -path ./newfolder -format jpg *.png</code></pre>
+</div>
 </div>
 <div id="edit-music-files" class="section level2">
 <h2>Edit music files</h2>
@@ -1464,42 +1478,59 @@ eval `ssh-agent`</code></pre>
 </div>
 <div id="system" class="section level1">
 <h1>System</h1>
-<p>OS release</p>
-<pre><code>less /etc/os-release </code></pre>
+<div id="disk-usage-and-memory" class="section level2">
+<h2>Disk usage and memory</h2>
 <p>Disk usage</p>
 <pre><code>du -hd1  # sub-folder size at depth=1 
 du -hs * # sub-folder size summary</code></pre>
 <p>Display available space on drives</p>
 <pre><code>df -h</code></pre>
 <p>Display available RAM memory</p>
-<pre><code>less /proc/meminfo</code></pre>
-<p>Install a program</p>
-<pre><code>sudo apt-get install </code></pre>
-<p>System name</p>
-<pre><code>uname -a
-
-file /sbin/init
-
-hostname -f </code></pre>
-<p>Start and quit a super user session</p>
-<pre><code>su
-exit </code></pre>
-<p>Last time the system was started</p>
-<pre><code>last reboot 
-last</code></pre>
+<pre><code>cat /proc/meminfo</code></pre>
+</div>
+<div id="environment-variables" class="section level2">
+<h2>Environment variables</h2>
 <p>Show environment variables</p>
 <pre><code>printenv 
 printenv LC_TIME</code></pre>
-<div id="partition-disks" class="section level2">
-<h2>Partition disks</h2>
-<p>Format a USB drive as a FAT 32 partition.</p>
-<pre><code>sudo fdisk -l 
-sudo umount /dev/mmcblk0p1 
-sudo mkdosfs -F 32 -I /dev/mmcblk0</code></pre>
-<p>format a USB drive as a FAT 32 partition smaller than the drive size</p>
-<pre><code>sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))</code></pre>
-<p>I used the GUI tool Gparted. To see if a partition is primary, use the command: sudo parted /dev/mmcblk0 # then: print</p>
-<p>This will print the type (primary or logical) of the partition.</p>
+</div>
+<div id="jobs-and-processes" class="section level2">
+<h2>Jobs and processes</h2>
+<div id="monitor-processes" class="section level3">
+<h3>Monitor processes</h3>
+<p>Display Linux processes</p>
+<pre><code>top</code></pre>
+<p>Interactive process viewer</p>
+<pre><code>htop</code></pre>
+<p>Run a command every 2 seconds, for example to list a folder as new files are being written to it:</p>
+<pre><code>watch ls</code></pre>
+<p>Follow the end of a log file, as it is written</p>
+<pre><code>tail filename.log</code></pre>
+<p>Find out which program is listening to which port</p>
+<pre><code>sudo netstat -pna | grep &lt;port_number&gt;</code></pre>
+</div>
+<div id="start-stop-move-to-background" class="section level3">
+<h3>Start, stop, move to background</h3>
+<p>List</p>
+<pre><code>jobs</code></pre>
+<p>Bring a job to the foreground</p>
+<pre><code>fg job_number</code></pre>
+<p>Run a job in the background. A command followed by an &amp; will run in the background.</p>
+<p>Stop a job</p>
+<pre><code>CTRL ^ Z</code></pre>
+<p>Move a stopped job to the background</p>
+<pre><code>bg</code></pre>
+<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-bash-s-job-control-to-manage-foreground-and-background-processes">How to manage foreground and background processes</a> “By default, the bg command operates on the most recently stopped process. If you’ve stopped multiple “</p>
+<p>Quit a job</p>
+<pre><code> CTRL ^ C</code></pre>
+<p>Kill a malfunctioning program:</p>
+<pre><code>kill process_id
+kill -9 process_it # -9 forces the kill</code></pre>
+<p>Find a program id with:</p>
+<pre><code>ps aux</code></pre>
+<p>Kill a graphical program, by clicking on it:</p>
+<pre><code> xkill</code></pre>
+</div>
 </div>
 <div id="keyboard" class="section level2">
 <h2>Keyboard</h2>
@@ -1539,6 +1570,17 @@ sudo locale-gen ru_RU.UTF-8</code></pre>
 <p>run this update command</p>
 <pre><code>sudo update-locale </code></pre>
 </div>
+<div id="os-version-and-system-name" class="section level2">
+<h2>OS version and system name</h2>
+<p>OS release</p>
+<pre><code>cat /etc/os-release </code></pre>
+<p>System name</p>
+<pre><code>uname -a
+
+file /sbin/init
+
+hostname -f </code></pre>
+</div>
 <div id="partitioning-and-formatting-drives" class="section level2">
 <h2>Partitioning and formatting drives</h2>
 <p>Manipulate the disk partition table <a href="https://ubuntuforums.org/archive/index.php/t-2030703.html">See forum post July 21st, 2012, 09:08 AM</a></p>
@@ -1552,41 +1594,32 @@ w # write table to disk</code></pre>
 <p>Create a MS-DOS file system for USB drives</p>
 <pre><code>mkfs.vfat -n &#39;usb_drive_name&#39; -I /dev/sdb1</code></pre>
 <p>You can also use the GUI gparted.</p>
+<div id="format-a-usb-drive" class="section level3">
+<h3>Format a USB drive</h3>
+<p>Format a USB drive as a FAT 32 partition.</p>
+<pre><code>sudo fdisk -l 
+sudo umount /dev/mmcblk0p1 
+sudo mkdosfs -F 32 -I /dev/mmcblk0</code></pre>
+<p>format a USB drive as a FAT 32 partition smaller than the drive size</p>
+<pre><code>sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))</code></pre>
+<p>I used the GUI tool Gparted. To see if a partition is primary, use the command: sudo parted /dev/mmcblk0 # then: print</p>
+<p>This will print the type (primary or logical) of the partition.</p>
 </div>
-<div id="monitoring" class="section level2">
-<h2>Monitoring</h2>
-<p>Display Linux processes</p>
-<pre><code>top</code></pre>
-<p>Interactive process viewer</p>
-<pre><code>htop</code></pre>
-<p>Run a command every 2 seconds, for example to list a folder as new files are being written to it:</p>
-<pre><code>watch ls</code></pre>
-<p>Follow the end of a log file, as it is written</p>
-<pre><code>tail filename.log</code></pre>
-<p>Find out which program is listening to which port</p>
-<pre><code>sudo netstat -pna | grep &lt;port_number&gt;</code></pre>
 </div>
-<div id="job-handling" class="section level2">
-<h2>Job handling</h2>
-<p>List</p>
-<pre><code>jobs</code></pre>
-<p>Bring a job to the foreground</p>
-<pre><code>fg job_number</code></pre>
-<p>Run a job in the background. A command followed by an &amp; will run in the background.</p>
-<p>Stop a job</p>
-<pre><code>CTRL ^ Z</code></pre>
-<p>Move a stopped job to the background</p>
-<pre><code>bg</code></pre>
-<p><a href="https://www.digitalocean.com/community/tutorials/how-to-use-bash-s-job-control-to-manage-foreground-and-background-processes">How to manage foreground and background processes</a> “By default, the bg command operates on the most recently stopped process. If you’ve stopped multiple “</p>
-<p>Quit a job</p>
-<pre><code> CTRL ^ C</code></pre>
-<p>Kill a malfunctioning program:</p>
-<pre><code>kill process_id
-kill -9 process_it # -9 forces the kill</code></pre>
-<p>Find a program id with:</p>
-<pre><code>ps aux</code></pre>
-<p>Kill a graphical program, by clicking on it:</p>
-<pre><code> xkill</code></pre>
+<div id="user-activity" class="section level2">
+<h2>User activity</h2>
+<div id="monitor-user-activity" class="section level3">
+<h3>Monitor user activity</h3>
+<p>Last time the system was started</p>
+<pre><code>last reboot 
+last</code></pre>
+</div>
+<div id="super-user" class="section level3">
+<h3>Super user</h3>
+<p>Start and quit a super user session</p>
+<pre><code>su
+exit </code></pre>
+</div>
 </div>
 </div>
 <div id="terminal-multiplexers" class="section level1">

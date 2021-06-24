@@ -132,6 +132,10 @@ Convert from png to jpg and change size
 
     mogrify -resize 2000 -path ./newfolder -format jpg *.png
 
+Only change format 
+
+    mogrify  -path ./newfolder -format jpg *.png
+
 See also more image modification commands in the edit image files section below.
 
 
@@ -382,8 +386,18 @@ The option `-a` does all of the following:
 
 Other options I have used: 
 
-    -v, --verbose increase verbosity
+    -v, --verbose increase verbosity, use -vv for more verbose.
     -z, --compress compress file data during the transfer
+
+
+To sync [only some file
+extensions](https://stackoverflow.com/a/11111793/2641825)
+
+> "So if we only want `*.sh` files we have to exclude all files `--exclude="*"`,
+> include all directories `--include="*/"` and include all `*.sh` files
+> `--include="*.sh"`."
+
+    rsync -zav --include="*/" --include="*.mdb" --exclude="*"  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/
 
 
 # Count
@@ -548,6 +562,8 @@ This is how I extracted all links from an html file:
 
 ## Edit Image files
 
+### Resize
+
 Resize a picture to 2000 px wide using ImageMagick:
 
     convert picture1.jpg -resize 2000 picture2.jpg 
@@ -555,6 +571,19 @@ Resize a picture to 2000 px wide using ImageMagick:
 Resize a picture to 2000 px wide and also convert it to gray scale:
 
     convert picture1.jpg -resize 2000 -type Grayscale picture2.jpg 
+
+Batch processing, resize all jpg images and place the resized images in a new folder
+
+    mkdir small
+    mogrify -resize 2000 -path ./small *.jpg
+    mogrify -resize 2000 -path ./small *.jpeg
+    mogrify -resize 2000 -path ./small/ *.JPG
+    mogrify -resize 2000 -type Grayscale -path ./small *.jpg
+
+
+### Convert
+
+Convert to different color scheme, other file format or rotate images.
 
 Convert to [black and white](http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279)
 (tricky to get the threshold right): 
@@ -566,19 +595,10 @@ images](https://superuser.com/questions/75373/convert-color-photos-of-documents-
 
     convert -monochrome in.png out.png
 
-Batch processing, resize all jpg images and place the resized images in a new folder
-
-    mkdir small
-    mogrify -resize 2000 -path ./small *.jpg
-    mogrify -resize 2000 -path ./small *.jpeg
-    mogrify -resize 2000 -path ./small/ *.JPG
-    mogrify -resize 2000 -type Grayscale -path ./small *.jpg
-
 Batch processing, rotate all images clockwise or counter clockwise
 
     mogrify -rotate 90 ../small/ *.JPG
     mogrify -rotate 270 ../small/ *.JPG
-
 
 Error: "cache resources exhausted" can appear in conversion of large images.
 
@@ -598,10 +618,10 @@ to
 
 <policy domain="resource" name="disk" value="4GiB"/>
 
-
 Convert from png to jpg and change size
 
     mogrify -resize 2000 -path ./newfolder -format jpg *.png
+
 
 ## Edit music files
 
@@ -1387,9 +1407,7 @@ Verify the signature
 
 # System
 
-OS release
-
-    less /etc/os-release 
+## Disk usage and memory
 
 Disk usage
 
@@ -1402,54 +1420,82 @@ Display available space on drives
 
 Display available RAM memory
 
-    less /proc/meminfo
+    cat /proc/meminfo
 
 
-Install a program
 
-    sudo apt-get install 
-
-System name
-
-    uname -a
-
-    file /sbin/init
-
-    hostname -f 
-
-Start and quit a super user session
-
-    su
-    exit 
-
-Last time the system was started
-
-    last reboot 
-    last
+## Environment variables
 
 Show environment variables
 
     printenv 
     printenv LC_TIME
 
-## Partition disks
+## Jobs and processes 
 
-Format a USB drive as a FAT 32 partition.
+### Monitor processes
 
-    sudo fdisk -l 
-    sudo umount /dev/mmcblk0p1 
-    sudo mkdosfs -F 32 -I /dev/mmcblk0
+Display Linux processes
 
-format a USB drive as a FAT 32 partition smaller than the drive size
+    top
 
-    sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))
+Interactive process viewer
 
-I used the GUI tool Gparted.
-To see if a partition is primary, use the command:
-    sudo parted /dev/mmcblk0 # then:
-    print
+    htop
 
-This will print the type (primary or logical) of the partition.
+Run a command every 2 seconds, 
+for example to list a folder as new files are being written to it:
+
+    watch ls
+
+Follow the end of a log file, as it is written
+
+    tail filename.log
+
+Find out which program is listening to which port
+
+    sudo netstat -pna | grep <port_number>
+
+### Start, stop, move to background
+
+List
+
+    jobs
+
+Bring a job to the foreground
+
+    fg job_number
+
+Run a job in the background. A command followed by an & will run in the background.
+
+Stop a job
+
+    CTRL ^ Z
+
+Move a stopped job to the background
+
+    bg
+
+[How to manage foreground and background processes](https://www.digitalocean.com/community/tutorials/how-to-use-bash-s-job-control-to-manage-foreground-and-background-processes) 
+“By default, the bg command operates on the most recently stopped process. If you've stopped multiple “
+
+Quit a job
+
+     CTRL ^ C
+
+Kill a malfunctioning program:
+
+    kill process_id
+    kill -9 process_it # -9 forces the kill
+
+Find a program id with:
+
+    ps aux
+
+Kill a graphical program, by clicking on it:
+
+     xkill
+
 
 ## Keyboard
 bash french blogger recommended a simple shell command to change keyboard layout :
@@ -1513,6 +1559,21 @@ run this update command
     sudo update-locale 
 
 
+## OS version and system name
+
+OS release
+
+    cat /etc/os-release 
+
+System name
+
+    uname -a
+
+    file /sbin/init
+
+    hostname -f 
+
+
 ## Partitioning and formatting drives
 
 Manipulate the disk partition table 
@@ -1533,67 +1594,40 @@ Create a MS-DOS file system for USB drives
 You can also use the GUI gparted.
 
 
-## Monitoring
+### Format a USB drive
 
-Display Linux processes
+Format a USB drive as a FAT 32 partition.
 
-    top
+    sudo fdisk -l 
+    sudo umount /dev/mmcblk0p1 
+    sudo mkdosfs -F 32 -I /dev/mmcblk0
 
-Interactive process viewer
+format a USB drive as a FAT 32 partition smaller than the drive size
 
-    htop
+    sudo mkdosfs -I -F 32 /dev/mmcblk0 $((2*1024*1024))
 
-Run a command every 2 seconds, 
-for example to list a folder as new files are being written to it:
+I used the GUI tool Gparted.
+To see if a partition is primary, use the command:
+    sudo parted /dev/mmcblk0 # then:
+    print
 
-    watch ls
+This will print the type (primary or logical) of the partition.
 
-Follow the end of a log file, as it is written
+## User activity
 
-    tail filename.log
+### Monitor user activity
 
-Find out which program is listening to which port
+Last time the system was started
 
-    sudo netstat -pna | grep <port_number>
+    last reboot 
+    last
 
-## Job handling
-List
 
-    jobs
+### Super user
+Start and quit a super user session
 
-Bring a job to the foreground
-
-    fg job_number
-
-Run a job in the background. A command followed by an & will run in the background.
-
-Stop a job
-
-    CTRL ^ Z
-
-Move a stopped job to the background
-
-    bg
-
-[How to manage foreground and background processes](https://www.digitalocean.com/community/tutorials/how-to-use-bash-s-job-control-to-manage-foreground-and-background-processes) 
-“By default, the bg command operates on the most recently stopped process. If you've stopped multiple “
-
-Quit a job
-
-     CTRL ^ C
-
-Kill a malfunctioning program:
-
-    kill process_id
-    kill -9 process_it # -9 forces the kill
-
-Find a program id with:
-
-    ps aux
-
-Kill a graphical program, by clicking on it:
-
-     xkill
+    su
+    exit 
 
 
 # Terminal multiplexers
