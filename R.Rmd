@@ -320,6 +320,18 @@ Can be solved by installing these dependencies:
     sudo apt install libxml2-dev 
     sudo apt install libssl-dev
 
+
+## Eurostat Package
+
+Install required GDAL development library for the "sf" package
+
+    sudo apt install libgdal-dev
+
+Then at the R prompt
+
+    install.packages("eurostat")
+
+
 # Information about your R system
 
 ```{r eval=FALSE}
