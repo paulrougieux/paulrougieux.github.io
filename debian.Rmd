@@ -653,6 +653,116 @@ Or
 [What is the difference between service and systemctl](https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl)
 > "[...], service is designed as a high-level wrapper to "abstract" out various service managers like init.d, initctl, and (of course) systemctl."
 
+# NGINX
+
+Install
+
+    sudo apt install nginx
+
+## Configure HTTP only
+
+Attempt at an nginx configuration for server_name.net, based on the default nginx config
+(comments removed) at /etc/nginx/sites-enabled/default.
+Directory listing is enabled through autoindex on.
+
+Create a configuration file in sites-available:
+
+    vim /etc/nginx/sites-available/server_name.net
+
+Insert the following
+
+    server {
+            listen 80 default_server;
+            listen [::]:80 default_server;
+            root /var/www/server_name.net;
+            index index.html index.htm index.nginx-debian.html;
+            autoindex on;
+            server_name server_name.net;
+            location / {
+                    try_files $uri $uri/ =404;
+            }
+    }
+
+Create a symbolik link to sites-enabled
+
+    ln -s /etc/nginx/sites-available/server_name.net /etc/nginx/sites-enabled/server_name.net
+
+Restart NGINX as a super user:
+
+    systemctl restart nginx
+
+
+## Enable HTTPS
+
+
+Install certbot and the related nginx plugin
+
+    su
+
+    apt install python3-certbot-nginx
+
+Make a certificate for nginx as explained on the [debian wiki page for
+letsencrypt](https://wiki.debian.org/LetsEncrypt). 
+
+    export PATH=/usr/sbin:$PATH
+    certbot --nginx -d edartra.de --post-hook "/usr/sbin/service nginx restart"
+
+Enable auto renewal of certificate:
+
+    su
+
+    crontab -e
+
+Add the following line
+
+    16 3 * * * certbot renew --post-hook "systemctl reload nginx"
+
+Note: In my case the certbot command failed with the following message:
+
+    The error was: NoInstallationError("Could not find a usable 'nginx' binary. Ensure
+    nginX EXIsts, the binary is executable, and your PATH is set correctly.")
+
+Because `/usr/sbin` was missing from the PATH. To add it temporarily before
+running the `certbot` command:
+
+    export PATH=/usr/sbin:$PATH
+
+
+## Configure HTTP redirect to HTTPS
+
+
+Edit the file in sites-enabled
+
+    vim /etc/nginx/sites-enabled/server_name.net
+
+Add the following content
+
+    server {
+            root /var/www/server_name.net;
+            index index.html index.htm index.nginx-debian.html;
+            autoindex on;
+            server_name server_name.net www.server_name.net;
+            location / {
+                    try_files $uri $uri/ =404;
+            }
+
+        listen [::]:443 ssl ipv6only=on; # managed by Certbot
+        listen 443 ssl; # managed by Certbot
+        ssl_certificate /etc/letsencrypt/live/server_name.net/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/server_name.net/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+    }
+
+    # Redirect http to https
+    server {
+           listen 0.0.0.0:80;
+           server_name server_name.net www.server_name.net;
+           rewrite ^ https://$host$request_uri? permanent;
+    }
+
+
 # Mouse and Touchpad
 
 Under Gnome Settings / Mouse and Touchpad, I set Natural scrolling off under
@@ -753,6 +863,23 @@ Find out which Debian version is running
 Display the OS release
 
     cat /etc/os-release 
+
+
+
+# Suspend or stop the system
+
+To suspend the system from the command line: 
+
+    systemctl suspend
+
+or 
+
+    systemctl hibernate
+
+To stop the system
+
+    sudo halt
+
 
 # Tools
 

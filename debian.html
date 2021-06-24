@@ -867,6 +867,84 @@ sudo apt install fonts-deva-extra</code></pre>
 <pre><code>sudo systemctl restart NetworkManager</code></pre>
 <p><a href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences between systemctl and service commands</a>. <a href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What is the difference between service and systemctl</a> &gt; “[…], service is designed as a high-level wrapper to”abstract&quot; out various service managers like init.d, initctl, and (of course) systemctl.&quot;</p>
 </div>
+<div id="nginx" class="section level1">
+<h1>NGINX</h1>
+<p>Install</p>
+<pre><code>sudo apt install nginx</code></pre>
+<div id="configure-http-only" class="section level2">
+<h2>Configure HTTP only</h2>
+<p>Attempt at an nginx configuration for server_name.net, based on the default nginx config (comments removed) at /etc/nginx/sites-enabled/default. Directory listing is enabled through autoindex on.</p>
+<p>Create a configuration file in sites-available:</p>
+<pre><code>vim /etc/nginx/sites-available/server_name.net</code></pre>
+<p>Insert the following</p>
+<pre><code>server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        root /var/www/server_name.net;
+        index index.html index.htm index.nginx-debian.html;
+        autoindex on;
+        server_name server_name.net;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+}</code></pre>
+<p>Create a symbolik link to sites-enabled</p>
+<pre><code>ln -s /etc/nginx/sites-available/server_name.net /etc/nginx/sites-enabled/server_name.net</code></pre>
+<p>Restart NGINX as a super user:</p>
+<pre><code>systemctl restart nginx</code></pre>
+</div>
+<div id="enable-https" class="section level2">
+<h2>Enable HTTPS</h2>
+<p>Install certbot and the related nginx plugin</p>
+<pre><code>su
+
+apt install python3-certbot-nginx</code></pre>
+<p>Make a certificate for nginx as explained on the <a href="https://wiki.debian.org/LetsEncrypt">debian wiki page for letsencrypt</a>.</p>
+<pre><code>export PATH=/usr/sbin:$PATH
+certbot --nginx -d edartra.de --post-hook &quot;/usr/sbin/service nginx restart&quot;</code></pre>
+<p>Enable auto renewal of certificate:</p>
+<pre><code>su
+
+crontab -e</code></pre>
+<p>Add the following line</p>
+<pre><code>16 3 * * * certbot renew --post-hook &quot;systemctl reload nginx&quot;</code></pre>
+<p>Note: In my case the certbot command failed with the following message:</p>
+<pre><code>The error was: NoInstallationError(&quot;Could not find a usable &#39;nginx&#39; binary. Ensure
+nginX EXIsts, the binary is executable, and your PATH is set correctly.&quot;)</code></pre>
+<p>Because <code>/usr/sbin</code> was missing from the PATH. To add it temporarily before running the <code>certbot</code> command:</p>
+<pre><code>export PATH=/usr/sbin:$PATH</code></pre>
+</div>
+<div id="configure-http-redirect-to-https" class="section level2">
+<h2>Configure HTTP redirect to HTTPS</h2>
+<p>Edit the file in sites-enabled</p>
+<pre><code>vim /etc/nginx/sites-enabled/server_name.net</code></pre>
+<p>Add the following content</p>
+<pre><code>server {
+        root /var/www/server_name.net;
+        index index.html index.htm index.nginx-debian.html;
+        autoindex on;
+        server_name server_name.net www.server_name.net;
+        location / {
+                try_files $uri $uri/ =404;
+        }
+
+    listen [::]:443 ssl ipv6only=on; # managed by Certbot
+    listen 443 ssl; # managed by Certbot
+    ssl_certificate /etc/letsencrypt/live/server_name.net/fullchain.pem; # managed by Certbot
+    ssl_certificate_key /etc/letsencrypt/live/server_name.net/privkey.pem; # managed by Certbot
+    include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+}
+
+# Redirect http to https
+server {
+       listen 0.0.0.0:80;
+       server_name server_name.net www.server_name.net;
+       rewrite ^ https://$host$request_uri? permanent;
+}</code></pre>
+</div>
+</div>
 <div id="mouse-and-touchpad" class="section level1">
 <h1>Mouse and Touchpad</h1>
 <p>Under Gnome Settings / Mouse and Touchpad, I set Natural scrolling off under the mouse and the touchpad sections.</p>
@@ -924,6 +1002,15 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 <pre><code>cat /etc/issue</code></pre>
 <p>Display the OS release</p>
 <pre><code>cat /etc/os-release </code></pre>
+</div>
+<div id="suspend-or-stop-the-system" class="section level1">
+<h1>Suspend or stop the system</h1>
+<p>To suspend the system from the command line:</p>
+<pre><code>systemctl suspend</code></pre>
+<p>or</p>
+<pre><code>systemctl hibernate</code></pre>
+<p>To stop the system</p>
+<pre><code>sudo halt</code></pre>
 </div>
 <div id="tools" class="section level1">
 <h1>Tools</h1>
