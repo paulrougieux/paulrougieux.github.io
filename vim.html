@@ -677,6 +677,26 @@ For example, to sort on only the first three letters
 of each line: &gt;
     :sort /\a\a\a/ r</code></pre>
 </div>
+<div id="increment-numbers-in-a-list" class="section level3">
+<h3>Increment numbers in a list</h3>
+<p>:help ctrl-a</p>
+<pre><code>    {Visual}g CTRL-A Add [count] to the number or alphabetic character in
+            the highlighted text. If several lines are
+                highlighted, each one will be incremented by an
+            additional [count] (so effectively creating a
+            [count] incrementing sequence).  {not in Vi}
+            For Example, if you have this list of numbers:
+                1. ~
+                1. ~
+                1. ~
+                1. ~
+            Move to the second &quot;1.&quot; and Visually select three
+            lines, pressing g CTRL-A results in:
+                1. ~
+                2. ~
+                3. ~
+                4. ~</code></pre>
+</div>
 </div>
 <div id="align-columns" class="section level2">
 <h2>Align columns</h2>
@@ -723,6 +743,9 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
 <div id="numbers" class="section level3">
 <h3>Numbers</h3>
+<p>Insert Markdown title marker <code>#</code> before a number at the beginning of a line</p>
+<pre><code>%s/^\(\d.\)/# \1/g</code></pre>
+<p>Note <code>\0</code> matches the hole pattern. Use backslash-escaped parenthesis to match a particular pattern. <code>\d</code> matches any digit.</p>
 <p>Remove bracketed references from text copied from Wikipedia.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
 </div>
@@ -1055,13 +1078,15 @@ c-w-= to restore. </code></pre>
 <div id="explore-files" class="section level2">
 <h2>Explore files</h2>
 <p>Vim comes with a file explorer:</p>
-<pre><code>:E</code></pre>
+<pre><code>:E
+:Le
+:Te</code></pre>
 <p>or</p>
-<pre><code>:Explorer</code></pre>
+<pre><code>:Explore</code></pre>
 <p>To open a file in vim press enter. To open a file better suited for other applications, such as a pdf, an html file or an image, press</p>
 <pre><code>x</code></pre>
 <p>To <a href="https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file">return to file editing without opening any file</a> (and to switch back and forth between editing and explorer):</p>
-<pre><code>:Rex
+<pre><code>:Rexplore
 :Re</code></pre>
 <p>In the file explorer, also called “netrw”, pressing <code>s</code> changes the way files are sorted by name, time, size. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system. Pressing <code>x</code> on a folder name opens the files explorer. The <code>i</code> key switches between different view types, tree view, detailed view, summarised view. To rename a file press <code>R</code> and to delete a file press <code>D</code>.</p>
 <p>To create a new file in the current directory visible in the explorer, press:</p>

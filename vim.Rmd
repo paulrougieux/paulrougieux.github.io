@@ -296,6 +296,30 @@ Sort within a pattern
     of each line: >
         :sort /\a\a\a/ r
 
+
+
+### Increment numbers in a list
+
+:help ctrl-a
+
+
+        {Visual}g CTRL-A Add [count] to the number or alphabetic character in
+                the highlighted text. If several lines are
+                    highlighted, each one will be incremented by an
+                additional [count] (so effectively creating a
+                [count] incrementing sequence).  {not in Vi}
+                For Example, if you have this list of numbers:
+                    1. ~
+                    1. ~
+                    1. ~
+                    1. ~
+                Move to the second "1." and Visually select three
+                lines, pressing g CTRL-A results in:
+                    1. ~
+                    2. ~
+                    3. ~
+                    4. ~
+
 ## Align columns
 
 The tabular plugin provides a Tabular command which can be abbreviated to
@@ -378,6 +402,13 @@ For example to [remove the last 2 characters of each line in a selection](https:
     :'<,'>s/..$//
 
 ### Numbers
+
+Insert Markdown title marker `#` before a number at the beginning of a line
+
+    %s/^\(\d.\)/# \1/g
+
+Note `\0` matches the hole pattern. Use backslash-escaped parenthesis to match
+a particular pattern. `\d` matches any digit.
 
 Remove bracketed references from text copied from Wikipedia.
 
@@ -896,10 +927,12 @@ Enter `:line number` to jump to a particular line number.
 Vim comes with a file explorer:
 
     :E
+    :Le
+    :Te
 
 or 
 
-    :Explorer
+    :Explore
 
 To open a file in vim press enter. To open a file better suited for other
 applications, such as a pdf, an html file or an image, press 
@@ -910,7 +943,7 @@ To [return to file editing without opening any
 file](https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file)
 (and to switch back and forth between editing and explorer):
 
-    :Rex
+    :Rexplore
     :Re
 
 In the file explorer, also called "netrw", pressing `s` changes the way files
