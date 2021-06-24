@@ -1,6 +1,6 @@
-""""""""""""""""""""""""""
-" Vundle package manager "
-""""""""""""""""""""""""""
+""""""""""""""""""""""""""""
+" # Vundle package manager "
+""""""""""""""""""""""""""""
 " Should be at the beginning 
 set nocompatible              " be iMproved, required
 filetype off                  " required
@@ -58,9 +58,9 @@ filetype plugin indent on    " required
 " set runtimepath-=~/.vim/bundle/vim-latex
 
 
-"""""""""""""""""""""""""
-" General configuration "
-"""""""""""""""""""""""""
+"""""""""""""""""""""""""""
+" # General configuration "
+"""""""""""""""""""""""""""
 " Determine the type of the current file
 filetype on
 syntax enable
@@ -111,9 +111,9 @@ nmap <LocalLeader>m $4b
 
 
 
-""""""""""""""""""
-" AZERTY keyboard "
-""""""""""""""""""
+""""""""""""""""""""
+" # AZERTY keyboard "
+""""""""""""""""""""
 " Shared on https://stackoverflow.com/a/62195253/2641825
 " Move to the end of the line
 noremap m $
@@ -127,9 +127,9 @@ vnoremap <Up> gk
 nnoremap <Down> gj
 vnoremap <Down> gj
 
-""""""""""""""""
-" Colour theme "
-""""""""""""""""
+""""""""""""""""""
+" # Colour theme "
+""""""""""""""""""
 set t_Co=256
 " terminal’s color palette #444444 is suggested by jellybeans.vim,
 " I used 353131
@@ -144,9 +144,9 @@ hi clear SpellBad
 "hi SpellBad cterm=underline
 hi SpellBad cterm=underline ctermbg=black
 
-"""""""""""""""""
-" File Explorer "
-"""""""""""""""""
+"""""""""""""""""""
+" # File Explorer "
+"""""""""""""""""""
 " Tree list view
 let g:netrw_liststyle = 3
 " Remove the banner
@@ -155,9 +155,13 @@ let g:netrw_banner = 0
 " deletes netrw's buffer once it's hidden (using ':q', for example)
 autocmd FileType netrw setl bufhidden=delete
 
-"""""""""""""""""""""
-" Git configuration "
-"""""""""""""""""""""
+" Lexplore with a 30 character size buffer only
+command! Ll Lexplore | vert res 30
+
+
+"""""""""""""""""""""""
+" # Git configuration "
+"""""""""""""""""""""""
 " Configure the fugitive plugin
 " Open git grep in a quickfix window with 'G grep'
 autocmd QuickFixCmdPost *grep* cwindow
@@ -169,9 +173,9 @@ command! Gwdiff vert term git diff --word-diff
 "command! -nargs=1 Gwdiff vert term git diff --word-diff <q-args>
 
 
-"""""""""""""""""""""""
-" Latex configuration "
-"""""""""""""""""""""""
+"""""""""""""""""""""""""
+" # Latex configuration "
+"""""""""""""""""""""""""
 " Settings for the vim-latex plugin
 " No folding
 :let Tex_FoldedSections=""
@@ -207,9 +211,9 @@ endfunction
 
 let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 
-""""""""""""""""""""""""""
-" Markdown configuration "
-""""""""""""""""""""""""""
+""""""""""""""""""""""""""""
+" # Markdown configuration "
+""""""""""""""""""""""""""""
 " Shortcut to align the current paragraph
 " J added to format also quoted paragraph correctly
 au BufRead,BufNewFile *.md map <C-P> vipJgqk
@@ -247,9 +251,9 @@ au BufRead,BufNewFile *.Rmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x>
 " nmap <LocalLeader>t command! '<,'>s/ /_/g
 
 
-""""""""""""""""""""""""
-" Python configuration "
-""""""""""""""""""""""""
+""""""""""""""""""""""""""
+" # Python configuration "
+""""""""""""""""""""""""""
 " Indentation settings
 set tabstop=4
 set expandtab
@@ -282,9 +286,9 @@ let g:ale_pattern_options = {
 \   '.*\.Rmd$': {'ale_enabled': 0},
 \}
 
-"""""""""""""""""""
-" R configuration "
-"""""""""""""""""""
+"""""""""""""""""""""
+" # R configuration "
+"""""""""""""""""""""
 " Autocomplete with Ctrl-Space, 
 au BufRead,BufNewFile *.R inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
@@ -333,9 +337,9 @@ augroup END
 command! Tt Tabularize /\t/r0
 
 
-""""""""""""""""""""""
-" Tmux configuration "
-""""""""""""""""""""""
+""""""""""""""""""""""""
+" # Tmux configuration "
+""""""""""""""""""""""""
 " Activate bracketed paste in tmux
 if &term =~ "screen"
   let &t_BE = "\e[?2004h"
