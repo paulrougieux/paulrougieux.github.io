@@ -25,8 +25,9 @@ export PATH=~/.npm-global/bin:$PATH
 # Paths for python modules
 export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_py/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_runner/":$PYTHONPATH
 export LIBCBM_DATA="$HOME/repos/libcbm_data/"
