@@ -157,7 +157,7 @@ Help about SQL commands:
     \h select
 
 
-# Information about databases, tables, columns
+# List schemas, tables, columns
 
 List databases
 
@@ -167,13 +167,13 @@ Connect to a database
 
     \c db_name
 
-List tables
-
-    \dt
-
 List schemas
 
     \dn
+
+List tables
+
+    \dt
 
 List tables for a particular schema i[list all tables in
 schema](https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql)
