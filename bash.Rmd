@@ -1380,9 +1380,10 @@ Copy a full directory (dmouraty) from the remote machine:
 
      scp -rp user@dest:/path destdirectory
 
+
 ## GPG signing keys
 
-Generate a pgp key
+Generate a PGP key
 
     gpg --gen-key
 
@@ -1395,14 +1396,33 @@ My keys are visible on pgp.mit.edu
 
 Sign a file
 
-    gpg --sign gpg.docx
+    gpg --sign filename.ext
 
 [Export GPG private and public key to a
 file](https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-private-key-and-public-key-to-a-file)
 
-Verify the signature
+Verify the signature of a file
 
-    gpg --verify gpg.docx.gpg
+    gpg --verify filename.ext.gpg
+
+List keys
+
+    gpg --list-keys
+    gpg --list-public-keys
+    gpg --list-secret-keys
+
+List files in the keyring
+
+    tree ~/.gnupg/
+
+Delete a key from the public keyring
+
+    gpg --delete-keys name
+
+Delete a key from the private keyring
+
+    gpg --delete-secret-keys name
+ 
 
 
 # System

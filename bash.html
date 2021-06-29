@@ -1464,16 +1464,26 @@ eval `ssh-agent`</code></pre>
 </div>
 <div id="gpg-signing-keys" class="section level2">
 <h2>GPG signing keys</h2>
-<p>Generate a pgp key</p>
+<p>Generate a PGP key</p>
 <pre><code>gpg --gen-key</code></pre>
 <p>To submit your key to a server, export the key</p>
 <pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
 <p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
 <p>Sign a file</p>
-<pre><code>gpg --sign gpg.docx</code></pre>
+<pre><code>gpg --sign filename.ext</code></pre>
 <p><a href="https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-private-key-and-public-key-to-a-file">Export GPG private and public key to a file</a></p>
-<p>Verify the signature</p>
-<pre><code>gpg --verify gpg.docx.gpg</code></pre>
+<p>Verify the signature of a file</p>
+<pre><code>gpg --verify filename.ext.gpg</code></pre>
+<p>List keys</p>
+<pre><code>gpg --list-keys
+gpg --list-public-keys
+gpg --list-secret-keys</code></pre>
+<p>List files in the keyring</p>
+<pre><code>tree ~/.gnupg/</code></pre>
+<p>Delete a key from the public keyring</p>
+<pre><code>gpg --delete-keys name</code></pre>
+<p>Delete a key from the private keyring</p>
+<pre><code>gpg --delete-secret-keys name</code></pre>
 </div>
 </div>
 <div id="system" class="section level1">
