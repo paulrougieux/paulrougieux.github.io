@@ -1744,6 +1744,10 @@ The linters I see most in python code are pylint and flake8.
 
 Pylint complains about [variable names that are too short](https://github.com/PyCQA/pylint/issues/2018)
 
+See the [python page](python.html) for the configuration details of the
+linters.
+
+
 ## Navigate code with tags 
 
 Install universtal ctags, the updated version
