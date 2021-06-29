@@ -89,6 +89,37 @@ Sample code with a function and if conditions:
 	function('')
 	function('lalala')
 
+# Databases
+
+## PostgreSQL
+
+The
+[pandas.to_sql](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html#io-sql-method)
+method uses sqlalchemy to write pandas data frame to a PostgreSQL database.
+
+> "The pandas.io.sql module provides a collection of query wrappers to both
+> facilitate data retrieval and to reduce dependency on DB-specific API.
+> Database abstraction is provided by SQLAlchemy if installed. In addition you
+> will need a driver library for your database. Examples of such drivers are
+> psycopg2 for PostgreSQL or pymysql for MySQL. For SQLite this is included in
+> Python’s standard library by default." 
+
+Create a database engin with SQLalchemy
+
+    from sqlalchemy import create_engine
+    engine = create_engine('postgresql://myusername:mypassword@myhost:5432/mydatabase')
+
+Send data to the database
+
+Blogs and Stackoverflow
+
+- [Load data into postgreSQL using python](https://hakibenita.com/fast-load-data-python-postgresql) (without pandas)
+
+- [Load CSVs into PostgreSQL using python and
+  pandas](https://medium.com/@apoor/quickly-load-csvs-into-postgresql-using-python-and-pandas-9101c274a92f)
+
+- [SO question pygresql-vs-psycopg2](https://stackoverflow.com/questions/413228/pygresql-vs-psycopg2)
+
 
 # Editors
 
@@ -140,6 +171,20 @@ Print the size of the output layer
     l = [1,2]
     print(type(l))
     # <type 'list'>
+
+
+## Convert between object types
+
+Character to numeric
+
+    int("3")
+    float("3.33")
+    int("3.33")
+
+Numeric to character
+
+    str(2)
+
 
 ## List
 
@@ -408,6 +453,18 @@ Add syncing to a given notebook:
 
 # Errors and exceptions
 
+## Handling Exceptions
+
+Python documentation on [Handling
+Exceptions](https://docs.python.org/3/tutorial/errors.html#handling-exceptions).
+
+    while True:
+        try:
+            x = int(input("Please enter a number: "))
+            break
+        except ValueError:
+            print("Oops!  That was no valid number.  Try again...")
+
 [Exception message capturing](https://stackoverflow.com/a/4690655/2641825)
 
     for i in [1,0]:
@@ -415,7 +472,17 @@ Add syncing to a given notebook:
             print(1/i)
         except Exception as e:
             print("Failed to compute:", str(e))
-         
+
+
+## Raising Exceptions
+
+Python documentation on [Raising
+Exceptions](https://docs.python.org/3/tutorial/errors.html#raising-exceptions)
+
+    raise Exception('spam')
+    raise ValueError('Not an acceptable value')
+    raise NameError('Wrong name')
+
 
 # Functions
 
@@ -793,6 +860,23 @@ You can create a data frame by passing a dictionary :
 ## Joining and merging
 
 Stackoverflow [Pandas mergin](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
+
+
+## Read and write csv
+
+
+### From an API
+
+Pandas data frames can be used to read CSV files from the [Comtrade
+data API](https://comtrade.un.org/Data/). For example, using the default API
+URL for all countries: 
+
+    import pandas
+    df = pandas.read_csv('http://comtrade.un.org/api/get?max=500&type=C&freq=A&px=HS&ps=2020&r=all&p=0&rg=all&cc=TOTAL&fmt=csv')
+
+Then use df.to_csv to write the data frame to a csv file
+
+     df.to_csv("/tmp/comtrade.csv")
 
 
 ## Reshaping
@@ -1336,10 +1420,93 @@ providing various ways to concatenate python strings.
  * RobustScaler
  * Normalizer
 
+
 # Style guide and linter
 
+## Black
+
 [Black](https://github.com/psf/black)
-"the uncompromising Python code formater"
+is "the uncompromising Python code formater"
+
+Run `black` as a pre commit hook with `pre-commit`
+
+
+## Flake 8
+
+Flake 8 looks at more than just formatting.
+
+[List of FLake8 warnings and error
+codes](https://pypi.org/project/flake8/1.6.1/#warning-error-codes)
+
+
+## Pre commit hooks
+
+Blog:
+
+- [pre commits using black and
+  flake8](https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/)
+
+Install `pre-commit`
+
+    pip install pre-commit
+
+Set up `pre-commit` in a repository
+
+    cd path_to_repository
+    vim requirements.txt # Add pre-commit
+    vim .pre-commit-config.yaml 
+
+Configuration options such as
+
+```
+repos:
+-   repo: https://github.com/ambv/black
+    rev: 21.6b0
+    hooks:
+    - id: black
+      language_version: python3.7
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.9
+    hooks:
+    - id: flake8
+```
+
+Update [hook repositories to the latest
+version](https://pre-commit.com/#using-the-latest-version-for-a-repository)
+
+    pre-commit autoupdate
+
+Install git hooks in your .git/ directory.
+
+    pre-commit install
+
+### Usage in Continuous integration
+
+[Usage in Continuous integration](https://pre-commit.com/#usage-in-continuous-integration) has a gitlab example:
+
+```
+    my_job:
+      variables:
+        PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+      cache:
+        paths:
+          - ${PRE_COMMIT_HOME}
+```
+
+## Pylint
+
+Edit the configuration file
+
+    vim ~/.pylintrc
+
+List of good names that shouldn't give a "short name" warning
+
+    [pylint]
+    good-names=df
+
+Generate a configuration file
+
+    pylint --generate-rcfile
 
 
 # Test driven development

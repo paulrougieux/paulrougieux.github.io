@@ -531,6 +531,26 @@ function(False)
 function(&#39;&#39;)
 function(&#39;lalala&#39;)</code></pre>
 </div>
+<div id="databases" class="section level1">
+<h1>Databases</h1>
+<div id="postgresql" class="section level2">
+<h2>PostgreSQL</h2>
+<p>The <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html#io-sql-method">pandas.to_sql</a> method uses sqlalchemy to write pandas data frame to a PostgreSQL database.</p>
+<blockquote>
+<p>“The pandas.io.sql module provides a collection of query wrappers to both facilitate data retrieval and to reduce dependency on DB-specific API. Database abstraction is provided by SQLAlchemy if installed. In addition you will need a driver library for your database. Examples of such drivers are psycopg2 for PostgreSQL or pymysql for MySQL. For SQLite this is included in Python’s standard library by default.”</p>
+</blockquote>
+<p>Create a database engin with SQLalchemy</p>
+<pre><code>from sqlalchemy import create_engine
+engine = create_engine(&#39;postgresql://myusername:mypassword@myhost:5432/mydatabase&#39;)</code></pre>
+<p>Send data to the database</p>
+<p>Blogs and Stackoverflow</p>
+<ul>
+<li><p><a href="https://hakibenita.com/fast-load-data-python-postgresql">Load data into postgreSQL using python</a> (without pandas)</p></li>
+<li><p><a href="https://medium.com/@apoor/quickly-load-csvs-into-postgresql-using-python-and-pandas-9101c274a92f">Load CSVs into PostgreSQL using python and pandas</a></p></li>
+<li><p><a href="https://stackoverflow.com/questions/413228/pygresql-vs-psycopg2">SO question pygresql-vs-psycopg2</a></p></li>
+</ul>
+</div>
+</div>
 <div id="editors" class="section level1">
 <h1>Editors</h1>
 <div id="spyder" class="section level2">
@@ -581,6 +601,15 @@ print(type(t))
 l = [1,2]
 print(type(l))
 # &lt;type &#39;list&#39;&gt;</code></pre>
+<div id="convert-between-object-types" class="section level2">
+<h2>Convert between object types</h2>
+<p>Character to numeric</p>
+<pre><code>int(&quot;3&quot;)
+float(&quot;3.33&quot;)
+int(&quot;3.33&quot;)</code></pre>
+<p>Numeric to character</p>
+<pre><code>str(2)</code></pre>
+</div>
 <div id="list" class="section level2">
 <h2>List</h2>
 <p><a href="https://stackoverflow.com/a/31077838/2641825">Remove an element from a list of strings</a></p>
@@ -771,13 +800,29 @@ jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipyn
 </div>
 <div id="errors-and-exceptions" class="section level1">
 <h1>Errors and exceptions</h1>
+<div id="handling-exceptions" class="section level2">
+<h2>Handling Exceptions</h2>
+<p>Python documentation on <a href="https://docs.python.org/3/tutorial/errors.html#handling-exceptions">Handling Exceptions</a>.</p>
+<pre><code>while True:
+    try:
+        x = int(input(&quot;Please enter a number: &quot;))
+        break
+    except ValueError:
+        print(&quot;Oops!  That was no valid number.  Try again...&quot;)</code></pre>
 <p><a href="https://stackoverflow.com/a/4690655/2641825">Exception message capturing</a></p>
 <pre><code>for i in [1,0]:
     try:
         print(1/i)
     except Exception as e:
-        print(&quot;Failed to compute:&quot;, str(e))
-     </code></pre>
+        print(&quot;Failed to compute:&quot;, str(e))</code></pre>
+</div>
+<div id="raising-exceptions" class="section level2">
+<h2>Raising Exceptions</h2>
+<p>Python documentation on <a href="https://docs.python.org/3/tutorial/errors.html#raising-exceptions">Raising Exceptions</a></p>
+<pre><code>raise Exception(&#39;spam&#39;)
+raise ValueError(&#39;Not an acceptable value&#39;)
+raise NameError(&#39;Wrong name&#39;)</code></pre>
+</div>
 </div>
 <div id="functions" class="section level1">
 <h1>Functions</h1>
@@ -1079,6 +1124,17 @@ pandas.DataFrame({&#39;a&#39;:range(0,3),&#39;b&#39;:range(3,6)})
 <div id="joining-and-merging" class="section level2">
 <h2>Joining and merging</h2>
 <p>Stackoverflow <a href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas mergin</a></p>
+</div>
+<div id="read-and-write-csv" class="section level2">
+<h2>Read and write csv</h2>
+<div id="from-an-api" class="section level3">
+<h3>From an API</h3>
+<p>Pandas data frames can be used to read CSV files from the <a href="https://comtrade.un.org/Data/">Comtrade data API</a>. For example, using the default API URL for all countries:</p>
+<pre><code>import pandas
+df = pandas.read_csv(&#39;http://comtrade.un.org/api/get?max=500&amp;type=C&amp;freq=A&amp;px=HS&amp;ps=2020&amp;r=all&amp;p=0&amp;rg=all&amp;cc=TOTAL&amp;fmt=csv&#39;)</code></pre>
+<p>Then use df.to_csv to write the data frame to a csv file</p>
+<pre><code> df.to_csv(&quot;/tmp/comtrade.csv&quot;)</code></pre>
+</div>
 </div>
 <div id="reshaping" class="section level2">
 <h2>Reshaping</h2>
@@ -1570,7 +1626,64 @@ df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))<
 </div>
 <div id="style-guide-and-linter" class="section level1">
 <h1>Style guide and linter</h1>
-<p><a href="https://github.com/psf/black">Black</a> “the uncompromising Python code formater”</p>
+<div id="black" class="section level2">
+<h2>Black</h2>
+<p><a href="https://github.com/psf/black">Black</a> is “the uncompromising Python code formater”</p>
+<p>Run <code>black</code> as a pre commit hook with <code>pre-commit</code></p>
+</div>
+<div id="flake-8" class="section level2">
+<h2>Flake 8</h2>
+<p>Flake 8 looks at more than just formatting.</p>
+<p><a href="https://pypi.org/project/flake8/1.6.1/#warning-error-codes">List of FLake8 warnings and error codes</a></p>
+</div>
+<div id="pre-commit-hooks" class="section level2">
+<h2>Pre commit hooks</h2>
+<p>Blog:</p>
+<ul>
+<li><a href="https://ljvmiranda921.github.io/notebook/2018/06/21/precommits-using-black-and-flake8/">pre commits using black and flake8</a></li>
+</ul>
+<p>Install <code>pre-commit</code></p>
+<pre><code>pip install pre-commit</code></pre>
+<p>Set up <code>pre-commit</code> in a repository</p>
+<pre><code>cd path_to_repository
+vim requirements.txt # Add pre-commit
+vim .pre-commit-config.yaml </code></pre>
+<p>Configuration options such as</p>
+<pre><code>repos:
+-   repo: https://github.com/ambv/black
+    rev: 21.6b0
+    hooks:
+    - id: black
+      language_version: python3.7
+-   repo: https://gitlab.com/pycqa/flake8
+    rev: 3.7.9
+    hooks:
+    - id: flake8</code></pre>
+<p>Update <a href="https://pre-commit.com/#using-the-latest-version-for-a-repository">hook repositories to the latest version</a></p>
+<pre><code>pre-commit autoupdate</code></pre>
+<p>Install git hooks in your .git/ directory.</p>
+<pre><code>pre-commit install</code></pre>
+<div id="usage-in-continuous-integration" class="section level3">
+<h3>Usage in Continuous integration</h3>
+<p><a href="https://pre-commit.com/#usage-in-continuous-integration">Usage in Continuous integration</a> has a gitlab example:</p>
+<pre><code>    my_job:
+      variables:
+        PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
+      cache:
+        paths:
+          - ${PRE_COMMIT_HOME}</code></pre>
+</div>
+</div>
+<div id="pylint" class="section level2">
+<h2>Pylint</h2>
+<p>Edit the configuration file</p>
+<pre><code>vim ~/.pylintrc</code></pre>
+<p>List of good names that shouldn’t give a “short name” warning</p>
+<pre><code>[pylint]
+good-names=df</code></pre>
+<p>Generate a configuration file</p>
+<pre><code>pylint --generate-rcfile</code></pre>
+</div>
 </div>
 <div id="test-driven-development" class="section level1">
 <h1>Test driven development</h1>
