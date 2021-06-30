@@ -98,6 +98,14 @@ Tip:
 > slowest of the three because of its additional storage costs. In most
 > situations text or character varying should be used instead." 
 
+[SO answer]'https://stackoverflow.com/a/20334221/2641825)
+
+> "Generally, there is no downside to using text in terms of
+> performance/memory. On the contrary: text is the optimum. Other types have
+> more or less relevant downsides. text is literally the "preferred" type among
+> string types in the Postgres type system, which can affect function or
+> operator type resolution."
+
 
 # Drop
 
@@ -112,9 +120,13 @@ Delete a schema
     DETAIL:  table raw_comext.monthly depends on schema raw_comext
     HINT:  Use DROP ... CASCADE to drop the dependent objects too.
 
-Here is the command with a drop in cascade
+Delete a schema and all its table with a drop in cascade
 
     psql -d tradeflows -h localhost -U rdb -c "DROP SCHEMA raw_comext CASCADE"
+
+Drop a table
+
+    drop table raw_comtrade.yearly;
 
 
 # Dump
@@ -156,8 +168,9 @@ Help about SQL commands:
     \h
     \h select
 
+# Information
 
-# List schemas, tables, columns
+## List schemas, tables, columns
 
 List databases
 
@@ -179,6 +192,14 @@ List tables for a particular schema i[list all tables in
 schema](https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql)
 
     \dt raw_comext.*;
+    \dt raw_comtrade.*;
+
+
+## Describe data types
+
+Describe a table to see column names and data types
+
+    \d raw_comtrade.yearly;
 
 
 # MariaDB/MySQL and PostgreSQL 
@@ -218,7 +239,15 @@ postgresql.org [Roadmap](https://www.postgresql.org/developer/roadmap/)
 
 
 
-# Schema
+# Schemas
+
+Create a schema
+
+    create schema raw_comtrade;
+
+List schemas
+
+    \dn
 
 Official documentation postgresql.org
 [schemas](https://www.postgresql.org/docs/current/ddl-schemas.html)

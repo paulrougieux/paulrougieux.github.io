@@ -547,6 +547,10 @@ sudo su postgres</code></pre>
 <blockquote>
 <p>“There is no performance difference among these three types, apart from increased storage space when using the blank-padded type, and a few extra CPU cycles to check the length when storing into a length-constrained column. While character(n) has performance advantages in some other database systems, there is no such advantage in PostgreSQL; in fact character(n) is usually the slowest of the three because of its additional storage costs. In most situations text or character varying should be used instead.”</p>
 </blockquote>
+<p>[SO answer]’<a href="https://stackoverflow.com/a/20334221/2641825" class="uri">https://stackoverflow.com/a/20334221/2641825</a>)</p>
+<blockquote>
+<p>“Generally, there is no downside to using text in terms of performance/memory. On the contrary: text is the optimum. Other types have more or less relevant downsides. text is literally the”preferred&quot; type among string types in the Postgres type system, which can affect function or operator type resolution.&quot;</p>
+</blockquote>
 </div>
 </div>
 <div id="drop" class="section level1">
@@ -558,8 +562,10 @@ sudo su postgres</code></pre>
 ERROR:  cannot drop schema raw_comext because other objects depend on it
 DETAIL:  table raw_comext.monthly depends on schema raw_comext
 HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
-<p>Here is the command with a drop in cascade</p>
+<p>Delete a schema and all its table with a drop in cascade</p>
 <pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext CASCADE&quot;</code></pre>
+<p>Drop a table</p>
+<pre><code>drop table raw_comtrade.yearly;</code></pre>
 </div>
 <div id="dump" class="section level1">
 <h1>Dump</h1>
@@ -585,8 +591,10 @@ SET default_with_oids = false;</code></pre>
 <pre><code>\h
 \h select</code></pre>
 </div>
-<div id="list-schemas-tables-columns" class="section level1">
-<h1>List schemas, tables, columns</h1>
+<div id="information" class="section level1">
+<h1>Information</h1>
+<div id="list-schemas-tables-columns" class="section level2">
+<h2>List schemas, tables, columns</h2>
 <p>List databases</p>
 <pre><code>\l</code></pre>
 <p>Connect to a database</p>
@@ -596,7 +604,14 @@ SET default_with_oids = false;</code></pre>
 <p>List tables</p>
 <pre><code>\dt</code></pre>
 <p>List tables for a particular schema i<a href="https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql">list all tables in schema</a></p>
-<pre><code>\dt raw_comext.*;</code></pre>
+<pre><code>\dt raw_comext.*;
+\dt raw_comtrade.*;</code></pre>
+</div>
+<div id="describe-data-types" class="section level2">
+<h2>Describe data types</h2>
+<p>Describe a table to see column names and data types</p>
+<pre><code>\d raw_comtrade.yearly;</code></pre>
+</div>
 </div>
 <div id="mariadbmysql-and-postgresql" class="section level1">
 <h1>MariaDB/MySQL and PostgreSQL</h1>
@@ -653,8 +668,12 @@ pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated</co
 <h1>Road map</h1>
 <p>postgresql.org <a href="https://www.postgresql.org/developer/roadmap/">Roadmap</a></p>
 </div>
-<div id="schema" class="section level1">
-<h1>Schema</h1>
+<div id="schemas" class="section level1">
+<h1>Schemas</h1>
+<p>Create a schema</p>
+<pre><code>create schema raw_comtrade;</code></pre>
+<p>List schemas</p>
+<pre><code>\dn</code></pre>
 <p>Official documentation postgresql.org <a href="https://www.postgresql.org/docs/current/ddl-schemas.html">schemas</a></p>
 <blockquote>
 <p>“A database contains one or more named schemas, which in turn contain tables. Schemas also contain other kinds of named objects, including data types, functions, and operators. The same object name can be used in different schemas without conflict; for example, both schema1 and myschema can contain tables named mytable. Unlike databases, schemas are not rigidly separated: a user can access objects in any of the schemas in the database they are connected to, if they have privileges to do so.”</p>
