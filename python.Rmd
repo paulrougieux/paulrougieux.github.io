@@ -1299,12 +1299,15 @@ mostly compare R to the python packages numpy and pandas. R was created almost
 > "Developer Wes McKinney started working on pandas in 2008 while at AQR
 > Capital Management out of the need for a high performance, flexible tool to
 > perform quantitative analysis on financial data. Before leaving AQR he was
-> able to convince management to allow him to open source the library. " 
+> able to convince management to allow him to open source the library." 
 
 [Migrating from R to python](https://jrvcomputing.wordpress.com/2016/11/14/migrating-from-r-to-python/)
-Python is a full fledge programming language but it is missing statistical and plotting libraries.
-Vectors are an after thought in python most functionality can be reproduced using operator overloading,
-but some functionality looks clumsy. 
+
+> "Python is a full fledge programming language but it is missing statistical
+> and plotting libraries. Vectors are an after thought in python most
+> functionality can be reproduced using operator overloading, but some
+> functionality looks clumsy."
+
 
 ## Pandas comparison with R
 
@@ -1507,6 +1510,12 @@ List of good names that shouldn't give a "short name" warning
 Generate a configuration file
 
     pylint --generate-rcfile
+
+Blog
+
+- Reddit [Any advantages of Flake8 over
+  PyLint](https://www.reddit.com/r/Python/comments/82hgzm/any_advantages_of_flake8_over_pylint/)
+  some answers suggest keeping both.
 
 
 # Test driven development
