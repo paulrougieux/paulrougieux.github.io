@@ -1053,6 +1053,18 @@ tree -d # List directories only, no files</code></pre>
 <pre><code>hostname</code></pre>
 </div>
 </div>
+<div id="open-files-and-folders-in-the-gui" class="section level1">
+<h1>Open files and folders in the GUI</h1>
+<p>If bash is running inside a Graphical desktop environment, you can open the current folder with</p>
+<pre><code>xdg-open .</code></pre>
+<p>And open any file with the preferred application with for example</p>
+<pre><code>xdg-open filename.pdf
+xdg-open filename.mp4</code></pre>
+<p>I created an alias in <code>.bash_aliases</code></p>
+<pre><code>alias open=&quot;xdg-open&quot;</code></pre>
+<p>Which makes it possible to open files with the</p>
+<pre><code>open command</code></pre>
+</div>
 <div id="organise" class="section level1">
 <h1>Organise</h1>
 <div id="compress-and-decompress-files" class="section level2">

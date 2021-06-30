@@ -2,6 +2,7 @@
 alias bookmark="vim -c 'syn off' ~/rp/bookmarkdown/bookmark.md"
 alias overflow="vim ~/rp/bookmarkdown/work/overflow.md"
 alias matrix="cd ~/rp/bookmarkdown/work && vim -u ~/rp/paulrougieux.github.io/setup/.vimrc_server matrix.Rmd"
+alias open="xdg-open"
 alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && vim -c 'syn off' readings_jrc.md"
 
 # Music

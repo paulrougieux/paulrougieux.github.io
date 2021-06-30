@@ -922,6 +922,28 @@ Show the host name
 
     hostname
 
+
+# Open files and folders in the GUI
+
+If bash is running inside a Graphical desktop environment, you can open the
+current folder with
+
+    xdg-open .
+
+And open any file with the preferred application with for example
+
+    xdg-open filename.pdf
+    xdg-open filename.mp4
+
+I created an alias in `.bash_aliases`
+
+    alias open="xdg-open"
+
+Which makes it possible to open files with the
+
+    open command
+
+
 # Organise
 
 ## Compress and decompress files
