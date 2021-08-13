@@ -164,16 +164,6 @@ If there were conflicts, they will be presented in this way:
     "The area where a pair of conflicting changes happened is marked with markers &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, and &gt;&gt;&gt;&gt;&gt;&gt;&gt;. The part before the ======= is typically your side, and the part afterwards is typically their side."
 
 
-I might need to delete a branch at some point:
-
-    git branch -d branchname 
-
-Delete a remote branch (stackoverflow question)
-
-    git push --delete origin temp
-
-Deleting your master branch.
-
 
 If I am on a detached head, it is recommended to create a temporary branch (stackoverflow).
 
@@ -202,12 +192,25 @@ Add minor change to the previous commit (git commit --amend):
 
 I use to have this branching strategy:
 
-> I never work in the master branch, always in a development branch called `develop`. 
-> I merge `develop` in `master`, only before pushing modifications back to my remote archive.
-> This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.
-
+> I never work in the master branch, always in a development branch called
+> `develop`. I merge `develop` in `master`, only before pushing modifications
+> back to my remote archive. This simple branching strategy makes it much
+> easier to deal with potential changes in the remote master branch.
 
 But I have now changed to a simpler strategy where I work only on the master branch. 
+
+
+
+## Delete a branch
+
+I might need to delete a branch at some point:
+
+    git branch -d branch_name 
+
+Delete a remote branch
+
+    git push --delete origin branch_name
+
 
 # Commit messages
 
@@ -219,6 +222,7 @@ Extract:
 
 > "I really should just learn another editor, rather than continue to polish
 > this turd."
+
 
 # Configuring git 
 
@@ -538,6 +542,16 @@ Identify the commit identity in the log and copy its sha number.
 Then to go back to this state for the whole folder: 
 
     git reset --hard commit_sha
+
+Do this **before pushing** only!
+
+Once you have pushed the changes, you need to revert the commit and commit
+those changes as well:
+
+    git revert -m 1 HEAD~
+    git revert commit_sha
+
+See https://stackoverflow.com/questions/9804211/can-not-push-changes-after-using-git-reset-hard
 
 Use the begining of a `commit_sha` copied from the log.
 
