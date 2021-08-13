@@ -250,7 +250,26 @@ Docker hub [R-base](https://hub.docker.com/_/r-base)
 
 ## Gitlab CI
 
-### Use MySQL or PostGreSQL containers
+### Default file location 
+
+Inside the gitlab CI containerse, files are located in `$CI_PROJECT_DIR`. This
+variable can be used to set other path variables such as the python path.
+
+
+### Clone private repository
+
+To clone a private git repo in the same project, use a token as explained in :
+[How to access multiple repositories in a CI
+build?](https://stackoverflow.com/a/50163888/2641825). A comment reminds us
+that the gitlab instance and group are separated by a slash `/` and not by a
+semi colon `:` as would be the case in a ssh clone url.
+
+```
+- git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/bioeconomy/libcbm/libcbm_aidb.git
+```
+
+
+### MySQL or PostGreSQL containers
 
 Documentation for [PostgreSQL containers on gitlab-ci](https://docs.gitlab.com/ee/ci/services/postgres.html)
 Example use of a PostgreSQL container
@@ -294,10 +313,19 @@ connect:
   - echo "SELECT 'OK';" | mysql --user=root --password="$MYSQL_ROOT_PASSWORD" --host=mysql "$MYSQL_DATABASE"
 ```
 
-### Use Rocker containers
+### Python containers 
 
-I use the rocker container to generate this site on gitlab-ci, see the
-configuration file at [.gitlab-ci.yml](.gitlab-ci.yml).
+```
+script:
+  - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.instance/group/project.git
+```
+
+
+### Rocker containers
+
+The Rocker container is made for the R statistical programming language. I use
+the rocker container to generate this site on gitlab-ci, see the configuration
+file at [.gitlab-ci.yml](.gitlab-ci.yml).
 
 
 # Security

@@ -646,8 +646,17 @@ docker image rm  &lt;image-id&gt;</code></pre>
 <h1>Related services</h1>
 <div id="gitlab-ci" class="section level2">
 <h2>Gitlab CI</h2>
-<div id="use-mysql-or-postgresql-containers" class="section level3">
-<h3>Use MySQL or PostGreSQL containers</h3>
+<div id="default-file-location" class="section level3">
+<h3>Default file location</h3>
+<p>Inside the gitlab CI containerse, files are located in <code>$CI_PROJECT_DIR</code>. This variable can be used to set other path variables such as the python path.</p>
+</div>
+<div id="clone-private-repository" class="section level3">
+<h3>Clone private repository</h3>
+<p>To clone a private git repo in the same project, use a token as explained in : <a href="https://stackoverflow.com/a/50163888/2641825">How to access multiple repositories in a CI build?</a>. A comment reminds us that the gitlab instance and group are separated by a slash <code>/</code> and not by a semi colon <code>:</code> as would be the case in a ssh clone url.</p>
+<pre><code>- git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/bioeconomy/libcbm/libcbm_aidb.git</code></pre>
+</div>
+<div id="mysql-or-postgresql-containers" class="section level3">
+<h3>MySQL or PostGreSQL containers</h3>
 <p>Documentation for <a href="https://docs.gitlab.com/ee/ci/services/postgres.html">PostgreSQL containers on gitlab-ci</a> Example use of a PostgreSQL container <a href="https://gitlab.com/gitlab-examples/postgres/-/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
 <pre><code>services:
   - postgres
@@ -678,9 +687,14 @@ connect:
   script:
   - echo &quot;SELECT &#39;OK&#39;;&quot; | mysql --user=root --password=&quot;$MYSQL_ROOT_PASSWORD&quot; --host=mysql &quot;$MYSQL_DATABASE&quot;</code></pre>
 </div>
-<div id="use-rocker-containers" class="section level3">
-<h3>Use Rocker containers</h3>
-<p>I use the rocker container to generate this site on gitlab-ci, see the configuration file at <a href=".gitlab-ci.yml" class="uri">.gitlab-ci.yml</a>.</p>
+<div id="python-containers" class="section level3">
+<h3>Python containers</h3>
+<pre><code>script:
+  - git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.instance/group/project.git</code></pre>
+</div>
+<div id="rocker-containers" class="section level3">
+<h3>Rocker containers</h3>
+<p>The Rocker container is made for the R statistical programming language. I use the rocker container to generate this site on gitlab-ci, see the configuration file at <a href=".gitlab-ci.yml" class="uri">.gitlab-ci.yml</a>.</p>
 </div>
 </div>
 </div>
