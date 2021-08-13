@@ -583,7 +583,8 @@ sudo dpkg -i packagename.deb</code></pre>
 <p>or</p>
 <pre><code>sudo apt install ./packagename.deb</code></pre>
 <p>Stack overflow <a href="https://unix.stackexchange.com/a/159114/85530">How to install a deb file, by dpkg -i or by apt?</a> “When you use apt to install a package, under the hood it uses dpkg.”</p>
-<p>If there are missingdependencies and you fix them you can retry the previsouly failed installed with: sudo dpkg –configure -a</p>
+<p>If there are missingdependencies and you fix them you can retry the previsouly failed installed with:</p>
+<pre><code>sudo dpkg --configure -a</code></pre>
 <p>Remove a package with:</p>
 <pre><code>sudo dpkg -r packagename</code></pre>
 </div>
@@ -808,6 +809,7 @@ wget https://zoom.us/client/latest/zoom_amd64.deb
 rm ~/downloads/pubkey
 wget https://zoom.us/linux/download/pubkey
 cat pubkey | gpg --import-options show-only --import
+gpg --verify zoom_amd64.deb
 
 # Install
 sudo apt install ./zoom_amd64.deb </code></pre>

@@ -204,6 +204,7 @@ Stack overflow [How to install a deb file, by dpkg -i or by apt?](https://unix.s
 
 
 If there are missingdependencies and you fix them you can retry the previsouly failed installed with:
+
     sudo dpkg --configure -a
 
 Remove a package with:
@@ -567,6 +568,7 @@ Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Li
     rm ~/downloads/pubkey
     wget https://zoom.us/linux/download/pubkey
     cat pubkey | gpg --import-options show-only --import
+    gpg --verify zoom_amd64.deb
 
     # Install
     sudo apt install ./zoom_amd64.deb 
