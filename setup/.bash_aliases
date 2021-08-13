@@ -31,6 +31,7 @@ export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_py/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_runner/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/plumbing/":$PYTHONPATH
 export LIBCBM_DATA="$HOME/repos/libcbm_data/"
 
 # Create tag files for an R project, from within an R project's R folder
@@ -49,5 +50,10 @@ rtagsall() {
 # It's actually better to enable this in the gnome shell in fact https://superuser.com/a/870547/419414
 # export TERM=xterm-256color
 alias vpn=expressvpn
+alias treep='tree -I "*.pyc"'
 
+
+
+# add local bin to the path
+export PATH=$PATH:~/.local/bin
 
