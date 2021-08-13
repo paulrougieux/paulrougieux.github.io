@@ -857,15 +857,16 @@ Plde</code></pre>
 <p>Note this works only for one replacement because the yank register is then replaced with the deleted word.</p>
 </div>
 </div>
-<div id="indent" class="section level2">
-<h2>Indent</h2>
+<div id="indentation" class="section level2">
+<h2>Indentation</h2>
 <p>Indentation replaced by spaces, add this to the ~/.vimrc file</p>
 <pre><code>set tabstop=4
 set expandtab
 set softtabstop=4
 set shiftwidth=4
 filetype indent on </code></pre>
-<p>More details on vim indentation in the <a href="https://wiki.python.org/moin/Vim">python wiki</a>.</p>
+<p>More details on vim indentation in the <a href="https://wiki.python.org/moin/Vim">python wiki</a>. In particular the page <a href="https://vim.fandom.com/wiki/How_to_stop_auto_indenting">How to stop auto indentation</a> explains how to display indentation setting for the current file type:</p>
+<pre><code>:verbose set ai? cin? cink? cino? si? inde? indk?</code></pre>
 </div>
 <div id="repeat-commands" class="section level2">
 <h2>Repeat Commands</h2>
@@ -889,6 +890,8 @@ filetype indent on </code></pre>
 <pre><code>au BufRead,BufNewFile *.md setlocal textwidth=80</code></pre>
 <p>To format the text, select it with v and up or down movements, and press</p>
 <pre><code>gq</code></pre>
+<p>To disable auto wrapping, call</p>
+<pre><code>:set formatoptions=cq</code></pre>
 </div>
 </div>
 <div id="select-and-visual-mode" class="section level1">

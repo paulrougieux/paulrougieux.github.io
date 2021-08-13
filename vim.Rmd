@@ -593,7 +593,7 @@ Or select the current word, then paste and delete the word to replace
 Note this works only for one replacement because the yank register is then
 replaced with the deleted word.
 
-## Indent
+## Indentation
 
 Indentation replaced by spaces, add this to the ~/.vimrc file
 
@@ -603,7 +603,13 @@ Indentation replaced by spaces, add this to the ~/.vimrc file
     set shiftwidth=4
     filetype indent on 
 
-More details on vim indentation in the [python wiki](https://wiki.python.org/moin/Vim).
+More details on vim indentation in the [python
+wiki](https://wiki.python.org/moin/Vim). In particular the page [How to stop
+auto indentation](https://vim.fandom.com/wiki/How_to_stop_auto_indenting)
+explains how to display indentation setting for the current file type: 
+
+    :verbose set ai? cin? cink? cino? si? inde? indk?
+
 
 ## Repeat Commands
 
@@ -638,6 +644,11 @@ Apply automatically to markdown files, by adding this to .vimrc
 To format the text, select it with v and up or down movements, and press 
 
     gq
+
+To disable auto wrapping, call
+
+    :set formatoptions=cq
+
 
 # Select and visual mode
 
@@ -971,6 +982,7 @@ Explains how to turn the banner off:
     let g:netrw_banner = 0
 
 You can put the banner back on by pressing `I`.
+
 
 ## Go to file
 
