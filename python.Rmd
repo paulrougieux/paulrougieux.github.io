@@ -378,6 +378,11 @@ Then start the notebook server as such:
 
     jupyter notebook
 
+## Security and authentication on a public server
+
+[Jupyter notebook with
+authentication](https://stackoverflow.com/questions/37808410/ipython-jupyter-notebook-with-authentication)
+
 
 ## Table of content in your notebooks
 
@@ -845,16 +850,44 @@ Example
 
 # Pandas data frames
 
+All code below assumes you have imported pandas
+    
+    import pandas 
+
+
 ## Creating a pandas data frame
 
 You can create a data frame by passing a dictionary :
 
-    import pandas 
     pandas.DataFrame({'a':range(0,3),'b':range(3,6)})
            a  b
         0  0  3
         1  1  4
         2  2  5
+
+## Columns
+
+List columns as an index object
+
+    df = pandas.DataFrame({'a':range(0,3),'b':range(3,6)})
+    df.columns
+
+List columns as a list
+
+    df.columns.tolist()
+
+Select only certain columns in a list
+
+    df['bla'] = 0
+    cols = df.columns.tolist()
+    [name for name in cols if 'a' in name]
+
+
+### Rename columns
+
+Rename the 'a' column to 'new'
+
+    df.rename(columns={'a':'new'})
 
 
 ## Joining and merging
@@ -884,6 +917,36 @@ Then use df.to_csv to write the data frame to a csv file
 [The Pandas user guide on reshaping](https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt) 
 gives several example using `melt` (easier to rename the  “variable” and “value” columns) 
 or `stack` (designed to work together with MultiIndex objects).
+
+Reshape using `melt`
+
+    cheese = pandas.DataFrame(
+          {
+              "first": ["John", "Mary"],
+              "last": ["Doe", "Bo"],
+              "height": [5.5, 6.0],
+              "weight": [130, 150],
+          }
+    )
+    cheese
+    cheese.melt(id_vars=["first", "last"], var_name="quantity")
+
+Reshape using the `wide_to_long` convenience function
+
+    import numpy as np
+    dft = pandas.DataFrame(
+        {
+            "A1970": {0: "a", 1: "b", 2: "c"},
+            "A1980": {0: "d", 1: "e", 2: "f"},
+            "B1970": {0: 2.5, 1: 1.2, 2: 0.7},
+            "B1980": {0: 3.2, 1: 1.3, 2: 0.1},
+            "X": dict(zip(range(3), np.random.randn(3))),
+        }
+    )
+    dft["id"] = dft.index
+    dft
+    pandas.wide_to_long(dft, stubnames=["A", "B"], i="id", j="year")
+
 
 
 ## Replacement
@@ -1254,6 +1317,21 @@ as such:
 
 Mentioned as a comment under [this answer](https://stackoverflow.com/a/56970556/2641825)
 
+### Scatter Plot
+
+Create a scatter plot
+
+    import seaborn
+    import matplotlib.pyplot as plt
+    tips = seaborn.load_dataset("tips")
+    seaborn.scatterplot(x="total_bill", y="tip", data=tips)
+    plt.show()
+
+Group by another variable and show the groups with different colors:
+    
+    searborn(x="total_bill", y="tip", hue="time", data=tips)
+
+
 # R and python
 
 See also the [R page](R.html) for more details on R.
@@ -1456,7 +1534,9 @@ Install `pre-commit`
 Set up `pre-commit` in a repository
 
     cd path_to_repository
-    vim requirements.txt # Add pre-commit
+    # Add the "pre-commit" python module to a requirements file
+    vim requirements.txt 
+    # Create a configuration file
     vim .pre-commit-config.yaml 
 
 Configuration options such as
@@ -1482,6 +1562,7 @@ version](https://pre-commit.com/#using-the-latest-version-for-a-repository)
 Install git hooks in your .git/ directory.
 
     pre-commit install
+
 
 ### Usage in Continuous integration
 
@@ -1518,6 +1599,49 @@ Blog
   some answers suggest keeping both.
 
 
+# System information
+
+Platform type
+
+    import sys
+    sys.platform
+
+or
+
+    import os
+    os.name
+
+Sys and os return different results 'linux' or 'posix'.
+
+More details are given by
+
+    os.uname()
+
+
+## Memory
+
+Sometimes when a python process runs out of memory, it can get killed by the
+Linux Kernel. In that case the error message is short "killed" and there is no
+python trace back printed. You can check that it is indeed a memory error by
+calling
+
+    sudo dmesg
+
+Here is a typical message:
+
+    [85962.510533] Out of memory: Kill process 16035 (ipython3) score 320 or sacrifice child
+    [85962.510554] Killed process 16035 (ipython3) total-vm:7081812kB, anon-rss:4536336kB, file-rss:0kB, shmem-rss:8kB
+    [85962.687468] oom_reaper: reaped process 16035 (ipython3), now anon-rss:0kB, file-rss:0kB, shmem-rss:8kB
+
+Various related Stack Overflow questions [what does "kill"
+mean](https://stackoverflow.com/questions/19189522/what-does-killed-mean-when-a-processing-of-a-huge-csv-with-python-which-sudde), 
+[How can I find the reason that python script is
+killed?](https://stackoverflow.com/questions/47408608/how-can-i-find-the-reason-that-python-script-is-killed),
+[Why does python script randomly gets
+killed?](https://stackoverflow.com/questions/1811173/why-does-my-python-script-randomly-get-killed).
+
+
+
 # Test driven development
 
 A good post about TDD 
@@ -1536,10 +1660,10 @@ A good post about TDD
 > '''From this perspective, the integration/unit test frontier is a frontier of design, not of tools or frameworks or how long tests run or how many lines of code we wrote get executed while running the test.'''
 > Kent Beck"
 
+
 ## Unit tests
 
 See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
-
 
 
 ## pytest
