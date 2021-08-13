@@ -6,26 +6,33 @@ social media, chat, calls and video calls from the perspective of a privacy
 conscious individual. I also care about freedom of speech and would like to
 avoid vendor lock in.
 
+Max Tegmark:
+
+> "...[Robots] are coming to hack us. It's kind of humbling that we are hacked
+> by this dumb machine learning algorithm."
+
 
 ## Network effects
 
 Network effects appear when friends encourage you to choose a particular
 platform. It is hard to resist the pressure from peers, friends and family who
 describe how convenient the software is and how nice it would be to write,
-talk, share pictures and videos on that platform. Network effects are natural, I
-suppose. They can apply to any form of communication. 
+talk, share pictures and videos on that platform. Network effects are natural,
+I suppose. They can apply to any form of communication. 
+
 
 # Silos versus freedom
 
 Through communication tools such as Skype, Whatsapp or Zoom you can only
-communicate with people registered at the same company.  
-Incompatible tools split our digital expression into silos. These silos lock us
-to a particular platform and limit our freedom of expression. Once a silo has
-managed to attract a large number of users, network effects pushes those users
-to attract more peers inside. 
+communicate with people registered at the same company. Incompatible tools
+split our digital expression into silos. These silos lock us to a particular
+platform and limit our freedom of expression. Once a silo has managed to
+attract a large number of users, network effects pushes those users to attract
+more peers inside. 
 
 Our communication doesn't have to be locked into a particular platform. The
 internet protocols were conceived with neutrality at the core.
+
 
 # Mail
 
@@ -33,7 +40,8 @@ internet protocols were conceived with neutrality at the core.
 
 Email is an open protocol and that is good because it means you can exchange
 emails with someone who uses an email server from a different company. In other
-words there are no communication silos with email.
+words there are no communication silos with email. But the security aspect of
+email exchanges is fundamentally broken.
 
 Most [emails are encrypted](https://en.wikipedia.org/wiki/Email_encryption) at
 the transport layer. End-to-end encryption would be better, but it's usage is
@@ -83,7 +91,7 @@ programmed mostly in C++ the
 it. 
 
 
-## Element
+## Element matrix
 
 [Element](https://element.io/get-started), previously called Riot-web is a chat
 application based on the matrix decentralised communication protocol. Matrix is
@@ -181,6 +189,83 @@ A question I wrote:
 Call with screen sharing in great quality. 
 
 [Privacy policy](https://zoom.us/privacy)
+
+
+# Encryption
+
+Some conversations and related data need to remain private.
+
+## Age 
+
+https://github.com/FiloSottile/age
+
+Installation
+
+    apt install age
+
+
+## PGP
+
+[How to use GPG to encrypt
+stuff](https://yanhan.github.io/posts/2017-09-27-how-to-use-gpg-to-encrypt-stuff/)
+
+> "Suppose Alice wants to send a message to Bob. Alice will encrypt Bob’s
+> message using Bob’s public key. This ensures that no one else other than Bob
+> can read the message, because only Bob can decrypt the message using his
+> private key. Anyone with Bob’s public key encrypt a message that only Bob can
+> view. This explanation should also explain why Bob must guard his private key
+> - because anyone with his private key can decrypt any message encrypted using
+> his public key." 
+
+> "Now, Alice has guaranteed that whatever message she sends to Bob can only be
+> viewed by Bob. This ensures the privacy of the message." 
+
+> "However, anyone with Bob’s public key can send a message intended for him.
+> How can Bob ensure that when Alice says she sent him a message, that the
+> message is from Alice and not from someone else?"
+
+> "This is where signatures come in. Alice can generate a file containing the
+> checksum of the original, plaintext message and sign that file using her
+> private key. Anyone who has Alice’s public key (and trusts her public key)
+> can verify the authenticity of that file, because to generate that signature,
+> Alice’s private key is required. Assuming that Alice’s private key has not
+> been compromised, it is pretty much impossible for anyone to forge the
+> signature, or for Alice to deny that she did not generate the signature. This
+> ensures the authenticity of the message, that it is indeed sent by Alice
+> herself and not anyone else."
+
+
+### Security issues
+
+- [15 reasons not to start using PGP](https://secushare.org/PGP)
+
+> "PGP conflates non-repudiation and authentication.
+
+> "I send Bob an encrypted message that we should meet to discuss the
+> suppression of free speech in our country. Bob obviously wants to be sure
+> that the message is coming from me, but maybe Bob is a spy … and with PGP the
+> only way the message can easily be authenticated as being from me is if I
+> cryptographically sign the message, creating persistent evidence of my words
+> not just to Bob but to Everyone!" 
+
+> "OTR has introduced deniable authentication to address this problem and many
+> next generation tools have adopted that concept. OTR cryptographically allows
+> two people to be sure who they are talking to, yet they cannot prove it to
+> anybody else."
+
+- [Efail](https://efail.de/) Usenix conference paper [Efail: Breaking S/MIME
+  and OpenPGP Email Encryptionusing Exfiltration
+  Channels](https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-poddebniak.pdf). 
+
+- [The PGP
+  problem](https://latacora.micro.blog/2019/07/16/the-pgp-problem.html)
+    mentions age as a potential alternative.
+
+- [PGP email encryption fundamentally broken](https://www.securityweek.com/pgp-email-encryption-fundamentally-broken-cryptography-expert)
+
+- [What's the matter with PGP](https://blog.cryptographyengineering.com/2014/08/13/whats-matter-with-pgp/)
+
+> "It’s time for PGP to die."
 
 
 # Social Media

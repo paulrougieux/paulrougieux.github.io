@@ -474,6 +474,10 @@ div.tocify {
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
 <p>The purpose of this document is to analyse communication options such as mail, social media, chat, calls and video calls from the perspective of a privacy conscious individual. I also care about freedom of speech and would like to avoid vendor lock in.</p>
+<p>Max Tegmark:</p>
+<blockquote>
+<p>“…[Robots] are coming to hack us. It’s kind of humbling that we are hacked by this dumb machine learning algorithm.”</p>
+</blockquote>
 <div id="network-effects" class="section level2">
 <h2>Network effects</h2>
 <p>Network effects appear when friends encourage you to choose a particular platform. It is hard to resist the pressure from peers, friends and family who describe how convenient the software is and how nice it would be to write, talk, share pictures and videos on that platform. Network effects are natural, I suppose. They can apply to any form of communication.</p>
@@ -481,15 +485,14 @@ div.tocify {
 </div>
 <div id="silos-versus-freedom" class="section level1">
 <h1>Silos versus freedom</h1>
-<p>Through communication tools such as Skype, Whatsapp or Zoom you can only communicate with people registered at the same company.<br />
-Incompatible tools split our digital expression into silos. These silos lock us to a particular platform and limit our freedom of expression. Once a silo has managed to attract a large number of users, network effects pushes those users to attract more peers inside.</p>
+<p>Through communication tools such as Skype, Whatsapp or Zoom you can only communicate with people registered at the same company. Incompatible tools split our digital expression into silos. These silos lock us to a particular platform and limit our freedom of expression. Once a silo has managed to attract a large number of users, network effects pushes those users to attract more peers inside.</p>
 <p>Our communication doesn’t have to be locked into a particular platform. The internet protocols were conceived with neutrality at the core.</p>
 </div>
 <div id="mail" class="section level1">
 <h1>Mail</h1>
 <div id="email" class="section level2">
 <h2>Email</h2>
-<p>Email is an open protocol and that is good because it means you can exchange emails with someone who uses an email server from a different company. In other words there are no communication silos with email.</p>
+<p>Email is an open protocol and that is good because it means you can exchange emails with someone who uses an email server from a different company. In other words there are no communication silos with email. But the security aspect of email exchanges is fundamentally broken.</p>
 <p>Most <a href="https://en.wikipedia.org/wiki/Email_encryption">emails are encrypted</a> at the transport layer. End-to-end encryption would be better, but it’s usage is rare.</p>
 </div>
 <div id="snail-mail" class="section level2">
@@ -510,8 +513,8 @@ Incompatible tools split our digital expression into silos. These silos lock us 
 <p><a href="https://www.linphone.org/technical-corner/linphone?qt-technical_corner=2#qt-technical_corner">Linphone</a> Development and support available from Belledonne-communications, a company based in Bordeaux, France.</p>
 <p><a href="https://gitlab.linphone.org/BC/public/linphone-desktop">Linphone desktop</a> is programmed mostly in C++ the <a href="https://gitlab.linphone.org/BC/public/linphone-sdk">sdk</a> has some java code in it.</p>
 </div>
-<div id="element" class="section level2">
-<h2>Element</h2>
+<div id="element-matrix" class="section level2">
+<h2>Element matrix</h2>
 <p><a href="https://element.io/get-started">Element</a>, previously called Riot-web is a chat application based on the matrix decentralised communication protocol. Matrix is an open protocol meant to avoid communication silos.</p>
 <p>Based on the Double Ratchet Cryptographic library called <a href="https://gitlab.matrix.org/matrix-org/olm">Olm</a> specified in <a href="https://whispersystems.org/docs/specifications/doubleratchet/">whispersystems.org doubleratchet</a> which now redirects to <a href="https://signal.org/docs/specifications/doubleratchet/">signal.org doubleratchet</a>.</p>
 </div>
@@ -554,6 +557,56 @@ Incompatible tools split our digital expression into silos. These silos lock us 
 <h2>Zoom</h2>
 <p>Call with screen sharing in great quality.</p>
 <p><a href="https://zoom.us/privacy">Privacy policy</a></p>
+</div>
+</div>
+<div id="encryption" class="section level1">
+<h1>Encryption</h1>
+<p>Some conversations and related data need to remain private.</p>
+<div id="age" class="section level2">
+<h2>Age</h2>
+<p><a href="https://github.com/FiloSottile/age" class="uri">https://github.com/FiloSottile/age</a></p>
+<p>Installation</p>
+<pre><code>apt install age</code></pre>
+</div>
+<div id="pgp" class="section level2">
+<h2>PGP</h2>
+<p><a href="https://yanhan.github.io/posts/2017-09-27-how-to-use-gpg-to-encrypt-stuff/">How to use GPG to encrypt stuff</a></p>
+<blockquote>
+<p>“Suppose Alice wants to send a message to Bob. Alice will encrypt Bob’s message using Bob’s public key. This ensures that no one else other than Bob can read the message, because only Bob can decrypt the message using his private key. Anyone with Bob’s public key encrypt a message that only Bob can view. This explanation should also explain why Bob must guard his private key - because anyone with his private key can decrypt any message encrypted using his public key.”</p>
+</blockquote>
+<blockquote>
+<p>“Now, Alice has guaranteed that whatever message she sends to Bob can only be viewed by Bob. This ensures the privacy of the message.”</p>
+</blockquote>
+<blockquote>
+<p>“However, anyone with Bob’s public key can send a message intended for him. How can Bob ensure that when Alice says she sent him a message, that the message is from Alice and not from someone else?”</p>
+</blockquote>
+<blockquote>
+<p>“This is where signatures come in. Alice can generate a file containing the checksum of the original, plaintext message and sign that file using her private key. Anyone who has Alice’s public key (and trusts her public key) can verify the authenticity of that file, because to generate that signature, Alice’s private key is required. Assuming that Alice’s private key has not been compromised, it is pretty much impossible for anyone to forge the signature, or for Alice to deny that she did not generate the signature. This ensures the authenticity of the message, that it is indeed sent by Alice herself and not anyone else.”</p>
+</blockquote>
+<div id="security-issues" class="section level3">
+<h3>Security issues</h3>
+<ul>
+<li><a href="https://secushare.org/PGP">15 reasons not to start using PGP</a></li>
+</ul>
+<blockquote>
+<p>&quot;PGP conflates non-repudiation and authentication.</p>
+</blockquote>
+<blockquote>
+<p>“I send Bob an encrypted message that we should meet to discuss the suppression of free speech in our country. Bob obviously wants to be sure that the message is coming from me, but maybe Bob is a spy … and with PGP the only way the message can easily be authenticated as being from me is if I cryptographically sign the message, creating persistent evidence of my words not just to Bob but to Everyone!”</p>
+</blockquote>
+<blockquote>
+<p>“OTR has introduced deniable authentication to address this problem and many next generation tools have adopted that concept. OTR cryptographically allows two people to be sure who they are talking to, yet they cannot prove it to anybody else.”</p>
+</blockquote>
+<ul>
+<li><p><a href="https://efail.de/">Efail</a> Usenix conference paper <a href="https://www.usenix.org/system/files/conference/usenixsecurity18/sec18-poddebniak.pdf">Efail: Breaking S/MIME and OpenPGP Email Encryptionusing Exfiltration Channels</a>.</p></li>
+<li><p><a href="https://latacora.micro.blog/2019/07/16/the-pgp-problem.html">The PGP problem</a> mentions age as a potential alternative.</p></li>
+<li><p><a href="https://www.securityweek.com/pgp-email-encryption-fundamentally-broken-cryptography-expert">PGP email encryption fundamentally broken</a></p></li>
+<li><p><a href="https://blog.cryptographyengineering.com/2014/08/13/whats-matter-with-pgp/">What’s the matter with PGP</a></p></li>
+</ul>
+<blockquote>
+<p>“It’s time for PGP to die.”</p>
+</blockquote>
+</div>
 </div>
 </div>
 <div id="social-media" class="section level1">
