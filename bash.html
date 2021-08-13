@@ -723,7 +723,16 @@ java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
 <blockquote>
 <p>“So if we only want <code>*.sh</code> files we have to exclude all files <code>--exclude=&quot;*&quot;</code>, include all directories <code>--include=&quot;*/&quot;</code> and include all <code>*.sh</code> files <code>--include=&quot;*.sh&quot;</code>.”</p>
 </blockquote>
+<p>Sync only <code>.mdb</code> files that are the output of a model</p>
 <pre><code>rsync -zav --include=&quot;*/&quot; --include=&quot;*.mdb&quot; --exclude=&quot;*&quot;  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/</code></pre>
+<div id="slash-or-no-slash" class="section level3">
+<h3>Slash or no slash</h3>
+<blockquote>
+<p>“A trailing slash on the source changes this behavior to avoid creating an additional directory level at the destination. You can think of a trailing / on a source as meaning”copy the contents of this directory&quot; as opposed to “copy the directory by name”, but in both cases the attributes of the containing directory are transferred to the containing directory on the destination. In other words, each of the follow‐ ing commands copies the files in the same way, including their setting of the attributes of /dest/foo: &quot;</p>
+</blockquote>
+<pre><code>rsync -av /src/foo /dest
+rsync -av /src/foo/ /dest/foo</code></pre>
+</div>
 </div>
 </div>
 <div id="count" class="section level1">
@@ -1030,9 +1039,16 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 <p>In case of you have spaces in file names, xargs recomments using the <code>-o</code> option to prevent file names from being processed incorrectly, this works best with the output of <code>find -print0</code> and it starts to look a lot more complex than other answers:</p>
 <pre><code>find -print0 |xargs -0 realpath</code></pre>
 <p>The above is an <a href="https://stackoverflow.com/a/65002323/2641825">answer</a> I posted on Stackoverflow. See also a Unix and Linux stackexchange <a href="https://unix.stackexchange.com/questions/268474/how-to-list-all-files-in-a-directory-with-absolute-paths">question on how to list all files in a directory with absolute path</a>.</p>
+<div id="tree" class="section level2">
+<h2>Tree</h2>
 <p>List contents of a directories in a tree like format</p>
 <pre><code>tree
 tree -d # List directories only, no files</code></pre>
+<p>Ignore files that contain compiled python bytecode with the <code>-I</code> option</p>
+<pre><code>tree -I &quot;*.pyc&quot;</code></pre>
+<p>Show only python file matching the <code>&quot;*.py&quot;</code> pattern with the <code>-P</code> option</p>
+<pre><code>tree -P &quot;*.py&quot;</code></pre>
+</div>
 </div>
 <div id="networking" class="section level1">
 <h1>Networking</h1>
@@ -1062,8 +1078,9 @@ tree -d # List directories only, no files</code></pre>
 xdg-open filename.mp4</code></pre>
 <p>I created an alias in <code>.bash_aliases</code></p>
 <pre><code>alias open=&quot;xdg-open&quot;</code></pre>
-<p>Which makes it possible to open files with the</p>
-<pre><code>open command</code></pre>
+<p>There is already an <code>open</code> command on some systems. But creating an alias for it should be safe according to an answer to this <a href="https://stackoverflow.com/questions/12329876/is-it-safe-to-alias-open-with-xdg-open">SO question</a> because “once you alias it, it’s valid only for your user”.</p>
+<p>The alias makes it possible to open files with the simple command</p>
+<pre><code>open .</code></pre>
 </div>
 <div id="organise" class="section level1">
 <h1>Organise</h1>
@@ -1429,8 +1446,10 @@ git diff</code></pre>
 <p><a href="https://packages.debian.org/buster/apg">apg</a> is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as “a maintained software with a comparable feature set becomes available”. Usage:</p>
 <pre><code>apg</code></pre>
 </div>
-<div id="generate-ssh-keys-and-add-them-to-the-agent" class="section level2">
-<h2>Generate SSH keys and add them to the agent</h2>
+<div id="ssh-secure-shell" class="section level2">
+<h2>SSH Secure Shell</h2>
+<div id="generate-ssh-keys-and-add-them-to-the-agent" class="section level3">
+<h3>Generate SSH keys and add them to the agent</h3>
 <p>Mon Sep 28 09:36:26 CEST 2020 Generate a new key</p>
 <pre><code>cd ~/.ssh
 ssh-keygen &lt;id_rsa_keyname&gt;</code></pre>
@@ -1449,22 +1468,22 @@ eval `ssh-agent`</code></pre>
 <p>Change the permission so only the current user has access to the file:</p>
 <pre><code>chmod 600 id_rsa</code></pre>
 </div>
-<div id="load-ssh-keys-into-the-remote-server" class="section level2">
-<h2>Load SSH keys into the remote server</h2>
+<div id="load-ssh-keys-into-the-remote-server" class="section level3">
+<h3>Load SSH keys into the remote server</h3>
 <p>Based on <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">Install the public key in remote server</a> Once you have an ssh key on your local machine, you need to load it into the remote server’s authorized keys as such:</p>
 <pre><code>ssh-copy-id -i $HOME/.ssh/id_rsa.pub user@server</code></pre>
 <p>OR just copy the public key in remote server as authorized_keys in ~/.ssh/ directory:</p>
 <pre><code>scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys</code></pre>
 <p>The remainder of the <a href="https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/">cybercity.biz document</a> explains how to disable the password based login on a server.</p>
 </div>
-<div id="check-a-keys-fingerprint" class="section level2">
-<h2>Check a key’s fingerprint</h2>
+<div id="check-a-keys-fingerprint" class="section level3">
+<h3>Check a key’s fingerprint</h3>
 <p>On github, ssh key fingerprints are displayed in md5format. To display the fingerprint in md5format, enter:</p>
 <pre><code>ssh-keygen -l -E md5 -f ~/.ssh/id_rsa.pub</code></pre>
 <p><a href="https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated">How to generate an SSH key fingerprint</a></p>
 </div>
-<div id="secure-shell-and-secure-copy" class="section level2">
-<h2>Secure shell and secure copy</h2>
+<div id="log-in-to-a-secure-shell-and-secure-copy" class="section level3">
+<h3>Log in to a secure shell and secure copy</h3>
 <p>log into a remote machine</p>
 <pre><code>ssh user@remote_machine</code></pre>
 <p>Copy a local file to a file on the remote machine</p>
@@ -1474,18 +1493,52 @@ eval `ssh-agent`</code></pre>
 <p>Copy a full directory (dmouraty) from the remote machine:</p>
 <pre><code> scp -rp user@dest:/path destdirectory</code></pre>
 </div>
+<div id="ssh-config" class="section level3">
+<h3>SSH config</h3>
+<p>To speed up login aliases can be set up in ~/.ssh/config</p>
+<pre><code>Host host_name
+  user paul
+  hostname ip_address </code></pre>
+</div>
+</div>
 <div id="gpg-signing-keys" class="section level2">
 <h2>GPG signing keys</h2>
+<p>See also the <a href="communication.html">communication page</a> on security issues related to PGP such as the Efail vulnerability. According to several authors PGP’s cryptography is really old and it is probably not the best encryption tool nowadays. Part of the issue is also related to the fact that email is a fundamentally unsecure communication tool.</p>
 <p>Generate a PGP key</p>
 <pre><code>gpg --gen-key</code></pre>
+<div id="public-key-servers" class="section level3">
+<h3>Public key servers</h3>
 <p>To submit your key to a server, export the key</p>
 <pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
-<p>My keys are visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a></p>
+<p>My keys were visible on pgp.mit.edu <a href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a>. 2019 Update following a look at a super user <a href="https://superuser.com/a/1498334/419414">answer on public key servers</a>, I uploaded my public key to</p>
+<pre><code>https://keys.openpgp.org/upload</code></pre>
+<p>My keys are searchable at</p>
+<pre><code>https://keys.openpgp.org/</code></pre>
+<p>Import a key from a public key server</p>
+<pre><code>curl -s &#39;https://keys.openpgp.org/vks/v1/by-fingerprint/6813A4C1B326F4A6A65336D9B6838AB252DD02F7&#39; | gpg --import</code></pre>
+<p><a href="https://keys.openpgp.org/about/usage#gnupg">GNUPG instructions</a> from openpgp.org</p>
+</div>
+<div id="encrypt-and-decrypt" class="section level3">
+<h3>Encrypt and decrypt</h3>
+<p>Encrypt a document for a particular recipient</p>
+<pre><code>gpg --encrypt --recipient user@email file.ext
+gpg -er user@email file.ext</code></pre>
+<p>Encrypt and sign a document</p>
+<pre><code>gpg --encrypt --sign --recipient user@email file.ext
+gpg -esr user@email file.ext</code></pre>
+<p>Decrypt a document</p>
+<pre><code>gpg --output file.ext --decrypt file.ext.gpg</code></pre>
+</div>
+<div id="sign-files" class="section level3">
+<h3>Sign files</h3>
 <p>Sign a file</p>
 <pre><code>gpg --sign filename.ext</code></pre>
 <p><a href="https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-private-key-and-public-key-to-a-file">Export GPG private and public key to a file</a></p>
 <p>Verify the signature of a file</p>
 <pre><code>gpg --verify filename.ext.gpg</code></pre>
+</div>
+<div id="manage-keys" class="section level3">
+<h3>Manage keys</h3>
 <p>List keys</p>
 <pre><code>gpg --list-keys
 gpg --list-public-keys
@@ -1496,6 +1549,17 @@ gpg --list-secret-keys</code></pre>
 <pre><code>gpg --delete-keys name</code></pre>
 <p>Delete a key from the private keyring</p>
 <pre><code>gpg --delete-secret-keys name</code></pre>
+</div>
+<div id="sks-pool" class="section level3">
+<h3>SKS pool</h3>
+<p>keys.openpgp.org <a href="https://keys.openpgp.org/about/faq">FAQ</a></p>
+<blockquote>
+<p>“Is this server part of the”SKS&quot; pool? &quot;</p>
+</blockquote>
+<blockquote>
+<p>No. The federation model of the SKS pool has various problems in terms of reliability, abuse-resistance, privacy, and usability. We might do something similar to it, but keys.openpgp.org will never be part of the SKS pool ITSELF. &quot;</p>
+</blockquote>
+</div>
 </div>
 </div>
 <div id="system" class="section level1">

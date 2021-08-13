@@ -397,7 +397,25 @@ extensions](https://stackoverflow.com/a/11111793/2641825)
 > include all directories `--include="*/"` and include all `*.sh` files
 > `--include="*.sh"`."
 
+Sync only `.mdb` files that are the output of a model
+
     rsync -zav --include="*/" --include="*.mdb" --exclude="*"  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/
+
+
+### Slash or no slash
+
+> "A trailing slash on the source changes this behavior to avoid creating an
+> additional directory level at the destination. You can think of a trailing /
+> on a source as meaning "copy the contents of this directory" as opposed to
+> "copy the directory by name", but in both cases the attributes of the
+> containing directory are transferred to the containing directory on the
+> destination. In other words, each of the follow‐ ing commands copies the
+> files in the same way, including their setting of the attributes of
+> /dest/foo: "
+
+    rsync -av /src/foo /dest
+    rsync -av /src/foo/ /dest/foo
+
 
 
 # Count
@@ -891,10 +909,22 @@ on Stackoverflow. See also a Unix and Linux stackexchange [question on how to
 list all files in a directory with absolute
 path](https://unix.stackexchange.com/questions/268474/how-to-list-all-files-in-a-directory-with-absolute-paths).
 
+
+## Tree
+
 List contents of a directories in a tree like format
 
     tree
     tree -d # List directories only, no files
+
+Ignore files that contain compiled python bytecode with the `-I` option
+
+    tree -I "*.pyc"
+
+Show only python file matching the `"*.py"` pattern with the `-P` option
+
+    tree -P "*.py"
+
 
 # Networking
 
@@ -911,6 +941,7 @@ Show the state of network interfaces
 Check open ports on a system
 
     nmap -Pn <hostname or IP address>
+
 
 ## Show domain name and host name
 
@@ -939,9 +970,13 @@ I created an alias in `.bash_aliases`
 
     alias open="xdg-open"
 
-Which makes it possible to open files with the
+There is already an `open` command on some systems. But creating an alias for
+it should be safe according to an answer to this [SO
+question](https://stackoverflow.com/questions/12329876/is-it-safe-to-alias-open-with-xdg-open) because "once you alias it, it's valid only for your user".
 
-    open command
+The alias makes it possible to open files with the simple command 
+
+    open .
 
 
 # Organise
@@ -1317,7 +1352,9 @@ Usage:
     apg
 
 
-## Generate SSH keys and add them to the agent 
+## SSH Secure Shell
+
+### Generate SSH keys and add them to the agent
 
 Mon Sep 28 09:36:26 CEST 2020
 Generate a new key
@@ -1357,7 +1394,7 @@ Change the permission so only the current user has access to the file:
 
     chmod 600 id_rsa
 
-## Load SSH keys into the remote server
+### Load SSH keys into the remote server
 
 Based on [Install the public key in remote
 server](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/)
@@ -1373,7 +1410,7 @@ OR just copy the public key in remote server as authorized_keys in ~/.ssh/ direc
 The remainder of the [cybercity.biz document](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/) explains how to disable the password based login
 on a server.
 
-## Check a key's fingerprint
+### Check a key's fingerprint
 
 On github, ssh key fingerprints are displayed in md5format.
 To display the fingerprint in md5format, enter:
@@ -1384,7 +1421,7 @@ To display the fingerprint in md5format, enter:
 
 
 
-## Secure shell and secure copy
+### Log in to a secure shell and secure copy
 
 log into a remote machine
 
@@ -1403,18 +1440,72 @@ Copy a full directory (dmouraty) from the remote machine:
      scp -rp user@dest:/path destdirectory
 
 
+### SSH config
+
+To speed up login aliases can be set up in ~/.ssh/config
+
+    Host host_name
+      user paul
+      hostname ip_address 
+
+
 ## GPG signing keys
+
+See also the [communication page](communication.html) on security issues
+related to PGP such as the Efail vulnerability. According to several authors
+PGP's cryptography is really old and it is probably not the best encryption
+tool nowadays. Part of the issue is also related to the fact that email is a
+fundamentally unsecure communication tool.
 
 Generate a PGP key
 
     gpg --gen-key
 
+
+### Public key servers
+
 To submit your key to a server, export the key
 
     gpg -a --export name@emailserver.com > public_key_sender.asc 
 
-My keys are visible on pgp.mit.edu 
-[search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index)
+My keys were visible on pgp.mit.edu 
+[search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index).
+2019 Update following a look at a super user [answer on public key
+servers](https://superuser.com/a/1498334/419414), I uploaded my public key to
+
+    https://keys.openpgp.org/upload
+
+My keys are searchable at
+
+    https://keys.openpgp.org/
+
+Import a key from a public key server
+
+    curl -s 'https://keys.openpgp.org/vks/v1/by-fingerprint/6813A4C1B326F4A6A65336D9B6838AB252DD02F7' | gpg --import
+
+[GNUPG instructions](https://keys.openpgp.org/about/usage#gnupg) from openpgp.org 
+
+
+### Encrypt and decrypt
+
+Encrypt a document for a particular recipient
+
+    gpg --encrypt --recipient user@email file.ext
+    gpg -er user@email file.ext
+
+Encrypt and sign a document 
+
+    gpg --encrypt --sign --recipient user@email file.ext
+    gpg -esr user@email file.ext
+
+Decrypt a document
+
+    gpg --output file.ext --decrypt file.ext.gpg
+
+
+
+
+### Sign files
 
 Sign a file
 
@@ -1426,6 +1517,9 @@ file](https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-privat
 Verify the signature of a file
 
     gpg --verify filename.ext.gpg
+
+
+### Manage keys
 
 List keys
 
@@ -1445,6 +1539,16 @@ Delete a key from the private keyring
 
     gpg --delete-secret-keys name
  
+### SKS pool
+
+keys.openpgp.org [FAQ](https://keys.openpgp.org/about/faq)
+
+> "Is this server part of the "SKS" pool? "
+
+> No. The federation model of the SKS pool has various problems in terms of
+> reliability, abuse-resistance, privacy, and usability. We might do something
+> similar to it, but keys.openpgp.org will never be part of the SKS pool
+> ITSELF. "
 
 
 # System
@@ -1540,6 +1644,7 @@ Kill a graphical program, by clicking on it:
 
 
 ## Keyboard
+
 bash french blogger recommended a simple shell command to change keyboard layout :
 
     sudo loadkeys fr
