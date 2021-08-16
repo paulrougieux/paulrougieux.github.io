@@ -266,6 +266,41 @@ provide the following operations:
 	    Return a new set with elements in either the set or other but not both.
     
 
+# HTTP
+
+## File download
+
+The following example uses urllib.request.urlopen to download a zip file
+containing Oceania's crop production data from the FAO statistical database. In
+that example, it is necessary to define a minimal header, otherwise FAOSTAT
+throws an `Error 403: Forbidden`. It was posted as a [StackOverflow
+Answer](https://stackoverflow.com/a/68804963/2641825).
+
+    import shutil
+    import urllib.request
+    import tempfile
+
+    # Create a request object with URL and headers    
+    url = “http://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_Oceania.zip”
+    header = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) '}
+    req = urllib.request.Request(url=url, headers=header)
+
+    # Define the destination file
+    dest_file = tempfile.gettempdir() + '/' + 'crop.zip'
+    print(f“File located at:{dest_file}”)
+
+    # Create an http response object
+    with urllib.request.urlopen(req) as response:
+        # Create a file object
+        with open(dest_file, "wb") as f:
+            # Copy the binary content of the response to the file
+            shutil.copyfileobj(response, f)
+
+Based on https://stackoverflow.com/a/48691447/2641825 and
+https://stackoverflow.com/a/66591873/2641825, see also the documentation at
+https://docs.python.org/3/howto/urllib2.html 
+
+
 # ipython
 
 Add these options at the ipyhton command line to reload objects automatically while you are coding

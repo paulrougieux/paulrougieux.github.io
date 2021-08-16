@@ -677,6 +677,33 @@ set ^ other
     Return a new set with elements in either the set or other but not both.</code></pre>
 </div>
 </div>
+<div id="http" class="section level1">
+<h1>HTTP</h1>
+<div id="file-download" class="section level2">
+<h2>File download</h2>
+<p>The following example uses urllib.request.urlopen to download a zip file containing Oceania’s crop production data from the FAO statistical database. In that example, it is necessary to define a minimal header, otherwise FAOSTAT throws an <code>Error 403: Forbidden</code>. It was posted as a <a href="https://stackoverflow.com/a/68804963/2641825">StackOverflow Answer</a>.</p>
+<pre><code>import shutil
+import urllib.request
+import tempfile
+
+# Create a request object with URL and headers    
+url = “http://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_Oceania.zip”
+header = {&#39;User-Agent&#39;: &#39;Mozilla/5.0 (X11; Linux x86_64) &#39;}
+req = urllib.request.Request(url=url, headers=header)
+
+# Define the destination file
+dest_file = tempfile.gettempdir() + &#39;/&#39; + &#39;crop.zip&#39;
+print(f“File located at:{dest_file}”)
+
+# Create an http response object
+with urllib.request.urlopen(req) as response:
+    # Create a file object
+    with open(dest_file, &quot;wb&quot;) as f:
+        # Copy the binary content of the response to the file
+        shutil.copyfileobj(response, f)</code></pre>
+<p>Based on <a href="https://stackoverflow.com/a/48691447/2641825" class="uri">https://stackoverflow.com/a/48691447/2641825</a> and <a href="https://stackoverflow.com/a/66591873/2641825" class="uri">https://stackoverflow.com/a/66591873/2641825</a>, see also the documentation at <a href="https://docs.python.org/3/howto/urllib2.html" class="uri">https://docs.python.org/3/howto/urllib2.html</a></p>
+</div>
+</div>
 <div id="ipython" class="section level1">
 <h1>ipython</h1>
 <p>Add these options at the ipyhton command line to reload objects automatically while you are coding</p>
