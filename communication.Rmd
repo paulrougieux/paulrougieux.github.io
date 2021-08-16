@@ -124,12 +124,15 @@ account](https://answers.microsoft.com/en-us/skype/forum/all/linking-old-skype-w
 
 ## Teams
 
-A Microsoft product.
+Teams is a Microsoft product based on Skype. It has a development version that
+runs on Debian Linux desktop computers. 
 
-I use second-hand laptop computers with open source software on them. They cost
-less than a fifth of new computers and I run them for years. This is not
-possible with Microsoft windows, because they have this different world-view/
-incentives to build planed obsolescence into their products.
+Side note: I use second-hand laptop computers with open source software on them. They cost
+less than a fifth of new computers and I run them for years. Running the latest
+version of  Microsoft windows is generally not possible or becomes very slow on
+old hardware. In fact companies that rely on Microsoft OS have a different world-view
+since the heavy requirements of Windows, leads to planed obsolescence.
+
 
 ## Telegram
 
