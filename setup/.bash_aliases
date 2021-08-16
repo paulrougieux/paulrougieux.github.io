@@ -32,7 +32,10 @@ export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_py/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_runner/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/plumbing/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/autopaths/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/gftmx/":$PYTHONPATH
 export LIBCBM_DATA="$HOME/repos/libcbm_data/"
+export GFTMX_DATA="$HOME/repos/gftmx_data/"
 
 # Create tag files for an R project, from within an R project's R folder
 rtags() {
