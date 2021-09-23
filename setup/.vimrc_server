@@ -6,6 +6,13 @@
 filetype on
 syntax enable
 
+" Indentation settings
+set tabstop=4
+set expandtab
+set softtabstop=4
+set shiftwidth=4
+filetype indent on 
+
 " change leader key from \ (the default) to ,
 let mapleader = ","
 let maplocalleader = ";"
