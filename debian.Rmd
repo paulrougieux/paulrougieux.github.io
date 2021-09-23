@@ -488,6 +488,16 @@ now. Yes, after looking at another laptop with teams only (no Skype) I'm sure
 that teams appears as "Skype" in that Debian settings / sound / applications
 menu. 
 
+
+Questions related to the lack of screen sharing capability on Linux:
+
+- [How to share your screen or at least a pdf presentation with microsoft teams
+  on
+  linux?](https://superuser.com/questions/1674579/how-to-share-your-screen-or-at-least-a-pdf-presentation-with-microsoft-teams-on) Paul asked this question.
+
+- [Screensharing not working in the official MS Teams for Linux](https://docs.microsoft.com/en-us/answers/questions/34407/screensharing-not-working-in-the-official-ms-teams.html)
+
+
 ## Vim 
 
 Edit the keyboard configuration as explained in 
@@ -803,6 +813,14 @@ Then update grub
 
 This did make the new resolution available in the Gnome display settings. 
 
+
+### Switch between Wayland and Xorg
+
+itsfoss.com [switch-xorg-wayland](https://itsfoss.com/switch-xorg-wayland/)
+
+    echo $XDG_SESSION_TYPE
+
+
 ## Custom wrapper script for x11
 Debian 10 Buster uses wayland as a
 window manager. To force the use of x11 for zathura, in debian a zathura
@@ -856,7 +874,7 @@ or following command
 
     xrandr --output XWAYLAND1 --mode "1920x1200_60.00"
 
-# System information
+# System information and version
 
 Find out which Debian version is running
 

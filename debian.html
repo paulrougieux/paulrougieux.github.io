@@ -755,6 +755,11 @@ make install</code></pre>
 <p>Install</p>
 <pre><code>sudo apt install ./teams_1.3.00.25560_amd64.deb</code></pre>
 <p><a href="https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html">Microphone stopped working in teams</a> I had a sound issue. I managed to reactivate the sound under Debian settings / sound / applications there by reactivating the sound for cmus this somehow also affected teams and I could hear the audio again in teams after that. Or maybe I also change the settings for Skype? In any case I have sound again in teams now. Yes, after looking at another laptop with teams only (no Skype) I’m sure that teams appears as “Skype” in that Debian settings / sound / applications menu.</p>
+<p>Questions related to the lack of screen sharing capability on Linux:</p>
+<ul>
+<li><p><a href="https://superuser.com/questions/1674579/how-to-share-your-screen-or-at-least-a-pdf-presentation-with-microsoft-teams-on">How to share your screen or at least a pdf presentation with microsoft teams on linux?</a> Paul asked this question.</p></li>
+<li><p><a href="https://docs.microsoft.com/en-us/answers/questions/34407/screensharing-not-working-in-the-official-ms-teams.html">Screensharing not working in the official MS Teams for Linux</a></p></li>
+</ul>
 </div>
 </div>
 <div id="vim" class="section level2">
@@ -970,6 +975,11 @@ server {
 <pre><code>sudo update-grub</code></pre>
 <p>This did make the new resolution available in the Gnome display settings.</p>
 </div>
+<div id="switch-between-wayland-and-xorg" class="section level3">
+<h3>Switch between Wayland and Xorg</h3>
+<p>itsfoss.com <a href="https://itsfoss.com/switch-xorg-wayland/">switch-xorg-wayland</a></p>
+<pre><code>echo $XDG_SESSION_TYPE</code></pre>
+</div>
 </div>
 <div id="custom-wrapper-script-for-x11" class="section level2">
 <h2>Custom wrapper script for x11</h2>
@@ -998,8 +1008,8 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 <pre><code>xrandr --output XWAYLAND1 --mode &quot;1920x1200_60.00&quot;</code></pre>
 </div>
 </div>
-<div id="system-information" class="section level1">
-<h1>System information</h1>
+<div id="system-information-and-version" class="section level1">
+<h1>System information and version</h1>
 <p>Find out which Debian version is running</p>
 <pre><code>cat /etc/issue</code></pre>
 <p>Display the OS release</p>
