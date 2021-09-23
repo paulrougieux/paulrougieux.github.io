@@ -26,26 +26,34 @@ database and "R" cannot be used as a user name according to system policy.
 
     sudo adduser rdb --disabled-password 
 
-Login as the default user postgres
-Now logged in as `postgres@machine_name` in the regular bash shell 
+**Login as the postgres user!**
 
-    sudo -u postgres bash
+    sudo -i -u postgres
 
-    # or 
-    sudo su postgres
+Now logged in as `postgres@machine_name` in the regular bash shell:
 
 1. Create a user with the same name as the system user created above
 
     createuser --pwprompt rdb
-
     # Create a user for myself
     createuser paul 
 
 2. Create a database owned by that user
 
     createdb -O rdb tradeflows
-
+    createdb -O rdb biotrade
     createdb -O paul tradeflows_migrated
+
+Note: createdb is a wrapper around the SQL command `CREATE DATABASE`.
+
+3. Grant rights to another user. First connect to the database
+    
+        psql -d biotrade -h localhost -U rdb
+
+    Then grand privileges
+
+        GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA raw_comtrade TO paul;
+
 
 # Connect to a database
 
@@ -60,19 +68,25 @@ Secure the file:
 
     chmod 600 ~/.pgpass
 
-Connect to the database:
+
+## Connect to the database 
+
+Using the credentials stored in .pgpass
 
     psql -d tradeflows -h localhost -U rdb
+    psql -d biotrade -h localhost -U rdb
 
-## As a system user
+
+## Connect by changing the user at the system level
 
 Login as the user who is the owner of that database
 
-    sudo su rdb
+    sudo -i -u rdb
 
 Connect to the database
 
     psql tradeflows
+
 
 # Data types
 
@@ -202,6 +216,15 @@ Describe a table to see column names and data types
     \d raw_comtrade.yearly;
 
 
+# Load data into the database
+
+## SQL files
+
+Read commands from a file with the `-f` argument:
+    
+    psql -d biotrade -h localhost -U rdb -f ~/rp/biotrade/biotrade/config_data/comtrade.sql
+
+
 # MariaDB/MySQL and PostgreSQL 
 
 ## Compare commands
@@ -232,6 +255,34 @@ For my own database I used:
     createdb -O paul tradeflows_migrated
     exit # Go back to user "paul"
     pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated
+
+# Query
+
+## SELECT
+
+postgresql.org the [WHERE
+Clause](https://www.postgresql.org/docs/13/queries-table-expressions.html#QUERIES-WHERE)
+
+Here are some examples of WHERE clauses:
+
+    SELECT ... FROM fdt WHERE c1 > 5
+
+    SELECT ... FROM fdt WHERE c1 IN (1, 2, 3)
+
+    SELECT ... FROM fdt WHERE c1 IN (SELECT c1 FROM t2)
+
+    SELECT ... FROM fdt WHERE c1 IN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10)
+
+    SELECT ... FROM fdt WHERE c1 BETWEEN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10) AND 100
+
+    SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 > fdt.c1)
+
+When using string values, single quotes are required (otherwise the `ERROR:
+column "02" does not exist` is returned)
+
+    select distinct(reporter) from raw_comtrade.yearly_hs2 where commodity_code = '02';
+
+
 
 # Road map
 
@@ -270,6 +321,17 @@ Official documentation postgresql.org
 
 > "Schemas are analogous to directories at the operating system level, except
 > that schemas cannot be nested." 
+
+
+# Tables
+
+## Export a table structure 
+
+[Export the create statement for an existing
+table](https://stackoverflow.com/questions/2593803/how-to-generate-the-create-table-sql-statement-for-an-existing-table-in-postgr)
+
+    pg_dump -t 'raw_comtrade.yearly_2_digit' --schema-only biotrade  >> /tmp/comtrade_yearly.sql
+
 
 # Blogs
 
