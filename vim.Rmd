@@ -512,6 +512,10 @@ tables:
 
     :'<,'>s/\s\+/|/g
 
+This pattern removes spaces at the end of the line:
+
+    :'<,'>s/\s*$//g
+
 
 ## Copy, cut and paste
 
@@ -782,6 +786,11 @@ I added the following command to my .vimrc:
     :bd         - close the current buffer (! to forget changes)
     :bd filename -close a buffer by name 
 
+Reload the file in the current buffer: 
+
+    :e
+
+
 ## Quickfix window
 
 Open the quickfix window with:
@@ -854,6 +863,24 @@ Open an existing buffer (from the buffer list) in a new split
 For a vertical split
 
     :vert sb buffername
+
+
+### Open vim with two files in two splits or more
+
+[ViM Stack
+exchange](https://vi.stackexchange.com/questions/732/how-to-open-multiple-files-in-split-mode)
+Open 2 files in 2 horizontal splits
+
+    vim -o file1.md file2.md
+
+Limit the number of splits
+
+    vim -o2 *.md
+
+Open files in vertical splits
+
+    vim -O file1.md file2.md
+
 
 ### Split resize
 

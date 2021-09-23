@@ -802,6 +802,8 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
 <p>This pattern replaces one or more white spaces with a pipe, to create markdown tables:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\s\+/|/g</code></pre>
+<p>This pattern removes spaces at the end of the line:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\s*$//g</code></pre>
 </div>
 </div>
 <div id="copy-cut-and-paste" class="section level2">
@@ -979,6 +981,8 @@ CTRL+T - jump backwards</code></pre>
 :b filename - open buffer #filename in this window
 :bd         - close the current buffer (! to forget changes)
 :bd filename -close a buffer by name </code></pre>
+<p>Reload the file in the current buffer:</p>
+<pre><code>:e</code></pre>
 </div>
 <div id="quickfix-window" class="section level2">
 <h2>Quickfix window</h2>
@@ -1027,6 +1031,15 @@ set splitright</code></pre>
 <pre><code>:sb buffername</code></pre>
 <p>For a vertical split</p>
 <pre><code>:vert sb buffername</code></pre>
+<div id="open-vim-with-two-files-in-two-splits-or-more" class="section level3">
+<h3>Open vim with two files in two splits or more</h3>
+<p><a href="https://vi.stackexchange.com/questions/732/how-to-open-multiple-files-in-split-mode">ViM Stack exchange</a> Open 2 files in 2 horizontal splits</p>
+<pre><code>vim -o file1.md file2.md</code></pre>
+<p>Limit the number of splits</p>
+<pre><code>vim -o2 *.md</code></pre>
+<p>Open files in vertical splits</p>
+<pre><code>vim -O file1.md file2.md</code></pre>
+</div>
 <div id="split-resize" class="section level3">
 <h3>Split resize</h3>
 <p>Set current window height to 10 lines</p>
