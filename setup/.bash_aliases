@@ -29,6 +29,7 @@ export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_py/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_runner/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/plumbing/":$PYTHONPATH
