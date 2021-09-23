@@ -640,6 +640,17 @@ Convert from png to jpg and change size
 
     mogrify -resize 2000 -path ./newfolder -format jpg *.png
 
+### A4 portrait Scan emulation
+
+Combine some of the commands above to create a scanned A4 portrait pdf document from
+pictures taken from a camera. First reduce the size of the pictures to 2000
+pixel wide and rotate them 90 degrees, then combine all images in a pdf.
+
+    mkdir small
+    mogrify -resize 2000 -rotate 90 -path ./small/ *.JPG
+    cd small/
+    img2pdf --output out.pdf --pagesize A4^T --border 2cm:2.5cm *.JPG
+
 
 ## Edit music files
 
