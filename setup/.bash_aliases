@@ -14,6 +14,10 @@ alias youtubebatchfile="youtube-dl --extract-audio --audio-format vorbis --sleep
 # A playlist url generally ends with an index number in the form "index=1"
 alias youtubeplaylist="youtube-dl --extract-audio --audio-format vorbis --sleep-interval 30 -i --yes-playlist"
 
+# Pictures
+alias mogri1000="mkdir -p small && mogrify -resize 1000 -path ./small/ *.JPG"
+alias mogri2000="mkdir -p small && mogrify -resize 2000 -path ./small/ *.JPG"
+
 # Tools
 alias ll='ls -lah'
 alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work"'
