@@ -417,6 +417,21 @@ Sync only `.mdb` files that are the output of a model
     rsync -av /src/foo/ /dest/foo
 
 
+## Flatten a file hierarchy
+
+Copy all files in the folder hierarchy to a flat folder at the root.
+[solution from
+askubuntu](https://askubuntu.com/questions/633945/how-can-i-merge-multiple-directories-into-one)
+
+    find . -type f -print0 | xargs -0 -I file mv --backup=numbered file .
+
+I also follow with [another
+command](https://unix.stackexchange.com/a/371393/85530)  
+
+    rename 's/((?:\..+)?)\.~(\d+)~$/_$2$1/' *.~*~
+
+to keep the numbering of duplicated files before the extension. 
+
 
 # Count
 
@@ -480,7 +495,13 @@ Alias from other persons:
 
 https://github.com/statox/dotfiles/blob/master/bash_aliases
 
+Reload bash aliases:
+
+    source ~/.bashrc
+
+
 ## Profile .bash_profile and .bashrc
+
 These are places where a user can turn of the system BEEP :
 
     setterm -blength 0

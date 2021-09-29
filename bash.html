@@ -734,6 +734,14 @@ java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
 rsync -av /src/foo/ /dest/foo</code></pre>
 </div>
 </div>
+<div id="flatten-a-file-hierarchy" class="section level2">
+<h2>Flatten a file hierarchy</h2>
+<p>Copy all files in the folder hierarchy to a flat folder at the root. <a href="https://askubuntu.com/questions/633945/how-can-i-merge-multiple-directories-into-one">solution from askubuntu</a></p>
+<pre><code>find . -type f -print0 | xargs -0 -I file mv --backup=numbered file .</code></pre>
+<p>I also follow with <a href="https://unix.stackexchange.com/a/371393/85530">another command</a></p>
+<pre><code>rename &#39;s/((?:\..+)?)\.~(\d+)~$/_$2$1/&#39; *.~*~</code></pre>
+<p>to keep the numbering of duplicated files before the extension.</p>
+</div>
 </div>
 <div id="count" class="section level1">
 <h1>Count</h1>
@@ -777,6 +785,8 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </blockquote>
 <p>Alias from other persons:</p>
 <p><a href="https://github.com/statox/dotfiles/blob/master/bash_aliases" class="uri">https://github.com/statox/dotfiles/blob/master/bash_aliases</a></p>
+<p>Reload bash aliases:</p>
+<pre><code>source ~/.bashrc</code></pre>
 </div>
 <div id="profile-.bash_profile-and-.bashrc" class="section level2">
 <h2>Profile .bash_profile and .bashrc</h2>
