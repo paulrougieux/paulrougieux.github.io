@@ -1845,9 +1845,12 @@ matter of taste anyway.
 I see R more like the bash command line. It's great for scripts, but you
 wouldn't want to write large applications in bash.
 
-Non standard evaluation doesn't exist in python. Here is an email thread
+Non standard evaluation doesn't exist in python. 
+- An email thread
 discussing [the idea of non standard evaluation in
 python](https://www.mail-archive.com/python-ideas@python.org/msg15694.html).
+- A [comparison of a python implementation and an R implementation using non
+  standard evaluation](https://third-bit.com/2018/11/16/non-standard-evaluation/).
 
 # String 
 
