@@ -938,8 +938,9 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 </div>
 <div id="continuous-integration" class="section level2">
 <h2>Continuous Integration</h2>
-<p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository. I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK.</p>
-<p>Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
+<p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository.</p>
+<p>I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK. Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
+<p>In 2020 RopenSci moved away from Travis CI because of a change of mannagement which removed support for open source projects. In <a href="https://ropensci.org/blog/2020/11/19/moving-away-travis/">this post</a> Jeroen Ooms thanks Travis CI for greatly enabling CI since 2012.</p>
 </div>
 <div id="make-file" class="section level2">
 <h2>Make file</h2>
@@ -1099,7 +1100,11 @@ iris2 &lt;- iris %&gt;%
     group_by(Species, Petal.Width) %&gt;%
     summarise(Sepal.Width = mean(Sepal.Width))
 ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
-    geom_text(aes(label = Species), position=position_jitter(width=0.5,height=0.3))</code></pre>
+    geom_text(aes(label = Species), 
+              position=position_jitter(width=0.5,height=0.3),
+              hjust=&quot;left&quot;) +
+    # Expand the scale so that names are shown in full
+    scale_x_continuous(expand = expansion(mult=c(0.1,0.5)))</code></pre>
 <p>Use repulsive textual annotations</p>
 <pre class="r"><code>ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
     ggrepel::geom_text_repel(aes(label = Species))</code></pre>

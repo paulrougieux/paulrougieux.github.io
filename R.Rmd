@@ -595,15 +595,23 @@ These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics
 
 
 ## Continuous Integration
+
+
 It is good to know if your package can be installed on a fresh system. 
 Continuous integration systems make this possible each time you submit a modification to your repository. 
-I have used travis-ci which is free for open github repositories. 
-[Instructions to build an R project on travis](https://docs.travis-ci.com/user/languages/r/).
-Unit tests are also run on travis, in addition to R CMD CHECK.
 
-Package dependencies can be configured in a `.travis.yml`
-file that is read by the travis machine performing the build.
-For package that are not on Cran, it's possible to specify a dependency field under `r_github_packages`.
+I have used travis-ci which is free for open github repositories. [Instructions
+to build an R project on travis](https://docs.travis-ci.com/user/languages/r/).
+Unit tests are also run on travis, in addition to R CMD CHECK. Package
+dependencies can be configured in a `.travis.yml` file that is read by the
+travis machine performing the build. For package that are not on Cran, it's
+possible to specify a dependency field under `r_github_packages`.
+
+In 2020 RopenSci moved away from Travis CI because of a change of mannagement
+which removed support for open source projects. In [this
+post](https://ropensci.org/blog/2020/11/19/moving-away-travis/) Jeroen Ooms
+thanks Travis CI for greatly enabling CI since 2012.
+
 
 ## Make file
 
@@ -823,7 +831,11 @@ iris2 <- iris %>%
     group_by(Species, Petal.Width) %>%
     summarise(Sepal.Width = mean(Sepal.Width))
 ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
-    geom_text(aes(label = Species), position=position_jitter(width=0.5,height=0.3))
+    geom_text(aes(label = Species), 
+              position=position_jitter(width=0.5,height=0.3),
+              hjust="left") +
+    # Expand the scale so that names are shown in full
+    scale_x_continuous(expand = expansion(mult=c(0.1,0.5)))
 ```
 
 Use repulsive textual annotations
