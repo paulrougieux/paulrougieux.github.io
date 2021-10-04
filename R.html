@@ -700,6 +700,15 @@ tr(,&quot;tsp&quot;)
 <pre><code>names(df) &lt;- gsub(&quot;.per.hectare.[0-9]* *&quot;, &quot;_&quot;, names(df))</code></pre>
 <p><a href="https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-not/18239222">And in a regular expression</a></p>
 <pre><code>|</code></pre>
+<p>Change columns to snake case</p>
+<pre class="r"><code>column_names &lt;- c(&quot;Bla Bla&quot;, &quot;Hips Hops&quot;, &quot;Yield/Carcass Weight&quot;,
+                  &quot;Production&quot;, &quot;Producing Animals/Slaughtered&quot;,
+                  &quot;Area harvested&quot;, &quot;Yield&quot;)
+gsub(&quot;[^[:alnum:]]&quot;,&quot;_&quot;,tolower(column_names))</code></pre>
+<pre><code>## [1] &quot;bla_bla&quot;                       &quot;hips_hops&quot;                    
+## [3] &quot;yield_carcass_weight&quot;          &quot;production&quot;                   
+## [5] &quot;producing_animals_slaughtered&quot; &quot;area_harvested&quot;               
+## [7] &quot;yield&quot;</code></pre>
 </div>
 </div>
 <div id="installing-r-and-packages" class="section level1">
@@ -715,6 +724,14 @@ tr(,&quot;tsp&quot;)
 <pre><code>sudo apt install libcurl4-openssl-dev 
 sudo apt install libxml2-dev 
 sudo apt install libssl-dev</code></pre>
+<div id="install-from-source-file" class="section level2">
+<h2>Install from source file</h2>
+<p>To install from a source file</p>
+<pre><code>install.packages(&quot;~/rp/FAOSTATpackage/FAOSTAT_2.2.1.tar.gz&quot;, repos=NULL)</code></pre>
+<p>System information used by <code>install.packages()</code> to determine default installation parameters</p>
+<pre><code>getOption(&quot;repos&quot;)
+getOption(&quot;pkgType&quot;)</code></pre>
+</div>
 <div id="eurostat-package" class="section level2">
 <h2>Eurostat Package</h2>
 <p>Install required GDAL development library for the “sf” package</p>
@@ -1029,7 +1046,7 @@ iris2 %&gt;%
     geom_point() +
     facet_wrap(species_math ~ mean_length + Species,
                labeller = labeller(species_math = label_parsed, mean_length = label_parsed))</code></pre>
-<p><img src="R_files/figure-html/unnamed-chunk-7-1.png" width="672" /></p>
+<p><img src="R_files/figure-html/unnamed-chunk-8-1.png" width="672" /></p>
 <p>As shown in the example above, the labeller can parse:</p>
 <ol style="list-style-type: decimal">
 <li><p>A character vector such as “m^2” for simple formulas</p></li>

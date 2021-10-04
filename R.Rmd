@@ -283,6 +283,7 @@ Dplyr has databases backends  to MySQl (MariaDB) and PostgreSQL.
     tr(,"tsp")
     ]  7 10  1
 
+
 ## Replace text in column names
 
 Add the first row to the column name, useful for some double headed csv files
@@ -298,6 +299,15 @@ Replace a regular expression with optional numerical pattern and final space
 expression](https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-not/18239222)
 
     |
+
+Change columns to snake case
+
+```{r}
+column_names <- c("Bla Bla", "Hips Hops", "Yield/Carcass Weight",
+                  "Production", "Producing Animals/Slaughtered",
+                  "Area harvested", "Yield")
+gsub("[^[:alnum:]]","_",tolower(column_names))
+```
 
 
 # Installing R and packages
@@ -321,6 +331,19 @@ Can be solved by installing these dependencies:
     sudo apt install libcurl4-openssl-dev 
     sudo apt install libxml2-dev 
     sudo apt install libssl-dev
+
+
+## Install from source file
+
+To install from a source file
+
+    install.packages("~/rp/FAOSTATpackage/FAOSTAT_2.2.1.tar.gz", repos=NULL)
+
+System information used by `install.packages()` to determine default 
+installation parameters
+
+    getOption("repos")
+    getOption("pkgType")
 
 
 ## Eurostat Package
