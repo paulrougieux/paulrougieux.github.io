@@ -299,8 +299,8 @@ let R_assign = 0
 "nnoremap <LocalLeader>cq <LocalLeader>ca
 
 " Add tags as explained in :help Nvim-R-tagsfile
-autocmd FileType r set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
-autocmd FileType rmd set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
+autocmd FileType r set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags,~/rp/FAOSTATpackage/FAOSTAT/R/tags
+autocmd FileType rmd set tags+=R/tags,~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags,~/rp/FAOSTATpackage/FAOSTAT/R/tags
 
 " NVim-R command to set the working directory to the project root in knitr
 " map <silent> <LocalLeader>w  :call g:SendCmdToR("setwd(opts_knit$get()$root.dir)")<CR>

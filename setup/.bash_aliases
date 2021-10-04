@@ -51,6 +51,7 @@ rtags() {
 # Create tag files for the most commonly used R projects
 rtagsall() {
     cd ~/rp/eutradeflows/R  && rtags
+    cd ~/rp/FAOSTATpackage/FAOSTAT/R/ && rtags
     cd ~/rp/tradeflows/R  && rtags
 }
 # Enable bracketed paste in vim
