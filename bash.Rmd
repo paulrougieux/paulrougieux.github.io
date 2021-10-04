@@ -747,7 +747,24 @@ I quoted them in `\begin{verbatim}` statements.
 
     # Test output to stdout placing # before and after a matching line
     sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
-     # Modify the file in place
+
+### Modify the file in place
+
+Both of these work
+
+    cd /tmp
+    cat "Export Quantity" >> file.md
+
+    bli () {
+    perl -i'' -pi -e "s/$1/$2/g" file.md
+    }
+    bli "Export Quantity" "export_quantity"
+
+    bla () {
+    perl -i'' -pE "s/$1/$2/g" file.md
+    }
+    bla "Export Quantity" "export_quantity"
+
 
 ## Remove duplicated lines from a file
 
@@ -1354,18 +1371,19 @@ files under git version control.
     git grep -lz 'readcsvfromgauss'| xargs -0 perl -i'' -pE "s/readcsvfromgauss/readcsvfromgauss0/g"
     git grep -lz 'RMySQL::'| xargs -0 perl -i'' -pE "s/RMySQL::/RMariaDB::/g"
 
-Alias to refactor:
+Alias to refactor, use single quotes for the patterns:
 
     refactor() {
         echo "Replacing $1 by $2 in all files in this git repository."
-        git grep -lz $1| xargs -0 perl -i'' -pE "s/$1/$2/g"
+        git grep -lz "$1"| xargs -0 perl -i'' -pE "s/$1/$2/g"
     }
+
 
 When there are slashes in the patterns, use another separator
 
     refactor() {
         echo "Replacing $1 by $2 in all files in this git repository."
-        git grep -lz $1| xargs -0 perl -i'' -pE "s|$1|$2|g"
+        git grep -lz "$1"| xargs -0 perl -i'' -pE "s|$1|$2|g"
     }
 
 Usage, for example replace 'word' with 'sword':

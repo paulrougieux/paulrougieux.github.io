@@ -942,8 +942,23 @@ grep EMAIL input_file.txt |sed  &#39;s/^.*\://g&#39; &gt; output_file.txt </code
 <p>Add a line above and below a line that contains a particular string. This was necessary for a Latex to Lyx document conversion. The Latex file had problematic characters in href links. Conversion worked fine without the href links, to keep the links</p>
 <p>I quoted them in <code>\begin{verbatim}</code> statements. <a href="https://stackoverflow.com/a/24230154/2641825">sed add # before a line containing a pattern</a> <a href="https://unix.stackexchange.com/questions/97428/sed-how-to-do-several-consecutive-substitutions-but-process-file-only-once">sed performing several substitutions</a></p>
 <pre><code># Test output to stdout placing # before and after a matching line
-sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href 
- # Modify the file in place</code></pre>
+sed -e /href/s/^/\\n#\\n/ -e /href/s/$/\\n#\\n/ clipboard_3_to_delete.tex| grep -C2 href </code></pre>
+<div id="modify-the-file-in-place" class="section level3">
+<h3>Modify the file in place</h3>
+<p>Both of these work</p>
+<pre><code>cd /tmp
+cat &quot;Export Quantity&quot; &gt;&gt; file.md
+
+bli () {
+perl -i&#39;&#39; -pi -e &quot;s/$1/$2/g&quot; file.md
+}
+bli &quot;Export Quantity&quot; &quot;export_quantity&quot;
+
+bla () {
+perl -i&#39;&#39; -pE &quot;s/$1/$2/g&quot; file.md
+}
+bla &quot;Export Quantity&quot; &quot;export_quantity&quot;</code></pre>
+</div>
 </div>
 <div id="remove-duplicated-lines-from-a-file" class="section level2">
 <h2>Remove duplicated lines from a file</h2>
@@ -1443,15 +1458,15 @@ echo $message</code></pre>
 <pre><code>git grep -lz &#39;first_string&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/first_string/second_string/g&quot;
 git grep -lz &#39;readcsvfromgauss&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/readcsvfromgauss/readcsvfromgauss0/g&quot;
 git grep -lz &#39;RMySQL::&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/RMySQL::/RMariaDB::/g&quot;</code></pre>
-<p>Alias to refactor:</p>
+<p>Alias to refactor, use single quotes for the patterns:</p>
 <pre><code>refactor() {
     echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
-    git grep -lz $1| xargs -0 perl -i&#39;&#39; -pE &quot;s/$1/$2/g&quot;
+    git grep -lz &quot;$1&quot;| xargs -0 perl -i&#39;&#39; -pE &quot;s/$1/$2/g&quot;
 }</code></pre>
 <p>When there are slashes in the patterns, use another separator</p>
 <pre><code>refactor() {
     echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
-    git grep -lz $1| xargs -0 perl -i&#39;&#39; -pE &quot;s|$1|$2|g&quot;
+    git grep -lz &quot;$1&quot;| xargs -0 perl -i&#39;&#39; -pE &quot;s|$1|$2|g&quot;
 }</code></pre>
 <p>Usage, for example replace ‘word’ with ‘sword’:</p>
 <pre><code>refactor word sword
