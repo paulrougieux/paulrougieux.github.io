@@ -898,6 +898,9 @@ some pandas stuff</code></pre>
 <p>Then start the notebook server as such:</p>
 <pre><code>jupyter notebook</code></pre>
 </div>
+<div id="plots" class="section level2">
+<h2>Plots</h2>
+</div>
 <div id="security-and-authentication-on-a-public-server" class="section level2">
 <h2>Security and authentication on a public server</h2>
 <p><a href="https://stackoverflow.com/questions/37808410/ipython-jupyter-notebook-with-authentication">Jupyter notebook with authentication</a></p>
@@ -1312,18 +1315,37 @@ df.rename(columns=lambda x: re.sub(r&quot; &quot;, &quot;_&quot;, str(x)).lower(
 <pre><code>df.rename(columns=lambda x: re.sub(r&quot;[()\.]&quot;, &quot;&quot;, x), inplace=True)</code></pre>
 </div>
 </div>
-<div id="joining-and-merging" class="section level2">
-<h2>Joining and merging</h2>
-<p>Stackoverflow <a href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas merging</a></p>
-</div>
-<div id="lag-or-shift-a-grouped-variable" class="section level2">
-<h2>Lag or shift a grouped variable</h2>
+<div id="group-by-operations" class="section level2">
+<h2>Group by operations</h2>
+<p>Compute the sum for the sepal length grouped by species</p>
+<pre><code>import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+iris.groupby(&#39;species&#39;).agg(sepal_length = (&#39;sepal_length&#39;, sum))</code></pre>
+<p>Compute the sum but repeated for every original row</p>
+<pre><code>iris[&#39;sepal_sum&#39;] = iris.groupby(&#39;species&#39;)[&#39;sepal_length&#39;].transform(&#39;sum&#39;)
+iris</code></pre>
+<p>Compute the cumulative sum of the sepal length</p>
+<pre><code>iris[&#39;cumsum&#39;] = iris.groupby(&#39;species&#39;).sepal_length.cumsum()
+iris[&#39;cumsum&#39;].plot()
+from matplotlib import pyplot
+pyplot.show()</code></pre>
+<p>Lag</p>
+<pre><code>iris[&#39;cumsum_lag&#39;] = iris.groupby(&#39;species&#39;)[&#39;cumsum&#39;].transform(&#39;shift&#39;, fill_value=0)
+iris[[&#39;cumsum&#39;, &#39;cumsum_lag&#39;]].plot()
+pyplot.show()</code></pre>
+<div id="lag-or-shift-a-grouped-variable" class="section level3">
+<h3>Lag or shift a grouped variable</h3>
 <p>Load the flights dataset and for each month, display the passenger value in the same month of the previous year. Compare the <code>passengers</code> and <code>pass_year_minus_one</code> columns by displaying the tables for January and December.</p>
 <pre><code>import seaborn
 flights = seaborn.load_dataset(&quot;flights&quot;)
 flights[&#39;pass_year_minus_one&#39;] = flights.groupby([&#39;month&#39;]).passengers.shift()
 flights.query(&quot;month==&#39;January&#39;&quot;)
 flights.query(&quot;month==&#39;December&#39;&quot;)</code></pre>
+</div>
+</div>
+<div id="joining-and-merging" class="section level2">
+<h2>Joining and merging</h2>
+<p>Stackoverflow <a href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas merging</a></p>
 </div>
 <div id="read-and-write-csv" class="section level2">
 <h2>Read and write csv</h2>
@@ -1524,6 +1546,11 @@ Out: False</code></pre>
 Out: True</code></pre>
 </div>
 </div>
+<div id="sort-or-arrange-values" class="section level2">
+<h2>Sort or arrange values</h2>
+<p>Sort iris by descending order of species and ascending order of petal width</p>
+<pre><code>iris.sort_values(by=[&quot;species&quot;, &quot;petal_width&quot;], ascending=[False,True])</code></pre>
+</div>
 <div id="string-operations-in-pandas" class="section level2">
 <h2>String operations in pandas</h2>
 <p>See also string operations in python in another section.</p>
@@ -1543,6 +1570,13 @@ Out: True</code></pre>
 merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 <p>Using <code>drop_duplicates</code></p>
 <pre><code>newdf=pd.concat[df1,df2].drop_duplicates(keep=False)</code></pre>
+</div>
+<div id="where-and-mask" class="section level2">
+<h2>Where and mask</h2>
+<p><code>where</code> replaces values that do not fit the condition and <code>mak</code> replaces values that fit the condition.</p>
+<pre><code>s = pandas.Series(range(5))
+s.where(s &gt; 1, 10)
+s.mask(s &gt; 1, 10)</code></pre>
 </div>
 </div>
 <div id="paths" class="section level1">
@@ -1653,10 +1687,26 @@ g.set(ylim=(0, None)) </code></pre>
 </div>
 <div id="grid-plot" class="section level3">
 <h3>Grid plot</h3>
-<pre><code>g = seaborn.FacetGrid(iris, col=&quot;species&quot;)
+<div id="grid-scatter-plot" class="section level4">
+<h4>Grid scatter plot</h4>
+<p>Draw a scatter plot for each iris species</p>
+<pre><code>g = seaborn.FacetGrid(iris, col=&quot;species&quot;, height=6, width=2)
 iris[&#39;species&#39;] = iris[&#39;species&#39;].astype(&#39;category&#39;)
-g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)</code></pre>
+g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)
+plt.show()</code></pre>
 <p>Notice that if you don’t change the color to a categorical variable, it will not vary across the species. I reported <a href="https://github.com/mwaskom/seaborn/issues/2028">this issue</a>.</p>
+</div>
+<div id="grid-bar-plot" class="section level4">
+<h4>Grid Bar plot</h4>
+<p>Draw a facet bar plot <a href="https://stackoverflow.com/a/62225095/2641825">from SO</a> for each combination of size and smoker/non smoker</p>
+<pre><code>import seaborn as sns
+import matplotlib.pyplot as plt
+sns.set()
+tips=sns.load_dataset(&quot;tips&quot;)
+g = sns.FacetGrid(tips, col = &#39;size&#39;,  row = &#39;smoker&#39;, hue = &#39;day&#39;)
+g = (g.map(sns.barplot, &#39;time&#39;, &#39;total_bill&#39;, ci = None).add_legend())
+plt.show()</code></pre>
+</div>
 </div>
 <div id="title" class="section level3">
 <h3>Title</h3>
@@ -1680,6 +1730,23 @@ g = g.map(plt.hist, &quot;total_bill&quot;)
 g.fig.set_figwidth(10)
 g.fig.set_figheight(10) </code></pre>
 <p>Mentioned as a comment under <a href="https://stackoverflow.com/a/56970556/2641825">this answer</a></p>
+<div id="larger-grid-plots" class="section level4">
+<h4>Larger grid plots</h4>
+<p>To change the height and aspect ration of individual grid cells, you can use the <code>height</code> and <code>aspect</code> arguments of the FacetGrid call as such:</p>
+<pre><code>import seaborn 
+from matplotlib import pyplot
+seaborn.set()
+iris = seaborn.load_dataset(&quot;iris&quot;)
+# Change height and aspect ratio
+g = seaborn.FacetGrid(iris, col=&quot;species&quot;, height=8, aspect=0.3)
+iris[&#39;species&#39;] = iris[&#39;species&#39;].astype(&#39;category&#39;)
+g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)
+pyplot.show()</code></pre>
+<p><code>help(seaborn.FacetGrid)</code></p>
+<blockquote>
+<p><code>aspect * height</code> gives the width of each facet in inches.</p>
+</blockquote>
+</div>
 </div>
 <div id="scatter-plot" class="section level3">
 <h3>Scatter Plot</h3>
@@ -1846,7 +1913,7 @@ Out[3]: array([inf])</code></pre>
 </tr>
 <tr class="even">
 <td>mutate</td>
-<td>assign</td>
+<td><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html">assign</a></td>
 <td></td>
 </tr>
 <tr class="odd">

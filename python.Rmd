@@ -585,6 +585,11 @@ Then start the notebook server as such:
 
     jupyter notebook
 
+## Plots
+
+
+
+
 ## Security and authentication on a public server
 
 [Jupyter notebook with
@@ -1141,12 +1146,34 @@ Remove parenthesis and dots in column names
     df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
 
 
-## Joining and merging
+## Group by operations
 
-Stackoverflow [Pandas merging](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
+Compute the sum for the sepal length grouped by species
+
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    iris.groupby('species').agg(sepal_length = ('sepal_length', sum))
+
+Compute the sum but repeated for every original row
+
+    iris['sepal_sum'] = iris.groupby('species')['sepal_length'].transform('sum')
+    iris
+
+Compute the cumulative sum of the sepal length
+
+    iris['cumsum'] = iris.groupby('species').sepal_length.cumsum()
+    iris['cumsum'].plot()
+    from matplotlib import pyplot
+    pyplot.show()
+
+Lag 
+
+    iris['cumsum_lag'] = iris.groupby('species')['cumsum'].transform('shift', fill_value=0)
+    iris[['cumsum', 'cumsum_lag']].plot()
+    pyplot.show()
 
 
-## Lag or shift a grouped variable
+### Lag or shift a grouped variable
 
 Load the flights dataset and for each month, display the passenger value in the
 same month of the previous year. Compare the `passengers` and
@@ -1158,6 +1185,11 @@ December.
     flights['pass_year_minus_one'] = flights.groupby(['month']).passengers.shift()
     flights.query("month=='January'")
     flights.query("month=='December'")
+
+
+## Joining and merging
+
+Stackoverflow [Pandas merging](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
 
 
 ## Read and write csv
@@ -1412,6 +1444,13 @@ varlue](https://stackoverflow.com/questions/21319929/how-to-determine-whether-a-
     Out: True
 
 
+## Sort or arrange values
+
+Sort iris by descending order of species and ascending order of petal width
+
+    iris.sort_values(by=["species", "petal_width"], ascending=[False,True])
+
+
 ## String operations in pandas
 
 See also string operations in python in another section.
@@ -1438,6 +1477,16 @@ Using `merge`:
 Using `drop_duplicates`
 
     newdf=pd.concat[df1,df2].drop_duplicates(keep=False)
+
+
+## Where and mask
+
+`where` replaces values that do not fit the condition and `mak` replaces
+values that fit the condition.
+
+    s = pandas.Series(range(5))
+    s.where(s > 1, 10)
+    s.mask(s > 1, 10)
 
 
 # Paths
@@ -1593,12 +1642,32 @@ In Seaborn facet grid.
 ### Grid plot
 
 
-    g = seaborn.FacetGrid(iris, col="species")
+#### Grid scatter plot
+
+Draw a scatter plot for each iris species
+
+    g = seaborn.FacetGrid(iris, col="species", height=6, width=2)
     iris['species'] = iris['species'].astype('category')
     g.map(seaborn.scatterplot,'petal_length','petal_width','species')
+    plt.show()
 
 Notice that if you don't change the color to a categorical variable, it will not vary across the species. 
 I reported [this issue](https://github.com/mwaskom/seaborn/issues/2028).
+
+
+#### Grid Bar plot 
+
+Draw a facet bar plot [from SO](https://stackoverflow.com/a/62225095/2641825)
+for each combination of size and smoker/non smoker 
+
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    sns.set()
+    tips=sns.load_dataset("tips")
+    g = sns.FacetGrid(tips, col = 'size',  row = 'smoker', hue = 'day')
+    g = (g.map(sns.barplot, 'time', 'total_bill', ci = None).add_legend())
+    plt.show()
+
 
 ### Title
 
@@ -1631,6 +1700,26 @@ as such:
     g.fig.set_figheight(10) 
 
 Mentioned as a comment under [this answer](https://stackoverflow.com/a/56970556/2641825)
+
+#### Larger grid plots
+
+To change the height and aspect ration of individual grid cells, you can use
+the `height` and `aspect` arguments of the FacetGrid call as such:
+
+    import seaborn 
+    from matplotlib import pyplot
+    seaborn.set()
+    iris = seaborn.load_dataset("iris")
+    # Change height and aspect ratio
+    g = seaborn.FacetGrid(iris, col="species", height=8, aspect=0.3)
+    iris['species'] = iris['species'].astype('category')
+    g.map(seaborn.scatterplot,'petal_length','petal_width','species')
+    pyplot.show()
+
+`help(seaborn.FacetGrid)`
+
+> ``aspect * height`` gives the width of each facet in inches.
+
 
 ### Scatter Plot
 
@@ -1770,7 +1859,7 @@ The mapping of tidyverse to pandas is:
 | filter                    | query                          |                                      |
 | group_by                  | groupby                        |                                      |
 | lag                       | [shift]                        | [pandas lag function][so_lag_pandas] |
-| mutate                    | assign                         |                                      |
+| mutate                    | [assign]                       |                                      |
 | pivot_longer              | [melt] or [wide_to_long]       |                                      |
 | pivot_wider               | [pivot]                        |                                      |
 | rename                    | df.rename(columns={'a':'new'}) |                                      |
@@ -1778,6 +1867,7 @@ The mapping of tidyverse to pandas is:
 | summarize                 | agg                            |                                      |
 | unnest                    | [explode]                      | [unnest in pandas][so_unnest]        |
 
+[assign]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html
 [explode]: https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html
 [melt]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html
 [pivot]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html

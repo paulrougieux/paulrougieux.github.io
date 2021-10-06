@@ -6,3 +6,6 @@
 # Ignore cache folders
 *_cache/*
 TODO.html
+
+# Ignore generated images
+*.png
