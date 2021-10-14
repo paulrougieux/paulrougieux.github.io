@@ -670,11 +670,6 @@ package before or during the submission process.
 
 ### Axes
 
-Rotate the tick text of the X axis. SO question [rotating axis labels in
-ggplot2](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2) 
-
-    theme(axis.text.x=element_text(angle = 90, hjust=0))
-
 Increase number of axis ticks by specifying an integer break vector
 
     scale_x_continuous(breaks = 1:10)
@@ -687,6 +682,14 @@ Alternatively breaks can be specified as an interval, and minor breaks as well
 
     scale_x_datetime(date_breaks = "5 years", labels = scales::date_format("%Y"), date_minor_breaks = "1 year")
 
+#### Rotate the tick text 
+
+Rotate the tick text of the X axis. SO question [rotating axis labels in
+ggplot2](https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2) 
+
+    theme(axis.text.x=element_text(angle = 90, hjust=0))
+
+
 ### Legend
 
 Place the legend at the bottom of the plot:
@@ -696,10 +699,17 @@ Place the legend at the bottom of the plot:
         geom_point() + 
         theme(legend.position="bottom")
 
+Remove the legend
+
+    ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) + 
+        geom_point() + 
+        theme(legend.position="none")
+
 Change the name of a particular sub element in the legend:
 
     labs(color="Iris Species")
     labs(linetype="Sawnwood product group")
+    labs(y="million")
 
 Make a multi column legend
 
@@ -785,6 +795,13 @@ Use [ggsave](https://ggplot2.tidyverse.org/reference/ggsave.html):
 Minimal theme
 
     theme_minimal()
+
+
+## Bar plots
+
+Use geom_col for bar plots where the height of the column represent the value
+of a variable. Use geom_bar for plots where the height of the column represents
+a count of number of occurrences.
 
 
 ## Choropleth maps
