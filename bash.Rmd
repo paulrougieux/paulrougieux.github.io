@@ -437,6 +437,10 @@ to keep the numbering of duplicated files before the extension.
 
 ## Number of files
 
+Count the number of files in the current folder
+
+    ls |wc -l
+
 [Recursively count the number of files in a
 directory](https://askubuntu.com/a/370717/315347), limiting the maximum depth
 
@@ -451,7 +455,9 @@ Counting files with a specific extension
 
     find DIR_NAME -type f | wc -l
 
+
 ## Number of lines in a text file
+
 Count the number of lines in a file
 
     wc -l filename.txt 
