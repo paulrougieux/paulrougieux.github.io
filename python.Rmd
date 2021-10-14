@@ -1140,6 +1140,9 @@ Rename columns to snake case using a regular expression
 
     import re
     df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
+    # Another regexp that replaces all non alphanumeric characters by an
+    # underscore
+    df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
 
 Remove parenthesis and dots in column names
 
@@ -1455,13 +1458,20 @@ Sort iris by descending order of species and ascending order of petal width
 
 See also string operations in python in another section.
 
+String operations in pandas use vectorized string methods of the 
+class StringMethods(pandas.core.base.NoNewAttributesMixin).
+
+    df = pandas.DataFrame({'a':['a','b','c']})
+    help(df.a.str)
+
 Concatenate all values in a character vector:
 
-    df['A'].str.cat()
+    df['a'].str.cat()
 
 Replace elements in a character vector:
 
-    df['A'].replace('a','b',regex=True)
+    df['a'].replace('a','b',regex=True)
+
 
 ## Difference between 2 data frames
 
@@ -1856,6 +1866,8 @@ The mapping of tidyverse to pandas is:
 | ------------------------- | -----------------------------  | -----------------------------        |
 | arrange                   | sort_values                    |                                      |
 | df %>% select(-a,-b)      | df.drop(columns=['a', 'b'])    |                                      |
+| select(a)                 | df.filter(items=['a'])         |                                      |
+| select(contains("a"))     | df.filter(regex='a')           |                                      |
 | filter                    | query                          |                                      |
 | group_by                  | groupby                        |                                      |
 | lag                       | [shift]                        | [pandas lag function][so_lag_pandas] |
@@ -1863,7 +1875,6 @@ The mapping of tidyverse to pandas is:
 | pivot_longer              | [melt] or [wide_to_long]       |                                      |
 | pivot_wider               | [pivot]                        |                                      |
 | rename                    | df.rename(columns={'a':'new'}) |                                      |
-| select                    | filter                         |                                      |
 | summarize                 | agg                            |                                      |
 | unnest                    | [explode]                      | [unnest in pandas][so_unnest]        |
 
@@ -1960,6 +1971,10 @@ providing various ways to concatenate python strings.
 ## Regex substitution
 
 [Documentation of the re package](https://docs.python.org/3/library/re.html).
+
+Replace one or more consecutive non alphanumeric characters by an underscore.
+
+    re.sub(r'\W+', '_', 'bla: bla**(bla)')
 
 Insert a suffix in a file name before the extension
 [SO anwser](https://stackoverflow.com/a/2763772/2641825)
