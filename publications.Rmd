@@ -5,19 +5,30 @@ output:
     toc: no
 ---
 
+
 ## Refereed Journal Articles
 
+2021 "Impacts of the FLEGT Action Plan and the EU Timber Regulation on EU Trade in Timber Product"
+Paul Rougieux and Ragnar Jonsson
+Sustainability 2021, 13(11), 6030; https://doi.org/10.3390/su13116030
+([python code and data](https://gitlab.com/paulrougieux/eutr_trade_impact_sustainability/))
+
+2021 "Comparing Reported Forest Biomass Gains and Losses in European and Global Datasets"
+Lucas Sinclair and Paul Rougieux
+Forests 2021, 12(2), 176; https://doi.org/10.3390/f12020176 
+([R code](https://github.com/xapple/forest_puller) and [data](https://github.com/xapple/puller_cache))
+
 2018: "Reassessing forest products demand functions in Europe using a panel co-integration approach",
-with Olivier Damette, 
-Applied Economics, forthcoming,
+Paul Rougieux and Olivier Damette, 
+Applied Economics, Pages 3247-3270 | Published online: 03 Jan 2018
 https://doi.org/10.1080/00036846.2017.1420887
 ([data](data/data_Reassessing_forest_products_demand_functions_in_Europe_using_a_panel_cointegration_approach.zip)).
 
 2014: "Potential impact of a Transatlantic Trade and Investment Partnership on the global forest sector"
-with Joseph Buongiorno, Ahmed Barkaoui, Shushuai Zhu, Patrice Harou, 
+Joseph Buongiorno, Paul Rougieux, Ahmed Barkaoui, Shushuai Zhu and Patrice Harou 
 Journal of Forest Economics, Vol 20, No 3, 252-266,
 https://doi.org/10.1016/j.jfe.2014.07.001  
-([code to read GFPM output data](https://github.com/paulrougieux/GFPMoutput))
+([R code to read GFPM output data](https://github.com/paulrougieux/GFPMoutput))
 
 
 ## Technical reports and other publications
