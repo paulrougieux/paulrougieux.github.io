@@ -1699,14 +1699,17 @@ g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
 </div>
 <div id="figure-size" class="section level3">
 <h3>Figure size</h3>
-<p><code>set_figwidth</code> and <code>set_figheight</code> work well for grid objects.</p>
+<p>Resize a scatter plot</p>
+<pre><code>p = seaborn.scatterplot(&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;,data=iris)
+p.figure.set_figwidth(15)</code></pre>
+<div id="larger-grid-plots" class="section level4">
+<h4>Larger grid plots</h4>
+<p><code>set_figwidth</code> and <code>set_figheight</code> work well to resize a grid object in its entirety.</p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
 g = g.map(plt.hist, &quot;total_bill&quot;)
 g.fig.set_figwidth(10)
 g.fig.set_figheight(10) </code></pre>
 <p>Mentioned as a comment under <a href="https://stackoverflow.com/a/56970556/2641825">this answer</a></p>
-<div id="larger-grid-plots" class="section level4">
-<h4>Larger grid plots</h4>
 <p>To change the height and aspect ration of individual grid cells, you can use the <code>height</code> and <code>aspect</code> arguments of the FacetGrid call as such:</p>
 <pre><code>import seaborn 
 from matplotlib import pyplot
