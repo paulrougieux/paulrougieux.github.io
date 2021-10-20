@@ -108,8 +108,9 @@ command! Date put =strftime('%Y-%m-%d')
 " Pomodoro entry
 nmap <LocalLeader>m $4b
 
-
-
+" Convert selected text to snake case
+" Replace any non alphanumeric characters by underscores
+command! -range=% Snake s/[^a-zA-Z0-9]\+/_/g
 
 """"""""""""""""""""
 " # AZERTY keyboard "
