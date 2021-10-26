@@ -1106,10 +1106,24 @@ Or by passing a list of tuples and defining the `columns` argument
 
 Convert 2 columns to a dictionary
 
-    df = pandas.DataFrame({'x':range(0,3), 
-                           'y':['a','b','c'], 
-                           'z':['m','n','o']})
-    df.set_index('y').to_dict()['z']
+    df = pandas.DataFrame({'a':range(0,3), 
+                           'b':['p','q','r'], 
+                           'c':['m','n','o']})
+    df.set_index('b').to_dict()['c']
+
+
+## Assign values
+
+Create a new column based on another one
+
+    df = pandas.DataFrame({'a':range(0,3), 
+                           'b':['p','q','r'], 
+                           'c':['m','n','o']})
+    df["d"] = df["a"] * 2
+
+Use the `assign` method
+
+    df.assign(e = lambda x: x["a"] * 3)
 
 
 ## Columns
@@ -1267,7 +1281,21 @@ Reshape using the `wide_to_long` convenience function
     pandas.Series(["bla", "bla"]).replace("a","i",regex=True)
 
 
-## Selection with loc, iloc, query and isin
+### Replace values where a condition is false
+
+Replace values where the condition is false see `help(df.where)`
+
+> "Where `cond` is True, keep the original value. Where False, replace with
+> corresponding value from `other`."
+
+    df = pandas.DataFrame({'a':range(0,3), 
+                           'b':['p','q','r'], 
+                           'c':['m','n','o']})
+    df["b"].where(df["c"].isin(["n","o"]),"no")
+    df.where(df["c"].isin(["n","o"]),"no")
+
+
+## Selection with loc, iloc, query, isin and xs
 
  * blog [Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
 
@@ -1396,6 +1424,8 @@ With a boolean array whose length matches the columns.
           0     1     3
           1   100   300
           2  1000  3000
+
+
 ### Query
 
 Query the columns of a Data Frame with a boolean expression.
@@ -1426,6 +1456,32 @@ Query using a variable
     df[df['A'].isin([3, 6])]
     df.loc[df['A'].isin([3, 6])]
     df.query("A in [3,6]")
+
+
+### xs cross sections
+
+The `key` and `level` arguments specify which part of the multilevel index
+should be used. Create a sample data frame, copied from ` help(df.xs)`:
+
+    d = {'num_legs': [4, 4, 2, 2],
+         'num_wings': [0, 0, 2, 2],
+         'class': ['mammal', 'mammal', 'mammal', 'bird'],
+         'animal': ['cat', 'dog', 'bat', 'penguin'],
+         'locomotion': ['walks', 'walks', 'flies', 'walks']}
+    df = pandas.DataFrame(data=d)
+    df = df.set_index(['class', 'animal', 'locomotion'])
+    print(df)
+
+Select with a key following the order in which levels appear in the index:
+
+    df.xs('mammal')
+    df.xs(('mammal', 'dog'))
+
+Select with a key and specify the levels:
+
+    df.xs(key='cat', level=1)
+    df.xs(key=('bird', 'walks'),
+          level=[0, 'locomotion'])
 
 
 ### Determine whether a column contains a particular value
@@ -1851,6 +1907,7 @@ Pandas data frame to be used for examples:
 | `df[df$y %in% c('a','b'),]` | `df[df['y'].isin(['a','b'])]` | [list of values to select a row]                   |
 | `dput(df)`                  | `df.to_dict()`                | [Print pandas data frame for reproducible example] |
 | `expand.grid(df$x,df$y)`    | `itertools.product`           | see section below                                  |
+| `ifelse`                    | `df.where()`                  | [ifelse in pandas]                                 |
 | `gsub`                      | `replace(regex=True)`         | [gsub in pandas]                                   |
 | `length(df)` and `dim(df)`  | `df.shape`                    | [row count of a data frame]                        |
 | `rbind`                     | `pandas.concat`               | [Pandas version of rbind]                          |
@@ -1866,7 +1923,7 @@ Pandas data frame to be used for examples:
 [Print pandas data frame for reproducible example]: https://stackoverflow.com/questions/47450931/print-pandas-data-frame-for-reproducible-example-equivalent-to-dput-in-r
 [numpy function to generate sequences]: https://stackoverflow.com/a/60753578/2641825
 [pandas equivalents for R functions like str summary and head]: https://stackoverflow.com/questions/27637281/what-are-python-pandas-equivalents-for-r-functions-like-str-summary-and-he
-
+[ifelse in pandas](https://stackoverflow.com/questions/43391591/if-else-function-in-pandas-dataframe)
 
 The mapping of tidyverse to pandas is:
 
@@ -1951,6 +2008,14 @@ complicated with R. The rabbit hole slide is smoother with python. I have the
 feeling that I keep a certain level of understanding at all steps. It's just a
 matter of taste anyway.
 
+The Python language can be more verbose on some aspects, but it allows for
+greater programmability, it is also more predictable because non standard
+evaluation doesn't create scoping problems and it enables to dive deeper into
+input/output issues such as URL request headers for example. R remains very
+good for data exploration, statistical analysis and plotting because non
+standard evaluation makes it possible to call variables without quotes and to
+pass formulas to plotting and estimation functions. 
+
 I see R more like the bash command line. It's great for scripts, but you
 wouldn't want to write large applications in bash.
 
@@ -1960,6 +2025,7 @@ discussing [the idea of non standard evaluation in
 python](https://www.mail-archive.com/python-ideas@python.org/msg15694.html).
 - A [comparison of a python implementation and an R implementation using non
   standard evaluation](https://third-bit.com/2018/11/16/non-standard-evaluation/).
+
 
 # String 
 
@@ -2029,7 +2095,7 @@ Finding](https://docs.scipy.org/doc/scipy/reference/optimize.html)
 [Black](https://github.com/psf/black)
 is "the uncompromising Python code formater"
 
-Run `black` as a pre commit hook with `pre-commit`
+Run `black` as a pre commit hook with `pre-commit` as explained below.
 
 
 ## Flake 8

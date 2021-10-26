@@ -1257,10 +1257,20 @@ sport_car = mike.build_car(&#39;rouge&#39;)</code></pre>
 <div id="converting-a-data-frame" class="section level2">
 <h2>Converting a data frame</h2>
 <p>Convert 2 columns to a dictionary</p>
-<pre><code>df = pandas.DataFrame({&#39;x&#39;:range(0,3), 
-                       &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;], 
-                       &#39;z&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
-df.set_index(&#39;y&#39;).to_dict()[&#39;z&#39;]</code></pre>
+<pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3), 
+                       &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
+                       &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
+df.set_index(&#39;b&#39;).to_dict()[&#39;c&#39;]</code></pre>
+</div>
+<div id="assign-values" class="section level2">
+<h2>Assign values</h2>
+<p>Create a new column based on another one</p>
+<pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3), 
+                       &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
+                       &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
+df[&quot;d&quot;] = df[&quot;a&quot;] * 2</code></pre>
+<p>Use the <code>assign</code> method</p>
+<pre><code>df.assign(e = lambda x: x[&quot;a&quot;] * 3)</code></pre>
 </div>
 <div id="columns" class="section level2">
 <h2>Columns</h2>
@@ -1373,9 +1383,21 @@ s.replace([&quot;ape&quot;, &quot;monkey&quot;], [&quot;lion&quot;, &quot;panda&
 s.replace(&quot;a&quot;, &quot;x&quot;, regex=True)
 `s.replace({&quot;ape&quot;: &quot;lion&quot;, &quot;monkey&quot;: &quot;panda&quot;})`
 pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&quot;,regex=True)</code></pre>
+<div id="replace-values-where-a-condition-is-false" class="section level3">
+<h3>Replace values where a condition is false</h3>
+<p>Replace values where the condition is false see <code>help(df.where)</code></p>
+<blockquote>
+<p>“Where <code>cond</code> is True, keep the original value. Where False, replace with corresponding value from <code>other</code>.”</p>
+</blockquote>
+<pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3), 
+                       &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
+                       &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
+df[&quot;b&quot;].where(df[&quot;c&quot;].isin([&quot;n&quot;,&quot;o&quot;]),&quot;no&quot;)
+df.where(df[&quot;c&quot;].isin([&quot;n&quot;,&quot;o&quot;]),&quot;no&quot;)</code></pre>
 </div>
-<div id="selection-with-loc-iloc-query-and-isin" class="section level2">
-<h2>Selection with loc, iloc, query and isin</h2>
+</div>
+<div id="selection-with-loc-iloc-query-isin-and-xs" class="section level2">
+<h2>Selection with loc, iloc, query, isin and xs</h2>
 <ul>
 <li>blog <a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></li>
 </ul>
@@ -1499,6 +1521,25 @@ A  B  C
 df[df[&#39;A&#39;].isin([3, 6])]
 df.loc[df[&#39;A&#39;].isin([3, 6])]
 df.query(&quot;A in [3,6]&quot;)</code></pre>
+</div>
+<div id="xs-cross-sections" class="section level3">
+<h3>xs cross sections</h3>
+<p>The <code>key</code> and <code>level</code> arguments specify which part of the multilevel index should be used. Create a sample data frame, copied from <code>help(df.xs)</code>:</p>
+<pre><code>d = {&#39;num_legs&#39;: [4, 4, 2, 2],
+     &#39;num_wings&#39;: [0, 0, 2, 2],
+     &#39;class&#39;: [&#39;mammal&#39;, &#39;mammal&#39;, &#39;mammal&#39;, &#39;bird&#39;],
+     &#39;animal&#39;: [&#39;cat&#39;, &#39;dog&#39;, &#39;bat&#39;, &#39;penguin&#39;],
+     &#39;locomotion&#39;: [&#39;walks&#39;, &#39;walks&#39;, &#39;flies&#39;, &#39;walks&#39;]}
+df = pandas.DataFrame(data=d)
+df = df.set_index([&#39;class&#39;, &#39;animal&#39;, &#39;locomotion&#39;])
+print(df)</code></pre>
+<p>Select with a key following the order in which levels appear in the index:</p>
+<pre><code>df.xs(&#39;mammal&#39;)
+df.xs((&#39;mammal&#39;, &#39;dog&#39;))</code></pre>
+<p>Select with a key and specify the levels:</p>
+<pre><code>df.xs(key=&#39;cat&#39;, level=1)
+df.xs(key=(&#39;bird&#39;, &#39;walks&#39;),
+      level=[0, &#39;locomotion&#39;])</code></pre>
 </div>
 <div id="determine-whether-a-column-contains-a-particular-value" class="section level3">
 <h3>Determine whether a column contains a particular value</h3>
@@ -1823,37 +1864,43 @@ Out[3]: array([inf])</code></pre>
 <td>see section below</td>
 </tr>
 <tr class="even">
+<td><code>ifelse</code></td>
+<td><code>df.where()</code></td>
+<td>[ifelse in pandas]</td>
+</tr>
+<tr class="odd">
 <td><code>gsub</code></td>
 <td><code>replace(regex=True)</code></td>
 <td><a href="https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104">gsub in pandas</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>length(df)</code> and <code>dim(df)</code></td>
 <td><code>df.shape</code></td>
 <td><a href="https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe">row count of a data frame</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>rbind</code></td>
 <td><code>pandas.concat</code></td>
 <td><a href="https://stackoverflow.com/questions/14988480/pandas-version-of-rbind">Pandas version of rbind</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>seq(1:5)</code></td>
 <td><code>np.array(range(0,5))</code></td>
 <td><a href="https://stackoverflow.com/a/60753578/2641825">numpy function to generate sequences</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>summary</code></td>
 <td><code>describe</code></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>str</code></td>
 <td><code>df.info()</code></td>
 <td><a href="https://stackoverflow.com/questions/27637281/what-are-python-pandas-equivalents-for-r-functions-like-str-summary-and-he">pandas equivalents for R functions like str summary and head</a></td>
 </tr>
 </tbody>
 </table>
+<p><a href="https://stackoverflow.com/questions/43391591/if-else-function-in-pandas-dataframe">ifelse in pandas</a></p>
 <p>The mapping of tidyverse to pandas is:</p>
 <table>
 <thead>
@@ -1967,6 +2014,7 @@ df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))<
 <div id="personal-reflection" class="section level2">
 <h2>Personal reflection</h2>
 <p>R is great for statistical analysis and plotting. You can also use it to elaborate a pipeline to load data, prepare it and analyse it. But when things start to get complicated, such as loading json data from APIs, or dealing with http requests issues, or understanding lazy evaluation, or the consequences of non standard evaluation, moving down the rabbit whole can get really complicated with R. The rabbit hole slide is smoother with python. I have the feeling that I keep a certain level of understanding at all steps. It’s just a matter of taste anyway.</p>
+<p>The Python language can be more verbose on some aspects, but it allows for greater programmability, it is also more predictable because non standard evaluation doesn’t create scoping problems and it enables to dive deeper into input/output issues such as URL request headers for example. R remains very good for data exploration, statistical analysis and plotting because non standard evaluation makes it possible to call variables without quotes and to pass formulas to plotting and estimation functions.</p>
 <p>I see R more like the bash command line. It’s great for scripts, but you wouldn’t want to write large applications in bash.</p>
 <p>Non standard evaluation doesn’t exist in python. - An email thread discussing <a href="https://www.mail-archive.com/python-ideas@python.org/msg15694.html">the idea of non standard evaluation in python</a>. - A <a href="https://third-bit.com/2018/11/16/non-standard-evaluation/">comparison of a python implementation and an R implementation using non standard evaluation</a>.</p>
 </div>
@@ -2019,7 +2067,7 @@ re.sub(r&#39;(?:_a)?(\.[^\.]*)$&#39; , r&#39;_suff\1&#39;,&quot;long.file.name.j
 <div id="black" class="section level2">
 <h2>Black</h2>
 <p><a href="https://github.com/psf/black">Black</a> is “the uncompromising Python code formater”</p>
-<p>Run <code>black</code> as a pre commit hook with <code>pre-commit</code></p>
+<p>Run <code>black</code> as a pre commit hook with <code>pre-commit</code> as explained below.</p>
 </div>
 <div id="flake-8" class="section level2">
 <h2>Flake 8</h2>
