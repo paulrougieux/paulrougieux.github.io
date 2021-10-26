@@ -1491,6 +1491,23 @@ Reddit [python workflow with terminal using tmux](https://www.reddit.com/r/vim/c
 > 
 > Instead of using pdb. Its really neat."
 
+
+### Ale Linter
+
+I use the Ale linter to check the code quality. 
+
+To copy code it's preferable to deactivate the 2 characters columns used by ale
+as explained in [Is it possible to disable the column on the left that is
+created by
+ALE?](https://vi.stackexchange.com/questions/21563/is-it-possible-to-disable-the-column-on-the-left-that-is-created-by-ale)
+
+    :set signcolumn=no
+
+The 2 characters column can later be shown again with 
+
+    :set signcolumn=yes
+
+
 ### Jedi vim
 
 * [Jedi](https://github.com/davidhalter/jedi) autocompletion, also used by
@@ -1525,6 +1542,7 @@ I remapped the `<leader>` key to `,` in my .vimrc
 
 See above section on navigation, you can use `Ctrl-O` to jump back and
 `Ctrl-I`to jump forward.
+
 
 ## R programming
 
