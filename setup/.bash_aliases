@@ -41,6 +41,7 @@ export PYTHONPATH="$HOME/repos/autopaths/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/gftmx/":$PYTHONPATH
 export LIBCBM_DATA="$HOME/repos/libcbm_data/"
 export GFTMX_DATA="$HOME/repos/gftmx_data/"
+export BIOTRADE_DATA="$HOME/repos/biotrade_data/"
 
 # Create tag files for an R project, from within an R project's R folder
 rtags() {
