@@ -27,21 +27,23 @@ alias dus='du -hd1|sort -hr'
 stty -ixon
 # Paths for git run
 export PATH=~/.npm-global/bin:$PATH
+
 # Paths for python modules
+export BIOTRADE_DATA="$HOME/repos/biotrade_data/"
 export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
+export GFTMX_DATA="$HOME/repos/gftmx_data/"
+export LIBCBM_DATA="$HOME/repos/libcbm_data/"
+export PYTHONPATH="$HOME/repos/autopaths/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/cbm_defaults/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/gftmx/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_py/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/libcbm_runner/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/plumbing/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/autopaths/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/gftmx/":$PYTHONPATH
-export LIBCBM_DATA="$HOME/repos/libcbm_data/"
-export GFTMX_DATA="$HOME/repos/gftmx_data/"
-export BIOTRADE_DATA="$HOME/repos/biotrade_data/"
 
 # Create tag files for an R project, from within an R project's R folder
 rtags() {
@@ -60,8 +62,7 @@ rtagsall() {
 # It's actually better to enable this in the gnome shell in fact https://superuser.com/a/870547/419414
 # export TERM=xterm-256color
 alias vpn=expressvpn
-alias treep='tree -I "*.pyc"'
-
+alias treep='tree -P "*.py"  -I "__pycache__"'
 
 
 # add local bin to the path
