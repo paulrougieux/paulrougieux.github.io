@@ -743,17 +743,16 @@ make install</code></pre>
 <div id="expressvpn" class="section level3">
 <h3>ExpressVPN</h3>
 <p>Download the software and signature file</p>
-<pre><code>cd downloads
-curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.8.0.4-1_amd64.deb
-curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.8.0.4-1_amd64.deb.asc
+<pre><code>cd ~/downloads
+curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb
+curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb.asc
 cat expressvpn_*_amd64.deb.asc</code></pre>
 <p><a href="https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/">Check the signature</a></p>
 <pre><code>gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 0xAFF2A1415F6A3A38
 gpg --fingerprint release@expressvpn.com
-gpg --verify expressvpn_3.3.0.21-1_amd64.deb.asc
-gpg --verify expressvpn_3.8.0.4-1_amd64.deb.asc</code></pre>
+gpg --verify expressvpn_3.13.0.8-1_amd64.deb.asc</code></pre>
 <p>Install</p>
-<pre><code>sudo apt install ./expressvpn_3.8.0.4-1_amd64.deb</code></pre>
+<pre><code>sudo apt install ./expressvpn_3.13.0.8-1_amd64.deb</code></pre>
 </div>
 </div>
 <div id="wajig" class="section level2">
