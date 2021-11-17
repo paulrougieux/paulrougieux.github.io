@@ -120,6 +120,27 @@ Tip:
 > string types in the Postgres type system, which can affect function or
 > operator type resolution."
 
+[differences between text and varchar](https://stackoverflow.com/a/4849030/2641825)
+> To sum it all up:
+>> - char(n) – takes too much space when dealing with values shorter than n
+>>   (pads them to n), and can lead to subtle errors because of adding
+>>   trailing spaces, plus it is problematic to change the limit 
+>> - varchar(n) – it's problematic to change the limit in live environment
+>>   (requires exclusive lock while altering table) 
+>> - varchar – just like text
+>> - text – for me a winner – over (n) data types because it lacks their
+>>    problems, and over varchar – because it has distinct name 
+
+
+In SQLite as well, character(n) doesn't seem to have any performance advantage.
+
+[SQLite data types](https://www.sqlite.org/datatype3.html)
+
+>  Note that numeric arguments in parentheses that following the type name (ex:
+>  "VARCHAR(255)") are ignored by SQLite - SQLite does not impose any length
+>  restrictions (other than the large global SQLITE_MAX_LENGTH limit) on the
+>  length of strings, BLOBs or numeric values. 
+
 
 # Drop
 
@@ -260,6 +281,10 @@ For my own database I used:
 
 ## SELECT
 
+Connect to the database (with the credentials defined in `~/.pgpass`)
+
+    psql biotrade
+
 postgresql.org the [WHERE
 Clause](https://www.postgresql.org/docs/13/queries-table-expressions.html#QUERIES-WHERE)
 
@@ -324,6 +349,11 @@ Official documentation postgresql.org
 
 
 # Tables
+ 
+List tables for a particular schema:
+
+    \dt raw_comtrade.*;
+
 
 ## Export a table structure 
 
@@ -333,7 +363,7 @@ table](https://stackoverflow.com/questions/2593803/how-to-generate-the-create-ta
     pg_dump -t 'raw_comtrade.yearly_2_digit' --schema-only biotrade  >> /tmp/comtrade_yearly.sql
 
 
-# Blogs
+# Blogs and other resources
 
 Dimitri Fontaine 2014 [Why is pgloader faster
 ?](https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/)
@@ -353,4 +383,11 @@ Dimitri Fontaine 2014 [Why is pgloader faster
 > loading performances." 
 
 
+[Wikipedia](https://en.wikipedia.org/wiki/SQL#Standardization_history)
+paragraph on the pronunciation 
 
+> "The original standard declared that the official pronunciation for "SQL" was
+> an initialism: /ˌɛsˌkjuːˈɛl/ ("ess cue el"). Regardless, many
+> English-speaking database professionals (including Donald Chamberlin
+> himself) use the acronym-like pronunciation of /ˈsiːkwəl/ ("sequel"),
+> mirroring the language's prerelease development name, "SEQUEL"."

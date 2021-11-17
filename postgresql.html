@@ -527,6 +527,12 @@ psql -d biotrade -h localhost -U rdb</code></pre>
 <blockquote>
 <p>“Generally, there is no downside to using text in terms of performance/memory. On the contrary: text is the optimum. Other types have more or less relevant downsides. text is literally the”preferred&quot; type among string types in the Postgres type system, which can affect function or operator type resolution.&quot;</p>
 </blockquote>
+<p><a href="https://stackoverflow.com/a/4849030/2641825">differences between text and varchar</a> &gt; To sum it all up: &gt;&gt; - char(n) – takes too much space when dealing with values shorter than n &gt;&gt; (pads them to n), and can lead to subtle errors because of adding &gt;&gt; trailing spaces, plus it is problematic to change the limit &gt;&gt; - varchar(n) – it’s problematic to change the limit in live environment &gt;&gt; (requires exclusive lock while altering table) &gt;&gt; - varchar – just like text &gt;&gt; - text – for me a winner – over (n) data types because it lacks their &gt;&gt; problems, and over varchar – because it has distinct name</p>
+<p>In SQLite as well, character(n) doesn’t seem to have any performance advantage.</p>
+<p><a href="https://www.sqlite.org/datatype3.html">SQLite data types</a></p>
+<blockquote>
+<p>Note that numeric arguments in parentheses that following the type name (ex: “VARCHAR(255)”) are ignored by SQLite - SQLite does not impose any length restrictions (other than the large global SQLITE_MAX_LENGTH limit) on the length of strings, BLOBs or numeric values.</p>
+</blockquote>
 </div>
 </div>
 <div id="drop" class="section level1">
@@ -652,6 +658,8 @@ pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated</co
 <h1>Query</h1>
 <div id="select" class="section level2">
 <h2>SELECT</h2>
+<p>Connect to the database (with the credentials defined in <code>~/.pgpass</code>)</p>
+<pre><code>psql biotrade</code></pre>
 <p>postgresql.org the <a href="https://www.postgresql.org/docs/13/queries-table-expressions.html#QUERIES-WHERE">WHERE Clause</a></p>
 <p>Here are some examples of WHERE clauses:</p>
 <pre><code>SELECT ... FROM fdt WHERE c1 &gt; 5
@@ -697,20 +705,26 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code>
 </div>
 <div id="tables" class="section level1">
 <h1>Tables</h1>
+<p>List tables for a particular schema:</p>
+<pre><code>\dt raw_comtrade.*;</code></pre>
 <div id="export-a-table-structure" class="section level2">
 <h2>Export a table structure</h2>
 <p><a href="https://stackoverflow.com/questions/2593803/how-to-generate-the-create-table-sql-statement-for-an-existing-table-in-postgr">Export the create statement for an existing table</a></p>
 <pre><code>pg_dump -t &#39;raw_comtrade.yearly_2_digit&#39; --schema-only biotrade  &gt;&gt; /tmp/comtrade_yearly.sql</code></pre>
 </div>
 </div>
-<div id="blogs" class="section level1">
-<h1>Blogs</h1>
+<div id="blogs-and-other-resources" class="section level1">
+<h1>Blogs and other resources</h1>
 <p>Dimitri Fontaine 2014 <a href="https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/">Why is pgloader faster ?</a></p>
 <blockquote>
 <p>“In searching for a modern programming language the best candidate I found was actually Common Lisp.”</p>
 </blockquote>
 <blockquote>
 <p>“Not only is Common Lisp code compiled to machine code when using most Common Lisp Implementations such as SBCL or Clozure Common Lisp; it’s also possible to actually benefit from parallel computing and threads in Common Lisp. In the pgloader case I’ve been using the lparallel utilities, in particular its queuing facility to be able to implement asynchronous IOs where a thread reads the source data and preprocess it, fills up a batch at a time in a buffer that is then pushed down to the writer thread, that handles the COPY protocol and operations. So my current analysis is that the new thread based architecture used with a very powerful compiler for the Common Lisp high-level language are allowing pgloader to enter a whole new field of data loading performances.”</p>
+</blockquote>
+<p><a href="https://en.wikipedia.org/wiki/SQL#Standardization_history">Wikipedia</a> paragraph on the pronunciation</p>
+<blockquote>
+<p>“The original standard declared that the official pronunciation for”SQL&quot; was an initialism: /ˌɛsˌkjuːˈɛl/ (“ess cue el”). Regardless, many English-speaking database professionals (including Donald Chamberlin himself) use the acronym-like pronunciation of /ˈsiːkwəl/ (“sequel”), mirroring the language’s prerelease development name, “SEQUEL”.&quot;</p>
 </blockquote>
 </div>
 
