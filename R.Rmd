@@ -451,7 +451,9 @@ Installation in R:
 
 This is to work with colleagues who are not in the latex/pdf world.
 
+
 ### Landscape pages
+
 ```{r insert_landscape_section, eval=FALSE}
 library(officer)
 library(flextable)
@@ -490,6 +492,52 @@ Knitr adds an extra space every five lines into booktabs tables for
 readability. This is undesirable for short tables. To remove this space specify
 the `linesep = ""` argument to `kable()` as explained in this [SO
 answer](https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown). 
+
+
+## Output
+
+The default output is in HTML. 
+The nature of the notebook output can be defined in the preamble section of the
+R markdown document.
+
+
+### PDF
+
+It's often useful to have a table of content at the start of long documents.
+
+    ---
+    title: "Title"
+    date:  "`r format(Sys.time(), '%d %B, %Y')`"
+    output:
+      pdf_document:
+        number_sections: yes
+        toc: yes
+    ---
+
+I usually have this line at the beginning of R markdown files to generate the
+pdf output from command line: 
+
+    cd ~/rp/path_to_repo/notebooks/ &&  Rscript -e "rmarkdown::render('file_name.Rmd', 'pdf_document')"
+
+
+### Power point documents
+
+It's possible to specify a power point template in the knitr preamble as such: 
+
+    ---
+    title: "Title"
+    output:
+      powerpoint_presentation:
+        reference_doc: presentation_template.pptx
+    ---
+
+
+More details in https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html
+I ran into some issues: 
+- https://stackoverflow.com/questions/56243502/how-to-fix-could-not-find-shape-for-powerpoint-content-error-pandoc-document-c
+- https://github.com/jgm/pandoc/issues/5402
+And the fact that I cannot edit the slide master from power point online is
+annoying.
 
 
 ## Python engine
