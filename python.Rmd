@@ -149,20 +149,96 @@ object and use its `has_table()` method. The following example was copied from
 [sqlalchemy.engine.reflection.Inspector.has_table](https://docs.sqlalchemy.org/en/14/core/reflection.html#sqlalchemy.engine.reflection.Inspector.has_table),
 with the addition of an SQLite engine to make it reproducible:
 
-    In [17]: from sqlalchemy import create_engine, inspect
-        ...: from sqlalchemy import MetaData, Table, Column, Text
-        ...: engine = create_engine('sqlite://')
-        ...: meta = MetaData()
-        ...: meta.bind = engine
-        ...: user_table = Table('user', meta, Column("name", Text))
-        ...: user_table.create()
-        ...: inspector = inspect(engine)
-        ...: inspector.has_table('user')
-    Out[17]: True
+    from sqlalchemy import create_engine, inspect
+    from sqlalchemy import MetaData, Table, Column, Text
+    engine = create_engine('sqlite://')
+    meta = MetaData()
+    meta.bind = engine
+    user_table = Table('user', meta, 
+                       Column("name", Text),
+                       Column("full_name", Text))
+    user_table.create()
+    inspector = inspect(engine)
+    inspector.has_table('user')
 
 You can also use the `user_table` metadata element `name` to check if it exists as such:
 
     inspector.has_table(user_table.name)
+
+
+### ORM querying guide
+
+
+#### Select where
+
+SQL Alchemy [Object Relational Model Querying
+Guide](https://docs.sqlalchemy.org/en/14/orm/queryguide.html)
+
+    from sqlalchemy import select
+    stmt = select(user_table).where(user_table.c.name == 'spongebob')
+    print(stmt)
+
+Since version 1.4 `.where()` is a synonym of `.filter()` as explained in [sqlalchemy.orm.Query.where](https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.where).
+
+
+#### Insert
+
+[Insert](https://docs.sqlalchemy.org/en/14/core/dml.html#sqlalchemy.sql.expression.insert) some data into the `user` table
+
+    from sqlalchemy import insert
+    from sqlalchemy.orm import Session
+    stmt = (
+        insert(user_table).
+        values(name='Bob', full_name='Sponge Bob')
+    )
+    with Session(engine) as session:
+        result = session.execute(stmt)
+        session.commit()
+
+
+#### ORM query to pandas
+
+Repeat the example table defined above, read the result of a
+[select](https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#the-select-sql-expression-construct)
+statement into a pandas data frame:
+
+    import pandas
+    from sqlalchemy import create_engine
+    from sqlalchemy import MetaData, Table, Column, Text
+    from sqlalchemy.orm import Session
+    # Define metadata and create the table
+    engine = create_engine('sqlite://')
+    meta = MetaData()
+    meta.bind = engine
+    user_table = Table('user', meta,
+                       Column("name", Text),
+                       Column("full_name", Text))
+    user_table.create()
+    # Insert data into the user table
+    stmt = user_table.insert().values(name='Bob', full_name='Sponge Bob')
+    with Session(engine) as session:
+        result = session.execute(stmt)
+        session.commit()
+    # Select data into a pandas data frame
+    stmt = user_table.select().where(user_table.c.name == 'Bob')
+    df = pandas.read_sql_query(stmt, engine)
+
+Another way importing the select statement:
+
+    from sqlalchemy import select
+    stmt = select(user_table).where(user_table.c.name == 'Bob')
+    df = pandas.read_sql_query(stmt, engine)
+
+Another way using a session
+
+    with Session(engine) as session:
+        df2 = pandas.read_sql(session.query(user_table).filter(user_table.name=="Bob").statement, session.bind)
+
+Read the whole table into pandas
+
+    df3 = pandas.read_sql_table("user", engine)
+
+[Stack Overflow Answer](https://stackoverflow.com/a/69812326/2641825)
 
 
 ## PostgreSQL
@@ -241,7 +317,11 @@ Print the size of the output layer
     print(model(x).shape)
 
 
-# Object types
+
+# Objects
+
+
+## Object types
 
 `type()` displays the type of an object.
 
@@ -259,7 +339,16 @@ Print the size of the output layer
     # <type 'list'>
 
 
-## Convert between object types
+### Check object types
+
+Check if a variable is a string, int or float
+
+    isinstance("a", str)
+    isinstance(1,  int)
+    isinstance(1.2, float)
+
+
+### Convert between object types
 
 Character to numeric
 
@@ -286,7 +375,7 @@ Another example with the list of the last 5 years
     ",".join(YEARS)
 
 
-## Dictionary
+### Dictionary
 
 Create a dictionary
 
@@ -297,7 +386,7 @@ Converts 2 lists into a dictionary
     dict(zip(['x', 'y', 'z'], [1, 2, 3]))
 
 
-## List
+### List
 
 [Remove an element from a list of strings ](https://stackoverflow.com/a/31077838/2641825)
 
@@ -307,7 +396,7 @@ Converts 2 lists into a dictionary
     ['a', 'b', 'd']
 
 
-### List of tuples
+#### List of tuples
 
 [How to flatten a list of tuples](https://stackoverflow.com/questions/10632839/transform-list-of-tuples-into-a-flat-list-or-a-matrix)
 
@@ -332,7 +421,7 @@ Using `extend`:
     [1, 2, 4, 0, 9]
 
 
-## Set
+### Set
 
 Instances of [set](https://docs.python.org/3/library/stdtypes.html#set)
 provide the following operations:
@@ -376,6 +465,86 @@ provide the following operations:
 
 	    Return a new set with elements in either the set or other but not both.
     
+
+## Programming objects
+
+### Inheritance and composition
+
+Below is an example of object inheritance where a Car and a Boat classes
+inherit from a Vehicle class.
+
+    class Vehicle(object):
+
+        def __init__(self, color, speed_max, garage=None):
+            self.color = color
+            self.speed_max = speed_max
+            self.garage = garage
+
+        def paint(self, new_color):
+            self.color = new_color
+
+        def go_back_home(self, new_color):
+            self.position = self.go_to(self.parent.location)
+
+    class Car(Vehicle):
+
+        def open_door(self):
+            pass
+
+    class Boat(Vehicle):
+
+        def open_balast(self):
+            pass
+
+    honda = Car('bleu', 60)
+    gorgeoote = Boat('rouge', 30)
+    honda.paint('purple')
+
+Note that the object should be able to access it's parent properties through
+the super() method.
+
+Below an example of object composition where the Garage class is parent to many
+Vehicle objects.
+
+    class Garage(object):
+
+        def __init__(self, all_vehicles):
+            self.all_vehicles = all_vehicles
+
+        def mass_paint(self, new_color):
+            for v in self.all_vehicles: v.paint(new_color)
+
+        def build_car(self, color):
+            new_car = Car(color, 90, self)
+            self.all_vehicles.append(new_car)
+            return new_car
+
+        @property
+        def location(self):
+            return '10, 18'
+
+
+    mike = Garage([honda, gorgeoote])
+
+    mike.mass_paint()
+
+    sport_car = mike.build_car('rouge')
+
+
+### Why do Python classes inherit object?
+
+[Why do Python classes inherit
+object?](https://stackoverflow.com/questions/4015417/why-do-python-classes-inherit-object)
+
+> So, what should you do?
+
+> In Python 2: always inherit from object explicitly. Get the perks.
+
+> In Python 3: inherit from object if you are writing code that tries to be
+> Python agnostic, that is, it needs to work both in Python 2 and in Python 3.
+> Otherwise don't, it really makes no difference since Python inserts it for
+> you behind the scenes. 
+
 
 # HTTP
 
@@ -585,10 +754,6 @@ Then start the notebook server as such:
 
     jupyter notebook
 
-## Plots
-
-
-
 
 ## Security and authentication on a public server
 
@@ -762,6 +927,28 @@ It is useful to repeat a pattern of behaviour around a function.
 
 I have used decorators to cache the function output
 along a data processing pipeline. 
+
+
+## Docstring Documentation 
+
+Document python functions with the sphinx convention
+[SO Answer](https://stackoverflow.com/a/40596167)
+
+    def send_message(sender, recipient, message_body, priority=1) -> int:
+       """
+       Send a message to a recipient
+
+       :param str sender: The person sending the message
+       :param str recipient: The recipient of the message
+       :param str message_body: The body of the message
+       :param priority: The priority of the message, can be a number 1-5
+       :type priority: integer or None
+       :return: the message id
+       :rtype: int
+       :raises ValueError: if the message_body exceeds 160 characters
+       :raises TypeError: if the message_body is not a basestring
+       """
+
 
 # Math
 
@@ -1009,74 +1196,6 @@ Error if probabilities do not sum up to one
     # ValueError: probabilities do not sum to 1
 
 
-# Objects
-
-## Inheritance and composition
-
-Example 
-
-    ###############################################################################
-    class Vehicle(object):
-
-        def __init__(self, color, speed_max, garage=None):
-            # Default attributes #
-            self.color = color
-            self.speed_max = speed_max
-            self.garage = garage
-
-        def paint(self, new_color):
-            # Default attributes #
-            self.color = new_color
-
-        def go_back_home(self, new_color):
-            # Default attributes #
-            self.position = self.go_to(self.parent.location)
-
-    ###############################################################################
-    class Car(Vehicle):
-
-        def open_door(self):
-            pass
-
-    ###############################################################################
-    class Boat(Vehicle):
-
-        def open_balast(self):
-            pass
-
-    ###############################################################################
-    class Garage(object):
-
-        def __init__(self, all_vehicles):
-            self.all_vehicles = all_vehicles
-
-        def mass_paint(self, new_color):
-            # Default attributes #
-            for v in self.all_vehicles: v.paint(new_color)
-
-        def build_car(self, color):
-            new_car = Car(color, 90, self)
-            self.all_vehicles.append(new_car)
-            return new_car
-
-        @property
-        def location(self):
-            return '10, 18'
-
-    ###############################################################################
-    ###############################################################################
-    ###############################################################################
-    honda = Car('bleu', 60)
-    gorgeoote = Boat('rouge', 30)
-    honda.paint('purple')
-
-    mike = Garage([honda, gorgeoote])
-
-    mike.mass_paint()
-
-    sport_car = mike.build_car('rouge')
-
-
 # Pandas data frames
 
 All code below assumes you have imported pandas
@@ -1124,6 +1243,104 @@ Create a new column based on another one
 Use the `assign` method
 
     df.assign(e = lambda x: x["a"] * 3)
+
+
+### Recursive function x(t) depends on x(t-1)
+
+A recursive function is difficult to vectorize because each input at time t
+depends on the previous input at time t-1. When possible use a year index for
+shorter selection with `.loc()`.
+
+    import pandas
+    df = pandas.DataFrame({'year':range(2020,2024),'a':range(3,7)})
+    df1 = df.copy()
+    # Set the initial value
+    t0 = min(df1.year)
+    df1.loc[df1.year==t0, "x"] = 0
+
+    # Doesn't work when the right side of the equation is a pandas.core.series.Series
+    for t in range (min(df1.year)+1, max(df1.year)+1):
+        df1.loc[df1.year==t, "x"] = df1.loc[df1.year==t-1,"x"] + df1.loc[df1.year==t-1,"a"]
+    print(df1)
+    #    year  a    x
+    # 0  2020  3  0.0
+    # 1  2021  4  NaN
+    # 2  2022  5  NaN
+    # 3  2023  6  NaN
+    print(type(df1.loc[df1.year==t-1,"x"] + df1.loc[df1.year==t-1,"a"]))
+    # <class 'pandas.core.series.Series'>
+
+    # Works when the right side of the equation is a numpy array
+    for t in range (min(df1.year)+1, max(df1.year)+1):
+        df1.loc[df1.year==t, "x"] = (df1.loc[df1.year==t-1,"x"] + df1.loc[df1.year==t-1,"a"]).unique()
+        #break
+    print(df1)
+    #    year  a     x
+    # 0  2020  3   0.0
+    # 1  2021  4   3.0
+    # 2  2022  5   7.0
+    # 3  2023  6  12.0
+    print(type((df1.loc[df1.year==t-1,"x"] + df1.loc[df1.year==t-1,"a"]).unique()))
+    # <class 'numpy.ndarray'>
+
+    # Assignement works directly when the .loc() selection is using a year index
+    df2 = df.set_index("year").copy()
+    # Set the initial value
+    df2.loc[df2.index.min(), "x"] = 0
+    for t in range (df2.index.min()+1, df2.index.max()+1):
+        df2.loc[t, "x"] = df2.loc[t-1, "x"] + df2.loc[t-1,"a"]
+        #break
+    print(df2)
+    #       a     x
+    # year
+    # 2020  3   0.0
+    # 2021  4   3.0
+    # 2022  5   7.0
+    # 2023  6  12.0
+    print(type(df2.loc[t-1, "x"] + df2.loc[t-1,"a"]))
+    # <class 'numpy.float64'>
+
+    #SO answer using cumsum
+
+Our real problem is more complicated since there is a multiplicative and an
+additive component
+
+    import pandas
+    df3 = pandas.DataFrame({'year':range(2020,2024),'a':range(3,7), 'b':range(8,12)})
+    df3 = df3.set_index("year").copy()
+    # Set the initial value
+    initial_value = 1
+    df3.loc[df3.index.min(), "x"] = initial_value
+    # Use a loop
+    for t in range (df3.index.min()+1, df3.index.max()+1):
+        df3.loc[t, "x"] = df3.loc[t-1, "x"] * df3.loc[t-1, "a"] + df3.loc[t-1, "b"]
+    # Use cumsum and cumprod
+    df3["cumprod_a"] = df3.a.cumprod().shift(1).fillna(1)
+    df3["cumsum_cumprod_a_b"] = df3.cumprod_a.cumsum().shift(1).fillna(0) * df3.b
+    df3["x2"] = df3.cumprod_a * initial_value + df3.cumsum_cumprod_a_b
+    print(df3)
+
+
+- `type(df1.loc[df1.year==t-1,"x"] + df1.loc[df1.year==t-1,"a"])` is a pandas
+  series while `type(df2.loc[t-1, "x"] + df2.loc[t-1,"a"])` is a numpy float.
+  Why are types different? 
+
+- Is there a better way to write a recursive `.loc()` assignment than to use
+  `.unique()`? 
+
+See also:
+
+- related Question and Answer on [recursive
+  assignment](https://stackoverflow.com/a/38008937/2641825)
+- related documentation on [Mutating User Defined Function
+  methods](https://pandas.pydata.org/pandas-docs/stable/user_guide/gotchas.html#mutating-with-user-defined-function-udf-methods)
+
+> "It is a general rule in programming that one should not mutate a container
+> while it is being iterated over. Mutation will invalidate the iterator,
+> causing unexpected behavior."
+> [...]
+> "To resolve this issue, one can make a copy so that the mutation does not
+> apply to the container being iterated over."
 
 
 ## Columns
@@ -1669,6 +1886,20 @@ Better to use X**2 + Y**2 directly as above.
     ax = plt.axes(projection='3d')
     ax.contour3D(X, Y, Z, 50, cmap='binary')
 
+
+### Pandas plots generate matplotlib AxesSubplot objects
+
+Create some data and change the xticks labels
+
+    import pandas
+    df = pandas.DataFrame({'x':range(0,30), 'y':range(10,40)})
+    df.set_index('x', inplace=True)
+    plot = df.plot()
+    type(plot)
+    #help(plot)
+    plot.set_xticks(range(0,31,10), minor=False)
+
+
 ## Plotly 
 
 The advantage of plotly is that it provides dynamic visualisation inside web
@@ -1680,6 +1911,13 @@ notebook](https://colab.research.google.com/github/bytehub-ai/blog-examples/blob
 on machine learning used to enhance the localisation of weather forecasts. Seen
 on this blog post [What does machine learning have to do with
 weather](https://medium.com/bytehub-ai/what-does-machine-learning-have-to-do-with-weather-94f3ac625ad3).
+
+
+## Plotnine
+
+Grammar of graphics for python
+https://github.com/has2k1/plotnine
+
 
 ## Seaborn
 
@@ -1810,6 +2048,50 @@ Group by another variable and show the groups with different colors:
     searborn(x="total_bill", y="tip", hue="time", data=tips)
 
 
+## Vega
+
+The tool tip feature is nice in an interactive notebook.
+
+- Ipython vega for Jupyter notebooks https://github.com/vega/ipyvega
+- Vega gallery https://vega.github.io/vega/examples/
+
+Vega Lite
+
+- Vega lite gallery https://vega.github.io/vega-lite-v1/examples/
+- Vega lite documentation on
+  [tooltips](https://vega.github.io/vega-lite/docs/tooltip.html)
+
+    from vega import VegaLite
+    import pandas
+    df = pandas.read_json('cars.json')
+    VegaLite({
+          "data": {"url": "data/cars.json"},
+          "mark": {"type": "point", "tooltip": true},
+          "encoding": {
+            "x": {"field": "Horsepower","type": "quantitative"},
+            "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+          }
+        }, df)
+
+
+
+# Profiling
+
+[How can I time a code segment for testing performance with Pythons timeit?](https://stackoverflow.com/questions/2866380/how-can-i-time-a-code-segment-for-testing-performance-with-pythons-timeit)
+
+Time a function:
+
+    import time, timeit
+    def wait():
+        time.sleep(1)
+    timeit.timeit(wait, number=3)
+
+> "If you are profiling your code and can use IPython, it has the magic
+> function `%timeit`. `%%timeit` operates on cells." 
+
+    %timeit wait()
+
+
 # R and python
 
 See also the [R page](R.html) for more details on R.
@@ -1927,21 +2209,23 @@ Pandas data frame to be used for examples:
 
 The mapping of tidyverse to pandas is:
 
-| tidyverse                 | pandas                         | SO questions                         |
-| ------------------------- | -----------------------------  | -----------------------------        |
-| arrange                   | sort_values                    |                                      |
-| df %>% select(-a,-b)      | df.drop(columns=['a', 'b'])    |                                      |
-| select(a)                 | df.filter(items=['a'])         |                                      |
-| select(contains("a"))     | df.filter(regex='a')           |                                      |
-| filter                    | query                          |                                      |
-| group_by                  | groupby                        |                                      |
-| lag                       | [shift]                        | [pandas lag function][so_lag_pandas] |
-| mutate                    | [assign]                       |                                      |
-| pivot_longer              | [melt] or [wide_to_long]       |                                      |
-| pivot_wider               | [pivot]                        |                                      |
-| rename                    | df.rename(columns={'a':'new'}) |                                      |
-| summarize                 | agg                            |                                      |
-| unnest                    | [explode]                      | [unnest in pandas][so_unnest]        |
+| tidyverse                 | pandas                                           | Help or SO questions                 |
+| ------------------------- | ------------------------------------------------ | -----------------------------        |
+| arrange                   | sort_values                                      |                                      |
+| df %>% select(-a,-b)      | df.drop(columns=['a', 'b'])                      |                                      |
+| select(a)                 | df.filter(items=['a'])                           |                                      |
+| select(contains("a"))     | df.filter(regex='a')                             |                                      |
+| filter                    | query                                            |                                      |
+| group_by                  | groupby                                          |                                      |
+| lag                       | [shift]                                          | [pandas lag function][so_lag_pandas] |
+| mutate                    | df.assign(e = lambda x: x["a"] * 3)              | [assign]                             |
+| pivot_longer              | [melt] or [wide_to_long]                         |                                      |
+| pivot_wider               | [pivot]                                          |                                      |
+| rename                    | df.rename(columns={'a':'new'})                   |                                      |
+| separate                  | df['b'], df['c'] = df['a'].str.split(',', 1).str | [pandas separate]                    |
+| summarize                 | agg                                              |                                      |
+| unite                     |                                                  |                                      |
+| unnest                    | [explode]                                        | [unnest in pandas][so_unnest]        |
 
 [assign]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html
 [explode]: https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html
@@ -1951,7 +2235,7 @@ The mapping of tidyverse to pandas is:
 [so_lag_pandas]: https://stackoverflow.com/questions/23664877/pandas-equivalent-of-oracle-lead-lag-function
 [so_unnest]: https://stackoverflow.com/a/53218939/2641825
 [wide_to_long]: https://pandas.pydata.org/docs/reference/api/pandas.wide_to_long.html
-
+[pandas separate]: https://stackoverflow.com/a/57823566
 
 Methods to use inside the .groupby().agg() method:
 

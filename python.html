@@ -524,18 +524,77 @@ yearly_hs2 = Table(&#39;yearly_hs2&#39;, meta, autoload_with=comtrade.database.e
 <div id="check-for-table-existence" class="section level3">
 <h3>Check for table existence</h3>
 <p>Paul’s <a href="https://stackoverflow.com/a/69224576/2641825">SO Answer</a>. SQL Alchemy’s recommended way to check for the presence of a table is to create an inspector object and use its <code>has_table()</code> method. The following example was copied from <a href="https://docs.sqlalchemy.org/en/14/core/reflection.html#sqlalchemy.engine.reflection.Inspector.has_table">sqlalchemy.engine.reflection.Inspector.has_table</a>, with the addition of an SQLite engine to make it reproducible:</p>
-<pre><code>In [17]: from sqlalchemy import create_engine, inspect
-    ...: from sqlalchemy import MetaData, Table, Column, Text
-    ...: engine = create_engine(&#39;sqlite://&#39;)
-    ...: meta = MetaData()
-    ...: meta.bind = engine
-    ...: user_table = Table(&#39;user&#39;, meta, Column(&quot;name&quot;, Text))
-    ...: user_table.create()
-    ...: inspector = inspect(engine)
-    ...: inspector.has_table(&#39;user&#39;)
-Out[17]: True</code></pre>
+<pre><code>from sqlalchemy import create_engine, inspect
+from sqlalchemy import MetaData, Table, Column, Text
+engine = create_engine(&#39;sqlite://&#39;)
+meta = MetaData()
+meta.bind = engine
+user_table = Table(&#39;user&#39;, meta, 
+                   Column(&quot;name&quot;, Text),
+                   Column(&quot;full_name&quot;, Text))
+user_table.create()
+inspector = inspect(engine)
+inspector.has_table(&#39;user&#39;)</code></pre>
 <p>You can also use the <code>user_table</code> metadata element <code>name</code> to check if it exists as such:</p>
 <pre><code>inspector.has_table(user_table.name)</code></pre>
+</div>
+<div id="orm-querying-guide" class="section level3">
+<h3>ORM querying guide</h3>
+<div id="select-where" class="section level4">
+<h4>Select where</h4>
+<p>SQL Alchemy <a href="https://docs.sqlalchemy.org/en/14/orm/queryguide.html">Object Relational Model Querying Guide</a></p>
+<pre><code>from sqlalchemy import select
+stmt = select(user_table).where(user_table.c.name == &#39;spongebob&#39;)
+print(stmt)</code></pre>
+<p>Since version 1.4 <code>.where()</code> is a synonym of <code>.filter()</code> as explained in <a href="https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.where">sqlalchemy.orm.Query.where</a>.</p>
+</div>
+<div id="insert" class="section level4">
+<h4>Insert</h4>
+<p><a href="https://docs.sqlalchemy.org/en/14/core/dml.html#sqlalchemy.sql.expression.insert">Insert</a> some data into the <code>user</code> table</p>
+<pre><code>from sqlalchemy import insert
+from sqlalchemy.orm import Session
+stmt = (
+    insert(user_table).
+    values(name=&#39;Bob&#39;, full_name=&#39;Sponge Bob&#39;)
+)
+with Session(engine) as session:
+    result = session.execute(stmt)
+    session.commit()</code></pre>
+</div>
+<div id="orm-query-to-pandas" class="section level4">
+<h4>ORM query to pandas</h4>
+<p>Repeat the example table defined above, read the result of a <a href="https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#the-select-sql-expression-construct">select</a> statement into a pandas data frame:</p>
+<pre><code>import pandas
+from sqlalchemy import create_engine
+from sqlalchemy import MetaData, Table, Column, Text
+from sqlalchemy.orm import Session
+# Define metadata and create the table
+engine = create_engine(&#39;sqlite://&#39;)
+meta = MetaData()
+meta.bind = engine
+user_table = Table(&#39;user&#39;, meta,
+                   Column(&quot;name&quot;, Text),
+                   Column(&quot;full_name&quot;, Text))
+user_table.create()
+# Insert data into the user table
+stmt = user_table.insert().values(name=&#39;Bob&#39;, full_name=&#39;Sponge Bob&#39;)
+with Session(engine) as session:
+    result = session.execute(stmt)
+    session.commit()
+# Select data into a pandas data frame
+stmt = user_table.select().where(user_table.c.name == &#39;Bob&#39;)
+df = pandas.read_sql_query(stmt, engine)</code></pre>
+<p>Another way importing the select statement:</p>
+<pre><code>from sqlalchemy import select
+stmt = select(user_table).where(user_table.c.name == &#39;Bob&#39;)
+df = pandas.read_sql_query(stmt, engine)</code></pre>
+<p>Another way using a session</p>
+<pre><code>with Session(engine) as session:
+    df2 = pandas.read_sql(session.query(user_table).filter(user_table.name==&quot;Bob&quot;).statement, session.bind)</code></pre>
+<p>Read the whole table into pandas</p>
+<pre><code>df3 = pandas.read_sql_table(&quot;user&quot;, engine)</code></pre>
+<p><a href="https://stackoverflow.com/a/69812326/2641825">Stack Overflow Answer</a></p>
+</div>
 </div>
 </div>
 <div id="postgresql" class="section level2">
@@ -604,8 +663,10 @@ model = nn.Sequential(
 print(model(x).shape)</code></pre>
 </div>
 </div>
-<div id="object-types" class="section level1">
-<h1>Object types</h1>
+<div id="objects" class="section level1">
+<h1>Objects</h1>
+<div id="object-types" class="section level2">
+<h2>Object types</h2>
 <p><code>type()</code> displays the type of an object.</p>
 <pre><code>i = 1
 print(type(i))
@@ -619,8 +680,15 @@ print(type(t))
 l = [1,2]
 print(type(l))
 # &lt;type &#39;list&#39;&gt;</code></pre>
-<div id="convert-between-object-types" class="section level2">
-<h2>Convert between object types</h2>
+<div id="check-object-types" class="section level3">
+<h3>Check object types</h3>
+<p>Check if a variable is a string, int or float</p>
+<pre><code>isinstance(&quot;a&quot;, str)
+isinstance(1,  int)
+isinstance(1.2, float)</code></pre>
+</div>
+<div id="convert-between-object-types" class="section level3">
+<h3>Convert between object types</h3>
 <p>Character to numeric</p>
 <pre><code>int(&quot;3&quot;)
 float(&quot;3.33&quot;)
@@ -638,22 +706,22 @@ YEARS = [year - i for i in range(1,6)]
 YEARS = [str(x) for x in YEARS]
 &quot;,&quot;.join(YEARS)</code></pre>
 </div>
-<div id="dictionary" class="section level2">
-<h2>Dictionary</h2>
+<div id="dictionary" class="section level3">
+<h3>Dictionary</h3>
 <p>Create a dictionary</p>
 <pre><code>{&#39;x&#39;:1, &#39;y&#39;:2, &#39;z&#39;:3}</code></pre>
 <p>Converts 2 lists into a dictionary</p>
 <pre><code>dict(zip([&#39;x&#39;, &#39;y&#39;, &#39;z&#39;], [1, 2, 3]))</code></pre>
 </div>
-<div id="list" class="section level2">
-<h2>List</h2>
+<div id="list" class="section level3">
+<h3>List</h3>
 <p><a href="https://stackoverflow.com/a/31077838/2641825">Remove an element from a list of strings</a></p>
 <pre><code>myList = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
 myList.remove(&#39;c&#39;)
 myList
 [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;]</code></pre>
-<div id="list-of-tuples" class="section level3">
-<h3>List of tuples</h3>
+<div id="list-of-tuples" class="section level4">
+<h4>List of tuples</h4>
 <p><a href="https://stackoverflow.com/questions/10632839/transform-list-of-tuples-into-a-flat-list-or-a-matrix">How to flatten a list of tuples</a></p>
 <pre><code>nested_list = [(1, 2, 4), (0, 9)]</code></pre>
 <p>Using <code>reduce</code>:</p>
@@ -670,8 +738,8 @@ flat_list
 [1, 2, 4, 0, 9]</code></pre>
 </div>
 </div>
-<div id="set" class="section level2">
-<h2>Set</h2>
+<div id="set" class="section level3">
+<h3>Set</h3>
 <p>Instances of <a href="https://docs.python.org/3/library/stdtypes.html#set">set</a> provide the following operations:</p>
 <pre><code>issubset(other)
 set &lt;= other
@@ -710,6 +778,78 @@ symmetric_difference(other)
 set ^ other
 
     Return a new set with elements in either the set or other but not both.</code></pre>
+</div>
+</div>
+<div id="programming-objects" class="section level2">
+<h2>Programming objects</h2>
+<div id="inheritance-and-composition" class="section level3">
+<h3>Inheritance and composition</h3>
+<p>Below is an example of object inheritance where a Car and a Boat classes inherit from a Vehicle class.</p>
+<pre><code>class Vehicle(object):
+
+    def __init__(self, color, speed_max, garage=None):
+        self.color = color
+        self.speed_max = speed_max
+        self.garage = garage
+
+    def paint(self, new_color):
+        self.color = new_color
+
+    def go_back_home(self, new_color):
+        self.position = self.go_to(self.parent.location)
+
+class Car(Vehicle):
+
+    def open_door(self):
+        pass
+
+class Boat(Vehicle):
+
+    def open_balast(self):
+        pass
+
+honda = Car(&#39;bleu&#39;, 60)
+gorgeoote = Boat(&#39;rouge&#39;, 30)
+honda.paint(&#39;purple&#39;)</code></pre>
+<p>Note that the object should be able to access it’s parent properties through the super() method.</p>
+<p>Below an example of object composition where the Garage class is parent to many Vehicle objects.</p>
+<pre><code>class Garage(object):
+
+    def __init__(self, all_vehicles):
+        self.all_vehicles = all_vehicles
+
+    def mass_paint(self, new_color):
+        for v in self.all_vehicles: v.paint(new_color)
+
+    def build_car(self, color):
+        new_car = Car(color, 90, self)
+        self.all_vehicles.append(new_car)
+        return new_car
+
+    @property
+    def location(self):
+        return &#39;10, 18&#39;
+
+
+mike = Garage([honda, gorgeoote])
+
+mike.mass_paint()
+
+sport_car = mike.build_car(&#39;rouge&#39;)</code></pre>
+</div>
+<div id="why-do-python-classes-inherit-object" class="section level3">
+<h3>Why do Python classes inherit object?</h3>
+<p><a href="https://stackoverflow.com/questions/4015417/why-do-python-classes-inherit-object">Why do Python classes inherit object?</a></p>
+<blockquote>
+<p>So, what should you do?</p>
+</blockquote>
+<blockquote>
+<p>In Python 2: always inherit from object explicitly. Get the perks.</p>
+</blockquote>
+<blockquote>
+<p>In Python 3: inherit from object if you are writing code that tries to be Python agnostic, that is, it needs to work both in Python 2 and in Python 3. Otherwise don’t, it really makes no difference since Python inserts it for you behind the scenes.</p>
+</blockquote>
+</div>
 </div>
 </div>
 <div id="http" class="section level1">
@@ -867,9 +1007,6 @@ some pandas stuff</code></pre>
 <p>Then start the notebook server as such:</p>
 <pre><code>jupyter notebook</code></pre>
 </div>
-<div id="plots" class="section level2">
-<h2>Plots</h2>
-</div>
 <div id="security-and-authentication-on-a-public-server" class="section level2">
 <h2>Security and authentication on a public server</h2>
 <p><a href="https://stackoverflow.com/questions/37808410/ipython-jupyter-notebook-with-authentication">Jupyter notebook with authentication</a></p>
@@ -985,6 +1122,24 @@ a
 <li>Examples <a href="https://www.oreilly.com/ideas/5-reasons-you-need-to-learn-to-write-python-decorators">5 use cases for decorators</a></li>
 </ul>
 <p>I have used decorators to cache the function output along a data processing pipeline.</p>
+</div>
+<div id="docstring-documentation" class="section level2">
+<h2>Docstring Documentation</h2>
+<p>Document python functions with the sphinx convention <a href="https://stackoverflow.com/a/40596167">SO Answer</a></p>
+<pre><code>def send_message(sender, recipient, message_body, priority=1) -&gt; int:
+   &quot;&quot;&quot;
+   Send a message to a recipient
+
+   :param str sender: The person sending the message
+   :param str recipient: The recipient of the message
+   :param str message_body: The body of the message
+   :param priority: The priority of the message, can be a number 1-5
+   :type priority: integer or None
+   :return: the message id
+   :rtype: int
+   :raises ValueError: if the message_body exceeds 160 characters
+   :raises TypeError: if the message_body is not a basestring
+   &quot;&quot;&quot;</code></pre>
 </div>
 </div>
 <div id="math" class="section level1">
@@ -1169,73 +1324,6 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
 # ValueError: probabilities do not sum to 1</code></pre>
 </div>
 </div>
-<div id="objects" class="section level1">
-<h1>Objects</h1>
-<div id="inheritance-and-composition" class="section level2">
-<h2>Inheritance and composition</h2>
-<p>Example</p>
-<pre><code>###############################################################################
-class Vehicle(object):
-
-    def __init__(self, color, speed_max, garage=None):
-        # Default attributes #
-        self.color = color
-        self.speed_max = speed_max
-        self.garage = garage
-
-    def paint(self, new_color):
-        # Default attributes #
-        self.color = new_color
-
-    def go_back_home(self, new_color):
-        # Default attributes #
-        self.position = self.go_to(self.parent.location)
-
-###############################################################################
-class Car(Vehicle):
-
-    def open_door(self):
-        pass
-
-###############################################################################
-class Boat(Vehicle):
-
-    def open_balast(self):
-        pass
-
-###############################################################################
-class Garage(object):
-
-    def __init__(self, all_vehicles):
-        self.all_vehicles = all_vehicles
-
-    def mass_paint(self, new_color):
-        # Default attributes #
-        for v in self.all_vehicles: v.paint(new_color)
-
-    def build_car(self, color):
-        new_car = Car(color, 90, self)
-        self.all_vehicles.append(new_car)
-        return new_car
-
-    @property
-    def location(self):
-        return &#39;10, 18&#39;
-
-###############################################################################
-###############################################################################
-###############################################################################
-honda = Car(&#39;bleu&#39;, 60)
-gorgeoote = Boat(&#39;rouge&#39;, 30)
-honda.paint(&#39;purple&#39;)
-
-mike = Garage([honda, gorgeoote])
-
-mike.mass_paint()
-
-sport_car = mike.build_car(&#39;rouge&#39;)</code></pre>
-</div>
-</div>
 <div id="pandas-data-frames" class="section level1">
 <h1>Pandas data frames</h1>
 <p>All code below assumes you have imported pandas</p>
@@ -1271,6 +1359,87 @@ df.set_index(&#39;b&#39;).to_dict()[&#39;c&#39;]</code></pre>
 df[&quot;d&quot;] = df[&quot;a&quot;] * 2</code></pre>
 <p>Use the <code>assign</code> method</p>
 <pre><code>df.assign(e = lambda x: x[&quot;a&quot;] * 3)</code></pre>
+<div id="recursive-function-xt-depends-on-xt-1" class="section level3">
+<h3>Recursive function x(t) depends on x(t-1)</h3>
+<p>A recursive function is difficult to vectorize because each input at time t depends on the previous input at time t-1. When possible use a year index for shorter selection with <code>.loc()</code>.</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;year&#39;:range(2020,2024),&#39;a&#39;:range(3,7)})
+df1 = df.copy()
+# Set the initial value
+t0 = min(df1.year)
+df1.loc[df1.year==t0, &quot;x&quot;] = 0
+
+# Doesn&#39;t work when the right side of the equation is a pandas.core.series.Series
+for t in range (min(df1.year)+1, max(df1.year)+1):
+    df1.loc[df1.year==t, &quot;x&quot;] = df1.loc[df1.year==t-1,&quot;x&quot;] + df1.loc[df1.year==t-1,&quot;a&quot;]
+print(df1)
+#    year  a    x
+# 0  2020  3  0.0
+# 1  2021  4  NaN
+# 2  2022  5  NaN
+# 3  2023  6  NaN
+print(type(df1.loc[df1.year==t-1,&quot;x&quot;] + df1.loc[df1.year==t-1,&quot;a&quot;]))
+# &lt;class &#39;pandas.core.series.Series&#39;&gt;
+
+# Works when the right side of the equation is a numpy array
+for t in range (min(df1.year)+1, max(df1.year)+1):
+    df1.loc[df1.year==t, &quot;x&quot;] = (df1.loc[df1.year==t-1,&quot;x&quot;] + df1.loc[df1.year==t-1,&quot;a&quot;]).unique()
+    #break
+print(df1)
+#    year  a     x
+# 0  2020  3   0.0
+# 1  2021  4   3.0
+# 2  2022  5   7.0
+# 3  2023  6  12.0
+print(type((df1.loc[df1.year==t-1,&quot;x&quot;] + df1.loc[df1.year==t-1,&quot;a&quot;]).unique()))
+# &lt;class &#39;numpy.ndarray&#39;&gt;
+
+# Assignement works directly when the .loc() selection is using a year index
+df2 = df.set_index(&quot;year&quot;).copy()
+# Set the initial value
+df2.loc[df2.index.min(), &quot;x&quot;] = 0
+for t in range (df2.index.min()+1, df2.index.max()+1):
+    df2.loc[t, &quot;x&quot;] = df2.loc[t-1, &quot;x&quot;] + df2.loc[t-1,&quot;a&quot;]
+    #break
+print(df2)
+#       a     x
+# year
+# 2020  3   0.0
+# 2021  4   3.0
+# 2022  5   7.0
+# 2023  6  12.0
+print(type(df2.loc[t-1, &quot;x&quot;] + df2.loc[t-1,&quot;a&quot;]))
+# &lt;class &#39;numpy.float64&#39;&gt;
+
+#SO answer using cumsum</code></pre>
+<p>Our real problem is more complicated since there is a multiplicative and an additive component</p>
+<pre><code>import pandas
+df3 = pandas.DataFrame({&#39;year&#39;:range(2020,2024),&#39;a&#39;:range(3,7), &#39;b&#39;:range(8,12)})
+df3 = df3.set_index(&quot;year&quot;).copy()
+# Set the initial value
+initial_value = 1
+df3.loc[df3.index.min(), &quot;x&quot;] = initial_value
+# Use a loop
+for t in range (df3.index.min()+1, df3.index.max()+1):
+    df3.loc[t, &quot;x&quot;] = df3.loc[t-1, &quot;x&quot;] * df3.loc[t-1, &quot;a&quot;] + df3.loc[t-1, &quot;b&quot;]
+# Use cumsum and cumprod
+df3[&quot;cumprod_a&quot;] = df3.a.cumprod().shift(1).fillna(1)
+df3[&quot;cumsum_cumprod_a_b&quot;] = df3.cumprod_a.cumsum().shift(1).fillna(0) * df3.b
+df3[&quot;x2&quot;] = df3.cumprod_a * initial_value + df3.cumsum_cumprod_a_b
+print(df3)</code></pre>
+<ul>
+<li><p><code>type(df1.loc[df1.year==t-1,&quot;x&quot;] + df1.loc[df1.year==t-1,&quot;a&quot;])</code> is a pandas series while <code>type(df2.loc[t-1, &quot;x&quot;] + df2.loc[t-1,&quot;a&quot;])</code> is a numpy float. Why are types different?</p></li>
+<li><p>Is there a better way to write a recursive <code>.loc()</code> assignment than to use <code>.unique()</code>?</p></li>
+</ul>
+<p>See also:</p>
+<ul>
+<li>related Question and Answer on <a href="https://stackoverflow.com/a/38008937/2641825">recursive assignment</a></li>
+<li>related documentation on <a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/gotchas.html#mutating-with-user-defined-function-udf-methods">Mutating User Defined Function methods</a></li>
+</ul>
+<blockquote>
+<p>“It is a general rule in programming that one should not mutate a container while it is being iterated over. Mutation will invalidate the iterator, causing unexpected behavior.” […] “To resolve this issue, one can make a copy so that the mutation does not apply to the container being iterated over.”</p>
+</blockquote>
+</div>
 </div>
 <div id="columns" class="section level2">
 <h2>Columns</h2>
@@ -1678,11 +1847,26 @@ ax.scatter(1,2,3)</code></pre>
 fig = plt.figure()
 ax = plt.axes(projection=&#39;3d&#39;)
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
+<div id="pandas-plots-generate-matplotlib-axessubplot-objects" class="section level3">
+<h3>Pandas plots generate matplotlib AxesSubplot objects</h3>
+<p>Create some data and change the xticks labels</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;x&#39;:range(0,30), &#39;y&#39;:range(10,40)})
+df.set_index(&#39;x&#39;, inplace=True)
+plot = df.plot()
+type(plot)
+#help(plot)
+plot.set_xticks(range(0,31,10), minor=False)</code></pre>
+</div>
 </div>
 <div id="plotly" class="section level2">
 <h2>Plotly</h2>
 <p>The advantage of plotly is that it provides dynamic visualisation inside web pages, such as the possibility to zoom in a graph. It’s the open source component of a commercial project called Dash entreprise.</p>
 <p>For example <a href="https://colab.research.google.com/github/bytehub-ai/blog-examples/blob/master/temperature_forecast_example.ipynb#scrollTo=7yJZA1CZSSx4">this notebook</a> on machine learning used to enhance the localisation of weather forecasts. Seen on this blog post <a href="https://medium.com/bytehub-ai/what-does-machine-learning-have-to-do-with-weather-94f3ac625ad3">What does machine learning have to do with weather</a>.</p>
+</div>
+<div id="plotnine" class="section level2">
+<h2>Plotnine</h2>
+<p>Grammar of graphics for python <a href="https://github.com/has2k1/plotnine" class="uri">https://github.com/has2k1/plotnine</a></p>
 </div>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>
@@ -1779,6 +1963,33 @@ plt.show()</code></pre>
 <pre><code>searborn(x=&quot;total_bill&quot;, y=&quot;tip&quot;, hue=&quot;time&quot;, data=tips)</code></pre>
 </div>
 </div>
+<div id="vega" class="section level2">
+<h2>Vega</h2>
+<p>The tool tip feature is nice in an interactive notebook.</p>
+<ul>
+<li>Ipython vega for Jupyter notebooks <a href="https://github.com/vega/ipyvega" class="uri">https://github.com/vega/ipyvega</a></li>
+<li>Vega gallery <a href="https://vega.github.io/vega/examples/" class="uri">https://vega.github.io/vega/examples/</a></li>
+</ul>
+<p>Vega Lite</p>
+<ul>
+<li>Vega lite gallery <a href="https://vega.github.io/vega-lite-v1/examples/" class="uri">https://vega.github.io/vega-lite-v1/examples/</a></li>
+<li><p>Vega lite documentation on <a href="https://vega.github.io/vega-lite/docs/tooltip.html">tooltips</a></p>
+<p>from vega import VegaLite import pandas df = pandas.read_json(‘cars.json’) VegaLite({ “data”: {“url”: “data/cars.json”}, “mark”: {“type”: “point”, “tooltip”: true}, “encoding”: { “x”: {“field”: “Horsepower”,“type”: “quantitative”}, “y”: {“field”: “Miles_per_Gallon”,“type”: “quantitative”} } }, df)</p></li>
+</ul>
+</div>
+</div>
+<div id="profiling" class="section level1">
+<h1>Profiling</h1>
+<p><a href="https://stackoverflow.com/questions/2866380/how-can-i-time-a-code-segment-for-testing-performance-with-pythons-timeit">How can I time a code segment for testing performance with Pythons timeit?</a></p>
+<p>Time a function:</p>
+<pre><code>import time, timeit
+def wait():
+    time.sleep(1)
+timeit.timeit(wait, number=3)</code></pre>
+<blockquote>
+<p>“If you are profiling your code and can use IPython, it has the magic function <code>%timeit</code>. <code>%%timeit</code> operates on cells.”</p>
+</blockquote>
+<pre><code>%timeit wait()</code></pre>
 </div>
 <div id="r-and-python" class="section level1">
 <h1>R and python</h1>
@@ -1903,11 +2114,16 @@ Out[3]: array([inf])</code></pre>
 <p><a href="https://stackoverflow.com/questions/43391591/if-else-function-in-pandas-dataframe">ifelse in pandas</a></p>
 <p>The mapping of tidyverse to pandas is:</p>
 <table>
+<colgroup>
+<col width="24%" />
+<col width="47%" />
+<col width="28%" />
+</colgroup>
 <thead>
 <tr class="header">
 <th>tidyverse</th>
 <th>pandas</th>
-<th>SO questions</th>
+<th>Help or SO questions</th>
 </tr>
 </thead>
 <tbody>
@@ -1948,8 +2164,8 @@ Out[3]: array([inf])</code></pre>
 </tr>
 <tr class="even">
 <td>mutate</td>
+<td>df.assign(e = lambda x: x[“a”] * 3)</td>
 <td><a href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html">assign</a></td>
-<td></td>
 </tr>
 <tr class="odd">
 <td>pivot_longer</td>
@@ -1967,8 +2183,18 @@ Out[3]: array([inf])</code></pre>
 <td></td>
 </tr>
 <tr class="even">
+<td>separate</td>
+<td>df[‘b’], df[‘c’] = df[‘a’].str.split(‘,’, 1).str</td>
+<td><a href="https://stackoverflow.com/a/57823566">pandas separate</a></td>
+</tr>
+<tr class="odd">
 <td>summarize</td>
 <td>agg</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>unite</td>
+<td></td>
 <td></td>
 </tr>
 <tr class="odd">
