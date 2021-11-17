@@ -950,6 +950,7 @@ reddit [python workflow with terminal using tmux](https://www.reddit.com/r/vim/c
 # Navigate
 
 ## Display line numbers
+
  Display line numbers
 
     :set nu
@@ -1038,6 +1039,7 @@ locations](https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations)
     Press Ctrl-O to jump back to the previous (older) location.
     Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. 
 
+
 ## Markdown Table of Content
 
 Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)
@@ -1050,6 +1052,7 @@ See also :
 * [Vim markdown composer](https://github.com/euclio/vim-markdown-composer/blob/master/README.md)
     a plugin that adds asynchronous Markdown preview to Neovim and Vim.
 
+
 ###  Vim-markdown TOC (not used)
 
 In [this
@@ -1061,10 +1064,12 @@ vim-markdown removes syntax highlighting and auto completion of the R code
 chunks. I first extracted the Toc function into a small plugin. Then started
 using the Voom plugin.
 
+
 ### Vim-pandoc TOC (not used)
 
 The vim-pandoc plugin also provides a table of content for markdown files,
 accessible through the `:TOC` command.
+
 
 ### Voom TOC (used)
 
@@ -1882,6 +1887,15 @@ vim in a split tmux window with a REPL in the other pane:
 
     let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 
+Excessive indentation issues can arrise when slime sends indented lines to the
+ipython console. For example  after a function definition, such as `def
+function_name():` ipython places the cursor at the indented place (4 spaces)
+and slime sends an additional 4 (or more spaces) to indent the line further.
+This shouldn't be done when slime is sending intput. Ipython's auto indentation
+behaviour can be turned off by sending the following command to ipython: 
+
+    %autoindent off
+
 
 ## Syntax highlight
 
@@ -1895,6 +1909,22 @@ Start Vim with syntax highlight turned off
 
 You can also specify a rule that vim should turn off syntax highlight for large
 files [Stackoverflow question](https://stackoverflow.com/questions/53729940/how-do-i-start-vim-with-syntax-highlighting-off).
+
+
+### Concealing
+
+#### Markdown
+
+Use the shorthand version `:set cole=0` to turn off concealing of markdown bold
+`**` and italic `*` marks as well as the replacement of `# Title` to `§ Title`.
+More explanations in [How to prevent vim from hiding symbols in Markdown and
+JSON](https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json)
+
+    :set cole=0
+
+Or set the file type to text
+
+    :set ft=text
 
 
 ## Tests
