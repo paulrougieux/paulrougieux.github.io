@@ -476,12 +476,45 @@ doc <- read_docx() %>%
 
 ## kable to create tables
 
+A table caption
+```{r}
+knitr::kable(head(iris), caption = "An example table caption.")
+```
+Examples copie from yihui's [R markdown cookbook](https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-caption).
+
+```{r}
+d <- cbind(X1 = runif(3), 
+           X2 = 10^c(3, 5, 7), 
+           X3 = rnorm(3, 0, 1000))
+# at most 4 decimal places
+knitr::kable(d, digits = 4)
+```
+
+```{r}
+# round columns separately
+knitr::kable(d, digits = c(5, 0, 2))
+```
+
+```{r}
+# do not use the scientific notation
+knitr::kable(d, digits = 3, format.args = list(scientific = FALSE))
+```
+
+```{r}
+# add commas to big numbers
+knitr::kable(d, digits = 3, format.args = list(big.mark = ",",
+  scientific = FALSE))
+```
+
+
+The format is recognised automatically by knitr based on the nature of the
+output document.
+
 ```{r }
 cat(kable(head(iris, 1), format = "html"))
 cat(kable(head(iris, 1), format = "latex"))
 cat(kable(head(iris, 1), format = "markdown"))
 ```
-
 
 ### Booktabs
 
@@ -544,8 +577,99 @@ annoying.
 
 Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
 
+See also the reticulate package mentioned below.
+
+
+### Reticulate to call python from R
+
+Example of a python chunk followed by an R chunk calling a python method
+defined in that package.
+
+λ{python eval=FALSE}
+from biotrade.faostat import faostat
+—
+
+```{r eval=FALSE}
+soy_prod <- py$faostat$db$select(table="crop_production", product = "soy")
+```
+
+More information in the vignette:
+
+    vignette("calling_python", package="reticulate")
+
+### Using Reticulate in an R packages
+
+> "When you do this, you should use the delay_load flag to the import()
+> function, for example:"
+
+    # global reference to scipy (will be initialized in .onLoad)
+    scipy <- NULL
+
+    .onLoad <- function(libname, pkgname) {
+      # use superassignment to update global reference to scipy
+      scipy <<- reticulate::import("scipy", delay_load = TRUE)
+    }
+
+> "Using the delay_load flag has two important benefits:"
+
+> "It allows you to successfully load your package even when Python / Python
+> packages are not installed on the target system (this is particularly
+> important when testing on CRAN build machines)."
+
+> "It allows users to specify a desired location for Python before interacting
+> with your package."
+
+
+# Reproducibility and cloud computing
+
+## Cloudyr project
+
+The [cloudyr project](https://cloudyr.github.io/packages/index.html) is a
+collection of R packages to enable cloud computing. 
+
+R packages that are actively maintained can be seen on the [github project page of
+cloudyr](https://github.com/cloudyr).
+
+- For example the
+  [googleCloudVisionR](https://github.com/cloudyr/googleCloudVisionR) package
+  gets the following image annotations for a picture of golden retriever
+  puppies
+
+          description     score topicality
+                  Dog 0.9953705  0.9953705
+               Mammal 0.9890478  0.9890478
+           Vertebrate 0.9851104  0.9851104
+              Canidae 0.9813780  0.9813780
+            Dog breed 0.9683250  0.9683250
+                Puppy 0.9400384  0.9400384
+     Golden retriever 0.8966703  0.8966703
+
+
+## Rocker
+
+[rocker-org/rocker](https://github.com/rocker-org/rocker) provides a series of
+docker images for various R development purposes.
+
+Bioconductor [docker intro](https://www.bioconductor.org/help/docker/#intro)
+
+> "With Bioconductor containers, we hope to enhance Reproducibility: If you run
+> some code in a container today, you can run it again in the same container
+> (with the same tag) years later and know that nothing in the container has
+> changed. You should always take note of the tag you used if you think you
+> might want to reproduce some work later."
+
+# Rscript
+
+Capture arguments in an Rscript on windows and write them to a file
+```
+"C:\Program Files\R\R-3.5.0\bin\Rscript.exe" --verbose -e "args = commandArgs(trailingOnly=TRUE)" -e "writeLines(args,'C:\\Dev\\args.txt')" "file1.csv" "file2.csv" "file3.csv"
+```
+Arguments can be extracted one by one with args[1]
+commandArgs() returns a **character vector** containing the name of the executable and the user-supplied command line arguments.
+
 
 ## Set knitr options
+
 Those 2 commands are different.
 Sets the options for chunk, within a knitr chunk inside the .Rmd document
 
@@ -873,8 +997,7 @@ Shape files to make choropleth maps of Europe:
 
     library(RColorBrewer)
     brewer.pal(n = 8, name = "Set2") 
-    [1] "#66C2A5" "#FC8D62" "#8DA0CB" "#E78AC3"
-    "#A6D854" "#FFD92F" "#E5C494" "#B3B3B3" 
+    #[1] "#66C2A5" "#FC8D62" "#8DA0CB" "#E78AC3" "#A6D854" "#FFD92F" "#E5C494" "#B3B3B3" 
     palette(brewer.pal(n = 8, name = "Set2"))
 
 Use this palette in ggplot2
@@ -1009,54 +1132,6 @@ TODO Compare to the same code in python
 to see the difference between the above and passing by reference.
 
 
-# Reproducibility and cloud computing
-
-## Cloudyr project
-
-The [cloudyr project](https://cloudyr.github.io/packages/index.html) is a
-collection of R packages to enable cloud computing. 
-
-R packages that are actively maintained can be seen on the [github project page of
-cloudyr](https://github.com/cloudyr).
-
-- For example the
-  [googleCloudVisionR](https://github.com/cloudyr/googleCloudVisionR) package
-  gets the following image annotations for a picture of golden retriever
-  puppies
-
-          description     score topicality
-                  Dog 0.9953705  0.9953705
-               Mammal 0.9890478  0.9890478
-           Vertebrate 0.9851104  0.9851104
-              Canidae 0.9813780  0.9813780
-            Dog breed 0.9683250  0.9683250
-                Puppy 0.9400384  0.9400384
-     Golden retriever 0.8966703  0.8966703
-
-
-## Rocker
-
-[rocker-org/rocker](https://github.com/rocker-org/rocker) provides a series of
-docker images for various R development purposes.
-
-Bioconductor [docker intro](https://www.bioconductor.org/help/docker/#intro)
-
-> "With Bioconductor containers, we hope to enhance Reproducibility: If you run
-> some code in a container today, you can run it again in the same container
-> (with the same tag) years later and know that nothing in the container has
-> changed. You should always take note of the tag you used if you think you
-> might want to reproduce some work later."
-
-# Rscript
-
-Capture arguments in an Rscript on windows and write them to a file
-```
-"C:\Program Files\R\R-3.5.0\bin\Rscript.exe" --verbose -e "args = commandArgs(trailingOnly=TRUE)" -e "writeLines(args,'C:\\Dev\\args.txt')" "file1.csv" "file2.csv" "file3.csv"
-```
-Arguments can be extracted one by one with args[1]
-commandArgs() returns a **character vector** containing the name of the executable and the user-supplied command line arguments.
-
-
 # Shiny
 
 [K means example](https://shiny.rstudio.com/gallery/kmeans-example.html)
@@ -1115,8 +1190,15 @@ iris %>%
 
 # A named list of functions
 iris %>%
-    group_by(Species) %>%
+    group_by(Species) %>%              # 
     summarise(across(starts_with("Sepal"), list(mean = mean, sd = sd)))
+
+# Show all_of to select a vector of variables
+iris %>%
+    group_by(Species) %>%
+    summarise(across(all_of(c("Sepal.Length", "Petal.Width")), 
+                            ~mean(.x, na.rm = TRUE)))
+
 ```
 
 More information in the vignette
