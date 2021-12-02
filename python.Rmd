@@ -379,11 +379,16 @@ Another example with the list of the last 5 years
 
 Create a dictionary
 
-    {'x':1, 'y':2, 'z':3}
+    ceci = {'x':1, 'y':2, 'z':3}
 
 Converts 2 lists into a dictionary
 
     dict(zip(['x', 'y', 'z'], [1, 2, 3]))
+
+Loop over the key and values of a dictionary
+
+    for key, value in ceci.items():
+        print(key, "has the value", value)
 
 
 ### List
@@ -1451,6 +1456,8 @@ Then use df.to_csv to write the data frame to a csv file
 
 ## Reshaping
 
+### From wide to long
+
 [The Pandas user guide on reshaping](https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt) 
 gives several example using `melt` (easier to rename the  “variable” and “value” columns) 
 or `stack` (designed to work together with MultiIndex objects).
@@ -1485,6 +1492,36 @@ Reshape using the `wide_to_long` convenience function
     pandas.wide_to_long(dft, stubnames=["A", "B"], i="id", j="year")
 
 
+### From long to wide
+
+Pivot from long to wide format using `pivot`:
+
+    df = pandas.DataFrame({
+        "lev1": [1, 1, 1, 2, 2, 2],
+        "lev2": [1, 1, 2, 1, 1, 2],
+        "lev3": [1, 2, 1, 2, 1, 2],
+        "lev4": [1, 2, 3, 4, 5, 6],
+        "values": [0, 1, 2, 3, 4, 5]})
+    df_wide = df.pivot(index="lev1", columns=["lev2", "lev3"], values="values")
+    df_wide
+
+    # lev2    1         2
+    # lev3    1    2    1    2
+    # lev1
+    # 1     0.0  1.0  2.0  NaN
+    # 2     4.0  3.0  NaN  5.0
+
+Rename the (sometimes confusing) axis names
+
+    df_wide.rename_axis(columns=[None, None])
+
+    #         1         2
+    #         1    2    1    2
+    # lev1
+    # 1     0.0  1.0  2.0  NaN
+    # 2     4.0  3.0  NaN  5.0
+
+
 
 ## Replacement
 
@@ -1510,6 +1547,24 @@ Replace values where the condition is false see `help(df.where)`
                            'c':['m','n','o']})
     df["b"].where(df["c"].isin(["n","o"]),"no")
     df.where(df["c"].isin(["n","o"]),"no")
+
+
+### Fill Na values
+
+Replace NA values by another value
+
+    import pandas
+    import numpy as np
+    df = pandas.DataFrame([[np.nan, 2, np.nan, 0],
+                      [3, 4, np.nan, 1],
+                      [np.nan, np.nan, np.nan, 5],
+                      [np.nan, 3, np.nan, 4]],
+                     columns=list("ABCD"))
+    # Replace all NaN elements with 0s.
+    df.fillna(0)
+    # Replace by 0 and column 2 and by 1 in column B
+    df.fillna({"A":0, "B":1}, inplace=True)
+    df
 
 
 ## Selection with loc, iloc, query, isin and xs
@@ -2182,7 +2237,8 @@ R data frame to be used for examples:
 
 Pandas data frame to be used for examples:
 
-    `df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})  `
+    import pandas
+    df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})
 
 | Base R                      | pandas                        | SO questions                                       |
 | --------------------------- | ----------------------------- | -------------------------------------------------- |
@@ -2224,7 +2280,7 @@ The mapping of tidyverse to pandas is:
 | rename                    | df.rename(columns={'a':'new'})                   |                                      |
 | separate                  | df['b'], df['c'] = df['a'].str.split(',', 1).str | [pandas separate]                    |
 | summarize                 | agg                                              |                                      |
-| unite                     |                                                  |                                      |
+| unite                     | df["z"] = df.y + df.y                            | [pandas unite]                       |
 | unnest                    | [explode]                                        | [unnest in pandas][so_unnest]        |
 
 [assign]: https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html
@@ -2236,6 +2292,7 @@ The mapping of tidyverse to pandas is:
 [so_unnest]: https://stackoverflow.com/a/53218939/2641825
 [wide_to_long]: https://pandas.pydata.org/docs/reference/api/pandas.wide_to_long.html
 [pandas separate]: https://stackoverflow.com/a/57823566
+[pandas unite]: https://stackoverflow.com/questions/19377969/combine-two-columns-of-text-in-pandas-dataframe
 
 Methods to use inside the .groupby().agg() method:
 

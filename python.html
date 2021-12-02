@@ -709,9 +709,12 @@ YEARS = [str(x) for x in YEARS]
 <div id="dictionary" class="section level3">
 <h3>Dictionary</h3>
 <p>Create a dictionary</p>
-<pre><code>{&#39;x&#39;:1, &#39;y&#39;:2, &#39;z&#39;:3}</code></pre>
+<pre><code>ceci = {&#39;x&#39;:1, &#39;y&#39;:2, &#39;z&#39;:3}</code></pre>
 <p>Converts 2 lists into a dictionary</p>
 <pre><code>dict(zip([&#39;x&#39;, &#39;y&#39;, &#39;z&#39;], [1, 2, 3]))</code></pre>
+<p>Loop over the key and values of a dictionary</p>
+<pre><code>for key, value in ceci.items():
+    print(key, &quot;has the value&quot;, value)</code></pre>
 </div>
 <div id="list" class="section level3">
 <h3>List</h3>
@@ -1516,6 +1519,8 @@ df2 = pandas.read_csv(&#39;http://comtrade.un.org/api/get?max=500&amp;type=C&amp
 </div>
 <div id="reshaping" class="section level2">
 <h2>Reshaping</h2>
+<div id="from-wide-to-long" class="section level3">
+<h3>From wide to long</h3>
 <p><a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt">The Pandas user guide on reshaping</a> gives several example using <code>melt</code> (easier to rename the “variable” and “value” columns) or <code>stack</code> (designed to work together with MultiIndex objects).</p>
 <p>Reshape using <code>melt</code></p>
 <pre><code>cheese = pandas.DataFrame(
@@ -1543,6 +1548,33 @@ dft[&quot;id&quot;] = dft.index
 dft
 pandas.wide_to_long(dft, stubnames=[&quot;A&quot;, &quot;B&quot;], i=&quot;id&quot;, j=&quot;year&quot;)</code></pre>
 </div>
+<div id="from-long-to-wide" class="section level3">
+<h3>From long to wide</h3>
+<p>Pivot from long to wide format using <code>pivot</code>:</p>
+<pre><code>df = pandas.DataFrame({
+    &quot;lev1&quot;: [1, 1, 1, 2, 2, 2],
+    &quot;lev2&quot;: [1, 1, 2, 1, 1, 2],
+    &quot;lev3&quot;: [1, 2, 1, 2, 1, 2],
+    &quot;lev4&quot;: [1, 2, 3, 4, 5, 6],
+    &quot;values&quot;: [0, 1, 2, 3, 4, 5]})
+df_wide = df.pivot(index=&quot;lev1&quot;, columns=[&quot;lev2&quot;, &quot;lev3&quot;], values=&quot;values&quot;)
+df_wide
+
+# lev2    1         2
+# lev3    1    2    1    2
+# lev1
+# 1     0.0  1.0  2.0  NaN
+# 2     4.0  3.0  NaN  5.0</code></pre>
+<p>Rename the (sometimes confusing) axis names</p>
+<pre><code>df_wide.rename_axis(columns=[None, None])
+
+#         1         2
+#         1    2    1    2
+# lev1
+# 1     0.0  1.0  2.0  NaN
+# 2     4.0  3.0  NaN  5.0</code></pre>
+</div>
+</div>
 <div id="replacement" class="section level2">
 <h2>Replacement</h2>
 <p><a href="https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace">Pyton pandas equivalent for replace</a></p>
@@ -1563,6 +1595,22 @@ pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&
                        &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
 df[&quot;b&quot;].where(df[&quot;c&quot;].isin([&quot;n&quot;,&quot;o&quot;]),&quot;no&quot;)
 df.where(df[&quot;c&quot;].isin([&quot;n&quot;,&quot;o&quot;]),&quot;no&quot;)</code></pre>
+</div>
+<div id="fill-na-values" class="section level3">
+<h3>Fill Na values</h3>
+<p>Replace NA values by another value</p>
+<pre><code>import pandas
+import numpy as np
+df = pandas.DataFrame([[np.nan, 2, np.nan, 0],
+                  [3, 4, np.nan, 1],
+                  [np.nan, np.nan, np.nan, 5],
+                  [np.nan, 3, np.nan, 4]],
+                 columns=list(&quot;ABCD&quot;))
+# Replace all NaN elements with 0s.
+df.fillna(0)
+# Replace by 0 and column 2 and by 1 in column B
+df.fillna({&quot;A&quot;:0, &quot;B&quot;:1}, inplace=True)
+df</code></pre>
 </div>
 </div>
 <div id="selection-with-loc-iloc-query-isin-and-xs" class="section level2">
@@ -2044,7 +2092,8 @@ Out[3]: array([inf])</code></pre>
 <p>R data frame to be used for examples:</p>
 <pre><code>df = data.frame(x = 1:3, y = c(&#39;a&#39;,&#39;b&#39;,&#39;c&#39;), stringsAsFactors = FALSE)</code></pre>
 <p>Pandas data frame to be used for examples:</p>
-<pre><code>`df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})  `</code></pre>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})</code></pre>
 <table>
 <colgroup>
 <col width="25%" />
@@ -2194,8 +2243,8 @@ Out[3]: array([inf])</code></pre>
 </tr>
 <tr class="even">
 <td>unite</td>
-<td></td>
-<td></td>
+<td>df[“z”] = df.y + df.y</td>
+<td><a href="https://stackoverflow.com/questions/19377969/combine-two-columns-of-text-in-pandas-dataframe">pandas unite</a></td>
 </tr>
 <tr class="odd">
 <td>unnest</td>
