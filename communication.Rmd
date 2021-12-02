@@ -21,7 +21,7 @@ talk, share pictures and videos on that platform. Network effects are natural,
 I suppose. They can apply to any form of communication. 
 
 
-# Silos versus freedom
+## Silos versus freedom
 
 Through communication tools such as Skype, Whatsapp or Zoom you can only
 communicate with people registered at the same company. Incompatible tools
@@ -79,18 +79,6 @@ Why has development stopped? According to wikipedia, the original developer
 [Damien Sandras](https://en.wikipedia.org/wiki/Damien_Sandras) is now working
 for be.ip on open source voip software. 
 
-## Linphone
-
-[Linphone](https://www.linphone.org/technical-corner/linphone?qt-technical_corner=2#qt-technical_corner)
-Development and support available from Belledonne-communications, a company
-based in Bordeaux, France. 
-
-[Linphone desktop](https://gitlab.linphone.org/BC/public/linphone-desktop) is
-programmed mostly in C++ the
-[sdk](https://gitlab.linphone.org/BC/public/linphone-sdk) has some java code in
-it. 
-
-
 ## Element matrix
 
 [Element](https://element.io/get-started), previously called Riot-web is a chat
@@ -103,6 +91,57 @@ Based on the Double Ratchet Cryptographic library called
 doubleratchet](https://whispersystems.org/docs/specifications/doubleratchet/)
 which now redirects to
 [signal.org doubleratchet](https://signal.org/docs/specifications/doubleratchet/).
+
+
+## Jami
+
+https://jami.net/
+
+Wikipedia [Jami](https://en.wikipedia.org/wiki/Jami_(software))
+
+> "Jami (formerly GNU Ring, SFLphone) is a SIP-compatible distributed
+> peer-to-peer softphone and SIP-based instant messenger for Linux, Microsoft
+> Windows, OS X, iOS, and Android. Jami was developed and maintained by the
+> Canadian company Savoir-faire Linux, and with the help of a global
+> community of users and contributors, Jami positions itself as a potential
+> free Skype replacement. Jami is free and open-source software released
+> under the GNU GPL-3.0-or-later. In November 2016, it became part of the GNU
+> Project." 
+
+Jami.net [peer to peer file sharing
+support](https://jami.net/peer-to-peer-file-sharing-support-in-jami/) based on
+the [PJSIP](https://www.pjsip.org/) library. Write the following about the
+improvements they made to enable communication over UDP:
+
+> "While PJSIP is recognized as the reference for Voice over IP communication
+> applications, it is not designed to work in a distributed network. For this
+> reason, our team had to make significant contributions to the PJSIP project.
+> In order to grasp the nature of those improvements, it is necessary to
+> understand the difference between UDP and TCP. They are both data transfer
+> protocols allowing machines to communicate, but they work differently."
+> "TCP keeps track of every packet of data sent and ensures that they are
+> reliably transferred by requiring the receiver to confirm reception of every
+> single one of them and the sender to resend those that were lost. UDP on the
+> other hand, doesn’t handle packet loss. While it is less reliable, it is
+> preferable in applications such as media streaming because the data is time
+> sensitive. In those cases, a lost packet will simply cause a small video or
+> audio glitch and waiting for it to be resent would make it worse than simply
+> moving on to the following bits. In the case of data transfer however, a
+> single lost packet can corrupt a whole file and reliability is therefore more
+> important than timeliness, which is why TCP is more suited for this
+> application."
+
+
+## Linphone
+
+[Linphone](https://www.linphone.org/technical-corner/linphone?qt-technical_corner=2#qt-technical_corner)
+Development and support available from Belledonne-communications, a company
+based in Bordeaux, France. 
+
+[Linphone desktop](https://gitlab.linphone.org/BC/public/linphone-desktop) is
+programmed mostly in C++ the
+[sdk](https://gitlab.linphone.org/BC/public/linphone-sdk) has some java code in
+it. 
 
 
 ## Signal 
