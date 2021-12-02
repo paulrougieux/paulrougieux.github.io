@@ -299,11 +299,12 @@ Install editor
 ### Installing R from the CRAN mirror
 
 Install R from the CRAN repository,
-see [Cran mirror of Debian packages](https://cran.r-project.org/bin/linux/debian/#debian-stretch-stable)
+see [Cran mirror of Debian packages](https://cran.r-project.org/bin/linux/debian/)
 
 Add the following to /etc/apt/sources.list
 
     deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/
+    deb http://cloud.r-project.org/bin/linux/debian buster-cran40/
 
 In case you get an error:
 
@@ -312,6 +313,9 @@ In case you get an error:
 Add the PGP key so that this server is trusted :
 
     sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 'FCAE2A0E115C3D8A'
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 'B8F25A8A73EACF41'
+    sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key '51716619E084DAB9'
+
 
 Based on this stackoverflow answer 
 [about key server receive fail error](https://unix.stackexchange.com/a/110594/85530)

@@ -610,13 +610,16 @@ sudo apt-get -t stretch-backports install lyx</code></pre>
 <h2>R and Rstudio</h2>
 <div id="installing-r-from-the-cran-mirror" class="section level3">
 <h3>Installing R from the CRAN mirror</h3>
-<p>Install R from the CRAN repository, see <a href="https://cran.r-project.org/bin/linux/debian/#debian-stretch-stable">Cran mirror of Debian packages</a></p>
+<p>Install R from the CRAN repository, see <a href="https://cran.r-project.org/bin/linux/debian/">Cran mirror of Debian packages</a></p>
 <p>Add the following to /etc/apt/sources.list</p>
-<pre><code>deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/</code></pre>
+<pre><code>deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/
+deb http://cloud.r-project.org/bin/linux/debian buster-cran40/</code></pre>
 <p>In case you get an error:</p>
 <pre><code>The following signatures couldn&#39;t be verified because the public key is not available: NO_PUBKEY FCAE2A0E115C3D8A</code></pre>
 <p>Add the PGP key so that this server is trusted :</p>
-<pre><code>sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;FCAE2A0E115C3D8A&#39;</code></pre>
+<pre><code>sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;FCAE2A0E115C3D8A&#39;
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;B8F25A8A73EACF41&#39;
+sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;51716619E084DAB9&#39;</code></pre>
 <p>Based on this stackoverflow answer <a href="https://unix.stackexchange.com/a/110594/85530">about key server receive fail error</a> I had to use a server providing a connection on port 80 because the default port is apparently blocked by a firewall on my network.</p>
 <p>Then run the following to upgrade R to the lastest version availale on your CRAN mirror:</p>
 <pre><code>sudo apt update
