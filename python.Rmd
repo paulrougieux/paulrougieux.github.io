@@ -2301,6 +2301,7 @@ Methods to use inside the .groupby().agg() method:
 * `mean`
 * `', '.join` [to get a union of strings](https://stackoverflow.com/questions/17841149/pandas-groupby-how-to-get-a-union-of-strings)
 
+
 ### Expand grid in pandas
 
 This [SO answer](https://stackoverflow.com/a/60371544/2641825) provides an
@@ -2312,6 +2313,9 @@ implementation of expand grid using itertools:
     years = range(1990, datetime.now().year)
     expand_grid = list(itertools.product(countries, years))
     df = pandas.DataFrame(expand_grid, columns=('country', 'year'))
+
+Another [SO answer on the same topic](https://stackoverflow.com/a/64449660/2641825)
+
 
 ### Blogs and quotes on Pandas and R
 
