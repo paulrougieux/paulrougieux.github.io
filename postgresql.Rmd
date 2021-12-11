@@ -18,6 +18,14 @@ Debian wiki explains [how to install and set up
 PostgreSQL](https://wiki.debian.org/PostgreSql).
 
 
+# Start and stop the server
+
+
+    sudo service postgresql start
+    sudo service postgresql stop
+
+
+
 # Create a user and a database
 
 Add system users at the regular bash shell before you can add them in

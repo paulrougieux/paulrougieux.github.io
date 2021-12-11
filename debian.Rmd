@@ -923,6 +923,7 @@ A [list of Gimp Shortcuts](http://gimptips.com/articles/gimp-keyboard-shortcuts)
 # Upgrade Debian version
 
 ## From Jessie 8 to Stretch 9
+
 I followed the documentation on 
 [upgrades from Debian 8, Jessie](https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.html)
 
@@ -980,6 +981,31 @@ released.
 > "Debian is version 10, codenamed buster was initially released as version
 > 10 on July 6th, 2019 and its latest update, version 10.6, was released on
 > September 26th, 2020."
+
+
+## From Buster 10 to bullseye 11
+
+Following the updates at 
+https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup
+
+Added the following lines to /etc/apt/sources.list and commented all the other
+lines
+
+    deb http://deb.debian.org/debian bullseye main contrib non-free
+    deb-src http://deb.debian.org/debian bullseye main contrib non-free
+
+    # R installation
+    deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/
+
+Recorded the process with 
+
+     script -t 2>~/upgrade-bullseyestep.time -a ~/upgrade-bullseyestep.script
+
+Then ran 
+
+    sudo apt update
+    sudo apt full-upgrade
+
 
 # Blogs
 
