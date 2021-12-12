@@ -709,6 +709,32 @@ The output of git push -v shows that it is now pushing to both repositories
     updating local tracking ref 'refs/remotes/origin/master'
     Everything up-to-date
 
+
+## Pull rebase versus merge
+
+[Explanation on rebase versus
+merge](https://sdqweb.ipd.kit.edu/wiki/Git_pull_--rebase_vs._--merge)
+
+> "If you pull remote changes with the flag --rebase, then your local changes
+> are **reapplied on top** of the remote changes."
+
+    git pull --rebase
+
+> "If you pull remote changes with the flag --merge, which is also the default,
+> then your local changes are merged with the remote changes. This results in a
+> **merge commit** that points to the latest local commit and the latest remote
+> commit."
+
+    git pull --merge
+
+> "It is best practice to always rebase your local commits when you pull before
+> pushing them."
+
+This can be set as a global configuration with 
+
+    git config --global pull.rebase true
+
+
 # Rename and delete files
 
 Rename a file
