@@ -4,7 +4,6 @@ split-window -v
 split-window -v 
 neww
 neww
-cd rp/paulrougieux.github.io/
 rename-window blog
 neww
 rename-window music 
