@@ -18,12 +18,17 @@ Debian wiki explains [how to install and set up
 PostgreSQL](https://wiki.debian.org/PostgreSql).
 
 
-# Start and stop the server
+## Change the listening port
 
+In case you need to change the listening port (for example when I had to test
+postgresql on docker containers while keeping postgresql running locally)
+
+
+
+# Start and stop the server
 
     sudo service postgresql start
     sudo service postgresql stop
-
 
 
 # Create a user and a database
@@ -65,24 +70,74 @@ Note: createdb is a wrapper around the SQL command `CREATE DATABASE`.
 
 # Connect to a database
 
-## Configuration file .pgpass
+## Configuration file ~/.pgpass
 
-This is the prefered way to connect to the database for scripts. Create a
+This is the preferred way to connect to the database for scripts. Create a
 `~/.pgpass` file to store the connection details for that user:
 
-    echo 'localhost:5432:tradeflows:rdb:localhost' >> ~/.pgpass
+    echo 'localhost:*:tradeflows:rdb:localhost' >> ~/.pgpass
 
 Secure the file:
 
     chmod 600 ~/.pgpass
 
+The `~/.pgpass` file should contain lines of the following format:
+
+    hostname:port:database:username:password
+
+> "Each of the first four fields can be a literal value, or `*`, which matches
+> anything."
+
+Therefore I  use `*` for the port so that it matches any ports.
+
+
+## Service file ~/.pg_service.conf
+
+The [postgresql service
+file](https://www.postgresql.org/docs/current/libpq-pgservice.html) enables
+"connection parameters to be associated with a single service name". You can
+specify the database connection parameters in a file called `~/.pg_service.conf`
+in you home.
+
+    # Trade database
+    [biotrade]
+    host=localhost
+    port=5432
+    user=rdb
+    dbname=biotrade
+    password=localhost
+
+And you would then connect to the database with:
+
+    psql service=biotrade
+
 
 ## Connect to the database 
 
-Using the credentials stored in .pgpass
+Using the credentials stored in `~/.pgpass`
 
     psql -d tradeflows -h localhost -U rdb
-    psql -d biotrade -h localhost -U rdb
+    psql -d biotrade -h localhost -U rdb 
+
+Specifying the port (normally not necessary if it's specified in `~/.pgpass`)
+
+    psql -d biotrade -h localhost -U rdb -p 5433
+
+It's possible to specify a connection URI of the form:
+
+    psql postgresql://rdb@localhost:5432/biotrade
+    # And since I have a URL set as an environmental variable
+    psql $BIOTRADE_DATABASE_URL
+
+[Postgresql connection
+URIs](https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS)
+
+> "It is possible to specify multiple host components, each with an optional
+> port component, in a single URI. A URI of the form
+> postgresql://host1:port1,host2:port2,host3:port3/ is equivalent to a
+> connection string of the form host=host1,host2,host3 port=port1,port2,port3.
+> As further described below, each host will be tried in turn until a
+> connection is successfully established."
 
 
 ## Connect by changing the user at the system level
