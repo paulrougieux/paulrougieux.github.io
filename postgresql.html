@@ -13,6 +13,7 @@
 
 <title>PostgreSQL Commands</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -447,6 +448,15 @@ div.tocify {
 <p>Install PostgreSQL</p>
 <pre><code>sudo apt install postgresql postgresql-client</code></pre>
 <p>Debian wiki explains <a href="https://wiki.debian.org/PostgreSql">how to install and set up PostgreSQL</a>.</p>
+<div id="change-the-listening-port" class="section level2">
+<h2>Change the listening port</h2>
+<p>In case you need to change the listening port (for example when I had to test postgresql on docker containers while keeping postgresql running locally)</p>
+</div>
+</div>
+<div id="start-and-stop-the-server" class="section level1">
+<h1>Start and stop the server</h1>
+<pre><code>sudo service postgresql start
+sudo service postgresql stop</code></pre>
 </div>
 <div id="create-a-user-and-a-database" class="section level1">
 <h1>Create a user and a database</h1>
@@ -472,17 +482,46 @@ div.tocify {
 <div id="connect-to-a-database" class="section level1">
 <h1>Connect to a database</h1>
 <div id="configuration-file-.pgpass" class="section level2">
-<h2>Configuration file .pgpass</h2>
-<p>This is the prefered way to connect to the database for scripts. Create a <code>~/.pgpass</code> file to store the connection details for that user:</p>
-<pre><code>echo &#39;localhost:5432:tradeflows:rdb:localhost&#39; &gt;&gt; ~/.pgpass</code></pre>
+<h2>Configuration file ~/.pgpass</h2>
+<p>This is the preferred way to connect to the database for scripts. Create a <code>~/.pgpass</code> file to store the connection details for that user:</p>
+<pre><code>echo &#39;localhost:*:tradeflows:rdb:localhost&#39; &gt;&gt; ~/.pgpass</code></pre>
 <p>Secure the file:</p>
 <pre><code>chmod 600 ~/.pgpass</code></pre>
+<p>The <code>~/.pgpass</code> file should contain lines of the following format:</p>
+<pre><code>hostname:port:database:username:password</code></pre>
+<blockquote>
+<p>“Each of the first four fields can be a literal value, or <code>*</code>, which matches anything.”</p>
+</blockquote>
+<p>Therefore I use <code>*</code> for the port so that it matches any ports.</p>
+</div>
+<div id="service-file-.pg_service.conf" class="section level2">
+<h2>Service file ~/.pg_service.conf</h2>
+<p>The <a href="https://www.postgresql.org/docs/current/libpq-pgservice.html">postgresql service file</a> enables “connection parameters to be associated with a single service name”. You can specify the database connection parameters in a file called <code>~/.pg_service.conf</code> in you home.</p>
+<pre><code># Trade database
+[biotrade]
+host=localhost
+port=5432
+user=rdb
+dbname=biotrade
+password=localhost</code></pre>
+<p>And you would then connect to the database with:</p>
+<pre><code>psql service=biotrade</code></pre>
 </div>
 <div id="connect-to-the-database" class="section level2">
 <h2>Connect to the database</h2>
-<p>Using the credentials stored in .pgpass</p>
+<p>Using the credentials stored in <code>~/.pgpass</code></p>
 <pre><code>psql -d tradeflows -h localhost -U rdb
-psql -d biotrade -h localhost -U rdb</code></pre>
+psql -d biotrade -h localhost -U rdb </code></pre>
+<p>Specifying the port (normally not necessary if it’s specified in <code>~/.pgpass</code>)</p>
+<pre><code>psql -d biotrade -h localhost -U rdb -p 5433</code></pre>
+<p>It’s possible to specify a connection URI of the form:</p>
+<pre><code>psql postgresql://rdb@localhost:5432/biotrade
+# And since I have a URL set as an environmental variable
+psql $BIOTRADE_DATABASE_URL</code></pre>
+<p><a href="https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS">Postgresql connection URIs</a></p>
+<blockquote>
+<p>“It is possible to specify multiple host components, each with an optional port component, in a single URI. A URI of the form postgresql://host1:port1,host2:port2,host3:port3/ is equivalent to a connection string of the form host=host1,host2,host3 port=port1,port2,port3. As further described below, each host will be tried in turn until a connection is successfully established.”</p>
+</blockquote>
 </div>
 <div id="connect-by-changing-the-user-at-the-system-level" class="section level2">
 <h2>Connect by changing the user at the system level</h2>
@@ -525,7 +564,7 @@ psql -d biotrade -h localhost -U rdb</code></pre>
 </blockquote>
 <p>[SO answer]’<a href="https://stackoverflow.com/a/20334221/2641825" class="uri">https://stackoverflow.com/a/20334221/2641825</a>)</p>
 <blockquote>
-<p>“Generally, there is no downside to using text in terms of performance/memory. On the contrary: text is the optimum. Other types have more or less relevant downsides. text is literally the”preferred&quot; type among string types in the Postgres type system, which can affect function or operator type resolution.&quot;</p>
+<p>“Generally, there is no downside to using text in terms of performance/memory. On the contrary: text is the optimum. Other types have more or less relevant downsides. text is literally the”preferred" type among string types in the Postgres type system, which can affect function or operator type resolution."</p>
 </blockquote>
 <p><a href="https://stackoverflow.com/a/4849030/2641825">differences between text and varchar</a> &gt; To sum it all up: &gt;&gt; - char(n) – takes too much space when dealing with values shorter than n &gt;&gt; (pads them to n), and can lead to subtle errors because of adding &gt;&gt; trailing spaces, plus it is problematic to change the limit &gt;&gt; - varchar(n) – it’s problematic to change the limit in live environment &gt;&gt; (requires exclusive lock while altering table) &gt;&gt; - varchar – just like text &gt;&gt; - text – for me a winner – over (n) data types because it lacks their &gt;&gt; problems, and over varchar – because it has distinct name</p>
 <p>In SQLite as well, character(n) doesn’t seem to have any performance advantage.</p>
@@ -673,7 +712,7 @@ SELECT ... FROM fdt WHERE c1 IN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10)
 SELECT ... FROM fdt WHERE c1 BETWEEN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10) AND 100
 
 SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code></pre>
-<p>When using string values, single quotes are required (otherwise the <code>ERROR: column &quot;02&quot; does not exist</code> is returned)</p>
+<p>When using string values, single quotes are required (otherwise the <code>ERROR: column "02" does not exist</code> is returned)</p>
 <pre><code>select distinct(reporter) from raw_comtrade.yearly_hs2 where commodity_code = &#39;02&#39;;</code></pre>
 </div>
 </div>
@@ -724,7 +763,7 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code>
 </blockquote>
 <p><a href="https://en.wikipedia.org/wiki/SQL#Standardization_history">Wikipedia</a> paragraph on the pronunciation</p>
 <blockquote>
-<p>“The original standard declared that the official pronunciation for”SQL&quot; was an initialism: /ˌɛsˌkjuːˈɛl/ (“ess cue el”). Regardless, many English-speaking database professionals (including Donald Chamberlin himself) use the acronym-like pronunciation of /ˈsiːkwəl/ (“sequel”), mirroring the language’s prerelease development name, “SEQUEL”.&quot;</p>
+<p>“The original standard declared that the official pronunciation for”SQL" was an initialism: /ˌɛsˌkjuːˈɛl/ (“ess cue el”). Regardless, many English-speaking database professionals (including Donald Chamberlin himself) use the acronym-like pronunciation of /ˈsiːkwəl/ (“sequel”), mirroring the language’s prerelease development name, “SEQUEL”."</p>
 </blockquote>
 </div>
 

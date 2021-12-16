@@ -13,6 +13,7 @@
 
 <title>docker.knit</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -442,8 +443,27 @@ div.tocify {
 
 <div id="docker-installation" class="section level1">
 <h1>Docker Installation</h1>
-<p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://docs.docker.com/engine/installation/linux/docker-ce/debian/">Docker community edition for Debian.</a> Then run :</p>
-<pre><code>sudo apt-get install docker-ce</code></pre>
+<p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://docs.docker.com/engine/install/debian/#install-using-the-repository">Docker community edition for Debian.</a></p>
+<p>Then run :</p>
+<pre><code>sudo apt update
+sudo apt install docker-ce</code></pre>
+<p>Install <a href="https://docs.docker.com/compose/install/">docker compose</a></p>
+<pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</code></pre>
+<p>Update permission</p>
+<pre><code>sudo chmod +x /usr/local/bin/docker-compose</code></pre>
+<div id="add-your-user-to-the-docker-group" class="section level2">
+<h2>Add your user to the docker group</h2>
+<p>To prevent docker from requesting permission each time you use it. Add your user to the docker group. As explained <a href="https://stackoverflow.com/a/48957722/2641825">here</a></p>
+<pre><code>sudo usermod -aG docker $USER</code></pre>
+<p>Login to the new group (so that you don’t need to restart the shell)</p>
+<pre><code>newgrp docker</code></pre>
+</div>
+<div id="login" class="section level2">
+<h2>Login</h2>
+<p>Login to docker</p>
+<pre><code>docker login</code></pre>
+<p>My repository <a href="https://hub.docker.com/u/paulrougieux" class="uri">https://hub.docker.com/u/paulrougieux</a></p>
+</div>
 </div>
 <div id="build" class="section level1">
 <h1>Build</h1>
@@ -518,6 +538,8 @@ docker volume rm $(docker volume ls -q) # all volumes</code></pre>
 </div>
 <div id="start-services" class="section level2">
 <h2>Start services</h2>
+<p>You can start the service with:</p>
+<pre><code>sudo docker-compose up -d</code></pre>
 <p>Create a compose file then start the service with:</p>
 <pre><code>docker stack deploy -c docker-compose.yml servicename </code></pre>
 <p>Stop the service with:</p>
@@ -528,20 +550,23 @@ docker volume rm $(docker volume ls -q) # all volumes</code></pre>
 </div>
 <div id="monitor" class="section level1">
 <h1>Monitor</h1>
-<div id="monitor-running-containers" class="section level2">
-<h2>Monitor running containers</h2>
-<p><a href="https://docs.docker.com/engine/admin/runmetrics/">run metrics</a></p>
-<pre><code>docker stats &lt;container-id&gt;</code></pre>
+<div id="start-a-bash-shell" class="section level2">
+<h2>Start a bash shell</h2>
 <p>Start a bash shell inside a container, -it stands for interactive</p>
 <pre><code>docker ps # find the ID of the running container
 docker exec -it &lt;container-id&gt; bash </code></pre>
 <p>Start a script within a container, non interactively</p>
 <pre><code>docker exec &lt;container-id&gt; /path/to/test.sh</code></pre>
+</div>
+<div id="stats-and-inspect-running-containers" class="section level2">
+<h2>Stats and inspect running containers</h2>
+<p><a href="https://docs.docker.com/engine/admin/runmetrics/">run metrics</a></p>
+<pre><code>docker stats &lt;container-id&gt;</code></pre>
 <p><a href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find the IP of a container</a>:</p>
-<pre><code>sudo docker ps # look for the process id
-sudo docker inspect &lt;container id&gt;</code></pre>
+<pre><code>docker ps # look for the process id
+docker inspect &lt;container id&gt;</code></pre>
 <p>The IP is at the end. it can also be <a href="https://stackoverflow.com/a/20686101/2641825">extracted with a template</a>:</p>
-<pre><code> sudo docker inspect -f &#39;{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}&#39; &lt;container id&gt; </code></pre>
+<pre><code> docker inspect -f &#39;{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}&#39; &lt;container id&gt; </code></pre>
 <div id="inspect-options" class="section level3">
 <h3>Inspect options</h3>
 <p>Inspect the <a href="https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart">run restart policies</a> Get the number of times a container was restarted:</p>
@@ -610,6 +635,10 @@ docker image rm  &lt;image-id&gt;</code></pre>
 <h2>Docker for R</h2>
 <p>Docker hub <a href="https://hub.docker.com/_/r-base">R-base</a></p>
 </div>
+<div id="docker-within-docker" class="section level2">
+<h2>Docker within docker</h2>
+<p>Docker blog <a href="https://www.docker.com/blog/docker-can-now-run-within-docker/">Docker can now run within Docker</a>.</p>
+</div>
 </div>
 <div id="related-services" class="section level1">
 <h1>Related services</h1>
@@ -663,7 +692,7 @@ connect:
 </div>
 <div id="rocker-containers" class="section level3">
 <h3>Rocker containers</h3>
-<p>The Rocker container is made for the R statistical programming language. I use the rocker container to generate this site on gitlab-ci, see the configuration file at <a href=".gitlab-ci.yml" class="uri">.gitlab-ci.yml</a>.</p>
+<p>The Rocker container is made for the R statistical programming language. I use the rocker container to generate this site on gitlab-ci, see the configuration file at <a href=".gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
 </div>
 </div>
 </div>

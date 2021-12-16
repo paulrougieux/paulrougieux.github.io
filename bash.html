@@ -13,6 +13,7 @@
 
 <title>Bash Commands</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -690,14 +691,14 @@ java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
 -z, --compress compress file data during the transfer</code></pre>
 <p>To sync <a href="https://stackoverflow.com/a/11111793/2641825">only some file extensions</a></p>
 <blockquote>
-<p>“So if we only want <code>*.sh</code> files we have to exclude all files <code>--exclude=&quot;*&quot;</code>, include all directories <code>--include=&quot;*/&quot;</code> and include all <code>*.sh</code> files <code>--include=&quot;*.sh&quot;</code>.”</p>
+<p>“So if we only want <code>*.sh</code> files we have to exclude all files <code>--exclude="*"</code>, include all directories <code>--include="*/"</code> and include all <code>*.sh</code> files <code>--include="*.sh"</code>.”</p>
 </blockquote>
 <p>Sync only <code>.mdb</code> files that are the output of a model</p>
 <pre><code>rsync -zav --include=&quot;*/&quot; --include=&quot;*.mdb&quot; --exclude=&quot;*&quot;  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/</code></pre>
 <div id="slash-or-no-slash" class="section level3">
 <h3>Slash or no slash</h3>
 <blockquote>
-<p>“A trailing slash on the source changes this behavior to avoid creating an additional directory level at the destination. You can think of a trailing / on a source as meaning”copy the contents of this directory&quot; as opposed to “copy the directory by name”, but in both cases the attributes of the containing directory are transferred to the containing directory on the destination. In other words, each of the follow‐ ing commands copies the files in the same way, including their setting of the attributes of /dest/foo: &quot;</p>
+<p>“A trailing slash on the source changes this behavior to avoid creating an additional directory level at the destination. You can think of a trailing / on a source as meaning”copy the contents of this directory" as opposed to “copy the directory by name”, but in both cases the attributes of the containing directory are transferred to the containing directory on the destination. In other words, each of the follow‐ ing commands copies the files in the same way, including their setting of the attributes of /dest/foo: "</p>
 </blockquote>
 <pre><code>rsync -av /src/foo /dest
 rsync -av /src/foo/ /dest/foo</code></pre>
@@ -781,7 +782,7 @@ find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </blockquote>
 <p>The “remote-name” argument or capital “-O” loads a file from a URL, using the file name from the URL as explained in the curl man page.</p>
 <blockquote>
-<p>&quot; -O, –remote-name Write output to a local file named like the remote file we get. (Only the file part of the remote file is used, the path is cut off.)&quot;</p>
+<p>" -O, –remote-name Write output to a local file named like the remote file we get. (Only the file part of the remote file is used, the path is cut off.)"</p>
 </blockquote>
 <pre><code>curl -O &lt;url_including_a_file_name&gt;</code></pre>
 </div>
@@ -1050,7 +1051,7 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 tree -d # List directories only, no files</code></pre>
 <p>Ignore files that contain compiled python bytecode with the <code>-I</code> option</p>
 <pre><code>tree -I &quot;*.pyc&quot;</code></pre>
-<p>Show only python file matching the <code>&quot;*.py&quot;</code> pattern with the <code>-P</code> option</p>
+<p>Show only python file matching the <code>"*.py"</code> pattern with the <code>-P</code> option</p>
 <pre><code>tree -P &quot;*.py&quot;</code></pre>
 </div>
 </div>
@@ -1062,6 +1063,9 @@ tree -d # List directories only, no files</code></pre>
 <pre><code>ip addr show</code></pre>
 <p>Show the state of network interfaces</p>
 <pre><code>ip link</code></pre>
+</div>
+<div id="check-ports" class="section level2">
+<h2>Check ports</h2>
 <p>Check open ports on a system</p>
 <pre><code>nmap -Pn &lt;hostname or IP address&gt;</code></pre>
 </div>
@@ -1558,10 +1562,10 @@ gpg --list-secret-keys</code></pre>
 <h3>SKS pool</h3>
 <p>keys.openpgp.org <a href="https://keys.openpgp.org/about/faq">FAQ</a></p>
 <blockquote>
-<p>“Is this server part of the”SKS&quot; pool? &quot;</p>
+<p>“Is this server part of the”SKS" pool? "</p>
 </blockquote>
 <blockquote>
-<p>No. The federation model of the SKS pool has various problems in terms of reliability, abuse-resistance, privacy, and usability. We might do something similar to it, but keys.openpgp.org will never be part of the SKS pool ITSELF. &quot;</p>
+<p>No. The federation model of the SKS pool has various problems in terms of reliability, abuse-resistance, privacy, and usability. We might do something similar to it, but keys.openpgp.org will never be part of the SKS pool ITSELF. "</p>
 </blockquote>
 </div>
 </div>
@@ -1922,7 +1926,7 @@ Warning: Permanently added &#39;[......eu-west-1.compute.amazonaws.com],[....]&#
 <p>Now the connection works.</p>
 <p>Some VPN access points caused issues when connecting to the corporate email server and intranet. The connection was blocked for the access point in Milan, Italy. It did work when using the access point in Strasbourg, France.</p>
 <p>The access point from Strasbourg prevented access to Elsevier publications. With the message: &gt; “There was a problem providing the content you requested”</p>
-<p>I complained to <a href="mailto:nlinfo@elsevier.com">nlinfo@elsevier.com</a> and received the following message::</p>
+<p>I complained to <a href="mailto:nlinfo@elsevier.com" class="email">nlinfo@elsevier.com</a> and received the following message::</p>
 <blockquote>
 <p>Dear Paul Thank you for your patience. My colleagues have informed me that the IP 92.118.13.115 where you are accessing from has been tagged with high amount of retrieving content from ScienceDirect.</p>
 </blockquote>

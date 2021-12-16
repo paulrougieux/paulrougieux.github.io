@@ -15,6 +15,7 @@
 
 <title>Python Commands</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -643,7 +644,7 @@ e = create_engine(&#39;sqlite:////path/to/database.db&#39;)</code></pre>
 </div>
 <div id="vim" class="section level2">
 <h2>Vim</h2>
-<p>See my page on <a href="vim.html" class="uri">vim.html</a>.</p>
+<p>See my page on <a href="vim.html">vim.html</a>.</p>
 </div>
 </div>
 <div id="neural-networks" class="section level1">
@@ -1014,14 +1015,14 @@ some pandas stuff</code></pre>
 <h2>Security and authentication on a public server</h2>
 <p><a href="https://stackoverflow.com/questions/37808410/ipython-jupyter-notebook-with-authentication">Jupyter notebook with authentication</a></p>
 </div>
-<div id="table-of-content-in-your-notebooks" class="section level2">
-<h2>Table of content in your notebooks</h2>
+<div id="toc-table-of-content-in-your-notebooks" class="section level2">
+<h2>TOC Table of content in your notebooks</h2>
 <p>Install <a href="https://github.com/ipython-contrib/jupyter_contrib_nbextensions">jupyter_contrib_nbextensions</a></p>
 <pre><code>python3 -m pip install --user jupyter_contrib_nbextensions
 python3 -m jupyter contrib nbextension install --user</code></pre>
 <p>Activate the table of content extension:</p>
 <pre><code>python3 -m jupyter nbextension enable toc2/main</code></pre>
-<p>There are many other extensions available in this package. Optionally you can install the jupyter notebook extension configurator (not needed)</p>
+<p>There are many other extensions available in this package. <strong>Optionally</strong> you can install the jupyter notebook extension configurator (not needed)</p>
 <pre><code>python3 -m pip install --user jupyter_nbextensions_configurator
 jupyter nbextensions_configurator enable --user</code></pre>
 <p>This will make a configuration interface available at:</p>
@@ -1035,8 +1036,8 @@ jupyter nbconvert --to html mynotebook.ipynb</code></pre>
 </blockquote>
 <pre><code>conda install -c conda-forge jupyter_contrib_nbextensions</code></pre>
 </div>
-<div id="version-control-the-markdown-version-with-git" class="section level2">
-<h2>Version control the markdown version with git</h2>
+<div id="jupytext-version-control-with-markdown-and-git" class="section level2">
+<h2>Jupytext version control with markdown and git</h2>
 <p>Convert notebooks to markdown so they are easier to track in git.</p>
 <p>Install <a href="https://github.com/mwouts/jupytext" class="uri">https://github.com/mwouts/jupytext</a></p>
 <pre><code>python3 -m pip install --user jupytext</code></pre>
@@ -1166,7 +1167,7 @@ a
 <h2>Indexing Multi-dimensional arrays and masks</h2>
 <p>Numpy <a href="https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html">array indexing</a></p>
 <blockquote>
-<p>“Basic slicing extends Python’s basic concept of slicing to N dimensions. Basic slicing occurs when obj is a slice object (constructed by start:stop:step notation inside of brackets), an integer, or a tuple of slice objects and integers.” […] The basic slice syntax is i:j:k where i is the starting index, j is the stopping index, and k is the step (<span class="math inline">\(k\neq0\)</span>). “[…]”Advanced indexing always returns a copy of the data (contrast with basic slicing that returns a view).&quot; “Integer array indexing allows selection of arbitrary items in the array based on their N-dimensional index. Each integer array represents a number of indexes into that dimension.”</p>
+<p>“Basic slicing extends Python’s basic concept of slicing to N dimensions. Basic slicing occurs when obj is a slice object (constructed by start:stop:step notation inside of brackets), an integer, or a tuple of slice objects and integers.” […] The basic slice syntax is i:j:k where i is the starting index, j is the stopping index, and k is the step (<span class="math inline">\(k\neq0\)</span>). “[…]”Advanced indexing always returns a copy of the data (contrast with basic slicing that returns a view)." “Integer array indexing allows selection of arbitrary items in the array based on their N-dimensional index. Each integer array represents a number of indexes into that dimension.”</p>
 </blockquote>
 <pre><code>x[0:3,0:2]
 # array([[0.64174957, 0.18540429],
@@ -1431,7 +1432,7 @@ df3[&quot;cumsum_cumprod_a_b&quot;] = df3.cumprod_a.cumsum().shift(1).fillna(0) 
 df3[&quot;x2&quot;] = df3.cumprod_a * initial_value + df3.cumsum_cumprod_a_b
 print(df3)</code></pre>
 <ul>
-<li><p><code>type(df1.loc[df1.year==t-1,&quot;x&quot;] + df1.loc[df1.year==t-1,&quot;a&quot;])</code> is a pandas series while <code>type(df2.loc[t-1, &quot;x&quot;] + df2.loc[t-1,&quot;a&quot;])</code> is a numpy float. Why are types different?</p></li>
+<li><p><code>type(df1.loc[df1.year==t-1,"x"] + df1.loc[df1.year==t-1,"a"])</code> is a pandas series while <code>type(df2.loc[t-1, "x"] + df2.loc[t-1,"a"])</code> is a numpy float. Why are types different?</p></li>
 <li><p>Is there a better way to write a recursive <code>.loc()</code> assignment than to use <code>.unique()</code>?</p></li>
 </ul>
 <p>See also:</p>
@@ -2020,7 +2021,7 @@ plt.show()</code></pre>
 </ul>
 <p>Vega Lite</p>
 <ul>
-<li>Vega lite gallery <a href="https://vega.github.io/vega-lite-v1/examples/" class="uri">https://vega.github.io/vega-lite-v1/examples/</a></li>
+<li><p>Vega lite gallery <a href="https://vega.github.io/vega-lite-v1/examples/" class="uri">https://vega.github.io/vega-lite-v1/examples/</a></p></li>
 <li><p>Vega lite documentation on <a href="https://vega.github.io/vega-lite/docs/tooltip.html">tooltips</a></p>
 <p>from vega import VegaLite import pandas df = pandas.read_json(‘cars.json’) VegaLite({ “data”: {“url”: “data/cars.json”}, “mark”: {“type”: “point”, “tooltip”: true}, “encoding”: { “x”: {“field”: “Horsepower”,“type”: “quantitative”}, “y”: {“field”: “Miles_per_Gallon”,“type”: “quantitative”} } }, df)</p></li>
 </ul>
@@ -2269,6 +2270,7 @@ countries = self.by_country_year[&#39;country&#39;].drop_duplicates()
 years = range(1990, datetime.now().year)
 expand_grid = list(itertools.product(countries, years))
 df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))</code></pre>
+<p>Another <a href="https://stackoverflow.com/a/64449660/2641825">SO answer on the same topic</a></p>
 </div>
 <div id="blogs-and-quotes-on-pandas-and-r" class="section level3">
 <h3>Blogs and quotes on Pandas and R</h3>
@@ -2553,7 +2555,7 @@ assert_series_equal # tricky to use</code></pre>
 <li><p>Dotan Nahum <a href="https://jondot.medium.com/functional-programming-with-python-for-people-without-time-1eebdbd9526c">Functional Programming with Python for People Without Time</a></p></li>
 </ul>
 <blockquote>
-<p>“Cracks in the Ice - We ended the previous part with stating that with a good measure of abstraction, functional programming doesn’t offer a considerable advantage over the “traditional” way of design, object oriented. It’s a lie. […] In our pipeline example above with our Executors — how do you feed in the output of one executor as the input for the next one? well, you have to build that infrastructure. With functional programming, those abstractions are not abstractions that you have to custom build. They’re part of the language, mindset, and ecosystem. Generically speaking — it’s all about impedence mismatch and leaky abstractions and when it comes to data and functions; there’s no mismatch because it’s built up from the core. The thesis is — that to build a functional programming approach over an object-oriented playground — is going to crash and burn at one point or another: be it bad modeling of abstractions, performance problems, bad developer ergonomics, and the worst — wrong mindset. Being able to model problems and solutions in a functional way, transcends above traditional abstraction; the object-oriented approach, in comparison, is crude, inefficient and prone to maintenance problems.&quot;</p>
+<p>“Cracks in the Ice - We ended the previous part with stating that with a good measure of abstraction, functional programming doesn’t offer a considerable advantage over the “traditional” way of design, object oriented. It’s a lie. […] In our pipeline example above with our Executors — how do you feed in the output of one executor as the input for the next one? well, you have to build that infrastructure. With functional programming, those abstractions are not abstractions that you have to custom build. They’re part of the language, mindset, and ecosystem. Generically speaking — it’s all about impedence mismatch and leaky abstractions and when it comes to data and functions; there’s no mismatch because it’s built up from the core. The thesis is — that to build a functional programming approach over an object-oriented playground — is going to crash and burn at one point or another: be it bad modeling of abstractions, performance problems, bad developer ergonomics, and the worst — wrong mindset. Being able to model problems and solutions in a functional way, transcends above traditional abstraction; the object-oriented approach, in comparison, is crude, inefficient and prone to maintenance problems."</p>
 </blockquote>
 </div>
 </div>

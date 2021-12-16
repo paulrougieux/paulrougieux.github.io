@@ -13,6 +13,7 @@
 
 <title>Git Commands</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -458,7 +459,7 @@ div.tocify {
 <pre><code>git add --all</code></pre>
 <p>Note: you might use a graphical git client with check boxes to add the files to be committed. Commit and describe changes</p>
 <pre><code>git commit -m &quot;describe changes made to those files&quot;</code></pre>
-<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m &quot;describe changes&quot;</code> each time your reach a consistant change status. Before you leave your computer, push the content to the remote repository with:</p>
+<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m "describe changes"</code> each time your reach a consistant change status. Before you leave your computer, push the content to the remote repository with:</p>
 <pre><code>git push</code></pre>
 <p>In case you work with other people on this remote repository, Before you push, you might want to integrate work done by others in your repository. If any new work has been added by others on the remote repository, git will ask you to first do:</p>
 <pre><code>git pull </code></pre>
@@ -485,7 +486,7 @@ git checkout develop</code></pre>
 git add --all</code></pre>
 <p>Commit and describe changes</p>
 <pre><code>git commit -m &quot;describe changes made to those files&quot;</code></pre>
-<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m &quot;describe changes&quot;</code> each time your reach a consistant change status.</p>
+<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m "describe changes"</code> each time your reach a consistant change status.</p>
 <p>At some point you will be ready to upload your content to a remote archive. Merge to the master branch</p>
 <pre><code>git checkout master
 git merge develop</code></pre>
@@ -849,6 +850,23 @@ To github.com:paulrougieux/paulrougieux.github.io.git
 updating local tracking ref &#39;refs/remotes/origin/master&#39;
 Everything up-to-date</code></pre>
 </div>
+<div id="pull-rebase-versus-merge" class="section level2">
+<h2>Pull rebase versus merge</h2>
+<p><a href="https://sdqweb.ipd.kit.edu/wiki/Git_pull_--rebase_vs._--merge">Explanation on rebase versus merge</a></p>
+<blockquote>
+<p>“If you pull remote changes with the flag –rebase, then your local changes are <strong>reapplied on top</strong> of the remote changes.”</p>
+</blockquote>
+<pre><code>git pull --rebase</code></pre>
+<blockquote>
+<p>“If you pull remote changes with the flag –merge, which is also the default, then your local changes are merged with the remote changes. This results in a <strong>merge commit</strong> that points to the latest local commit and the latest remote commit.”</p>
+</blockquote>
+<pre><code>git pull --merge</code></pre>
+<blockquote>
+<p>“It is best practice to always rebase your local commits when you pull before pushing them.”</p>
+</blockquote>
+<p>This can be set as a global configuration with</p>
+<pre><code>git config --global pull.rebase true</code></pre>
+</div>
 </div>
 <div id="rename-and-delete-files" class="section level1">
 <h1>Rename and delete files</h1>
@@ -902,7 +920,7 @@ git clone --depth 1 &quot;$1&quot; temp-linecount-repo &amp;&amp;
   cloc temp-linecount-repo &amp;&amp;
   rm -rf temp-linecount-repo</code></pre>
 <blockquote>
-<p>“This script requires CLOC (“Count Lines of Code”) to be installed. cloc can probably be installed with your package manager&quot;</p>
+<p>“This script requires CLOC (“Count Lines of Code”) to be installed. cloc can probably be installed with your package manager"</p>
 </blockquote>
 <pre><code>sudo apt install cloc</code></pre>
 <blockquote>

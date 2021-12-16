@@ -13,6 +13,7 @@
 
 <title>Debian GNU/Linux Operation System</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -749,13 +750,16 @@ make install</code></pre>
 <pre><code>cd ~/downloads
 curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb
 curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb.asc
+curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.14.0.4-1_amd64.deb.asc
+
 cat expressvpn_*_amd64.deb.asc</code></pre>
 <p><a href="https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/">Check the signature</a></p>
 <pre><code>gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 0xAFF2A1415F6A3A38
 gpg --fingerprint release@expressvpn.com
-gpg --verify expressvpn_3.13.0.8-1_amd64.deb.asc</code></pre>
+gpg --verify expressvpn_3.13.0.8-1_amd64.deb.asc
+gpg --verify expressvpn_3.14.0.4-1_amd64.deb.asc</code></pre>
 <p>Install</p>
-<pre><code>sudo apt install ./expressvpn_3.13.0.8-1_amd64.deb</code></pre>
+<pre><code>sudo apt install ./expressvpn_3.14.0.4-1_amd64.deb</code></pre>
 </div>
 </div>
 <div id="wajig" class="section level2">
@@ -804,7 +808,7 @@ set-default-source logitechheadset</code></pre>
 </div>
 <div id="audio-issues" class="section level2">
 <h2>Audio Issues</h2>
-<p>“dummy output” issue. Seen on a <a href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian Forum</a> one of the answer to Pulse Audio shows “dummy output” linked to that KDE PulseAudio page: <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE PulseAudio Integration</a> “One thing that can happen is that some other process”hogs&quot; the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a “Dummy Output”. As the name suggests, anything that is “Played” via this device is inaudible). This “Dummy Output” should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere).&quot;</p>
+<p>“dummy output” issue. Seen on a <a href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian Forum</a> one of the answer to Pulse Audio shows “dummy output” linked to that KDE PulseAudio page: <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE PulseAudio Integration</a> “One thing that can happen is that some other process”hogs" the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a “Dummy Output”. As the name suggests, anything that is “Played” via this device is inaudible). This “Dummy Output” should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere)."</p>
 <p>Debian wiki <a href="https://wiki.debian.org/PulseAudio#Missing_playback_devices_or_audio_capture">Missing playback devices or audio capture</a> deleting the configuration files and restarting pulseaudio. The following commands restored audio:</p>
 <pre><code>$ rm -r ~/.config/pulse /tmp/pulse-*
 $ pulseaudio --kill
@@ -843,7 +847,7 @@ sudo apt install fonts-deva-extra</code></pre>
 <pre><code>sudo service network-manager restart</code></pre>
 <p>Or</p>
 <pre><code>sudo systemctl restart NetworkManager</code></pre>
-<p><a href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences between systemctl and service commands</a>. <a href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What is the difference between service and systemctl</a> &gt; “[…], service is designed as a high-level wrapper to”abstract&quot; out various service managers like init.d, initctl, and (of course) systemctl.&quot;</p>
+<p><a href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences between systemctl and service commands</a>. <a href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What is the difference between service and systemctl</a> &gt; “[…], service is designed as a high-level wrapper to”abstract" out various service managers like init.d, initctl, and (of course) systemctl."</p>
 </div>
 <div id="nginx" class="section level1">
 <h1>NGINX</h1>
@@ -938,7 +942,7 @@ server {
 <h2>Wayland</h2>
 <div id="make-another-screen-resolution-available" class="section level3">
 <h3>Make another screen resolution available</h3>
-<p>Ask Ubuntu <a href="https://askubuntu.com/a/973582">Adding a custom resolution with Wayland</a> I tried <a href="https://askubuntu.com/a/1210275/315347">this answer</a> and added this to the kernel boot parameter. Note from ubuntu wiki <a href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">kernel boot parameter</a> “Be sure to add a SPACE after”splash&quot; before adding your new parameter.) Click the Save button, then close the editor window. &quot;</p>
+<p>Ask Ubuntu <a href="https://askubuntu.com/a/973582">Adding a custom resolution with Wayland</a> I tried <a href="https://askubuntu.com/a/1210275/315347">this answer</a> and added this to the kernel boot parameter. Note from ubuntu wiki <a href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">kernel boot parameter</a> “Be sure to add a SPACE after”splash" before adding your new parameter.) Click the Save button, then close the editor window. "</p>
 <pre><code>sudo vim /etc/default/grub</code></pre>
 <p>Then edit this line</p>
 <pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet video=DP-2:1920x1200@60&quot;</code></pre>
@@ -1027,7 +1031,7 @@ R&gt; pkgissues &lt;- unlist(lapply(blil, &quot;[[&quot;, 1))</code></pre>
 <div id="from-stretch-9-to-buster-10" class="section level2">
 <h2>From stretch 9 to buster 10</h2>
 <ul>
-<li>debian.org <a href="https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading">buster upgrading</a></li>
+<li><p>debian.org <a href="https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading">buster upgrading</a></p></li>
 <li><p>tecadmin.net <a href="https://tecadmin.net/upgrade-debian-9-to-debian-10-buster/">upgrade debian 9 to debian 10 buster</a></p>
 <p>sudo apt update sudo apt upgrade</p></li>
 </ul>
@@ -1041,6 +1045,22 @@ sudo apt upgrade
 sudo apt dist-upgrade</code></pre>
 <p>The update steps mentioned above worked well in October 2019, but one year later, in October 2020 I tried to update another laptop from Debian 9 to 10 and many Debian packages were kept back. The GNOME desktop became unstable and I couldn’t log in any longer. I could still log into the command line to make a proper backup of all the data to a USB drive. I ended up reinstalling a fresh version of Debian buster 10 to that laptop. The lesson I learned from this, is that it’s better to update to a new stable release pretty soon after it’s released.</p>
 <p><a href="https://www.debian.org/releases/">Debian releases</a>: &gt; “Debian is version 10, codenamed buster was initially released as version &gt; 10 on July 6th, 2019 and its latest update, version 10.6, was released on &gt; September 26th, 2020.”</p>
+</div>
+<div id="from-buster-10-to-bullseye-11" class="section level2">
+<h2>From Buster 10 to bullseye 11</h2>
+<p>Following the updates at <a href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup" class="uri">https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup</a></p>
+<p>Added the following lines to /etc/apt/sources.list and commented all the other lines</p>
+<pre><code>deb http://deb.debian.org/debian bullseye main contrib non-free
+deb-src http://deb.debian.org/debian bullseye main contrib non-free
+
+# R installation
+deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/</code></pre>
+<p>Recorded the process with</p>
+<pre><code> script -t 2&gt;~/upgrade-bullseyestep.time -a ~/upgrade-bullseyestep.script</code></pre>
+<p>That file ended up having 24000 lines at the end of the update.</p>
+<p>Then ran</p>
+<pre><code>sudo apt update
+sudo apt full-upgrade</code></pre>
 </div>
 </div>
 <div id="blogs" class="section level1">

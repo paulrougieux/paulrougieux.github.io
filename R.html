@@ -15,6 +15,7 @@
 
 <title>R Commands</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -682,7 +683,7 @@ gsub(&quot;[^[:alnum:]]&quot;,&quot;_&quot;,tolower(column_names))</code></pre>
 </div>
 <div id="installing-r-and-packages" class="section level1">
 <h1>Installing R and packages</h1>
-<p>To install R and Rstudio on Debian, see the <a href="debian.html#r_and_rstudio" class="uri">debian.html#r_and_rstudio</a> page on this site.</p>
+<p>To install R and Rstudio on Debian, see the <a href="debian.html#r_and_rstudio">debian.html#r_and_rstudio</a> page on this site.</p>
 <p>To install packages simply enter the following at an R command prompt:</p>
 <pre><code>install.packages(&quot;package_name&quot;)</code></pre>
 <p>Some packages have dependencies that need to be installed at the OS level. Error messages:</p>
@@ -742,7 +743,7 @@ installed.packages()</code></pre>
 <pre><code>rmd_files: [&quot;index.Rmd&quot;, &quot;chapters/chapt1.RMD&quot;, &quot;chapters/chapt2.RMD&quot;]</code></pre>
 <p>Attention this will only work in the Merge and Knit strategy, as explained in the <a href="https://bookdown.org/yihui/bookdown/new-session.html">book chapter on two rendering approaches</a></p>
 <blockquote>
-<p>“We call these two approaches “Merge and Knit” (M-K) and “Knit and Merge” (K-M), respectively.&quot; “K-M does not allow Rmd files to be in subdirectories, but M-K does.”</p>
+<p>“We call these two approaches “Merge and Knit” (M-K) and “Knit and Merge” (K-M), respectively." “K-M does not allow Rmd files to be in subdirectories, but M-K does.”</p>
 </blockquote>
 </div>
 </div>
@@ -757,7 +758,7 @@ installed.packages()</code></pre>
 </ul>
 <pre class="r"><code>iris %&gt;% head() %&gt;% flextable()</code></pre>
 <p>This is a reference to flextable @ref(tab:irishead). The chunk name should not contain an underscore, otherwise the cross reference will not work. See <a href="https://github.com/rstudio/bookdown/issues/941">bookdown issue 941</a>.</p>
-<p>See more flextable caption examples in <code>system.file(package = &quot;flextable&quot;, &quot;examples&quot;, &quot;rmd&quot;, &quot;captions&quot;)</code></p>
+<p>See more flextable caption examples in <code>system.file(package = "flextable", "examples", "rmd", "captions")</code></p>
 </div>
 <div id="flextable-and-officer-package" class="section level2">
 <h2>Flextable and officer package</h2>
@@ -863,19 +864,19 @@ knitr::kable(d, digits = 4)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.0456</td>
+<td align="right">0.9895</td>
 <td align="right">1e+03</td>
-<td align="right">-1742.2949</td>
+<td align="right">67.8654</td>
 </tr>
 <tr class="even">
-<td align="right">0.2375</td>
+<td align="right">0.1680</td>
 <td align="right">1e+05</td>
-<td align="right">253.2506</td>
+<td align="right">-666.1155</td>
 </tr>
 <tr class="odd">
-<td align="right">0.3691</td>
+<td align="right">0.8081</td>
 <td align="right">1e+07</td>
-<td align="right">41.7024</td>
+<td align="right">-62.9536</td>
 </tr>
 </tbody>
 </table>
@@ -891,19 +892,19 @@ knitr::kable(d, digits = c(5, 0, 2))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.04557</td>
+<td align="right">0.98947</td>
 <td align="right">1e+03</td>
-<td align="right">-1742.29</td>
+<td align="right">67.87</td>
 </tr>
 <tr class="even">
-<td align="right">0.23747</td>
+<td align="right">0.16805</td>
 <td align="right">1e+05</td>
-<td align="right">253.25</td>
+<td align="right">-666.12</td>
 </tr>
 <tr class="odd">
-<td align="right">0.36913</td>
+<td align="right">0.80809</td>
 <td align="right">1e+07</td>
-<td align="right">41.70</td>
+<td align="right">-62.95</td>
 </tr>
 </tbody>
 </table>
@@ -919,19 +920,19 @@ knitr::kable(d, digits = 3, format.args = list(scientific = FALSE))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.046</td>
+<td align="right">0.989</td>
 <td align="right">1000</td>
-<td align="right">-1742.295</td>
+<td align="right">67.865</td>
 </tr>
 <tr class="even">
-<td align="right">0.237</td>
+<td align="right">0.168</td>
 <td align="right">100000</td>
-<td align="right">253.251</td>
+<td align="right">-666.115</td>
 </tr>
 <tr class="odd">
-<td align="right">0.369</td>
+<td align="right">0.808</td>
 <td align="right">10000000</td>
-<td align="right">41.702</td>
+<td align="right">-62.954</td>
 </tr>
 </tbody>
 </table>
@@ -948,19 +949,19 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.046</td>
+<td align="right">0.989</td>
 <td align="right">1,000</td>
-<td align="right">-1,742.295</td>
+<td align="right">67.865</td>
 </tr>
 <tr class="even">
-<td align="right">0.237</td>
+<td align="right">0.168</td>
 <td align="right">100,000</td>
-<td align="right">253.251</td>
+<td align="right">-666.115</td>
 </tr>
 <tr class="odd">
-<td align="right">0.369</td>
+<td align="right">0.808</td>
 <td align="right">10,000,000</td>
-<td align="right">41.702</td>
+<td align="right">-62.954</td>
 </tr>
 </tbody>
 </table>
@@ -1000,7 +1001,7 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 <div id="booktabs" class="section level3">
 <h3>Booktabs</h3>
 <p>Booktabs tables look nicer in latex document, they can be created by specifying the argument <code>booktabs = TRUE</code> into the <code>kable()</code> call.</p>
-<p>Knitr adds an extra space every five lines into booktabs tables for readability. This is undesirable for short tables. To remove this space specify the <code>linesep = &quot;&quot;</code> argument to <code>kable()</code> as explained in this <a href="https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown">SO answer</a>.</p>
+<p>Knitr adds an extra space every five lines into booktabs tables for readability. This is undesirable for short tables. To remove this space specify the <code>linesep = ""</code> argument to <code>kable()</code> as explained in this <a href="https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown">SO answer</a>.</p>
 </div>
 </div>
 <div id="output" class="section level2">
@@ -1011,7 +1012,7 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 <p>It’s often useful to have a table of content at the start of long documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;02 December, 2021&quot;
+date:  &quot;16 December, 2021&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1147,7 +1148,7 @@ $ git init</code></pre>
 <div id="documentation" class="section level2">
 <h2>Documentation</h2>
 <p>The roxygen2 package helps with function documentation. Documentation can be written in the form of comments #’ tags such as <code>@param</code> and <code>@description</code> structure the documentation of each function.</p>
-<p>For an introcution to roxygen2, call <code>vignette(&quot;roxygen2&quot;, package = &quot;roxygen2&quot;)</code> at the R prompt.</p>
+<p>For an introcution to roxygen2, call <code>vignette("roxygen2", package = "roxygen2")</code> at the R prompt.</p>
 <p>Since roxygen2 version 6, markdown formating can be used in the documentation, by specifying the <code>@md</code> tag.</p>
 <div id="examples" class="section level3">
 <h3>Examples</h3>

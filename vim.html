@@ -13,6 +13,7 @@
 
 <title>Vim Commands</title>
 
+<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -449,7 +450,7 @@ div.tocify {
 </div>
 <div id="configure-vim-in-.vimrc" class="section level1">
 <h1>Configure vim in .vimrc</h1>
-<p>See also my vimrc file stored in <a href="setup/.vimrc" class="uri">setup/.vimrc</a>. Many configuration options are mentioned throughout this document.</p>
+<p>See also my vimrc file stored in <a href="setup/.vimrc">setup/.vimrc</a>. Many configuration options are mentioned throughout this document.</p>
 <p>Reload the configuration after editing it:</p>
 <pre><code>:so ~/.vimrc</code></pre>
 <p>Text colour. Add syntax highlight to your .vimrc</p>
@@ -961,7 +962,7 @@ CTRL+T - jump backwards</code></pre>
 </div>
 <div id="tabs-should-be-called-workspaces" class="section level2">
 <h2>Tabs should be called workspaces</h2>
-<p><a href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why do vim experts prefer buffers over tabs?</a> &gt; &quot;“Vim experts” don’t prefer buffers over tabs: they use buffers as the file &gt; proxies they are and tab pages as the workspaces they are. Buffers and tab &gt; pages have different purposes&quot;</p>
+<p><a href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why do vim experts prefer buffers over tabs?</a> &gt; "“Vim experts” don’t prefer buffers over tabs: they use buffers as the file &gt; proxies they are and tab pages as the workspaces they are. Buffers and tab &gt; pages have different purposes"</p>
 <p>Open a file in a new tab</p>
 <pre><code>:tabnew {file}</code></pre>
 <p>Move to the next tab</p>
@@ -1046,7 +1047,7 @@ c-w-= to restore. </code></pre>
 <p>I use the <a href="https://github.com/christoomey/vim-tmux-navigator">vim-tmux-navigator</a></p>
 <p>It doesn’t work in a terminal buffer because of conflicts with fuzzy file search. <a href="https://github.com/christoomey/vim-tmux-navigator/pull/172">issue 172</a></p>
 <p><a href="https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl">vim-tmux-navigator to use tmux prefix instead of C-[hjkl]</a></p>
-<p>busnag.com <a href="https://www.bugsnag.com/blog/tmux-and-vim">tmux and vim</a> &gt; &quot; like many vim users, I edited my .vimrc to simplify split navigation, so &gt; that I can jump between vim splits using ctrl-j, ctrl-k, etc.</p>
+<p>busnag.com <a href="https://www.bugsnag.com/blog/tmux-and-vim">tmux and vim</a> &gt; " like many vim users, I edited my .vimrc to simplify split navigation, so &gt; that I can jump between vim splits using ctrl-j, ctrl-k, etc.</p>
 <p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a> &gt; “Finally, I have Ctrl+[hjkl] setup such that I can navigate seamlessly between vim and tmux panes.”</p>
 </div>
 </div>
@@ -1133,7 +1134,7 @@ C Recursively contract the current node and its siblings.</code></pre>
 <pre><code>&lt;LocalLeader&gt;l Move node(s) left, that is promote.
 &lt;LocalLeader&gt;r Move node(s) right, that is demote.</code></pre>
 <blockquote>
-<p>By default, commands Cut, Copy, Paste use the &quot;+ register, that is the system clipboard (|registers|, |quote+|). This means you can move nodes between outlines in different instances of Vim, or copy/paste in other applications.</p>
+<p>By default, commands Cut, Copy, Paste use the "+ register, that is the system clipboard (|registers|, |quote+|). This means you can move nodes between outlines in different instances of Vim, or copy/paste in other applications.</p>
 </blockquote>
 </div>
 </div>
@@ -1158,7 +1159,7 @@ in addition, I mapped m to $</code></pre>
 </div>
 <div id="search-in-the-current-file" class="section level2">
 <h2>Search in the current file</h2>
-<p>Use <code>&quot;/&quot;</code> to search, then n forward and N backwards <code>&quot;*&quot;</code> to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
+<p>Use <code>"/"</code> to search, then n forward and N backwards <code>"*"</code> to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
 <p>Use <code>:g/pattern</code> to display a list of all search result in the document.</p>
 <p>Search all occurrences of a pattern and populate the quick fix window:</p>
 <pre><code>:vim /pattern/ % | cw</code></pre>
@@ -1355,7 +1356,7 @@ filetype plugin indent on    &quot; required
 <li>doesn’t add anything to the taglist (maybe I should use gutentag?) but there is a table of content buffer.</li>
 </ul>
 <p>Usage as explained in ̀<code>:help vimtex-default-mappings</code>:</p>
-<p>———————————————————————~ LHS RHS MODE<sub> ———————————————————————</sub> <localleader>lv |<plug>(vimtex-view)| <code>n</code> <localleader>lr |<plug>(vimtex-reverse-search)| <code>n</code> <localleader>ll |<plug>(vimtex-compile)| <code>n</code> ———————————————————————~</p>
+<p>———————————————————————~ LHS RHS MODE~ ———————————————————————~ <localleader>lv |<plug>(vimtex-view)| <code>n</code> <localleader>lr |<plug>(vimtex-reverse-search)| <code>n</code> <localleader>ll |<plug>(vimtex-compile)| <code>n</code> ———————————————————————~</p>
 <p>I mapped <code>&lt;localleader&gt;</code> to <code>;</code>.</p>
 <p>Display a table of content:</p>
 <pre><code>:VimtexTocOpen
@@ -1399,11 +1400,11 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 </ul>
 <p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
 <blockquote>
-<p>&quot;I run my scripts using</p>
+<p>"I run my scripts using</p>
 <p>ipython -i script.py</p>
 <p>That way I drop to an ipython shell whenever it breaks or finishes running. I also insert</p>
 <p>from ipython import embed; embed();</p>
-<p>Instead of using pdb. Its really neat.&quot;</p>
+<p>Instead of using pdb. Its really neat."</p>
 </blockquote>
 <div id="ale-linter" class="section level3">
 <h3>Ale Linter</h3>
@@ -1620,7 +1621,7 @@ sudo apt install ctags </code></pre>
 <pre><code>Plugin &#39;yegappan/taglist&#39;</code></pre>
 <p><a href="http://vim-taglist.sourceforge.net/manual.html#taglist-internet">taglist manual</a></p>
 <blockquote>
-<p>“You can open the taglist window using the”:TlistOpen&quot; or the “:TlistToggle” commands. The “:TlistOpen” command opens the taglist window and jumps to it. The “:TlistToggle” command opens or closes (toggle) the taglist window and the cursor remains in the current window.&quot;</p>
+<p>“You can open the taglist window using the”:TlistOpen" or the “:TlistToggle” commands. The “:TlistOpen” command opens the taglist window and jumps to it. The “:TlistToggle” command opens or closes (toggle) the taglist window and the cursor remains in the current window."</p>
 </blockquote>
 <p>Help:</p>
 <pre><code>:help taglist-intro</code></pre>
@@ -1684,7 +1685,7 @@ let g:tagbar_compact = 1</code></pre>
 <pre><code>:! wc %</code></pre>
 <p>To insert the word count directly in the file, run:</p>
 <pre><code>!! wc %</code></pre>
-<p>You can copy (<code>y $</code>) and paste a command in the vim command line with <code>CTRL + R + &quot;</code>.</p>
+<p>You can copy (<code>y $</code>) and paste a command in the vim command line with <code>CTRL + R + "</code>.</p>
 <p>Insert text from a specified file into the current buffer:</p>
 <pre><code>:r textfile</code></pre>
 <p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using a read command:</p>
@@ -1739,7 +1740,7 @@ o      &quot; insert an empty line below cursor
 &lt;Esc&gt;  &quot; switch to normal mode
 jjj    &quot; move the cursor 3 lines downward
 q      &quot; stop recording</code></pre>
-<p>Then just move to the start line and type <a href="mailto:1000@q">1000@q</a> to execute your macro 1000 times.</p>
+<p>Then just move to the start line and type <a href="mailto:1000@q" class="email">1000@q</a> to execute your macro 1000 times.</p>
 </div>
 <div id="spell-check" class="section level2">
 <h2>Spell check</h2>
@@ -1782,8 +1783,8 @@ set spell spelllang=de</code></pre>
 <h2>Learning vim</h2>
 <ul>
 <li><p><a href="https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/">Should I introduce vim to my kid</a> &gt; “Learn to support, not to shoehorn.”</p></li>
-<li><a href="https://vim-adventures.com/">Vim adventures</a></li>
-<li><a href="https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/">Learn vim basic featurs</a></li>
+<li><p><a href="https://vim-adventures.com/">Vim adventures</a></p></li>
+<li><p><a href="https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/">Learn vim basic featurs</a></p></li>
 <li><p><a href="https://github.com/mhinz/vim-galore#the-vim-philosophy">Vim Galore</a> introduction to vim maintained by a group of users</p></li>
 </ul>
 </div>
@@ -1799,7 +1800,7 @@ set spell spelllang=de</code></pre>
 <li><a href="https://en.wikipedia.org/wiki/Vi">Vi</a></li>
 </ul>
 <blockquote>
-<p>“The original code for vi was written by Bill Joy in 1976, as the visual mode for a line editor called ex that Joy had written with Chuck Haley.[3] Bill Joy’s ex 1.1 was released as part of the first Berkeley Software Distribution (BSD) Unix release in March 1978. It was not until version 2.0 of ex, released as part of Second BSD in May 1979 that the editor was installed under the name”vi&quot; (which took users straight into ex’s visual mode),[4] and the name by which it is known today. […] On the free software process</p>
+<p>“The original code for vi was written by Bill Joy in 1976, as the visual mode for a line editor called ex that Joy had written with Chuck Haley.[3] Bill Joy’s ex 1.1 was released as part of the first Berkeley Software Distribution (BSD) Unix release in March 1978. It was not until version 2.0 of ex, released as part of Second BSD in May 1979 that the editor was installed under the name”vi" (which took users straight into ex’s visual mode),[4] and the name by which it is known today. […] On the free software process</p>
 </blockquote>
 <ul>
 <li>Vim is based on vi, itself based on the <a href="https://en.wikipedia.org/wiki/Ex_(text_editor)">ex editor</a></li>
