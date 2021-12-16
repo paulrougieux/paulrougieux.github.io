@@ -766,7 +766,7 @@ Then start the notebook server as such:
 authentication](https://stackoverflow.com/questions/37808410/ipython-jupyter-notebook-with-authentication)
 
 
-## Table of content in your notebooks
+## TOC Table of content in your notebooks
 
 Install [jupyter_contrib_nbextensions](https://github.com/ipython-contrib/jupyter_contrib_nbextensions)
 
@@ -778,7 +778,7 @@ Activate the table of content extension:
     python3 -m jupyter nbextension enable toc2/main
 
 There are many other extensions available in this package.
-Optionally you can install the jupyter notebook extension configurator (not needed)
+**Optionally** you can install the jupyter notebook extension configurator (not needed)
 
     python3 -m pip install --user jupyter_nbextensions_configurator
     jupyter nbextensions_configurator enable --user
@@ -804,7 +804,7 @@ specifies that
     conda install -c conda-forge jupyter_contrib_nbextensions
 
 
-## Version control the markdown version with git
+## Jupytext version control with markdown and git
 
 Convert notebooks to markdown so they are easier to track in git. 
 
