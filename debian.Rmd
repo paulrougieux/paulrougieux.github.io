@@ -524,6 +524,8 @@ Download the software and signature file
     cd ~/downloads
     curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb
     curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb.asc
+    curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.14.0.4-1_amd64.deb.asc
+    
     cat expressvpn_*_amd64.deb.asc
 
 [Check the
@@ -532,10 +534,11 @@ signature](https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/)
     gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 0xAFF2A1415F6A3A38
     gpg --fingerprint release@expressvpn.com
     gpg --verify expressvpn_3.13.0.8-1_amd64.deb.asc
+    gpg --verify expressvpn_3.14.0.4-1_amd64.deb.asc
 
 Install 
 
-    sudo apt install ./expressvpn_3.13.0.8-1_amd64.deb
+    sudo apt install ./expressvpn_3.14.0.4-1_amd64.deb
 
 
 ## Wajig
@@ -586,6 +589,7 @@ Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Li
 
     # Install
     sudo apt install ./zoom_amd64.deb 
+
 
 # Audio
 
@@ -1000,6 +1004,8 @@ lines
 Recorded the process with 
 
      script -t 2>~/upgrade-bullseyestep.time -a ~/upgrade-bullseyestep.script
+
+That file ended up having 24000 lines at the end of the update.
 
 Then ran 
 

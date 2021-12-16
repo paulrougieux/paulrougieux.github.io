@@ -993,6 +993,9 @@ Show the state of network interfaces
 
     ip link
 
+
+## Check ports
+
 Check open ports on a system
 
     nmap -Pn <hostname or IP address>
