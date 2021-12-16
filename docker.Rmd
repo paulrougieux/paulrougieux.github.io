@@ -4,17 +4,53 @@
 
 To get the most recent stable docker version 
 on a Debian, system, add the docker repository as explained in 
-[Docker community edition for Debian.](https://docs.docker.com/engine/installation/linux/docker-ce/debian/)
+[Docker community edition for Debian.](https://docs.docker.com/engine/install/debian/#install-using-the-repository)
+
 Then run :
 
-    sudo apt-get install docker-ce
+    sudo apt update
+    sudo apt install docker-ce
  
+Install [docker compose](https://docs.docker.com/compose/install/)
+
+    sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+
+Update permission
+
+    sudo chmod +x /usr/local/bin/docker-compose
+
+
+## Add your user to the docker group
+
+To prevent docker from requesting permission each time you use it. Add your
+user to the docker group. As explained
+[here](https://stackoverflow.com/a/48957722/2641825)
+
+    sudo usermod -aG docker $USER
+
+Login to the new group (so that you don't need to restart the shell)
+
+    newgrp docker
+
+
+## Login
+
+Login to docker
+
+    docker login
+
+My repository https://hub.docker.com/u/paulrougieux
+
+
+
+
 # Build
 
 Instructions to create a container are storred in a Dockerfile.
 Docker hub is a collection of Dockerfiles. 
 Containers stored on docker hub can be pulled and started directly from the docker run command.
 The section below explain how to write your own Docker file.
+
 
 ## Docker file
 
@@ -111,8 +147,11 @@ Stop a container
 
 ## Start services
 
-Create a compose file
-then start the service with:
+You can start the service with:
+
+    sudo docker-compose up -d
+
+Create a compose file then start the service with:
 
     docker stack deploy -c docker-compose.yml servicename 
 
@@ -128,11 +167,7 @@ Stackoverflow [could not choose and IP address Error](https://stackoverflow.com/
 
 # Monitor
 
-## Monitor running containers
-
-[run metrics](https://docs.docker.com/engine/admin/runmetrics/)
-
-    docker stats <container-id>
+## Start a bash shell
 
 Start a bash shell inside a container, -it stands for interactive
 
@@ -143,14 +178,21 @@ Start a script within a container, non interactively
 
     docker exec <container-id> /path/to/test.sh
 
+
+## Stats and inspect running containers
+
+[run metrics](https://docs.docker.com/engine/admin/runmetrics/)
+
+    docker stats <container-id>
+
 [Find the IP of a container](https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host):
 
-    sudo docker ps # look for the process id
-    sudo docker inspect <container id>
+    docker ps # look for the process id
+    docker inspect <container id>
 
 The IP is at the end. it can also be [extracted with a template](https://stackoverflow.com/a/20686101/2641825):
 
-     sudo docker inspect -f '{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}' <container id> 
+     docker inspect -f '{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}' <container id> 
 
 
 ### Inspect options
@@ -164,11 +206,14 @@ Get the last time the container was (re)started;
 
     docker inspect -f "{{ .State.StartedAt }}" my-container
 
+
 ### Container logs
 
     docker logs [OPTIONS] <container id>
 
+
 ## Monitor stopped containers 
+
 See [stopped containers](https://stackoverflow.com/questions/30231187/docker-list-only-stopped-containers/30231188#30231188)
 
     docker ps --filter "status=exited"
@@ -178,8 +223,8 @@ Inspect a stopped container
     docker inspect <container-id>
 
 
-
 ## Monitor running services
+
 see which stacks are running
 
     sudo docker stack ls
@@ -202,6 +247,7 @@ You can also run `docker ps` to see all running processes.
 Show available images on the system:
 
     sudo docker images
+
 
 ## Update a container image
 
@@ -245,6 +291,12 @@ Remove images
 ## Docker for R
 
 Docker hub [R-base](https://hub.docker.com/_/r-base)
+
+
+## Docker within docker
+
+Docker blog [Docker can now run within Docker](https://www.docker.com/blog/docker-can-now-run-within-docker/).
+
 
 # Related services
 
@@ -329,6 +381,7 @@ file at [.gitlab-ci.yml](.gitlab-ci.yml).
 
 
 # Security
+
 docs.docker.com [Manage sensitive data with Docker secrets](https://docs.docker.com/engine/swarm/secrets/)
  * [Example use secrets with a Wordpress service](https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service)
  * [Use secrets in compose](https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose)
