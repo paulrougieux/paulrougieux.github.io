@@ -783,6 +783,56 @@ git revert commit_sha</code></pre>
 <p>Get help on a command (will start a web browser):</p>
 <pre><code>git init --help</code></pre>
 </div>
+<div id="hosting-services" class="section level1">
+<h1>Hosting services</h1>
+<div id="gitlab" class="section level2">
+<h2>Gitlab</h2>
+<div id="issue-triage" class="section level3">
+<h3>Issue triage</h3>
+<p>On the Gitlab labels page:</p>
+<blockquote>
+<p>“Labels can be applied to issues and merge requests. Star a label to make it a priority label. Order the prioritized labels to change their relative priority, by dragging.”</p>
+</blockquote>
+<p><a href="https://about.gitlab.com/handbook/engineering/quality/issue-triage/#priority">Issue triage by priority</a></p>
+<table>
+<colgroup>
+<col width="11%" />
+<col width="8%" />
+<col width="80%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th>Priority</th>
+<th>Importance</th>
+<th>Intention</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>~priority::1</code></td>
+<td>Urgent</td>
+<td>We will address this as soon as possible regardless of the limit on our team capacity.</td>
+</tr>
+<tr class="even">
+<td><code>~priority::2</code></td>
+<td>High</td>
+<td>We will address this soon and will provide capacity from our team for it in the next few releases.</td>
+</tr>
+<tr class="odd">
+<td><code>~priority::3</code></td>
+<td>Medium</td>
+<td>We want to address this but may have other higher priority items.</td>
+</tr>
+<tr class="even">
+<td><code>~priority::4</code></td>
+<td>Low</td>
+<td>We don’t have visibility when this will be addressed.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 <div id="line-endings" class="section level1">
 <h1>Line endings</h1>
 <p><a href="https://stackoverflow.com/questions/7156694/git-how-to-renormalize-line-endings-in-all-files-in-all-revisions">How to renormalize line endings in all files in all revisions?</a></p>
