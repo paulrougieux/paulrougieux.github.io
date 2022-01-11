@@ -450,7 +450,8 @@ div.tocify {
 <p>Debian wiki explains <a href="https://wiki.debian.org/PostgreSql">how to install and set up PostgreSQL</a>.</p>
 <div id="change-the-listening-port" class="section level2">
 <h2>Change the listening port</h2>
-<p>In case you need to change the listening port (for example when I had to test postgresql on docker containers while keeping postgresql running locally)</p>
+<p>In case you need to change the listening port (for example when I had to test postgresql on docker containers while keeping postgresql running locally) Edit the configuration file <code>/etc/postgresql/13/main/postgresql.conf</code> and change the port definition as follows</p>
+<pre><code>port = 5433</code></pre>
 </div>
 </div>
 <div id="start-and-stop-the-server" class="section level1">
@@ -463,7 +464,9 @@ sudo service postgresql stop</code></pre>
 <p>Add system users at the regular bash shell before you can add them in postgresql. I call this user “rdb” because I plan to use R to connect to the database and “R” cannot be used as a user name according to system policy.</p>
 <pre><code>sudo adduser rdb --disabled-password </code></pre>
 <p><strong>Login as the postgres user!</strong></p>
-<pre><code>sudo -i -u postgres</code></pre>
+<pre><code>sudo -i -u postgres
+# In case postgresql is not on the default port 5432
+export PGPORT=5433</code></pre>
 <p>Now logged in as <code>postgres@machine_name</code> in the regular bash shell:</p>
 <ol style="list-style-type: decimal">
 <li><p>Create a user with the same name as the system user created above</p>
@@ -562,11 +565,14 @@ psql $BIOTRADE_DATABASE_URL</code></pre>
 <blockquote>
 <p>“There is no performance difference among these three types, apart from increased storage space when using the blank-padded type, and a few extra CPU cycles to check the length when storing into a length-constrained column. While character(n) has performance advantages in some other database systems, there is no such advantage in PostgreSQL; in fact character(n) is usually the slowest of the three because of its additional storage costs. In most situations text or character varying should be used instead.”</p>
 </blockquote>
-<p>[SO answer]’<a href="https://stackoverflow.com/a/20334221/2641825" class="uri">https://stackoverflow.com/a/20334221/2641825</a>)</p>
+<p><a href="https://stackoverflow.com/a/20334221/2641825">SO answer</a></p>
 <blockquote>
 <p>“Generally, there is no downside to using text in terms of performance/memory. On the contrary: text is the optimum. Other types have more or less relevant downsides. text is literally the”preferred" type among string types in the Postgres type system, which can affect function or operator type resolution."</p>
 </blockquote>
-<p><a href="https://stackoverflow.com/a/4849030/2641825">differences between text and varchar</a> &gt; To sum it all up: &gt;&gt; - char(n) – takes too much space when dealing with values shorter than n &gt;&gt; (pads them to n), and can lead to subtle errors because of adding &gt;&gt; trailing spaces, plus it is problematic to change the limit &gt;&gt; - varchar(n) – it’s problematic to change the limit in live environment &gt;&gt; (requires exclusive lock while altering table) &gt;&gt; - varchar – just like text &gt;&gt; - text – for me a winner – over (n) data types because it lacks their &gt;&gt; problems, and over varchar – because it has distinct name</p>
+<p><a href="https://stackoverflow.com/a/4849030/2641825">differences between text and varchar</a></p>
+<blockquote>
+<p>To sum it all up: - char(n) – takes too much space when dealing with values shorter than n (pads them to n), and can lead to subtle errors because of adding trailing spaces, plus it is problematic to change the limit - varchar(n) – it’s problematic to change the limit in live environment (requires exclusive lock while altering table) - varchar – just like text - text – for me a winner – over (n) data types because it lacks their problems, and over varchar – because it has distinct name</p>
+</blockquote>
 <p>In SQLite as well, character(n) doesn’t seem to have any performance advantage.</p>
 <p><a href="https://www.sqlite.org/datatype3.html">SQLite data types</a></p>
 <blockquote>
@@ -626,7 +632,8 @@ SET default_with_oids = false;</code></pre>
 <pre><code>\dt</code></pre>
 <p>List tables for a particular schema i<a href="https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql">list all tables in schema</a></p>
 <pre><code>\dt raw_comext.*;
-\dt raw_comtrade.*;</code></pre>
+\dt raw_comtrade.*;
+\dt raw_faostat*;</code></pre>
 </div>
 <div id="describe-data-types" class="section level2">
 <h2>Describe data types</h2>
