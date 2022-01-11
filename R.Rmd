@@ -832,6 +832,14 @@ In general enter the Git tag after the submission has been completed, because
 it is very likely that additional information will need to be added to the
 package before or during the submission process.
 
+
+### CRAN's automated check of URL's validity
+
+Upon submission CRAN runs an automated check of URL validity. This [blog
+post](https://blog.r-hub.io/2020/12/01/url-checks/) explains that URLS in
+vignettes and function documentations are checked.
+
+
 # Plots
 
 

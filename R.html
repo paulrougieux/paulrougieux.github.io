@@ -864,19 +864,19 @@ knitr::kable(d, digits = 4)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.9895</td>
+<td align="right">0.5700</td>
 <td align="right">1e+03</td>
-<td align="right">67.8654</td>
+<td align="right">2298.5730</td>
 </tr>
 <tr class="even">
-<td align="right">0.1680</td>
+<td align="right">0.0555</td>
 <td align="right">1e+05</td>
-<td align="right">-666.1155</td>
+<td align="right">657.2549</td>
 </tr>
 <tr class="odd">
-<td align="right">0.8081</td>
+<td align="right">0.8794</td>
 <td align="right">1e+07</td>
-<td align="right">-62.9536</td>
+<td align="right">161.4140</td>
 </tr>
 </tbody>
 </table>
@@ -892,19 +892,19 @@ knitr::kable(d, digits = c(5, 0, 2))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.98947</td>
+<td align="right">0.56996</td>
 <td align="right">1e+03</td>
-<td align="right">67.87</td>
+<td align="right">2298.57</td>
 </tr>
 <tr class="even">
-<td align="right">0.16805</td>
+<td align="right">0.05547</td>
 <td align="right">1e+05</td>
-<td align="right">-666.12</td>
+<td align="right">657.25</td>
 </tr>
 <tr class="odd">
-<td align="right">0.80809</td>
+<td align="right">0.87944</td>
 <td align="right">1e+07</td>
-<td align="right">-62.95</td>
+<td align="right">161.41</td>
 </tr>
 </tbody>
 </table>
@@ -920,19 +920,19 @@ knitr::kable(d, digits = 3, format.args = list(scientific = FALSE))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.989</td>
+<td align="right">0.570</td>
 <td align="right">1000</td>
-<td align="right">67.865</td>
+<td align="right">2298.573</td>
 </tr>
 <tr class="even">
-<td align="right">0.168</td>
+<td align="right">0.055</td>
 <td align="right">100000</td>
-<td align="right">-666.115</td>
+<td align="right">657.255</td>
 </tr>
 <tr class="odd">
-<td align="right">0.808</td>
+<td align="right">0.879</td>
 <td align="right">10000000</td>
-<td align="right">-62.954</td>
+<td align="right">161.414</td>
 </tr>
 </tbody>
 </table>
@@ -949,19 +949,19 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.989</td>
+<td align="right">0.570</td>
 <td align="right">1,000</td>
-<td align="right">67.865</td>
+<td align="right">2,298.573</td>
 </tr>
 <tr class="even">
-<td align="right">0.168</td>
+<td align="right">0.055</td>
 <td align="right">100,000</td>
-<td align="right">-666.115</td>
+<td align="right">657.255</td>
 </tr>
 <tr class="odd">
-<td align="right">0.808</td>
+<td align="right">0.879</td>
 <td align="right">10,000,000</td>
-<td align="right">-62.954</td>
+<td align="right">161.414</td>
 </tr>
 </tbody>
 </table>
@@ -1012,7 +1012,7 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 <p>It’s often useful to have a table of content at the start of long documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;16 December, 2021&quot;
+date:  &quot;11 January, 2022&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1216,6 +1216,10 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 </ul>
 <p>The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review.</p>
 <p>In general enter the Git tag after the submission has been completed, because it is very likely that additional information will need to be added to the package before or during the submission process.</p>
+<div id="crans-automated-check-of-urls-validity" class="section level3">
+<h3>CRAN’s automated check of URL’s validity</h3>
+<p>Upon submission CRAN runs an automated check of URL validity. This <a href="https://blog.r-hub.io/2020/12/01/url-checks/">blog post</a> explains that URLS in vignettes and function documentations are checked.</p>
+</div>
 </div>
 </div>
 <div id="plots" class="section level1">
