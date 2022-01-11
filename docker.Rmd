@@ -6,6 +6,28 @@ To get the most recent stable docker version
 on a Debian, system, add the docker repository as explained in 
 [Docker community edition for Debian.](https://docs.docker.com/engine/install/debian/#install-using-the-repository)
 
+    sudo apt-get update
+
+    sudo apt-get install \
+       ca-certificates \
+       curl \
+       gnupg \
+       lsb-release
+
+Add Docker’s official GPG key:
+
+    curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Learn about nightly and test channels.
+
+     echo \
+      "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+      $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+Display the updated source.list
+
+    cat /etc/apt/sources.list.d/docker.list
+
 Then run :
 
     sudo apt update
@@ -15,7 +37,7 @@ Install [docker compose](https://docs.docker.com/compose/install/)
 
     sudo curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 
-Update permission
+Update permissions
 
     sudo chmod +x /usr/local/bin/docker-compose
 
@@ -46,7 +68,7 @@ My repository https://hub.docker.com/u/paulrougieux
 
 # Build
 
-Instructions to create a container are storred in a Dockerfile.
+Instructions to create a container are stored in a Dockerfile.
 Docker hub is a collection of Dockerfiles. 
 Containers stored on docker hub can be pulled and started directly from the docker run command.
 The section below explain how to write your own Docker file.

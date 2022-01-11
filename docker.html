@@ -444,12 +444,27 @@ div.tocify {
 <div id="docker-installation" class="section level1">
 <h1>Docker Installation</h1>
 <p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://docs.docker.com/engine/install/debian/#install-using-the-repository">Docker community edition for Debian.</a></p>
+<pre><code>sudo apt-get update
+
+sudo apt-get install \
+   ca-certificates \
+   curl \
+   gnupg \
+   lsb-release</code></pre>
+<p>Add Docker’s official GPG key:</p>
+<pre><code>curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</code></pre>
+<p>Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Learn about nightly and test channels.</p>
+<pre><code> echo \
+  &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
+  $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</code></pre>
+<p>Display the updated source.list</p>
+<pre><code>cat /etc/apt/sources.list.d/docker.list</code></pre>
 <p>Then run :</p>
 <pre><code>sudo apt update
 sudo apt install docker-ce</code></pre>
 <p>Install <a href="https://docs.docker.com/compose/install/">docker compose</a></p>
 <pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</code></pre>
-<p>Update permission</p>
+<p>Update permissions</p>
 <pre><code>sudo chmod +x /usr/local/bin/docker-compose</code></pre>
 <div id="add-your-user-to-the-docker-group" class="section level2">
 <h2>Add your user to the docker group</h2>
@@ -467,7 +482,7 @@ sudo apt install docker-ce</code></pre>
 </div>
 <div id="build" class="section level1">
 <h1>Build</h1>
-<p>Instructions to create a container are storred in a Dockerfile. Docker hub is a collection of Dockerfiles. Containers stored on docker hub can be pulled and started directly from the docker run command. The section below explain how to write your own Docker file.</p>
+<p>Instructions to create a container are stored in a Dockerfile. Docker hub is a collection of Dockerfiles. Containers stored on docker hub can be pulled and started directly from the docker run command. The section below explain how to write your own Docker file.</p>
 <div id="docker-file" class="section level2">
 <h2>Docker file</h2>
 <p>docs.docker.com <a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/">best practices for writing Dockerfiles</a></p>
