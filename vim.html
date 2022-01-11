@@ -609,6 +609,48 @@ Move down with jj to select the columns of text in the lines you want to comment
 Then hit $ to select all lines until the end of the line.
 Then press Shift+A and type the text you want to insert.
 The press Escape, the inserted text will appear at the end of all lines.</code></pre>
+<div id="increment-numbers-in-a-list" class="section level3">
+<h3>Increment numbers in a list</h3>
+<p>Use the <code>range</code> command as explained in the <a href="https://vim.fandom.com/wiki/Making_a_list_of_numbers">vim wiki</a>:</p>
+<pre><code>:put =range(11,15)</code></pre>
+<p>Use the auto incrementation <code>g CTRL-A</code></p>
+<pre><code>:help ctrl-a
+
+    {Visual}g CTRL-A Add [count] to the number or alphabetic character in
+            the highlighted text. If several lines are
+                highlighted, each one will be incremented by an
+            additional [count] (so effectively creating a
+            [count] incrementing sequence).  {not in Vi}
+            For Example, if you have this list of numbers:
+                1. ~
+                1. ~
+                1. ~
+                1. ~
+            Move to the second &quot;1.&quot; and Visually select three
+            lines, pressing g CTRL-A results in:
+                1. ~
+                2. ~
+                3. ~
+                4. ~</code></pre>
+<p>Other example from the vim wiki:</p>
+<pre><code>my_array[0] = 0;</code></pre>
+<p>Then copy it using <code>Y6p</code> (copy the line and paste it six times). The result is:</p>
+<pre><code>my_array[0] = 0;
+my_array[0] = 0;
+my_array[0] = 0;
+my_array[0] = 0;
+my_array[0] = 0;
+my_array[0] = 0;
+my_array[0] = 0;</code></pre>
+<p>Then select the lines from the second line onwards and use <code>g CTRL-A</code> to get:</p>
+<pre><code>my_array[0] = 0;
+my_array[1] = 0;
+my_array[2] = 0;
+my_array[3] = 0;
+my_array[4] = 0;
+my_array[5] = 0;
+my_array[6] = 0;</code></pre>
+</div>
 <div id="sort-lines-alphabetically" class="section level3">
 <h3>Sort lines alphabetically</h3>
 <p>Select a few lines in visual mode and</p>
@@ -646,26 +688,6 @@ instead of skipping past it as described above.
 For example, to sort on only the first three letters
 of each line: &gt;
     :sort /\a\a\a/ r</code></pre>
-</div>
-<div id="increment-numbers-in-a-list" class="section level3">
-<h3>Increment numbers in a list</h3>
-<p>:help ctrl-a</p>
-<pre><code>    {Visual}g CTRL-A Add [count] to the number or alphabetic character in
-            the highlighted text. If several lines are
-                highlighted, each one will be incremented by an
-            additional [count] (so effectively creating a
-            [count] incrementing sequence).  {not in Vi}
-            For Example, if you have this list of numbers:
-                1. ~
-                1. ~
-                1. ~
-                1. ~
-            Move to the second &quot;1.&quot; and Visually select three
-            lines, pressing g CTRL-A results in:
-                1. ~
-                2. ~
-                3. ~
-                4. ~</code></pre>
 </div>
 </div>
 <div id="align-columns" class="section level2">
@@ -785,6 +807,11 @@ Move the cursor to the end of what you want to cut.
 Press d to cut or y to yank (copy into the `&quot;0` register).
 Move to where you would like to paste.
 Press P to paste before the cursor, or p to paste after. </code></pre>
+<div id="paste-the-current-line-many-times" class="section level3">
+<h3>Paste the current line many times</h3>
+<p>Press <code>Y6p</code> to copy the following line 6 times</p>
+<pre><code>- example</code></pre>
+</div>
 <div id="paste-from-the-system-register" class="section level3">
 <h3>Paste from the system register</h3>
 <p>When pasting from the system register i.e. with <code>Ctrl+Shift+V</code> you need to prevent auto indent otherwise vim will mess with the indentation. This can be solved with bracketed paste, see further down below.</p>
@@ -1770,15 +1797,28 @@ set spell spelllang=de</code></pre>
 <pre><code>vimdiff file1 file2</code></pre>
 </div>
 </div>
-<div id="blogs" class="section level1">
-<h1>blogs</h1>
-<p><a href="https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1">Why atom cant replace vim</a></p>
+<div id="blogs-and-resources" class="section level1">
+<h1>Blogs and resources</h1>
+<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my 2014 blog post on Vim commands</a>.</p>
+<div id="other-editors" class="section level2">
+<h2>Other editors</h2>
+<ul>
+<li><p><a href="https://www.spacemacs.org/doc/VIMUSERS.html">Spacemacs</a></p>
+<blockquote>
+<p>“Spacemacs is an attempt to improve on both vim and Emacs using the superior modal editing of vim and the nicer configuration language of Emacs.”</p>
+</blockquote></li>
+<li><p><a href="https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1">Why atom cant replace vim</a></p>
 <blockquote>
 <p>“This philosophy of minimalist commands that can be composed together is the fundamental originating philosophy of Unix, and Vim exemplifies it like no other editor.”</p>
-</blockquote>
-<p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a> I tried slime.</p>
-<p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a> <a href="https://github.com/tridactyl/tridactyl">Browse the web in vim mode</a></p>
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my 2014 blog post on Vim commands</a>.</p>
+</blockquote></li>
+<li><p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></p></li>
+</ul>
+</div>
+<div id="demonstrations-of-vim-use" class="section level2">
+<h2>Demonstrations of vim use</h2>
+<p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a> I tried slime.</p>
+<p><a href="https://github.com/tridactyl/tridactyl">Browse the web in vim mode</a></p>
+</div>
 <div id="learning-vim" class="section level2">
 <h2>Learning vim</h2>
 <ul>

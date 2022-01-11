@@ -251,6 +251,60 @@ Similarly to enter text at the end of multiple lines ([vim.wikia](http://vim.wik
     Then press Shift+A and type the text you want to insert.
     The press Escape, the inserted text will appear at the end of all lines.
 
+### Increment numbers in a list
+
+
+Use the `range` command as explained in the [vim
+wiki](https://vim.fandom.com/wiki/Making_a_list_of_numbers):
+
+    :put =range(11,15)
+
+Use the auto incrementation `g CTRL-A`
+
+    :help ctrl-a
+
+        {Visual}g CTRL-A Add [count] to the number or alphabetic character in
+                the highlighted text. If several lines are
+                    highlighted, each one will be incremented by an
+                additional [count] (so effectively creating a
+                [count] incrementing sequence).  {not in Vi}
+                For Example, if you have this list of numbers:
+                    1. ~
+                    1. ~
+                    1. ~
+                    1. ~
+                Move to the second "1." and Visually select three
+                lines, pressing g CTRL-A results in:
+                    1. ~
+                    2. ~
+                    3. ~
+                    4. ~
+
+Other example from the vim wiki:
+
+    my_array[0] = 0;
+
+Then copy it using `Y6p` (copy the line and paste it six times). The result is:
+
+    my_array[0] = 0;
+    my_array[0] = 0;
+    my_array[0] = 0;
+    my_array[0] = 0;
+    my_array[0] = 0;
+    my_array[0] = 0;
+    my_array[0] = 0;
+
+Then select the lines from the second line onwards and use `g CTRL-A` to get: 
+
+    my_array[0] = 0;
+    my_array[1] = 0;
+    my_array[2] = 0;
+    my_array[3] = 0;
+    my_array[4] = 0;
+    my_array[5] = 0;
+    my_array[6] = 0;
+
+
 ### Sort lines alphabetically
 
 Select a few lines in visual mode and
@@ -297,28 +351,6 @@ Sort within a pattern
         :sort /\a\a\a/ r
 
 
-
-### Increment numbers in a list
-
-:help ctrl-a
-
-
-        {Visual}g CTRL-A Add [count] to the number or alphabetic character in
-                the highlighted text. If several lines are
-                    highlighted, each one will be incremented by an
-                additional [count] (so effectively creating a
-                [count] incrementing sequence).  {not in Vi}
-                For Example, if you have this list of numbers:
-                    1. ~
-                    1. ~
-                    1. ~
-                    1. ~
-                Move to the second "1." and Visually select three
-                lines, pressing g CTRL-A results in:
-                    1. ~
-                    2. ~
-                    3. ~
-                    4. ~
 
 ## Align columns
 
@@ -527,6 +559,14 @@ Copy and paste with the following instructions
     Press d to cut or y to yank (copy into the `"0` register).
     Move to where you would like to paste.
     Press P to paste before the cursor, or p to paste after. 
+
+
+### Paste the current line many times
+
+Press `Y6p` to copy the following line 6 times
+
+    - example
+
 
 ### Paste from the system register
 
@@ -2097,21 +2137,34 @@ View differences between `file1` and `file2` (vim documentation)
 
 
 
-# blogs
-
-[Why atom cant replace vim](https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1)
-
-> "This philosophy of minimalist commands that can be composed together is the
-> fundamental originating philosophy of Unix, and Vim exemplifies it like no
-> other editor."
-
-reddit [Python workflow with terminal using tmux](https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/)
-I tried slime.
-
-[Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
-[Browse the web in vim mode](https://github.com/tridactyl/tridactyl)
+# Blogs and resources
 
 This page is the continuation of [my 2014 blog post on Vim commands](https://paulremote.blogspot.de/2014/07/vim-commands.html).
+
+
+## Other editors
+
+- [Spacemacs](https://www.spacemacs.org/doc/VIMUSERS.html)
+
+    > "Spacemacs is an attempt to improve on both vim and Emacs using the superior
+    > modal editing of vim and the nicer configuration language of Emacs."
+
+- [Why atom cant replace vim](https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1)
+
+    > "This philosophy of minimalist commands that can be composed together is the
+    > fundamental originating philosophy of Unix, and Vim exemplifies it like no
+    > other editor."
+
+- [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
+
+
+## Demonstrations of vim use
+
+Reddit [Python workflow with terminal using
+tmux](https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/)
+I tried slime.
+
+[Browse the web in vim mode](https://github.com/tridactyl/tridactyl)
 
 
 ## Learning vim
