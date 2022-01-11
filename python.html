@@ -487,6 +487,23 @@ div.tocify {
 <p><a href="https://pipenv.pypa.io/en/latest/">Pipenv</a> makes pip and virtual env work together.</p>
 </div>
 </div>
+<div id="compilers" class="section level1">
+<h1>Compilers</h1>
+<div id="numba-just-in-time-compiler" class="section level2">
+<h2>Numba just-in-time compiler</h2>
+<p><a href="https://numba.readthedocs.io/en/stable/user/5minguide.html">Numba User Manual</a></p>
+<blockquote>
+<p>“When a call is made to a Numba-decorated function it is compiled to machine code “just-in-time” for execution and all or part of your code can subsequently run at native machine code speed!"</p>
+</blockquote>
+</div>
+<div id="pythran-ahead-of-time-compiler" class="section level2">
+<h2>Pythran Ahead of time compiler</h2>
+<p><a href="https://github.com/serge-sans-paille/pythran" class="uri">https://github.com/serge-sans-paille/pythran</a></p>
+<blockquote>
+<p>“Pythran is an ahead of time compiler for a subset of the Python language, with a focus on scientific computing. It takes a Python module annotated with a few interface descriptions and turns it into a native Python module with the same interface, but (hopefully) faster.”</p>
+</blockquote>
+</div>
+</div>
 <div id="control-flow" class="section level1">
 <h1>Control flow</h1>
 <p>dotnetperls: <a href="https://www.dotnetperls.com/not-python">not python</a></p>
@@ -1634,6 +1651,7 @@ Out:
                     max_speed  shield
         viper               4       5
         sidewinder          7       8</code></pre>
+<p>Note: in the case of a multi index, use tuples for index selection, see section below on multi index selection with loc.</p>
 <p>Conditional that returns a boolean Series</p>
 <pre><code>In :  df.loc[df[&#39;shield&#39;] &gt; 6]
 Out:
@@ -1672,6 +1690,32 @@ Out:
       max_speed  shield
    8          4       5
    9          7       8</code></pre>
+<div id="multi-index-selection-with-loc" class="section level4">
+<h4>Multi-index selection with loc</h4>
+<p>Sample data copied from <code>help(df.loc)</code>:</p>
+<pre><code>tuples = [
+   (&#39;cobra&#39;, &#39;mark i&#39;), (&#39;cobra&#39;, &#39;mark ii&#39;),
+   (&#39;sidewinder&#39;, &#39;mark i&#39;), (&#39;sidewinder&#39;, &#39;mark ii&#39;),
+   (&#39;viper&#39;, &#39;mark ii&#39;), (&#39;viper&#39;, &#39;mark iii&#39;)
+]
+index = pandas.MultiIndex.from_tuples(tuples)
+values = [[12, 2], [0, 4], [10, 20],
+        [1, 4], [7, 1], [16, 36]]
+df = pandas.DataFrame(values, columns=[&#39;max_speed&#39;, &#39;shield&#39;], index=index)</code></pre>
+<p>Single label. Note this returns a DataFrame with a single index.</p>
+<pre><code>df.loc[&#39;cobra&#39;]</code></pre>
+<p>Single index tuple. Note this returns a Series.</p>
+<pre><code>df.loc[(&#39;cobra&#39;, &#39;mark ii&#39;)]
+df.loc[(:,&#39;mark ii&#39;)]</code></pre>
+<p>Single tuple. Note using <code>[[]]</code> returns a DataFrame.</p>
+<pre><code>df.loc[[(&#39;cobra&#39;, &#39;mark ii&#39;)]]</code></pre>
+<p>Single label for row and column. Similar to passing in a tuple, this returns a Series.</p>
+<pre><code>df.loc[&#39;cobra&#39;, &#39;mark i&#39;]</code></pre>
+<p>Slice from index tuple to single label</p>
+<pre><code>df.loc[(&#39;cobra&#39;, &#39;mark i&#39;):&#39;viper&#39;]</code></pre>
+<p>Slice from index tuple to index tuple</p>
+<pre><code>df.loc[(&#39;cobra&#39;, &#39;mark i&#39;):(&#39;viper&#39;, &#39;mark ii&#39;)]</code></pre>
+</div>
 </div>
 <div id="iloc" class="section level3">
 <h3>iloc</h3>
@@ -1916,6 +1960,17 @@ plot.set_xticks(range(0,31,10), minor=False)</code></pre>
 <div id="plotnine" class="section level2">
 <h2>Plotnine</h2>
 <p>Grammar of graphics for python <a href="https://github.com/has2k1/plotnine" class="uri">https://github.com/has2k1/plotnine</a></p>
+<div id="figure-size" class="section level3">
+<h3>Figure size</h3>
+<p>Change the <a href="https://plotnine.readthedocs.io/en/stable/generated/plotnine.options.figure_size.html">plotnine figure size</a></p>
+<pre><code>import plotnine
+plotnine.options.figure_size = (12, 8)</code></pre>
+</div>
+<div id="facet-grid" class="section level3">
+<h3>Facet grid</h3>
+<p>Create a facet grid plot</p>
+<pre><code>from plotnine import ggplot, aes, geom_line, facet_grid, labs</code></pre>
+</div>
 </div>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>
@@ -1971,7 +2026,7 @@ g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
 <p>In case the title is overwritten on the subplots, you might need to use <a href="https://stackoverflow.com/a/28650623/2641825">fig.subplot_adjust()</a> as such:</p>
 <pre><code>g.fig.subplots_adjust(top=.95)</code></pre>
 </div>
-<div id="figure-size" class="section level3">
+<div id="figure-size-1" class="section level3">
 <h3>Figure size</h3>
 <p>Resize a scatter plot</p>
 <pre><code>p = seaborn.scatterplot(&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;,data=iris)
@@ -2557,6 +2612,9 @@ assert_series_equal # tricky to use</code></pre>
 <blockquote>
 <p>“Cracks in the Ice - We ended the previous part with stating that with a good measure of abstraction, functional programming doesn’t offer a considerable advantage over the “traditional” way of design, object oriented. It’s a lie. […] In our pipeline example above with our Executors — how do you feed in the output of one executor as the input for the next one? well, you have to build that infrastructure. With functional programming, those abstractions are not abstractions that you have to custom build. They’re part of the language, mindset, and ecosystem. Generically speaking — it’s all about impedence mismatch and leaky abstractions and when it comes to data and functions; there’s no mismatch because it’s built up from the core. The thesis is — that to build a functional programming approach over an object-oriented playground — is going to crash and burn at one point or another: be it bad modeling of abstractions, performance problems, bad developer ergonomics, and the worst — wrong mindset. Being able to model problems and solutions in a functional way, transcends above traditional abstraction; the object-oriented approach, in comparison, is crude, inefficient and prone to maintenance problems."</p>
 </blockquote>
+<ul>
+<li><a href="https://www.stochasticlifestyle.com/why-numba-and-cython-are-not-substitutes-for-julia/">Why numba and cython are no substitute for Julia</a> discusses the advantages of the Julia language over Python for large code bases.</li>
+</ul>
 </div>
 </div>
 

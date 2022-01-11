@@ -73,6 +73,28 @@ to set separate files for attribution.
 [Pipenv](https://pipenv.pypa.io/en/latest/)
 makes pip and virtual env work together. 
 
+
+# Compilers
+
+## Numba just-in-time compiler
+
+[Numba User Manual](https://numba.readthedocs.io/en/stable/user/5minguide.html)
+
+> "When a call is made to a Numba-decorated function it is compiled to machine
+> code “just-in-time” for execution and all or part of your code can
+> subsequently run at native machine code speed!"
+
+
+## Pythran Ahead of time compiler
+
+https://github.com/serge-sans-paille/pythran
+
+> "Pythran is an ahead of time compiler for a subset of the Python language,
+> with a focus on scientific computing. It takes a Python module annotated with
+> a few interface descriptions and turns it into a native Python module with
+> the same interface, but (hopefully) faster."
+
+
 # Control flow
 
 dotnetperls: [not python](https://www.dotnetperls.com/not-python)
@@ -1158,6 +1180,7 @@ Append vs concatenate
     print(np.concatenate((a, b.T), axis=1))
     print(np.concatenate((a, b), axis=None))
 
+
 ## Random vector or matrices
 
     x = np.random.random([3,4])
@@ -1594,6 +1617,8 @@ List of index labels
             viper               4       5
             sidewinder          7       8
 
+Note: in the case of a multi index, use tuples for index selection, see section below on multi index selection with loc.
+
 Conditional that returns a boolean Series
 
     In :  df.loc[df['shield'] > 6]
@@ -1644,6 +1669,48 @@ Slice with integer labels for rows. Note that both the start and stop of the sli
           max_speed  shield
        8          4       5
        9          7       8
+
+
+#### Multi-index selection with loc
+
+Sample data copied from `help(df.loc)`:
+
+    tuples = [
+       ('cobra', 'mark i'), ('cobra', 'mark ii'),
+       ('sidewinder', 'mark i'), ('sidewinder', 'mark ii'),
+       ('viper', 'mark ii'), ('viper', 'mark iii')
+    ]
+    index = pandas.MultiIndex.from_tuples(tuples)
+    values = [[12, 2], [0, 4], [10, 20],
+            [1, 4], [7, 1], [16, 36]]
+    df = pandas.DataFrame(values, columns=['max_speed', 'shield'], index=index)
+  
+Single label. Note this returns a DataFrame with a single index.
+  
+    df.loc['cobra']
+  
+Single index tuple. Note this returns a Series.
+  
+    df.loc[('cobra', 'mark ii')]
+    df.loc[(:,'mark ii')]
+
+Single tuple. Note using ``[[]]`` returns a DataFrame.
+  
+    df.loc[[('cobra', 'mark ii')]]
+
+Single label for row and column. Similar to passing in a tuple, this
+returns a Series.
+  
+    df.loc['cobra', 'mark i']
+
+Slice from index tuple to single label
+
+    df.loc[('cobra', 'mark i'):'viper']
+
+Slice from index tuple to index tuple
+
+    df.loc[('cobra', 'mark i'):('viper', 'mark ii')]
+
 
 ### iloc 
 
@@ -1972,6 +2039,24 @@ weather](https://medium.com/bytehub-ai/what-does-machine-learning-have-to-do-wit
 
 Grammar of graphics for python
 https://github.com/has2k1/plotnine
+
+
+### Figure size
+
+Change the [plotnine figure
+size](https://plotnine.readthedocs.io/en/stable/generated/plotnine.options.figure_size.html)
+
+    import plotnine
+    plotnine.options.figure_size = (12, 8)
+
+
+### Facet grid
+
+Create a facet grid plot
+
+    from plotnine import ggplot, aes, geom_line, facet_grid, labs
+
+
 
 
 ## Seaborn
@@ -2763,4 +2848,9 @@ Podcast [talk python to me](https://talkpython.fm/)
 > abstraction; the object-oriented approach, in comparison, is crude,
 > inefficient and prone to maintenance problems."
 
+
+- [Why numba and cython are no substitute for
+  Julia](https://www.stochasticlifestyle.com/why-numba-and-cython-are-not-substitutes-for-julia/)
+  discusses the advantages of the Julia language over Python for large code
+  bases.
 

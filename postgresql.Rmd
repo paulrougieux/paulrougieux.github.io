@@ -22,7 +22,10 @@ PostgreSQL](https://wiki.debian.org/PostgreSql).
 
 In case you need to change the listening port (for example when I had to test
 postgresql on docker containers while keeping postgresql running locally)
+Edit the configuration file `/etc/postgresql/13/main/postgresql.conf` and
+change the port definition as follows
 
+    port = 5433
 
 
 # Start and stop the server
@@ -42,6 +45,8 @@ database and "R" cannot be used as a user name according to system policy.
 **Login as the postgres user!**
 
     sudo -i -u postgres
+    # In case postgresql is not on the default port 5432
+    export PGPORT=5433
 
 Now logged in as `postgres@machine_name` in the regular bash shell:
 
@@ -175,7 +180,7 @@ Tip:
 > slowest of the three because of its additional storage costs. In most
 > situations text or character varying should be used instead." 
 
-[SO answer]'https://stackoverflow.com/a/20334221/2641825)
+[SO answer](https://stackoverflow.com/a/20334221/2641825)
 
 > "Generally, there is no downside to using text in terms of
 > performance/memory. On the contrary: text is the optimum. Other types have
@@ -184,15 +189,16 @@ Tip:
 > operator type resolution."
 
 [differences between text and varchar](https://stackoverflow.com/a/4849030/2641825)
+
 > To sum it all up:
->> - char(n) – takes too much space when dealing with values shorter than n
->>   (pads them to n), and can lead to subtle errors because of adding
->>   trailing spaces, plus it is problematic to change the limit 
->> - varchar(n) – it's problematic to change the limit in live environment
->>   (requires exclusive lock while altering table) 
->> - varchar – just like text
->> - text – for me a winner – over (n) data types because it lacks their
->>    problems, and over varchar – because it has distinct name 
+> - char(n) – takes too much space when dealing with values shorter than n
+>   (pads them to n), and can lead to subtle errors because of adding
+>   trailing spaces, plus it is problematic to change the limit 
+> - varchar(n) – it's problematic to change the limit in live environment
+>   (requires exclusive lock while altering table) 
+> - varchar – just like text
+> - text – for me a winner – over (n) data types because it lacks their
+>    problems, and over varchar – because it has distinct name 
 
 
 In SQLite as well, character(n) doesn't seem to have any performance advantage.
@@ -291,6 +297,7 @@ schema](https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-
 
     \dt raw_comext.*;
     \dt raw_comtrade.*;
+    \dt raw_faostat*;
 
 
 ## Describe data types
