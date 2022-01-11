@@ -11,7 +11,7 @@
 
 
 
-<title>Bash Commands</title>
+<title>bash.knit</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -437,11 +437,14 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Bash Commands</h1>
 
 </div>
 
 
+<ul>
+<li></li>
+<li>title: “Bash Commands” output: html_document: toc: yes toc_float: true —</li>
+</ul>
 <pre class="r"><code>knitr::opts_chunk$set(eval=FALSE)</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
@@ -449,6 +452,17 @@ div.tocify {
 <p>Linux is the kernel of the operating system on top of which other programs are built. A detailed list of GNU core utilities is available under the command :</p>
 <pre><code>info coreutils </code></pre>
 <p>The page below also contains many commands from external tools that are not part of the GNU project.</p>
+<div id="environment-variables" class="section level2">
+<h2>Environment variables</h2>
+<p>Environment variables are the way the tell processes where resources are located. For example</p>
+<pre><code>export PYTHONPATH=&quot;$HOME/repos/biotrade/&quot;:$PYTHONPATH</code></pre>
+<p>Tells python where the biotrade package is located.</p>
+<p>PostGreSQL utilities <code>createuser</code> and <code>createdb</code> can be told which port to use by specifying the following environment variable beforehand:</p>
+<pre><code>export PGPORT=5433</code></pre>
+<p>The following variables can be used to specify a user and password inside a postgresql docker container</p>
+<pre><code>POSTGRES_USER=user_name
+POSTGRES_PASS=password</code></pre>
+</div>
 </div>
 <div id="command-history" class="section level1">
 <h1>Command history</h1>
@@ -473,9 +487,11 @@ div.tocify {
 <h2>Images to pdf</h2>
 <p>Convert one or more images to pdf</p>
 <pre><code>img2pdf img.jpg -o output.pdf </code></pre>
+<p>Convert a directory of JPG images into a printable A4 pdf:</p>
+<pre><code>img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG</code></pre>
 <p>The help page <code>man img3pd</code> explains the arguments</p>
 <blockquote>
-<p>Convert a directory of JPEG images into a PDF with printable A4 pages in landscape mode. On each page, the photo takes the maximum amount of space while preserving its aspect ratio and a print border of 2 cm on the top and bottom and 2.5 cm on the left and right hand side.</p>
+<p>Convert a directory of JPEG images into a PDF with printable A4 pages in <strong>landscape mode.</strong> On each page, the photo takes the maximum amount of space while preserving its aspect ratio and a print border of 2 cm on the top and bottom and 2.5 cm on the left and right hand side.</p>
 </blockquote>
 <pre><code>img2pdf --output out.pdf --pagesize A4^T --border 2cm:2.5cm *.jpg</code></pre>
 <blockquote>
@@ -664,55 +680,6 @@ java -Dfile.encoding=utf-8 -Xms256M -Xmx1024M -jar tabula.jar</code></pre>
 <pre><code>figlet</code></pre>
 </div>
 </div>
-<div id="copy-files" class="section level1">
-<h1>Copy files</h1>
-<p>To copy a file from /tmp/file.md to /tmp/file2.md</p>
-<pre><code>cp /tmp/file.md /tmp/file2.md</code></pre>
-<div id="rsync" class="section level2">
-<h2>Rsync</h2>
-<p>Rsync man page:</p>
-<blockquote>
-<p>Rsync is a fast and extraordinarily versatile file copying tool. It can copy locally, to/from another host over any remote shell, or to/from a remote rsync daemon. […] It is famous for its delta-transfer algorithm, which reduces the amount of data sent over the network by sending only the differences between the source files and the existing files in the destination. Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.</p>
-</blockquote>
-<p>The most important option is -a:</p>
-<pre><code>-a, --archive archive mode; equals -rlptgoD (no -H,-A,-X)</code></pre>
-<p>The option <code>-a</code> does all of the following:</p>
-<pre><code>-r, --recursive             recurse into directories
--l, --links                 copy symlinks as symlinks
--p, --perms                 preserve permissions
--t, --times                 preserve modification times
--g, --group                 preserve group
--o, --owner                 preserve owner (super-user only)
-    --devices               preserve device files (super-user only)
-    --specials              preserve special files
--D                          same as --devices --specials</code></pre>
-<p>Other options I have used:</p>
-<pre><code>-v, --verbose increase verbosity, use -vv for more verbose.
--z, --compress compress file data during the transfer</code></pre>
-<p>To sync <a href="https://stackoverflow.com/a/11111793/2641825">only some file extensions</a></p>
-<blockquote>
-<p>“So if we only want <code>*.sh</code> files we have to exclude all files <code>--exclude="*"</code>, include all directories <code>--include="*/"</code> and include all <code>*.sh</code> files <code>--include="*.sh"</code>.”</p>
-</blockquote>
-<p>Sync only <code>.mdb</code> files that are the output of a model</p>
-<pre><code>rsync -zav --include=&quot;*/&quot; --include=&quot;*.mdb&quot; --exclude=&quot;*&quot;  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/</code></pre>
-<div id="slash-or-no-slash" class="section level3">
-<h3>Slash or no slash</h3>
-<blockquote>
-<p>“A trailing slash on the source changes this behavior to avoid creating an additional directory level at the destination. You can think of a trailing / on a source as meaning”copy the contents of this directory" as opposed to “copy the directory by name”, but in both cases the attributes of the containing directory are transferred to the containing directory on the destination. In other words, each of the follow‐ ing commands copies the files in the same way, including their setting of the attributes of /dest/foo: "</p>
-</blockquote>
-<pre><code>rsync -av /src/foo /dest
-rsync -av /src/foo/ /dest/foo</code></pre>
-</div>
-</div>
-<div id="flatten-a-file-hierarchy" class="section level2">
-<h2>Flatten a file hierarchy</h2>
-<p>Copy all files in the folder hierarchy to a flat folder at the root. <a href="https://askubuntu.com/questions/633945/how-can-i-merge-multiple-directories-into-one">solution from askubuntu</a></p>
-<pre><code>find . -type f -print0 | xargs -0 -I file mv --backup=numbered file .</code></pre>
-<p>I also follow with <a href="https://unix.stackexchange.com/a/371393/85530">another command</a></p>
-<pre><code>rename &#39;s/((?:\..+)?)\.~(\d+)~$/_$2$1/&#39; *.~*~</code></pre>
-<p>to keep the numbering of duplicated files before the extension.</p>
-</div>
-</div>
 <div id="count" class="section level1">
 <h1>Count</h1>
 <div id="number-of-files" class="section level2">
@@ -839,11 +806,16 @@ mogrify -resize 2000 -type Grayscale -path ./small *.jpg</code></pre>
 </div>
 <div id="convert-1" class="section level3">
 <h3>Convert</h3>
-<p>Convert to different color scheme, other file format or rotate images.</p>
+<p>Convert to different color scheme, other file format or rotate images. For example to convert from png to jpg and change size</p>
+<pre><code>mogrify -resize 2000 -path ./newfolder -format jpg *.png</code></pre>
 <p>Convert to <a href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279">black and white</a> (tricky to get the threshold right):</p>
 <pre><code>convert picture1.jpg -threshold 40% picture2.jpg </code></pre>
 <p>Other option to convert to black and white <a href="https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images">good black and white bimodal images</a>:</p>
 <pre><code>convert -monochrome in.png out.png</code></pre>
+<p>Note this doesn’t result in smaller images. To get smaller files, set the <code>-quality</code> parameter to a value between 1 and 100.</p>
+</div>
+<div id="rotate" class="section level3">
+<h3>Rotate</h3>
 <p>Batch processing, rotate all images clockwise or counter clockwise</p>
 <pre><code>mogrify -rotate 90 ../small/ *.JPG
 mogrify -rotate 270 ../small/ *.JPG</code></pre>
@@ -855,8 +827,6 @@ mogrify -rotate 270 ../small/ *.JPG</code></pre>
 <p><policy domain="resource" name="disk" value="1GiB"/></p>
 <p>to</p>
 <p><policy domain="resource" name="disk" value="4GiB"/></p>
-<p>Convert from png to jpg and change size</p>
-<pre><code>mogrify -resize 2000 -path ./newfolder -format jpg *.png</code></pre>
 </div>
 <div id="a4-portrait-scan-emulation" class="section level3">
 <h3>A4 portrait Scan emulation</h3>
@@ -864,7 +834,9 @@ mogrify -rotate 270 ../small/ *.JPG</code></pre>
 <pre><code>mkdir small
 mogrify -resize 2000 -rotate 90 -path ./small/ *.JPG
 cd small/
-img2pdf --output out.pdf --pagesize A4^T --border 2cm:2.5cm *.JPG</code></pre>
+img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG</code></pre>
+<p>Alternatively use a higher compression for smaller image sizes</p>
+<pre><code>mogrify  -quality 40 -path ./small/ *.JPG</code></pre>
 </div>
 </div>
 <div id="edit-music-files" class="section level2">
@@ -965,6 +937,12 @@ bla &quot;Export Quantity&quot; &quot;export_quantity&quot;</code></pre>
 0 17 * * 1-5 ln -f /etc/hosts_playtime /etc/hosts</code></pre>
 <p>I initially used <code>cp</code> instead of <code>ln -f</code>, but it’s better to make a hard link so any subsequent modification of /etc/hosts will actually be kept in one of the file, and not overwritten by the <code>cp</code>. I noticed that youtube.com was still available for a little while after I blocked it. I’m not sure it’s necessary or if you simply need to wait a little bit for the change to the hosts file to take effect. Anyway here is an instruction to restart networking and clear the DNS cache:</p>
 <pre><code>sudo /etc/init.d/networking restart</code></pre>
+</div>
+<div id="to-do-lists" class="section level2">
+<h2>To do lists</h2>
+<p><a href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
+<p>To add a small unit of work in the Kitchen project:</p>
+<pre><code>task add project:Kitchen Select floor tiles</code></pre>
 </div>
 </div>
 <div id="find" class="section level1">
@@ -1090,8 +1068,56 @@ xdg-open filename.mp4</code></pre>
 <p>The alias makes it possible to open files with the simple command</p>
 <pre><code>open .</code></pre>
 </div>
-<div id="organise" class="section level1">
-<h1>Organise</h1>
+<div id="move-copy-rename-compress-files" class="section level1">
+<h1>Move, copy, rename, compress files</h1>
+<p>Copy a file</p>
+<pre><code>cp file1 file2</code></pre>
+<p>To copy a file from /tmp/file.md to /tmp/file2.md</p>
+<pre><code>cp /tmp/file.md /tmp/file2.md</code></pre>
+<div id="rsync" class="section level2">
+<h2>Rsync</h2>
+<p>Rsync man page:</p>
+<blockquote>
+<p>Rsync is a fast and extraordinarily versatile file copying tool. It can copy locally, to/from another host over any remote shell, or to/from a remote rsync daemon. […] It is famous for its delta-transfer algorithm, which reduces the amount of data sent over the network by sending only the differences between the source files and the existing files in the destination. Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.</p>
+</blockquote>
+<p>The most important option is -a:</p>
+<pre><code>-a, --archive archive mode; equals -rlptgoD (no -H,-A,-X)</code></pre>
+<p>The option <code>-a</code> does all of the following:</p>
+<pre><code>-r, --recursive             recurse into directories
+-l, --links                 copy symlinks as symlinks
+-p, --perms                 preserve permissions
+-t, --times                 preserve modification times
+-g, --group                 preserve group
+-o, --owner                 preserve owner (super-user only)
+    --devices               preserve device files (super-user only)
+    --specials              preserve special files
+-D                          same as --devices --specials</code></pre>
+<p>Other options I have used:</p>
+<pre><code>-v, --verbose increase verbosity, use -vv for more verbose.
+-z, --compress compress file data during the transfer</code></pre>
+<p>To sync <a href="https://stackoverflow.com/a/11111793/2641825">only some file extensions</a></p>
+<blockquote>
+<p>“So if we only want <code>*.sh</code> files we have to exclude all files <code>--exclude="*"</code>, include all directories <code>--include="*/"</code> and include all <code>*.sh</code> files <code>--include="*.sh"</code>.”</p>
+</blockquote>
+<p>Sync only <code>.mdb</code> files that are the output of a model</p>
+<pre><code>rsync -zav --include=&quot;*/&quot; --include=&quot;*.mdb&quot; --exclude=&quot;*&quot;  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/</code></pre>
+<div id="slash-or-no-slash" class="section level3">
+<h3>Slash or no slash</h3>
+<blockquote>
+<p>“A trailing slash on the source changes this behavior to avoid creating an additional directory level at the destination. You can think of a trailing / on a source as meaning”copy the contents of this directory" as opposed to “copy the directory by name”, but in both cases the attributes of the containing directory are transferred to the containing directory on the destination. In other words, each of the follow‐ ing commands copies the files in the same way, including their setting of the attributes of /dest/foo: "</p>
+</blockquote>
+<pre><code>rsync -av /src/foo /dest
+rsync -av /src/foo/ /dest/foo</code></pre>
+</div>
+</div>
+<div id="flatten-a-file-hierarchy" class="section level2">
+<h2>Flatten a file hierarchy</h2>
+<p>Copy all files in the folder hierarchy to a flat folder at the root. <a href="https://askubuntu.com/questions/633945/how-can-i-merge-multiple-directories-into-one">solution from askubuntu</a></p>
+<pre><code>find . -type f -print0 | xargs -0 -I file mv --backup=numbered file .</code></pre>
+<p>I also follow with <a href="https://unix.stackexchange.com/a/371393/85530">another command</a></p>
+<pre><code>rename &#39;s/((?:\..+)?)\.~(\d+)~$/_$2$1/&#39; *.~*~</code></pre>
+<p>to keep the numbering of duplicated files before the extension.</p>
+</div>
 <div id="compress-and-decompress-files" class="section level2">
 <h2>Compress and decompress files</h2>
 <p>Compress a file using gzip or 7z compression</p>
@@ -1130,23 +1156,17 @@ tar --extract -f /path/to/file.tgz --one-top-leve
 <pre><code>zip dir.zip -r dir</code></pre>
 </div>
 </div>
-<div id="move-and-copy-files" class="section level2">
-<h2>Move and copy files</h2>
-<p>Copy a file</p>
-<pre><code>cp file1 file2</code></pre>
+<div id="recursive-copy-of-some-files" class="section level2">
+<h2>Recursive copy of some files</h2>
 <p><a href="https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure">Recursive copy some files while keeping the directory structure</a></p>
 <pre><code>find . -name &#39;*.csv&#39; -exec cp --parents \{\} /target \;</code></pre>
+<p>Move files from various sub folders to the same folder see the section on a flatten a file hierarchy for a description.</p>
+<pre><code>cd ~/Pictures/scan</code></pre>
 </div>
 <div id="rename-files" class="section level2">
 <h2>Rename files</h2>
 <p>For example to rename all upper-case .JPG extension into lower-case .jpg extension.</p>
 <pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
-</div>
-<div id="to-do-lists" class="section level2">
-<h2>To do lists</h2>
-<p><a href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
-<p>To add a small unit of work in the Kitchen project:</p>
-<pre><code>task add project:Kitchen Select floor tiles</code></pre>
 </div>
 </div>
 <div id="program-with-bash" class="section level1">
@@ -1453,6 +1473,10 @@ git diff</code></pre>
 <h2>Generate passwords</h2>
 <p><a href="https://packages.debian.org/buster/apg">apg</a> is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as “a maintained software with a comparable feature set becomes available”. Usage:</p>
 <pre><code>apg</code></pre>
+<p>A post on Unix &amp; Linux Stack Exchange recommends using <code>/dev/urandom</code> as such</p>
+<pre><code>cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | head -c 20</code></pre>
+<p>To create passwords that are hard for attackers to guess but easy to remember, have a look at this <a href="https://xkcd.com/936/">xkcd comic strip</a>. It explains how password entropy rises faster with the number of characters than with the character set weirdness.</p>
+<p>When possible, it’s better to authenticate with private and public key cryptography.</p>
 </div>
 <div id="ssh-secure-shell" class="section level2">
 <h2>SSH Secure Shell</h2>
@@ -1507,6 +1531,10 @@ eval `ssh-agent`</code></pre>
 <pre><code>Host host_name
   user paul
   hostname ip_address </code></pre>
+</div>
+<div id="passwordless-access-for-root-user" class="section level3">
+<h3>Passwordless access for root user</h3>
+<p><a href="https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-access-for-root-user">How to set up passwordless SSH access for root user</a></p>
 </div>
 </div>
 <div id="gpg-signing-keys" class="section level2">
@@ -1582,7 +1610,7 @@ du -hs * # sub-folder size summary</code></pre>
 <p>Display available RAM memory</p>
 <pre><code>cat /proc/meminfo</code></pre>
 </div>
-<div id="environment-variables" class="section level2">
+<div id="environment-variables-1" class="section level2">
 <h2>Environment variables</h2>
 <p>Show environment variables</p>
 <pre><code>printenv 

@@ -1,4 +1,5 @@
----
+-
+-
 title: "Bash Commands"
 output: 
   html_document: 
@@ -23,6 +24,28 @@ built. A detailed list of GNU core utilities is available under the command :
 
 The page below also contains many commands from external tools 
 that are not part of the GNU project.
+
+
+## Environment variables
+
+Environment variables are the way the tell processes where resources are located.
+For example 
+
+    export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
+
+Tells python where the biotrade package is located.
+
+PostGreSQL utilities `createuser` and  `createdb` can be told which port to use
+by specifying the following environment variable beforehand: 
+
+    export PGPORT=5433
+
+The following variables can be used to specify a user and password
+inside a postgresql docker container
+
+    POSTGRES_USER=user_name
+    POSTGRES_PASS=password
+
 
 # Command history
 
@@ -62,10 +85,14 @@ Convert one or more images to pdf
 
     img2pdf img.jpg -o output.pdf 
 
+Convert a directory of JPG images into a printable A4 pdf:
+
+    img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG
+
 The help page `man img3pd` explains the arguments
 
 > Convert a directory of JPEG images into a PDF with printable A4 pages in
-> landscape mode. On each page, the photo takes the maximum amount of space
+> **landscape mode.** On each page, the photo takes the maximum amount of space
 > while preserving its aspect ratio and a print border of 2 cm on the top and
 > bottom and 2.5 cm on the left and right hand side.
 
@@ -349,90 +376,6 @@ Convert text to large ascii art
     figlet
 
 
-# Copy files
-
-To copy a file from /tmp/file.md to /tmp/file2.md
-
-    cp /tmp/file.md /tmp/file2.md
-
-
-## Rsync 
-
-Rsync man page:
-
-> Rsync is a fast and extraordinarily versatile file copying tool. It can copy
-> locally, to/from another host over any remote shell, or to/from a remote
-> rsync daemon. [...] It is famous for its delta-transfer algorithm, which
-> reduces the amount of data sent over the network by sending only the
-> differences between the source files and the existing files in the
-> destination. Rsync is widely used for backups and mirroring and as an
-> improved copy command for everyday use.
-
-The most important option is -a:
-
-    -a, --archive archive mode; equals -rlptgoD (no -H,-A,-X)
-
-The option `-a` does all of the following:
-
-    -r, --recursive             recurse into directories
-    -l, --links                 copy symlinks as symlinks
-    -p, --perms                 preserve permissions
-    -t, --times                 preserve modification times
-    -g, --group                 preserve group
-    -o, --owner                 preserve owner (super-user only)
-        --devices               preserve device files (super-user only)
-        --specials              preserve special files
-    -D                          same as --devices --specials
-
-Other options I have used: 
-
-    -v, --verbose increase verbosity, use -vv for more verbose.
-    -z, --compress compress file data during the transfer
-
-
-To sync [only some file
-extensions](https://stackoverflow.com/a/11111793/2641825)
-
-> "So if we only want `*.sh` files we have to exclude all files `--exclude="*"`,
-> include all directories `--include="*/"` and include all `*.sh` files
-> `--include="*.sh"`."
-
-Sync only `.mdb` files that are the output of a model
-
-    rsync -zav --include="*/" --include="*.mdb" --exclude="*"  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/
-
-
-### Slash or no slash
-
-> "A trailing slash on the source changes this behavior to avoid creating an
-> additional directory level at the destination. You can think of a trailing /
-> on a source as meaning "copy the contents of this directory" as opposed to
-> "copy the directory by name", but in both cases the attributes of the
-> containing directory are transferred to the containing directory on the
-> destination. In other words, each of the follow‐ ing commands copies the
-> files in the same way, including their setting of the attributes of
-> /dest/foo: "
-
-    rsync -av /src/foo /dest
-    rsync -av /src/foo/ /dest/foo
-
-
-## Flatten a file hierarchy
-
-Copy all files in the folder hierarchy to a flat folder at the root.
-[solution from
-askubuntu](https://askubuntu.com/questions/633945/how-can-i-merge-multiple-directories-into-one)
-
-    find . -type f -print0 | xargs -0 -I file mv --backup=numbered file .
-
-I also follow with [another
-command](https://unix.stackexchange.com/a/371393/85530)  
-
-    rename 's/((?:\..+)?)\.~(\d+)~$/_$2$1/' *.~*~
-
-to keep the numbering of duplicated files before the extension. 
-
-
 # Count
 
 ## Number of files
@@ -629,6 +572,9 @@ Batch processing, resize all jpg images and place the resized images in a new fo
 ### Convert
 
 Convert to different color scheme, other file format or rotate images.
+For example to convert from png to jpg and change size
+
+    mogrify -resize 2000 -path ./newfolder -format jpg *.png
 
 Convert to [black and white](http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279)
 (tricky to get the threshold right): 
@@ -639,6 +585,12 @@ Other option to convert to black and white [good black and white bimodal
 images](https://superuser.com/questions/75373/convert-color-photos-of-documents-to-good-black-and-white-bitonal-images):
 
     convert -monochrome in.png out.png
+
+Note this doesn't result in smaller images. To get smaller files, set the
+`-quality` parameter to a value between 1 and 100.
+
+
+### Rotate
 
 Batch processing, rotate all images clockwise or counter clockwise
 
@@ -663,9 +615,6 @@ to
 
 <policy domain="resource" name="disk" value="4GiB"/>
 
-Convert from png to jpg and change size
-
-    mogrify -resize 2000 -path ./newfolder -format jpg *.png
 
 ### A4 portrait Scan emulation
 
@@ -676,7 +625,11 @@ pixel wide and rotate them 90 degrees, then combine all images in a pdf.
     mkdir small
     mogrify -resize 2000 -rotate 90 -path ./small/ *.JPG
     cd small/
-    img2pdf --output out.pdf --pagesize A4^T --border 2cm:2.5cm *.JPG
+    img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG
+
+Alternatively use a higher compression for smaller image sizes
+
+    mogrify  -quality 40 -path ./small/ *.JPG
 
 
 ## Edit music files
@@ -824,6 +777,16 @@ bit for the change to the hosts file to take effect. Anyway here is an
 instruction to restart networking and clear the DNS cache: 
 
     sudo /etc/init.d/networking restart
+
+To do lists
+-----------
+
+[Taskwarrior](https://taskwarrior.org/docs/best-practices.html)
+
+To add a small unit of work in the Kitchen project:
+
+    task add project:Kitchen Select floor tiles
+
 
 # Find
 
@@ -1037,7 +1000,93 @@ The alias makes it possible to open files with the simple command
     open .
 
 
-# Organise
+# Move, copy, rename, compress files
+
+Copy a file
+
+    cp file1 file2
+
+To copy a file from /tmp/file.md to /tmp/file2.md
+
+    cp /tmp/file.md /tmp/file2.md
+
+
+## Rsync
+
+Rsync man page:
+
+> Rsync is a fast and extraordinarily versatile file copying tool. It can copy
+> locally, to/from another host over any remote shell, or to/from a remote
+> rsync daemon. [...] It is famous for its delta-transfer algorithm, which
+> reduces the amount of data sent over the network by sending only the
+> differences between the source files and the existing files in the
+> destination. Rsync is widely used for backups and mirroring and as an
+> improved copy command for everyday use.
+
+The most important option is -a:
+
+    -a, --archive archive mode; equals -rlptgoD (no -H,-A,-X)
+
+The option `-a` does all of the following:
+
+    -r, --recursive             recurse into directories
+    -l, --links                 copy symlinks as symlinks
+    -p, --perms                 preserve permissions
+    -t, --times                 preserve modification times
+    -g, --group                 preserve group
+    -o, --owner                 preserve owner (super-user only)
+        --devices               preserve device files (super-user only)
+        --specials              preserve special files
+    -D                          same as --devices --specials
+
+Other options I have used: 
+
+    -v, --verbose increase verbosity, use -vv for more verbose.
+    -z, --compress compress file data during the transfer
+
+
+To sync [only some file
+extensions](https://stackoverflow.com/a/11111793/2641825)
+
+> "So if we only want `*.sh` files we have to exclude all files `--exclude="*"`,
+> include all directories `--include="*/"` and include all `*.sh` files
+> `--include="*.sh"`."
+
+Sync only `.mdb` files that are the output of a model
+
+    rsync -zav --include="*/" --include="*.mdb" --exclude="*"  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/
+
+
+### Slash or no slash
+
+> "A trailing slash on the source changes this behavior to avoid creating an
+> additional directory level at the destination. You can think of a trailing /
+> on a source as meaning "copy the contents of this directory" as opposed to
+> "copy the directory by name", but in both cases the attributes of the
+> containing directory are transferred to the containing directory on the
+> destination. In other words, each of the follow‐ ing commands copies the
+> files in the same way, including their setting of the attributes of
+> /dest/foo: "
+
+    rsync -av /src/foo /dest
+    rsync -av /src/foo/ /dest/foo
+
+
+## Flatten a file hierarchy
+
+Copy all files in the folder hierarchy to a flat folder at the root.
+[solution from
+askubuntu](https://askubuntu.com/questions/633945/how-can-i-merge-multiple-directories-into-one)
+
+    find . -type f -print0 | xargs -0 -I file mv --backup=numbered file .
+
+I also follow with [another
+command](https://unix.stackexchange.com/a/371393/85530)  
+
+    rename 's/((?:\..+)?)\.~(\d+)~$/_$2$1/' *.~*~
+
+to keep the numbering of duplicated files before the extension. 
+
 
 ## Compress and decompress files
 
@@ -1094,29 +1143,28 @@ Create the zip archive of a directory
 
     zip dir.zip -r dir
 
-## Move and copy files
 
-Copy a file
 
-    cp file1 file2
+
+## Recursive copy of some files
 
 [Recursive copy some files while keeping the directory structure](https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure)
 
     find . -name '*.csv' -exec cp --parents \{\} /target \;
 
+Move files from various sub folders to the same folder see the section on a
+flatten a file hierarchy for a description.
+
+    cd ~/Pictures/scan
+
+
+
+
 ## Rename files
+
 For example to rename all upper-case .JPG extension into lower-case .jpg extension.
 
     rename 's/\.JPG$/\.jpg/' *.JPG
-
-## To do lists
-
-[Taskwarrior](https://taskwarrior.org/docs/best-practices.html)
-
-To add a small unit of work in the Kitchen project:
-
-    task add project:Kitchen Select floor tiles
-
 
 # Program with bash
 
@@ -1405,10 +1453,21 @@ Usage, for example replace 'word' with 'sword':
 
 ## Generate passwords
 
-[apg](https://packages.debian.org/buster/apg) is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as "a maintained software with a comparable feature set becomes available".
-Usage:
+[apg](https://packages.debian.org/buster/apg) is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as "a maintained software with a comparable feature set becomes available". Usage:
 
     apg
+
+A post on Unix & Linux Stack Exchange recommends using `/dev/urandom` as such
+
+    cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 20
+
+To create passwords that are hard for attackers to guess but easy to remember,
+have a look at this [xkcd comic strip](https://xkcd.com/936/). It explains how
+password entropy rises faster with the number of characters than with the
+character set weirdness.
+
+When possible, it's better to authenticate with private and public key
+cryptography.
 
 
 ## SSH Secure Shell
@@ -1506,6 +1565,11 @@ To speed up login aliases can be set up in ~/.ssh/config
     Host host_name
       user paul
       hostname ip_address 
+
+
+### Passwordless access for root user
+
+[How to set up passwordless SSH access for root user](https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-access-for-root-user)
 
 
 ## GPG signing keys
