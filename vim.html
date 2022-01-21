@@ -466,11 +466,12 @@ div.tocify {
 <p>Prevent tab expanding to space in make files <a href="https://stackoverflow.com/a/158990/2641825">SO answer</a>:</p>
 <pre><code>autocmd FileType make set noexpandtab</code></pre>
 </div>
-<div id="azerty-keyboard" class="section level2">
-<h2>AZERTY Keyboard</h2>
+<div id="keyboard-azerty-quertz" class="section level2">
+<h2>Keyboard AZERTY, QUERTZ</h2>
 <ul>
 <li>SO <a href="https://stackoverflow.com/questions/33245317/vim-and-azerty-keyboards">Configure vim for AZERTY keyboards</a></li>
 <li>Reddit <a href="https://www.reddit.com/r/vim/comments/2tvupe/azerty_keymapping/">AZERTY keymapping</a></li>
+<li>Reddit <a href="https://www.reddit.com/r/vim/comments/9bh6ql/vim_on_czqwertz/">Vim on CZ QUERTZ</a></li>
 </ul>
 <p>I mapped m to the end of line, maybe I should use m instead?</p>
 <pre><code>noremap m $</code></pre>
@@ -709,6 +710,17 @@ of each line: &gt;
 Ctrl-R: Redo changes which were undone (undo the undos). 
 Compare to &#39;.&#39; to repeat a previous change, at the current cursor position.
 Ctrl-R will redo a previously undone change, wherever the change occurred. </code></pre>
+<div id="navigate-the-change-list" class="section level3">
+<h3>Navigate the change list</h3>
+<p>Jump to previous or next editing position <code>:help g;</code></p>
+<blockquote>
+<p>When making a change the cursor position is remembered. One position is remembered for every change that can be undone, unless it is close to a previous change. Two commands can be used to jump to positions of changes, also those that have been undone:</p>
+<pre><code>                      *g;* *E662*</code></pre>
+<p>g; Go to [count] older position in change list. If [count] is larger than the number of older change positions go to the oldest change. If there is no older change an error message is given. (not a motion command) {not available without the |+jumplist| feature}</p>
+<pre><code>                      *g,* *E663*</code></pre>
+<p>g, Go to [count] newer cursor position in change list. Just like |g;| but in the opposite direction. (not a motion command) {not available without the |+jumplist| feature}</p>
+</blockquote>
+</div>
 </div>
 <div id="replace-characters" class="section level2">
 <h2>Replace characters</h2>
@@ -1091,11 +1103,13 @@ c-w-= to restore. </code></pre>
 <div id="explore-files" class="section level2">
 <h2>Explore files</h2>
 <p>Vim comes with a file explorer:</p>
-<pre><code>:E
+<pre><code>:Explore
+:E</code></pre>
+<p>The file explorer can also be opened in tabs or splits:</p>
+<pre><code>:Se
 :Le
+:Ve
 :Te</code></pre>
-<p>or</p>
-<pre><code>:Explore</code></pre>
 <p>To open a file in vim press enter. To open a file better suited for other applications, such as a pdf, an html file or an image, press</p>
 <pre><code>x</code></pre>
 <p>To <a href="https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file">return to file editing without opening any file</a> (and to switch back and forth between editing and explorer):</p>
@@ -1818,6 +1832,7 @@ set spell spelllang=de</code></pre>
 <h2>Demonstrations of vim use</h2>
 <p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a> I tried slime.</p>
 <p><a href="https://github.com/tridactyl/tridactyl">Browse the web in vim mode</a></p>
+<p><a href="https://towardsdatascience.com/boosting-your-data-science-workflow-with-vim-tmux-14505c5e016e">Boosting your data science workflow with vim+tmux</a></p>
 </div>
 <div id="learning-vim" class="section level2">
 <h2>Learning vim</h2>

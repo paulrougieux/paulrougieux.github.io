@@ -29,6 +29,7 @@ Text colour. Add syntax highlight to your .vimrc
 
     syntax enable
 
+
 ## File specific .vimrc options
 
 How to add a file extension to vim syntax highlight
@@ -48,16 +49,20 @@ Prevent tab expanding to space in make files [SO answer](https://stackoverflow.c
 
     autocmd FileType make set noexpandtab
 
-## AZERTY Keyboard
+
+## Keyboard AZERTY, QUERTZ 
 
 * SO [Configure vim for AZERTY keyboards](https://stackoverflow.com/questions/33245317/vim-and-azerty-keyboards)
 * Reddit [AZERTY keymapping](https://www.reddit.com/r/vim/comments/2tvupe/azerty_keymapping/)
+- Reddit [Vim on CZ
+  QUERTZ](https://www.reddit.com/r/vim/comments/9bh6ql/vim_on_czqwertz/)
 
 I mapped m to the end of line, maybe I should use m instead? 
 
     noremap m $
 
 See also mapping below.
+
 
 ## Colour themes
 
@@ -383,6 +388,31 @@ For more, see `help tabular`.
     Ctrl-R: Redo changes which were undone (undo the undos). 
     Compare to '.' to repeat a previous change, at the current cursor position.
     Ctrl-R will redo a previously undone change, wherever the change occurred. 
+
+
+### Navigate the change list
+
+Jump to previous or next editing position `:help g;`
+
+> When making a change the cursor position is remembered.  One position is
+> remembered for every change that can be undone, unless it is close to a
+> previous change.  Two commands can be used to jump to positions of changes,
+> also those that have been undone:
+> 
+>     						*g;* *E662*
+> g;			Go to [count] older position in change list.
+>     		If [count] is larger than the number of older change
+>     		positions go to the oldest change.
+>     		If there is no older change an error message is given.
+>     		(not a motion command)
+>     		{not available without the |+jumplist| feature}
+> 
+> 							*g,* *E663*
+> g,			Go to [count] newer cursor position in change list.
+> 			Just like |g;| but in the opposite direction.
+> 			(not a motion command)
+> 			{not available without the |+jumplist| feature}
+
 
 ## Replace characters
 
@@ -1005,13 +1035,15 @@ Enter `:line number` to jump to a particular line number.
 
 Vim comes with a file explorer:
 
-    :E
-    :Le
-    :Te
-
-or 
-
     :Explore
+    :E
+
+The file explorer can also be opened in tabs or splits:
+
+    :Se
+    :Le
+    :Ve
+    :Te
 
 To open a file in vim press enter. To open a file better suited for other
 applications, such as a pdf, an html file or an image, press 
@@ -2166,6 +2198,7 @@ I tried slime.
 
 [Browse the web in vim mode](https://github.com/tridactyl/tridactyl)
 
+[Boosting your data science workflow with vim+tmux](https://towardsdatascience.com/boosting-your-data-science-workflow-with-vim-tmux-14505c5e016e)
 
 ## Learning vim
 
