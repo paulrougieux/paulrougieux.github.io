@@ -1944,14 +1944,14 @@ The default for document files on Debian seems to be chmod 644, visible as &quot
 </ul>
 <p>VPN access also removes localisation of site searches on google and google maps.</p>
 <p>Example session,from a company wifi system which is probably blocking SSH traffic. The SSH connection breaks:</p>
-<pre><code>paul@debianpaul:~/repos$ ssh cbm1 
+<pre><code>paul@debian:~/repos$ ssh host 
 ssh_exchange_identification: Connection closed by remote host</code></pre>
 <p>I start the VPN:</p>
-<pre><code>paul@debianpaul:~/repos$ vpn connect
+<pre><code>paul@debian:~/repos$ vpn connect
 Connecting to France - Paris - 1...     100.0%                       
 Connected to France - Paris - 1</code></pre>
 <p>I try to reconnect to that server through SSH:</p>
-<pre><code>paul@debianpaul:~/repos$ ssh cbm1 
+<pre><code>paul@debian:~/repos$ ssh host 
 The authenticity of host &#39;[.......eu-west-1.compute.amazonaws.com] ([__IP__])&#39; can&#39;t be established.
 ECDSA key fingerprint is SHA256:PTwO1p7Q3XqPE4Gs+KH37XqH88ePDYh5bNqKXyVpGAE.
 Are you sure you want to continue connecting (yes/no)? yes
@@ -1961,7 +1961,7 @@ Warning: Permanently added &#39;[......eu-west-1.compute.amazonaws.com],[....]&#
 <p>The access point from Strasbourg prevented access to Elsevier publications. With the message: &gt; “There was a problem providing the content you requested”</p>
 <p>I complained to <a href="mailto:nlinfo@elsevier.com" class="email">nlinfo@elsevier.com</a> and received the following message::</p>
 <blockquote>
-<p>Dear Paul Thank you for your patience. My colleagues have informed me that the IP 92.118.13.115 where you are accessing from has been tagged with high amount of retrieving content from ScienceDirect.</p>
+<p>Dear Paul Thank you for your patience. My colleagues have informed me that the IP &lt;………….&gt; where you are accessing from has been tagged with high amount of retrieving content from ScienceDirect.</p>
 </blockquote>
 <blockquote>
 <p>We do understand that your purpose of downloading and searching of content is for personal, non-commercial or scholarly use and it is difficult to be getting warnings every time you download content from the site. Please be advised that Elsevier cares about the integrity of our product and ensure data protection. With this, ScienceDirect continuously monitor signals of excessive downloading of content thus explains the warning you might have encountered. Please note as well that only the IP has been tagged and this concern may be resolved by using a different IP network.</p>

@@ -2212,18 +2212,18 @@ VPN access also removes localisation of site searches on google and google maps.
 Example session,from a company wifi system which is probably blocking SSH traffic.
 The SSH connection breaks:
 
-    paul@debianpaul:~/repos$ ssh cbm1 
+    paul@debian:~/repos$ ssh host 
     ssh_exchange_identification: Connection closed by remote host
 
 I start the VPN:
 
-    paul@debianpaul:~/repos$ vpn connect
+    paul@debian:~/repos$ vpn connect
     Connecting to France - Paris - 1...     100.0%                       
     Connected to France - Paris - 1
 
 I try to reconnect to that server through SSH:
 
-    paul@debianpaul:~/repos$ ssh cbm1 
+    paul@debian:~/repos$ ssh host 
     The authenticity of host '[.......eu-west-1.compute.amazonaws.com] ([__IP__])' can't be established.
     ECDSA key fingerprint is SHA256:PTwO1p7Q3XqPE4Gs+KH37XqH88ePDYh5bNqKXyVpGAE.
     Are you sure you want to continue connecting (yes/no)? yes
@@ -2243,7 +2243,7 @@ With the message:
 I complained to <nlinfo@elsevier.com> and received the following message::
 
 > Dear Paul Thank you for your patience. My colleagues have informed me that
-> the IP 92.118.13.115 where you are accessing from has been tagged with high
+> the IP <.............> where you are accessing from has been tagged with high
 > amount of retrieving content from ScienceDirect.
 
 > We do understand that your purpose of downloading and searching of content is
