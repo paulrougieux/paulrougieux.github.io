@@ -730,6 +730,8 @@ YEARS = [str(x) for x in YEARS]
 <pre><code>ceci = {&#39;x&#39;:1, &#39;y&#39;:2, &#39;z&#39;:3}</code></pre>
 <p>Converts 2 lists into a dictionary</p>
 <pre><code>dict(zip([&#39;x&#39;, &#39;y&#39;, &#39;z&#39;], [1, 2, 3]))</code></pre>
+<p>Dictionary comprehension</p>
+<pre><code>d = {n: True for n in range(5)}</code></pre>
 <p>Loop over the key and values of a dictionary</p>
 <pre><code>for key, value in ceci.items():
     print(key, &quot;has the value&quot;, value)</code></pre>
@@ -1092,6 +1094,14 @@ jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipyn
         print(1/i)
     except Exception as e:
         print(&quot;Failed to compute:&quot;, str(e))</code></pre>
+<p>Handle empty data in pandas</p>
+<pre><code>from pandas.errors import EmptyDataError
+try:
+    df = gfpmx_data[s]
+    columns = df.columns
+except EmptyDataError:
+    print(f&quot;no data in file {s}&quot;)
+    columns = []</code></pre>
 </div>
 <div id="raising-exceptions" class="section level2">
 <h2>Raising Exceptions</h2>
@@ -1143,6 +1153,17 @@ a
 <li>Examples <a href="https://www.oreilly.com/ideas/5-reasons-you-need-to-learn-to-write-python-decorators">5 use cases for decorators</a></li>
 </ul>
 <p>I have used decorators to cache the function output along a data processing pipeline.</p>
+<div id="property-and-cached-property" class="section level3">
+<h3>Property and cached property</h3>
+<p>Since python 3.8 there is also a <code>@cached_property</code> decorator <a href="https://docs.python.org/dev/library/functools.html#functools.cached_property">functools.cached_property</a></p>
+<blockquote>
+<p>“Transform a method of a class into a property whose value is computed once and then cached as a normal attribute for the life of the instance. Similar to property(), with the addition of caching. Useful for expensive computed properties of instances that are otherwise effectively immutable.”</p>
+</blockquote>
+<p>There is also a <code>@cache</code> decorator <a href="https://docs.python.org/dev/library/functools.html#functools.cache">functools.cache</a> that creates:</p>
+<blockquote>
+<p>"a thin wrapper around a dictionary lookup for the function arguments. Because it never needs to evict old values, this is smaller and faster than lru_cache() with a size limit.</p>
+</blockquote>
+</div>
 </div>
 <div id="docstring-documentation" class="section level2">
 <h2>Docstring Documentation</h2>
@@ -1351,8 +1372,9 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
 <pre><code>import pandas </code></pre>
 <div id="creating-a-data-frame" class="section level2">
 <h2>Creating a data frame</h2>
-<p>You can create a data frame by passing a dictionary with column names as keys</p>
-<pre><code>pandas.DataFrame({&#39;x&#39;:range(0,3), &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
+<p>You can create a data frame by passing a <strong>dictionary of lists</strong> with column names as keys</p>
+<pre><code>pandas.DataFrame({&#39;x&#39;:range(0,3), 
+                  &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
        a  b
     0  0  3
     1  1  4
@@ -1560,9 +1582,9 @@ dft = pandas.DataFrame(
         &quot;B1970&quot;: {0: 2.5, 1: 1.2, 2: 0.7},
         &quot;B1980&quot;: {0: 3.2, 1: 1.3, 2: 0.1},
         &quot;X&quot;: dict(zip(range(3), np.random.randn(3))),
+        &quot;id&quot;:  {0: 0, 1: 1, 2: 2},
     }
 )
-dft[&quot;id&quot;] = dft.index
 dft
 pandas.wide_to_long(dft, stubnames=[&quot;A&quot;, &quot;B&quot;], i=&quot;id&quot;, j=&quot;year&quot;)</code></pre>
 </div>
@@ -1651,6 +1673,11 @@ Out:
                     max_speed  shield
         viper               4       5
         sidewinder          7       8</code></pre>
+<p>Selecting a cell with 2 lists returns a data frame</p>
+<pre><code>df.loc[[&quot;viper&quot;], [&quot;shield&quot;]]</code></pre>
+<p>Selecting cell with tuples (for multi indexes) or strings returns its value</p>
+<pre><code>df.loc[(&quot;viper&quot;), (&quot;shield&quot;)]
+df.loc[&quot;viper&quot;, &quot;shield&quot;]</code></pre>
 <p>Note: in the case of a multi index, use tuples for index selection, see section below on multi index selection with loc.</p>
 <p>Conditional that returns a boolean Series</p>
 <pre><code>In :  df.loc[df[&#39;shield&#39;] &gt; 6]
@@ -1836,6 +1863,60 @@ help(df.a.str)</code></pre>
 <pre><code>df[&#39;a&#39;].str.cat()</code></pre>
 <p>Replace elements in a character vector:</p>
 <pre><code>df[&#39;a&#39;].replace(&#39;a&#39;,&#39;b&#39;,regex=True)</code></pre>
+<div id="separate-a-columns-in-two-based-on-a-split-pattern" class="section level3">
+<h3>Separate a columns in two based on a split pattern</h3>
+<p>The “too many values to unpack” error can also be returned by the <code>str.split</code> method of pandas data frames.</p>
+<p>For example splitting a character vector on the “<code>,</code>” pattern:</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&quot;x&quot;: [&quot;a&quot;, &quot;a, b&quot;, &quot;a,b,c&quot;]})
+df.x.str.split(&quot;,&quot;)
+
+# 0          [a]
+# 1      [a,  b]
+# 2    [a, b, c]
+
+df.x.str.split(&quot;,&quot;, n=1)
+
+# 0         [a]
+# 1     [a,  b]
+# 2    [a, b,c]
+
+df.x.str.split(&quot;,&quot;, expand=True)
+
+#    0     1     2
+# 0  a  None  None
+# 1  a     b  None
+# 2  a     b     c
+
+df.x.str.split(&quot;,&quot;, n=1, expand=True)
+
+#    0     1
+# 0  a  None
+# 1  a     b
+# 2  a   b,c</code></pre>
+<p>The following version works only if each row has exactly 2 splits. It fails with the error “too many values to unpack (expected 2)” in this example:</p>
+<pre><code>df[&quot;y&quot;], df[&quot;z&quot;] = df.x.str.split(&quot;,&quot;, n=1)</code></pre>
+<p>The last version with both <code>n=1</code> and <code>expand=True</code> is the one to use for multiple vector assignment. It is equivalent to <a href="https://tidyr.tidyverse.org/reference/separate.html">tidyr::separate</a> in R.</p>
+<pre><code>df[[&quot;y&quot;, &quot;z&quot;]] = df.x.str.split(&quot;,&quot;, n=1, expand=True)
+df
+
+#        x  y     z
+# 0      a  a  None
+# 1   a, b  a     b
+# 2  a,b,c  a   b,c</code></pre>
+<p>According to the <a href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.split.html">documentation of pandas.Series.str.split</a> If n &gt; 0 and</p>
+<blockquote>
+<p>“If for a certain row the number of found splits &lt; n, append None for padding up to n if expand=True.”</p>
+</blockquote>
+</div>
+<div id="extract-columns-based-on-a-pattern" class="section level3">
+<h3>Extract columns based on a pattern</h3>
+<p>Place product patterns in a capture group for extraction</p>
+<pre><code>df = pandas.DataFrame({&quot;x&quot;: [&quot;am&quot;, &quot;an&quot;, &quot;o&quot;, &quot;bm&quot;, &quot;bn&quot;, &quot;cm&quot;]})
+product_pattern = &quot;a|b|c&quot;
+df[[&quot;product&quot;, &quot;element&quot;]] = df.x.str.extract(f&quot;({product_pattern})?(.*)&quot;)
+df</code></pre>
+</div>
 </div>
 <div id="difference-between-2-data-frames" class="section level2">
 <h2>Difference between 2 data frames</h2>
@@ -1870,6 +1951,11 @@ os.path.join(&#39;~&#39;,&#39;downloads&#39;)</code></pre>
 Path(&#39;~&#39;) / &#39;downloads&#39;</code></pre>
 <p>Data located in the home folder</p>
 <pre><code> data_dir = Path.home() / &quot;repos/data/&quot;</code></pre>
+<div id="list-all-files-in-a-directory" class="section level3">
+<h3>List all files in a directory</h3>
+<p>If <code>p</code> is a pathlib object you can list file names as such:</p>
+<pre><code>[x.name for x in p.glob(&#39;**/*.csv&#39;)]</code></pre>
+</div>
 </div>
 </div>
 <div id="plot" class="section level1">
@@ -2234,27 +2320,27 @@ df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&
 <tbody>
 <tr class="odd">
 <td>arrange</td>
-<td>sort_values</td>
+<td>df.sort_values(by=“y”, ascending=False)</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>df %&gt;% select(-a,-b)</td>
-<td>df.drop(columns=[‘a’, ‘b’])</td>
+<td>df.drop(columns=[‘x’, ‘y’])</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>select(a)</td>
-<td>df.filter(items=[‘a’])</td>
+<td>df.filter(items=[‘x’])</td>
 <td></td>
 </tr>
 <tr class="even">
 <td>select(contains(“a”))</td>
-<td>df.filter(regex=‘a’)</td>
+<td>df.filter(regex=‘x’)</td>
 <td></td>
 </tr>
 <tr class="odd">
 <td>filter</td>
-<td>query</td>
+<td>df.query(“y==‘b’”)</td>
 <td></td>
 </tr>
 <tr class="even">
@@ -2289,8 +2375,8 @@ df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&
 </tr>
 <tr class="even">
 <td>separate</td>
-<td>df[‘b’], df[‘c’] = df[‘a’].str.split(‘,’, 1).str</td>
-<td><a href="https://stackoverflow.com/a/57823566">pandas separate</a></td>
+<td>df[‘b’,‘c’] = df.a.str.split(‘,’,1,expand=True)</td>
+<td><a href="https://stackoverflow.com/a/57823566">pandas separate</a> str section</td>
 </tr>
 <tr class="odd">
 <td>summarize</td>
@@ -2353,7 +2439,7 @@ df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))<
 </div>
 <div id="string" class="section level1">
 <h1>String</h1>
-<p>See also string operations in pandas vectors.</p>
+<p>See also string operations in pandas character vectors.</p>
 <p><a href="https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects">SO answer</a> providing various ways to concatenate python strings.</p>
 <div id="string-formatting" class="section level2">
 <h2>String formatting</h2>
@@ -2368,6 +2454,27 @@ df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))<
 <p>Insert a suffix in a file name before the extension <a href="https://stackoverflow.com/a/2763772/2641825">SO anwser</a></p>
 <pre><code>import re
 re.sub(r&#39;(?:_a)?(\.[^\.]*)$&#39; , r&#39;_suff\1&#39;,&quot;long.file.name.jpg&quot;)</code></pre>
+</div>
+<div id="regex-search" class="section level2">
+<h2>Regex search</h2>
+<p>Search for patterns</p>
+<pre><code>import re
+re.findall(r&#39;\bf[a-z]*&#39;, &#39;which foot or hand fell fastest&#39;)
+[&#39;foot&#39;, &#39;fell&#39;, &#39;fastest&#39;]
+
+re.findall(r&#39;(\w+)=(\d+)&#39;, &#39;set width=20 and height=10&#39;)
+[(&#39;width&#39;, &#39;20&#39;), (&#39;height&#39;, &#39;10&#39;)]</code></pre>
+<p>Search for ab in baba:</p>
+<pre><code>re.search(&quot;ab&quot;, &quot;baba&quot;)</code></pre>
+<p>Search for the numeric after “value_”</p>
+<pre><code>re.findall(&quot;value_(\d+)&quot;, &quot;value_2022&quot;)</code></pre>
+<p>Search for the group values occurrence of the numeric after “value_”</p>
+<pre><code>re.search(&quot;(value)_(\d+)&quot;, &quot;value_2022&quot;).group(0)
+re.search(&quot;(value)_(\d+)&quot;, &quot;value_2022&quot;).group(1)
+re.search(&quot;(value)_(\d+)&quot;, &quot;value_2022&quot;).group(2)</code></pre>
+<p>Search charcters that are not value</p>
+<pre><code>l = [&quot;value123&quot;, &quot;a&quot;, &quot;b&quot;]
+[x for x in l if not re.search(&quot;value&quot;, x)]</code></pre>
 </div>
 </div>
 <div id="statistics" class="section level1">

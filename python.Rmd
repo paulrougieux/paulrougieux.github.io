@@ -407,6 +407,10 @@ Converts 2 lists into a dictionary
 
     dict(zip(['x', 'y', 'z'], [1, 2, 3]))
 
+Dictionary comprehension
+
+    d = {n: True for n in range(5)}
+
 Loop over the key and values of a dictionary
 
     for key, value in ceci.items():
@@ -882,6 +886,16 @@ Exceptions](https://docs.python.org/3/tutorial/errors.html#handling-exceptions).
         except Exception as e:
             print("Failed to compute:", str(e))
 
+Handle empty data in pandas
+
+    from pandas.errors import EmptyDataError
+    try:
+        df = gfpmx_data[s]
+        columns = df.columns
+    except EmptyDataError:
+        print(f"no data in file {s}")
+        columns = []
+
 
 ## Raising Exceptions
 
@@ -954,6 +968,26 @@ It is useful to repeat a pattern of behaviour around a function.
 
 I have used decorators to cache the function output
 along a data processing pipeline. 
+
+
+### Property and cached property
+
+
+
+
+Since python 3.8 there is also a `@cached_property` decorator
+[functools.cached_property](https://docs.python.org/dev/library/functools.html#functools.cached_property)
+
+> "Transform a method of a class into a property whose value is computed once
+> and then cached as a normal attribute for the life of the instance. Similar
+> to property(), with the addition of caching. Useful for expensive computed
+> properties of instances that are otherwise effectively immutable."
+
+There is also a `@cache` decorator
+[functools.cache](https://docs.python.org/dev/library/functools.html#functools.cache)
+that creates:
+
+> "a thin wrapper around a dictionary lookup for the function arguments. Because it never needs to evict old values, this is smaller and faster than lru_cache() with a size limit.
 
 
 ## Docstring Documentation 
@@ -1233,9 +1267,10 @@ All code below assumes you have imported pandas
 
 ## Creating a data frame
 
-You can create a data frame by passing a dictionary with column names as keys
+You can create a data frame by passing a **dictionary of lists** with column names as keys
 
-    pandas.DataFrame({'x':range(0,3), 'y':['a','b','c']})
+    pandas.DataFrame({'x':range(0,3), 
+                      'y':['a','b','c']})
            a  b
         0  0  3
         1  1  4
@@ -1508,9 +1543,9 @@ Reshape using the `wide_to_long` convenience function
             "B1970": {0: 2.5, 1: 1.2, 2: 0.7},
             "B1980": {0: 3.2, 1: 1.3, 2: 0.1},
             "X": dict(zip(range(3), np.random.randn(3))),
+            "id":  {0: 0, 1: 1, 2: 2},
         }
     )
-    dft["id"] = dft.index
     dft
     pandas.wide_to_long(dft, stubnames=["A", "B"], i="id", j="year")
 
@@ -1616,6 +1651,15 @@ List of index labels
                         max_speed  shield
             viper               4       5
             sidewinder          7       8
+
+Selecting a cell with 2 lists returns a data frame 
+
+    df.loc[["viper"], ["shield"]]
+
+Selecting cell with tuples (for multi indexes) or strings returns its value
+
+    df.loc[("viper"), ("shield")]
+    df.loc["viper", "shield"]
 
 Note: in the case of a multi index, use tuples for index selection, see section below on multi index selection with loc.
 
@@ -1868,6 +1912,75 @@ Replace elements in a character vector:
     df['a'].replace('a','b',regex=True)
 
 
+### Separate a columns in two based on a split pattern
+
+The "too many values to unpack" error can also be returned by the `str.split` method of pandas data frames.
+
+For example splitting a character vector on the "`,`" pattern:
+
+    import pandas
+    df = pandas.DataFrame({"x": ["a", "a, b", "a,b,c"]})
+    df.x.str.split(",")
+
+    # 0          [a]
+    # 1      [a,  b]
+    # 2    [a, b, c]
+
+    df.x.str.split(",", n=1)
+
+    # 0         [a]
+    # 1     [a,  b]
+    # 2    [a, b,c]
+
+    df.x.str.split(",", expand=True)
+
+    #    0     1     2
+    # 0  a  None  None
+    # 1  a     b  None
+    # 2  a     b     c
+
+    df.x.str.split(",", n=1, expand=True)
+
+    #    0     1
+    # 0  a  None
+    # 1  a     b
+    # 2  a   b,c
+
+The following version works only if each row has exactly 2 splits. It fails
+with the error “too many values to unpack (expected 2)” in this example:
+
+    df["y"], df["z"] = df.x.str.split(",", n=1)
+
+The last version with both `n=1` and `expand=True` is the one to use for
+multiple vector assignment. It is equivalent to
+[tidyr::separate](https://tidyr.tidyverse.org/reference/separate.html) in R.
+
+    df[["y", "z"]] = df.x.str.split(",", n=1, expand=True)
+    df
+
+    #        x  y     z
+    # 0      a  a  None
+    # 1   a, b  a     b
+    # 2  a,b,c  a   b,c
+
+According to the [documentation of
+pandas.Series.str.split](https://pandas.pydata.org/docs/reference/api/pandas.Series.str.split.html)
+If n > 0 and
+
+> "If for a certain row the number of found splits < n, append None for padding
+> up to n if expand=True."
+
+
+### Extract columns based on a pattern
+
+Place product patterns in a capture group for extraction
+
+    df = pandas.DataFrame({"x": ["am", "an", "o", "bm", "bn", "cm"]})
+    product_pattern = "a|b|c"
+    df[["product", "element"]] = df.x.str.extract(f"({product_pattern})?(.*)")
+    df
+
+
 ## Difference between 2 data frames
 
 * [Find difference between two data frames](https://stackoverflow.com/questions/48647534/python-pandas-find-difference-between-two-data-frames)
@@ -1914,6 +2027,13 @@ You can use:
 Data located in the home folder
 
      data_dir = Path.home() / "repos/data/"
+
+
+### List all files in a directory
+
+If `p` is a pathlib object you can list file names as such: 
+
+    [x.name for x in p.glob('**/*.csv')]
 
 
 # Plot
@@ -2352,18 +2472,18 @@ The mapping of tidyverse to pandas is:
 
 | tidyverse                 | pandas                                           | Help or SO questions                 |
 | ------------------------- | ------------------------------------------------ | -----------------------------        |
-| arrange                   | sort_values                                      |                                      |
-| df %>% select(-a,-b)      | df.drop(columns=['a', 'b'])                      |                                      |
-| select(a)                 | df.filter(items=['a'])                           |                                      |
-| select(contains("a"))     | df.filter(regex='a')                             |                                      |
-| filter                    | query                                            |                                      |
+| arrange                   | df.sort_values(by="y", ascending=False)          |                                      |
+| df %>% select(-a,-b)      | df.drop(columns=['x', 'y'])                      |                                      |
+| select(a)                 | df.filter(items=['x'])                           |                                      |
+| select(contains("a"))     | df.filter(regex='x')                             |                                      |
+| filter                    | df.query("y=='b'")                               |                                      |
 | group_by                  | groupby                                          |                                      |
 | lag                       | [shift]                                          | [pandas lag function][so_lag_pandas] |
 | mutate                    | df.assign(e = lambda x: x["a"] * 3)              | [assign]                             |
 | pivot_longer              | [melt] or [wide_to_long]                         |                                      |
 | pivot_wider               | [pivot]                                          |                                      |
 | rename                    | df.rename(columns={'a':'new'})                   |                                      |
-| separate                  | df['b'], df['c'] = df['a'].str.split(',', 1).str | [pandas separate]                    |
+| separate                  | df['b','c'] = df.a.str.split(',',1,expand=True)  | [pandas separate] str section        |
 | summarize                 | agg                                              |                                      |
 | unite                     | df["z"] = df.y + df.y                            | [pandas unite]                       |
 | unnest                    | [explode]                                        | [unnest in pandas][so_unnest]        |
@@ -2459,7 +2579,7 @@ python](https://www.mail-archive.com/python-ideas@python.org/msg15694.html).
 
 # String 
 
-See also string operations in pandas vectors.
+See also string operations in pandas character vectors.
 
 [SO answer ](https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects) 
 providing various ways to concatenate python strings.
@@ -2485,6 +2605,37 @@ Insert a suffix in a file name before the extension
 
     import re
     re.sub(r'(?:_a)?(\.[^\.]*)$' , r'_suff\1',"long.file.name.jpg")
+
+
+## Regex search
+
+Search for patterns
+
+    import re
+    re.findall(r'\bf[a-z]*', 'which foot or hand fell fastest')
+    ['foot', 'fell', 'fastest']
+
+    re.findall(r'(\w+)=(\d+)', 'set width=20 and height=10')
+    [('width', '20'), ('height', '10')]
+
+Search for ab in baba:
+
+    re.search("ab", "baba")
+
+Search for the numeric after "value_"
+
+    re.findall("value_(\d+)", "value_2022")
+
+Search for the group values occurrence of the numeric after "value_"
+
+    re.search("(value)_(\d+)", "value_2022").group(0)
+    re.search("(value)_(\d+)", "value_2022").group(1)
+    re.search("(value)_(\d+)", "value_2022").group(2)
+
+Search charcters that are not value
+
+    l = ["value123", "a", "b"]
+    [x for x in l if not re.search("value", x)]
 
 
 
