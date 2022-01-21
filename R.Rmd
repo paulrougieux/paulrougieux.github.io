@@ -303,10 +303,12 @@ expression](https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-
 Change columns to snake case
 
 ```{r}
-column_names <- c("Bla Bla", "Hips Hops", "Yield/Carcass Weight",
+column_names <- c("Bla, Bla", "Hips, Hops", "Yield/Carcass Weight",
                   "Production", "Producing Animals/Slaughtered",
                   "Area harvested", "Yield")
 gsub("[^[:alnum:]]","_",tolower(column_names))
+# Replace one or more by and underscore
+gsub("[^[:alnum:]]+","_",tolower(column_names))
 ```
 
 
@@ -838,6 +840,17 @@ package before or during the submission process.
 Upon submission CRAN runs an automated check of URL validity. This [blog
 post](https://blog.r-hub.io/2020/12/01/url-checks/) explains that URLS in
 vignettes and function documentations are checked.
+
+
+### Is it possible to rename a package on CRAN
+
+[Uwe Ligges on the R-devel mailing list](https://stat.ethz.ch/pipermail/r-devel/2013-August/067264.html):
+
+> "Renaming packages should be reduced to an absolute minimum and would
+> probably only accepted for legal concerns related to inappropriate package
+> names."
+
+[Related SO question](https://stackoverflow.com/questions/22654421/how-to-rename-an-existing-r-package-on-cran)
 
 
 # Plots
