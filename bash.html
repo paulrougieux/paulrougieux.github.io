@@ -963,6 +963,11 @@ find . -type f ! \( -name &#39;*.csv&#39; \)</code></pre>
 <pre><code>find . -maxdepth 1 -name &quot;*.pdf&quot; </code></pre>
 <p>Find files in the whole system</p>
 <pre><code>locate filename</code></pre>
+<div id="show-the-beginning-of-many-files" class="section level3">
+<h3>Show the beginning of many files</h3>
+<p>To show the beginning of many files in a hierarchy:</p>
+<pre><code>head $(find -name *.csv)</code></pre>
+</div>
 </div>
 <div id="get-information-about-a-file" class="section level2">
 <h2>Get information about a file</h2>

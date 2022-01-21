@@ -819,6 +819,14 @@ Find files in the whole system
 
     locate filename
 
+
+### Show the beginning of many files 
+
+To show the beginning of many files in a hierarchy:
+
+    head $(find -name *.csv)
+
+
 ## Get information about a file
 
 Determine file type and encoding. The -i option shows the mime type strings.
