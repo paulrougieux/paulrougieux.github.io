@@ -581,7 +581,17 @@ This pattern removes spaces at the end of the line:
 
 ## Copy, cut and paste
 
-Copy and paste with the following instructions
+Copy 
+
+    yy            The current line
+    yiw           The current word
+    ye            To the end of the current word
+    yip           The current paragraph
+    yG            To the end of the document
+
+Paste with `P` (before) or `p` (after) the cursor.
+
+Copy and paste in visual mode with the following instructions:
 
     Position the cursor where you want to begin cutting.
     Press v (or upper case V if you want to cut whole lines).
@@ -589,6 +599,14 @@ Copy and paste with the following instructions
     Press d to cut or y to yank (copy into the `"0` register).
     Move to where you would like to paste.
     Press P to paste before the cursor, or p to paste after. 
+
+Copy to a system register (to be used by other programs)
+
+    "+yy
+    "+yip
+
+See also the section on registers below and `:help "+` for more details on
+system registers.
 
 
 ### Paste the current line many times
@@ -647,6 +665,7 @@ For example yank the word "yank", delete the word "delete" and copy the word
     "*   system
     "+   system
     ".   ^@yank^@delete^@
+
 
 ### Replace a word
 
@@ -1884,22 +1903,23 @@ linters.
 
 ## Navigate code with tags 
 
-Install universtal ctags, the updated version
+Install [universal ctags](https://github.com/universal-ctags/ctags), the updated version
 
     sudo apt install universal-ctags
 
-This is the old version called exhuberant ctags (not updated since 2009):
+This is an updated version exuberant ctags (not updated since 2009).
 
-    # not needed if above is installed
-    sudo apt install ctags 
+I have defined shortcuts for the French AZERTY keyboard. I use `ctrl %` to jump to a
+tag, because it's besides the letter M, accessible with the little finger.
 
-Reddit [comparison of taglist and tagbar](https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/)
+- Reddit [comparison of taglist and
+  tagbar](https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/)
 
-### Base vim
-
+Help page for NvimR
+```
 :help RBuildTags
+```
 
-:he
 
 ### Taglist 
 

@@ -812,13 +812,24 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 </div>
 <div id="copy-cut-and-paste" class="section level2">
 <h2>Copy, cut and paste</h2>
-<p>Copy and paste with the following instructions</p>
+<p>Copy</p>
+<pre><code>yy            The current line
+yiw           The current word
+ye            To the end of the current word
+yip           The current paragraph
+yG            To the end of the document</code></pre>
+<p>Paste with <code>P</code> (before) or <code>p</code> (after) the cursor.</p>
+<p>Copy and paste in visual mode with the following instructions:</p>
 <pre><code>Position the cursor where you want to begin cutting.
 Press v (or upper case V if you want to cut whole lines).
 Move the cursor to the end of what you want to cut.
 Press d to cut or y to yank (copy into the `&quot;0` register).
 Move to where you would like to paste.
 Press P to paste before the cursor, or p to paste after. </code></pre>
+<p>Copy to a system register (to be used by other programs)</p>
+<pre><code>&quot;+yy
+&quot;+yip</code></pre>
+<p>See also the section on registers below and <code>:help "+</code> for more details on system registers.</p>
 <div id="paste-the-current-line-many-times" class="section level3">
 <h3>Paste the current line many times</h3>
 <p>Press <code>Y6p</code> to copy the following line 6 times</p>
@@ -1645,17 +1656,15 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 </div>
 <div id="navigate-code-with-tags" class="section level2">
 <h2>Navigate code with tags</h2>
-<p>Install universtal ctags, the updated version</p>
+<p>Install <a href="https://github.com/universal-ctags/ctags">universal ctags</a>, the updated version</p>
 <pre><code>sudo apt install universal-ctags</code></pre>
-<p>This is the old version called exhuberant ctags (not updated since 2009):</p>
-<pre><code># not needed if above is installed
-sudo apt install ctags </code></pre>
-<p>Reddit <a href="https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/">comparison of taglist and tagbar</a></p>
-<div id="base-vim" class="section level3">
-<h3>Base vim</h3>
-<p>:help RBuildTags</p>
-<p>:he</p>
-</div>
+<p>This is an updated version exuberant ctags (not updated since 2009).</p>
+<p>I have defined shortcuts for the French AZERTY keyboard. I use <code>ctrl %</code> to jump to a tag, because it’s besides the letter M, accessible with the little finger.</p>
+<ul>
+<li>Reddit <a href="https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/">comparison of taglist and tagbar</a></li>
+</ul>
+<p>Help page for NvimR</p>
+<pre><code>:help RBuildTags</code></pre>
 <div id="taglist" class="section level3">
 <h3>Taglist</h3>
 <p>Install the taglist plugin with vundle</p>
