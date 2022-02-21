@@ -541,6 +541,8 @@ echo &quot;The pdf document containing all images is located at: /tmp/bli/output
 <pre><code>pandoc filname.md -o filename.pdf
 # If there are utf-8 encoding issues, use another engine
 pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
+<p>Convert a markdown document to pptx</p>
+<pre><code>pandoc filname.md -o filename.pptx</code></pre>
 <p>Convert an odt document to markdown</p>
 <pre><code>pandoc filename.odt -o filename.md </code></pre>
 <p>Convert a Microsoft Word document to markdown</p>
@@ -1081,6 +1083,9 @@ xdg-open filename.mp4</code></pre>
 <pre><code>cp /tmp/file.md /tmp/file2.md</code></pre>
 <div id="rsync" class="section level2">
 <h2>Rsync</h2>
+<p>Copy a folder and all it’s content to a remote server:</p>
+<pre><code>rsync -zav ~/repos/forobs/tradetools/ edartrade:repos/tradetools/</code></pre>
+<p>Note the slash at the end of the first repo is very important, other wise it crease a sub repos with the same name inside <code>edartrade</code> on the remote machine. More explanations on the section slashes.</p>
 <p>Rsync man page:</p>
 <blockquote>
 <p>Rsync is a fast and extraordinarily versatile file copying tool. It can copy locally, to/from another host over any remote shell, or to/from a remote rsync daemon. […] It is famous for its delta-transfer algorithm, which reduces the amount of data sent over the network by sending only the differences between the source files and the existing files in the destination. Rsync is widely used for backups and mirroring and as an improved copy command for everyday use.</p>
@@ -1108,6 +1113,7 @@ xdg-open filename.mp4</code></pre>
 <pre><code>rsync -zav --include=&quot;*/&quot; --include=&quot;*.mdb&quot; --exclude=&quot;*&quot;  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/</code></pre>
 <div id="slash-or-no-slash" class="section level3">
 <h3>Slash or no slash</h3>
+<p><a href="https://stackoverflow.com/a/31278462/2641825">SO slashes and the rsync command</a> quoting the rsync man page:</p>
 <blockquote>
 <p>“A trailing slash on the source changes this behavior to avoid creating an additional directory level at the destination. You can think of a trailing / on a source as meaning”copy the contents of this directory" as opposed to “copy the directory by name”, but in both cases the attributes of the containing directory are transferred to the containing directory on the destination. In other words, each of the follow‐ ing commands copies the files in the same way, including their setting of the attributes of /dest/foo: "</p>
 </blockquote>
@@ -1451,6 +1457,14 @@ echo $message</code></pre>
 <h2>Read CSV in bash</h2>
 <p><a href="https://www.cyberciti.biz/faq/unix-linux-bash-read-comma-separated-cvsfile/">Read CSV in bash</a></p>
 </div>
+</div>
+<div id="record-a-terminal-session" class="section level1">
+<h1>Record a terminal session</h1>
+<p>Record a terminal session with tools such as:</p>
+<ul>
+<li><p>asciinema</p></li>
+<li><p>ttygif</p></li>
+</ul>
 </div>
 <div id="refactor" class="section level1">
 <h1>Refactor</h1>

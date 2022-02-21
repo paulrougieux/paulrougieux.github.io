@@ -178,6 +178,10 @@ Convert a markdown document to pdf
     # If there are utf-8 encoding issues, use another engine
     pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex
 
+Convert a markdown document to pptx
+
+    pandoc filname.md -o filename.pptx
+
 Convert an odt document to markdown
 
     pandoc filename.odt -o filename.md 
@@ -1021,6 +1025,14 @@ To copy a file from /tmp/file.md to /tmp/file2.md
 
 ## Rsync
 
+Copy a folder and all it's content to a remote server:
+
+    rsync -zav ~/repos/forobs/tradetools/ edartrade:repos/tradetools/
+
+Note the slash at the end of the first repo is very important, other wise it
+crease a sub repos with the same name inside `edartrade` on the remote machine.
+More explanations on the section slashes.
+
 Rsync man page:
 
 > Rsync is a fast and extraordinarily versatile file copying tool. It can copy
@@ -1066,6 +1078,10 @@ Sync only `.mdb` files that are the output of a model
 
 
 ### Slash or no slash
+
+[SO slashes and the rsync
+command](https://stackoverflow.com/a/31278462/2641825) quoting the rsync man
+page:
 
 > "A trailing slash on the source changes this behavior to avoid creating an
 > additional directory level at the destination. You can think of a trailing /
@@ -1424,6 +1440,15 @@ configuration menu, under the applications tab.
 
 [Read CSV in
 bash](https://www.cyberciti.biz/faq/unix-linux-bash-read-comma-separated-cvsfile/)
+
+
+# Record a terminal session
+
+Record a terminal session with tools such as:
+
+- asciinema
+
+- ttygif
 
 
 # Refactor
