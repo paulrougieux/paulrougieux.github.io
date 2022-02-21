@@ -29,14 +29,14 @@ stty -ixon
 export PATH=~/.npm-global/bin:$PATH
 
 # Paths for python modules
-export BIOTRADE_DATA="$HOME/repos/biotrade_data/"
+export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
 export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost:5433/biotrade"
 export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export GFTMX_DATA="$HOME/repos/gftmx_data/"
 export LIBCBM_DATA="$HOME/repos/libcbm_data/"
 export PYTHONPATH="$HOME/repos/autopaths/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/forobs/biotrade/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbm_defaults/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
