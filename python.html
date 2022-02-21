@@ -887,13 +887,13 @@ import urllib.request
 import tempfile
 
 # Create a request object with URL and headers    
-url = “http://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_Oceania.zip”
+url = &quot;http://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_Oceania.zip&quot;
 header = {&#39;User-Agent&#39;: &#39;Mozilla/5.0 (X11; Linux x86_64) &#39;}
 req = urllib.request.Request(url=url, headers=header)
 
 # Define the destination file
 dest_file = tempfile.gettempdir() + &#39;/&#39; + &#39;crop.zip&#39;
-print(f“File located at:{dest_file}”)
+print(f&quot;File located at:{dest_file}&quot;)
 
 # Create an http response object
 with urllib.request.urlopen(req) as response:
@@ -1108,7 +1108,11 @@ except EmptyDataError:
 <p>Python documentation on <a href="https://docs.python.org/3/tutorial/errors.html#raising-exceptions">Raising Exceptions</a></p>
 <pre><code>raise Exception(&#39;spam&#39;)
 raise ValueError(&#39;Not an acceptable value&#39;)
-raise NameError(&#39;Wrong name&#39;)</code></pre>
+raise NameError(&quot;Wrong name: %s&quot; % &quot;quack quack quack&quot;)</code></pre>
+<p>Display variables in the error message:</p>
+<pre><code>raise ValueError(&quot;This is wrong: %s&quot; % &quot;wrong_value&quot;)
+msg = &quot;Value %s and value %s have problems.&quot;
+raise ValueError(msg % (1, 2))</code></pre>
 </div>
 <div id="logging" class="section level2">
 <h2>Logging</h2>
@@ -1196,6 +1200,23 @@ a
 <p>Modulo</p>
 <pre><code>5%3
 # 2</code></pre>
+<div id="sympy" class="section level2">
+<h2>Sympy</h2>
+<p><a href="https://www.sympy.org/en/index.html" class="uri">https://www.sympy.org/en/index.html</a></p>
+<blockquote>
+<p>“SymPy is a Python library for symbolic mathematics. It aims to become a full-featured computer algebra system (CAS) while keeping the code as simple as possible in order to be comprehensible and easily extensible. SymPy is written entirely in Python.”</p>
+</blockquote>
+</div>
+</div>
+<div id="modelling" class="section level1">
+<h1>Modelling</h1>
+<div id="pyomo" class="section level2">
+<h2>Pyomo</h2>
+<p><a href="https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-with-Pyomo.html">Pyomo Cookbook</a></p>
+<blockquote>
+<p>“Pyomo is well suited to modeling simple and complex systems that can be described by linear or nonlinear algebraic, differential, and partial differential equations and constraints.”</p>
+</blockquote>
+</div>
 </div>
 <div id="numpy-vectors-and-matrices-arrays" class="section level1">
 <h1>Numpy vectors and matrices (arrays)</h1>
@@ -1329,6 +1350,18 @@ print(np.concatenate((a, b), axis=0))
 print(np.concatenate((a, b.T), axis=1))
 print(np.concatenate((a, b), axis=None))</code></pre>
 </div>
+<div id="power" class="section level2">
+<h2>Power</h2>
+<p>Power of an array</p>
+<pre><code>import numpy as np
+a = np.arange(4).reshape(2, 2)
+print(a)
+print(a**2)
+print(a*a)
+np.power(a, 2)</code></pre>
+<p>Broadcast the power operator</p>
+<pre><code>np.power(a, a)</code></pre>
+</div>
 <div id="random-vector-or-matrices" class="section level2">
 <h2>Random vector or matrices</h2>
 <pre><code>x = np.random.random([3,4])
@@ -1370,8 +1403,10 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
 <h1>Pandas data frames</h1>
 <p>All code below assumes you have imported pandas</p>
 <pre><code>import pandas </code></pre>
-<div id="creating-a-data-frame" class="section level2">
-<h2>Creating a data frame</h2>
+<div id="assign-values" class="section level2">
+<h2>Assign values</h2>
+<div id="create-a-data-frame" class="section level3">
+<h3>Create a data frame</h3>
 <p>You can create a data frame by passing a <strong>dictionary of lists</strong> with column names as keys</p>
 <pre><code>pandas.DataFrame({&#39;x&#39;:range(0,3), 
                   &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
@@ -1385,16 +1420,8 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
     columns=[&quot;x&quot;, &quot;y&quot;]
 )</code></pre>
 </div>
-<div id="converting-a-data-frame" class="section level2">
-<h2>Converting a data frame</h2>
-<p>Convert 2 columns to a dictionary</p>
-<pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3), 
-                       &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
-                       &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
-df.set_index(&#39;b&#39;).to_dict()[&#39;c&#39;]</code></pre>
-</div>
-<div id="assign-values" class="section level2">
-<h2>Assign values</h2>
+<div id="use-the-assign-method" class="section level3">
+<h3>Use the assign method</h3>
 <p>Create a new column based on another one</p>
 <pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3), 
                        &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
@@ -1402,8 +1429,9 @@ df.set_index(&#39;b&#39;).to_dict()[&#39;c&#39;]</code></pre>
 df[&quot;d&quot;] = df[&quot;a&quot;] * 2</code></pre>
 <p>Use the <code>assign</code> method</p>
 <pre><code>df.assign(e = lambda x: x[&quot;a&quot;] * 3)</code></pre>
-<div id="recursive-function-xt-depends-on-xt-1" class="section level3">
-<h3>Recursive function x(t) depends on x(t-1)</h3>
+</div>
+<div id="recursive-computation-xt-depends-on-xt-1" class="section level3">
+<h3>Recursive computation x(t) depends on x(t-1)</h3>
 <p>A recursive function is difficult to vectorize because each input at time t depends on the previous input at time t-1. When possible use a year index for shorter selection with <code>.loc()</code>.</p>
 <pre><code>import pandas
 df = pandas.DataFrame({&#39;year&#39;:range(2020,2024),&#39;a&#39;:range(3,7)})
@@ -1483,9 +1511,51 @@ print(df3)</code></pre>
 <p>“It is a general rule in programming that one should not mutate a container while it is being iterated over. Mutation will invalidate the iterator, causing unexpected behavior.” […] “To resolve this issue, one can make a copy so that the mutation does not apply to the container being iterated over.”</p>
 </blockquote>
 </div>
+<div id="set-values-with-.loc" class="section level3">
+<h3>Set values with .loc</h3>
+<p>Create an example data frame</p>
+<pre><code>import pandas
+df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                      index=[&#39;cobra&#39;, &#39;viper&#39;, &#39;sidewinder&#39;],
+                      columns=[&#39;max_speed&#39;, &#39;shield&#39;])</code></pre>
+<p>Set value for all items matching the list of labels</p>
+<pre><code>df.loc[[&#39;viper&#39;, &#39;sidewinder&#39;], [&#39;shield&#39;]] = 50
+
+#             max_speed  shield
+# cobra               1       2
+# viper               4      50
+# sidewinder          7      50</code></pre>
+</div>
+</div>
+<div id="convert-data-frames" class="section level2">
+<h2>Convert data frames</h2>
+<p>Convert 2 columns to a dictionary</p>
+<pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3), 
+                       &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
+                       &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
+df.set_index(&#39;b&#39;).to_dict()[&#39;c&#39;]</code></pre>
+</div>
+<div id="compare-data-frames" class="section level2">
+<h2>Compare data frames</h2>
+<p>Pure equality example from <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html">pandas.DataFrame.equals</a></p>
+<pre><code>import pandas
+df = pandas.DataFrame({1: [10], 2: [20]})
+exactly_equal = pandas.DataFrame({1: [10], 2: [20]})
+df.equals(exactly_equal)
+different_column_type = pandas.DataFrame({1.0: [10], 2.0: [20]})
+df.equals(different_column_type)
+different_data_type = pandas.DataFrame({1: [10.0], 2: [20.0]})
+df.equals(different_data_type)</code></pre>
+<p>Testing closeness (for example with floating point results computed in another software)</p>
+<pre><code>import numpy as np
+df.equals(df+1e-6)
+np.testing.assert_allclose(df,df+1e-7)
+np.testing.assert_allclose(df,df+1e-3)</code></pre>
 </div>
 <div id="columns" class="section level2">
 <h2>Columns</h2>
+<div id="list-columns" class="section level3">
+<h3>List Columns</h3>
 <p>List columns as an index object</p>
 <pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3),&#39;b&#39;:range(3,6)})
 df.columns</code></pre>
@@ -1495,6 +1565,7 @@ df.columns</code></pre>
 <pre><code>df[&#39;bla&#39;] = 0
 cols = df.columns.tolist()
 [name for name in cols if &#39;a&#39; in name]</code></pre>
+</div>
 <div id="rename-columns" class="section level3">
 <h3>Rename columns</h3>
 <p>Rename the ‘a’ column to ‘new’</p>
@@ -1537,9 +1608,77 @@ flights.query(&quot;month==&#39;January&#39;&quot;)
 flights.query(&quot;month==&#39;December&#39;&quot;)</code></pre>
 </div>
 </div>
-<div id="joining-and-merging" class="section level2">
-<h2>Joining and merging</h2>
+<div id="index" class="section level2">
+<h2>Index</h2>
+<p>Index can be converted back to a data frame See also index selection in the “.loc” section.</p>
+<div id="recursive-computation-on-a-index-in-a-loop" class="section level3">
+<h3>Recursive computation on a index in a loop</h3>
+<div id="simple-index-case" class="section level4">
+<h4>Simple index case</h4>
+<p>Compute in a loop based on the value of the previous year t-1. If there is a single value by year, scalar computation</p>
+<pre><code>df = pandas.DataFrame({&#39;x&#39;:range(0,10)})
+df.loc[0, &quot;y&quot;] = 2
+for t in range(1, len(df)):
+    df.loc[t, &quot;y&quot;] = pow(df.loc[t-1, &quot;y&quot;], df.loc[t, &quot;x&quot;]/2)
+df</code></pre>
+<p>If there are multiple values for each single year vector computation.</p>
+<pre><code>import itertools
+import pandas
+countries = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]
+years = range(1990, 2020)
+expand_grid = list(itertools.product(countries, years))
+df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))
+df[&quot;x&quot;] = 1
+df[&quot;x&quot;] = df[&quot;x&quot;].cumsum()
+df.set_index([&quot;year&quot;], inplace=True)
+df.loc[min(years), &quot;y&quot;] = 2
+for t in range(min(years)+1, max(years)+1):
+    df.loc[t, &quot;y&quot;] = pow(df.loc[t-1, &quot;y&quot;], df.loc[t, &quot;x&quot;]/2)
+df</code></pre>
+<p>Multi index case I would like to compute the consumption equation of a partial equilibrium model.</p>
+<pre><code>pandas.DataFrame({&#39;x&#39;:range(0,3), 
+                  &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
+
+for t in range(gfpmx_data.base_year + 1, years.max()+1):
+    # TODO: replace this loop by vectorized operations using only the index on years
+    for c in countries:
+        # Consumption
+        swd.loc[(t,c), &quot;cons2&quot;] = (swd.loc[(t, c), &quot;constant&quot;]
+                                   * pow(swd.loc[(t-1, c), &quot;price&quot;],
+                                         swd.loc[(t, c), &quot;price_elasticity&quot;])
+                                   * pow(swd.loc[(t, c), &quot;gdp&quot;],
+                                         swd.loc[(t, c), &quot;gdp_elasticity&quot;])
+                                  )
+swd[&#39;comp_prop&#39;] = swd.cons2 / swd.cons -1
+print(swd[&quot;comp_prop&quot;].abs().max())
+swd.query(&quot;year &gt;= 2019&quot;)</code></pre>
+</div>
+</div>
+</div>
+<div id="join-and-merge" class="section level2">
+<h2>Join and merge</h2>
 <p>Stackoverflow <a href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas merging</a></p>
+</div>
+<div id="pyarrow" class="section level2">
+<h2>PyArrow</h2>
+<ul>
+<li><a href="https://arrow.apache.org/overview/">Apache Arrow overview</a> explains the advantage of using a in memory columnar format to store data:</li>
+</ul>
+<blockquote>
+<p>“The Apache Arrow format allows computational routines and execution engines to maximize their efficiency when scanning and iterating large chunks of data. In particular, the contiguous columnar layout enables vectorization using the latest SIMD (Single Instruction, Multiple Data) operations included in modern processors.” “[…] a standardized memory format facilitates reuse of libraries of algorithms, even across languages.” “Arrow libraries for C (Glib), MATLAB, Python, R, and Ruby are built on top of the C++ library.”</p>
+</blockquote>
+<ul>
+<li><p><a href="https://arrow.apache.org/docs/python/pandas.html">PyArrow interface with pandas</a></p></li>
+<li><p><a href="https://arrow.apache.org/docs/python/csv.html">Read and write csv files</a></p></li>
+</ul>
+<div id="dask-data-frame" class="section level3">
+<h3>Dask data frame</h3>
+<p><a href="https://docs.dask.org/en/latest/dataframe.html" class="uri">https://docs.dask.org/en/latest/dataframe.html</a></p>
+</div>
+<div id="vaex" class="section level3">
+<h3>Vaex</h3>
+<p><a href="https://github.com/vaexio/vaex" class="uri">https://github.com/vaexio/vaex</a></p>
+</div>
 </div>
 <div id="read-and-write-csv" class="section level2">
 <h2>Read and write csv</h2>
@@ -1557,8 +1696,8 @@ df2 = pandas.read_csv(&#39;http://comtrade.un.org/api/get?max=500&amp;type=C&amp
 <pre><code> df1.to_csv(&quot;/tmp/comtrade.csv&quot;)</code></pre>
 </div>
 </div>
-<div id="reshaping" class="section level2">
-<h2>Reshaping</h2>
+<div id="reshape" class="section level2">
+<h2>Reshape</h2>
 <div id="from-wide-to-long" class="section level3">
 <h3>From wide to long</h3>
 <p><a href="https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt">The Pandas user guide on reshaping</a> gives several example using <code>melt</code> (easier to rename the “variable” and “value” columns) or <code>stack</code> (designed to work together with MultiIndex objects).</p>
@@ -1615,8 +1754,8 @@ df_wide
 # 2     4.0  3.0  NaN  5.0</code></pre>
 </div>
 </div>
-<div id="replacement" class="section level2">
-<h2>Replacement</h2>
+<div id="replace" class="section level2">
+<h2>Replace</h2>
 <p><a href="https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace">Pyton pandas equivalent for replace</a></p>
 <pre><code>import pandas
 s = pandas.Series([&quot;ape&quot;, &quot;monkey&quot;, &quot;seagull&quot;])
@@ -1653,8 +1792,8 @@ df.fillna({&quot;A&quot;:0, &quot;B&quot;:1}, inplace=True)
 df</code></pre>
 </div>
 </div>
-<div id="selection-with-loc-iloc-query-isin-and-xs" class="section level2">
-<h2>Selection with loc, iloc, query, isin and xs</h2>
+<div id="select-with-loc-iloc-query-isin-and-xs" class="section level2">
+<h2>Select with loc, iloc, query, isin and xs</h2>
 <ul>
 <li>blog <a href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select pandas data frame rows and columns using iloc and loc</a></li>
 </ul>
@@ -1684,14 +1823,6 @@ df.loc[&quot;viper&quot;, &quot;shield&quot;]</code></pre>
 Out:
                      max_speed  shield
          sidewinder          7       8</code></pre>
-<p>Select rows that are not in [‘cobra’,‘viper’] Based on a <a href="https://stackoverflow.com/a/29140194/2641825">SO answer use isin on the index</a>:</p>
-<pre><code>In : df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])
-Out: array([ True,  True, False])
-
-In : df.loc[~df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])]
-Out: 
-            max_speed  shield
-sidewinder          7       8</code></pre>
 <p>Slice with labels for row and labels for columns.</p>
 <pre><code>In :  df.loc[&#39;cobra&#39;:&#39;viper&#39;, &#39;max_speed&#39;:&#39;shield&#39;]
 Out:
@@ -1708,15 +1839,30 @@ Out:
         viper               4      50
         sidewinder          7      50</code></pre>
 <p>Another example using integers for the index</p>
-<pre><code>In : df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
-                           index=[7, 8, 9],
-                           columns=[&#39;max_speed&#39;, &#39;shield&#39;])</code></pre>
-<p>Slice with integer labels for rows. Note that both the start and stop of the slice are included.</p>
-<pre><code>In :  df.loc[8:9]
+<pre><code>df2 = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                      index=[7, 8, 9],
+                      columns=[&#39;max_speed&#39;, &#39;shield&#39;])</code></pre>
+<p>Slice with integer labels for rows. Note that <strong>both the start and stop of the slice</strong> are included. Python slices behave differently.</p>
+<pre><code>In :  df2.loc[8:9]
 Out:
       max_speed  shield
    8          4       5
    9          7       8</code></pre>
+<div id="index.isin" class="section level4">
+<h4>index.isin()</h4>
+<p>Using the same example as above, select rows that are not in [‘cobra’,‘viper’]. Based on a <a href="https://stackoverflow.com/a/29140194/2641825">SO answer use isin on the index</a>:</p>
+<pre><code>In : df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])
+Out: array([ True,  True, False])
+
+In : df.loc[~df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])]
+Out: 
+            max_speed  shield
+sidewinder          7       8</code></pre>
+<p>Or assign the selector to reuse it:</p>
+<pre><code>selector = df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])
+df.loc[selector]
+df.loc[~selector]</code></pre>
+</div>
 <div id="multi-index-selection-with-loc" class="section level4">
 <h4>Multi-index selection with loc</h4>
 <p>Sample data copied from <code>help(df.loc)</code>:</p>
@@ -1742,6 +1888,15 @@ df.loc[(:,&#39;mark ii&#39;)]</code></pre>
 <pre><code>df.loc[(&#39;cobra&#39;, &#39;mark i&#39;):&#39;viper&#39;]</code></pre>
 <p>Slice from index tuple to index tuple</p>
 <pre><code>df.loc[(&#39;cobra&#39;, &#39;mark i&#39;):(&#39;viper&#39;, &#39;mark ii&#39;)]</code></pre>
+<p>Invert a selection on the second index</p>
+<pre><code>df.loc[~df.index.isin([&quot;mark i&quot;], level=1)]</code></pre>
+</div>
+<div id="multi-index-slicers" class="section level4">
+<h4>Multi-index slicers</h4>
+<p><a href="https://stackoverflow.com/a/50414126/2641825">Using loc on just the second index in multi index</a> Using the same data frame as above.</p>
+<pre><code>idx = pandas.IndexSlice
+df.loc[idx[:, &quot;mark i&quot;],:]
+df.xs(&quot;mark i&quot;, level=1)</code></pre>
 </div>
 </div>
 <div id="iloc" class="section level3">
@@ -1829,6 +1984,7 @@ df.xs((&#39;mammal&#39;, &#39;dog&#39;))</code></pre>
 <pre><code>df.xs(key=&#39;cat&#39;, level=1)
 df.xs(key=(&#39;bird&#39;, &#39;walks&#39;),
       level=[0, &#39;locomotion&#39;])</code></pre>
+<p>Pandas <a href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.xs.html">DataFrame.xs</a> “cannot be used to set values.”</p>
 </div>
 <div id="determine-whether-a-column-contains-a-particular-value" class="section level3">
 <h3>Determine whether a column contains a particular value</h3>
@@ -2168,6 +2324,18 @@ plt.show()</code></pre>
 </ul>
 </div>
 </div>
+<div id="print" class="section level1">
+<h1>Print</h1>
+<p><a href="https://stackoverflow.com/a/21786287/2641825">How to print coloured text at the terminal?</a></p>
+<blockquote>
+<p>“Print a string that starts a color/style, then the string, and then end the color/style change with ‘1b[0m’.”</p>
+</blockquote>
+<p>For example</p>
+<pre><code>print(1000 * (&quot;\x1b[1;32;44m&quot; + &quot;Winter&quot; + &quot;\x1b[0m&quot; + &quot;, &quot; +
+              &quot;\x1b[1;32;42m&quot; + &quot;Spring&quot; + &quot;\x1b[0m&quot; + &quot;, &quot; +
+              &quot;\x1b[1;35;41m&quot; + &quot;Summer&quot; + &quot;\x1b[0m&quot; + &quot;, &quot; +
+              &quot;\x1b[1;35;45m&quot; + &quot;Autumn&quot; + &quot;\x1b[0m&quot; + &quot;, &quot;))</code></pre>
+</div>
 <div id="profiling" class="section level1">
 <h1>Profiling</h1>
 <p><a href="https://stackoverflow.com/questions/2866380/how-can-i-time-a-code-segment-for-testing-performance-with-pythons-timeit">How can I time a code segment for testing performance with Pythons timeit?</a></p>
@@ -2407,8 +2575,8 @@ df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&
 <p>This <a href="https://stackoverflow.com/a/60371544/2641825">SO answer</a> provides an implementation of expand grid using itertools:</p>
 <pre><code>import itertools
 import pandas
-countries = self.by_country_year[&#39;country&#39;].drop_duplicates()
-years = range(1990, datetime.now().year)
+countries = [&quot;a&quot;,&quot;b&quot;,&quot;c&quot;,&quot;d&quot;]
+years = range(1990, 2020)
 expand_grid = list(itertools.product(countries, years))
 df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))</code></pre>
 <p>Another <a href="https://stackoverflow.com/a/64449660/2641825">SO answer on the same topic</a></p>
@@ -2673,7 +2841,7 @@ os.name</code></pre>
 </div>
 <div id="pytest" class="section level2">
 <h2>pytest</h2>
-<p>Numpy moved from nose to pytest in their, as explained in their <a href="https://docs.scipy.org/doc/numpy/reference/testing.html">testing guidelines</a>:</p>
+<p>Numpy moved from nose to pytest as explained in their <a href="https://docs.scipy.org/doc/numpy/reference/testing.html">testing guidelines</a>:</p>
 <blockquote>
 <p>“Until the 1.15 release, NumPy used the nose testing framework, it now uses the pytest framework. The older framework is still maintained in order to support downstream projects that use the old numpy framework, but all tests for NumPy should use pytest.”</p>
 </blockquote>
@@ -2701,26 +2869,74 @@ py.test</code></pre>
 assert_series_equal # tricky to use</code></pre>
 </div>
 </div>
-<div id="web-frameworks" class="section level1">
-<h1>Web Frameworks</h1>
+<div id="web" class="section level1">
+<h1>Web</h1>
+<div id="back-end-api" class="section level2">
+<h2>Back-end API</h2>
+<ul>
+<li><p><a href="https://fastapi.tiangolo.com/" class="uri">https://fastapi.tiangolo.com/</a> seems to be a recommended way to create python APIs.</p></li>
+<li><p>Django API</p></li>
+<li><p>Flask API</p></li>
+</ul>
+</div>
+<div id="frameworks" class="section level2">
+<h2>Frameworks</h2>
 <p><a href="asynchrosnus://www.codementor.io/garethdwyer/flask-vs-django-why-flask-might-be-better-4xs7mdf8v">Flask vs. Django</a></p>
 <p>Note: <a href="http://pgjones.gitlab.io/quart/flask_evolution.html#flask-evolution">Flask Evolution into Quart</a> to support <a href="http://pgjones.gitlab.io/quart/asyncio.html#asyncio">asyncio</a> This last link contains a nice, simple example of how asyncio works with a simulated delay to fetch a web page.</p>
 </div>
-<div id="media" class="section level1">
-<h1>Media</h1>
-<p>Podcast <a href="https://talkpython.fm/">talk python to me</a> * <a href="https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition">Data science year in review</a></p>
+</div>
+<div id="media-and-organizations" class="section level1">
+<h1>Media and organizations</h1>
 <div id="blogs" class="section level2">
 <h2>Blogs</h2>
 <ul>
-<li><p><a href="https://blog.juliobiason.me/thoughts/things-i-learnt-the-hard-way/">Things I Learnt The Hard Way (in 30 Years of Software Development)</a></p></li>
-<li><p><a href="https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/">I do not use a debugger</a> &gt;““Debuggers don’t remove bugs. They only show them in slow motion.” <a href="https://lwn.net/2000/0914/a/lt-debugger.php3">Linus Toarvald doesn’t use a debugger</a></p></li>
-<li><p>Dotan Nahum <a href="https://jondot.medium.com/functional-programming-with-python-for-people-without-time-1eebdbd9526c">Functional Programming with Python for People Without Time</a></p></li>
-</ul>
+<li><p>Julio Biason <a href="https://blog.juliobiason.me/thoughts/things-i-learnt-the-hard-way/">Things I Learnt The Hard Way (in 30 Years of Software Development)</a></p></li>
+<li><p>Daniel Lemire <a href="https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/">I do not use a debugger</a></p>
+<blockquote>
+<p>“Debuggers don’t remove bugs. They only show them in slow motion.”</p>
+</blockquote>
+<p><a href="https://lwn.net/2000/0914/a/lt-debugger.php3">Linus Toarvald doesn’t use a debugger</a></p></li>
+<li><p>Wes McKinney</p>
+<ul>
+<li><p>2017 <a href="https://wesmckinney.com/blog/apache-arrow-pandas-internals/">Apache Arrow and the 10 things I hate about pandas</a></p>
+<blockquote>
+<p>“pandas rule of thumb: have 5 to 10 times as much RAM as the size of your dataset”</p>
+</blockquote></li>
+<li><p>2018 <a href="https://wesmckinney.com/blog/announcing-ursalabs/">Announcing Ursalabs</a></p>
+<blockquote>
+<p>“It has long been a frustration of mine that it isn’t easier to share code and systems between R and Python. This is part of why working on Arrow has been so important for me; it provides a path to sharing of systems code outside of Python by enabling free interoperability at the data level.”</p>
+</blockquote>
+<blockquote>
+<p>“Critically, RStudio has avoided the “<strong>startup trap</strong>” and managed to build a sustainable business while still investing the vast majority of its engineering resources in <strong>open source development</strong>. Nearly 9 years have passed since J.J. started building the RStudio IDE, but in many ways he and Hadley and others feel like they are just getting started."</p>
+</blockquote></li>
+</ul></li>
+<li><p>Dotan Nahum <a href="https://jondot.medium.com/functional-programming-with-python-for-people-without-time-1eebdbd9526c">Functional Programming with Python for People Without Time</a></p>
 <blockquote>
 <p>“Cracks in the Ice - We ended the previous part with stating that with a good measure of abstraction, functional programming doesn’t offer a considerable advantage over the “traditional” way of design, object oriented. It’s a lie. […] In our pipeline example above with our Executors — how do you feed in the output of one executor as the input for the next one? well, you have to build that infrastructure. With functional programming, those abstractions are not abstractions that you have to custom build. They’re part of the language, mindset, and ecosystem. Generically speaking — it’s all about impedence mismatch and leaky abstractions and when it comes to data and functions; there’s no mismatch because it’s built up from the core. The thesis is — that to build a functional programming approach over an object-oriented playground — is going to crash and burn at one point or another: be it bad modeling of abstractions, performance problems, bad developer ergonomics, and the worst — wrong mindset. Being able to model problems and solutions in a functional way, transcends above traditional abstraction; the object-oriented approach, in comparison, is crude, inefficient and prone to maintenance problems."</p>
-</blockquote>
+</blockquote></li>
+<li><p>Christopher Rackauckas <a href="https://www.stochasticlifestyle.com/why-numba-and-cython-are-not-substitutes-for-julia/">Why numba and cython are no substitute for Julia</a> discusses the advantages of the Julia language over Python for large code bases.</p></li>
+<li><p>Ethan Rosenthal <a href="https://www.ethanrosenthal.com/2022/02/01/everything-gets-a-package/">Everything Gets a Package: My Python Data Science Setup</a></p></li>
+</ul>
+</div>
+<div id="foundations" class="section level2">
+<h2>Foundations</h2>
 <ul>
-<li><a href="https://www.stochasticlifestyle.com/why-numba-and-cython-are-not-substitutes-for-julia/">Why numba and cython are no substitute for Julia</a> discusses the advantages of the Julia language over Python for large code bases.</li>
+<li><p><a href="https://www.coin-or.org/projects/">COIN-OR project</a> “open source for the operations research community”</p>
+<blockquote>
+<p>“Without open source implementations of existing algorithms, testing new ideas built on existing ones typically requires the time-consuming and error-prone process of re-implementing (and re-debugging and re-testing) the original algorithm. If the original algorithm were publicly available in a community repository, imagine the productivity gains from software reuse! Science evolves when previous results can be easily replicated”</p>
+</blockquote></li>
+<li><p><a href="https://www.python.org/psf-landing/">Python software foundation</a></p>
+<blockquote>
+<p>“We support and maintain python.org, The Python Package Index, Python Documentation, and many other services the Python Community relies on.”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="podcasts" class="section level2">
+<h2>Podcasts</h2>
+<p><a href="https://talkpython.fm/">talk python to me</a></p>
+<ul>
+<li><p><a href="https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition">Data science year in review</a></p></li>
+<li><p>Interesting how Samuel Colvin talks about serialization <a href="https://talkpython.fm/episodes/show/313/automate%20your%20data%20exchange%20with%20pydantic">automate your data exchange with pydantic</a></p></li>
 </ul>
 </div>
 </div>

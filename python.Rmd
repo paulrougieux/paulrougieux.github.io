@@ -594,13 +594,13 @@ Answer](https://stackoverflow.com/a/68804963/2641825).
     import tempfile
 
     # Create a request object with URL and headers    
-    url = “http://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_Oceania.zip”
+    url = "http://fenixservices.fao.org/faostat/static/bulkdownloads/Production_Crops_Livestock_E_Oceania.zip"
     header = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) '}
     req = urllib.request.Request(url=url, headers=header)
 
     # Define the destination file
     dest_file = tempfile.gettempdir() + '/' + 'crop.zip'
-    print(f“File located at:{dest_file}”)
+    print(f"File located at:{dest_file}")
 
     # Create an http response object
     with urllib.request.urlopen(req) as response:
@@ -904,7 +904,13 @@ Exceptions](https://docs.python.org/3/tutorial/errors.html#raising-exceptions)
 
     raise Exception('spam')
     raise ValueError('Not an acceptable value')
-    raise NameError('Wrong name')
+    raise NameError("Wrong name: %s" % "quack quack quack")
+
+Display variables in the error message:
+
+    raise ValueError("This is wrong: %s" % "wrong_value")
+    msg = "Value %s and value %s have problems."
+    raise ValueError(msg % (1, 2))
 
 
 ## Logging
@@ -1029,6 +1035,32 @@ Modulo
 
     5%3
     # 2
+
+
+## Sympy
+
+https://www.sympy.org/en/index.html
+
+> "SymPy is a Python library for symbolic mathematics. It aims to become a
+> full-featured computer algebra system (CAS) while keeping the code as simple
+> as possible in order to be comprehensible and easily extensible. SymPy is
+> written entirely in Python."
+
+
+# Modelling
+
+
+## Pyomo
+
+[Pyomo
+Cookbook](https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-with-Pyomo.html)
+
+> "Pyomo is well suited to modeling simple and complex systems that can be
+> described by linear or nonlinear algebraic, differential, and partial
+> differential equations and constraints."
+
+
+
 
 # Numpy vectors and matrices (arrays)
 
@@ -1215,6 +1247,22 @@ Append vs concatenate
     print(np.concatenate((a, b), axis=None))
 
 
+## Power
+
+Power of an array
+
+    import numpy as np
+    a = np.arange(4).reshape(2, 2)
+    print(a)
+    print(a**2)
+    print(a*a)
+    np.power(a, 2)
+
+Broadcast the power operator
+
+    np.power(a, a)
+
+
 ## Random vector or matrices
 
     x = np.random.random([3,4])
@@ -1265,7 +1313,9 @@ All code below assumes you have imported pandas
     import pandas 
 
 
-## Creating a data frame
+## Assign values
+
+### Create a data frame
 
 You can create a data frame by passing a **dictionary of lists** with column names as keys
 
@@ -1284,17 +1334,7 @@ Or by passing a list of tuples and defining the `columns` argument
     )
 
 
-## Converting a data frame
-
-Convert 2 columns to a dictionary
-
-    df = pandas.DataFrame({'a':range(0,3), 
-                           'b':['p','q','r'], 
-                           'c':['m','n','o']})
-    df.set_index('b').to_dict()['c']
-
-
-## Assign values
+### Use the assign method
 
 Create a new column based on another one
 
@@ -1307,8 +1347,7 @@ Use the `assign` method
 
     df.assign(e = lambda x: x["a"] * 3)
 
-
-### Recursive function x(t) depends on x(t-1)
+### Recursive computation x(t) depends on x(t-1)
 
 A recursive function is difficult to vectorize because each input at time t
 depends on the previous input at time t-1. When possible use a year index for
@@ -1406,7 +1445,61 @@ See also:
 > apply to the container being iterated over."
 
 
+### Set values with .loc
+
+Create an example data frame
+
+    import pandas
+    df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                          index=['cobra', 'viper', 'sidewinder'],
+                          columns=['max_speed', 'shield'])
+
+Set value for all items matching the list of labels
+
+    df.loc[['viper', 'sidewinder'], ['shield']] = 50
+
+    #             max_speed  shield
+    # cobra               1       2
+    # viper               4      50
+    # sidewinder          7      50
+
+
+## Convert data frames
+
+Convert 2 columns to a dictionary
+
+    df = pandas.DataFrame({'a':range(0,3), 
+                           'b':['p','q','r'], 
+                           'c':['m','n','o']})
+    df.set_index('b').to_dict()['c']
+
+
+## Compare data frames
+
+Pure equality example from
+[pandas.DataFrame.equals](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html)
+
+    import pandas
+    df = pandas.DataFrame({1: [10], 2: [20]})
+    exactly_equal = pandas.DataFrame({1: [10], 2: [20]})
+    df.equals(exactly_equal)
+    different_column_type = pandas.DataFrame({1.0: [10], 2.0: [20]})
+    df.equals(different_column_type)
+    different_data_type = pandas.DataFrame({1: [10.0], 2: [20.0]})
+    df.equals(different_data_type)
+
+Testing closeness (for example with floating point results computed in another
+software)
+
+    import numpy as np
+    df.equals(df+1e-6)
+    np.testing.assert_allclose(df,df+1e-7)
+    np.testing.assert_allclose(df,df+1e-3)
+
+
 ## Columns
+
+### List Columns
 
 List columns as an index object
 
@@ -1484,13 +1577,100 @@ December.
     flights.query("month=='December'")
 
 
-## Joining and merging
+## Index
+
+Index can be converted back to a data frame
+See also index selection in the ".loc" section.
+
+
+### Recursive computation on a index in a loop
+
+#### Simple index case
+
+Compute in a loop based on the value of the previous year t-1.
+If there is a single value by year, scalar computation
+
+    df = pandas.DataFrame({'x':range(0,10)})
+    df.loc[0, "y"] = 2
+    for t in range(1, len(df)):
+        df.loc[t, "y"] = pow(df.loc[t-1, "y"], df.loc[t, "x"]/2)
+    df
+
+If there are multiple values for each single year
+vector computation.
+
+    import itertools
+    import pandas
+    countries = ["a","b","c","d"]
+    years = range(1990, 2020)
+    expand_grid = list(itertools.product(countries, years))
+    df = pandas.DataFrame(expand_grid, columns=('country', 'year'))
+    df["x"] = 1
+    df["x"] = df["x"].cumsum()
+    df.set_index(["year"], inplace=True)
+    df.loc[min(years), "y"] = 2
+    for t in range(min(years)+1, max(years)+1):
+        df.loc[t, "y"] = pow(df.loc[t-1, "y"], df.loc[t, "x"]/2)
+    df
+
+Multi index case
+I would like to compute the consumption equation of a partial equilibrium
+model.
+
+    pandas.DataFrame({'x':range(0,3), 
+                      'y':['a','b','c']})
+
+    for t in range(gfpmx_data.base_year + 1, years.max()+1):
+        # TODO: replace this loop by vectorized operations using only the index on years
+        for c in countries:
+            # Consumption
+            swd.loc[(t,c), "cons2"] = (swd.loc[(t, c), "constant"]
+                                       * pow(swd.loc[(t-1, c), "price"],
+                                             swd.loc[(t, c), "price_elasticity"])
+                                       * pow(swd.loc[(t, c), "gdp"],
+                                             swd.loc[(t, c), "gdp_elasticity"])
+                                      )
+    swd['comp_prop'] = swd.cons2 / swd.cons -1
+    print(swd["comp_prop"].abs().max())
+    swd.query("year >= 2019")
+
+
+## Join and merge
 
 Stackoverflow [Pandas merging](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
 
 
-## Read and write csv
+## PyArrow
 
+- [Apache Arrow overview](https://arrow.apache.org/overview/) explains the
+advantage of using a in memory columnar format to store data:
+
+> "The Apache Arrow format allows computational routines and execution engines
+> to maximize their efficiency when scanning and iterating large chunks of
+> data. In particular, the contiguous columnar layout enables vectorization
+> using the latest SIMD (Single Instruction, Multiple Data) operations included
+> in modern processors." "[...] a standardized memory format facilitates reuse
+> of libraries of algorithms, even across languages." "Arrow libraries for C
+> (Glib), MATLAB, Python, R, and Ruby are built on top of the C++ library."
+
+- [PyArrow interface with
+pandas](https://arrow.apache.org/docs/python/pandas.html)
+
+- [Read and write csv files](https://arrow.apache.org/docs/python/csv.html)
+
+
+### Dask data frame
+
+https://docs.dask.org/en/latest/dataframe.html
+
+
+### Vaex
+
+https://github.com/vaexio/vaex
+
+
+
+## Read and write csv
 
 ### From an API
 
@@ -1512,7 +1692,7 @@ Then use df.to_csv to write the data frame to a csv file
      df1.to_csv("/tmp/comtrade.csv")
 
 
-## Reshaping
+## Reshape
 
 ### From wide to long
 
@@ -1581,7 +1761,7 @@ Rename the (sometimes confusing) axis names
 
 
 
-## Replacement
+## Replace
 
 [Pyton pandas equivalent for replace](https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace)
 
@@ -1625,7 +1805,7 @@ Replace NA values by another value
     df
 
 
-## Selection with loc, iloc, query, isin and xs
+## Select with loc, iloc, query, isin and xs
 
  * blog [Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
 
@@ -1670,17 +1850,6 @@ Conditional that returns a boolean Series
                          max_speed  shield
              sidewinder          7       8
 
-Select rows that are not in ['cobra','viper'] 
-Based on a [SO answer use isin on the index](https://stackoverflow.com/a/29140194/2641825):
-
-    In : df.index.isin(['cobra','viper'])
-    Out: array([ True,  True, False])
-
-    In : df.loc[~df.index.isin(['cobra','viper'])]
-    Out: 
-                max_speed  shield
-    sidewinder          7       8
-
 Slice with labels for row and labels for columns.
 
     In :  df.loc['cobra':'viper', 'max_speed':'shield']
@@ -1702,17 +1871,39 @@ Set value for all items matching the list of labels
 
 Another example using integers for the index
 
-    In : df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
-                               index=[7, 8, 9],
-                               columns=['max_speed', 'shield'])
+    df2 = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                          index=[7, 8, 9],
+                          columns=['max_speed', 'shield'])
 
-Slice with integer labels for rows. Note that both the start and stop of the slice are included.
+Slice with integer labels for rows. Note that **both the start and stop of the
+slice** are included. Python slices behave differently.
 
-    In :  df.loc[8:9]
+    In :  df2.loc[8:9]
     Out:
           max_speed  shield
        8          4       5
        9          7       8
+
+
+#### index.isin()
+
+Using the same example as above, select rows that are not in ['cobra','viper'].
+Based on a [SO answer use isin on the
+index](https://stackoverflow.com/a/29140194/2641825):
+
+    In : df.index.isin(['cobra','viper'])
+    Out: array([ True,  True, False])
+
+    In : df.loc[~df.index.isin(['cobra','viper'])]
+    Out: 
+                max_speed  shield
+    sidewinder          7       8
+
+Or assign the selector to reuse it:
+
+    selector = df.index.isin(['cobra','viper'])
+    df.loc[selector]
+    df.loc[~selector]
 
 
 #### Multi-index selection with loc
@@ -1754,6 +1945,24 @@ Slice from index tuple to single label
 Slice from index tuple to index tuple
 
     df.loc[('cobra', 'mark i'):('viper', 'mark ii')]
+
+
+
+Invert a selection on the second index
+
+    df.loc[~df.index.isin(["mark i"], level=1)]
+
+
+#### Multi-index slicers
+
+[Using loc on just the second index in multi
+index](https://stackoverflow.com/a/50414126/2641825)
+Using the same data frame as above.
+
+    idx = pandas.IndexSlice
+    df.loc[idx[:, "mark i"],:]
+    df.xs("mark i", level=1)
+   
 
 
 ### iloc 
@@ -1865,6 +2074,10 @@ Select with a key and specify the levels:
     df.xs(key='cat', level=1)
     df.xs(key=('bird', 'walks'),
           level=[0, 'locomotion'])
+
+Pandas
+[DataFrame.xs](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.xs.html)
+"cannot be used to set values."
 
 
 ### Determine whether a column contains a particular value
@@ -2334,6 +2547,21 @@ Vega Lite
         }, df)
 
 
+# Print
+
+[How to print coloured text at the
+terminal?](https://stackoverflow.com/a/21786287/2641825)
+
+> "Print a string that starts a color/style, then the string, and then end the
+> color/style change with '\x1b[0m'."
+
+For example
+
+    print(1000 * ("\x1b[1;32;44m" + "Winter" + "\x1b[0m" + ", " +
+                  "\x1b[1;32;42m" + "Spring" + "\x1b[0m" + ", " +
+                  "\x1b[1;35;41m" + "Summer" + "\x1b[0m" + ", " +
+                  "\x1b[1;35;45m" + "Autumn" + "\x1b[0m" + ", "))
+
 
 # Profiling
 
@@ -2514,8 +2742,8 @@ implementation of expand grid using itertools:
 
     import itertools
     import pandas
-    countries = self.by_country_year['country'].drop_duplicates()
-    years = range(1990, datetime.now().year)
+    countries = ["a","b","c","d"]
+    years = range(1990, 2020)
     expand_grid = list(itertools.product(countries, years))
     df = pandas.DataFrame(expand_grid, columns=('country', 'year'))
 
@@ -2917,7 +3145,8 @@ See [python markdown unit tests](https://github.com/okken/markdown.py/blob/maste
 
 
 ## pytest
-Numpy moved from nose to pytest in their, as explained in their
+
+Numpy moved from nose to pytest as explained in their
 [testing guidelines](https://docs.scipy.org/doc/numpy/reference/testing.html):
 
 > "Until the 1.15 release, NumPy used the nose testing framework, it now uses the pytest framework. The older framework is still maintained in order to support downstream projects that use the old numpy framework, but all tests for NumPy should use pytest." 
@@ -2953,7 +3182,18 @@ Test pandas data frame with
     assert_series_equal # tricky to use
 
 
-# Web Frameworks
+# Web 
+
+## Back-end API
+
+- https://fastapi.tiangolo.com/ seems to be a recommended way to create python APIs.
+
+- Django API
+
+- Flask API
+
+
+## Frameworks
 
 [Flask vs. Django](asynchrosnus://www.codementor.io/garethdwyer/flask-vs-django-why-flask-might-be-better-4xs7mdf8v)
 
@@ -2964,44 +3204,96 @@ This last link contains a nice, simple example of
 how asyncio works with a simulated delay to fetch a web page.
 
 
-# Media
-
-Podcast [talk python to me](https://talkpython.fm/)
- * [Data science year in review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
-
+# Media and organizations
 
 ## Blogs
 
-* [Things I Learnt The Hard Way (in 30 Years of Software
+* Julio Biason [Things I Learnt The Hard Way (in 30 Years of Software
   Development)](https://blog.juliobiason.me/thoughts/things-i-learnt-the-hard-way/) 
 
-* [I do not use a debugger](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/)
-    >"“Debuggers don’t remove bugs. They only show them in slow motion.”
+* Daniel Lemire [I do not use a debugger](https://lemire.me/blog/2016/06/21/i-do-not-use-a-debugger/)
+
+    > “Debuggers don’t remove bugs. They only show them in slow motion.”
+
     [Linus Toarvald doesn't use a debugger](https://lwn.net/2000/0914/a/lt-debugger.php3)
+
+- Wes McKinney 
+
+  - 2017 [Apache Arrow and the 10 things I hate about
+  pandas](https://wesmckinney.com/blog/apache-arrow-pandas-internals/)
+
+    > "pandas rule of thumb: have 5 to 10 times as much RAM as the size of your
+    > dataset "
+
+  - 2018 [Announcing Ursalabs](https://wesmckinney.com/blog/announcing-ursalabs/)
+
+    > "It has long been a frustration of mine that it isn’t easier to share code
+    > and systems between R and Python. This is part of why working on Arrow has
+    > been so important for me; it provides a path to sharing of systems code
+    > outside of Python by enabling free interoperability at the data level."
+
+    > "Critically, RStudio has avoided the “**startup trap**” and managed to build a
+    > sustainable business while still investing the vast majority of its
+    > engineering resources in **open source development**. Nearly 9 years have passed
+    > since J.J. started building the RStudio IDE, but in many ways he and Hadley
+    > and others feel like they are just getting started."
 
 - Dotan Nahum [Functional Programming with Python for People Without Time](https://jondot.medium.com/functional-programming-with-python-for-people-without-time-1eebdbd9526c)
 
-> "Cracks in the Ice - We ended the previous part with stating that with a good
-> measure of abstraction, functional programming doesn’t offer a considerable
-> advantage over the “traditional” way of design, object oriented. It’s a lie.
-> [...] In our pipeline example above with our Executors — how do you feed in
-> the output of one executor as the input for the next one? well, you have to
-> build that infrastructure. With functional programming, those abstractions
-> are not abstractions that you have to custom build. They’re part of the
-> language, mindset, and ecosystem. Generically speaking — it’s all about
-> impedence mismatch and leaky abstractions and when it comes to data and
-> functions; there’s no mismatch because it’s built up from the core. The
-> thesis is — that to build a functional programming approach over an
-> object-oriented playground — is going to crash and burn at one point or
-> another: be it bad modeling of abstractions, performance problems, bad
-> developer ergonomics, and the worst — wrong mindset. Being able to model
-> problems and solutions in a functional way, transcends above traditional
-> abstraction; the object-oriented approach, in comparison, is crude,
-> inefficient and prone to maintenance problems."
+    > "Cracks in the Ice - We ended the previous part with stating that with a good
+    > measure of abstraction, functional programming doesn’t offer a considerable
+    > advantage over the “traditional” way of design, object oriented. It’s a lie.
+    > [...] In our pipeline example above with our Executors — how do you feed in
+    > the output of one executor as the input for the next one? well, you have to
+    > build that infrastructure. With functional programming, those abstractions
+    > are not abstractions that you have to custom build. They’re part of the
+    > language, mindset, and ecosystem. Generically speaking — it’s all about
+    > impedence mismatch and leaky abstractions and when it comes to data and
+    > functions; there’s no mismatch because it’s built up from the core. The
+    > thesis is — that to build a functional programming approach over an
+    > object-oriented playground — is going to crash and burn at one point or
+    > another: be it bad modeling of abstractions, performance problems, bad
+    > developer ergonomics, and the worst — wrong mindset. Being able to model
+    > problems and solutions in a functional way, transcends above traditional
+    > abstraction; the object-oriented approach, in comparison, is crude,
+    > inefficient and prone to maintenance problems."
 
 
-- [Why numba and cython are no substitute for
+- Christopher Rackauckas [Why numba and cython are no substitute for
   Julia](https://www.stochasticlifestyle.com/why-numba-and-cython-are-not-substitutes-for-julia/)
   discusses the advantages of the Julia language over Python for large code
   bases.
 
+- Ethan Rosenthal [Everything Gets a Package: My Python Data Science
+  Setup](https://www.ethanrosenthal.com/2022/02/01/everything-gets-a-package/)
+
+
+
+## Foundations
+
+- [COIN-OR project](https://www.coin-or.org/projects/) "open source for the
+  operations research community" 
+
+    > "Without open source implementations of existing algorithms, testing new
+    > ideas built on existing ones typically requires the time-consuming and
+    > error-prone process of re-implementing (and re-debugging and re-testing) the
+    > original algorithm. If the original algorithm were publicly available in a
+    > community repository, imagine the productivity gains from software reuse!
+    > Science evolves when previous results can be easily replicated"
+
+- [Python software foundation](https://www.python.org/psf-landing/)
+
+    > "We support and maintain python.org, The Python Package Index, Python
+    > Documentation, and many other services the Python Community relies on."
+
+
+## Podcasts
+
+[talk python to me](https://talkpython.fm/)
+
+* [Data science year in
+  review](https://talkpython.fm/episodes/show/193/data-science-year-in-review-2018-edition)
+
+- Interesting how Samuel Colvin talks about serialization [automate your data
+  exchange with pydantic](https://talkpython.fm/episodes/show/313/automate
+  your data exchange with pydantic)
