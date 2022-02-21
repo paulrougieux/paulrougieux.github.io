@@ -316,12 +316,16 @@ Social media "facilitate controlled experimentation". When you use social
 media, you subject yourself to experimentation and behaviour modification.
 
 
-## Facebook 
+## Facebook now Meta
 
-[Facebook–Cambridge Analytica data scandal](https://en.wikipedia.org/wiki/Facebook–Cambridge_Analytica_data_scandal)
+- [Facebook–Cambridge Analytica data scandal](https://en.wikipedia.org/wiki/Facebook–Cambridge_Analytica_data_scandal)
+
+- [2021 Facebook leak](https://en.wikipedia.org/wiki/2021_Facebook_leak)
 
 
 # Links
 
 * eff.org [surveillance self defence](https://ssd.eff.org/en/module-categories/tool-guides)
 
+- Gmail [large
+  attachements](https://one.google.com/storage/management?utm_source=g1&utm_medium=email&utm_campaign=storage&utm_content=non_g1_gmail_aoos_95_smui)
