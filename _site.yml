@@ -43,12 +43,12 @@ navbar:
         - text: "Musical scales"
           href: musical_scales.html
     - text: "Data"
-      icon: fa-database
+      icon: fa-line-chart
       menu:
-        - text: "Sources"
-          href: datasources.html
         - text: "Explore"
           href: explore.html
+        - text: "Sources"
+          href: datasources.html
     - text: "Events"
       icon: fa-users
       href: events.html
