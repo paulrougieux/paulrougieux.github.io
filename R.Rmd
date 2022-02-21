@@ -307,7 +307,7 @@ column_names <- c("Bla, Bla", "Hips, Hops", "Yield/Carcass Weight",
                   "Production", "Producing Animals/Slaughtered",
                   "Area harvested", "Yield")
 gsub("[^[:alnum:]]","_",tolower(column_names))
-# Replace one or more by and underscore
+# Replace one or more occurrences by an underscore
 gsub("[^[:alnum:]]+","_",tolower(column_names))
 ```
 
@@ -620,6 +620,11 @@ More information in the vignette:
 
 > "It allows users to specify a desired location for Python before interacting
 > with your package."
+
+#### Example R packages that use reticulate
+
+- spicyr https://cran.r-project.org/web/packages/spacyr/index.html
+   - Vignette https://cran.r-project.org/web/packages/spacyr/vignettes/using_spacyr.html
 
 
 # Reproducibility and cloud computing
@@ -1496,6 +1501,8 @@ comment](https://stackoverflow.com/questions/4216753/check-existence-of-director
 ## Blogs
 
 * Gavin Simpson [My aversion to pipers](http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/) shows an Hadley tweet explaining that pipe might not be good in package development.
+
+- 5 R packages for text analysis https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb
 
 ## Stackoverflow
 
