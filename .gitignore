@@ -5,7 +5,7 @@
 *.swp
 # Ignore cache folders
 *_cache/*
-TODO.html
+todo.html
 
 # Ignore generated images
 *.png
