@@ -774,7 +774,7 @@ git revert commit_sha</code></pre>
 </div>
 <div id="revert" class="section level2">
 <h2>Revert</h2>
-<p>Revert an unwanted comming with a new comming doing exactly the reverse operation</p>
+<p>Revert an unwanted commit with a new commit doing exactly the reverse operation</p>
 <pre><code>git revert &lt;commit hash&gt;</code></pre>
 </div>
 </div>
@@ -982,25 +982,29 @@ git clone --depth 1 &quot;$1&quot; temp-linecount-repo &amp;&amp;
 <div id="tagging" class="section level1">
 <h1>Tagging</h1>
 <p>Creating an annotated tag</p>
-<pre><code>git tag -a v1.4 -m &#39;my version 1.4&#39;</code></pre>
+<pre><code>git tag -a v1.4 -m &#39;my version 1.4&#39;
+git tag v0.0.2  -m &quot;Version 0.0.2&quot;</code></pre>
+<p>A regular push command won’t push a tag (bitbucket), to push all your tags :</p>
+<pre><code>git push origin --tags</code></pre>
+<p>List tags</p>
+<pre><code>git tag -l</code></pre>
 <p>You can add a tag after the fact. To tag an earlier commit, specify the commit checksum or part of it:</p>
 <pre><code>git log --pretty=oneline
 
 git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
 <p>Delete a tag</p>
 <pre><code>git tag -d tag_name</code></pre>
-<p>A regular push command won’t push a tag (bitbucket), to push all your tags :</p>
-<pre><code>git push origin --tags</code></pre>
 <p>Return all files in the repository to a particular tag:</p>
 <pre><code>git checkout tags/v0.1</code></pre>
-<p>Optionally you cancheckout and create a new branch to commit your changes with:</p>
+<p>Optionally you can checkout and create a new branch to commit your changes with:</p>
 <pre><code>git checkout tags/o.1 -b newbranchname</code></pre>
 <p>Git tools <a href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">signing your work</a>Signed tags Generate a pgp key</p>
 <pre><code>gpg --gen-key</code></pre>
 <p>More information on gpg key publishing in the <a href="bash.html">bash page</a>. Display what keys are available</p>
 <pre><code>gpg --list-keys</code></pre>
 <p>Configure git to use the key</p>
-<pre><code> git config --global user.signingkey 0A46826A</code></pre>
+<pre><code> git config --global user.signingkey 0A46826A
+ git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0</code></pre>
 </div>
 <div id="to-do-lists" class="section level1">
 <h1>TO DO lists</h1>
