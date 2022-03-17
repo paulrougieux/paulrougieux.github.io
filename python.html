@@ -471,6 +471,26 @@ div.tocify {
 <p>To <a href="https://stackoverflow.com/a/18021540/2641825">install the local version of a package with pip</a></p>
 <pre><code>pip install -e /develop/MyPackage</code></pre>
 <p>According to <code>man pip</code>, the <code>-e</code> option “installs a project in editable mode (i.e. setuptools”develop mode“) from a local project path or a VCS url”.</p>
+<div id="uninstall-a-local-version" class="section level3">
+<h3>Uninstall a local version</h3>
+<p>When uninstalling a package installed locally, you might get this error message:</p>
+<pre><code>uninstall localpackage
+# Found existing installation: localpackage 0.0.1
+# Can&#39;t uninstall &#39;localpackage&#39;. No files were found to uninstall.</code></pre>
+<p>You can show the location of the package with</p>
+<pre><code>pip show localpackage</code></pre>
+<p>Then remove it manually with</p>
+<pre><code>rm -rf ~/.local/lib/python3.9/site-packages/localpackage*</code></pre>
+<p>And maybe this as well</p>
+<pre><code>rm -rf ~/.local/lib/python3.9/site-packages/build/lib/localpackage*</code></pre>
+</div>
+</div>
+<div id="install-from-a-git-repository" class="section level2">
+<h2>Install from a git repository</h2>
+<p>Install from the dev branch of a private repo on gitlab using ssh</p>
+<pre><code>pip install git+ssh://git@gitlab.com/bioeconomy/forobs/biotrade.git@dev</code></pre>
+<p>Install from the dev branch of a private repo on gitlab using an <a href="https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html">authentication token</a></p>
+<pre><code>pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev</code></pre>
 </div>
 <div id="upload-a-package-to-pypi" class="section level2">
 <h2>Upload a package to pypi</h2>
@@ -968,6 +988,16 @@ Out[17]:
 <p>Show available variable in the current context:</p>
 <pre><code>`a` </code></pre>
 </div>
+<div id="breakpoint" class="section level2">
+<h2>Breakpoint</h2>
+<p>To break at every step in a loop, use the <code>breakpoint()</code> function in any part of the code as explained in <a href="https://stackoverflow.com/questions/16867347/step-by-step-debugging-with-ipython">setp by step debuging with ipython</a>.</p>
+</div>
+<div id="running-from-ipython" class="section level2">
+<h2>Running from ipython</h2>
+<p>Run a file from the ipython console</p>
+<pre><code>%run -i test.py.</code></pre>
+<p><a href="https://github.com/ipython/ipython/issues/1001" class="uri">https://github.com/ipython/ipython/issues/1001</a></p>
+</div>
 </div>
 <div id="jupyter-notebooks" class="section level1">
 <h1>Jupyter notebooks</h1>
@@ -976,6 +1006,45 @@ Out[17]:
 <p>Prefix the bash call with an exclamation mark, for example:</p>
 <pre><code>!df -h</code></pre>
 <p>In fact the question mark also works from an ipython shell. See also <a href="https://stackoverflow.com/questions/45784499/difference-between-and-in-jupyter-notebooks">Difference between ! and % in Jupyter Notebooks</a></p>
+</div>
+<div id="execute-notebooks-programmatically" class="section level2">
+<h2>Execute notebooks programmatically</h2>
+<div id="at-the-shell" class="section level3">
+<h3>At the shell</h3>
+<p>To work from the ipython command line it’s useful to load execute the whole notebook inside the ipython shell with</p>
+<pre><code>ipython -c &quot;%run notebook.ipynb&quot;</code></pre>
+<p>It’s also possible to convert the long notebooks to a python script with:</p>
+<pre><code>jupyter nbconvert --to script notebook.ipynb</code></pre>
+<p>Then run the whole notebook and start an interactive shell with:</p>
+<pre><code>ipython -i notebook.py</code></pre>
+<p>Otherwise I also sometimes open the synchronized markdown version of the notebook and execute a few cells using Vim slime to sent them to a tmux pane where ipython is running.</p>
+</div>
+<div id="from-python" class="section level3">
+<h3>From python</h3>
+<p>Run an ipython notebook from python using <a href="https://nbconvert.readthedocs.io/en/latest/execute_api.html#example">nbconver</a>’s execute API:</p>
+<pre><code>import nbformat
+from nbconvert.preprocessors import ExecutePreprocessor
+import jupytext
+
+####################
+# Run one notebook #
+####################
+filename = &#39;notebook.ipynb&#39;
+with open(filename) as ff:
+    nb_in = nbformat.read(ff, nbformat.NO_CONVERT)
+
+# Read a notebook from the markdown file synchronized by jupytext
+nb_md = jupytext.read(&#39;notebook.md&#39;)
+
+# Run the notebook
+ep = ExecutePreprocessor(timeout=600, kernel_name=&#39;python3&#39;)
+nb_out = ep.preprocess(nb_in)
+
+# Save the output notebook
+with open(filename, &#39;w&#39;, encoding=&#39;utf-8&#39;) as f:
+    nbformat.write(nb_out, f)</code></pre>
+<p>Saving fails in my case.</p>
+</div>
 </div>
 <div id="dashboards-and-widgets" class="section level2">
 <h2>Dashboards and widgets</h2>
@@ -999,6 +1068,11 @@ Out[17]:
 <p>With a context manager <a href="https://stackoverflow.com/a/47113685/2641825">as in this answer</a></p>
 <pre><code>with pd.option_context(&#39;display.max_rows&#39;, 100, &#39;display.max_columns&#39;, 10):
 some pandas stuff</code></pre>
+</div>
+<div id="docker-stacks" class="section level2">
+<h2>Docker stacks</h2>
+<p><a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/">Docker stacks for Jupyter notebooks</a></p>
+<p><a href="https://jupyter-docker-stacks.readthedocs.io/en/latest/using/selecting.html#core-stacks">Selecting an image</a></p>
 </div>
 <div id="download-data-from-a-jupyter-notebook" class="section level2">
 <h2>Download data from a jupyter notebook</h2>
@@ -1429,6 +1503,11 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
 df[&quot;d&quot;] = df[&quot;a&quot;] * 2</code></pre>
 <p>Use the <code>assign</code> method</p>
 <pre><code>df.assign(e = lambda x: x[&quot;a&quot;] * 3)</code></pre>
+<p>Sum all columns in an assign and use it to compute a share</p>
+<pre><code>import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;).set_index(&quot;species&quot;)
+iris.assign(sp_sum = lambda x: x.sum(axis=1),
+            sl_share = lambda x: x.sepal_length / x.sp_sum)</code></pre>
 </div>
 <div id="recursive-computation-xt-depends-on-xt-1" class="section level3">
 <h3>Recursive computation x(t) depends on x(t-1)</h3>
@@ -1580,6 +1659,18 @@ df.rename(columns=lambda x: re.sub(r&quot;\W+&quot;, &quot;_&quot;, str(x)).lowe
 <pre><code>df.rename(columns=lambda x: re.sub(r&quot;[()\.]&quot;, &quot;&quot;, x), inplace=True)</code></pre>
 </div>
 </div>
+<div id="datetime-operations" class="section level2">
+<h2>Datetime operations</h2>
+<p>Create date time columns from a character column</p>
+<pre><code>import pandas
+pandas.to_datetime(&#39;2020-01-01&#39;, format=&#39;%Y-%m-%d&#39;)
+pandas.to_datetime(&#39;2020-01-02&#39;)
+pandas.to_datetime(&#39;20200103&#39;)</code></pre>
+<p>Extract the year</p>
+<pre><code>s = pandas.Series(pandas.date_range(&quot;2000-01-01&quot;, periods=3, freq=&quot;Y&quot;))
+print(s)
+print(s.dt.year)</code></pre>
+</div>
 <div id="group-by-operations" class="section level2">
 <h2>Group by operations</h2>
 <p>Compute the sum for the sepal length grouped by species</p>
@@ -1589,6 +1680,7 @@ iris.groupby(&#39;species&#39;).agg(sepal_length = (&#39;sepal_length&#39;, sum)
 <p>Compute the sum but repeated for every original row</p>
 <pre><code>iris[&#39;sepal_sum&#39;] = iris.groupby(&#39;species&#39;)[&#39;sepal_length&#39;].transform(&#39;sum&#39;)
 iris</code></pre>
+<p>This is useful to compute the <a href="https://stackoverflow.com/questions/23377108/pandas-percentage-of-total-with-groupby">share of total in each group</a> for example.</p>
 <p>Compute the cumulative sum of the sepal length</p>
 <pre><code>iris[&#39;cumsum&#39;] = iris.groupby(&#39;species&#39;).sepal_length.cumsum()
 iris[&#39;cumsum&#39;].plot()
@@ -1606,6 +1698,13 @@ flights = seaborn.load_dataset(&quot;flights&quot;)
 flights[&#39;pass_year_minus_one&#39;] = flights.groupby([&#39;month&#39;]).passengers.shift()
 flights.query(&quot;month==&#39;January&#39;&quot;)
 flights.query(&quot;month==&#39;December&#39;&quot;)</code></pre>
+</div>
+<div id="get-the-first-elements-of-each-group" class="section level3">
+<h3>Get the first elements of each group</h3>
+<ul>
+<li><p><a href="https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-first-row-in-each-group-by-group">How do I select the first row in each group in groupby</a></p>
+<p>import pandas import numpy as np df = pandas.DataFrame({‘A’ : [‘foo’, ‘foo’, ‘bar’, ‘bar’, ‘bar’], ‘B’ : [‘1’, ‘2’,‘2’, ‘4’, ‘1’], ‘C’ : [np.nan, ‘X’, ‘Y’, ‘Y’, ‘Y’]}) df.sort_values(‘B’).groupby(‘A’).nth(0) df.sort_values(‘B’).groupby(‘A’).nth(list(range(2))) df.sort_values(‘B’).groupby(‘A’).head(2)</p></li>
+</ul>
 </div>
 </div>
 <div id="index" class="section level2">
@@ -1653,6 +1752,13 @@ swd[&#39;comp_prop&#39;] = swd.cons2 / swd.cons -1
 print(swd[&quot;comp_prop&quot;].abs().max())
 swd.query(&quot;year &gt;= 2019&quot;)</code></pre>
 </div>
+</div>
+<div id="unique-values-of-a-multi-index" class="section level3">
+<h3>Unique values of a multi index</h3>
+<p>Return the unique values of a multi index as a data frame:</p>
+<pre><code>df.set_index([&quot;product&quot;, &quot;product_code&quot;]).index.unique().to_frame(False)</code></pre>
+<p>You can also use the following to display the unique values of the two columns with a count of occurrences</p>
+<pre><code>df[[&quot;partner&quot;, &quot;partner_code&quot;]].value_counts()</code></pre>
 </div>
 </div>
 <div id="join-and-merge" class="section level2">
@@ -1865,6 +1971,17 @@ df.loc[~selector]</code></pre>
 </div>
 <div id="multi-index-selection-with-loc" class="section level4">
 <h4>Multi-index selection with loc</h4>
+<p>Create a panel data set with a multi index in years and countries</p>
+<pre><code>import pandas
+import numpy as np
+df = pandas.DataFrame(
+    {&quot;country&quot;: [&#39;Algeria&#39;, &#39;Angola&#39;, &#39;Benin&#39;, &#39;Botswana&#39;, &#39;Burkina Faso&#39;] * 2,
+     &quot;year&quot;: np.repeat(np.array([2020,2021]), 5),
+     &quot;value&quot;:  np.random.randint(0,1e3,10)
+     })
+df = df.set_index([&quot;year&quot;, &quot;country&quot;])
+      </code></pre>
+<p>See also the course material <a href="https://python.quantecon.org/pandas_panel.html">Pandas for panel data</a>.</p>
 <p>Sample data copied from <code>help(df.loc)</code>:</p>
 <pre><code>tuples = [
    (&#39;cobra&#39;, &#39;mark i&#39;), (&#39;cobra&#39;, &#39;mark ii&#39;),
@@ -1957,6 +2074,8 @@ df.query(&quot;A &gt; @limit&quot;)
 A  B  C
 4  4  7
 5  2  6</code></pre>
+<p>Query for a variable in a list</p>
+<pre><code>df.query(&quot;A in [3,6]&quot;)</code></pre>
 </div>
 <div id="isin" class="section level3">
 <h3>isin</h3>
@@ -2050,7 +2169,7 @@ df.x.str.split(&quot;,&quot;, n=1, expand=True)
 # 0  a  None
 # 1  a     b
 # 2  a   b,c</code></pre>
-<p>The following version works only if each row has exactly 2 splits. It fails with the error “too many values to unpack (expected 2)” in this example:</p>
+<p>The following version works only if each row has exactly 2 splits. It <strong>fails</strong> with the <strong>error</strong> “too many values to unpack (expected 2)” in this example:</p>
 <pre><code>df[&quot;y&quot;], df[&quot;z&quot;] = df.x.str.split(&quot;,&quot;, n=1)</code></pre>
 <p>The last version with both <code>n=1</code> and <code>expand=True</code> is the one to use for multiple vector assignment. It is equivalent to <a href="https://tidyr.tidyverse.org/reference/separate.html">tidyr::separate</a> in R.</p>
 <pre><code>df[[&quot;y&quot;, &quot;z&quot;]] = df.x.str.split(&quot;,&quot;, n=1, expand=True)
@@ -2088,10 +2207,19 @@ merged[merged[&#39;_merge&#39;] == &#39;right_only&#39;]</code></pre>
 </div>
 <div id="where-and-mask" class="section level2">
 <h2>Where and mask</h2>
-<p><code>where</code> replaces values that do not fit the condition and <code>mak</code> replaces values that fit the condition.</p>
+<p><code>where</code> replaces values that do not fit the condition and <code>mask</code> replaces values that fit the condition.</p>
 <pre><code>s = pandas.Series(range(5))
 s.where(s &gt; 1, 10)
 s.mask(s &gt; 1, 10)</code></pre>
+<p>On a data frame</p>
+<pre><code>import pandas
+import numpy as np
+df1 = pandas.DataFrame({&#39;x&#39;:[0,np.nan, np.nan], 
+                        &#39;y&#39;:[&#39;a&#39;,np.nan,&#39;c&#39;]})
+df2 = pandas.DataFrame({&#39;x&#39;:[10, 11, 12], 
+                        &#39;y&#39;:[&#39;x&#39;,&#39;y&#39;, np.nan]})
+df1.mask(df1.isna(), df2)
+df1.where(df1.isna(), df2)</code></pre>
 </div>
 </div>
 <div id="paths" class="section level1">
@@ -2182,16 +2310,18 @@ ax.scatter(1,2,3)</code></pre>
 fig = plt.figure()
 ax = plt.axes(projection=&#39;3d&#39;)
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
-<div id="pandas-plots-generate-matplotlib-axessubplot-objects" class="section level3">
-<h3>Pandas plots generate matplotlib AxesSubplot objects</h3>
+<div id="pandas-plots-are-matplotlib-axessubplot-objects" class="section level3">
+<h3>Pandas plots are matplotlib AxesSubplot objects</h3>
 <p>Create some data and change the xticks labels</p>
 <pre><code>import pandas
 df = pandas.DataFrame({&#39;x&#39;:range(0,30), &#39;y&#39;:range(10,40)})
 df.set_index(&#39;x&#39;, inplace=True)
-plot = df.plot()
+plot = df.plot(title=&#39;Two ranges&#39;)
 type(plot)
 #help(plot)
 plot.set_xticks(range(0,31,10), minor=False)</code></pre>
+<p>Save the figure to a pdf file:</p>
+<pre><code>plot.get_figure().savefig(&#39;/tmp/output.pdf&#39;, format=&#39;pdf&#39;)</code></pre>
 </div>
 </div>
 <div id="plotly" class="section level2">
@@ -2440,30 +2570,35 @@ df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&
 </tr>
 <tr class="odd">
 <td><code>gsub</code></td>
-<td><code>replace(regex=True)</code></td>
+<td><code>df.x.replace(regex=True)</code></td>
 <td><a href="https://stackoverflow.com/questions/21834293/equivalent-of-gsub-for-pandas-series-dataframe/56547104?noredirect=1#comment99677847_56547104">gsub in pandas</a></td>
 </tr>
 <tr class="even">
+<td></td>
+<td>or df.x.str.replace()</td>
+<td></td>
+</tr>
+<tr class="odd">
 <td><code>length(df)</code> and <code>dim(df)</code></td>
 <td><code>df.shape</code></td>
 <td><a href="https://stackoverflow.com/questions/15943769/how-do-i-get-the-row-count-of-a-pandas-dataframe">row count of a data frame</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>rbind</code></td>
 <td><code>pandas.concat</code></td>
 <td><a href="https://stackoverflow.com/questions/14988480/pandas-version-of-rbind">Pandas version of rbind</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>seq(1:5)</code></td>
 <td><code>np.array(range(0,5))</code></td>
 <td><a href="https://stackoverflow.com/a/60753578/2641825">numpy function to generate sequences</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>summary</code></td>
 <td><code>describe</code></td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>str</code></td>
 <td><code>df.info()</code></td>
 <td><a href="https://stackoverflow.com/questions/27637281/what-are-python-pandas-equivalents-for-r-functions-like-str-summary-and-he">pandas equivalents for R functions like str summary and head</a></td>
@@ -2916,7 +3051,19 @@ assert_series_equal # tricky to use</code></pre>
 </blockquote></li>
 <li><p>Christopher Rackauckas <a href="https://www.stochasticlifestyle.com/why-numba-and-cython-are-not-substitutes-for-julia/">Why numba and cython are no substitute for Julia</a> discusses the advantages of the Julia language over Python for large code bases.</p></li>
 <li><p>Ethan Rosenthal <a href="https://www.ethanrosenthal.com/2022/02/01/everything-gets-a-package/">Everything Gets a Package: My Python Data Science Setup</a></p></li>
+<li><p><a href="https://bashtage.github.io/linearmodels/panel/examples/data-formats.html">Data Formats for Panel Data Analysis</a></p></li>
 </ul>
+<blockquote>
+<p>There are two primary methods to express data:</p>
+<ul>
+<li><p>MultiIndex DataFrames where the outer index is the entity and the inner is the time index. This requires using pandas.</p></li>
+<li><p>3D structures were dimension 0 (outer) is variable, dimension 1 is time index and dimension 2 is the entity index. It is also possible to use a 2D data structure with dimensions (t, n) which is treated as a 3D data structure having dimensions (1, t, n). These 3D data structures can be pandas, NumPy or xarray.</p></li>
+</ul>
+</blockquote>
+<ul>
+<li><a href="https://python.quantecon.org/pandas_panel.html">Pandas for panel data</a></li>
+</ul>
+<p>Explains multi index with stacking and unstacking.</p>
 </div>
 <div id="foundations" class="section level2">
 <h2>Foundations</h2>
