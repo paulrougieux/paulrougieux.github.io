@@ -171,8 +171,10 @@ out of our brain storming.
 
 # Latex
 
-## Bibliography
+- [Latex cheat sheet](http://www.utc.fr/~jlaforet/Suppl/latex-cheatsheet.pdf)
 
+
+## Bibliography
 
 [How to add a page number to a bibliographic
 entry.](https://tex.stackexchange.com/questions/373754/how-to-add-page-numbers-to-book-related-bibliographic-entries/373777)
