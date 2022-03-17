@@ -992,11 +992,19 @@ released.
 Following the updates at 
 https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup
 
+
+First update the current version of your system 
+
+    sudo apt update
+    sudo apt update 
+
 Added the following lines to /etc/apt/sources.list and commented all the other
 lines
 
     deb http://deb.debian.org/debian bullseye main contrib non-free
     deb-src http://deb.debian.org/debian bullseye main contrib non-free
+
+    deb https://deb.debian.org/debian-security bullseye-security main contrib non-free
 
     # R installation
     deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/

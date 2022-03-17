@@ -1049,9 +1049,14 @@ sudo apt dist-upgrade</code></pre>
 <div id="from-buster-10-to-bullseye-11" class="section level2">
 <h2>From Buster 10 to bullseye 11</h2>
 <p>Following the updates at <a href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup" class="uri">https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup</a></p>
+<p>First update the current version of your system</p>
+<pre><code>sudo apt update
+sudo apt update </code></pre>
 <p>Added the following lines to /etc/apt/sources.list and commented all the other lines</p>
 <pre><code>deb http://deb.debian.org/debian bullseye main contrib non-free
 deb-src http://deb.debian.org/debian bullseye main contrib non-free
+
+deb https://deb.debian.org/debian-security bullseye-security main contrib non-free
 
 # R installation
 deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/</code></pre>
