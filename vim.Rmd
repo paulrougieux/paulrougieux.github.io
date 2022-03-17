@@ -2022,7 +2022,7 @@ Or set the file type to text
 ## Tests
 
 [Vim Test](https://github.com/vim-test/vim-test)
-Works with pytest and many other testing suites for many languages.
+Works with pytest and other testing suites for many languages.
 Test results appear in the quick fix window.
 
 [pytest vim](https://github.com/alfredodeza/pytest.vim)
