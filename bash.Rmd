@@ -1,5 +1,4 @@
--
--
+---
 title: "Bash Commands"
 output: 
   html_document: 
@@ -1012,6 +1011,15 @@ The alias makes it possible to open files with the simple command
     open .
 
 
+## Open many files
+
+[Open many files with
+xdg-open](https://askubuntu.com/questions/356650/how-to-open-multiple-files-with-the-default-program-from-terminal)
+
+    ls *.pdf| xargs -n 1 open
+
+
+
 # Move, copy, rename, compress files
 
 Copy a file
@@ -1376,7 +1384,7 @@ Here is the list of view modes:
 | v               | player-stop     |                                      |
 | x               | player-play     |                                      |
 | z               | player-prev     |                                      |
-| e               |                 | append tracks to the play queue      |
+| e               |                 | **append tracks to the play queue**  |
 | E               |                 | prepend tracks to the play queue     |
 
 
@@ -1600,6 +1608,13 @@ To speed up login aliases can be set up in ~/.ssh/config
       hostname ip_address 
 
 
+### SSH tunnel
+
+Tunnel to a jupyter notebook on a server
+
+    alias tunnelnotebook="ssh -L 8888:localhost:8888 servername -N"
+
+
 ### Passwordless access for root user
 
 [How to set up passwordless SSH access for root user](https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-access-for-root-user)
@@ -1673,6 +1688,95 @@ file](https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-privat
 Verify the signature of a file
 
     gpg --verify filename.ext.gpg
+
+
+### Trust other public keys
+
+#### Sign public keys
+
+[](https://www.gnupg.org/gph/en/manual/x56.html)
+
+> "Once a key is imported it should be validated."
+
+    alice% gpg --edit-key blake@cyb.org
+
+    pub  1024D/9E98BC16  created: 1999-06-04 expires: never      trust: -/q
+    sub  1024g/5C8CBD41  created: 1999-06-04 expires: never
+    (1)  Blake (Executioner) <blake@cyb.org>
+
+    Command> fpr
+    pub  1024D/9E98BC16 1999-06-04 Blake (Executioner) <blake@cyb.org>
+                 Fingerprint: 268F 448F CCD7 AF34 183E  52D8 9BDE 1A08 9E98 BC16
+
+> "A key's fingerprint is verified with the key's owner. This may be done in
+> person or over the phone or through any other means as long as you can
+> guarantee that you are communicating with the key's true owner. If the
+> fingerprint you get is the same as the fingerprint the key's owner gets, then
+> you can be sure that you have a correct copy of the key.
+
+> After checking the fingerprint, you may sign the key to validate it. Since
+> key verification is a weak point in public-key cryptography, you should be
+> extremely careful and always check a key's fingerprint with the owner before
+> signing the key."
+
+    Command> sign
+
+    pub  1024D/9E98BC16  created: 1999-06-04 expires: never      trust: -/q
+                 Fingerprint: 268F 448F CCD7 AF34 183E  52D8 9BDE 1A08 9E98 BC16
+
+         Blake (Executioner) <blake@cyb.org>
+
+    Are you really sure that you want to sign this key
+    with your key: "Alice (Judge) <alice@cyb.org>"
+
+    Really sign?
+
+> "Once signed you can check the key to list the signatures on it and see the
+> signature that you have added. Every user ID on the key will have one or more
+> self-signatures as well as a signature for each user that has validated the
+> key."
+
+    Command> check
+    uid  Blake (Executioner) <blake@cyb.org>
+    sig!       9E98BC16 1999-06-04   [self-signature]
+    sig!       BB7576AC 1999-06-04   Alice (Judge) <alice@cyb.org>
+
+
+#### Edit the trust level
+
+Edit the trust level of a key
+
+[Validating other keys on your public keyring](https://www.gnupg.org/gph/en/manual/x334.html)
+
+    alice% gpg --edit-key blake
+
+    pub  1024D/8B927C8A  created: 1999-07-02 expires: never      trust: q/f
+    sub  1024g/C19EA233  created: 1999-07-02 expires: never     
+    (1)  Blake (Executioner) <blake@cyb.org>
+
+    Command> trust
+    pub  1024D/8B927C8A  created: 1999-07-02 expires: never      trust: q/f
+    sub  1024g/C19EA233  created: 1999-07-02 expires: never     
+    (1)  Blake (Executioner) <blake@cyb.org>
+
+    Please decide how far you trust this user to correctly
+    verify other users' keys (by looking at passports,
+    checking fingerprints from different sources...)?
+
+     1 = Don't know
+     2 = I do NOT trust
+     3 = I trust marginally
+     4 = I trust fully
+     s = please show me more information
+     m = back to the main menu
+
+    Your decision? 3
+                    
+    pub  1024D/8B927C8A  created: 1999-07-02 expires: never      trust: m/f
+    sub  1024g/C19EA233  created: 1999-07-02 expires: never     
+    (1)  Blake (Executioner) <blake@cyb.org>
+
+    Command> quit
 
 
 ### Manage keys
@@ -2001,9 +2105,11 @@ Rename the current window
 
     tmux rename-window (CTRL + b + ,)
 
+
 ### Panes (splits)
 
-Following commands should be prefixed by CTRL + b.
+Following commands should be prefixed by `CTRL + b`.
+
 Vertical split
 
     %
@@ -2027,6 +2133,12 @@ Display pane numbers
 Zoom a pane and de-zoom it:
 
    z
+
+Swap pane up and down or left and right
+
+    {
+    }
+
 
 ### Movements
 

@@ -11,7 +11,7 @@
 
 
 
-<title>bash.knit</title>
+<title>Bash Commands</title>
 
 <script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -437,14 +437,11 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Bash Commands</h1>
 
 </div>
 
 
-<ul>
-<li></li>
-<li>title: “Bash Commands” output: html_document: toc: yes toc_float: true —</li>
-</ul>
 <pre class="r"><code>knitr::opts_chunk$set(eval=FALSE)</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
@@ -1074,6 +1071,11 @@ xdg-open filename.mp4</code></pre>
 <p>There is already an <code>open</code> command on some systems. But creating an alias for it should be safe according to an answer to this <a href="https://stackoverflow.com/questions/12329876/is-it-safe-to-alias-open-with-xdg-open">SO question</a> because “once you alias it, it’s valid only for your user”.</p>
 <p>The alias makes it possible to open files with the simple command</p>
 <pre><code>open .</code></pre>
+<div id="open-many-files" class="section level2">
+<h2>Open many files</h2>
+<p><a href="https://askubuntu.com/questions/356650/how-to-open-multiple-files-with-the-default-program-from-terminal">Open many files with xdg-open</a></p>
+<pre><code>ls *.pdf| xargs -n 1 open</code></pre>
+</div>
 </div>
 <div id="move-copy-rename-compress-files" class="section level1">
 <h1>Move, copy, rename, compress files</h1>
@@ -1382,7 +1384,7 @@ echo $message</code></pre>
 <tr class="even">
 <td>e</td>
 <td></td>
-<td>append tracks to the play queue</td>
+<td><strong>append tracks to the play queue</strong></td>
 </tr>
 <tr class="odd">
 <td>E</td>
@@ -1551,6 +1553,11 @@ eval `ssh-agent`</code></pre>
   user paul
   hostname ip_address </code></pre>
 </div>
+<div id="ssh-tunnel" class="section level3">
+<h3>SSH tunnel</h3>
+<p>Tunnel to a jupyter notebook on a server</p>
+<pre><code>alias tunnelnotebook=&quot;ssh -L 8888:localhost:8888 servername -N&quot;</code></pre>
+</div>
 <div id="passwordless-access-for-root-user" class="section level3">
 <h3>Passwordless access for root user</h3>
 <p><a href="https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-access-for-root-user">How to set up passwordless SSH access for root user</a></p>
@@ -1591,6 +1598,83 @@ gpg -esr user@email file.ext</code></pre>
 <p><a href="https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-private-key-and-public-key-to-a-file">Export GPG private and public key to a file</a></p>
 <p>Verify the signature of a file</p>
 <pre><code>gpg --verify filename.ext.gpg</code></pre>
+</div>
+<div id="trust-other-public-keys" class="section level3">
+<h3>Trust other public keys</h3>
+<div id="sign-public-keys" class="section level4">
+<h4>Sign public keys</h4>
+<p><a href="https://www.gnupg.org/gph/en/manual/x56.html"></a></p>
+<blockquote>
+<p>“Once a key is imported it should be validated.”</p>
+</blockquote>
+<pre><code>alice% gpg --edit-key blake@cyb.org
+
+pub  1024D/9E98BC16  created: 1999-06-04 expires: never      trust: -/q
+sub  1024g/5C8CBD41  created: 1999-06-04 expires: never
+(1)  Blake (Executioner) &lt;blake@cyb.org&gt;
+
+Command&gt; fpr
+pub  1024D/9E98BC16 1999-06-04 Blake (Executioner) &lt;blake@cyb.org&gt;
+             Fingerprint: 268F 448F CCD7 AF34 183E  52D8 9BDE 1A08 9E98 BC16</code></pre>
+<blockquote>
+<p>"A key’s fingerprint is verified with the key’s owner. This may be done in person or over the phone or through any other means as long as you can guarantee that you are communicating with the key’s true owner. If the fingerprint you get is the same as the fingerprint the key’s owner gets, then you can be sure that you have a correct copy of the key.</p>
+</blockquote>
+<blockquote>
+<p>After checking the fingerprint, you may sign the key to validate it. Since key verification is a weak point in public-key cryptography, you should be extremely careful and always check a key’s fingerprint with the owner before signing the key."</p>
+</blockquote>
+<pre><code>Command&gt; sign
+
+pub  1024D/9E98BC16  created: 1999-06-04 expires: never      trust: -/q
+             Fingerprint: 268F 448F CCD7 AF34 183E  52D8 9BDE 1A08 9E98 BC16
+
+     Blake (Executioner) &lt;blake@cyb.org&gt;
+
+Are you really sure that you want to sign this key
+with your key: &quot;Alice (Judge) &lt;alice@cyb.org&gt;&quot;
+
+Really sign?</code></pre>
+<blockquote>
+<p>“Once signed you can check the key to list the signatures on it and see the signature that you have added. Every user ID on the key will have one or more self-signatures as well as a signature for each user that has validated the key.”</p>
+</blockquote>
+<pre><code>Command&gt; check
+uid  Blake (Executioner) &lt;blake@cyb.org&gt;
+sig!       9E98BC16 1999-06-04   [self-signature]
+sig!       BB7576AC 1999-06-04   Alice (Judge) &lt;alice@cyb.org&gt;</code></pre>
+</div>
+<div id="edit-the-trust-level" class="section level4">
+<h4>Edit the trust level</h4>
+<p>Edit the trust level of a key</p>
+<p><a href="https://www.gnupg.org/gph/en/manual/x334.html">Validating other keys on your public keyring</a></p>
+<pre><code>alice% gpg --edit-key blake
+
+pub  1024D/8B927C8A  created: 1999-07-02 expires: never      trust: q/f
+sub  1024g/C19EA233  created: 1999-07-02 expires: never     
+(1)  Blake (Executioner) &lt;blake@cyb.org&gt;
+
+Command&gt; trust
+pub  1024D/8B927C8A  created: 1999-07-02 expires: never      trust: q/f
+sub  1024g/C19EA233  created: 1999-07-02 expires: never     
+(1)  Blake (Executioner) &lt;blake@cyb.org&gt;
+
+Please decide how far you trust this user to correctly
+verify other users&#39; keys (by looking at passports,
+checking fingerprints from different sources...)?
+
+ 1 = Don&#39;t know
+ 2 = I do NOT trust
+ 3 = I trust marginally
+ 4 = I trust fully
+ s = please show me more information
+ m = back to the main menu
+
+Your decision? 3
+                
+pub  1024D/8B927C8A  created: 1999-07-02 expires: never      trust: m/f
+sub  1024g/C19EA233  created: 1999-07-02 expires: never     
+(1)  Blake (Executioner) &lt;blake@cyb.org&gt;
+
+Command&gt; quit</code></pre>
+</div>
 </div>
 <div id="manage-keys" class="section level3">
 <h3>Manage keys</h3>
@@ -1807,7 +1891,8 @@ exit </code></pre>
 </div>
 <div id="panes-splits" class="section level3">
 <h3>Panes (splits)</h3>
-<p>Following commands should be prefixed by CTRL + b. Vertical split</p>
+<p>Following commands should be prefixed by <code>CTRL + b</code>.</p>
+<p>Vertical split</p>
 <pre><code>%</code></pre>
 <p>Horizontal split</p>
 <pre><code>&quot;</code></pre>
@@ -1821,6 +1906,9 @@ exit </code></pre>
 </blockquote>
 <p>Zoom a pane and de-zoom it:</p>
 <p>z</p>
+<p>Swap pane up and down or left and right</p>
+<pre><code>{
+}</code></pre>
 </div>
 <div id="movements" class="section level3">
 <h3>Movements</h3>
