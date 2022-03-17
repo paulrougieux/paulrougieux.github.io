@@ -207,6 +207,15 @@ Rmarkdown documents, view the state of a git repository and build packages.
     list.files(tempdir()) 
     dir.create("blabla")
 
+
+## Apache Arrow
+
+[Apache arrow R packages](https://github.com/apache/arrow/tree/master/r)
+
+> "Read and write Feather files (read_feather(), write_feather()), a format
+> optimized for speed and interoperability"
+
+
 ## CSV files
 
 Read one csv file with default R function.
@@ -1058,6 +1067,18 @@ Display all palettes
 
     display.brewer.all()
 
+
+### Add more colours to a palette
+
+[Expand colour palettes in
+R](https://www.datanovia.com/en/blog/easy-way-to-expand-color-palettes-in-r/)
+
+Expand from 8 colours to more colours:
+
+    mycolors <- colorRampPalette(brewer.pal(8, "Set2"))(nb.cols)
+
+
+
 ## Text labels
 
 ggplot2 [text](https://ggplot2.tidyverse.org/reference/geom_text.html)
@@ -1204,6 +1225,12 @@ semantics inside summarise and mutate.
 cars %>%
     group_by(speed) %>%
     summarise(across(dist, list(n = length , min = min, mean = mean, max = max)))
+```
+
+With trade data
+
+```{r eval=FALSE}
+summarise(across(all_of(c("tradevalue", "weight", "quantity")), sum, na.rm=TRUE))
 ```
 
 Other examples from the help of the across function
@@ -1500,9 +1527,30 @@ comment](https://stackoverflow.com/questions/4216753/check-existence-of-director
 
 ## Blogs
 
+- [tinyverse](https://www.tinyverse.org/) "Lightweight is the right weight"
+
+    - Dirk Eddelbuettel [dependencies](http://dirk.eddelbuettel.com/blog/2018/02/28/#017_dependencies) 
+
+         > "I relied on the liteq package by Gabor which does the job: enqueue
+         > jobs, and reliably dequeue them (also in a parallel fashion) and more.
+         > It looks light enough:"
+
+            R> tools::package_dependencies(package="liteq", recursive=FALSE, db=AP)$liteq
+            [1] "assertthat" "DBI"        "rappdirs"   "RSQLite"
+
+        > "Two dependencies because it uses an internal SQLite database, one
+        > for internal tooling and one for configuration." All good then? Not
+        > so fast. The devil here is the very innocuous and versatile RSQLite
+        > package because when we look at fully recursive dependencies all hell
+        > breaks loose: Now we went from four to twenty-four, due to the
+        > twenty-two dependencies pulled in by RSQLite."
+
 * Gavin Simpson [My aversion to pipers](http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/) shows an Hadley tweet explaining that pipe might not be good in package development.
 
 - 5 R packages for text analysis https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb
+
+
+
 
 ## Stackoverflow
 

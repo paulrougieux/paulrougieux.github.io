@@ -605,6 +605,13 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 <pre><code>getwd()
 list.files(tempdir()) 
 dir.create(&quot;blabla&quot;)</code></pre>
+<div id="apache-arrow" class="section level2">
+<h2>Apache Arrow</h2>
+<p><a href="https://github.com/apache/arrow/tree/master/r">Apache arrow R packages</a></p>
+<blockquote>
+<p>“Read and write Feather files (read_feather(), write_feather()), a format optimized for speed and interoperability”</p>
+</blockquote>
+</div>
 <div id="csv-files" class="section level2">
 <h2>CSV files</h2>
 <p>Read one csv file with default R function.</p>
@@ -870,19 +877,19 @@ knitr::kable(d, digits = 4)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.6163</td>
+<td align="right">0.7002</td>
 <td align="right">1e+03</td>
-<td align="right">253.5558</td>
+<td align="right">-287.8106</td>
 </tr>
 <tr class="even">
-<td align="right">0.7685</td>
+<td align="right">0.2518</td>
 <td align="right">1e+05</td>
-<td align="right">141.5670</td>
+<td align="right">323.6062</td>
 </tr>
 <tr class="odd">
-<td align="right">0.4023</td>
+<td align="right">0.4279</td>
 <td align="right">1e+07</td>
-<td align="right">373.5137</td>
+<td align="right">-254.5400</td>
 </tr>
 </tbody>
 </table>
@@ -898,19 +905,19 @@ knitr::kable(d, digits = c(5, 0, 2))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.61632</td>
+<td align="right">0.70019</td>
 <td align="right">1e+03</td>
-<td align="right">253.56</td>
+<td align="right">-287.81</td>
 </tr>
 <tr class="even">
-<td align="right">0.76850</td>
+<td align="right">0.25181</td>
 <td align="right">1e+05</td>
-<td align="right">141.57</td>
+<td align="right">323.61</td>
 </tr>
 <tr class="odd">
-<td align="right">0.40228</td>
+<td align="right">0.42794</td>
 <td align="right">1e+07</td>
-<td align="right">373.51</td>
+<td align="right">-254.54</td>
 </tr>
 </tbody>
 </table>
@@ -926,19 +933,19 @@ knitr::kable(d, digits = 3, format.args = list(scientific = FALSE))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.616</td>
+<td align="right">0.700</td>
 <td align="right">1000</td>
-<td align="right">253.556</td>
+<td align="right">-287.811</td>
 </tr>
 <tr class="even">
-<td align="right">0.768</td>
+<td align="right">0.252</td>
 <td align="right">100000</td>
-<td align="right">141.567</td>
+<td align="right">323.606</td>
 </tr>
 <tr class="odd">
-<td align="right">0.402</td>
+<td align="right">0.428</td>
 <td align="right">10000000</td>
-<td align="right">373.514</td>
+<td align="right">-254.540</td>
 </tr>
 </tbody>
 </table>
@@ -955,19 +962,19 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.616</td>
+<td align="right">0.700</td>
 <td align="right">1,000</td>
-<td align="right">253.556</td>
+<td align="right">-287.811</td>
 </tr>
 <tr class="even">
-<td align="right">0.768</td>
+<td align="right">0.252</td>
 <td align="right">100,000</td>
-<td align="right">141.567</td>
+<td align="right">323.606</td>
 </tr>
 <tr class="odd">
-<td align="right">0.402</td>
+<td align="right">0.428</td>
 <td align="right">10,000,000</td>
-<td align="right">373.514</td>
+<td align="right">-254.540</td>
 </tr>
 </tbody>
 </table>
@@ -1018,7 +1025,7 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 <p>It’s often useful to have a table of content at the start of long documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;21 February, 2022&quot;
+date:  &quot;17 March, 2022&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1384,6 +1391,12 @@ p + scale_colour_manual(values = iris_palette)</code></pre>
 <p>Display all palettes</p>
 <pre><code>display.brewer.all()</code></pre>
 </div>
+<div id="add-more-colours-to-a-palette" class="section level3">
+<h3>Add more colours to a palette</h3>
+<p><a href="https://www.datanovia.com/en/blog/easy-way-to-expand-color-palettes-in-r/">Expand colour palettes in R</a></p>
+<p>Expand from 8 colours to more colours:</p>
+<pre><code>mycolors &lt;- colorRampPalette(brewer.pal(8, &quot;Set2&quot;))(nb.cols)</code></pre>
+</div>
 </div>
 <div id="text-labels" class="section level2">
 <h2>Text labels</h2>
@@ -1541,6 +1554,8 @@ cars %&gt;%
 ## 17    23      1       54      54         54
 ## 18    24      4       70      93.8      120
 ## 19    25      1       85      85         85</code></pre>
+<p>With trade data</p>
+<pre class="r"><code>summarise(across(all_of(c(&quot;tradevalue&quot;, &quot;weight&quot;, &quot;quantity&quot;)), sum, na.rm=TRUE))</code></pre>
 <p>Other examples from the help of the across function</p>
 <pre class="r"><code># A purrr-style formula
 iris %&gt;%
@@ -1769,6 +1784,18 @@ piris$plot[2]</code></pre>
 <div id="blogs" class="section level2">
 <h2>Blogs</h2>
 <ul>
+<li><p><a href="https://www.tinyverse.org/">tinyverse</a> “Lightweight is the right weight”</p>
+<ul>
+<li><p>Dirk Eddelbuettel <a href="http://dirk.eddelbuettel.com/blog/2018/02/28/#017_dependencies">dependencies</a></p>
+<blockquote>
+<p>“I relied on the liteq package by Gabor which does the job: enqueue jobs, and reliably dequeue them (also in a parallel fashion) and more. It looks light enough:”</p>
+</blockquote>
+<pre><code>  R&gt; tools::package_dependencies(package=&quot;liteq&quot;, recursive=FALSE, db=AP)$liteq
+  [1] &quot;assertthat&quot; &quot;DBI&quot;        &quot;rappdirs&quot;   &quot;RSQLite&quot;</code></pre>
+<blockquote>
+<p>“Two dependencies because it uses an internal SQLite database, one for internal tooling and one for configuration.” All good then? Not so fast. The devil here is the very innocuous and versatile RSQLite package because when we look at fully recursive dependencies all hell breaks loose: Now we went from four to twenty-four, due to the twenty-two dependencies pulled in by RSQLite."</p>
+</blockquote></li>
+</ul></li>
 <li><p>Gavin Simpson <a href="http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/">My aversion to pipers</a> shows an Hadley tweet explaining that pipe might not be good in package development.</p></li>
 <li><p>5 R packages for text analysis <a href="https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb" class="uri">https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb</a></p></li>
 </ul>
