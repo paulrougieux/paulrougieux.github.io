@@ -701,6 +701,14 @@ latexdiff content_before_review.tex content_now.tex &gt; content.tex</code></pre
 </div>
 </div>
 </div>
+<div id="fancy-headers" class="section level2">
+<h2>Fancy Headers</h2>
+<p><a href="https://tex.stackexchange.com/a/598241/44254">Fancy header on cusom page widths</a></p>
+<blockquote>
+<p>“<code>\fancyhfoffset{0pt}</code> makes fancyhdr recalculate for each page, based on the then current .”</p>
+</blockquote>
+<pre><code> \fancyhfoffset{0pt}</code></pre>
+</div>
 <div id="makefile" class="section level2">
 <h2>Makefile</h2>
 <p>Make can be use to automate the compilation of the latex file, place the supporting figures and documents in a zip archive and subsequently remove the intermediate files.</p>
@@ -726,6 +734,19 @@ zip: # Remove the zip archive otherwise deleted files will remain in the archive
      echo &quot;Verify that the pdf and zip archives have been updated by checking their update time.&quot;
      ls -lh ../*.zip
      ls -lh ../*.pdf</code></pre>
+</div>
+<div id="multicol" class="section level2">
+<h2>Multicol</h2>
+<p><a href="https://ftp.gwdg.de/pub/ctan/macros/latex/required/tools/multicol.pdf">Documentation of the Latex multicol package</a></p>
+<pre><code>\begin{multicols}{⟨number ⟩}
+⟨multicolumn text⟩
+\end{multicols}</code></pre>
+<blockquote>
+<p>“It is often convenient to spread some text over all columns, just before the multicolumn output, without any page break in be- tween. To achieve this the multi- cols environment has an optional second argument which can be used for this purpose. For exam- ple, the text you are now reading was started with”</p>
+</blockquote>
+<pre><code>\begin{multicols}{3}
+[\section{The User
+Interface}] ...</code></pre>
 </div>
 </div>
 <div id="motivation" class="section level1">

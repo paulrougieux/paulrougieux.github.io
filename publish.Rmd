@@ -292,6 +292,18 @@ Compile the diff document, enter quiet mode with “Q” if there are error mess
 
      latexmk -pdf -bibtex -use-make template.tex
 
+
+## Fancy Headers
+
+[Fancy header on cusom page
+widths](https://tex.stackexchange.com/a/598241/44254) 
+
+> "`\fancyhfoffset{0pt}` makes fancyhdr recalculate \headwidth for each
+> page, based on the then current \textwidth."
+
+     \fancyhfoffset{0pt}
+
+
 ## Makefile
 
 Make can be use to automate the compilation of the latex file, place the
@@ -320,6 +332,26 @@ intermediate files.
          echo "Verify that the pdf and zip archives have been updated by checking their update time."
          ls -lh ../*.zip
 	     ls -lh ../*.pdf
+
+
+## Multicol
+
+[Documentation of the Latex multicol
+package](https://ftp.gwdg.de/pub/ctan/macros/latex/required/tools/multicol.pdf)
+
+    \begin{multicols}{⟨number ⟩}
+    ⟨multicolumn text⟩
+    \end{multicols}
+
+> "It is often convenient to spread some text over all columns, just before
+> the multicolumn output, without any page break in be- tween. To achieve this
+> the multi- cols environment has an optional second argument which can be used
+> for this purpose. For exam- ple, the text you are now reading was started
+> with"
+
+    \begin{multicols}{3}
+    [\section{The User
+    Interface}] ...
 
 
 # Motivation
