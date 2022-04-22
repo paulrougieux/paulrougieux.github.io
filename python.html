@@ -506,6 +506,63 @@ div.tocify {
 <h2>Virtual environments</h2>
 <p><a href="https://pipenv.pypa.io/en/latest/">Pipenv</a> makes pip and virtual env work together.</p>
 </div>
+<div id="anaconda" class="section level2">
+<h2>Anaconda</h2>
+<p>Use conda update command to check to see if a new update is available. If conda tells you an update is available, you can then choose whether or not to install it.</p>
+<div id="install" class="section level3">
+<h3>Install</h3>
+<p>Documentation conda.io <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#installing-packages">installing packages</a></p>
+<blockquote>
+<p>To install a specific package such as SciPy into an existing environment “myenv”:</p>
+</blockquote>
+<pre><code>conda install --name myenv scipy</code></pre>
+<blockquote>
+<p>If you do not specify the environment name, which in this example is done by –name myenv, the package installs into the current environment:</p>
+</blockquote>
+<pre><code>conda install scipy</code></pre>
+<blockquote>
+<p>To install a specific version of a package such as SciPy:</p>
+</blockquote>
+<pre><code>conda install scipy=0.15.0</code></pre>
+<blockquote>
+<p>To install multiple packages at once, such as SciPy and cURL:</p>
+</blockquote>
+<pre><code>conda install scipy curl</code></pre>
+<blockquote>
+<p>Note: It is best to install all packages at once, so that all of the dependencies are installed at the same time.</p>
+</blockquote>
+</div>
+<div id="update" class="section level3">
+<h3>Update</h3>
+<p>Documentation conda.io <a href="https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#updating-packages">updating packages</a></p>
+<blockquote>
+<p>Use the terminal or an Anaconda Prompt for the following steps.</p>
+</blockquote>
+<blockquote>
+<p>To update a specific package:</p>
+</blockquote>
+<pre><code>conda update biopython</code></pre>
+<blockquote>
+<p>To update Python:</p>
+</blockquote>
+<pre><code>conda update python</code></pre>
+<blockquote>
+<p>To update conda itself:</p>
+</blockquote>
+<pre><code>conda update conda</code></pre>
+</div>
+<div id="environment-file" class="section level3">
+<h3>Environment file</h3>
+<p>Creating an environment file manually</p>
+<p>You can create an environment file (environment.yml) manually to share with others.</p>
+<p>EXAMPLE: A simple environment file:</p>
+<p>name: stats dependencies: - numpy - pandas</p>
+<p>EXAMPLE: A more complex environment file:</p>
+<p>name: stats2 channels: - javascript dependencies: - python=3.6 # or 2.7 - bokeh=0.9.2 - numpy=1.9.<em> - nodejs=0.10.</em> - flask - pip: - Flask-Testing</p>
+<p>Note</p>
+<p>Note the use of the wildcard * when defining the patch version number. Defining the version number by fixing the major and minor version numbers while allowing the patch version number to vary allows us to use our environment file to update our environment to get any bug fixes whilst still maintaining consistency of software environment.</p>
+</div>
+</div>
 </div>
 <div id="compilers" class="section level1">
 <h1>Compilers</h1>
@@ -585,6 +642,20 @@ inspector.has_table(&#39;user&#39;)</code></pre>
 stmt = select(user_table).where(user_table.c.name == &#39;spongebob&#39;)
 print(stmt)</code></pre>
 <p>Since version 1.4 <code>.where()</code> is a synonym of <code>.filter()</code> as explained in <a href="https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.where">sqlalchemy.orm.Query.where</a>.</p>
+<p>To select only one column you can use <a href="https://docs.sqlalchemy.org/en/14/core/selectable.html#sqlalchemy.sql.expression.Select.with_only_columns">Select.with_only_columns</a>:</p>
+<pre><code>from sqlalchemy import MetaData, Table, Column, Text
+meta = MetaData()
+table = Table(&#39;user&#39;, meta, 
+              Column(&quot;name&quot;, Text),
+              Column(&quot;full_name&quot;, Text))
+stmt = (table.select()
+        .with_only_columns([table.c.name])
+       )
+print(stmt)</code></pre>
+<p>Entering columns in the <code>select</code> method returns an error. Although it should be valid according to the documentation.</p>
+<pre><code>print(table.select([table.c.name]))
+# ArgumentError: SQL expression for WHERE/HAVING role expected, 
+# got [Column(&#39;name&#39;, Text(), table=&lt;user&gt;)].</code></pre>
 </div>
 <div id="insert" class="section level4">
 <h4>Insert</h4>
@@ -746,15 +817,22 @@ YEARS = [str(x) for x in YEARS]
 </div>
 <div id="dictionary" class="section level3">
 <h3>Dictionary</h3>
-<p>Create a dictionary</p>
+<p>Create a dictionary with curly braces</p>
 <pre><code>ceci = {&#39;x&#39;:1, &#39;y&#39;:2, &#39;z&#39;:3}</code></pre>
-<p>Converts 2 lists into a dictionary</p>
+<p>Converts 2 lists into a dictionary with the <code>dict</code> built in function</p>
 <pre><code>dict(zip([&#39;x&#39;, &#39;y&#39;, &#39;z&#39;], [1, 2, 3]))</code></pre>
 <p>Dictionary comprehension</p>
 <pre><code>d = {n: True for n in range(5)}</code></pre>
 <p>Loop over the key and values of a dictionary</p>
 <pre><code>for key, value in ceci.items():
     print(key, &quot;has the value&quot;, value)</code></pre>
+</div>
+<div id="iterator" class="section level3">
+<h3>Iterator</h3>
+<p>The <code>map</code> function makes an iterator object of type <code>map</code></p>
+<pre><code>iter = map(lambda x:x+1,range(3))
+type(iter)
+[i for i in iter]</code></pre>
 </div>
 <div id="list" class="section level3">
 <h3>List</h3>
@@ -763,6 +841,8 @@ YEARS = [str(x) for x in YEARS]
 myList.remove(&#39;c&#39;)
 myList
 [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;]</code></pre>
+<p>Create a list of strings using split (seen in <a href="https://stackoverflow.com/a/52110266/2641825">this answer</a>)</p>
+<pre><code>&quot;slope, intercept, r_value, p_value, std_err&quot;.split(&quot;, &quot;)</code></pre>
 <div id="list-of-tuples" class="section level4">
 <h4>List of tuples</h4>
 <p><a href="https://stackoverflow.com/questions/10632839/transform-list-of-tuples-into-a-flat-list-or-a-matrix">How to flatten a list of tuples</a></p>
@@ -1019,6 +1099,11 @@ Out[17]:
 <pre><code>ipython -i notebook.py</code></pre>
 <p>Otherwise I also sometimes open the synchronized markdown version of the notebook and execute a few cells using Vim slime to sent them to a tmux pane where ipython is running.</p>
 </div>
+<div id="convert-notebooks-to-html" class="section level3">
+<h3>Convert notebooks to html</h3>
+<p>Notebooks can be converted from the File / Save and Export Notebook As / HTML menu. Or <a href="https://nbconvert.readthedocs.io/en/latest/usage.html#convert-html">at the command line with nbconvert</a></p>
+<pre><code>jupyter nbconvert --to html notebook.ipynb</code></pre>
+</div>
 <div id="from-python" class="section level3">
 <h3>From python</h3>
 <p>Run an ipython notebook from python using <a href="https://nbconvert.readthedocs.io/en/latest/execute_api.html#example">nbconver</a>’s execute API:</p>
@@ -1058,6 +1143,36 @@ with open(filename, &#39;w&#39;, encoding=&#39;utf-8&#39;) as f:
 <p>“interactive HTML widgets for Jupyter notebooks and the IPython kernel.”</p>
 </blockquote></li>
 </ul>
+<div id="interactive-widgets" class="section level3">
+<h3>Interactive widgets</h3>
+<p><a href="https://ipywidgets.readthedocs.io/en/latest/examples/Using%20Interact.html">Documentation of interactive widgets</a></p>
+<p>Create a text box</p>
+<pre><code>def print_name(name):
+    return(&quot;Name: &quot; + name)
+interact(print_name, name=&quot;Paul&quot;)</code></pre>
+<p>Create a drop down list for an interactive plot</p>
+<pre><code>import matplotlib.pyplot as plt
+import seaborn
+from ipywidgets import interact
+iris = seaborn.load_dataset(&quot;iris&quot;).set_index(&quot;species&quot;)
+
+def plot_iris(species):
+    &quot;&quot;&quot;Plot the given species&quot;&quot;&quot;
+    df = iris.loc[species]
+    ax = df.plot.scatter(x=&#39;petal_length&#39;, y=&#39;petal_width&#39;, title=species)
+    ax.set_xlim(0,8)
+    ax.set_ylim(0,4)
+
+interact(plot_iris, species=list(iris.index.unique()))</code></pre>
+<p>Use the <code>@interact</code> decorator</p>
+<pre><code>@interact(species=list(iris.index.unique()))
+def plot_iris(species):
+    &quot;&quot;&quot;Plot the given species&quot;&quot;&quot;
+    df = iris.loc[species]
+    ax = df.plot.scatter(x=&#39;petal_length&#39;, y=&#39;petal_width&#39;, title=species)
+    ax.set_xlim(0,8)
+    ax.set_ylim(0,4)</code></pre>
+</div>
 </div>
 <div id="display-all-rows-and-columns-of-a-data-frame" class="section level2">
 <h2>Display all rows and columns of a data frame</h2>
@@ -1129,8 +1244,10 @@ jupyter nbconvert --to html mynotebook.ipynb</code></pre>
 </blockquote>
 <pre><code>conda install -c conda-forge jupyter_contrib_nbextensions</code></pre>
 </div>
-<div id="jupytext-version-control-with-markdown-and-git" class="section level2">
-<h2>Jupytext version control with markdown and git</h2>
+<div id="jupyter-and-git-version-control" class="section level2">
+<h2>Jupyter and git version control</h2>
+<div id="jupytext-with-markdown-and-git" class="section level3">
+<h3>Jupytext with markdown and git</h3>
 <p>Convert notebooks to markdown so they are easier to track in git.</p>
 <p>Install <a href="https://github.com/mwouts/jupytext" class="uri">https://github.com/mwouts/jupytext</a></p>
 <pre><code>python3 -m pip install --user jupytext</code></pre>
@@ -1149,6 +1266,11 @@ python3 -m jupyter nbextension enable  jupytext --py --user</code></pre>
 jupytext --set-formats ipynb,md --sync ~/repos/example_repos/notebooks/test.ipynb
 # Python sync
 jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipynb</code></pre>
+</div>
+<div id="remove-jupyter-notebook-output-when-using-git" class="section level3">
+<h3>Remove jupyter notebook output when using git</h3>
+<p>Alternative to the above, this post explains <a href="https://janakiev.com/blog/jupyter-git-remove-output/">how to remove Jupyter notebook output from terminal and when using git</a>.</p>
+</div>
 </div>
 </div>
 <div id="errors-exceptions-and-logging" class="section level1">
@@ -1205,6 +1327,43 @@ raise ValueError(msg % (1, 2))</code></pre>
 add_one(1)
 
 # 2</code></pre>
+<div id="annotations" class="section level2">
+<h2>Annotations</h2>
+<p><a href="https://peps.python.org/pep-3107/">PEP 3107</a></p>
+<blockquote>
+<p>Annotations for parameters take the form of optional expressions that follow the parameter name:</p>
+</blockquote>
+<pre><code>def foo(a: expression, b: expression = 5):
+    ...</code></pre>
+<blockquote>
+<p>to annotate the type of a function’s return value. This is done like so:</p>
+</blockquote>
+<pre><code>def sum() -&gt; expression:
+    ...</code></pre>
+<p><a href="https://stackoverflow.com/a/15073109/2641825">SO example</a></p>
+<pre><code>def kinetic_energy(m:&#39;in KG&#39;, v:&#39;in M/S&#39;)-&gt;&#39;Joules&#39;:
+return 1/2_m_v**2
+
+kinetic_energy.__annotations__
+{&#39;m&#39;: &#39;in KG&#39;, &#39;v&#39;: &#39;in M/S&#39;, &#39;return&#39;: &#39;Joules&#39;}</code></pre>
+<p>The pandas code base doesn’t use it everywhere, there are functions that use the standard sphinx type of documentation <a href="https://github.com/pandas-dev/pandas/blob/a2029ce7bdd640931cb2c19e8a2c2c5a258fa5f9/pandas/core/arrays/timedeltas.py#L1094">timedeltas.py#L1094</a>. I have the impression that the annotation are used for the package internal functions, while the sphinx documentation is used for the functions that are exposed to the outside users. And in the same script, they use both sphinx documentation and type annotations <a href="https://github.com/pandas-dev/pandas/blob/a2029ce7bdd640931cb2c19e8a2c2c5a258fa5f9/pandas/core/arrays/timedeltas.py#L952">timedeltas.py#L952</a>.</p>
+<p><a href="https://www.blog.pythonlibrary.org/2020/04/15/type-checking-in-python/">Type checking in python</a></p>
+<blockquote>
+<p>There are several things to know about up front when it comes to type hinting in Python. Let’s look at the pros of type hinting first:</p>
+<ul>
+<li>Type hints are nice way to document your code in addition to docstrings</li>
+<li>Type hints can make IDEs and linters give better feedback and better autocomplete</li>
+<li>Adding type hints forces you to think about types, which may help you make good decisions during the design of your applications.</li>
+</ul>
+<p>Adding type hinting isn’t all rainbows and roses though. There are some downsides:</p>
+<ul>
+<li>The code is more verbose and arguably harder to write</li>
+<li>Type hinting adds development time</li>
+<li>Type hints only work in Python 3.5+. Before that, you had to use type comments</li>
+<li>Type hinting can have a minor start up time penalty in code that uses it, especially if you import the typing module.</li>
+</ul>
+</blockquote>
+</div>
 <div id="call-by-reference-or-call-by-value" class="section level2">
 <h2>Call by reference or call by value</h2>
 <p>When using numpy arrays, python displays a behaviour of call by reference</p>
@@ -1243,6 +1402,15 @@ a
 </blockquote>
 </div>
 </div>
+<div id="deprecate-arguments" class="section level2">
+<h2>Deprecate arguments</h2>
+<p>Deprecate the old name of a function argument</p>
+<pre><code>def agg_trade_eu_row(df, grouping_side=&quot;partner&quot;, index_side=None):
+    if index_side is not None:
+        warnings.warn(&quot;index_side is deprecated; use grouping_side&quot;, DeprecationWarning, 2)
+        grouping_side = index_side</code></pre>
+<p>This <a href="https://stackoverflow.com/q/49802412/2641825">SO Questions</a> asks how to create an argument alias, without changing the number of arguments to the function.</p>
+</div>
 <div id="docstring-documentation" class="section level2">
 <h2>Docstring Documentation</h2>
 <p>Document python functions with the sphinx convention <a href="https://stackoverflow.com/a/40596167">SO Answer</a></p>
@@ -1268,12 +1436,22 @@ a
 <p>2 to the power of 3</p>
 <pre><code>2**3
 # 8</code></pre>
+<div id="floor-division" class="section level2">
+<h2>Floor division</h2>
 <p>Floor division</p>
 <pre><code>5//3
-# 1</code></pre>
-<p>Modulo</p>
+# 1
+# Use it to extract the year of a Comtrade period
+202105 // 100</code></pre>
+</div>
+<div id="modulo" class="section level2">
+<h2>Modulo</h2>
 <pre><code>5%3
-# 2</code></pre>
+# 2
+12
+# Use it to extract the last 2 digits of an integer
+202105 % 100</code></pre>
+</div>
 <div id="sympy" class="section level2">
 <h2>Sympy</h2>
 <p><a href="https://www.sympy.org/en/index.html" class="uri">https://www.sympy.org/en/index.html</a></p>
@@ -1296,6 +1474,34 @@ a
 <h1>Numpy vectors and matrices (arrays)</h1>
 <p>All examples below are based on the numpy package being imported as np :</p>
 <pre><code>import numpy as np</code></pre>
+<div id="logical-operators-and-binary-operations" class="section level2">
+<h2>Logical operators and binary operations</h2>
+<p>I mostly use <a href="%3Chttps://numpy.org/doc/stable/reference/routines.bitwise.html">binary operators</a> on boolean arrays for index selections in pandas data frames.</p>
+<p>Bitwise and</p>
+<pre><code>np.array([True, True]) &amp; np.array([False, True])</code></pre>
+<p>Bitwise not</p>
+<pre><code>~np.array([True, False])</code></pre>
+<p>They are equivalent to logical operators <a href="https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html">numpy.logical_and</a>, <a href="https://numpy.org/doc/stable/reference/generated/numpy.logical_not.html">numpy.logical_not</a> for logical arrays.</p>
+<p>A <a href="https://stackoverflow.com/a/54435820/2641825">SO answer</a> quotes <a href="https://www.numpy.org/devdocs/user/numpy-for-matlab-users.html#numpy-for-matlab-users-notes">the NumPy v1.15 Manual</a></p>
+<pre><code>&gt; If you know you have boolean arguments, you can get away with using
+&gt; NumPy’s bitwise operators, but be careful with parentheses, like this:
+&gt; `z = (x &gt; 1) &amp; (x &lt; 2)`. The absence of NumPy operator forms of
+&gt; `logical_and` and `logical_or` is an unfortunate consequence of Python’s
+&gt; design.</code></pre>
+<blockquote>
+<p>So one can also use <code>~</code> for <code>logical_not</code> and <code>|</code> for <code>logical_or</code>.</p>
+</blockquote>
+<p><a href="https://numpy.org/doc/stable/reference/generated/numpy.bitwise_and.html">Bitwise and</a></p>
+<blockquote>
+<p>“The number 13 is represented by 00001101. Likewise, 17 is represented by 00010001. The bit-wise AND of 13 and 17 is therefore 000000001, or 1”</p>
+</blockquote>
+<pre><code>np.bitwise_and(13, 17)
+# 1</code></pre>
+<p>The <code>&amp;</code> operator can be used as a shorthand for np.bitwise_and on ndarrays.</p>
+<pre><code>x1 = np.array([2, 5, 255])
+x2 = np.array([3, 14, 16])
+x1 &amp; x2</code></pre>
+</div>
 <div id="indexing-multi-dimensional-arrays-and-masks" class="section level2">
 <h2>Indexing Multi-dimensional arrays and masks</h2>
 <p>Numpy <a href="https://docs.scipy.org/doc/numpy/reference/arrays.indexing.html">array indexing</a></p>
@@ -1482,12 +1688,13 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
 <div id="create-a-data-frame" class="section level3">
 <h3>Create a data frame</h3>
 <p>You can create a data frame by passing a <strong>dictionary of lists</strong> with column names as keys</p>
-<pre><code>pandas.DataFrame({&#39;x&#39;:range(0,3), 
+<pre><code>df = pandas.DataFrame({&#39;x&#39;:range(0,3), 
                   &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
-       a  b
-    0  0  3
-    1  1  4
-    2  2  5</code></pre>
+
+#      a  b
+#   0  0  3
+#   1  1  4
+#   2  2  5</code></pre>
 <p>Or by passing a list of tuples and defining the <code>columns</code> argument</p>
 <pre><code>pandas.DataFrame(
     list(zip(range(0,3), [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;])), 
@@ -1503,11 +1710,14 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
 df[&quot;d&quot;] = df[&quot;a&quot;] * 2</code></pre>
 <p>Use the <code>assign</code> method</p>
 <pre><code>df.assign(e = lambda x: x[&quot;a&quot;] * 3)</code></pre>
+<div id="sum-columns-together-and-compute-a-share" class="section level4">
+<h4>Sum columns together and compute a share</h4>
 <p>Sum all columns in an assign and use it to compute a share</p>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;).set_index(&quot;species&quot;)
 iris.assign(sp_sum = lambda x: x.sum(axis=1),
             sl_share = lambda x: x.sepal_length / x.sp_sum)</code></pre>
+</div>
 </div>
 <div id="recursive-computation-xt-depends-on-xt-1" class="section level3">
 <h3>Recursive computation x(t) depends on x(t-1)</h3>
@@ -1631,6 +1841,25 @@ df.equals(df+1e-6)
 np.testing.assert_allclose(df,df+1e-7)
 np.testing.assert_allclose(df,df+1e-3)</code></pre>
 </div>
+<div id="concatenate-and-merge" class="section level2">
+<h2>Concatenate and merge</h2>
+<div id="concatenate-2-data-frames" class="section level3">
+<h3>Concatenate 2 data frames</h3>
+</div>
+<div id="concatenate-2-series" class="section level3">
+<h3>Concatenate 2 series</h3>
+<p>Concatenate two series <a href="https://stackoverflow.com/questions/18062135/combining-two-series-into-a-dataframe-in-pandas">SO</a> Notice the difference between the default <code>axis=0</code> concatenate on the index, and <code>axis=1</code> concatenate on the columns.</p>
+<pre><code>import pandas
+s1 = pandas.Series([1, 2, 3], index=[&#39;A&#39;, &#39;B&#39;, &#39;c&#39;], name=&#39;s1&#39;)
+s2 = pandas.Series([4, 5, 6], index=[&#39;A&#39;, &#39;B&#39;, &#39;D&#39;], name=&#39;s2&#39;)
+pandas.concat([s1, s2], axis=0)
+pandas.concat([s1, s2], axis=1)</code></pre>
+</div>
+<div id="merge-or-join" class="section level3">
+<h3>Merge or join</h3>
+<p>Stackoverflow <a href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas merging</a></p>
+</div>
+</div>
 <div id="columns" class="section level2">
 <h2>Columns</h2>
 <div id="list-columns" class="section level3">
@@ -1658,6 +1887,30 @@ df.rename(columns=lambda x: re.sub(r&quot;\W+&quot;, &quot;_&quot;, str(x)).lowe
 <p>Remove parenthesis and dots in column names</p>
 <pre><code>df.rename(columns=lambda x: re.sub(r&quot;[()\.]&quot;, &quot;&quot;, x), inplace=True)</code></pre>
 </div>
+<div id="replace-the-content-of-columns" class="section level3">
+<h3>Replace the content of columns</h3>
+<p>Replace Comtrade product code by the FAOSTAT product codes</p>
+<pre><code># Create a dictionary from 2 columns of a data frame
+product_dict = product_mapping.set_index(&#39;comtrade_code&#39;).to_dict()[&#39;faostat_code&#39;]
+df_comtrade[&quot;product_code&quot;] = df_comtrade[&quot;product_code&quot;].replace(product_dict)</code></pre>
+</div>
+<div id="reorder-columns" class="section level3">
+<h3>Reorder columns</h3>
+<p>Place the last column first</p>
+<pre><code>  cols = df.columns.to_list()
+  cols = [cols[-1] + cols[:-1]
+  df = df[cols]</code></pre>
+<p>This <a href="https://stackoverflow.com/a/58776941/2641825">SO Answer</a> provide 6 different ways to reorder columns.</p>
+</div>
+<div id="variable-type" class="section level3">
+<h3>Variable Type</h3>
+<p>To change the type of a column use astype:</p>
+<pre><code>s = pandas.Series(range(3))
+s.to_list()
+s.astype(str).to_list()
+s.astype(float).to_list()</code></pre>
+<p>Note using NA values is not possible with the base integer type, it requires a special type Int64 as explained in this <a href="https://stackoverflow.com/a/67270477/2641825">SO answer</a></p>
+</div>
 </div>
 <div id="datetime-operations" class="section level2">
 <h2>Datetime operations</h2>
@@ -1673,23 +1926,42 @@ print(s.dt.year)</code></pre>
 </div>
 <div id="group-by-operations" class="section level2">
 <h2>Group by operations</h2>
-<p>Compute the sum for the sepal length grouped by species</p>
+<p>Compute the sum of sepal length grouped by species</p>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;)
-iris.groupby(&#39;species&#39;).agg(sepal_length = (&#39;sepal_length&#39;, sum))</code></pre>
+# Aggregate one value
+iris.groupby(&#39;species&#39;)[&quot;sepal_length&quot;].agg(sum).reset_index()
+# Aggregate multiple values
+iris.groupby(&#39;species&#39;)[[&quot;sepal_length&quot;, &quot;petal_length&quot;]].agg(sum).reset_index()
+# Aggregate multiple values and give new names
+iris.groupby(&#39;species&#39;).agg(sepal_length_sum = (&#39;sepal_length&#39;, sum),
+                            petal_length_sum = (&#39;petal_length&#39;, sum))</code></pre>
 <p>Compute the sum but repeated for every original row</p>
 <pre><code>iris[&#39;sepal_sum&#39;] = iris.groupby(&#39;species&#39;)[&#39;sepal_length&#39;].transform(&#39;sum&#39;)
 iris</code></pre>
 <p>This is useful to compute the <a href="https://stackoverflow.com/questions/23377108/pandas-percentage-of-total-with-groupby">share of total in each group</a> for example.</p>
 <p>Compute the cumulative sum of the sepal length</p>
 <pre><code>iris[&#39;cumsum&#39;] = iris.groupby(&#39;species&#39;).sepal_length.cumsum()
-iris[&#39;cumsum&#39;].plot()
+ris[&#39;cumsum&#39;].plot()
 from matplotlib import pyplot
 pyplot.show()</code></pre>
-<p>Lag</p>
+<p>Compute a lag</p>
 <pre><code>iris[&#39;cumsum_lag&#39;] = iris.groupby(&#39;species&#39;)[&#39;cumsum&#39;].transform(&#39;shift&#39;, fill_value=0)
 iris[[&#39;cumsum&#39;, &#39;cumsum_lag&#39;]].plot()
 pyplot.show()</code></pre>
+<div id="compute-with-a-lambda-function" class="section level3">
+<h3>Compute with a lambda function</h3>
+<p>Beyond standard function such as <code>sum</code> and <code>mean</code>, it’s possible to use a self defined lambda function as follows</p>
+<pre><code>import numpy as np
+(iris
+ .groupby([&quot;species&quot;])
+ .agg(pw_sum = (&quot;petal_width&quot;, sum),
+      pw_sum_div_by_10 = (&quot;petal_width&quot;, lambda x: x.sum()/0),
+      n = (&quot;petal_width&quot;, len),
+      mean1 = (&quot;petal_width&quot;, np.mean))
+ .assign(mean2 = lambda x: x.pw_sum / x.n)
+)</code></pre>
+</div>
 <div id="lag-or-shift-a-grouped-variable" class="section level3">
 <h3>Lag or shift a grouped variable</h3>
 <p>Load the flights dataset and for each month, display the passenger value in the same month of the previous year. Compare the <code>passengers</code> and <code>pass_year_minus_one</code> columns by displaying the tables for January and December.</p>
@@ -1755,15 +2027,14 @@ swd.query(&quot;year &gt;= 2019&quot;)</code></pre>
 </div>
 <div id="unique-values-of-a-multi-index" class="section level3">
 <h3>Unique values of a multi index</h3>
-<p>Return the unique values of a multi index as a data frame:</p>
-<pre><code>df.set_index([&quot;product&quot;, &quot;product_code&quot;]).index.unique().to_frame(False)</code></pre>
-<p>You can also use the following to display the unique values of the two columns with a count of occurrences</p>
-<pre><code>df[[&quot;partner&quot;, &quot;partner_code&quot;]].value_counts()</code></pre>
+<p>Display the unique values of the two columns with a count of occurrences</p>
+<pre><code>import seaborn
+penguins = seaborn.load_dataset(&quot;penguins&quot;)
+penguins.value_counts([&quot;species&quot;, &quot;island&quot;])
+penguins[[&quot;species&quot;, &quot;island&quot;]].value_counts()</code></pre>
+<p>Lower level method using <code>unique()</code> on a multi index and returning a data frame</p>
+<pre><code>penguins.set_index([&quot;species&quot;, &quot;island&quot;]).index.unique().to_frame(False)</code></pre>
 </div>
-</div>
-<div id="join-and-merge" class="section level2">
-<h2>Join and merge</h2>
-<p>Stackoverflow <a href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas merging</a></p>
 </div>
 <div id="pyarrow" class="section level2">
 <h2>PyArrow</h2>
@@ -1788,6 +2059,21 @@ swd.query(&quot;year &gt;= 2019&quot;)</code></pre>
 </div>
 <div id="read-and-write-csv" class="section level2">
 <h2>Read and write csv</h2>
+<div id="compressed-csv" class="section level3">
+<h3>Compressed csv</h3>
+<p>Write a compressed csv file as a gzip archive</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;x&#39;:range(0,3), &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
+df.to_csv(&quot;/tmp/df.csv.gz&quot;, index=False, compression=&quot;gzip&quot;)</code></pre>
+<p>Write a compressed csv file as a zip archive, using a dict with the option “archive_name” (works only for the zip format)</p>
+<pre><code>compression_opts = dict(method=&#39;zip&#39;, archive_name=&#39;out.csv&#39;)
+df.to_csv(&#39;/tmp/df.csv.zip&#39;, index=False, compression=compression_opts)</code></pre>
+<p>Read compressed csv files</p>
+<pre><code>df1 = pandas.read_csv(&quot;/tmp/df.csv.gz&quot;)
+df.equals(df1)
+df2 = pandas.read_csv(&quot;/tmp/df.csv.zip&quot;)
+df.equals(df2)</code></pre>
+</div>
 <div id="from-an-api" class="section level3">
 <h3>From an API</h3>
 <p>Pandas data frames can be used to read CSV files from the <a href="https://comtrade.un.org/Data/">Comtrade data API</a>. For example, using the default API URL for all countries:</p>
@@ -1862,7 +2148,7 @@ df_wide
 </div>
 <div id="replace" class="section level2">
 <h2>Replace</h2>
-<p><a href="https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace">Pyton pandas equivalent for replace</a></p>
+<p><a href="https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace">Python pandas equivalent for replace</a></p>
 <pre><code>import pandas
 s = pandas.Series([&quot;ape&quot;, &quot;monkey&quot;, &quot;seagull&quot;])
 s.replace([&quot;ape&quot;, &quot;monkey&quot;], [&quot;lion&quot;, &quot;panda&quot;])
@@ -2221,6 +2507,12 @@ df2 = pandas.DataFrame({&#39;x&#39;:[10, 11, 12],
 df1.mask(df1.isna(), df2)
 df1.where(df1.isna(), df2)</code></pre>
 </div>
+<div id="xarray" class="section level2">
+<h2>Xarray</h2>
+<ul>
+<li><a href="https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python">How to read netcdf files in chunks with Xarray and Dask</a></li>
+</ul>
+</div>
 </div>
 <div id="paths" class="section level1">
 <h1>Paths</h1>
@@ -2240,6 +2532,29 @@ Path(&#39;~&#39;) / &#39;downloads&#39;</code></pre>
 <p>If <code>p</code> is a pathlib object you can list file names as such:</p>
 <pre><code>[x.name for x in p.glob(&#39;**/*.csv&#39;)]</code></pre>
 </div>
+</div>
+<div id="temporary-directories-and-files" class="section level2">
+<h2>Temporary directories and files</h2>
+<p>Docs.python.org <a href="https://docs.python.org/3/library/tempfile.html#examples">tempfile examples</a> using a context manager</p>
+<pre><code>import tempfile
+# create a temporary directory using the context manager
+with tempfile.TemporaryDirectory() as tmpdirname:
+    print(&#39;created temporary directory&#39;, tmpdirname)
+# directory and contents have been removed</code></pre>
+<p>Using <code>pathlib</code> to facilitate path manipulation on top of <code>tempfile</code> makes it possible to create new paths using the <code>/</code> path operator of pathlib:</p>
+<pre><code>import tempfile
+from pathlib import Path
+with tempfile.TemporaryDirectory() as tmpdirname:
+    temp_dir = Path(tmpdirname)
+    print(temp_dir, temp_dir.exists())
+    file_name = temp_dir / &quot;test.txt&quot;
+    file_name.write_text(&quot;bla bla bla&quot;)
+    print(file_name, &quot;contains&quot;, file_name.open().read())</code></pre>
+<p>Outside the context manager, files have been destroyed</p>
+<pre><code>print(temp_dir, temp_dir.exists())
+# /tmp/tmp81iox6s2 False
+print(file_name, file_name.exists())
+# /tmp/tmp81iox6s2/test.txt False</code></pre>
 </div>
 </div>
 <div id="plot" class="section level1">
@@ -2314,14 +2629,24 @@ ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
 <h3>Pandas plots are matplotlib AxesSubplot objects</h3>
 <p>Create some data and change the xticks labels</p>
 <pre><code>import pandas
+import matplotlib.pyplot as plt
 df = pandas.DataFrame({&#39;x&#39;:range(0,30), &#39;y&#39;:range(10,40)})
 df.set_index(&#39;x&#39;, inplace=True)
 plot = df.plot(title=&#39;Two ranges&#39;)
 type(plot)
 #help(plot)
-plot.set_xticks(range(0,31,10), minor=False)</code></pre>
+plot.set_xticks(range(0,31,10), minor=False)
+plt.show()</code></pre>
 <p>Save the figure to a pdf file:</p>
 <pre><code>plot.get_figure().savefig(&#39;/tmp/output.pdf&#39;, format=&#39;pdf&#39;)</code></pre>
+<div id="pandas-plots-side-by-side" class="section level4">
+<h4>Pandas plots side by side</h4>
+<p>Using the same df as above show 2 plost side by side based on this <a href="https://stackoverflow.com/a/68008119/2641825">SO answer</a></p>
+<pre><code>fig, (ax1, ax2) = plt.subplots(1,2, figsize=(15,6))
+df.plot(title=&#39;Two ranges&#39;, ax=ax1)
+df.plot(title=&#39;Two ranges&#39;, ax=ax2)
+plt.show()</code></pre>
+</div>
 </div>
 </div>
 <div id="plotly" class="section level2">
@@ -2438,6 +2763,13 @@ plt.show()</code></pre>
 <p>Group by another variable and show the groups with different colors:</p>
 <pre><code>searborn(x=&quot;total_bill&quot;, y=&quot;tip&quot;, hue=&quot;time&quot;, data=tips)</code></pre>
 </div>
+<div id="sample-data" class="section level3">
+<h3>Sample data</h3>
+<p>Show all Seaborn sample datasets</p>
+<pre><code>for dataset in seaborn.get_dataset_names():
+    print(dataset)
+    print(seaborn.load_dataset(dataset).head())</code></pre>
+</div>
 </div>
 <div id="vega" class="section level2">
 <h2>Vega</h2>
@@ -2543,7 +2875,7 @@ df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&
 <thead>
 <tr class="header">
 <th>Base R</th>
-<th>pandas</th>
+<th>python or pandas</th>
 <th>SO questions</th>
 </tr>
 </thead>
@@ -2589,16 +2921,21 @@ df = pandas.DataFrame({&#39;x&#39; : [1,2,3], &#39;y&#39; : [&#39;a&#39;,&#39;b&
 <td><a href="https://stackoverflow.com/questions/14988480/pandas-version-of-rbind">Pandas version of rbind</a></td>
 </tr>
 <tr class="odd">
+<td><code>rep(1,3)</code></td>
+<td><code>[1]*3</code></td>
+<td></td>
+</tr>
+<tr class="even">
 <td><code>seq(1:5)</code></td>
 <td><code>np.array(range(0,5))</code></td>
 <td><a href="https://stackoverflow.com/a/60753578/2641825">numpy function to generate sequences</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td><code>summary</code></td>
 <td><code>describe</code></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td><code>str</code></td>
 <td><code>df.info()</code></td>
 <td><a href="https://stackoverflow.com/questions/27637281/what-are-python-pandas-equivalents-for-r-functions-like-str-summary-and-he">pandas equivalents for R functions like str summary and head</a></td>
@@ -2972,7 +3309,11 @@ os.name</code></pre>
 </blockquote>
 <div id="unit-tests" class="section level2">
 <h2>Unit tests</h2>
-<p>See <a href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python markdown unit tests</a></p>
+<p>See</p>
+<ul>
+<li><p><a href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python markdown unit tests</a></p></li>
+<li><p><a href="https://stackoverflow.com/questions/2085953/unit-testing-with-singletons">Unit testing with singleton</a></p></li>
+</ul>
 </div>
 <div id="pytest" class="section level2">
 <h2>pytest</h2>

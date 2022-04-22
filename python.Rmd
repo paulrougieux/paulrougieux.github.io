@@ -109,6 +109,92 @@ to set separate files for attribution.
 makes pip and virtual env work together. 
 
 
+## Anaconda
+
+
+Use conda update command to check to see if a new update is available. If conda tells you an update is available, you can then choose whether or not to install it.
+
+
+
+### Install
+
+
+Documentation conda.io  [installing
+packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#installing-packages)
+
+> To install a specific package such as SciPy into an existing environment "myenv":
+
+    conda install --name myenv scipy
+
+> If you do not specify the environment name, which in this example is done by --name myenv, the package installs into the current environment:
+
+    conda install scipy
+
+> To install a specific version of a package such as SciPy:
+
+    conda install scipy=0.15.0
+
+> To install multiple packages at once, such as SciPy and cURL:
+
+    conda install scipy curl
+
+> Note: It is best to install all packages at once, so that all of the dependencies are installed at the same time.
+
+
+### Update
+
+Documentation conda.io [updating
+packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#updating-packages)
+
+> Use the terminal or an Anaconda Prompt for the following steps.
+
+> To update a specific package:
+
+    conda update biopython
+
+> To update Python:
+
+    conda update python
+
+> To update conda itself:
+
+    conda update conda
+
+
+### Environment file
+
+Creating an environment file manually
+
+You can create an environment file (environment.yml) manually to share with others.
+
+EXAMPLE: A simple environment file:
+
+name: stats
+dependencies:
+  - numpy
+  - pandas
+
+EXAMPLE: A more complex environment file:
+
+name: stats2
+channels:
+  - javascript
+dependencies:
+  - python=3.6   # or 2.7
+  - bokeh=0.9.2
+  - numpy=1.9.*
+  - nodejs=0.10.*
+  - flask
+  - pip:
+    - Flask-Testing
+
+Note
+
+Note the use of the wildcard * when defining the patch version number. Defining the version number by fixing the major and minor version numbers while allowing the patch version number to vary allows us to use our environment file to update our environment to get any bug fixes whilst still maintaining consistency of software environment.
+
+
+
+
 # Compilers
 
 ## Numba just-in-time compiler
@@ -236,6 +322,25 @@ Guide](https://docs.sqlalchemy.org/en/14/orm/queryguide.html)
     print(stmt)
 
 Since version 1.4 `.where()` is a synonym of `.filter()` as explained in [sqlalchemy.orm.Query.where](https://docs.sqlalchemy.org/en/14/orm/query.html#sqlalchemy.orm.Query.where).
+
+To select only one column you can use [Select.with_only_columns](https://docs.sqlalchemy.org/en/14/core/selectable.html#sqlalchemy.sql.expression.Select.with_only_columns):
+
+    from sqlalchemy import MetaData, Table, Column, Text
+    meta = MetaData()
+    table = Table('user', meta, 
+                  Column("name", Text),
+                  Column("full_name", Text))
+    stmt = (table.select()
+            .with_only_columns([table.c.name])
+           )
+    print(stmt)
+
+Entering columns in the `select` method returns an error. Although it should be
+valid according to the documentation.
+
+    print(table.select([table.c.name]))
+    # ArgumentError: SQL expression for WHERE/HAVING role expected, 
+    # got [Column('name', Text(), table=<user>)].
 
 
 #### Insert
@@ -434,11 +539,11 @@ Another example with the list of the last 5 years
 
 ### Dictionary
 
-Create a dictionary
+Create a dictionary with curly braces
 
     ceci = {'x':1, 'y':2, 'z':3}
 
-Converts 2 lists into a dictionary
+Converts 2 lists into a dictionary with the `dict` built in function
 
     dict(zip(['x', 'y', 'z'], [1, 2, 3]))
 
@@ -452,6 +557,15 @@ Loop over the key and values of a dictionary
         print(key, "has the value", value)
 
 
+### Iterator
+
+The `map` function makes an iterator object of type `map`
+
+    iter = map(lambda x:x+1,range(3))
+    type(iter)
+    [i for i in iter]
+
+
 ### List
 
 [Remove an element from a list of strings ](https://stackoverflow.com/a/31077838/2641825)
@@ -460,6 +574,11 @@ Loop over the key and values of a dictionary
     myList.remove('c')
     myList
     ['a', 'b', 'd']
+
+Create a list of strings using split (seen in [this
+answer](https://stackoverflow.com/a/52110266/2641825))
+
+    "slope, intercept, r_value, p_value, std_err".split(", ")
 
 
 #### List of tuples
@@ -789,6 +908,14 @@ notebook and execute a few cells using Vim slime to sent them to a tmux pane
 where ipython is running.
 
 
+### Convert notebooks to html
+
+Notebooks can be converted from the File / Save and Export Notebook As / HTML
+menu. Or [at the command line with nbconvert](https://nbconvert.readthedocs.io/en/latest/usage.html#convert-html)
+
+    jupyter nbconvert --to html notebook.ipynb
+
+
 ### From python
 
 Run an ipython notebook from python using
@@ -830,6 +957,43 @@ Saving fails in my case.
 - [ipywidgets](https://github.com/jupyter-widgets/ipywidgets)
   
   > "interactive HTML widgets for Jupyter notebooks and the IPython kernel."
+
+
+### Interactive widgets
+
+[Documentation of interactive widgets](https://ipywidgets.readthedocs.io/en/latest/examples/Using%20Interact.html)
+
+Create a text box
+
+    def print_name(name):
+        return("Name: " + name)
+    interact(print_name, name="Paul")
+
+Create a drop down list for an interactive plot
+
+    import matplotlib.pyplot as plt
+    import seaborn
+    from ipywidgets import interact
+    iris = seaborn.load_dataset("iris").set_index("species")
+
+    def plot_iris(species):
+        """Plot the given species"""
+        df = iris.loc[species]
+        ax = df.plot.scatter(x='petal_length', y='petal_width', title=species)
+        ax.set_xlim(0,8)
+        ax.set_ylim(0,4)
+
+    interact(plot_iris, species=list(iris.index.unique()))
+
+Use the `@interact` decorator
+
+    @interact(species=list(iris.index.unique()))
+    def plot_iris(species):
+        """Plot the given species"""
+        df = iris.loc[species]
+        ax = df.plot.scatter(x='petal_length', y='petal_width', title=species)
+        ax.set_xlim(0,8)
+        ax.set_ylim(0,4)
 
 
 ## Display all rows and columns of a data frame
@@ -939,7 +1103,9 @@ specifies that
     conda install -c conda-forge jupyter_contrib_nbextensions
 
 
-## Jupytext version control with markdown and git
+## Jupyter and git version control 
+
+### Jupytext with markdown and git
 
 Convert notebooks to markdown so they are easier to track in git. 
 
@@ -971,6 +1137,11 @@ Add syncing to a given notebook:
     jupytext --set-formats ipynb,md --sync ~/repos/example_repos/notebooks/test.ipynb
     # Python sync
     jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipynb
+
+### Remove jupyter notebook output when using git
+
+Alternative to the above, this post explains [how to remove  Jupyter notebook
+output from terminal and when using git](https://janakiev.com/blog/jupyter-git-remove-output/).
 
 
 # Errors, exceptions and logging
@@ -1049,6 +1220,55 @@ Functions in python can be defined with
 
     # 2
 
+
+## Annotations
+
+[PEP 3107](https://peps.python.org/pep-3107/)
+
+> Annotations for parameters take the form of optional expressions that follow the parameter name:
+
+    def foo(a: expression, b: expression = 5):
+        ...
+> to annotate the type of a function’s return value. This is done like so:
+
+    def sum() -> expression:
+        ...
+
+[SO example](https://stackoverflow.com/a/15073109/2641825)
+
+    def kinetic_energy(m:'in KG', v:'in M/S')->'Joules':
+    return 1/2_m_v**2
+
+    kinetic_energy.__annotations__
+    {'m': 'in KG', 'v': 'in M/S', 'return': 'Joules'}
+
+The pandas code base doesn't use it everywhere, there are functions that
+use the standard sphinx type of documentation
+[timedeltas.py#L1094](https://github.com/pandas-dev/pandas/blob/a2029ce7bdd640931cb2c19e8a2c2c5a258fa5f9/pandas/core/arrays/timedeltas.py#L1094).
+I have the impression that the annotation are used for the package internal
+functions, while the sphinx documentation is used for the functions that are
+exposed to the outside users. And in the same script, they use both
+sphinx documentation and type annotations
+[timedeltas.py#L952](https://github.com/pandas-dev/pandas/blob/a2029ce7bdd640931cb2c19e8a2c2c5a258fa5f9/pandas/core/arrays/timedeltas.py#L952).
+
+
+[Type checking in python](https://www.blog.pythonlibrary.org/2020/04/15/type-checking-in-python/)
+
+> There are several things to know about up front when it comes to type hinting
+> in Python. Let's look at the pros of type hinting first:
+>  
+>  - Type hints are nice way to document your code in addition to docstrings
+>  - Type hints can make IDEs and linters give better feedback and better autocomplete
+>  - Adding type hints forces you to think about types, which may help you make good decisions during the design of your applications.
+>  
+> Adding type hinting isn't all rainbows and roses though. There are some downsides:
+>  
+>  - The code is more verbose and arguably harder to write
+>  - Type hinting adds development time
+>  - Type hints only work in Python 3.5+. Before that, you had to use type comments
+>  - Type hinting can have a minor start up time penalty in code that uses it, especially if you import the typing module.
+  
+
 ## Call by reference or call by value
 
 When using numpy arrays, python displays a behaviour of call by reference 
@@ -1073,6 +1293,7 @@ The R Language Definition says this (in section 4.3.3 Argument Evaluation)
 > Changing the value of a supplied argument within a function will not affect
 > the value of the variable in the calling frame. [Emphasis added]"
 
+
 ## Decorators
 
 Decorators are a way to wrap a function around another function. 
@@ -1087,9 +1308,6 @@ along a data processing pipeline.
 
 ### Property and cached property
 
-
-
-
 Since python 3.8 there is also a `@cached_property` decorator
 [functools.cached_property](https://docs.python.org/dev/library/functools.html#functools.cached_property)
 
@@ -1103,6 +1321,20 @@ There is also a `@cache` decorator
 that creates:
 
 > "a thin wrapper around a dictionary lookup for the function arguments. Because it never needs to evict old values, this is smaller and faster than lru_cache() with a size limit.
+
+
+## Deprecate arguments
+
+Deprecate the old name of a function argument
+
+    def agg_trade_eu_row(df, grouping_side="partner", index_side=None):
+        if index_side is not None:
+            warnings.warn("index_side is deprecated; use grouping_side", DeprecationWarning, 2)
+            grouping_side = index_side
+
+This [SO Questions](https://stackoverflow.com/q/49802412/2641825) asks how to
+create an argument alias, without changing the number of arguments to the
+function.
 
 
 ## Docstring Documentation 
@@ -1135,15 +1367,23 @@ Document python functions with the sphinx convention
     2**3
     # 8
 
+## Floor division
+
 Floor division
 
     5//3
     # 1
+    # Use it to extract the year of a Comtrade period
+    202105 // 100
 
-Modulo
+
+## Modulo
 
     5%3
     # 2
+    12
+    # Use it to extract the last 2 digits of an integer
+    202105 % 100
 
 
 ## Sympy
@@ -1176,6 +1416,52 @@ Cookbook](https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-wit
 All examples below are based on the numpy package being imported as np :
 
     import numpy as np
+
+
+## Logical operators and binary operations
+
+I mostly use [binary
+operators](<https://numpy.org/doc/stable/reference/routines.bitwise.html) on
+boolean arrays for index selections in pandas data frames.
+
+Bitwise and
+
+    np.array([True, True]) & np.array([False, True])
+
+Bitwise not
+
+    ~np.array([True, False])
+
+They are equivalent to logical operators
+[numpy.logical_and](https://numpy.org/doc/stable/reference/generated/numpy.logical_and.html),
+[numpy.logical_not](https://numpy.org/doc/stable/reference/generated/numpy.logical_not.html)
+for logical arrays.
+
+A [SO answer](https://stackoverflow.com/a/54435820/2641825) quotes [the
+NumPy v1.15
+Manual](https://www.numpy.org/devdocs/user/numpy-for-matlab-users.html#numpy-for-matlab-users-notes)
+
+    > If you know you have boolean arguments, you can get away with using
+    > NumPy’s bitwise operators, but be careful with parentheses, like this:
+    > `z = (x > 1) & (x < 2)`. The absence of NumPy operator forms of
+    > `logical_and` and `logical_or` is an unfortunate consequence of Python’s
+    > design.
+
+> So one can also use `~` for `logical_not` and `|` for `logical_or`.
+
+[Bitwise and](https://numpy.org/doc/stable/reference/generated/numpy.bitwise_and.html)
+
+> "The number 13 is represented by 00001101. Likewise, 17 is represented by
+> 00010001. The bit-wise AND of 13 and 17 is therefore 000000001, or 1"
+
+    np.bitwise_and(13, 17)
+    # 1
+
+The `&` operator can be used as a shorthand for np.bitwise_and on ndarrays.
+
+    x1 = np.array([2, 5, 255])
+    x2 = np.array([3, 14, 16])
+    x1 & x2
 
 
 ## Indexing Multi-dimensional arrays and masks
@@ -1428,12 +1714,13 @@ All code below assumes you have imported pandas
 
 You can create a data frame by passing a **dictionary of lists** with column names as keys
 
-    pandas.DataFrame({'x':range(0,3), 
+    df = pandas.DataFrame({'x':range(0,3), 
                       'y':['a','b','c']})
-           a  b
-        0  0  3
-        1  1  4
-        2  2  5
+
+    #      a  b
+    #   0  0  3
+    #   1  1  4
+    #   2  2  5
 
 Or by passing a list of tuples and defining the `columns` argument
 
@@ -1456,6 +1743,8 @@ Use the `assign` method
 
     df.assign(e = lambda x: x["a"] * 3)
 
+
+#### Sum columns together and compute a share
 
 Sum all columns in an assign and use it to compute a share
 
@@ -1615,6 +1904,29 @@ software)
     np.testing.assert_allclose(df,df+1e-3)
 
 
+## Concatenate and merge
+
+### Concatenate  2 data frames
+
+### Concatenate 2 series
+
+Concatenate two series
+[SO](https://stackoverflow.com/questions/18062135/combining-two-series-into-a-dataframe-in-pandas)
+Notice the difference between the default `axis=0` concatenate on the index,
+and `axis=1` concatenate on the columns.
+
+    import pandas
+    s1 = pandas.Series([1, 2, 3], index=['A', 'B', 'c'], name='s1')
+    s2 = pandas.Series([4, 5, 6], index=['A', 'B', 'D'], name='s2')
+    pandas.concat([s1, s2], axis=0)
+    pandas.concat([s1, s2], axis=1)
+
+
+### Merge or join
+
+Stackoverflow [Pandas merging](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
+
+
 ## Columns
 
 ### List Columns
@@ -1653,6 +1965,41 @@ Remove parenthesis and dots in column names
 
     df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
 
+### Replace the content of columns
+
+Replace Comtrade product code by the FAOSTAT product codes
+
+    # Create a dictionary from 2 columns of a data frame
+    product_dict = product_mapping.set_index('comtrade_code').to_dict()['faostat_code']
+    df_comtrade["product_code"] = df_comtrade["product_code"].replace(product_dict)
+
+
+### Reorder columns
+
+Place the last column first
+
+      cols = df.columns.to_list()
+      cols = [cols[-1] + cols[:-1]
+      df = df[cols]
+   
+This [SO Answer](https://stackoverflow.com/a/58776941/2641825) provide 6
+different ways to reorder columns.
+
+
+### Variable Type
+
+To change the type of a column use astype:
+
+    s = pandas.Series(range(3))
+    s.to_list()
+    s.astype(str).to_list()
+    s.astype(float).to_list()
+
+Note using NA values is not possible with the base integer type, it requires a
+special type Int64 as explained in this [SO
+answer](https://stackoverflow.com/a/67270477/2641825)
+
+
 
 ## Datetime operations
 
@@ -1672,11 +2019,17 @@ Extract the year
 
 ## Group by operations
 
-Compute the sum for the sepal length grouped by species
+Compute the sum of sepal length grouped by species
 
     import seaborn
     iris = seaborn.load_dataset("iris")
-    iris.groupby('species').agg(sepal_length = ('sepal_length', sum))
+    # Aggregate one value
+    iris.groupby('species')["sepal_length"].agg(sum).reset_index()
+    # Aggregate multiple values
+    iris.groupby('species')[["sepal_length", "petal_length"]].agg(sum).reset_index()
+    # Aggregate multiple values and give new names
+    iris.groupby('species').agg(sepal_length_sum = ('sepal_length', sum),
+                                petal_length_sum = ('petal_length', sum))
 
 Compute the sum but repeated for every original row
 
@@ -1690,15 +2043,31 @@ for example.
 Compute the cumulative sum of the sepal length
 
     iris['cumsum'] = iris.groupby('species').sepal_length.cumsum()
-    iris['cumsum'].plot()
+    ris['cumsum'].plot()
     from matplotlib import pyplot
     pyplot.show()
 
-Lag 
+Compute a lag 
 
     iris['cumsum_lag'] = iris.groupby('species')['cumsum'].transform('shift', fill_value=0)
     iris[['cumsum', 'cumsum_lag']].plot()
     pyplot.show()
+
+
+### Compute with a lambda function
+
+Beyond standard function such as `sum` and `mean`, it's possible to use a self
+defined lambda function as follows
+
+    import numpy as np
+    (iris
+     .groupby(["species"])
+     .agg(pw_sum = ("petal_width", sum),
+          pw_sum_div_by_10 = ("petal_width", lambda x: x.sum()/0),
+          n = ("petal_width", len),
+          mean1 = ("petal_width", np.mean))
+     .assign(mean2 = lambda x: x.pw_sum / x.n)
+    )
 
 
 ### Lag or shift a grouped variable
@@ -1787,21 +2156,20 @@ model.
     print(swd["comp_prop"].abs().max())
     swd.query("year >= 2019")
 
+
 ### Unique values of a multi index
 
-Return the unique values of a multi index as a data frame:
+Display the unique values of the two columns with a count of occurrences
 
-    df.set_index(["product", "product_code"]).index.unique().to_frame(False)
+    import seaborn
+    penguins = seaborn.load_dataset("penguins")
+    penguins.value_counts(["species", "island"])
+    penguins[["species", "island"]].value_counts()
 
-You can also use the following to display the unique values of the two columns
-with a count of occurrences
+Lower level method using `unique()` on a multi index and returning a data frame
 
-    df[["partner", "partner_code"]].value_counts()
+    penguins.set_index(["species", "island"]).index.unique().to_frame(False)
 
-
-## Join and merge
-
-Stackoverflow [Pandas merging](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
 
 
 ## PyArrow
@@ -1835,6 +2203,29 @@ https://github.com/vaexio/vaex
 
 
 ## Read and write csv
+
+
+### Compressed csv
+
+Write a compressed csv file as a gzip archive
+
+    import pandas
+    df = pandas.DataFrame({'x':range(0,3), 'y':['a','b','c']})
+    df.to_csv("/tmp/df.csv.gz", index=False, compression="gzip")
+
+Write a compressed csv file as a zip archive, using a dict with the option
+"archive_name" (works only for the zip format)
+
+    compression_opts = dict(method='zip', archive_name='out.csv')
+    df.to_csv('/tmp/df.csv.zip', index=False, compression=compression_opts)
+
+Read compressed csv files
+
+    df1 = pandas.read_csv("/tmp/df.csv.gz")
+    df.equals(df1)
+    df2 = pandas.read_csv("/tmp/df.csv.zip")
+    df.equals(df2)
+
 
 ### From an API
 
@@ -1927,7 +2318,7 @@ Rename the (sometimes confusing) axis names
 
 ## Replace
 
-[Pyton pandas equivalent for replace](https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace)
+[Python pandas equivalent for replace](https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace)
 
     import pandas
     s = pandas.Series(["ape", "monkey", "seagull"])
@@ -2411,6 +2802,11 @@ On a data frame
     df1.where(df1.isna(), df2)
 
 
+## Xarray
+
+- [How to read netcdf files in chunks with Xarray and Dask](https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python)
+
+
 # Paths
 
 ## Pathlib
@@ -2438,6 +2834,38 @@ Data located in the home folder
 If `p` is a pathlib object you can list file names as such: 
 
     [x.name for x in p.glob('**/*.csv')]
+
+
+## Temporary directories and files
+
+Docs.python.org [tempfile
+examples](https://docs.python.org/3/library/tempfile.html#examples) using a
+context manager
+
+    import tempfile
+    # create a temporary directory using the context manager
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        print('created temporary directory', tmpdirname)
+    # directory and contents have been removed
+
+Using `pathlib` to facilitate path manipulation on top of `tempfile`
+makes it possible to create new paths using the `/` path operator of pathlib:
+
+    import tempfile
+    from pathlib import Path
+    with tempfile.TemporaryDirectory() as tmpdirname:
+        temp_dir = Path(tmpdirname)
+        print(temp_dir, temp_dir.exists())
+        file_name = temp_dir / "test.txt"
+        file_name.write_text("bla bla bla")
+        print(file_name, "contains", file_name.open().read())
+
+Outside the context manager, files have been destroyed
+
+    print(temp_dir, temp_dir.exists())
+    # /tmp/tmp81iox6s2 False
+    print(file_name, file_name.exists())
+    # /tmp/tmp81iox6s2/test.txt False
 
 
 # Plot
@@ -2538,16 +2966,28 @@ Better to use X**2 + Y**2 directly as above.
 Create some data and change the xticks labels
 
     import pandas
+    import matplotlib.pyplot as plt
     df = pandas.DataFrame({'x':range(0,30), 'y':range(10,40)})
     df.set_index('x', inplace=True)
     plot = df.plot(title='Two ranges')
     type(plot)
     #help(plot)
     plot.set_xticks(range(0,31,10), minor=False)
+    plt.show()
 
 Save the figure to a pdf file:
 
     plot.get_figure().savefig('/tmp/output.pdf', format='pdf')
+
+
+#### Pandas plots side by side
+
+Using the same df as above show 2 plost side by side based on this [SO answer](https://stackoverflow.com/a/68008119/2641825)
+
+    fig, (ax1, ax2) = plt.subplots(1,2, figsize=(15,6))
+    df.plot(title='Two ranges', ax=ax1)
+    df.plot(title='Two ranges', ax=ax2)
+    plt.show()
 
 
 ## Plotly 
@@ -2716,6 +3156,15 @@ Group by another variable and show the groups with different colors:
     searborn(x="total_bill", y="tip", hue="time", data=tips)
 
 
+### Sample data
+
+Show all Seaborn sample datasets
+
+    for dataset in seaborn.get_dataset_names():
+        print(dataset)
+        print(seaborn.load_dataset(dataset).head())
+
+
 ## Vega
 
 The tool tip feature is nice in an interactive notebook.
@@ -2868,7 +3317,7 @@ Pandas data frame to be used for examples:
     import pandas
     df = pandas.DataFrame({'x' : [1,2,3], 'y' : ['a','b','c']})
 
-| Base R                      | pandas                        | SO questions                                                   |
+| Base R                      | python or pandas              | SO questions                                                   |
 | --------------------------- | ----------------------------- | --------------------------------------------------             |
 | `df[df$y %in% c('a','b'),]` | `df[df['y'].isin(['a','b'])]` | [list of values to select a row]                               |
 | `dput(df)`                  | `df.to_dict()`                | [Print pandas data frame for reproducible example]             |
@@ -2878,6 +3327,7 @@ Pandas data frame to be used for examples:
 |                             | or df.x.str.replace()         |                                                                |
 | `length(df)` and `dim(df)`  | `df.shape`                    | [row count of a data frame]                                    |
 | `rbind`                     | `pandas.concat`               | [Pandas version of rbind]                                      |
+| `rep(1,3)`                  | `[1]*3`                       |                                                                |
 | `seq(1:5)`                  | `np.array(range(0,5))`        | [numpy function to generate sequences]                         |
 | `summary`                   | `describe`                    |                                                                |
 | `str`                       | `df.info()`                   | [pandas equivalents for R functions like str summary and head] |
@@ -3337,7 +3787,12 @@ A good post about TDD
 
 ## Unit tests
 
-See [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
+See 
+
+- [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
+
+- [Unit testing with
+  singleton](https://stackoverflow.com/questions/2085953/unit-testing-with-singletons)
 
 
 ## pytest
