@@ -270,6 +270,13 @@ Read a dataset from an rds file
 Dplyr has databases backends  to MySQl (MariaDB) and PostgreSQL.
 
 
+## Create directories
+
+Create a directory do not show a warning if it exists already.
+
+    dir_path = "/tmp/blabla/"
+    dir.create(dir_path, showWarnings = FALSE)
+
 
 # Find and replace
 
@@ -536,6 +543,26 @@ Knitr adds an extra space every five lines into booktabs tables for
 readability. This is undesirable for short tables. To remove this space specify
 the `linesep = ""` argument to `kable()` as explained in this [SO
 answer](https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown). 
+
+
+### KableExtra formatting
+
+The package `kableExtra` can [group rows via multi-row
+cells](https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html#Group_rows_via_multi-row_cell)
+
+Html format
+
+    library(dplyr)
+    iris3 <- iris %>% group_by(Species) %>% slice(1:3)
+    iris3 %>%
+        knitr::kable(format = "html") %>%
+        kableExtra::collapse_rows(columns = 5, valign = "top")
+
+Latex, pdf format
+
+    iris3 %>%
+        knitr::kable(format = "latex") %>%
+        kableExtra::collapse_rows(columns = 5, valign = "top")
 
 
 ## Output
@@ -930,6 +957,35 @@ Make a multi column legend
 
 See ggplot2 reference [guide
 legend](https://ggplot2.tidyverse.org/reference/guide_legend.html).
+
+
+#### One legend for each sub plot
+
+[Different legends for each sub plot using grid
+extra](https://stackoverflow.com/a/14841379/2641825)
+
+    library(ggplot2)
+    library(gridExtra)
+    df <- data.frame(country = rep(c("X", "Y", "Z"), each=9),
+                     product = rep(c("A", "B", "C", "B", "C", "D", "B", "D", "A"),each=3),
+                     year = rep(1:3,9),
+                     value = rnorm(27)
+    )
+    out <- by(data = df,                                                  
+              INDICES = df$product,
+              FUN = function(m) {                                                     
+                  ggplot(m, aes(x=year, y=value, color=country)) +
+                      geom_point() +
+                      facet_wrap(~product, scales="free_y") +                    
+                      theme_minimal()                                                 
+              })                                                                      
+    do.call(grid.arrange, out)                                                        
+    # If you want to supply the parameters to grid.arrange
+    #do.call(grid.arrange, c(out, ncol=3))
+
+Different legend for each sub plot using patchwork
+
+
 
 
 ### Math formulas in facet labels

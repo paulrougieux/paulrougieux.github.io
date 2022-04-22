@@ -647,6 +647,12 @@ identical(iris, iris2)</code></pre>
 <h2>Databases</h2>
 <p>Dplyr has databases backends to MySQl (MariaDB) and PostgreSQL.</p>
 </div>
+<div id="create-directories" class="section level2">
+<h2>Create directories</h2>
+<p>Create a directory do not show a warning if it exists already.</p>
+<pre><code>dir_path = &quot;/tmp/blabla/&quot;
+dir.create(dir_path, showWarnings = FALSE)</code></pre>
+</div>
 </div>
 <div id="find-and-replace" class="section level1">
 <h1>Find and replace</h1>
@@ -877,19 +883,19 @@ knitr::kable(d, digits = 4)</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.7002</td>
+<td align="right">0.1411</td>
 <td align="right">1e+03</td>
-<td align="right">-287.8106</td>
+<td align="right">-152.1594</td>
 </tr>
 <tr class="even">
-<td align="right">0.2518</td>
+<td align="right">0.5268</td>
 <td align="right">1e+05</td>
-<td align="right">323.6062</td>
+<td align="right">-886.4724</td>
 </tr>
 <tr class="odd">
-<td align="right">0.4279</td>
+<td align="right">0.3592</td>
 <td align="right">1e+07</td>
-<td align="right">-254.5400</td>
+<td align="right">-276.5751</td>
 </tr>
 </tbody>
 </table>
@@ -905,19 +911,19 @@ knitr::kable(d, digits = c(5, 0, 2))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.70019</td>
+<td align="right">0.14108</td>
 <td align="right">1e+03</td>
-<td align="right">-287.81</td>
+<td align="right">-152.16</td>
 </tr>
 <tr class="even">
-<td align="right">0.25181</td>
+<td align="right">0.52683</td>
 <td align="right">1e+05</td>
-<td align="right">323.61</td>
+<td align="right">-886.47</td>
 </tr>
 <tr class="odd">
-<td align="right">0.42794</td>
+<td align="right">0.35918</td>
 <td align="right">1e+07</td>
-<td align="right">-254.54</td>
+<td align="right">-276.58</td>
 </tr>
 </tbody>
 </table>
@@ -933,19 +939,19 @@ knitr::kable(d, digits = 3, format.args = list(scientific = FALSE))</code></pre>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.700</td>
+<td align="right">0.141</td>
 <td align="right">1000</td>
-<td align="right">-287.811</td>
+<td align="right">-152.159</td>
 </tr>
 <tr class="even">
-<td align="right">0.252</td>
+<td align="right">0.527</td>
 <td align="right">100000</td>
-<td align="right">323.606</td>
+<td align="right">-886.472</td>
 </tr>
 <tr class="odd">
-<td align="right">0.428</td>
+<td align="right">0.359</td>
 <td align="right">10000000</td>
-<td align="right">-254.540</td>
+<td align="right">-276.575</td>
 </tr>
 </tbody>
 </table>
@@ -962,19 +968,19 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 </thead>
 <tbody>
 <tr class="odd">
-<td align="right">0.700</td>
+<td align="right">0.141</td>
 <td align="right">1,000</td>
-<td align="right">-287.811</td>
+<td align="right">-152.159</td>
 </tr>
 <tr class="even">
-<td align="right">0.252</td>
+<td align="right">0.527</td>
 <td align="right">100,000</td>
-<td align="right">323.606</td>
+<td align="right">-886.472</td>
 </tr>
 <tr class="odd">
-<td align="right">0.428</td>
+<td align="right">0.359</td>
 <td align="right">10,000,000</td>
-<td align="right">-254.540</td>
+<td align="right">-276.575</td>
 </tr>
 </tbody>
 </table>
@@ -1016,6 +1022,20 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 <p>Booktabs tables look nicer in latex document, they can be created by specifying the argument <code>booktabs = TRUE</code> into the <code>kable()</code> call.</p>
 <p>Knitr adds an extra space every five lines into booktabs tables for readability. This is undesirable for short tables. To remove this space specify the <code>linesep = ""</code> argument to <code>kable()</code> as explained in this <a href="https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown">SO answer</a>.</p>
 </div>
+<div id="kableextra-formatting" class="section level3">
+<h3>KableExtra formatting</h3>
+<p>The package <code>kableExtra</code> can <a href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html#Group_rows_via_multi-row_cell">group rows via multi-row cells</a></p>
+<p>Html format</p>
+<pre><code>library(dplyr)
+iris3 &lt;- iris %&gt;% group_by(Species) %&gt;% slice(1:3)
+iris3 %&gt;%
+    knitr::kable(format = &quot;html&quot;) %&gt;%
+    kableExtra::collapse_rows(columns = 5, valign = &quot;top&quot;)</code></pre>
+<p>Latex, pdf format</p>
+<pre><code>iris3 %&gt;%
+    knitr::kable(format = &quot;latex&quot;) %&gt;%
+    kableExtra::collapse_rows(columns = 5, valign = &quot;top&quot;)</code></pre>
+</div>
 </div>
 <div id="output" class="section level2">
 <h2>Output</h2>
@@ -1025,7 +1045,7 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 <p>It’s often useful to have a table of content at the start of long documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;17 March, 2022&quot;
+date:  &quot;22 April, 2022&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1296,6 +1316,29 @@ plot + # With a fill aeasthetic
 plot + # with a color aesthetic 
      guides(col = guide_legend(ncol = 1))</code></pre>
 <p>See ggplot2 reference <a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide legend</a>.</p>
+<div id="one-legend-for-each-sub-plot" class="section level4">
+<h4>One legend for each sub plot</h4>
+<p><a href="https://stackoverflow.com/a/14841379/2641825">Different legends for each sub plot using grid extra</a></p>
+<pre><code>library(ggplot2)
+library(gridExtra)
+df &lt;- data.frame(country = rep(c(&quot;X&quot;, &quot;Y&quot;, &quot;Z&quot;), each=9),
+                 product = rep(c(&quot;A&quot;, &quot;B&quot;, &quot;C&quot;, &quot;B&quot;, &quot;C&quot;, &quot;D&quot;, &quot;B&quot;, &quot;D&quot;, &quot;A&quot;),each=3),
+                 year = rep(1:3,9),
+                 value = rnorm(27)
+)
+out &lt;- by(data = df,                                                  
+          INDICES = df$product,
+          FUN = function(m) {                                                     
+              ggplot(m, aes(x=year, y=value, color=country)) +
+                  geom_point() +
+                  facet_wrap(~product, scales=&quot;free_y&quot;) +                    
+                  theme_minimal()                                                 
+          })                                                                      
+do.call(grid.arrange, out)                                                        
+# If you want to supply the parameters to grid.arrange
+#do.call(grid.arrange, c(out, ncol=3))</code></pre>
+<p>Different legend for each sub plot using patchwork</p>
+</div>
 </div>
 <div id="math-formulas-in-facet-labels" class="section level3">
 <h3>Math formulas in facet labels</h3>
