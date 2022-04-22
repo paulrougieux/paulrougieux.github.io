@@ -334,6 +334,15 @@ To ignore all files in a folder but not the folder itself. Put this .gitignore i
     /foo/*
     !/foo/bar
 
+
+# .gitkeep
+
+[So question how can I add a blank directory to a git repository](https://stackoverflow.com/questions/115983/how-can-i-add-a-blank-directory-to-a-git-repository)
+
+some answers suggest using `.gitkeep` or simply `.keep` because files starting
+with ".git" should be reserved for git usage. 
+
+
 # Git run 
 
 Git run enables to pull from many repositories with a single command  
@@ -587,6 +596,33 @@ Revert an unwanted commit with a new commit doing exactly the reverse operation
     git revert <commit hash>
 
 
+# GUI Graphical User Interface
+
+For colleagues who need a GUI: 
+
+- http://gitextensions.github.io/ recommended on [this SO
+  answer](http://gitextensions.github.io/)
+- [Github Desktop](https://desktop.github.com/)
+
+A section of the git book on [Graphical User
+Interfaces](https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Graphical-Interfaces)
+describes the default git-gui and gitk graphical user interfaces to prepare
+commits and view the git log history. It also describes the github desktop
+client and in particular it's "sync" feature:
+
+> "The main way you interact with other repositories over the network is
+> through the “Sync” feature. Git internally has separate operations for
+> pushing, fetching, merging, and rebasing, but the GitHub clients collapse all
+> of these into one multi-step feature. Here’s what happens when you click the
+> Sync button:
+>
+>     git pull --rebase. If this fails because of a merge conflict, fall back to git pull --no-rebase.
+>     git push.
+>
+> This is the most common sequence of network commands when working in this
+> style, so squashing them into one command saves a lot of time. "
+
+
 # Help
 
 Get help on a command (will start a web browser):
@@ -617,6 +653,29 @@ On the Gitlab labels page:
 | `~priority::2` | High       | We will address this soon and will provide capacity from our team for it in the next few releases. |
 | `~priority::3` | Medium     | We want to address this but may have other higher priority items.                                  |
 | `~priority::4` | Low        | We don't have visibility when this will be addressed.                                              |
+
+
+### CI Continuous Integration
+
+By default, job artifacts are not kept on failure. 
+To enable this add a `when` clause to `.gitlab-ci.yaml`
+
+      artifacts:
+        when: always
+        paths:
+        - notebooks
+
+
+#### Usage quotas
+
+Check usage quotas for a group at (replace group_name by the actual group name): 
+
+    https://gitlab.com/groups/group_name/-/usage_quotas
+
+For a user at (link works as is):
+
+    https://gitlab.com/-/profile/usage_quotas#pipelines-quota-tab
+
 
 
 # Line endings
@@ -817,6 +876,14 @@ pattern was present in the repo. You can then checkout the older revision of a
 file under a new name
 
     git show commit_sha:filename > new_file_name
+
+
+### Searching for two terms on the same line
+
+
+For example:
+
+    git grep -e module_dir --and -e "import"
 
 
 ## Replacing strings
