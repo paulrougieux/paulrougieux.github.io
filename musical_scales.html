@@ -844,7 +844,7 @@ for (i in 1:nrow(notes)){
     cat(&quot; the minor chords &quot;)
     minor_slice &lt;- slice(minor_chords,minor_match)
     cat(paste0(minor_slice$it, &quot;(m)&quot;))
-    cat(&quot; and the major7 chords &quot;)
+    cat(&quot; and the major7 chord &quot;)
     major7_slice = slice(major7_chords,major7_match)
     cat(paste0(major7_slice$it, &quot;7&quot;))
     chords &lt;- unnest(major_slice, cols=c(m4,m7), names_repair=&quot;universal&quot;) %&gt;%
@@ -854,7 +854,7 @@ for (i in 1:nrow(notes)){
     options(knitr.kable.NA = &#39;&#39;)
     chords %&gt;% knitr::kable() %&gt;% print()
 }</code></pre>
-<p>The scale: do re mi fa sol la si contains the major chords do fa sol the minor chords re(m) mi(m) la(m) and the major7 chords sol7</p>
+<p>The scale: do re mi fa sol la si contains the major chords do fa sol the minor chords re(m) mi(m) la(m) and the major7 chord sol7</p>
 <table>
 <thead>
 <tr class="header">
@@ -973,7 +973,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: do# mib fa fa# sol# sib do contains the major chords do# fa# sol# the minor chords mib(m) fa(m) sib(m) and the major7 chords sol#7</p>
+<p>The scale: do# mib fa fa# sol# sib do contains the major chords do# fa# sol# the minor chords mib(m) fa(m) sib(m) and the major7 chord sol#7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1092,7 +1092,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: re mi fa# sol la si do# contains the major chords re sol la the minor chords mi(m) fa#(m) si(m) and the major7 chords la7</p>
+<p>The scale: re mi fa# sol la si do# contains the major chords re sol la the minor chords mi(m) fa#(m) si(m) and the major7 chord la7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1211,7 +1211,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: mib fa sol sol# sib do re contains the major chords mib sol# sib the minor chords do(m) fa(m) sol(m) and the major7 chords sib7</p>
+<p>The scale: mib fa sol sol# sib do re contains the major chords mib sol# sib the minor chords do(m) fa(m) sol(m) and the major7 chord sib7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1330,7 +1330,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: mi fa# sol# la si do# mib contains the major chords mi la si the minor chords do#(m) fa#(m) sol#(m) and the major7 chords si7</p>
+<p>The scale: mi fa# sol# la si do# mib contains the major chords mi la si the minor chords do#(m) fa#(m) sol#(m) and the major7 chord si7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1449,7 +1449,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: fa sol la sib do re mi contains the major chords do fa sib the minor chords re(m) sol(m) la(m) and the major7 chords do7</p>
+<p>The scale: fa sol la sib do re mi contains the major chords do fa sib the minor chords re(m) sol(m) la(m) and the major7 chord do7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1568,7 +1568,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: fa# sol# sib si do# mib fa contains the major chords do# fa# si the minor chords mib(m) sol#(m) sib(m) and the major7 chords do#7</p>
+<p>The scale: fa# sol# sib si do# mib fa contains the major chords do# fa# si the minor chords mib(m) sol#(m) sib(m) and the major7 chord do#7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1687,7 +1687,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: sol la si do re mi fa# contains the major chords do re sol the minor chords mi(m) la(m) si(m) and the major7 chords re7</p>
+<p>The scale: sol la si do re mi fa# contains the major chords do re sol the minor chords mi(m) la(m) si(m) and the major7 chord re7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1806,7 +1806,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: sol# sib do do# mib fa sol contains the major chords do# mib sol# the minor chords do(m) fa(m) sib(m) and the major7 chords mib7</p>
+<p>The scale: sol# sib do do# mib fa sol contains the major chords do# mib sol# the minor chords do(m) fa(m) sib(m) and the major7 chord mib7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1925,7 +1925,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: la si do# re mi fa# sol# contains the major chords re mi la the minor chords do#(m) fa#(m) si(m) and the major7 chords mi7</p>
+<p>The scale: la si do# re mi fa# sol# contains the major chords re mi la the minor chords do#(m) fa#(m) si(m) and the major7 chord mi7</p>
 <table>
 <thead>
 <tr class="header">
@@ -2044,7 +2044,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: sib do re mib fa sol la contains the major chords mib fa sib the minor chords do(m) re(m) sol(m) and the major7 chords fa7</p>
+<p>The scale: sib do re mib fa sol la contains the major chords mib fa sib the minor chords do(m) re(m) sol(m) and the major7 chord fa7</p>
 <table>
 <thead>
 <tr class="header">
@@ -2163,7 +2163,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: si do# mib mi fa# sol# sib contains the major chords mi fa# si the minor chords do#(m) mib(m) sol#(m) and the major7 chords fa#7</p>
+<p>The scale: si do# mib mi fa# sol# sib contains the major chords mi fa# si the minor chords do#(m) mib(m) sol#(m) and the major7 chord fa#7</p>
 <table>
 <thead>
 <tr class="header">

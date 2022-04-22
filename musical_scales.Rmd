@@ -144,7 +144,7 @@ for (i in 1:nrow(notes)){
     cat(" the minor chords ")
     minor_slice <- slice(minor_chords,minor_match)
     cat(paste0(minor_slice$it, "(m)"))
-    cat(" and the major7 chords ")
+    cat(" and the major7 chord ")
     major7_slice = slice(major7_chords,major7_match)
     cat(paste0(major7_slice$it, "7"))
     chords <- unnest(major_slice, cols=c(m4,m7), names_repair="universal") %>%
