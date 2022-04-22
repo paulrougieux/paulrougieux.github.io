@@ -211,6 +211,16 @@ In SQLite as well, character(n) doesn't seem to have any performance advantage.
 >  length of strings, BLOBs or numeric values. 
 
 
+# Delete from a table
+
+Delete oil products from the Comtrade monthly table:
+
+    # Check results
+    select distinct(product_code) from raw_comtrade.monthly where product_code like '15%';
+    # Delete
+    DELETE FROM raw_comtrade.monthly WHERE product_code like '15%';
+
+
 # Drop
 
 Delete a database
@@ -302,9 +312,11 @@ schema](https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-
 
 ## Describe data types
 
-Describe a table to see column names and data types
+
+Describe a table to show the table structure, including column names and data types
 
     \d raw_comtrade.yearly;
+    \d raw_comtrade.monthly;
 
 
 # Load data into the database
@@ -347,9 +359,8 @@ For my own database I used:
     exit # Go back to user "paul"
     pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated
 
-# Query
 
-## SELECT
+# SELECT
 
 Connect to the database (with the credentials defined in `~/.pgpass`)
 
@@ -376,6 +387,12 @@ When using string values, single quotes are required (otherwise the `ERROR:
 column "02" does not exist` is returned)
 
     select distinct(reporter) from raw_comtrade.yearly_hs2 where commodity_code = '02';
+
+
+## Like
+
+
+    select distinct(product_code) from raw_comtrade.monthly where product_code like '15%';
 
 
 

@@ -580,6 +580,14 @@ psql $BIOTRADE_DATABASE_URL</code></pre>
 </blockquote>
 </div>
 </div>
+<div id="delete-from-a-table" class="section level1">
+<h1>Delete from a table</h1>
+<p>Delete oil products from the Comtrade monthly table:</p>
+<pre><code># Check results
+select distinct(product_code) from raw_comtrade.monthly where product_code like &#39;15%&#39;;
+# Delete
+DELETE FROM raw_comtrade.monthly WHERE product_code like &#39;15%&#39;;</code></pre>
+</div>
 <div id="drop" class="section level1">
 <h1>Drop</h1>
 <p>Delete a database</p>
@@ -637,8 +645,9 @@ SET default_with_oids = false;</code></pre>
 </div>
 <div id="describe-data-types" class="section level2">
 <h2>Describe data types</h2>
-<p>Describe a table to see column names and data types</p>
-<pre><code>\d raw_comtrade.yearly;</code></pre>
+<p>Describe a table to show the table structure, including column names and data types</p>
+<pre><code>\d raw_comtrade.yearly;
+\d raw_comtrade.monthly;</code></pre>
 </div>
 </div>
 <div id="load-data-into-the-database" class="section level1">
@@ -700,10 +709,8 @@ exit # Go back to user &quot;paul&quot;
 pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated</code></pre>
 </div>
 </div>
-<div id="query" class="section level1">
-<h1>Query</h1>
-<div id="select" class="section level2">
-<h2>SELECT</h2>
+<div id="select" class="section level1">
+<h1>SELECT</h1>
 <p>Connect to the database (with the credentials defined in <code>~/.pgpass</code>)</p>
 <pre><code>psql biotrade</code></pre>
 <p>postgresql.org the <a href="https://www.postgresql.org/docs/13/queries-table-expressions.html#QUERIES-WHERE">WHERE Clause</a></p>
@@ -721,6 +728,9 @@ SELECT ... FROM fdt WHERE c1 BETWEEN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10) 
 SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code></pre>
 <p>When using string values, single quotes are required (otherwise the <code>ERROR: column "02" does not exist</code> is returned)</p>
 <pre><code>select distinct(reporter) from raw_comtrade.yearly_hs2 where commodity_code = &#39;02&#39;;</code></pre>
+<div id="like" class="section level2">
+<h2>Like</h2>
+<pre><code>select distinct(product_code) from raw_comtrade.monthly where product_code like &#39;15%&#39;;</code></pre>
 </div>
 </div>
 <div id="road-map" class="section level1">
