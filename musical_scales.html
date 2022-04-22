@@ -450,7 +450,7 @@ div.tocify {
 <h1>Setup</h1>
 <p>Create a data frame that contains the twelve notes of the chromatic scale used later in the analysis.</p>
 <pre class="r"><code>notes &lt;- tribble(
-    ~it,   ~en,
+    ~it,   ~en, 
     &quot;do&quot;,  &quot;C&quot;,
     &quot;do#&quot;, &quot;C#&quot; ,
     &quot;re&quot;,  &quot;D&quot;,
@@ -464,6 +464,7 @@ div.tocify {
     &quot;sib&quot;, &quot;Bb&quot;,
     &quot;si&quot;,  &quot;B&quot;,
 )
+notes$n = as.integer(rownames(notes))
 
 # Duplicate the notes so that increments of scale number below don&#39;t fall out of the range.
 notes2 &lt;- rbind(notes, notes)
@@ -474,16 +475,16 @@ display &lt;- function(x){cat(&quot;&quot;, x, &quot;\n&quot;, sep=&quot;|&quot;
 # The scale corresponding to the white notes of the piano
 major_heptatonic &lt;- c(0, 2, 4, 5, 7, 9, 11)
 notes[major_heptatonic + 1,]</code></pre>
-<pre><code>## # A tibble: 7 × 2
-##   it    en   
-##   &lt;chr&gt; &lt;chr&gt;
-## 1 do    C    
-## 2 re    D    
-## 3 mi    E    
-## 4 fa    F    
-## 5 sol   G    
-## 6 la    A    
-## 7 si    B</code></pre>
+<pre><code>## # A tibble: 7 × 3
+##   it    en        n
+##   &lt;chr&gt; &lt;chr&gt; &lt;int&gt;
+## 1 do    C         1
+## 2 re    D         3
+## 3 mi    E         5
+## 4 fa    F         6
+## 5 sol   G         8
+## 6 la    A        10
+## 7 si    B        12</code></pre>
 <pre class="r"><code># A function to display a table with the given scale shifted to all the note of
 # the major heptatonic scale
 display_scale &lt;- function(input_scale){
@@ -648,6 +649,9 @@ display_scale &lt;- function(input_scale){
 </tr>
 </tbody>
 </table>
+<p>The Bb or Sib scale</p>
+<pre class="r"><code>notes2$it[major_heptatonic+11]</code></pre>
+<pre><code>## [1] &quot;sib&quot; &quot;do&quot;  &quot;re&quot;  &quot;mib&quot; &quot;fa&quot;  &quot;sol&quot; &quot;la&quot;</code></pre>
 </div>
 <div id="heptatonic-minor-scale" class="section level2">
 <h2>Heptatonic minor scale</h2>
@@ -794,6 +798,1490 @@ display_scale &lt;- function(input_scale){
 </tbody>
 </table>
 <p>Note how the notes of the C major scale are the same as the notes of the A minor scale. The notes of the F major scale are the same as the notes of the D minor scale. This is explained in <a href="https://en.wikipedia.org/wiki/Minor_scale">minor scale</a> and the correspondance between minor and major scales is visible on the <a href="https://en.wikipedia.org/wiki/Circle_of_fifths">circle of fifths</a>.</p>
+</div>
+<div id="chords-in-the-scale-of" class="section level2">
+<h2>Chords in the scale of</h2>
+<p>For each scale, show the major, minor and 7 chords that are in that scale.</p>
+<pre class="r"><code>major &lt;- c(0, 4, 7)
+minor &lt;- c(0, 3, 7)
+major7 &lt;- c(0, 4, 7, 10)
+notes2$it[major + 1]</code></pre>
+<p>[1] “do” “mi” “sol”</p>
+<pre class="r"><code>notes2$it[minor + 1]</code></pre>
+<p>[1] “do” “mib” “sol”</p>
+<pre class="r"><code>major_chords &lt;- notes
+major_chords$m4 = slice(notes2,(4+1):(4+12))
+major_chords$m7 = slice(notes2,(7+1):(7+12))
+minor_chords &lt;- notes
+minor_chords$m3 = slice(notes2,(3+1):(3+12))
+minor_chords$m7 = slice(notes2,(7+1):(7+12))
+major7_chords &lt;- notes
+major7_chords$m4 = slice(notes2,(4+1):(4+12))
+major7_chords$m7 = slice(notes2,(7+1):(7+12))
+major7_chords$m10 = slice(notes2,(10+1):(10+12))
+
+
+for (i in 1:nrow(notes)){
+    cat(&quot;\nThe scale: &quot;)
+    cat(notes2$it[major_heptatonic + i])
+    major_match = c()
+    minor_match = c()
+    major7_match = c()
+    for (j in 1:nrow(notes)){
+        if (length(setdiff(notes2$n[major + j], notes2$n[major_heptatonic + i])) == 0L){
+            major_match = c(major_match, j)
+        }
+        if (length(setdiff(notes2$n[minor + j], notes2$n[major_heptatonic + i])) == 0L){
+            minor_match = c(minor_match, j)
+        }
+        if (length(setdiff(notes2$n[major7 + j], notes2$n[major_heptatonic + i])) == 0L){
+            major7_match = c(major7_match, j)
+        }
+    }
+    cat(&quot; contains the major chords &quot;)
+    major_slice &lt;- slice(major_chords,major_match)
+    cat(major_slice$it)
+    cat(&quot; the minor chords &quot;)
+    minor_slice &lt;- slice(minor_chords,minor_match)
+    cat(paste0(minor_slice$it, &quot;(m)&quot;))
+    cat(&quot; and the major7 chords &quot;)
+    major7_slice = slice(major7_chords,major7_match)
+    cat(paste0(major7_slice$it, &quot;7&quot;))
+    chords &lt;- unnest(major_slice, cols=c(m4,m7), names_repair=&quot;universal&quot;) %&gt;%
+        bind_rows(unnest(minor_slice, cols=c(m3,m7), names_repair=&quot;universal&quot;)) %&gt;%
+        bind_rows(unnest(major7_slice, cols=c(m4,m7,m10), names_repair=&quot;universal&quot;))
+    names(chords) &lt;- paste0(rep(c(&quot;it&quot;, &quot;en&quot;,&quot;n&quot;),4),rep(1:4,each=3))
+    options(knitr.kable.NA = &#39;&#39;)
+    chords %&gt;% knitr::kable() %&gt;% print()
+}</code></pre>
+<p>The scale: do re mi fa sol la si contains the major chords do fa sol the minor chords re(m) mi(m) la(m) and the major7 chords sol7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: do# mib fa fa# sol# sib do contains the major chords do# fa# sol# the minor chords mib(m) fa(m) sib(m) and the major7 chords sol#7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: re mi fa# sol la si do# contains the major chords re sol la the minor chords mi(m) fa#(m) si(m) and the major7 chords la7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: mib fa sol sol# sib do re contains the major chords mib sol# sib the minor chords do(m) fa(m) sol(m) and the major7 chords sib7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: mi fa# sol# la si do# mib contains the major chords mi la si the minor chords do#(m) fa#(m) sol#(m) and the major7 chords si7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: fa sol la sib do re mi contains the major chords do fa sib the minor chords re(m) sol(m) la(m) and the major7 chords do7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: fa# sol# sib si do# mib fa contains the major chords do# fa# si the minor chords mib(m) sol#(m) sib(m) and the major7 chords do#7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: sol la si do re mi fa# contains the major chords do re sol the minor chords mi(m) la(m) si(m) and the major7 chords re7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: sol# sib do do# mib fa sol contains the major chords do# mib sol# the minor chords do(m) fa(m) sib(m) and the major7 chords mib7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: la si do# re mi fa# sol# contains the major chords re mi la the minor chords do#(m) fa#(m) si(m) and the major7 chords mi7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: sib do re mib fa sol la contains the major chords mib fa sib the minor chords do(m) re(m) sol(m) and the major7 chords fa7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sol</td>
+<td align="left">G</td>
+<td align="right">8</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">re</td>
+<td align="left">D</td>
+<td align="right">3</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa</td>
+<td align="left">F</td>
+<td align="right">6</td>
+<td align="left">la</td>
+<td align="left">A</td>
+<td align="right">10</td>
+<td align="left">do</td>
+<td align="left">C</td>
+<td align="right">1</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+</tr>
+</tbody>
+</table>
+<p>The scale: si do# mib mi fa# sol# sib contains the major chords mi fa# si the minor chords do#(m) mib(m) sol#(m) and the major7 chords fa#7</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">it1</th>
+<th align="left">en1</th>
+<th align="right">n1</th>
+<th align="left">it2</th>
+<th align="left">en2</th>
+<th align="right">n2</th>
+<th align="left">it3</th>
+<th align="left">en3</th>
+<th align="right">n3</th>
+<th align="left">it4</th>
+<th align="left">en4</th>
+<th align="right">n4</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="even">
+<td align="left">sol#</td>
+<td align="left">G#</td>
+<td align="right">9</td>
+<td align="left">si</td>
+<td align="left">B</td>
+<td align="right">12</td>
+<td align="left">mib</td>
+<td align="left">Eb</td>
+<td align="right">4</td>
+<td align="left"></td>
+<td align="left"></td>
+<td align="right"></td>
+</tr>
+<tr class="odd">
+<td align="left">fa#</td>
+<td align="left">F#</td>
+<td align="right">7</td>
+<td align="left">sib</td>
+<td align="left">Bb</td>
+<td align="right">11</td>
+<td align="left">do#</td>
+<td align="left">C#</td>
+<td align="right">2</td>
+<td align="left">mi</td>
+<td align="left">E</td>
+<td align="right">5</td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div id="pentatonic-scales" class="section level1">

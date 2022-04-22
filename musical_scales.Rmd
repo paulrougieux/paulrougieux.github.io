@@ -9,8 +9,9 @@ output:
 
 ```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
 # Generate this notebook to a pdf document
-# cd ~/rp/paulrougieux.github.io && Rscript -e "rmarkdown::render('music_theory.Rmd', 'pdf_document')"
+# cd ~/rp/paulrougieux.github.io && Rscript -e "rmarkdown::render('musical_scales.Rmd', 'pdf_document')"
 library(dplyr)
+library(tidyr)
 ```
 
 # Introduction
@@ -25,7 +26,7 @@ Create a data frame that contains the twelve notes of the chromatic scale used l
 
 ```{r}
 notes <- tribble(
-    ~it,   ~en,
+    ~it,   ~en, 
     "do",  "C",
     "do#", "C#" ,
     "re",  "D",
@@ -39,6 +40,7 @@ notes <- tribble(
     "sib", "Bb",
     "si",  "B",
 )
+notes$n = as.integer(rownames(notes))
 
 # Duplicate the notes so that increments of scale number below don't fall out of the range.
 notes2 <- rbind(notes, notes)
@@ -78,6 +80,11 @@ display_scale <- function(input_scale){
 display_scale(major_heptatonic)
 ```
 
+The Bb or Sib scale
+```{r}
+notes2$it[major_heptatonic+11]
+```
+
 ## Heptatonic minor scale
 
 ```{r,  results='asis'}
@@ -90,6 +97,65 @@ minor scale. This is explained in [minor
 scale](https://en.wikipedia.org/wiki/Minor_scale) and the correspondance
 between minor and major scales is visible on the [circle of
 fifths](https://en.wikipedia.org/wiki/Circle_of_fifths).
+
+
+## Chords in the scale of
+
+For each scale, show the major, minor and 7 chords that are in that scale.
+
+```{r message=FALSE, warning=FALSE, results="asis"}
+major <- c(0, 4, 7)
+minor <- c(0, 3, 7)
+major7 <- c(0, 4, 7, 10)
+notes2$it[major + 1]
+notes2$it[minor + 1]
+major_chords <- notes
+major_chords$m4 = slice(notes2,(4+1):(4+12))
+major_chords$m7 = slice(notes2,(7+1):(7+12))
+minor_chords <- notes
+minor_chords$m3 = slice(notes2,(3+1):(3+12))
+minor_chords$m7 = slice(notes2,(7+1):(7+12))
+major7_chords <- notes
+major7_chords$m4 = slice(notes2,(4+1):(4+12))
+major7_chords$m7 = slice(notes2,(7+1):(7+12))
+major7_chords$m10 = slice(notes2,(10+1):(10+12))
+
+
+for (i in 1:nrow(notes)){
+    cat("\nThe scale: ")
+    cat(notes2$it[major_heptatonic + i])
+    major_match = c()
+    minor_match = c()
+    major7_match = c()
+    for (j in 1:nrow(notes)){
+        if (length(setdiff(notes2$n[major + j], notes2$n[major_heptatonic + i])) == 0L){
+            major_match = c(major_match, j)
+        }
+        if (length(setdiff(notes2$n[minor + j], notes2$n[major_heptatonic + i])) == 0L){
+            minor_match = c(minor_match, j)
+        }
+        if (length(setdiff(notes2$n[major7 + j], notes2$n[major_heptatonic + i])) == 0L){
+            major7_match = c(major7_match, j)
+        }
+    }
+    cat(" contains the major chords ")
+    major_slice <- slice(major_chords,major_match)
+    cat(major_slice$it)
+    cat(" the minor chords ")
+    minor_slice <- slice(minor_chords,minor_match)
+    cat(paste0(minor_slice$it, "(m)"))
+    cat(" and the major7 chords ")
+    major7_slice = slice(major7_chords,major7_match)
+    cat(paste0(major7_slice$it, "7"))
+    chords <- unnest(major_slice, cols=c(m4,m7), names_repair="universal") %>%
+        bind_rows(unnest(minor_slice, cols=c(m3,m7), names_repair="universal")) %>%
+        bind_rows(unnest(major7_slice, cols=c(m4,m7,m10), names_repair="universal"))
+    names(chords) <- paste0(rep(c("it", "en","n"),4),rep(1:4,each=3))
+    options(knitr.kable.NA = '')
+    chords %>% knitr::kable() %>% print()
+}
+
+```
 
 
 # Pentatonic scales
