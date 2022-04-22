@@ -624,15 +624,21 @@ to
 Combine some of the commands above to create a scanned A4 portrait pdf document from
 pictures taken from a camera. First reduce the size of the pictures to 2000
 pixel wide and rotate them 90 degrees, then combine all images in a pdf.
+Use a higher compression for smaller image sizes. You might need to change the
+rotation from -90 to 90 depending on how the camera was held.
 
     mkdir small
-    mogrify -resize 2000 -rotate 90 -path ./small/ *.JPG
+    mogrify -resize 2000 -quality 40 -rotate -90 -path ./small/ *.JPG
     cd small/
     img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG
 
-Alternatively use a higher compression for smaller image sizes
+Remove the -quality argument to keep default higher quality images.
 
-    mogrify  -quality 40 -path ./small/ *.JPG
+    mogrify -resize 2000 -rotate 90 -path ./small/ *.JPG
+
+Use only the quality argument without rotation
+
+    mogrify -quality 40 -path ./small/ *.JPG
 
 
 ## Edit music files

@@ -829,13 +829,15 @@ mogrify -rotate 270 ../small/ *.JPG</code></pre>
 </div>
 <div id="a4-portrait-scan-emulation" class="section level3">
 <h3>A4 portrait Scan emulation</h3>
-<p>Combine some of the commands above to create a scanned A4 portrait pdf document from pictures taken from a camera. First reduce the size of the pictures to 2000 pixel wide and rotate them 90 degrees, then combine all images in a pdf.</p>
+<p>Combine some of the commands above to create a scanned A4 portrait pdf document from pictures taken from a camera. First reduce the size of the pictures to 2000 pixel wide and rotate them 90 degrees, then combine all images in a pdf. Use a higher compression for smaller image sizes. You might need to change the rotation from -90 to 90 depending on how the camera was held.</p>
 <pre><code>mkdir small
-mogrify -resize 2000 -rotate 90 -path ./small/ *.JPG
+mogrify -resize 2000 -quality 40 -rotate -90 -path ./small/ *.JPG
 cd small/
 img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG</code></pre>
-<p>Alternatively use a higher compression for smaller image sizes</p>
-<pre><code>mogrify  -quality 40 -path ./small/ *.JPG</code></pre>
+<p>Remove the -quality argument to keep default higher quality images.</p>
+<pre><code>mogrify -resize 2000 -rotate 90 -path ./small/ *.JPG</code></pre>
+<p>Use only the quality argument without rotation</p>
+<pre><code>mogrify -quality 40 -path ./small/ *.JPG</code></pre>
 </div>
 </div>
 <div id="edit-music-files" class="section level2">
