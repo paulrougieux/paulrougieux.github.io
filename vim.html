@@ -745,14 +745,6 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 <pre><code>:%s/\n\n/\r/g</code></pre>
 <p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
-<div id="numbers" class="section level3">
-<h3>Numbers</h3>
-<p>Insert Markdown title marker <code>#</code> before a number at the beginning of a line</p>
-<pre><code>%s/^\(\d.\)/# \1/g</code></pre>
-<p>Note <code>\0</code> matches the hole pattern. Use backslash-escaped parenthesis to match a particular pattern. <code>\d</code> matches any digit.</p>
-<p>Remove bracketed references from text copied from Wikipedia.</p>
-<pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
-</div>
 <div id="character-classes" class="section level3">
 <h3>Character classes</h3>
 <p>See also patterns below.</p>
@@ -792,6 +784,16 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <blockquote>
 <p>s/regex/replace/ is vim command for search n replace. % makes it apply throughout the file ^ and $ denotes start and end of the line respectively. <code>(.*)</code> captures everything in between. ( and ) needs to be escaped in vim regexes. \1 puts the captured content between two quotes.</p>
 </blockquote>
+<p>Remove bracketed references from text copied from Wikipedia.</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
+<div id="numbers" class="section level4">
+<h4>Numbers</h4>
+<p>Insert Markdown title marker <code>#</code> before a number at the beginning of a line</p>
+<pre><code>%s/^\(\d.\)/# \1/g</code></pre>
+<p>Note <code>\0</code> matches the hole pattern. Use backslash-escaped parenthesis to match a particular pattern. <code>\d</code> matches any digit.</p>
+<p>Remove bracketed references from text copied from Wikipedia.</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
+</div>
 </div>
 <div id="replace-spaces-and-new-lines" class="section level3">
 <h3>Replace spaces and new lines</h3>
@@ -808,6 +810,13 @@ Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\s\+/|/g</code></pre>
 <p>This pattern removes spaces at the end of the line:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\s*$//g</code></pre>
+</div>
+<div id="visual-selection" class="section level3">
+<h3>Visual selection</h3>
+<p>To search and replace in a visual selection, select an area then press <code>:</code>. The line will automatically begin with <code>:'&lt;,'&gt;</code>, you can then enter the patterns.</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/search/replace/g</code></pre>
+<p>For <a href="https://stackoverflow.com/a/25276670/2641825">a vertical selection</a>, this doesn’t work automatically and you have to use</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\%Vsearch/replace/g</code></pre>
 </div>
 </div>
 <div id="copy-cut-and-paste" class="section level2">
@@ -1763,6 +1772,11 @@ let g:tagbar_compact = 1</code></pre>
 <pre><code>:term make</code></pre>
 <p>Start ipython3:</p>
 <pre><code>:vert term ipython3</code></pre>
+<p>Change the terminal window size to be 4 lines high (works for all subsequent opening of a terminal <code>:term</code>)</p>
+<pre><code>:set termwinsize=4x
+:set tws=4x</code></pre>
+<p>Change the size of the current terminal</p>
+<pre><code>:res 10</code></pre>
 </div>
 </div>
 <div id="tools" class="section level1">

@@ -463,20 +463,6 @@ For example to [remove the last 2 characters of each line in a selection](https:
 
     :'<,'>s/..$//
 
-### Numbers
-
-Insert Markdown title marker `#` before a number at the beginning of a line
-
-    %s/^\(\d.\)/# \1/g
-
-Note `\0` matches the hole pattern. Use backslash-escaped parenthesis to match
-a particular pattern. `\d` matches any digit.
-
-Remove bracketed references from text copied from Wikipedia.
-
-    :'<,'>s/\[[0-9]\+\]//g
-
-
 ### Character classes
 
 See also patterns below.
@@ -545,6 +531,24 @@ line](https://stackoverflow.com/a/3218805/2641825)
 >    `(.*)` captures everything in between. ( and ) needs to be escaped in vim regexes.
 >    \1 puts the captured content between two quotes.
 
+Remove bracketed references from text copied from Wikipedia.
+
+    :'<,'>s/\[[0-9]\+\]//g
+
+
+#### Numbers
+
+Insert Markdown title marker `#` before a number at the beginning of a line
+
+    %s/^\(\d.\)/# \1/g
+
+Note `\0` matches the hole pattern. Use backslash-escaped parenthesis to match
+a particular pattern. `\d` matches any digit.
+
+Remove bracketed references from text copied from Wikipedia.
+
+    :'<,'>s/\[[0-9]\+\]//g
+
 
 ### Replace spaces and new lines
 
@@ -577,6 +581,19 @@ tables:
 This pattern removes spaces at the end of the line:
 
     :'<,'>s/\s*$//g
+
+
+### Visual selection
+
+To search and replace in a visual selection, select an area then press `:`. The
+line will automatically begin with `:'<,'>`, you can then enter the patterns.
+
+    :'<,'>s/search/replace/g
+
+For [a vertical selection](https://stackoverflow.com/a/25276670/2641825), this
+doesn't work automatically and you have to use 
+
+    :'<,'>s/\%Vsearch/replace/g
 
 
 ## Copy, cut and paste
@@ -2095,6 +2112,16 @@ Start a make action:
 Start ipython3:
 
     :vert term ipython3
+
+Change the terminal window size to be 4 lines high (works for all subsequent
+opening of a terminal `:term`) 
+
+    :set termwinsize=4x
+    :set tws=4x
+
+Change the size of the current terminal
+
+    :res 10
 
 
 # Tools
