@@ -19,8 +19,6 @@ navbar:
           href: docker.html
         - text: "Git"
           href: git.html
-        - text: "Learning"
-          href: learning.html
         - text: "Lyx"
           href: lyx.html
         - text: "MySQL"
