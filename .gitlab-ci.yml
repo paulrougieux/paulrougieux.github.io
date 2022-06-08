@@ -1,4 +1,4 @@
-image: rocker/verse:4.0.0
+image: rocker/verse:4.2.0
 before_script:
   - R -e "install.packages('reticulate')"
 pages:
