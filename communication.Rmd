@@ -223,8 +223,11 @@ Whatsapp betrayed its user by sharing contact details with FaceBook for advertis
 
 ## Webex
 
-A question I wrote: 
+- A question I wrote, with answers about a native install
 [How to use webex from Debian Linux](https://superuser.com/questions/1539643/how-to-use-webex-from-debian-linux)
+
+- Webex test meeting https://www.webex.com/test-meeting.html
+
 
 ## Zoom 
 
@@ -323,7 +326,22 @@ media, you subject yourself to experimentation and behaviour modification.
 - [2021 Facebook leak](https://en.wikipedia.org/wiki/2021_Facebook_leak)
 
 
-# Links
+# Web browser
+
+## Firefox 
+
+- [WebRTC Test Landing
+  Page](https://mozilla.github.io/webrtc-landing/index.html) can be used to
+  test video capture and streaming from Firefox. See on [this
+  forum](https://ask.fedoraproject.org/t/share-screen-on-cisco-webex-using-firefox/13689/3).
+
+
+## Chrome
+
+
+
+
+# ZZ Links
 
 * eff.org [surveillance self defence](https://ssd.eff.org/en/module-categories/tool-guides)
 

@@ -13,7 +13,7 @@
 
 <title>communication.knit</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -86,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -311,7 +315,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +332,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-wrench"></span>
      
     Tools
@@ -350,9 +354,6 @@ div.tocify {
     </li>
     <li>
       <a href="git.html">Git</a>
-    </li>
-    <li>
-      <a href="learning.html">Learning</a>
     </li>
     <li>
       <a href="lyx.html">Lyx</a>
@@ -378,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-microchip"></span>
      
     Algos
@@ -395,7 +396,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-line-chart"></span>
      
     Data
@@ -533,7 +534,10 @@ div.tocify {
 </div>
 <div id="webex" class="section level2">
 <h2>Webex</h2>
-<p>A question I wrote: <a href="https://superuser.com/questions/1539643/how-to-use-webex-from-debian-linux">How to use webex from Debian Linux</a></p>
+<ul>
+<li><p>A question I wrote, with answers about a native install <a href="https://superuser.com/questions/1539643/how-to-use-webex-from-debian-linux">How to use webex from Debian Linux</a></p></li>
+<li><p>Webex test meeting <a href="https://www.webex.com/test-meeting.html" class="uri">https://www.webex.com/test-meeting.html</a></p></li>
+</ul>
 </div>
 <div id="zoom" class="section level2">
 <h2>Zoom</h2>
@@ -602,8 +606,20 @@ div.tocify {
 </ul>
 </div>
 </div>
-<div id="links" class="section level1">
-<h1>Links</h1>
+<div id="web-browser" class="section level1">
+<h1>Web browser</h1>
+<div id="firefox" class="section level2">
+<h2>Firefox</h2>
+<ul>
+<li><a href="https://mozilla.github.io/webrtc-landing/index.html">WebRTC Test Landing Page</a> can be used to test video capture and streaming from Firefox. See on <a href="https://ask.fedoraproject.org/t/share-screen-on-cisco-webex-using-firefox/13689/3">this forum</a>.</li>
+</ul>
+</div>
+<div id="chrome" class="section level2">
+<h2>Chrome</h2>
+</div>
+</div>
+<div id="zz-links" class="section level1">
+<h1>ZZ Links</h1>
 <ul>
 <li><p>eff.org <a href="https://ssd.eff.org/en/module-categories/tool-guides">surveillance self defence</a></p></li>
 <li><p>Gmail <a href="https://one.google.com/storage/management?utm_source=g1&amp;utm_medium=email&amp;utm_campaign=storage&amp;utm_content=non_g1_gmail_aoos_95_smui">large attachements</a></p></li>
