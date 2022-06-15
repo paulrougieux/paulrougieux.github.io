@@ -8,12 +8,18 @@ output:
 ---
 
 
-# Pip
+# Packages
+
+## Install with Pip
 
 pypi.org [pip](https://pypi.org/project/pip/):
 
 > "pip is the package installer for Python. You can use pip to install packages
 > from the Python Package Index and other indexes."
+
+Run at the command line or from an ipython prompt:
+
+    pip install packagename
 
 [What is the difference between a python module and a python
 package](https://stackoverflow.com/questions/7948494/whats-the-difference-between-a-python-module-and-a-python-package)
@@ -25,7 +31,7 @@ package](https://stackoverflow.com/questions/7948494/whats-the-difference-betwee
 setup.py?](https://stackoverflow.com/questions/1471994/what-is-setup-py)
 
 
-## Install an old version
+### Install an old version
 
 For example to install pandas 0.24.2
 
@@ -40,7 +46,7 @@ Sometimes you need to overwrite the existing version with I.
     pip install -I  package==version
 
 
-## Install a local version
+### Install a local version
 
 To [install the local version of a package with
 pip](https://stackoverflow.com/a/18021540/2641825)
@@ -51,7 +57,7 @@ According to `man pip`, the `-e` option "installs a project in editable mode
 (i.e. setuptools "develop mode") from a local project path or a VCS url".
 
 
-### Uninstall a local version
+#### Uninstall a local version
 
 When uninstalling a package installed locally, you might get this error message: 
 
@@ -72,7 +78,7 @@ And maybe this as well
     rm -rf ~/.local/lib/python3.9/site-packages/build/lib/localpackage*
 
 
-## Install from a git repository
+### Install from a git repository
 
 Install from the dev branch of a private repo on gitlab using ssh
 
@@ -85,39 +91,14 @@ token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html)
     pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev
 
 
-## Upload a package to pypi
+## Install with Anaconda
 
-To upload a package to pypi, you need a pypi account. The [instructions on
-uploading distribution archives explain how to upload the package to pypi](
-https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives):
-    
-      python3 -m twine upload --repository testpypi dist/*
-
-
-### Authorship
-
-It's only possible to specify one author field in setup.py.
-The recommendation is to use a mailing list when there are multiple authors and
-to set separate files for attribution.
-
-[How to specify multiple authords in setup.py?](https://stackoverflow.com/questions/9999829/how-to-specify-multiple-authors-emails-in-setup-py)
-
-
-## Virtual environments
-
-[Pipenv](https://pipenv.pypa.io/en/latest/)
-makes pip and virtual env work together. 
-
-
-## Anaconda
-
-
-Use conda update command to check to see if a new update is available. If conda tells you an update is available, you can then choose whether or not to install it.
-
+Use conda update command to check to see if a new update is available. If conda
+tells you an update is available, you can then choose whether or not to install
+it.
 
 
 ### Install
-
 
 Documentation conda.io  [installing
 packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs.html#installing-packages)
@@ -193,6 +174,81 @@ Note
 Note the use of the wildcard * when defining the patch version number. Defining the version number by fixing the major and minor version numbers while allowing the patch version number to vary allows us to use our environment file to update our environment to get any bug fixes whilst still maintaining consistency of software environment.
 
 
+
+
+## Create a package
+
+### Upload a package to pypi
+
+To upload a package to pypi, you need a pypi account. The [instructions on
+uploading distribution archives explain how to upload the package to pypi](
+https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives):
+    
+      python3 -m twine upload --repository testpypi dist/*
+
+
+### Authorship
+
+It's only possible to specify one author field in setup.py.
+The recommendation is to use a mailing list when there are multiple authors and
+to set separate files for attribution.
+
+[How to specify multiple authords in setup.py?](https://stackoverflow.com/questions/9999829/how-to-specify-multiple-authors-emails-in-setup-py)
+
+
+### Version
+
+[SO What is the correct way to share package version with setup.py and the
+package?](https://stackoverflow.com/questions/17583443/what-is-the-correct-way-to-share-package-version-with-setup-py-and-the-package)
+
+The version of a package has to be set both in `setup.py` and `__init__py` it's
+crazy the number of options that people have thought about. [This
+answers](https://stackoverflow.com/a/61960231/2641825) summarizes the state of
+the art in 7 options, including a link to the
+[python packaging user guide](https://packaging.python.org/en/latest/guides/single-sourcing-package-version/) 
+
+
+#### Bump version
+
+Install bumpversion
+
+    pip install bumpversion
+
+Increment the version number both in setup.py and __init__.py with the command
+line tool bumpversion. First create a configuration file `.bumpversion.cfg`
+where the `current_version` matches the versions in `setup.py` and
+`packagename/__init__.py`
+
+    [bumpversion]
+    current_version = 0.0.5
+    commit = True
+    tag = True
+
+    [bumpversion:file:setup.py]
+    [bumpversion:file:biotrade/__init__.py]
+
+Increment the version number in all files and the git tag with:
+
+    bumpversion patch
+    # Or to increment minor or major versions
+    bumpversion minor
+    bumpversion major
+
+Check the updated version in setup.py
+
+    python setup.py --version 
+
+Start an ipython prompt to test the package version
+
+    ipython
+    import packagename
+    packagename.__version__
+
+
+## Virtual environments
+
+[Pipenv](https://pipenv.pypa.io/en/latest/)
+makes pip and virtual env work together. 
 
 
 # Compilers
@@ -635,6 +691,15 @@ provide the following operations:
 
 	    Return a new set with elements from the set and all others.
 
+Note the following perform a union:
+
+    set(range(3,10)).union(set(range(5)))
+    set(range(3,10)) | set(range(5))
+
+But this is not a union:
+
+    set(range(3,10)) or set(range(5))
+
 	intersection(*others)
 	set & other & ...
 
@@ -862,6 +927,7 @@ To break at every step in a loop, use the `breakpoint()` function in any part
 of the code as explained in [setp by step debuging with
 ipython](https://stackoverflow.com/questions/16867347/step-by-step-debugging-with-ipython).
 
+    continue
 
 ## Running from ipython
 
@@ -872,7 +938,7 @@ Run a file from the ipython console
 https://github.com/ipython/ipython/issues/1001
 
 
-# Jupyter notebooks
+# Jupyter notebooks and lab
 
 
 ## Call bash from a notebook
@@ -886,7 +952,7 @@ See also
 [Difference between ! and % in Jupyter Notebooks](https://stackoverflow.com/questions/45784499/difference-between-and-in-jupyter-notebooks)
 
 
-## Execute notebooks programmatically
+## Convert and execute notebooks programmatically
 
 ### At the shell
 
@@ -1057,6 +1123,16 @@ To [install Jupyter](https://jupyter.org/install) notebooks on python3:
 Then start the notebook server as such:
 
     jupyter notebook
+
+
+## Plots in notebooks
+
+
+It is [sometimes necessary to add the
+following](https://stackoverflow.com/a/24884342/2641825) at the beginning of a
+jupyter notebook so that plots are displayed inline
+
+    %matplotlib inline
 
 
 ## Security and authentication on a public server
@@ -2000,6 +2076,32 @@ special type Int64 as explained in this [SO
 answer](https://stackoverflow.com/a/67270477/2641825)
 
 
+### Memory usage
+
+To display the memory usage of [each column in a pandas data frame](https://stackoverflow.com/questions/18089667/how-to-estimate-how-much-memory-a-pandas-dataframe-will-need)
+
+    import pandas
+    df = pandas.DataFrame({'x':range(0,3), 'y':['a','b','c']})
+    print(df.memory_usage(deep=True))
+    print(df.memory_usage(deep=True).sum())
+    df.info()
+
+Using `sys.getsizeof`:
+
+    import sys
+    print(sys.getsizeof(df))
+
+Changing a repeated data series to a categorical can help reduce memory usage
+
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    print(iris["species"].memory_usage(deep=True))
+    print(iris["species"].astype('category').memory_usage(deep=True))
+    iris2 = iris.copy()
+    iris2["species"] = iris["species"].astype('category')
+    print(sys.getsizeof(iris2))
+    print(sys.getsizeof(iris))
+
 
 ## Datetime operations
 
@@ -2084,7 +2186,7 @@ December.
     flights.query("month=='December'")
 
 
-### Get the first elements of each group
+### Slice, get the first elements of each group
 
 - [How do I select the first row in each group in
 groupby](https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-first-row-in-each-group-by-group)
@@ -2097,6 +2199,12 @@ groupby](https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-fir
     df.sort_values('B').groupby('A').nth(0)
     df.sort_values('B').groupby('A').nth(list(range(2)))
     df.sort_values('B').groupby('A').head(2)
+
+### Min or max in group
+
+Min or max in each group
+
+    df.loc[df.groupby('A')['B val'].idxmin()]
 
 
 ## Index
@@ -2611,6 +2719,19 @@ Query for a variable in a list
     df.query("A in [3,6]")
 
 
+#### str.contains and str.startswith
+
+str.contains and str.startswith do not work with the default numexpre engine,
+you need to set `engine="python"` as explained in [this
+answer](https://stackoverflow.com/a/51375487/2641825).
+
+Example use on a table of product codes, query products description that
+contain "oak" but not "cloak" and query sawnwood products starting with "4407 ":
+
+    comtrade.products.hs.query("product_description.str.contains('oak') and not product_description.str.contains('cloak')", engine="python")
+    comtrade.products.hs.query("product_code.str.startswith('4407')", engine="python")
+
+
 ### isin
 
 [Use alist of values to select rows](https://stackoverflow.com/questions/12096252/use-a-list-of-values-to-select-rows-from-a-pandas-dataframe)
@@ -2779,6 +2900,26 @@ Using `merge`:
 Using `drop_duplicates`
 
     newdf=pd.concat[df1,df2].drop_duplicates(keep=False)
+
+
+## Duplicated values
+
+Warn in case the variable x is duplicated
+
+    import pandas
+    df = pandas.DataFrame({"x": ["a", "b", "c", "a"], "y": range(4)})
+    dup_x = df["x"].duplicated(keep=False)
+    if any(dup_x):
+        msg = "x values are not unique. "
+        msg += "The following duplicates are present:\n"
+        msg += f"{df.loc[dup_x]}"
+        raise ValueError(msg)
+
+Drop duplicates
+
+    df["x"].drop_duplicates()
+    df["x"].drop_duplicates(keep=False)
+    df["x"].drop_duplicates(keep="last")
 
 
 ## Where and mask
@@ -2963,6 +3104,8 @@ Better to use X**2 + Y**2 directly as above.
 
 ### Pandas plots are matplotlib AxesSubplot objects
 
+#### Show pandas plots in ipython
+
 Create some data and change the xticks labels
 
     import pandas
@@ -3051,6 +3194,9 @@ In Seaborn facet grid.
     g = g.map(plt.hist, "total_bill")
     g.set(ylim=(0, None)) 
 
+
+
+
 ### Grid plot
 
 
@@ -3079,6 +3225,42 @@ for each combination of size and smoker/non smoker
     g = sns.FacetGrid(tips, col = 'size',  row = 'smoker', hue = 'day')
     g = (g.map(sns.barplot, 'time', 'total_bill', ci = None).add_legend())
     plt.show()
+
+
+#### Grid line plot
+
+
+>   This function provides access to several different axes-level functions
+>   that show the relationship between two variables with semantic mappings
+>   of subsets. The ``kind`` parameter selects the underlying axes-level
+>   function to use:
+
+>   - :func:`scatterplot` (with ``kind="scatter"``; the default)
+>   - :func:`lineplot` (with ``kind="line"``)
+
+
+https://seaborn.pydata.org/examples/faceted_lineplot.html
+
+    import seaborn as sns
+    sns.set_theme(style="ticks")
+
+    dots = sns.load_dataset("dots")
+
+    # Define the palette as a list to specify exact values
+    palette = sns.color_palette("rocket_r")
+
+    # Plot the lines on two facets
+    g = sns.relplot(
+        data=dots,
+        x="time", y="firing_rate",
+        hue="coherence", size="choice", col="align",
+        kind="line", size_order=["T1", "T2"], palette=palette,
+        height=5, aspect=.75, facet_kws=dict(sharex=False),
+    )
+    g.fig.suptitle("Dots example")
+    # Add a title and adjust the position so the title doesn't overwrite facets
+    g.set_ylabels("Y label")
+    plt.subplots_adjust(top=0.9)
 
 
 ### Title
@@ -3207,13 +3389,14 @@ For example
                   "\x1b[1;35;45m" + "Autumn" + "\x1b[0m" + ", "))
 
 
-# Profiling
+# Profiling and measuring time
 
 [How can I time a code segment for testing performance with Pythons timeit?](https://stackoverflow.com/questions/2866380/how-can-i-time-a-code-segment-for-testing-performance-with-pythons-timeit)
 
 Time a function:
 
-    import time, timeit
+    import timeit
+    import time
     def wait():
         time.sleep(1)
     timeit.timeit(wait, number=3)
@@ -3320,7 +3503,7 @@ Pandas data frame to be used for examples:
 | Base R                      | python or pandas              | SO questions                                                   |
 | --------------------------- | ----------------------------- | --------------------------------------------------             |
 | `df[df$y %in% c('a','b'),]` | `df[df['y'].isin(['a','b'])]` | [list of values to select a row]                               |
-| `dput(df)`                  | `df.to_dict()`                | [Print pandas data frame for reproducible example]             |
+| `dput(df)`                  | `df.to_dict(orient="list")`   | [Print pandas data frame for reproducible example]             |
 | `expand.grid(df$x,df$y)`    | `itertools.product`           | see section below                                              |
 | `ifelse`                    | `df.where()`                  | [ifelse in pandas]                                             |
 | `gsub`                      | `df.x.replace(regex=True)`    | [gsub in pandas]                                               |
@@ -3561,6 +3744,23 @@ Flake 8 looks at more than just formatting.
 codes](https://pypi.org/project/flake8/1.6.1/#warning-error-codes)
 
 
+## PEP Python Enhancement Proposals
+
+[PEP 8 Style Guide for Python Code](https://legacy.python.org/dev/peps/pep-0008/#version-bookkeeping)
+
+> "A style guide is about consistency. Consistency with this style guide is
+> important. Consistency within a project is more important. Consistency within
+> one module or function is the most important."
+
+> "However, **know when to be inconsistent** -- sometimes style guide
+> recommendations just aren't applicable. When in doubt, use your best
+> judgment. Look at other examples and decide what looks best. And don't
+> hesitate to ask!"
+
+> "In particular: do not break backwards compatibility just to comply with this
+> PEP!"
+
+
 ## Pre commit hooks
 
 Blog:
@@ -3744,6 +3944,20 @@ More details are given by
 
 ## Memory
 
+### Memory usage of a python object
+
+To display the memory usage of a python object
+
+    import sys
+    a = 1
+    print(sys.getsizeof(a))
+
+See also the section on memory usage of pandas data frames under columns /
+memory usage.
+
+
+### Out of memory error
+
 Sometimes when a python process runs out of memory, it can get killed by the
 Linux Kernel. In that case the error message is short "killed" and there is no
 python trace back printed. You can check that it is indeed a memory error by
@@ -3831,6 +4045,14 @@ Test pandas data frame with
 
     assert_frame_equal
     assert_series_equal # tricky to use
+
+
+## Test use in projects
+
+- [tabulate](https://pypi.org/project/tabulate/)
+
+    > "uses pytest testing framework and [tox](https://tox.wiki/en/latest/) to
+    > automate testing in different environments."
 
 
 # Web 
