@@ -241,6 +241,7 @@ augroup Toc
     autocmd Filetype rnoweb command! -buffer Toc Voom
     autocmd Filetype tex command! -buffer Toc VimtexTocOpen
 augroup END
+command! TOc Toc
 
 " Insert citations or autocomplete code with Ctrl-Space, 
 " Might conflict with python plugin Jedi's autocomplete when editing a python
