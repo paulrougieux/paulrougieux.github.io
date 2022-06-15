@@ -127,6 +127,31 @@ Go back to the development branch
 
 Continue to modify files in the repository.
 
+# Add and commit
+
+## Add patterns
+
+Add modified markdown files to the next git commit
+
+    git add *.md
+
+The star * is a [file glob
+pattern](https://git-scm.com/docs/git-add#Documentation/git-add.txt-ltpathspecgt82308203)
+that matches all other path components in between.
+
+
+## Commit messages
+
+Example of a long commit message (like a letter) torvalds/uemacs [Stop using
+'short' for line and allocation sizes
+](https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61). 
+
+Extract:
+
+> "I really should just learn another editor, rather than continue to polish
+> this turd."
+
+
 # Autocompletion
 
 git has an [auto complete](https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion) 
@@ -210,19 +235,6 @@ I might need to delete a branch at some point:
 Delete a remote branch
 
     git push --delete origin branch_name
-
-
-# Commit messages
-
-Example of a long commit message (like a letter) torvalds/uemacs [Stop using
-'short' for line and allocation sizes
-](https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61). 
-
-Extract:
-
-> "I really should just learn another editor, rather than continue to polish
-> this turd."
-
 
 # Configuring git 
 
@@ -343,7 +355,7 @@ some answers suggest using `.gitkeep` or simply `.keep` because files starting
 with ".git" should be reserved for git usage. 
 
 
-# Git run 
+# Git run to automate many repositories
 
 Git run enables to pull from many repositories with a single command  
 
@@ -684,11 +696,13 @@ For a user at (link works as is):
 
     git add --renormalize .
 
-This is usually taken care of at the system level. 
-But sometimes when you share files with windows machines (accessing them on a shared folder for example)
-you end up with commits that show a lot of modifications because the windows line ending LRLF appears in the linux machine. 
-[Configuring git to handle line endings](https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings)
-To force the line ending to be LF only, create a  .gitattributes file which contains: 
+This is usually taken care of at the system level. But sometimes when you share
+files with windows machines (accessing them on a shared folder for example) you
+end up with commits that show a lot of modifications because the windows line
+ending LRLF appears in the linux machine. [Configuring git to handle line
+endings](https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings)
+To force the line ending to be LF only, create a  .gitattributes file which
+contains: 
 
     text eol=lf
 
@@ -699,15 +713,23 @@ To force the line ending to be LF only, create a  .gitattributes file which cont
 
 Older content related to pages built from branches.
 
-SO answer to the question "How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)": An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.
+SO answer to the question "How to add a git repo as a submodule of itself? (Or:
+How to generate GitHub Pages programmatically?)": An alternative to using Git
+Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.
 
-In fact I didn't use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page  branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).
+In fact I didn't use quite that strategy and I instead cloned a temporary copy
+of my repository. Created the gh-page  branch. Pushed it to github. Then I went
+back to the original repository (where I have a few large untracked data files
+I find handy to keep for analyses purposes).
 
-Then within the inst folder, I cloned only the gh-branch. To clone only one branch:
+Then within the inst folder, I cloned only the gh-branch. To clone only one
+branch:
 
     git clone -b mybranch --single-branch git://sub.domain.com/repo.git
 
-Then I renamed the folder to "web", so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.
+Then I renamed the folder to "web", so that I had a inst/web folder, tracking
+the gh-branch. inst/web is ignored in the main repository.
+
 
 ## On Gitlab
 
@@ -944,6 +966,10 @@ You can add a tag after the fact. To tag an earlier commit, specify the commit c
 Delete a tag
 
     git tag -d tag_name
+
+To delete a tag on the remote server as well
+
+    git push --delete origin tagname
 
 Return all files in the repository to a particular tag:
 

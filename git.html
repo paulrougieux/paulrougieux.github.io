@@ -13,7 +13,7 @@
 
 <title>Git Commands</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -86,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -311,7 +315,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +332,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-wrench"></span>
      
     Tools
@@ -350,9 +354,6 @@ div.tocify {
     </li>
     <li>
       <a href="git.html">Git</a>
-    </li>
-    <li>
-      <a href="learning.html">Learning</a>
     </li>
     <li>
       <a href="lyx.html">Lyx</a>
@@ -378,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-microchip"></span>
      
     Algos
@@ -395,7 +396,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-line-chart"></span>
      
     Data
@@ -500,6 +501,23 @@ git merge develop</code></pre>
 <p>Continue to modify files in the repository.</p>
 </div>
 </div>
+<div id="add-and-commit" class="section level1">
+<h1>Add and commit</h1>
+<div id="add-patterns" class="section level2">
+<h2>Add patterns</h2>
+<p>Add modified markdown files to the next git commit</p>
+<pre><code>git add *.md</code></pre>
+<p>The star * is a <a href="https://git-scm.com/docs/git-add#Documentation/git-add.txt-ltpathspecgt82308203">file glob pattern</a> that matches all other path components in between.</p>
+</div>
+<div id="commit-messages" class="section level2">
+<h2>Commit messages</h2>
+<p>Example of a long commit message (like a letter) torvalds/uemacs <a href="https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61">Stop using ‘short’ for line and allocation sizes</a>.</p>
+<p>Extract:</p>
+<blockquote>
+<p>“I really should just learn another editor, rather than continue to polish this turd.”</p>
+</blockquote>
+</div>
+</div>
 <div id="autocompletion" class="section level1">
 <h1>Autocompletion</h1>
 <p>git has an <a href="https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion">auto complete</a> feature available in a script: <code>git-completion.bash</code>.</p>
@@ -550,14 +568,6 @@ git merge temp</code></pre>
 <p>Delete a remote branch</p>
 <pre><code>git push --delete origin branch_name</code></pre>
 </div>
-</div>
-<div id="commit-messages" class="section level1">
-<h1>Commit messages</h1>
-<p>Example of a long commit message (like a letter) torvalds/uemacs <a href="https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61">Stop using ‘short’ for line and allocation sizes</a>.</p>
-<p>Extract:</p>
-<blockquote>
-<p>“I really should just learn another editor, rather than continue to polish this turd.”</p>
-</blockquote>
 </div>
 <div id="configuring-git" class="section level1">
 <h1>Configuring git</h1>
@@ -637,8 +647,8 @@ git log --pretty=oneline </code></pre>
 <p><a href="https://stackoverflow.com/questions/115983/how-can-i-add-a-blank-directory-to-a-git-repository">So question how can I add a blank directory to a git repository</a></p>
 <p>some answers suggest using <code>.gitkeep</code> or simply <code>.keep</code> because files starting with “.git” should be reserved for git usage.</p>
 </div>
-<div id="git-run" class="section level1">
-<h1>Git run</h1>
+<div id="git-run-to-automate-many-repositories" class="section level1">
+<h1>Git run to automate many repositories</h1>
 <p>Git run enables to pull from many repositories with a single command</p>
 <p>configuration was a bit complicated on debian</p>
 <p>Install nodejs and npm from the backports</p>
@@ -1034,6 +1044,8 @@ git tag v0.0.2  -m &quot;Version 0.0.2&quot;</code></pre>
 git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
 <p>Delete a tag</p>
 <pre><code>git tag -d tag_name</code></pre>
+<p>To delete a tag on the remote server as well</p>
+<pre><code>git push --delete origin tagname</code></pre>
 <p>Return all files in the repository to a particular tag:</p>
 <pre><code>git checkout tags/v0.1</code></pre>
 <p>Optionally you can checkout and create a new branch to commit your changes with:</p>

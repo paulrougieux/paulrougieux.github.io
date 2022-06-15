@@ -519,7 +519,7 @@ Add the following line to that file:
 
 ### ExpressVPN
 
-Download the software and signature file
+Copy the links, then download the software and signature file
 
     cd ~/downloads
     curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb
@@ -590,6 +590,10 @@ Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Li
     # Install
     sudo apt install ./zoom_amd64.deb 
 
+
+## Webex
+
+I use the web based version of Webex
 
 # Audio
 
