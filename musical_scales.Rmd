@@ -122,7 +122,7 @@ major7_chords$m10 = slice(notes2,(10+1):(10+12))
 
 
 for (i in 1:nrow(notes)){
-    cat("\nThe scale: ")
+    cat(sprintf("\nThe %s scale: ", notes2$en[major_heptatonic + i][1]))
     cat(notes2$it[major_heptatonic + i])
     major_match = c()
     minor_match = c()
@@ -139,9 +139,9 @@ for (i in 1:nrow(notes)){
         }
     }
     cat(" contains the major chords ")
-    major_slice <- slice(major_chords,major_match)
+    major_slice <- slice(major_chords, major_match)
     cat(major_slice$it)
-    cat(" the minor chords ")
+    cat(", the minor chords ")
     minor_slice <- slice(minor_chords,minor_match)
     cat(paste0(minor_slice$it, "(m)"))
     cat(" and the major7 chord ")

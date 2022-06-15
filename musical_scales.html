@@ -13,7 +13,7 @@
 
 <title>Musical scales</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -86,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -311,7 +315,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +332,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-wrench"></span>
      
     Tools
@@ -350,9 +354,6 @@ div.tocify {
     </li>
     <li>
       <a href="git.html">Git</a>
-    </li>
-    <li>
-      <a href="learning.html">Learning</a>
     </li>
     <li>
       <a href="lyx.html">Lyx</a>
@@ -378,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-microchip"></span>
      
     Algos
@@ -395,7 +396,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-line-chart"></span>
      
     Data
@@ -822,7 +823,7 @@ major7_chords$m10 = slice(notes2,(10+1):(10+12))
 
 
 for (i in 1:nrow(notes)){
-    cat(&quot;\nThe scale: &quot;)
+    cat(sprintf(&quot;\nThe %s scale: &quot;, notes2$en[major_heptatonic + i][1]))
     cat(notes2$it[major_heptatonic + i])
     major_match = c()
     minor_match = c()
@@ -839,9 +840,9 @@ for (i in 1:nrow(notes)){
         }
     }
     cat(&quot; contains the major chords &quot;)
-    major_slice &lt;- slice(major_chords,major_match)
+    major_slice &lt;- slice(major_chords, major_match)
     cat(major_slice$it)
-    cat(&quot; the minor chords &quot;)
+    cat(&quot;, the minor chords &quot;)
     minor_slice &lt;- slice(minor_chords,minor_match)
     cat(paste0(minor_slice$it, &quot;(m)&quot;))
     cat(&quot; and the major7 chord &quot;)
@@ -854,7 +855,7 @@ for (i in 1:nrow(notes)){
     options(knitr.kable.NA = &#39;&#39;)
     chords %&gt;% knitr::kable() %&gt;% print()
 }</code></pre>
-<p>The scale: do re mi fa sol la si contains the major chords do fa sol the minor chords re(m) mi(m) la(m) and the major7 chord sol7</p>
+<p>The C scale: do re mi fa sol la si contains the major chords do fa sol, the minor chords re(m) mi(m) la(m) and the major7 chord sol7</p>
 <table>
 <thead>
 <tr class="header">
@@ -973,7 +974,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: do# mib fa fa# sol# sib do contains the major chords do# fa# sol# the minor chords mib(m) fa(m) sib(m) and the major7 chord sol#7</p>
+<p>The C# scale: do# mib fa fa# sol# sib do contains the major chords do# fa# sol#, the minor chords mib(m) fa(m) sib(m) and the major7 chord sol#7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1092,7 +1093,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: re mi fa# sol la si do# contains the major chords re sol la the minor chords mi(m) fa#(m) si(m) and the major7 chord la7</p>
+<p>The D scale: re mi fa# sol la si do# contains the major chords re sol la, the minor chords mi(m) fa#(m) si(m) and the major7 chord la7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1211,7 +1212,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: mib fa sol sol# sib do re contains the major chords mib sol# sib the minor chords do(m) fa(m) sol(m) and the major7 chord sib7</p>
+<p>The Eb scale: mib fa sol sol# sib do re contains the major chords mib sol# sib, the minor chords do(m) fa(m) sol(m) and the major7 chord sib7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1330,7 +1331,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: mi fa# sol# la si do# mib contains the major chords mi la si the minor chords do#(m) fa#(m) sol#(m) and the major7 chord si7</p>
+<p>The E scale: mi fa# sol# la si do# mib contains the major chords mi la si, the minor chords do#(m) fa#(m) sol#(m) and the major7 chord si7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1449,7 +1450,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: fa sol la sib do re mi contains the major chords do fa sib the minor chords re(m) sol(m) la(m) and the major7 chord do7</p>
+<p>The F scale: fa sol la sib do re mi contains the major chords do fa sib, the minor chords re(m) sol(m) la(m) and the major7 chord do7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1568,7 +1569,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: fa# sol# sib si do# mib fa contains the major chords do# fa# si the minor chords mib(m) sol#(m) sib(m) and the major7 chord do#7</p>
+<p>The F# scale: fa# sol# sib si do# mib fa contains the major chords do# fa# si, the minor chords mib(m) sol#(m) sib(m) and the major7 chord do#7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1687,7 +1688,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: sol la si do re mi fa# contains the major chords do re sol the minor chords mi(m) la(m) si(m) and the major7 chord re7</p>
+<p>The G scale: sol la si do re mi fa# contains the major chords do re sol, the minor chords mi(m) la(m) si(m) and the major7 chord re7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1806,7 +1807,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: sol# sib do do# mib fa sol contains the major chords do# mib sol# the minor chords do(m) fa(m) sib(m) and the major7 chord mib7</p>
+<p>The G# scale: sol# sib do do# mib fa sol contains the major chords do# mib sol#, the minor chords do(m) fa(m) sib(m) and the major7 chord mib7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1925,7 +1926,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: la si do# re mi fa# sol# contains the major chords re mi la the minor chords do#(m) fa#(m) si(m) and the major7 chord mi7</p>
+<p>The A scale: la si do# re mi fa# sol# contains the major chords re mi la, the minor chords do#(m) fa#(m) si(m) and the major7 chord mi7</p>
 <table>
 <thead>
 <tr class="header">
@@ -2044,7 +2045,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: sib do re mib fa sol la contains the major chords mib fa sib the minor chords do(m) re(m) sol(m) and the major7 chord fa7</p>
+<p>The Bb scale: sib do re mib fa sol la contains the major chords mib fa sib, the minor chords do(m) re(m) sol(m) and the major7 chord fa7</p>
 <table>
 <thead>
 <tr class="header">
@@ -2163,7 +2164,7 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The scale: si do# mib mi fa# sol# sib contains the major chords mi fa# si the minor chords do#(m) mib(m) sol#(m) and the major7 chord fa#7</p>
+<p>The B scale: si do# mib mi fa# sol# sib contains the major chords mi fa# si, the minor chords do#(m) mib(m) sol#(m) and the major7 chord fa#7</p>
 <table>
 <thead>
 <tr class="header">
