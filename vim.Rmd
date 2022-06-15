@@ -667,6 +667,22 @@ Note: I don't use paste toggle any more, bracketed paste works well.
 
 ### Registers
 
+[How to use vim registers](https://stackoverflow.com/a/1498026/2641825)
+
+>" Registers in Vim let you run actions or commands on text stored within them.
+> To access a register, you type "a before a command, where a is the name of a
+> register. If you want to copy the current line into register k, you can type
+
+    "kyy
+
+> Or you can append to a register by using a capital letter
+
+    "Kyy
+
+> You can then move through the document and paste it elsewhere using
+
+    "kp
+
 To display the content of all registers:
 
     :registers
@@ -683,6 +699,12 @@ For example yank the word "yank", delete the word "delete" and copy the word
     "+   system
     ".   ^@yank^@delete^@
 
+To clean vim registers as explained on a [SO
+answer](https://stackoverflow.com/a/41003241/2641825), enter this at the vim
+prompt:
+
+    for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor
+ 
 
 ### Replace a word
 
@@ -2105,6 +2127,10 @@ To start a vertical terminal:
 
     :vert term
 
+Open a terminal in a new tab:
+
+    :tab term
+
 Start a make action: 
 
     :term make
@@ -2235,6 +2261,10 @@ This page is the continuation of [my 2014 blog post on Vim commands](https://pau
     > other editor."
 
 - [Jupyter vim](https://github.com/jupyter-vim/jupyter-vim)
+
+- [5 emacs packages for better
+  productivity](https://www.maketecheasier.com/useful-emacs-packages/): Org
+  mode, magit, evil mode, focus mode, darkroom
 
 
 ## Demonstrations of vim use

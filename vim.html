@@ -13,7 +13,7 @@
 
 <title>Vim Commands</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -86,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -311,7 +315,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +332,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-wrench"></span>
      
     Tools
@@ -350,9 +354,6 @@ div.tocify {
     </li>
     <li>
       <a href="git.html">Git</a>
-    </li>
-    <li>
-      <a href="learning.html">Learning</a>
     </li>
     <li>
       <a href="lyx.html">Lyx</a>
@@ -378,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-microchip"></span>
      
     Algos
@@ -395,7 +396,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-line-chart"></span>
      
     Data
@@ -864,6 +865,19 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 </div>
 <div id="registers" class="section level3">
 <h3>Registers</h3>
+<p><a href="https://stackoverflow.com/a/1498026/2641825">How to use vim registers</a></p>
+<blockquote>
+<p>" Registers in Vim let you run actions or commands on text stored within them. To access a register, you type "a before a command, where a is the name of a register. If you want to copy the current line into register k, you can type</p>
+</blockquote>
+<pre><code>&quot;kyy</code></pre>
+<blockquote>
+<p>Or you can append to a register by using a capital letter</p>
+</blockquote>
+<pre><code>&quot;Kyy</code></pre>
+<blockquote>
+<p>You can then move through the document and paste it elsewhere using</p>
+</blockquote>
+<pre><code>&quot;kp</code></pre>
 <p>To display the content of all registers:</p>
 <pre><code>:registers</code></pre>
 <p>For example yank the word “yank”, delete the word “delete” and copy the word “system” outside of vim in any program will give you the following registers:</p>
@@ -875,6 +889,8 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 &quot;*   system
 &quot;+   system
 &quot;.   ^@yank^@delete^@</code></pre>
+<p>To clean vim registers as explained on a <a href="https://stackoverflow.com/a/41003241/2641825">SO answer</a>, enter this at the vim prompt:</p>
+<pre><code>for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor</code></pre>
 </div>
 <div id="replace-a-word" class="section level3">
 <h3>Replace a word</h3>
@@ -1768,6 +1784,8 @@ let g:tagbar_compact = 1</code></pre>
 <p>Reddit <a href="https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/">does anybody use terminal instead of tmux and a normal terminal?</a> Some users prefer tmux panes and windows, others prefer vim terminal. I have not used vim terminal buffers enough to know how to use them properly. For example <a href="https://vimawesome.com/plugin/vim-slime#vim-terminal">slime is also working with vim’s terminal</a></p>
 <p>To start a vertical terminal:</p>
 <pre><code>:vert term</code></pre>
+<p>Open a terminal in a new tab:</p>
+<pre><code>:tab term</code></pre>
 <p>Start a make action:</p>
 <pre><code>:term make</code></pre>
 <p>Start ipython3:</p>
@@ -1849,6 +1867,7 @@ set spell spelllang=de</code></pre>
 <p>“This philosophy of minimalist commands that can be composed together is the fundamental originating philosophy of Unix, and Vim exemplifies it like no other editor.”</p>
 </blockquote></li>
 <li><p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></p></li>
+<li><p><a href="https://www.maketecheasier.com/useful-emacs-packages/">5 emacs packages for better productivity</a>: Org mode, magit, evil mode, focus mode, darkroom</p></li>
 </ul>
 </div>
 <div id="demonstrations-of-vim-use" class="section level2">
