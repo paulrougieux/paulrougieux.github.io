@@ -46,11 +46,26 @@ between data table, dplyr, python pandas and other database like tools.
 
 # Data types
 
-## Everything is a vector
+## Data frames
+
+The data type used in must analysis. Data frames are an aligned collection of
+vectors with observation in rows and variables in columns.
+
+
+### Size in memory
+
+Print the size of a data frame in memory
+
+    print(object.size(df), units="MB")
+
+
+## Vectors
+
+### Everything is a vector
 
 There are no scalar values in R, only vectors, this makes it very natural to
 process times series or cross sectional data over many N observations as if we
-were processing only one instance.
+were processing only one instance of the variable.
 
 [SO answer concerning indexing up to end of vector/matrix](https://stackoverflow.com/a/7500961/2641825) "Sometimes it's easier to tell R what you don't want"
 
@@ -58,7 +73,8 @@ were processing only one instance.
     x[-(1:3)]
     x[-c(1,3,6)]
 
-### Set operations
+
+#### Set operations
 
 ```{r}
 x = letters[1:3]
@@ -70,7 +86,27 @@ setdiff(y, x)
 setequal(x, y)
 ```
 
-## Factors
+
+### Dates
+
+Create a date vector
+
+    as.Date("2022-01-01")
+    seq(as.Date("2022-01-01"), by=1, len=3)
+
+Parse a character vector into a date vector with lubridate
+
+    tralala_chr <- c("202012", "202101")
+    tralala <- lubridate::parse_date_time(tralala_chr, "%y%m")
+    tralala
+
+Represent the date object as a string
+
+    format(min(tralala),"%Y-%m")
+    format(max(tralala),"%Y-%m") 
+
+
+### Factors
 
 [My answer to the question how to reorder factor levels the tidy
 way](https://stackoverflow.com/questions/45148897/how-to-reorder-factor-levels-in-a-tidy-way/59246372#59246372) 
@@ -101,6 +137,19 @@ Notice how the species names on the x axis are not ordered alphabetically but
 by increasing value of their mean_sepal_width. Remove the line containing
 as_factor to see the difference. 
 
+
+### Strings
+
+```{r}
+message("Using the following letters: ", paste(letters, collapse=","), ".")
+```
+
+#### Levenshtein distance between words
+
+Cf. https://en.wikipedia.org/wiki/Levenshtein_distance
+
+    adist("kitten", "sitting")
+
 ## Lists
 
 Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.
@@ -120,17 +169,45 @@ map(minyearmaxyear, 1)
 ```
 
 
-## Strings
+### Remove items from a list
 
-```{r}
-message("Using the following letters: ", paste(letters, collapse=","), ".")
-```
+[Remove elements from a named
+list](https://stackoverflow.com/a/50143588/2641825) in R.
 
-### Levenshtein distance between words
+    l <- list(a = 1, b = 2)
+    l <- within(l, rm(a)) 
 
-Cf. https://en.wikipedia.org/wiki/Levenshtein_distance
+[Remove elements from an unnamed list](https://stackoverflow.com/a/4685169/2641825)
 
-    adist("kitten", "sitting")
+    l <- list(1,2)
+    l[1] <- NULL
+
+
+### Bind data frames in a list
+
+[Bind data frames in a list](https://stackoverflow.com/a/72277344/2641825)
+
+    # Large list if data frames
+    l_df <- list(head(iris), iris[c(92:95),], tail(iris))
+    df_stack <- data.frame()
+    for (i in 1:length(l_df)){
+        # Bind the first list item and remove it
+        df_stack <- rbind(df_stack, l_df[[1]])
+        l_df[1] <- NULL
+    }
+    # Reset row names
+    row.names(df_stack) <- NULL
+
+This will take less memory than binding the data frame in this way:
+
+    l_df <- list(head(iris), iris[c(92:95),], tail(iris))
+    dfdt = data.table::rbindlist(l_df)
+
+And should give a similar result
+
+    identical(df_stack, data.frame(dfdt))
+    # TRUE
+
 
 ## S3 methods
 
@@ -141,11 +218,41 @@ List all available methods for a class:
 
 # Debug
 
+[Hadley Wickham on debugging](https://adv-r.hadley.nz/debugging.html#debugging)
+
+> "NB: You shouldn’t need to use these tools when writing new functions. If you
+> find yourself using them frequently with new code, reconsider your approach.
+> Instead of trying to write one big function all at once, work interactively
+> on small pieces. If you start small, you can quickly identify why something
+> doesn’t work, and don’t need sophisticated debugging tools."
+
+
 ## Debug with base R
 
 Print the call stack of the last error:
 
     traceback()
+
+Start a [browser at a particular position in
+code](https://adv-r.hadley.nz/debugging.html#browser-commands):
+
+     browser()
+
+>    Next, n: executes the next step in the function. If you have a variable
+>    named n, you’ll need print(n) to display its value.
+
+>    Step into, or s: works like next, but if the next step is a function, it
+>    will step into that function so you can explore it interactively.
+
+>    Finish, or f: finishes execution of the current loop or function.
+
+>    Continue, c: leaves interactive debugging and continues regular execution
+>    of the function. This is useful if you’ve fixed the bad state and want to
+>    check that the function proceeds correctly.
+
+>    Stop, Q: stops debugging, terminates the function, and returns to the
+>    global workspace. Use this once you’ve figured out where the problem is,
+>    and you’re ready to fix it and reload the code.
 
 
 ## Debug with rlang
@@ -897,6 +1004,8 @@ vignettes and function documentations are checked.
 
 # Plots
 
+- R graph gallery https://r-graph-gallery.com/
+
 
 ## Plotting with ggplot2
 
@@ -1061,11 +1170,38 @@ Minimal theme
     theme_minimal()
 
 
-## Bar plots
+## Geoms
+
+### Bar plots with geom_col
 
 Use geom_col for bar plots where the height of the column represent the value
 of a variable. Use geom_bar for plots where the height of the column represents
 a count of number of occurrences.
+
+
+### geom_ribbon
+
+Example from help(geom_ribbon):
+
+     huron <- data.frame(year = 1875:1972, level = as.vector(LakeHuron))
+     ggplot(huron, aes(year)) +
+       geom_ribbon(aes(ymin = level - 1, ymax = level + 1), fill = "grey70") +
+       geom_line(aes(y = level))
+
+[Add or remove lines at the border of the
+ribbon](https://stackoverflow.com/questions/7755041/ggplot-remove-lines-at-ribbon-edges):
+
+     ggplot(huron, aes(year)) +
+       geom_ribbon(aes(ymin = level - 1, ymax = level + 1), 
+                   outline.type="lower", fill = "grey70", color="red") +
+       geom_line(aes(y = level))
+
+     ggplot(huron, aes(year)) +
+       geom_ribbon(aes(ymin = level - 1, ymax = level + 1), 
+                   outline.type="lower", fill = "grey70", color="red",
+                   linetype=0) +
+       geom_line(aes(y = level))
+
 
 
 ## Choropleth maps
@@ -1568,6 +1704,25 @@ piris$plot[1]
 piris$plot[3]
 piris$plot[2]
 ```
+
+# Time series
+
+## Moving averages
+
+Use the rollmean function from the zoo package. It defaults to centered.
+
+     library(zoo)
+     x.Date <- as.Date(paste(2004, rep(1:4, 4:1), sample(1:28, 10), sep = "-"))
+     x <- zoo(rnorm(12), x.Date)
+     rollmean(x, 3, fill=NA)
+     rollmean(x, 3, fill="extend")
+     y <- x
+     y["2004-01-15"] <- NA
+     rollmean(y, 3, fill="extend") 
+     # Returns NA values if there are not enough observations for the rollmean
+     rollmean(y, 9, fill="extend") 
+     rollmean(x, 9, fill="extend") 
+
 
 # Working directory
 
