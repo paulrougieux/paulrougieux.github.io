@@ -531,6 +531,22 @@ If you encounter some Errors 403 forbidden, removing the cache might help
 
     youtube-dl --rm-cache-dir
 
+You can also download multiple URLs from a batch file:
+
+> -a, --batch-file FILE
+>
+>   File  containing URLs to download ('-' for stdin), one URL per line. Lines
+>   starting with '#', ';' or ']' are considered as comments and ignored.
+
+Download in a lower resolution (copied from example in man `youtube-dl`)
+
+    youtube-dl -f 'bestvideo[height<=480]+bestaudio/best[height<=480]' --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file /tmp/dl.md
+
+Download only audio (using a low resolution for the video which is dropped)
+
+    youtube-dl -f 'bestaudio/best[height<=480]' --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file /tmp/dl.md
+
+
 ## Parse html files for URLS
 
 [How to use grep and cut in script to obtain website URLs from an HTML file](https://unix.stackexchange.com/questions/181254/how-to-use-grep-and-cut-in-script-to-obtain-website-urls-from-an-html-file)
@@ -920,9 +936,11 @@ List all files in a directory
 
     ls
 
-List a file with its full path
+List a file with its full directory path
 
     realpath README.md
+    ls -ld $PWD
+    ls -ld ~/downloads/*
 
 To include dot files, pipe the output of `ls -a` to realpath:
 
@@ -2145,6 +2163,13 @@ Swap pane up and down or left and right
     {
     }
 
+Bind the s key to create a small split window at the bottom of the screen
+
+    bind-key s split-window -v \; resize-pane -y 2
+
+Uses an escaped semi colon to separate the two commands [as explained on super
+user](https://superuser.com/questions/352117/binding-a-tmux-key-to-multiple-commands). 
+
 
 ### Movements
 
@@ -2181,6 +2206,7 @@ Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/com
 Reload the tmux configuration file
 
     source-file ~/.tmux.conf
+
 
 ### VIM and TMUX Navigation
 

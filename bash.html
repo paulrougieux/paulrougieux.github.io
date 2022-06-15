@@ -13,7 +13,7 @@
 
 <title>Bash Commands</title>
 
-<script src="site_libs/header-attrs-2.11/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -62,6 +62,7 @@ if (window.hljs) {
 
 
 
+
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
 
@@ -86,6 +87,9 @@ button.code-folding-btn:focus {
 }
 summary {
   display: list-item;
+}
+details > summary > p:only-child {
+  display: inline;
 }
 pre code {
   padding: 0;
@@ -311,7 +315,7 @@ div.tocify {
 <div class="navbar navbar-default  navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-bs-toggle="collapse" data-target="#navbar" data-bs-target="#navbar">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
@@ -328,7 +332,7 @@ div.tocify {
   </a>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-wrench"></span>
      
     Tools
@@ -350,9 +354,6 @@ div.tocify {
     </li>
     <li>
       <a href="git.html">Git</a>
-    </li>
-    <li>
-      <a href="learning.html">Learning</a>
     </li>
     <li>
       <a href="lyx.html">Lyx</a>
@@ -378,7 +379,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-microchip"></span>
      
     Algos
@@ -395,7 +396,7 @@ div.tocify {
   </ul>
 </li>
 <li class="dropdown">
-  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
     <span class="fa fa-line-chart"></span>
      
     Data
@@ -773,6 +774,15 @@ alias youtubemp3=&quot;youtube-dl --extract-audio --audio-format mp3&quot;</code
 <p>If you encounter some Errors 403 forbidden, removing the cache might help</p>
 <p><a href="https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-403-forbidden-when-using-generated-direct-link-by">error 403 with youtube-dl</a></p>
 <pre><code>youtube-dl --rm-cache-dir</code></pre>
+<p>You can also download multiple URLs from a batch file:</p>
+<blockquote>
+<p>-a, –batch-file FILE</p>
+<p>File containing URLs to download (‘-’ for stdin), one URL per line. Lines starting with ‘#’, ‘;’ or ‘]’ are considered as comments and ignored.</p>
+</blockquote>
+<p>Download in a lower resolution (copied from example in man <code>youtube-dl</code>)</p>
+<pre><code>youtube-dl -f &#39;bestvideo[height&lt;=480]+bestaudio/best[height&lt;=480]&#39; --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file /tmp/dl.md</code></pre>
+<p>Download only audio (using a low resolution for the video which is dropped)</p>
+<pre><code>youtube-dl -f &#39;bestaudio/best[height&lt;=480]&#39; --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file /tmp/dl.md</code></pre>
 </div>
 <div id="parse-html-files-for-urls" class="section level2">
 <h2>Parse html files for URLS</h2>
@@ -1019,8 +1029,10 @@ grep -r encountered --include runner.log | tee /dev/tty |wc -l</code></pre>
 <h1>List files</h1>
 <p>List all files in a directory</p>
 <pre><code>ls</code></pre>
-<p>List a file with its full path</p>
-<pre><code>realpath README.md</code></pre>
+<p>List a file with its full directory path</p>
+<pre><code>realpath README.md
+ls -ld $PWD
+ls -ld ~/downloads/*</code></pre>
 <p>To include dot files, pipe the output of <code>ls -a</code> to realpath:</p>
 <pre><code>ls -a | xargs realpath</code></pre>
 <p>To list subdirectories recursively:</p>
@@ -1911,6 +1923,9 @@ exit </code></pre>
 <p>Swap pane up and down or left and right</p>
 <pre><code>{
 }</code></pre>
+<p>Bind the s key to create a small split window at the bottom of the screen</p>
+<pre><code>bind-key s split-window -v \; resize-pane -y 2</code></pre>
+<p>Uses an escaped semi colon to separate the two commands <a href="https://superuser.com/questions/352117/binding-a-tmux-key-to-multiple-commands">as explained on super user</a>.</p>
 </div>
 <div id="movements" class="section level3">
 <h3>Movements</h3>
