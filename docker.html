@@ -444,7 +444,10 @@ div.tocify {
 
 <div id="docker-installation" class="section level1">
 <h1>Docker Installation</h1>
-<p>To get the most recent stable docker version on a Debian, system, add the docker repository as explained in <a href="https://docs.docker.com/engine/install/debian/#install-using-the-repository">Docker community edition for Debian.</a></p>
+<p>To get the most recent stable docker version on a Debian, system, add
+the docker repository as explained in <a
+href="https://docs.docker.com/engine/install/debian/#install-using-the-repository">Docker
+community edition for Debian.</a></p>
 <pre><code>sudo apt-get update
 
 sudo apt-get install \
@@ -454,7 +457,10 @@ sudo apt-get install \
    lsb-release</code></pre>
 <p>Add Docker’s official GPG key:</p>
 <pre><code>curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg</code></pre>
-<p>Use the following command to set up the stable repository. To add the nightly or test repository, add the word nightly or test (or both) after the word stable in the commands below. Learn about nightly and test channels.</p>
+<p>Use the following command to set up the stable repository. To add the
+nightly or test repository, add the word nightly or test (or both) after
+the word stable in the commands below. Learn about nightly and test
+channels.</p>
 <pre><code> echo \
   &quot;deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/debian \
   $(lsb_release -cs) stable&quot; | sudo tee /etc/apt/sources.list.d/docker.list &gt; /dev/null</code></pre>
@@ -463,35 +469,48 @@ sudo apt-get install \
 <p>Then run :</p>
 <pre><code>sudo apt update
 sudo apt install docker-ce</code></pre>
-<p>Install <a href="https://docs.docker.com/compose/install/">docker compose</a></p>
+<p>Install <a href="https://docs.docker.com/compose/install/">docker
+compose</a></p>
 <pre><code>sudo curl -L &quot;https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)&quot; -o /usr/local/bin/docker-compose</code></pre>
 <p>Update permissions</p>
 <pre><code>sudo chmod +x /usr/local/bin/docker-compose</code></pre>
 <div id="add-your-user-to-the-docker-group" class="section level2">
 <h2>Add your user to the docker group</h2>
-<p>To prevent docker from requesting permission each time you use it. Add your user to the docker group. As explained <a href="https://stackoverflow.com/a/48957722/2641825">here</a></p>
+<p>To prevent docker from requesting permission each time you use it.
+Add your user to the docker group. As explained <a
+href="https://stackoverflow.com/a/48957722/2641825">here</a></p>
 <pre><code>sudo usermod -aG docker $USER</code></pre>
-<p>Login to the new group (so that you don’t need to restart the shell)</p>
+<p>Login to the new group (so that you don’t need to restart the
+shell)</p>
 <pre><code>newgrp docker</code></pre>
 </div>
 <div id="login" class="section level2">
 <h2>Login</h2>
 <p>Login to docker</p>
 <pre><code>docker login</code></pre>
-<p>My repository <a href="https://hub.docker.com/u/paulrougieux" class="uri">https://hub.docker.com/u/paulrougieux</a></p>
+<p>My repository <a href="https://hub.docker.com/u/paulrougieux"
+class="uri">https://hub.docker.com/u/paulrougieux</a></p>
 </div>
 </div>
 <div id="build" class="section level1">
 <h1>Build</h1>
-<p>Instructions to create a container are stored in a Dockerfile. Docker hub is a collection of Dockerfiles. Containers stored on docker hub can be pulled and started directly from the docker run command. The section below explain how to write your own Docker file.</p>
+<p>Instructions to create a container are stored in a Dockerfile. Docker
+hub is a collection of Dockerfiles. Containers stored on docker hub can
+be pulled and started directly from the docker run command. The section
+below explain how to write your own Docker file.</p>
 <div id="docker-file" class="section level2">
 <h2>Docker file</h2>
-<p>docs.docker.com <a href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/">best practices for writing Dockerfiles</a></p>
-<p>Build a container based on the Dockerfile in the present working directory</p>
+<p>docs.docker.com <a
+href="https://docs.docker.com/engine/userguide/eng-image/dockerfile_best-practices/">best
+practices for writing Dockerfiles</a></p>
+<p>Build a container based on the Dockerfile in the present working
+directory</p>
 <pre><code>docker build -t friendlyhello .</code></pre>
 <p>Dockerfile from R packages:</p>
 <ul>
-<li><a href="https://github.com/bcm-uga/TESS3_encho_sen/blob/master/Dockerfile">bcm-uga/TESS3_encho_sen/Dockerfile</a> FROM rocker/hadleyverse</li>
+<li><a
+href="https://github.com/bcm-uga/TESS3_encho_sen/blob/master/Dockerfile">bcm-uga/TESS3_encho_sen/Dockerfile</a>
+FROM rocker/hadleyverse</li>
 </ul>
 <p>I used R CMD build inside the docker file to build a package.</p>
 <pre><code># Set the working directory to /R
@@ -508,11 +527,20 @@ RUN R -e &#39;install.packages(&quot;packagename_0.1.0.tar.gz&quot;)&#39;</code>
 </div>
 <div id="compose-file" class="section level2">
 <h2>Compose file</h2>
-<p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/">how services work</a></p>
-<p>Compose several containers in a service <a href="https://docs.docker.com/compose/networking/">Networking in compose</a> from version 2, <a href="https://docs.docker.com/compose/compose-file/#links">links are not required</a>, for example with</p>
+<p>docs.docker.com <a
+href="https://docs.docker.com/engine/swarm/how-swarm-mode-works/services/">how
+services work</a></p>
+<p>Compose several containers in a service <a
+href="https://docs.docker.com/compose/networking/">Networking in
+compose</a> from version 2, <a
+href="https://docs.docker.com/compose/compose-file/#links">links are not
+required</a>, for example with</p>
 <p>db: image: postgres ports: - “8001:5432”</p>
 <blockquote>
-<p>“Within the web container [in the same compose file], your connection string to db would look like postgres://db:5432, and from the host machine, the connection string would look like postgres://{DOCKER_IP}:8001.”</p>
+<p>“Within the web container [in the same compose file], your connection
+string to db would look like postgres://db:5432, and from the host
+machine, the connection string would look like
+postgres://{DOCKER_IP}:8001.”</p>
 </blockquote>
 <p><a href="">Restart policy</a></p>
 <pre><code>deploy:
@@ -521,7 +549,9 @@ RUN R -e &#39;install.packages(&quot;packagename_0.1.0.tar.gz&quot;)&#39;</code>
 </div>
 <div id="volumes" class="section level2">
 <h2>Volumes</h2>
-<p>docs.docker <a href="create%20and%20manage%20volumes">https://docs.docker.com/engine/admin/volumes/volumes/#create-and-manage-volumes</a> List volumes:</p>
+<p>docs.docker <a
+href="create%20and%20manage%20volumes">https://docs.docker.com/engine/admin/volumes/volumes/#create-and-manage-volumes</a>
+List volumes:</p>
 <pre><code>docker volume ls</code></pre>
 <p>Inspect a volume:</p>
 <pre><code>docker volume inspect my-vol</code></pre>
@@ -545,10 +575,16 @@ docker volume rm $(docker volume ls -q) # all volumes</code></pre>
 <div id="docker-run-options" class="section level3">
 <h3>Docker run options</h3>
 <ul>
-<li><code>-i, --interactive</code> Keep STDIN open even if not attached</li>
-<li><code>rm</code>=true|false “Automatically remove the container when it exits (incompatible with -d). The default is false.”</li>
+<li><code>-i, --interactive</code> Keep STDIN open even if not
+attached</li>
+<li><code>rm</code>=true|false “Automatically remove the container when
+it exits (incompatible with -d). The default is false.”</li>
 <li><code>-t, --tty</code> Allocate a pseudo-TTY</li>
-<li><code>-v</code>, –volume=[] Bind mount a volume (e.g., from the host: -v /host:/container, from Docker: -v /container) The -v option can be used one or more times to add one or more mounts to a container. These mounts can then be used in other containers using the –volumes-from option.</li>
+<li><code>-v</code>, –volume=[] Bind mount a volume (e.g., from the
+host: -v /host:/container, from Docker: -v /container) The -v option can
+be used one or more times to add one or more mounts to a container.
+These mounts can then be used in other containers using the
+–volumes-from option.</li>
 </ul>
 </div>
 </div>
@@ -561,7 +597,9 @@ docker volume rm $(docker volume ls -q) # all volumes</code></pre>
 <p>Stop the service with:</p>
 <pre><code>docker stack rm servicename </code></pre>
 <p>swarm init error:</p>
-<p>I specified the IP address Stackoverflow <a href="https://stackoverflow.com/questions/38602903/docker-swarm-init-could-not-choose-an-ip-address-error">could not choose and IP address Error</a></p>
+<p>I specified the IP address Stackoverflow <a
+href="https://stackoverflow.com/questions/38602903/docker-swarm-init-could-not-choose-an-ip-address-error">could
+not choose and IP address Error</a></p>
 </div>
 </div>
 <div id="monitor" class="section level1">
@@ -576,16 +614,24 @@ docker exec -it &lt;container-id&gt; bash </code></pre>
 </div>
 <div id="stats-and-inspect-running-containers" class="section level2">
 <h2>Stats and inspect running containers</h2>
-<p><a href="https://docs.docker.com/engine/admin/runmetrics/">run metrics</a></p>
+<p><a href="https://docs.docker.com/engine/admin/runmetrics/">run
+metrics</a></p>
 <pre><code>docker stats &lt;container-id&gt;</code></pre>
-<p><a href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find the IP of a container</a>:</p>
+<p><a
+href="https://stackoverflow.com/questions/17157721/how-to-get-a-docker-containers-ip-address-from-the-host">Find
+the IP of a container</a>:</p>
 <pre><code>docker ps # look for the process id
 docker inspect &lt;container id&gt;</code></pre>
-<p>The IP is at the end. it can also be <a href="https://stackoverflow.com/a/20686101/2641825">extracted with a template</a>:</p>
+<p>The IP is at the end. it can also be <a
+href="https://stackoverflow.com/a/20686101/2641825">extracted with a
+template</a>:</p>
 <pre><code> docker inspect -f &#39;{{range .NetworkSettings.Networks}} IP {{.IPAddress}}{{end}}&#39; &lt;container id&gt; </code></pre>
 <div id="inspect-options" class="section level3">
 <h3>Inspect options</h3>
-<p>Inspect the <a href="https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart">run restart policies</a> Get the number of times a container was restarted:</p>
+<p>Inspect the <a
+href="https://docs.docker.com/v1.11/engine/reference/run/#restart-policies-restart">run
+restart policies</a> Get the number of times a container was
+restarted:</p>
 <pre><code>docker inspect -f &quot;{{ .RestartCount }}&quot; my-container</code></pre>
 <p>Get the last time the container was (re)started;</p>
 <pre><code>docker inspect -f &quot;{{ .State.StartedAt }}&quot; my-container</code></pre>
@@ -597,7 +643,9 @@ docker inspect &lt;container id&gt;</code></pre>
 </div>
 <div id="monitor-stopped-containers" class="section level2">
 <h2>Monitor stopped containers</h2>
-<p>See <a href="https://stackoverflow.com/questions/30231187/docker-list-only-stopped-containers/30231188#30231188">stopped containers</a></p>
+<p>See <a
+href="https://stackoverflow.com/questions/30231187/docker-list-only-stopped-containers/30231188#30231188">stopped
+containers</a></p>
 <pre><code>docker ps --filter &quot;status=exited&quot;</code></pre>
 <p>Inspect a stopped container</p>
 <pre><code>docker inspect &lt;container-id&gt;</code></pre>
@@ -611,7 +659,8 @@ sudo docker stack services &lt;stackname&gt;</code></pre>
 <pre><code>docker service ls</code></pre>
 <p>see which containers are running inside a service</p>
 <pre><code>docker service ps &lt;service_name&gt; </code></pre>
-<p>You can also run <code>docker ps</code> to see all running processes.</p>
+<p>You can also run <code>docker ps</code> to see all running
+processes.</p>
 </div>
 </div>
 <div id="manage-container-images" class="section level1">
@@ -620,16 +669,20 @@ sudo docker stack services &lt;stackname&gt;</code></pre>
 <pre><code>sudo docker images</code></pre>
 <div id="update-a-container-image" class="section level2">
 <h2>Update a container image</h2>
-<p><a href="https://stackoverflow.com/a/26833005/2641825">How to upgrade docker container after its image changed</a> Has information on the difference between volumes and bind mounts for data backup.</p>
+<p><a href="https://stackoverflow.com/a/26833005/2641825">How to upgrade
+docker container after its image changed</a> Has information on the
+difference between volumes and bind mounts for data backup.</p>
 <pre><code>docker pull &lt;image-name&gt; 
 docker stop &lt;container-id&gt; 
 docker rm &lt;image-name&gt; 
 docker run &lt;image-name&gt; [options]</code></pre>
-<p>If the container is part of a stack, you only need <code>docker pull</code>, then <code>docker stack deploy</code>.</p>
+<p>If the container is part of a stack, you only need
+<code>docker pull</code>, then <code>docker stack deploy</code>.</p>
 </div>
 <div id="cleanup" class="section level2">
 <h2>Cleanup</h2>
-<p>A container should be stopped before it can be removed. Stop a container</p>
+<p>A container should be stopped before it can be removed. Stop a
+container</p>
 <pre><code>docker ps
 docker stop &lt;container-id&gt;</code></pre>
 <p>Remove a stopped container</p>
@@ -645,7 +698,8 @@ docker image rm  &lt;image-id&gt;</code></pre>
 <h1>Programming with Docker</h1>
 <div id="docker-for-python" class="section level2">
 <h2>Docker for python</h2>
-<p><a href="https://pythonspeed.com/docker/">Docker packaging guide for python</a></p>
+<p><a href="https://pythonspeed.com/docker/">Docker packaging guide for
+python</a></p>
 </div>
 <div id="docker-for-r" class="section level2">
 <h2>Docker for R</h2>
@@ -653,7 +707,9 @@ docker image rm  &lt;image-id&gt;</code></pre>
 </div>
 <div id="docker-within-docker" class="section level2">
 <h2>Docker within docker</h2>
-<p>Docker blog <a href="https://www.docker.com/blog/docker-can-now-run-within-docker/">Docker can now run within Docker</a>.</p>
+<p>Docker blog <a
+href="https://www.docker.com/blog/docker-can-now-run-within-docker/">Docker
+can now run within Docker</a>.</p>
 </div>
 </div>
 <div id="related-services" class="section level1">
@@ -662,16 +718,27 @@ docker image rm  &lt;image-id&gt;</code></pre>
 <h2>Gitlab CI</h2>
 <div id="default-file-location" class="section level3">
 <h3>Default file location</h3>
-<p>Inside the gitlab CI containerse, files are located in <code>$CI_PROJECT_DIR</code>. This variable can be used to set other path variables such as the python path.</p>
+<p>Inside the gitlab CI containerse, files are located in
+<code>$CI_PROJECT_DIR</code>. This variable can be used to set other
+path variables such as the python path.</p>
 </div>
 <div id="clone-private-repository" class="section level3">
 <h3>Clone private repository</h3>
-<p>To clone a private git repo in the same project, use a token as explained in : <a href="https://stackoverflow.com/a/50163888/2641825">How to access multiple repositories in a CI build?</a>. A comment reminds us that the gitlab instance and group are separated by a slash <code>/</code> and not by a semi colon <code>:</code> as would be the case in a ssh clone url.</p>
+<p>To clone a private git repo in the same project, use a token as
+explained in : <a
+href="https://stackoverflow.com/a/50163888/2641825">How to access
+multiple repositories in a CI build?</a>. A comment reminds us that the
+gitlab instance and group are separated by a slash <code>/</code> and
+not by a semi colon <code>:</code> as would be the case in a ssh clone
+url.</p>
 <pre><code>- git clone https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/bioeconomy/libcbm/libcbm_aidb.git</code></pre>
 </div>
 <div id="mysql-or-postgresql-containers" class="section level3">
 <h3>MySQL or PostGreSQL containers</h3>
-<p>Documentation for <a href="https://docs.gitlab.com/ee/ci/services/postgres.html">PostgreSQL containers on gitlab-ci</a> Example use of a PostgreSQL container <a href="https://gitlab.com/gitlab-examples/postgres/-/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
+<p>Documentation for <a
+href="https://docs.gitlab.com/ee/ci/services/postgres.html">PostgreSQL
+containers on gitlab-ci</a> Example use of a PostgreSQL container <a
+href="https://gitlab.com/gitlab-examples/postgres/-/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
 <pre><code>services:
   - postgres
 
@@ -687,7 +754,10 @@ connect:
   # official way to provide password to psql: http://www.postgresql.org/docs/9.3/static/libpq-envars.html
   - export PGPASSWORD=$POSTGRES_PASSWORD
   - psql -h &quot;postgres&quot; -U &quot;$POSTGRES_USER&quot; -d &quot;$POSTGRES_DB&quot; -c &quot;SELECT &#39;OK&#39; AS status;&quot;</code></pre>
-<p>Documentation for <a href="https://docs.gitlab.com/ee/ci/services/mysql.html">MySQl containers on gitlab-ci</a> Example use of a MySQL container <a href="https://gitlab.com/gitlab-examples/mysql/-/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a></p>
+<p>Documentation for <a
+href="https://docs.gitlab.com/ee/ci/services/mysql.html">MySQl
+containers on gitlab-ci</a> Example use of a MySQL container <a
+href="https://gitlab.com/gitlab-examples/mysql/-/blob/master/.gitlab-ci.yml">.gitlab-ci.yml</a></p>
 <pre><code>services:
 - mysql
 
@@ -708,13 +778,22 @@ connect:
 </div>
 <div id="rocker-containers" class="section level3">
 <h3>Rocker containers</h3>
-<p>The Rocker container is made for the R statistical programming language. I use the rocker container to generate this site on gitlab-ci, see the configuration file at <a href=".gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
+<p>The Rocker container is made for the R statistical programming
+language. I use the rocker container to generate this site on gitlab-ci,
+see the configuration file at <a
+href=".gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
 </div>
 </div>
 </div>
 <div id="security" class="section level1">
 <h1>Security</h1>
-<p>docs.docker.com <a href="https://docs.docker.com/engine/swarm/secrets/">Manage sensitive data with Docker secrets</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service">Example use secrets with a Wordpress service</a> * <a href="https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose">Use secrets in compose</a> * Declare the location of secrets :</p>
+<p>docs.docker.com <a
+href="https://docs.docker.com/engine/swarm/secrets/">Manage sensitive
+data with Docker secrets</a> * <a
+href="https://docs.docker.com/engine/swarm/secrets/#advanced-example-use-secrets-with-a-wordpress-service">Example
+use secrets with a Wordpress service</a> * <a
+href="https://docs.docker.com/engine/swarm/secrets/#use-secrets-in-compose">Use
+secrets in compose</a> * Declare the location of secrets :</p>
 <pre><code> secrets:
    db_password:
      file: db_password.txt
@@ -722,9 +801,18 @@ connect:
      file: db_root_password.txt</code></pre>
 <ul>
 <li><p>give access to secrets to a service :</p>
-<p>db: image: mysql:latest volumes: - db_<a href="data:/var/lib/mysql" class="uri">data:/var/lib/mysql</a> environment: MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password MYSQL_DATABASE: wordpress MYSQL_USER: wordpress MYSQL_PASSWORD_FILE: /run/secrets/db_password secrets: - db_root_password - db_password</p></li>
+<p>db: image: mysql:latest volumes: - db_<a href="data:/var/lib/mysql"
+class="uri">data:/var/lib/mysql</a> environment:
+MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password MYSQL_DATABASE:
+wordpress MYSQL_USER: wordpress MYSQL_PASSWORD_FILE:
+/run/secrets/db_password secrets: - db_root_password -
+db_password</p></li>
 </ul>
-<p>Stackoverflow <a href="https://stackoverflow.com/questions/22651647/docker-and-securing-passwords">Docker and securing passwords</a> previous solution recommended passing passwords as environement variables. Docker now has a native solution to deal with secrets.</p>
+<p>Stackoverflow <a
+href="https://stackoverflow.com/questions/22651647/docker-and-securing-passwords">Docker
+and securing passwords</a> previous solution recommended passing
+passwords as environement variables. Docker now has a native solution to
+deal with secrets.</p>
 </div>
 
 

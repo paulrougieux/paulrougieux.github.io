@@ -443,15 +443,21 @@ div.tocify {
 </div>
 
 
-<p>This document explains the installation and configuration of the PostgreSQL database engine.</p>
+<p>This document explains the installation and configuration of the
+PostgreSQL database engine.</p>
 <div id="install-postgresql" class="section level1">
 <h1>Install PostgreSQL</h1>
 <p>Install PostgreSQL</p>
 <pre><code>sudo apt install postgresql postgresql-client</code></pre>
-<p>Debian wiki explains <a href="https://wiki.debian.org/PostgreSql">how to install and set up PostgreSQL</a>.</p>
+<p>Debian wiki explains <a href="https://wiki.debian.org/PostgreSql">how
+to install and set up PostgreSQL</a>.</p>
 <div id="change-the-listening-port" class="section level2">
 <h2>Change the listening port</h2>
-<p>In case you need to change the listening port (for example when I had to test postgresql on docker containers while keeping postgresql running locally) Edit the configuration file <code>/etc/postgresql/13/main/postgresql.conf</code> and change the port definition as follows</p>
+<p>In case you need to change the listening port (for example when I had
+to test postgresql on docker containers while keeping postgresql running
+locally) Edit the configuration file
+<code>/etc/postgresql/13/main/postgresql.conf</code> and change the port
+definition as follows</p>
 <pre><code>port = 5433</code></pre>
 </div>
 </div>
@@ -462,20 +468,29 @@ sudo service postgresql stop</code></pre>
 </div>
 <div id="create-a-user-and-a-database" class="section level1">
 <h1>Create a user and a database</h1>
-<p>Add system users at the regular bash shell before you can add them in postgresql. I call this user “rdb” because I plan to use R to connect to the database and “R” cannot be used as a user name according to system policy.</p>
+<p>Add system users at the regular bash shell before you can add them in
+postgresql. I call this user “rdb” because I plan to use R to connect to
+the database and “R” cannot be used as a user name according to system
+policy.</p>
 <pre><code>sudo adduser rdb --disabled-password </code></pre>
 <p><strong>Login as the postgres user!</strong></p>
 <pre><code>sudo -i -u postgres
 # In case postgresql is not on the default port 5432
 export PGPORT=5433</code></pre>
-<p>Now logged in as <code>postgres@machine_name</code> in the regular bash shell:</p>
+<p>Now logged in as <code>postgres@machine_name</code> in the regular
+bash shell:</p>
 <ol style="list-style-type: decimal">
-<li><p>Create a user with the same name as the system user created above</p>
-<p>createuser –pwprompt rdb # Create a user for myself createuser paul</p></li>
+<li><p>Create a user with the same name as the system user created
+above</p>
+<p>createuser –pwprompt rdb # Create a user for myself createuser
+paul</p></li>
 <li><p>Create a database owned by that user</p>
-<p>createdb -O rdb tradeflows createdb -O rdb biotrade createdb -O paul tradeflows_migrated</p></li>
+<p>createdb -O rdb tradeflows createdb -O rdb biotrade createdb -O paul
+tradeflows_migrated</p></li>
 </ol>
-<p>Note: createdb is a wrapper around the SQL command <code>CREATE DATABASE</code>. At the postgreSQL command prompt, you can use</p>
+<p>Note: createdb is a wrapper around the SQL command
+<code>CREATE DATABASE</code>. At the postgreSQL command prompt, you can
+use</p>
 <pre><code>create database biotrade;</code></pre>
 <ol start="3" style="list-style-type: decimal">
 <li><p>Grant rights to another user. First connect to the database</p>
@@ -488,20 +503,29 @@ export PGPORT=5433</code></pre>
 <h1>Connect to a database</h1>
 <div id="configuration-file-.pgpass" class="section level2">
 <h2>Configuration file ~/.pgpass</h2>
-<p>This is the preferred way to connect to the database for scripts. Create a <code>~/.pgpass</code> file to store the connection details for that user:</p>
+<p>This is the preferred way to connect to the database for scripts.
+Create a <code>~/.pgpass</code> file to store the connection details for
+that user:</p>
 <pre><code>echo &#39;localhost:*:tradeflows:rdb:localhost&#39; &gt;&gt; ~/.pgpass</code></pre>
 <p>Secure the file:</p>
 <pre><code>chmod 600 ~/.pgpass</code></pre>
-<p>The <code>~/.pgpass</code> file should contain lines of the following format:</p>
+<p>The <code>~/.pgpass</code> file should contain lines of the following
+format:</p>
 <pre><code>hostname:port:database:username:password</code></pre>
 <blockquote>
-<p>“Each of the first four fields can be a literal value, or <code>*</code>, which matches anything.”</p>
+<p>“Each of the first four fields can be a literal value, or
+<code>*</code>, which matches anything.”</p>
 </blockquote>
-<p>Therefore I use <code>*</code> for the port so that it matches any ports.</p>
+<p>Therefore I use <code>*</code> for the port so that it matches any
+ports.</p>
 </div>
 <div id="service-file-.pg_service.conf" class="section level2">
 <h2>Service file ~/.pg_service.conf</h2>
-<p>The <a href="https://www.postgresql.org/docs/current/libpq-pgservice.html">postgresql service file</a> enables “connection parameters to be associated with a single service name”. You can specify the database connection parameters in a file called <code>~/.pg_service.conf</code> in you home.</p>
+<p>The <a
+href="https://www.postgresql.org/docs/current/libpq-pgservice.html">postgresql
+service file</a> enables “connection parameters to be associated with a
+single service name”. You can specify the database connection parameters
+in a file called <code>~/.pg_service.conf</code> in you home.</p>
 <pre><code># Trade database
 [biotrade]
 host=localhost
@@ -517,18 +541,27 @@ password=localhost</code></pre>
 <p>Using the credentials stored in <code>~/.pgpass</code></p>
 <pre><code>psql -d tradeflows -h localhost -U rdb
 psql -d biotrade -h localhost -U rdb </code></pre>
-<p>Specifying the port (normally not necessary if it’s specified in <code>~/.pgpass</code>)</p>
+<p>Specifying the port (normally not necessary if it’s specified in
+<code>~/.pgpass</code>)</p>
 <pre><code>psql -d biotrade -h localhost -U rdb -p 5433</code></pre>
 <p>It’s possible to specify a connection URI of the form:</p>
 <pre><code>psql postgresql://rdb@localhost:5432/biotrade
 # And since I have a URL set as an environmental variable
 psql $BIOTRADE_DATABASE_URL</code></pre>
-<p><a href="https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS">Postgresql connection URIs</a></p>
+<p><a
+href="https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-PARAMKEYWORDS">Postgresql
+connection URIs</a></p>
 <blockquote>
-<p>“It is possible to specify multiple host components, each with an optional port component, in a single URI. A URI of the form postgresql://host1:port1,host2:port2,host3:port3/ is equivalent to a connection string of the form host=host1,host2,host3 port=port1,port2,port3. As further described below, each host will be tried in turn until a connection is successfully established.”</p>
+<p>“It is possible to specify multiple host components, each with an
+optional port component, in a single URI. A URI of the form
+postgresql://host1:port1,host2:port2,host3:port3/ is equivalent to a
+connection string of the form host=host1,host2,host3
+port=port1,port2,port3. As further described below, each host will be
+tried in turn until a connection is successfully established.”</p>
 </blockquote>
 </div>
-<div id="connect-by-changing-the-user-at-the-system-level" class="section level2">
+<div id="connect-by-changing-the-user-at-the-system-level"
+class="section level2">
 <h2>Connect by changing the user at the system level</h2>
 <p>Login as the user who is the owner of that database</p>
 <pre><code>sudo -i -u rdb</code></pre>
@@ -540,7 +573,9 @@ psql $BIOTRADE_DATABASE_URL</code></pre>
 <h1>Data types</h1>
 <div id="character" class="section level2">
 <h2>Character</h2>
-<p><a href="https://www.postgresql.org/docs/8.4/datatype-character.html">Datatype character</a>:</p>
+<p><a
+href="https://www.postgresql.org/docs/8.4/datatype-character.html">Datatype
+character</a>:</p>
 <table>
 <thead>
 <tr class="header">
@@ -565,20 +600,45 @@ psql $BIOTRADE_DATABASE_URL</code></pre>
 </table>
 <p>Tip:</p>
 <blockquote>
-<p>“There is no performance difference among these three types, apart from increased storage space when using the blank-padded type, and a few extra CPU cycles to check the length when storing into a length-constrained column. While character(n) has performance advantages in some other database systems, there is no such advantage in PostgreSQL; in fact character(n) is usually the slowest of the three because of its additional storage costs. In most situations text or character varying should be used instead.”</p>
+<p>“There is no performance difference among these three types, apart
+from increased storage space when using the blank-padded type, and a few
+extra CPU cycles to check the length when storing into a
+length-constrained column. While character(n) has performance advantages
+in some other database systems, there is no such advantage in
+PostgreSQL; in fact character(n) is usually the slowest of the three
+because of its additional storage costs. In most situations text or
+character varying should be used instead.”</p>
 </blockquote>
-<p><a href="https://stackoverflow.com/a/20334221/2641825">SO answer</a></p>
+<p><a href="https://stackoverflow.com/a/20334221/2641825">SO
+answer</a></p>
 <blockquote>
-<p>“Generally, there is no downside to using text in terms of performance/memory. On the contrary: text is the optimum. Other types have more or less relevant downsides. text is literally the”preferred" type among string types in the Postgres type system, which can affect function or operator type resolution."</p>
+<p>“Generally, there is no downside to using text in terms of
+performance/memory. On the contrary: text is the optimum. Other types
+have more or less relevant downsides. text is literally the”preferred”
+type among string types in the Postgres type system, which can affect
+function or operator type resolution.”</p>
 </blockquote>
-<p><a href="https://stackoverflow.com/a/4849030/2641825">differences between text and varchar</a></p>
+<p><a href="https://stackoverflow.com/a/4849030/2641825">differences
+between text and varchar</a></p>
 <blockquote>
-<p>To sum it all up: - char(n) – takes too much space when dealing with values shorter than n (pads them to n), and can lead to subtle errors because of adding trailing spaces, plus it is problematic to change the limit - varchar(n) – it’s problematic to change the limit in live environment (requires exclusive lock while altering table) - varchar – just like text - text – for me a winner – over (n) data types because it lacks their problems, and over varchar – because it has distinct name</p>
+<p>To sum it all up: - char(n) – takes too much space when dealing with
+values shorter than n (pads them to n), and can lead to subtle errors
+because of adding trailing spaces, plus it is problematic to change the
+limit - varchar(n) – it’s problematic to change the limit in live
+environment (requires exclusive lock while altering table) - varchar –
+just like text - text – for me a winner – over (n) data types because it
+lacks their problems, and over varchar – because it has distinct
+name</p>
 </blockquote>
-<p>In SQLite as well, character(n) doesn’t seem to have any performance advantage.</p>
-<p><a href="https://www.sqlite.org/datatype3.html">SQLite data types</a></p>
+<p>In SQLite as well, character(n) doesn’t seem to have any performance
+advantage.</p>
+<p><a href="https://www.sqlite.org/datatype3.html">SQLite data
+types</a></p>
 <blockquote>
-<p>Note that numeric arguments in parentheses that following the type name (ex: “VARCHAR(255)”) are ignored by SQLite - SQLite does not impose any length restrictions (other than the large global SQLITE_MAX_LENGTH limit) on the length of strings, BLOBs or numeric values.</p>
+<p>Note that numeric arguments in parentheses that following the type
+name (ex: “VARCHAR(255)”) are ignored by SQLite - SQLite does not impose
+any length restrictions (other than the large global SQLITE_MAX_LENGTH
+limit) on the length of strings, BLOBs or numeric values.</p>
 </blockquote>
 </div>
 </div>
@@ -586,7 +646,8 @@ psql $BIOTRADE_DATABASE_URL</code></pre>
 <h1>Delete data</h1>
 <div id="delete-content-from-a-table" class="section level2">
 <h2>Delete content from a table</h2>
-<p>Keep the table structure but delete it’s content. Delete oil products from the Comtrade monthly table:</p>
+<p>Keep the table structure but delete it’s content. Delete oil products
+from the Comtrade monthly table:</p>
 <pre><code># Check results
 select distinct(product_code) from raw_comtrade.monthly where product_code like &#39;15%&#39;;
 # Delete
@@ -610,9 +671,11 @@ HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
 </div>
 <div id="dump" class="section level1">
 <h1>Dump</h1>
-<p>Examples copied from <code>man pg_dump</code>. To dump a database called mydb into a SQL-script file:</p>
+<p>Examples copied from <code>man pg_dump</code>. To dump a database
+called mydb into a SQL-script file:</p>
 <pre><code>$ pg_dump mydb &gt; db.sql</code></pre>
-<p>To reload such a script into a (freshly created) database named newdb:</p>
+<p>To reload such a script into a (freshly created) database named
+newdb:</p>
 <pre><code>$ psql -d newdb -f db.sql</code></pre>
 <div id="remove-statements" class="section level2">
 <h2>Remove statements</h2>
@@ -620,8 +683,14 @@ HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
 <pre><code>SET default_tablespace = &#39;&#39;;
 
 SET default_with_oids = false;</code></pre>
-<p>I removed default table space because the official documentation for <a href="https://www.postgresql.org/docs/current/manage-ag-tablespaces.html">table spaces</a> says it doesn’t make sense to have more than one table space per system.</p>
-<p>I removed default_with_oids because <a href="https://dba.stackexchange.com/questions/101281/what-is-the-relevance-of-set-default-with-oids-true-in-a-postgresql-dump">this posrt</a> explains that it’s used to enable a legacy feature.</p>
+<p>I removed default table space because the official documentation for
+<a
+href="https://www.postgresql.org/docs/current/manage-ag-tablespaces.html">table
+spaces</a> says it doesn’t make sense to have more than one table space
+per system.</p>
+<p>I removed default_with_oids because <a
+href="https://dba.stackexchange.com/questions/101281/what-is-the-relevance-of-set-default-with-oids-true-in-a-postgresql-dump">this
+posrt</a> explains that it’s used to enable a legacy feature.</p>
 </div>
 <div id="duplicate-a-table" class="section level2">
 <h2>Duplicate a table</h2>
@@ -649,14 +718,17 @@ SET default_with_oids = false;</code></pre>
 <pre><code>\dn</code></pre>
 <p>List tables</p>
 <pre><code>\dt</code></pre>
-<p>List tables for a particular schema i<a href="https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql">list all tables in schema</a></p>
+<p>List tables for a particular schema i<a
+href="https://dba.stackexchange.com/questions/40045/how-do-i-list-all-schemas-in-postgresql">list
+all tables in schema</a></p>
 <pre><code>\dt raw_comext.*;
 \dt raw_comtrade.*;
 \dt raw_faostat*;</code></pre>
 </div>
 <div id="describe-data-types" class="section level2">
 <h2>Describe data types</h2>
-<p>Describe a table to show the table structure, including column names and data types</p>
+<p>Describe a table to show the table structure, including column names
+and data types</p>
 <pre><code>\d raw_comtrade.yearly;
 \d raw_comtrade.monthly;</code></pre>
 </div>
@@ -708,7 +780,9 @@ SET default_with_oids = false;</code></pre>
 <div id="migrate-from-mysql-into-postgresql" class="section level2">
 <h2>Migrate from MySQL into PostgreSQL</h2>
 <ul>
-<li>ipostgresql.org <a href="https://wiki.postgresql.org/wiki/Converting_from_other_Databases_to_PostgreSQL#MySQL">converting from other databases to postgreSQL</a></li>
+<li>ipostgresql.org <a
+href="https://wiki.postgresql.org/wiki/Converting_from_other_Databases_to_PostgreSQL#MySQL">converting
+from other databases to postgreSQL</a></li>
 <li><a href="https://github.com/dimitri/pgloader">pgloader</a></li>
 </ul>
 <p>Transfer data from MySQL to PostgreSQL:</p>
@@ -722,9 +796,12 @@ pgloader mysql://paul@localhost/tradeflows postgresql:///tradeflows_migrated</co
 </div>
 <div id="select" class="section level1">
 <h1>SELECT</h1>
-<p>Connect to the database (with the credentials defined in <code>~/.pgpass</code>)</p>
+<p>Connect to the database (with the credentials defined in
+<code>~/.pgpass</code>)</p>
 <pre><code>psql biotrade</code></pre>
-<p>postgresql.org the <a href="https://www.postgresql.org/docs/13/queries-table-expressions.html#QUERIES-WHERE">WHERE Clause</a></p>
+<p>postgresql.org the <a
+href="https://www.postgresql.org/docs/13/queries-table-expressions.html#QUERIES-WHERE">WHERE
+Clause</a></p>
 <p>Here are some examples of WHERE clauses:</p>
 <pre><code>SELECT ... FROM fdt WHERE c1 &gt; 5
 
@@ -737,7 +814,8 @@ SELECT ... FROM fdt WHERE c1 IN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10)
 SELECT ... FROM fdt WHERE c1 BETWEEN (SELECT c3 FROM t2 WHERE c2 = fdt.c1 + 10) AND 100
 
 SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code></pre>
-<p>When using string values, single quotes are required (otherwise the <code>ERROR: column "02" does not exist</code> is returned)</p>
+<p>When using string values, single quotes are required (otherwise the
+<code>ERROR: column "02" does not exist</code> is returned)</p>
 <pre><code>select distinct(reporter) from raw_comtrade.yearly_hs2 where commodity_code = &#39;02&#39;;</code></pre>
 <div id="like" class="section level2">
 <h2>Like</h2>
@@ -746,7 +824,8 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code>
 </div>
 <div id="road-map" class="section level1">
 <h1>Road map</h1>
-<p>postgresql.org <a href="https://www.postgresql.org/developer/roadmap/">Roadmap</a></p>
+<p>postgresql.org <a
+href="https://www.postgresql.org/developer/roadmap/">Roadmap</a></p>
 </div>
 <div id="schemas" class="section level1">
 <h1>Schemas</h1>
@@ -754,20 +833,32 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code>
 <pre><code>create schema raw_comtrade;</code></pre>
 <p>List schemas</p>
 <pre><code>\dn</code></pre>
-<p>Official documentation postgresql.org <a href="https://www.postgresql.org/docs/current/ddl-schemas.html">schemas</a></p>
+<p>Official documentation postgresql.org <a
+href="https://www.postgresql.org/docs/current/ddl-schemas.html">schemas</a></p>
 <blockquote>
-<p>“A database contains one or more named schemas, which in turn contain tables. Schemas also contain other kinds of named objects, including data types, functions, and operators. The same object name can be used in different schemas without conflict; for example, both schema1 and myschema can contain tables named mytable. Unlike databases, schemas are not rigidly separated: a user can access objects in any of the schemas in the database they are connected to, if they have privileges to do so.”</p>
+<p>“A database contains one or more named schemas, which in turn contain
+tables. Schemas also contain other kinds of named objects, including
+data types, functions, and operators. The same object name can be used
+in different schemas without conflict; for example, both schema1 and
+myschema can contain tables named mytable. Unlike databases, schemas are
+not rigidly separated: a user can access objects in any of the schemas
+in the database they are connected to, if they have privileges to do
+so.”</p>
 </blockquote>
 <blockquote>
 <p>“There are several reasons why one might want to use schemas:”</p>
 </blockquote>
 <ul>
-<li>“To allow many users to use one database without interfering with each other.”</li>
-<li>“To organize database objects into logical groups to make them more manageable.”</li>
-<li>“Third-party applications can be put into separate schemas so they do not collide with the names of other objects.”</li>
+<li>“To allow many users to use one database without interfering with
+each other.”</li>
+<li>“To organize database objects into logical groups to make them more
+manageable.”</li>
+<li>“Third-party applications can be put into separate schemas so they
+do not collide with the names of other objects.”</li>
 </ul>
 <blockquote>
-<p>“Schemas are analogous to directories at the operating system level, except that schemas cannot be nested.”</p>
+<p>“Schemas are analogous to directories at the operating system level,
+except that schemas cannot be nested.”</p>
 </blockquote>
 </div>
 <div id="tables" class="section level1">
@@ -776,20 +867,33 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code>
 <pre><code>\dt raw_comtrade.*;</code></pre>
 <div id="export-a-table-structure" class="section level2">
 <h2>Export a table structure</h2>
-<p><a href="https://stackoverflow.com/questions/2593803/how-to-generate-the-create-table-sql-statement-for-an-existing-table-in-postgr">Export the create statement for an existing table</a></p>
+<p><a
+href="https://stackoverflow.com/questions/2593803/how-to-generate-the-create-table-sql-statement-for-an-existing-table-in-postgr">Export
+the create statement for an existing table</a></p>
 <pre><code>pg_dump -t &#39;raw_comtrade.yearly_2_digit&#39; --schema-only biotrade  &gt;&gt; /tmp/comtrade_yearly.sql</code></pre>
 </div>
 </div>
 <div id="blogs-and-other-resources" class="section level1">
 <h1>Blogs and other resources</h1>
-<p>Dimitri Fontaine 2014 <a href="https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/">Why is pgloader faster ?</a></p>
+<p>Dimitri Fontaine 2014 <a
+href="https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/">Why
+is pgloader faster ?</a></p>
 <blockquote>
-<p>“In searching for a modern programming language the best candidate I found was actually Common Lisp.”</p>
+<p>“In searching for a modern programming language the best candidate I
+found was actually Common Lisp.”</p>
 </blockquote>
-<p>See also a more detailed quote under the <a href="lisp.html">Lisp page</a>.</p>
-<p><a href="https://en.wikipedia.org/wiki/SQL#Standardization_history">Wikipedia</a> paragraph on the pronunciation</p>
+<p>See also a more detailed quote under the <a href="lisp.html">Lisp
+page</a>.</p>
+<p><a
+href="https://en.wikipedia.org/wiki/SQL#Standardization_history">Wikipedia</a>
+paragraph on the pronunciation</p>
 <blockquote>
-<p>“The original standard declared that the official pronunciation for”SQL" was an initialism: /ˌɛsˌkjuːˈɛl/ (“ess cue el”). Regardless, many English-speaking database professionals (including Donald Chamberlin himself) use the acronym-like pronunciation of /ˈsiːkwəl/ (“sequel”), mirroring the language’s prerelease development name, “SEQUEL”."</p>
+<p>“The original standard declared that the official pronunciation
+for”SQL” was an initialism: /ˌɛsˌkjuːˈɛl/ (“ess cue el”). Regardless,
+many English-speaking database professionals (including Donald
+Chamberlin himself) use the acronym-like pronunciation of /ˈsiːkwəl/
+(“sequel”), mirroring the language’s prerelease development name,
+“SEQUEL”.”</p>
 </blockquote>
 </div>
 

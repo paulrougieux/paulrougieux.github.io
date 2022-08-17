@@ -445,11 +445,13 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>The purpose of this notebook is to display notes used in various music scales.</p>
+<p>The purpose of this notebook is to display notes used in various
+music scales.</p>
 </div>
 <div id="setup" class="section level1">
 <h1>Setup</h1>
-<p>Create a data frame that contains the twelve notes of the chromatic scale used later in the analysis.</p>
+<p>Create a data frame that contains the twelve notes of the chromatic
+scale used later in the analysis.</p>
 <pre class="r"><code>notes &lt;- tribble(
     ~it,   ~en, 
     &quot;do&quot;,  &quot;C&quot;,
@@ -502,9 +504,11 @@ display_scale &lt;- function(input_scale){
 </div>
 <div id="heptatonic-scale" class="section level1">
 <h1>Heptatonic scale</h1>
-<p><a href="https://en.wikipedia.org/wiki/Heptatonic_scale">Heptatonic scale</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Heptatonic_scale">Heptatonic
+scale</a></p>
 <blockquote>
-<p>“A heptatonic scale is a musical scale that has seven pitches (a.k.a. tones) per octave.”</p>
+<p>“A heptatonic scale is a musical scale that has seven pitches (a.k.a.
+tones) per octave.”</p>
 </blockquote>
 <div id="heptatonic-major-scale" class="section level2">
 <h2>Heptatonic major scale</h2>
@@ -798,11 +802,18 @@ display_scale &lt;- function(input_scale){
 </tr>
 </tbody>
 </table>
-<p>Note how the notes of the C major scale are the same as the notes of the A minor scale. The notes of the F major scale are the same as the notes of the D minor scale. This is explained in <a href="https://en.wikipedia.org/wiki/Minor_scale">minor scale</a> and the correspondance between minor and major scales is visible on the <a href="https://en.wikipedia.org/wiki/Circle_of_fifths">circle of fifths</a>.</p>
+<p>Note how the notes of the C major scale are the same as the notes of
+the A minor scale. The notes of the F major scale are the same as the
+notes of the D minor scale. This is explained in <a
+href="https://en.wikipedia.org/wiki/Minor_scale">minor scale</a> and the
+correspondance between minor and major scales is visible on the <a
+href="https://en.wikipedia.org/wiki/Circle_of_fifths">circle of
+fifths</a>.</p>
 </div>
 <div id="chords-in-the-scale-of" class="section level2">
 <h2>Chords in the scale of</h2>
-<p>For each scale, show the major, minor and 7 chords that are in that scale.</p>
+<p>For each scale, show the major, minor and 7 chords that are in that
+scale.</p>
 <pre class="r"><code>major &lt;- c(0, 4, 7)
 minor &lt;- c(0, 3, 7)
 major7 &lt;- c(0, 4, 7, 10)
@@ -855,7 +866,8 @@ for (i in 1:nrow(notes)){
     options(knitr.kable.NA = &#39;&#39;)
     chords %&gt;% knitr::kable() %&gt;% print()
 }</code></pre>
-<p>The C scale: do re mi fa sol la si contains the major chords do fa sol, the minor chords re(m) mi(m) la(m) and the major7 chord sol7</p>
+<p>The C scale: do re mi fa sol la si contains the major chords do fa
+sol, the minor chords re(m) mi(m) la(m) and the major7 chord sol7</p>
 <table>
 <thead>
 <tr class="header">
@@ -974,7 +986,9 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The C# scale: do# mib fa fa# sol# sib do contains the major chords do# fa# sol#, the minor chords mib(m) fa(m) sib(m) and the major7 chord sol#7</p>
+<p>The C# scale: do# mib fa fa# sol# sib do contains the major chords
+do# fa# sol#, the minor chords mib(m) fa(m) sib(m) and the major7 chord
+sol#7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1093,7 +1107,8 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The D scale: re mi fa# sol la si do# contains the major chords re sol la, the minor chords mi(m) fa#(m) si(m) and the major7 chord la7</p>
+<p>The D scale: re mi fa# sol la si do# contains the major chords re sol
+la, the minor chords mi(m) fa#(m) si(m) and the major7 chord la7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1212,7 +1227,9 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The Eb scale: mib fa sol sol# sib do re contains the major chords mib sol# sib, the minor chords do(m) fa(m) sol(m) and the major7 chord sib7</p>
+<p>The Eb scale: mib fa sol sol# sib do re contains the major chords mib
+sol# sib, the minor chords do(m) fa(m) sol(m) and the major7 chord
+sib7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1331,7 +1348,9 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The E scale: mi fa# sol# la si do# mib contains the major chords mi la si, the minor chords do#(m) fa#(m) sol#(m) and the major7 chord si7</p>
+<p>The E scale: mi fa# sol# la si do# mib contains the major chords mi
+la si, the minor chords do#(m) fa#(m) sol#(m) and the major7 chord
+si7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1450,7 +1469,8 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The F scale: fa sol la sib do re mi contains the major chords do fa sib, the minor chords re(m) sol(m) la(m) and the major7 chord do7</p>
+<p>The F scale: fa sol la sib do re mi contains the major chords do fa
+sib, the minor chords re(m) sol(m) la(m) and the major7 chord do7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1569,7 +1589,9 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The F# scale: fa# sol# sib si do# mib fa contains the major chords do# fa# si, the minor chords mib(m) sol#(m) sib(m) and the major7 chord do#7</p>
+<p>The F# scale: fa# sol# sib si do# mib fa contains the major chords
+do# fa# si, the minor chords mib(m) sol#(m) sib(m) and the major7 chord
+do#7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1688,7 +1710,8 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The G scale: sol la si do re mi fa# contains the major chords do re sol, the minor chords mi(m) la(m) si(m) and the major7 chord re7</p>
+<p>The G scale: sol la si do re mi fa# contains the major chords do re
+sol, the minor chords mi(m) la(m) si(m) and the major7 chord re7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1807,7 +1830,9 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The G# scale: sol# sib do do# mib fa sol contains the major chords do# mib sol#, the minor chords do(m) fa(m) sib(m) and the major7 chord mib7</p>
+<p>The G# scale: sol# sib do do# mib fa sol contains the major chords
+do# mib sol#, the minor chords do(m) fa(m) sib(m) and the major7 chord
+mib7</p>
 <table>
 <thead>
 <tr class="header">
@@ -1926,7 +1951,8 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The A scale: la si do# re mi fa# sol# contains the major chords re mi la, the minor chords do#(m) fa#(m) si(m) and the major7 chord mi7</p>
+<p>The A scale: la si do# re mi fa# sol# contains the major chords re mi
+la, the minor chords do#(m) fa#(m) si(m) and the major7 chord mi7</p>
 <table>
 <thead>
 <tr class="header">
@@ -2045,7 +2071,8 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The Bb scale: sib do re mib fa sol la contains the major chords mib fa sib, the minor chords do(m) re(m) sol(m) and the major7 chord fa7</p>
+<p>The Bb scale: sib do re mib fa sol la contains the major chords mib
+fa sib, the minor chords do(m) re(m) sol(m) and the major7 chord fa7</p>
 <table>
 <thead>
 <tr class="header">
@@ -2164,7 +2191,9 @@ for (i in 1:nrow(notes)){
 </tr>
 </tbody>
 </table>
-<p>The B scale: si do# mib mi fa# sol# sib contains the major chords mi fa# si, the minor chords do#(m) mib(m) sol#(m) and the major7 chord fa#7</p>
+<p>The B scale: si do# mib mi fa# sol# sib contains the major chords mi
+fa# si, the minor chords do#(m) mib(m) sol#(m) and the major7 chord
+fa#7</p>
 <table>
 <thead>
 <tr class="header">
@@ -2289,9 +2318,17 @@ for (i in 1:nrow(notes)){
 <h1>Pentatonic scales</h1>
 <div id="major-pentatonic" class="section level2">
 <h2>Major pentatonic</h2>
-<p><a href="https://en.wikipedia.org/wiki/Pentatonic_scale#Major_pentatonic_scale">Major pentatonic scale</a></p>
+<p><a
+href="https://en.wikipedia.org/wiki/Pentatonic_scale#Major_pentatonic_scale">Major
+pentatonic scale</a></p>
 <blockquote>
-<p>“The major pentatonic scale may be thought of as a gapped or incomplete major scale.[8] However, the pentatonic scale has a unique character and is complete in terms of tonality. One construction takes five consecutive pitches from the circle of fifths;[9] starting on C, these are C, G, D, A, and E. Transposing the pitches to fit into one octave rearranges the pitches into the major pentatonic scale: C, D, E, G, A.”</p>
+<p>“The major pentatonic scale may be thought of as a gapped or
+incomplete major scale.[8] However, the pentatonic scale has a unique
+character and is complete in terms of tonality. One construction takes
+five consecutive pitches from the circle of fifths;[9] starting on C,
+these are C, G, D, A, and E. Transposing the pitches to fit into one
+octave rearranges the pitches into the major pentatonic scale: C, D, E,
+G, A.”</p>
 </blockquote>
 <pre class="r"><code>major_pentatonic &lt;- c(0, 2, 4, 7, 9)
 display_scale(major_pentatonic)</code></pre>
@@ -2409,9 +2446,14 @@ display_scale(major_pentatonic)</code></pre>
 </div>
 <div id="minor-pentatonic" class="section level2">
 <h2>Minor pentatonic</h2>
-<p><a href="https://en.wikipedia.org/wiki/Pentatonic_scale#Minor_pentatonic_scale">Minor pentatonic scale</a></p>
+<p><a
+href="https://en.wikipedia.org/wiki/Pentatonic_scale#Minor_pentatonic_scale">Minor
+pentatonic scale</a></p>
 <blockquote>
-<p>" It may also be considered a gapped blues scale. The C minor pentatonic is C, E-flat, F, G, B-flat. The A minor pentatonic, the relative minor of C pentatonic, comprises the same tones as the C major pentatonic, starting on A, giving A, C, D, E, G."</p>
+<p>” It may also be considered a gapped blues scale. The C minor
+pentatonic is C, E-flat, F, G, B-flat. The A minor pentatonic, the
+relative minor of C pentatonic, comprises the same tones as the C major
+pentatonic, starting on A, giving A, C, D, E, G.”</p>
 </blockquote>
 <pre class="r"><code>display_scale(c(0, 3, 5, 7, 10))</code></pre>
 <table>
@@ -2529,9 +2571,12 @@ display_scale(major_pentatonic)</code></pre>
 </div>
 <div id="hexatonic-scales" class="section level1">
 <h1>Hexatonic scales</h1>
-<p><a href="https://en.wikipedia.org/wiki/Blues_scale#Hexatonic">Blues scale Hexatonic</a></p>
+<p><a href="https://en.wikipedia.org/wiki/Blues_scale#Hexatonic">Blues
+scale Hexatonic</a></p>
 <blockquote>
-<p>“The hexatonic, or six-note, blues scale consists of the minor pentatonic scale plus the b5th degree of the original heptatonic scale.”</p>
+<p>“The hexatonic, or six-note, blues scale consists of the minor
+pentatonic scale plus the b5th degree of the original heptatonic
+scale.”</p>
 </blockquote>
 <pre class="r"><code>hexatonic &lt;- c(0, 3, 5, 6, 7, 10)
 display_scale(hexatonic)</code></pre>

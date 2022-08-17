@@ -445,13 +445,18 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>Vim is a modal text editor, to learn how to switch modes, start by the section <a href="#navigation_edit">Switch between navigation and editing mode</a>. Large part of this documents have been copied from the vim help accessible through:</p>
+<p>Vim is a modal text editor, to learn how to switch modes, start by
+the section <a href="#navigation_edit">Switch between navigation and
+editing mode</a>. Large part of this documents have been copied from the
+vim help accessible through:</p>
 <pre><code>:help &lt;topic&gt;</code></pre>
 <p>People that I admire use vim.</p>
 </div>
 <div id="configure-vim-in-.vimrc" class="section level1">
 <h1>Configure vim in .vimrc</h1>
-<p>See also my vimrc file stored in <a href="setup/.vimrc">setup/.vimrc</a>. Many configuration options are mentioned throughout this document.</p>
+<p>See also my vimrc file stored in <a
+href="setup/.vimrc">setup/.vimrc</a>. Many configuration options are
+mentioned throughout this document.</p>
 <p>Reload the configuration after editing it:</p>
 <pre><code>:so ~/.vimrc</code></pre>
 <p>Text colour. Add syntax highlight to your .vimrc</p>
@@ -462,17 +467,26 @@ div.tocify {
 <pre><code>au BufNewFile,BufRead *.dump set filetype=sql</code></pre>
 <p>I used it to display markdown files as text files:</p>
 <pre><code>au BufNewFile,BufRead *.md set filetype=txt</code></pre>
-<p>Make a key combination specific to latex files, to insert a citation key using the vimtex plugin. Note: ctrl-space appears as ctrl-@ in my terminal</p>
+<p>Make a key combination specific to latex files, to insert a citation
+key using the vimtex plugin. Note: ctrl-space appears as ctrl-@ in my
+terminal</p>
 <pre><code>au BufRead,BufNewFile *.tex inoremap &lt;C-Space&gt; &lt;C-x&gt;&lt;C-o&gt; | inoremap &lt;C-@&gt; &lt;C-x&gt;&lt;C-o&gt;</code></pre>
-<p>Prevent tab expanding to space in make files <a href="https://stackoverflow.com/a/158990/2641825">SO answer</a>:</p>
+<p>Prevent tab expanding to space in make files <a
+href="https://stackoverflow.com/a/158990/2641825">SO answer</a>:</p>
 <pre><code>autocmd FileType make set noexpandtab</code></pre>
 </div>
 <div id="keyboard-azerty-quertz" class="section level2">
 <h2>Keyboard AZERTY, QUERTZ</h2>
 <ul>
-<li>SO <a href="https://stackoverflow.com/questions/33245317/vim-and-azerty-keyboards">Configure vim for AZERTY keyboards</a></li>
-<li>Reddit <a href="https://www.reddit.com/r/vim/comments/2tvupe/azerty_keymapping/">AZERTY keymapping</a></li>
-<li>Reddit <a href="https://www.reddit.com/r/vim/comments/9bh6ql/vim_on_czqwertz/">Vim on CZ QUERTZ</a></li>
+<li>SO <a
+href="https://stackoverflow.com/questions/33245317/vim-and-azerty-keyboards">Configure
+vim for AZERTY keyboards</a></li>
+<li>Reddit <a
+href="https://www.reddit.com/r/vim/comments/2tvupe/azerty_keymapping/">AZERTY
+keymapping</a></li>
+<li>Reddit <a
+href="https://www.reddit.com/r/vim/comments/9bh6ql/vim_on_czqwertz/">Vim
+on CZ QUERTZ</a></li>
 </ul>
 <p>I mapped m to the end of line, maybe I should use m instead?</p>
 <pre><code>noremap m $</code></pre>
@@ -480,11 +494,18 @@ div.tocify {
 </div>
 <div id="colour-themes" class="section level2">
 <h2>Colour themes</h2>
-<p>Be sure to set terminal colour to 256 as explained in an answer to <a href="https://vi.stackexchange.com/a/25310/6671">a question on vi.stackexchange</a> and in the vim wiki <a href="https://vim.fandom.com/wiki/256_colors_in_vim">256 colors in vim</a></p>
+<p>Be sure to set terminal colour to 256 as explained in an answer to <a
+href="https://vi.stackexchange.com/a/25310/6671">a question on
+vi.stackexchange</a> and in the vim wiki <a
+href="https://vim.fandom.com/wiki/256_colors_in_vim">256 colors in
+vim</a></p>
 <pre><code>set t_Co=256</code></pre>
 <ul>
-<li>Slant <a href="https://www.slant.co/topics/480/~best-vim-color-schemes#1">vim Theme gallery</a></li>
-<li><a href="https://github.com/rafalbromirski/vim-aurora">Custom theme aurora</a></li>
+<li>Slant <a
+href="https://www.slant.co/topics/480/~best-vim-color-schemes#1">vim
+Theme gallery</a></li>
+<li><a href="https://github.com/rafalbromirski/vim-aurora">Custom theme
+aurora</a></li>
 </ul>
 </div>
 <div id="key-mapping-and-shortcuts" class="section level2">
@@ -493,9 +514,13 @@ div.tocify {
 <pre><code>:help map</code></pre>
 <p>Show all mappings including <leader> commands:</p>
 <p>:map</p>
-<p><a href="https://vi.stackexchange.com/questions/2350/how-to-map-alt-key">How to map the ALT key</a> Explains who to see what key combination is actually seen by the console:</p>
+<p><a
+href="https://vi.stackexchange.com/questions/2350/how-to-map-alt-key">How
+to map the ALT key</a> Explains who to see what key combination is
+actually seen by the console:</p>
 <pre><code>sed -n l</code></pre>
-<p>I used this mapping “ALT-;” to insert the pipe “%&gt;%” in R documents:</p>
+<p>I used this mapping “ALT-;” to insert the pipe “%&gt;%” in R
+documents:</p>
 <pre><code>&quot; The ALT key is mapped to escape in the terminal, remap it
 &quot; https://vi.stackexchange.com/questions/2350/how-to-map-alt-key
 execute &quot;set &lt;M-;&gt;=\e;&quot;
@@ -505,16 +530,24 @@ autocmd FileType rmd inoremap &lt;M-;&gt; &lt;space&gt;%&gt;%&lt;CR&gt;</code></
 <pre><code>&quot; Try to map the CTRL+;
 autocmd FileType r inoremap &lt;C-;&gt; &lt;space&gt;%&gt;%&lt;CR&gt;
 autocmd FileType rmd inoremap &lt;C-;&gt; &lt;space&gt;%&gt;%&lt;CR&gt;</code></pre>
-<p>In the end I changed the mapping &gt; to %&gt;% <a href="https://github.com/jalvesaq/Nvim-R/issues/85">as explained in NVimR issue 85</a>:</p>
+<p>In the end I changed the mapping &gt; to %&gt;% <a
+href="https://github.com/jalvesaq/Nvim-R/issues/85">as explained in
+NVimR issue 85</a>:</p>
 <pre><code>autocmd FileType r inoremap &lt;buffer&gt; &gt; &lt;Esc&gt;:normal! a %&gt;%&lt;CR&gt;a 
 autocmd FileType rmd inoremap &lt;buffer&gt; &gt; &lt;Esc&gt;:normal! a %&gt;%&lt;CR&gt;a </code></pre>
-<p><a href="https://stackoverflow.com/questions/1506764/how-to-map-ctrla-and-ctrlshifta-differently">different mappings for CTRL+A and CTRL+SHIFT+A</a> It’s generally not possible.</p>
+<p><a
+href="https://stackoverflow.com/questions/1506764/how-to-map-ctrla-and-ctrlshifta-differently">different
+mappings for CTRL+A and CTRL+SHIFT+A</a> It’s generally not
+possible.</p>
 </div>
 <div id="minimal-.vimrc-for-bug-reports" class="section level2">
 <h2>Minimal .vimrc for bug reports</h2>
 <p>You can create a minimal .vimrc and use is by calling vim with</p>
 <pre><code>vim -u /tmp/.vimrc</code></pre>
-<p>See for example this <a href="https://github.com/lervag/vimtex/issues/1719">bug report</a> where I used this minimal vimrc file to investigate an issue with the Vimtex plugin.</p>
+<p>See for example this <a
+href="https://github.com/lervag/vimtex/issues/1719">bug report</a> where
+I used this minimal vimrc file to investigate an issue with the Vimtex
+plugin.</p>
 <pre><code>set nocompatible
 let &amp;runtimepath  = &#39;~/.vim/bundle/vimtex,&#39; . &amp;runtimepath
 let &amp;runtimepath .= &#39;,~/.vim/bundle/vimtex/after&#39;
@@ -522,7 +555,8 @@ filetype plugin indent on
 syntax enable
 &quot; Use zathura as a PDF viewer
 let g:vimtex_view_method = &#39;zathura&#39;</code></pre>
-<p>Or another minimal vimrc to investigate an issue with the nvim-R plugin.</p>
+<p>Or another minimal vimrc to investigate an issue with the nvim-R
+plugin.</p>
 <pre><code>set nocompatible
 let &amp;runtimepath  = &#39;~/.vim/bundle/Nvim-R,&#39; . &amp;runtimepath
 filetype plugin indent on
@@ -535,16 +569,19 @@ augroup filetypedetect_markdown
     au!
     au BufRead,BufNewFile *.Rmd set ft=markdown
 augroup END</code></pre>
-<p>The solution was to use 2 file types for Rmd files: <code>set ft=rmd.markdown</code>.</p>
+<p>The solution was to use 2 file types for Rmd files:
+<code>set ft=rmd.markdown</code>.</p>
 </div>
 </div>
 <div id="convert" class="section level1">
 <h1>Convert</h1>
 <div id="pandoc" class="section level2">
 <h2>Pandoc</h2>
-<div id="from-markdown-to-other-formats-with-pandoc" class="section level3">
+<div id="from-markdown-to-other-formats-with-pandoc"
+class="section level3">
 <h3>From markdown to other formats with pandoc</h3>
-<p>Convert markdown documents to other formats such as pdf with pandoc.</p>
+<p>Convert markdown documents to other formats such as pdf with
+pandoc.</p>
 <p>Convert the current document to html</p>
 <pre><code>:Pandoc </code></pre>
 <p>Convert the current document to pdf</p>
@@ -552,7 +589,9 @@ augroup END</code></pre>
 <p>Convert the current document to word</p>
 <pre><code>:Pandoc docx</code></pre>
 <p>Other output -t options from man pandoc</p>
-<p>• docx (Word docx) • html or html5 (HTML, i.e. HTML5/XHTML polyglot markup) • latex (LaTeX) • odt (OpenOffice text document) • pptx (PowerPoint slide show)</p>
+<p>• docx (Word docx) • html or html5 (HTML, i.e. HTML5/XHTML polyglot
+markup) • latex (LaTeX) • odt (OpenOffice text document) • pptx
+(PowerPoint slide show)</p>
 <p>Add a yaml front matter to specify more parameters</p>
 <pre><code>---
 title: &quot;Songs of freedom&quot;
@@ -562,13 +601,21 @@ geometry: margin=0.5cm
 </div>
 <div id="bibliography" class="section level3">
 <h3>bibliography</h3>
-<p>To use a bibliography with the pandoc extension insert the following in the header of the markdown file:</p>
+<p>To use a bibliography with the pandoc extension insert the following
+in the header of the markdown file:</p>
 <pre><code>bibliography: /path/to/bibliography/papers.bib</code></pre>
-<p>Then the bibliography file should be added to the vim variable <code>b:pandoc_biblio_bibs</code>. You can check it was added correctly by calling:</p>
+<p>Then the bibliography file should be added to the vim variable
+<code>b:pandoc_biblio_bibs</code>. You can check it was added correctly
+by calling:</p>
 <pre><code>:echo b:pandoc_biblio_bibs</code></pre>
-<p>Once the bibliography files is activated, autocomplete can be called by pressing <code>CTRL-X CTRL-O</code> (or ctrl+space in my case) after <code>@</code>. For more see:</p>
+<p>Once the bibliography files is activated, autocomplete can be called
+by pressing <code>CTRL-X CTRL-O</code> (or ctrl+space in my case) after
+<code>@</code>. For more see:</p>
 <pre><code>:help vim-pandoc-bibliographies-module</code></pre>
-<p>Bibliography also works with R markdown documents, see rmarkdown documentation <a href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">authoring bibliographies and citations</a>.</p>
+<p>Bibliography also works with R markdown documents, see rmarkdown
+documentation <a
+href="https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html">authoring
+bibliographies and citations</a>.</p>
 </div>
 </div>
 </div>
@@ -576,7 +623,9 @@ geometry: margin=0.5cm
 <h1>Edit a text file</h1>
 <div id="navigation_edit" class="section level2">
 <h2>Switch between navigation and editing mode</h2>
-<p>Enter editing mode with i, a, o. Use escape to switch to navigation mode. Note: I remapped the caps lock key to escape at a system level.</p>
+<p>Enter editing mode with i, a, o. Use escape to switch to navigation
+mode. Note: I remapped the caps lock key to escape at a system
+level.</p>
 <pre><code>i - Insert text before the cursor.
 I - Insert text before the first non-blank in the line.
 gi - Insert text in the same position as where insert mode
@@ -586,7 +635,8 @@ A - Move to the end of the line and switch to editing mode .
 o - Begin a new line below the cursor and insert text.
 O - Begin a new line above the cursor and insert text.
 R - Enter Replace mode: Each character you type replaces an existing character.</code></pre>
-<p>When in editing mode you can use escape to enter the navigation mode or use:</p>
+<p>When in editing mode you can use escape to enter the navigation mode
+or use:</p>
 <pre><code>alt+h alt+j alt+k alt+l - Switch to navigation mode and move.
 alt+: - Switch to navigation mode and send a command.</code></pre>
 </div>
@@ -600,12 +650,15 @@ P to paste the copied or deleted text before the current line </code></pre>
 </div>
 <div id="edit-multiple-lines" class="section level2">
 <h2>Edit multiple lines</h2>
-<p>You can edit multiple lines simultaneously by <a href="https://stackoverflow.com/a/253391">inserting text inside a multi-line selection in Vim</a> :</p>
+<p>You can edit multiple lines simultaneously by <a
+href="https://stackoverflow.com/a/253391">inserting text inside a
+multi-line selection in Vim</a> :</p>
 <pre><code>Use Ctrl+V to enter visual block mode
 Move down with jj to select the columns of text in the lines you want to comment.
 Then hit Shift+I and type the text you want to insert.
 Then press Escape, the inserted text will appear on all lines.</code></pre>
-<p>Similarly to enter text at the end of multiple lines (<a href="http://vim.wikia.com/wiki/Inserting_text_in_multiple_lines">vim.wikia</a>)</p>
+<p>Similarly to enter text at the end of multiple lines (<a
+href="http://vim.wikia.com/wiki/Inserting_text_in_multiple_lines">vim.wikia</a>)</p>
 <pre><code>Use Ctrl+V to enter visual block mode
 Move down with jj to select the columns of text in the lines you want to comment.
 Then hit $ to select all lines until the end of the line.
@@ -613,7 +666,9 @@ Then press Shift+A and type the text you want to insert.
 The press Escape, the inserted text will appear at the end of all lines.</code></pre>
 <div id="increment-numbers-in-a-list" class="section level3">
 <h3>Increment numbers in a list</h3>
-<p>Use the <code>range</code> command as explained in the <a href="https://vim.fandom.com/wiki/Making_a_list_of_numbers">vim wiki</a>:</p>
+<p>Use the <code>range</code> command as explained in the <a
+href="https://vim.fandom.com/wiki/Making_a_list_of_numbers">vim
+wiki</a>:</p>
 <pre><code>:put =range(11,15)</code></pre>
 <p>Use the auto incrementation <code>g CTRL-A</code></p>
 <pre><code>:help ctrl-a
@@ -636,7 +691,8 @@ The press Escape, the inserted text will appear at the end of all lines.</code><
                 4. ~</code></pre>
 <p>Other example from the vim wiki:</p>
 <pre><code>my_array[0] = 0;</code></pre>
-<p>Then copy it using <code>Y6p</code> (copy the line and paste it six times). The result is:</p>
+<p>Then copy it using <code>Y6p</code> (copy the line and paste it six
+times). The result is:</p>
 <pre><code>my_array[0] = 0;
 my_array[0] = 0;
 my_array[0] = 0;
@@ -644,7 +700,8 @@ my_array[0] = 0;
 my_array[0] = 0;
 my_array[0] = 0;
 my_array[0] = 0;</code></pre>
-<p>Then select the lines from the second line onwards and use <code>g CTRL-A</code> to get:</p>
+<p>Then select the lines from the second line onwards and use
+<code>g CTRL-A</code> to get:</p>
 <pre><code>my_array[0] = 0;
 my_array[1] = 0;
 my_array[2] = 0;
@@ -694,11 +751,15 @@ of each line: &gt;
 </div>
 <div id="align-columns" class="section level2">
 <h2>Align columns</h2>
-<p>The tabular plugin provides a Tabular command which can be abbreviated to <code>:Tab</code>. To align a latex table with the tabular package. Select a few lines, then press:</p>
+<p>The tabular plugin provides a Tabular command which can be
+abbreviated to <code>:Tab</code>. To align a latex table with the
+tabular package. Select a few lines, then press:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;Tab /&amp;</code></pre>
-<p>Similarly to align a markdown table, select a few lines, then call:</p>
+<p>Similarly to align a markdown table, select a few lines, then
+call:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;Tab /|</code></pre>
-<p>Align tab separated text in the current buffer (to view tsv files generated from data frames by NVim-R for example):</p>
+<p>Align tab separated text in the current buffer (to view tsv files
+generated from data frames by NVim-R for example):</p>
 <pre><code>:Tab /\t</code></pre>
 <p>Or enter CTRL + V and press the TAB key for a literal tab.</p>
 <p>To have numbers right aligned</p>
@@ -715,11 +776,19 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 <h3>Navigate the change list</h3>
 <p>Jump to previous or next editing position <code>:help g;</code></p>
 <blockquote>
-<p>When making a change the cursor position is remembered. One position is remembered for every change that can be undone, unless it is close to a previous change. Two commands can be used to jump to positions of changes, also those that have been undone:</p>
+<p>When making a change the cursor position is remembered. One position
+is remembered for every change that can be undone, unless it is close to
+a previous change. Two commands can be used to jump to positions of
+changes, also those that have been undone:</p>
 <pre><code>                      *g;* *E662*</code></pre>
-<p>g; Go to [count] older position in change list. If [count] is larger than the number of older change positions go to the oldest change. If there is no older change an error message is given. (not a motion command) {not available without the |+jumplist| feature}</p>
+<p>g; Go to [count] older position in change list. If [count] is larger
+than the number of older change positions go to the oldest change. If
+there is no older change an error message is given. (not a motion
+command) {not available without the |+jumplist| feature}</p>
 <pre><code>                      *g,* *E663*</code></pre>
-<p>g, Go to [count] newer cursor position in change list. Just like |g;| but in the opposite direction. (not a motion command) {not available without the |+jumplist| feature}</p>
+<p>g, Go to [count] newer cursor position in change list. Just like |g;|
+but in the opposite direction. (not a motion command) {not available
+without the |+jumplist| feature}</p>
 </blockquote>
 </div>
 </div>
@@ -727,96 +796,147 @@ Ctrl-R will redo a previously undone change, wherever the change occurred. </cod
 <h2>Replace characters</h2>
 <p>Vim help on search and replace <code>:help :s</code></p>
 <blockquote>
-<p><code>[range]s[ubstitute]/{pattern}/{string}/[flags] [count]</code> For each line in <code>[range]</code> replace a match of <code>{pattern}</code> with <code>{string}</code>.</p>
+<p><code>[range]s[ubstitute]/{pattern}/{string}/[flags] [count]</code>
+For each line in <code>[range]</code> replace a match of
+<code>{pattern}</code> with <code>{string}</code>.</p>
 </blockquote>
-<p>For example find each occurrence of ‘red’ (in the current line only), and replace it with ‘green’:</p>
+<p>For example find each occurrence of ‘red’ (in the current line only),
+and replace it with ‘green’:</p>
 <pre><code>:s/red/green/g</code></pre>
-<p>The <code>s</code> command means “substitute”. The <code>g</code> means “greedy”, it will replace all occurrences of the word on a line (not just the first occurrence).</p>
-<p>When <a href="http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection">text is visually selected</a>, press : to enter a command. The command line will automatically enter the range:</p>
+<p>The <code>s</code> command means “substitute”. The <code>g</code>
+means “greedy”, it will replace all occurrences of the word on a line
+(not just the first occurrence).</p>
+<p>When <a
+href="http://vim.wikia.com/wiki/Search_and_replace_in_a_visual_selection">text
+is visually selected</a>, press : to enter a command. The command line
+will automatically enter the range:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;</code></pre>
-<p>Then you can enter a replacement command such as <code>s/red/green/g</code> to replace each occurence of “red” with “green” in all lines of the visual selection. The command will appear as:</p>
+<p>Then you can enter a replacement command such as
+<code>s/red/green/g</code> to replace each occurence of “red” with
+“green” in all lines of the visual selection. The command will appear
+as:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/red/green/g</code></pre>
-<p>Find each occurrence of ‘red’ in all lines (<code>%s</code>), and replace it with ‘green’.</p>
+<p>Find each occurrence of ‘red’ in all lines (<code>%s</code>), and
+replace it with ‘green’.</p>
 <pre><code>:%s/red/green/g </code></pre>
-<p>Find each occurence of foo but don’t perform the replacement, only count the number of occurences</p>
+<p>Find each occurence of foo but don’t perform the replacement, only
+count the number of occurences</p>
 <pre><code>:%s/foo/bar/n</code></pre>
-<p>To replace by a new line character, use <code>\r</code> instead of <code>\n</code>. For example to insert a new line after each comma in a selection:</p>
+<p>To replace by a new line character, use <code>\r</code> instead of
+<code>\n</code>. For example to insert a new line after each comma in a
+selection:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/,/,\r/g</code></pre>
 <p>To replace double line breaks by a single line brake</p>
 <pre><code>:%s/\n\n/\r/g</code></pre>
-<p>You can use replacement to remove text. For example to <a href="https://stackoverflow.com/a/36264759/2641825">remove the last 2 characters of each line in a selection</a> :</p>
+<p>You can use replacement to remove text. For example to <a
+href="https://stackoverflow.com/a/36264759/2641825">remove the last 2
+characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
 <div id="character-classes" class="section level3">
 <h3>Character classes</h3>
 <p>See also patterns below.</p>
-<p>See <code>:help character-classes</code> for a list of classes accepted in Vim with their equivalent regex pattern, for example <code>\w</code> is equivalent to <code>[0-9A-Za-z_]</code>. Replace all word characters by a dash (to create a markdown table division see also collection below)</p>
+<p>See <code>:help character-classes</code> for a list of classes
+accepted in Vim with their equivalent regex pattern, for example
+<code>\w</code> is equivalent to <code>[0-9A-Za-z_]</code>. Replace all
+word characters by a dash (to create a markdown table division see also
+collection below)</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\w/-/g</code></pre>
-<p>Note that this only works with ASCII characters and doesn’t work with accentuated characters. For example <code>smöl</code> gets replaced by <code>--ö-</code>. To replace all identifier characters, use</p>
+<p>Note that this only works with ASCII characters and doesn’t work with
+accentuated characters. For example <code>smöl</code> gets replaced by
+<code>--ö-</code>. To replace all identifier characters, use</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\i/-/g</code></pre>
 <p>And then <code>smöl</code> gets replaced by <code>----</code>.</p>
 </div>
 <div id="collection" class="section level3">
 <h3>Collection</h3>
-<p>See <code>:help collection</code>: “A collection is a sequence of characters enclosed in brackets.”</p>
+<p>See <code>:help collection</code>: “A collection is a sequence of
+characters enclosed in brackets.”</p>
 <pre><code>Example     matches ~
 [xyz]       any &#39;x&#39;, &#39;y&#39; or &#39;z&#39;
 [^xyz]&quot;     anything but &#39;x&#39;, &#39;y&#39; and &#39;z&#39;
 [a-zA-Z]$   any alphabetic character at the end of a line</code></pre>
-<p>For example to replace all characters but the pipe (to create a separation in a markdown table):</p>
+<p>For example to replace all characters but the pipe (to create a
+separation in a markdown table):</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/[^\|]/-/g</code></pre>
 </div>
 <div id="convert-to-lower-case" class="section level3">
 <h3>Convert to lower-case</h3>
-<p><a href="https://vim.fandom.com/wiki/Switching_case_of_characters">Switching case of characters</a>:</p>
+<p><a
+href="https://vim.fandom.com/wiki/Switching_case_of_characters">Switching
+case of characters</a>:</p>
 <pre><code>Toggle case &quot;HellO&quot; to &quot;hELLo&quot; with g~ then a movement.
 Uppercase &quot;HellO&quot; to &quot;HELLO&quot; with gU then a movement.
 Lowercase &quot;HellO&quot; to &quot;hello&quot; with gu then a movement.</code></pre>
-<p>For example to convert to lower case from the cursor to the end of the line:</p>
+<p>For example to convert to lower case from the cursor to the end of
+the line:</p>
 <pre><code>gu$</code></pre>
 <p>To change the current line from upper to lower case:</p>
 <pre><code>guu</code></pre>
 </div>
 <div id="patterns" class="section level3">
 <h3>Patterns</h3>
-<p>To place quotes around variables that contain a dollar sign (otherwise interpreted as a formula start in markdown):</p>
+<p>To place quotes around variables that contain a dollar sign
+(otherwise interpreted as a formula start in markdown):</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\(\w*\$\)/`\1`/g</code></pre>
-<p><a href="https://stackoverflow.com/a/3218805/2641825">add quotes at the start and end of each line</a></p>
+<p><a href="https://stackoverflow.com/a/3218805/2641825">add quotes at
+the start and end of each line</a></p>
 <pre><code>:%s/^\(.*\)$/&quot;\1&quot;/</code></pre>
 <blockquote>
-<p>s/regex/replace/ is vim command for search n replace. % makes it apply throughout the file ^ and $ denotes start and end of the line respectively. <code>(.*)</code> captures everything in between. ( and ) needs to be escaped in vim regexes. \1 puts the captured content between two quotes.</p>
+<p>s/regex/replace/ is vim command for search n replace. % makes it
+apply throughout the file ^ and $ denotes start and end of the line
+respectively. <code>(.*)</code> captures everything in between. ( and )
+needs to be escaped in vim regexes. \1 puts the captured content between
+two quotes.</p>
 </blockquote>
 <p>Remove bracketed references from text copied from Wikipedia.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
 <div id="numbers" class="section level4">
 <h4>Numbers</h4>
-<p>Insert Markdown title marker <code>#</code> before a number at the beginning of a line</p>
+<p>Insert Markdown title marker <code>#</code> before a number at the
+beginning of a line</p>
 <pre><code>%s/^\(\d.\)/# \1/g</code></pre>
-<p>Note <code>\0</code> matches the hole pattern. Use backslash-escaped parenthesis to match a particular pattern. <code>\d</code> matches any digit.</p>
+<p>Note <code>\0</code> matches the hole pattern. Use backslash-escaped
+parenthesis to match a particular pattern. <code>\d</code> matches any
+digit.</p>
 <p>Remove bracketed references from text copied from Wikipedia.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
 </div>
 </div>
 <div id="replace-spaces-and-new-lines" class="section level3">
 <h3>Replace spaces and new lines</h3>
-<p>Vim wiki <a href="https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace">Remove unwanted spaces</a>:</p>
+<p>Vim wiki <a
+href="https://vim.fandom.com/wiki/Remove_unwanted_spaces#Automatically_removing_all_trailing_whitespace">Remove
+unwanted spaces</a>:</p>
 <blockquote>
-<p>In a search, finds white space (a space or a tab), and + finds one or more occurrences. Command to replace repeated white spaces by a single white space in a selection:</p>
+<p>In a search, finds white space (a space or a tab), and + finds one or
+more occurrences. Command to replace repeated white spaces by a single
+white space in a selection:</p>
 </blockquote>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\s\+/ /g</code></pre>
-<p>SO <a href="https://stackoverflow.com/questions/3860532/vim-regex-replace-multiple-consecutive-spaces-with-only-one-space">vim regex replace multiple consecutive spaces with only one space</a> proposes multiple other solutions, this one derived from Aristotle’s answer keeps indentation white spaces at the beginning of the line:</p>
+<p>SO <a
+href="https://stackoverflow.com/questions/3860532/vim-regex-replace-multiple-consecutive-spaces-with-only-one-space">vim
+regex replace multiple consecutive spaces with only one space</a>
+proposes multiple other solutions, this one derived from Aristotle’s
+answer keeps indentation white spaces at the beginning of the line:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/[^\s]\zs\s\+/ /g</code></pre>
-<p>Remove all beginnings of line. :%s//, /g replace all end of line by comma + space. This cleans an html list of species for inclusion in a text.</p>
+<p>Remove all beginnings of line. :%s//, /g replace all end of line by
+comma + space. This cleans an html list of species for inclusion in a
+text.</p>
 <pre><code> %s/option value=&quot;.*&quot;//g </code></pre>
-<p>This pattern replaces one or more white spaces with a pipe, to create markdown tables:</p>
+<p>This pattern replaces one or more white spaces with a pipe, to create
+markdown tables:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\s\+/|/g</code></pre>
 <p>This pattern removes spaces at the end of the line:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\s*$//g</code></pre>
 </div>
 <div id="visual-selection" class="section level3">
 <h3>Visual selection</h3>
-<p>To search and replace in a visual selection, select an area then press <code>:</code>. The line will automatically begin with <code>:'&lt;,'&gt;</code>, you can then enter the patterns.</p>
+<p>To search and replace in a visual selection, select an area then
+press <code>:</code>. The line will automatically begin with
+<code>:'&lt;,'&gt;</code>, you can then enter the patterns.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/search/replace/g</code></pre>
-<p>For <a href="https://stackoverflow.com/a/25276670/2641825">a vertical selection</a>, this doesn’t work automatically and you have to use</p>
+<p>For <a href="https://stackoverflow.com/a/25276670/2641825">a vertical
+selection</a>, this doesn’t work automatically and you have to use</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\%Vsearch/replace/g</code></pre>
 </div>
 </div>
@@ -828,7 +948,8 @@ yiw           The current word
 ye            To the end of the current word
 yip           The current paragraph
 yG            To the end of the document</code></pre>
-<p>Paste with <code>P</code> (before) or <code>p</code> (after) the cursor.</p>
+<p>Paste with <code>P</code> (before) or <code>p</code> (after) the
+cursor.</p>
 <p>Copy and paste in visual mode with the following instructions:</p>
 <pre><code>Position the cursor where you want to begin cutting.
 Press v (or upper case V if you want to cut whole lines).
@@ -839,7 +960,8 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 <p>Copy to a system register (to be used by other programs)</p>
 <pre><code>&quot;+yy
 &quot;+yip</code></pre>
-<p>See also the section on registers below and <code>:help "+</code> for more details on system registers.</p>
+<p>See also the section on registers below and <code>:help "+</code> for
+more details on system registers.</p>
 <div id="paste-the-current-line-many-times" class="section level3">
 <h3>Paste the current line many times</h3>
 <p>Press <code>Y6p</code> to copy the following line 6 times</p>
@@ -847,27 +969,39 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 </div>
 <div id="paste-from-the-system-register" class="section level3">
 <h3>Paste from the system register</h3>
-<p>When pasting from the system register i.e. with <code>Ctrl+Shift+V</code> you need to prevent auto indent otherwise vim will mess with the indentation. This can be solved with bracketed paste, see further down below.</p>
-<p>As explained in <a href="https://stackoverflow.com/a/2545242/2641825">Paste without autoindent</a> You can either read from the shell with:</p>
+<p>When pasting from the system register i.e. with
+<code>Ctrl+Shift+V</code> you need to prevent auto indent otherwise vim
+will mess with the indentation. This can be solved with bracketed paste,
+see further down below.</p>
+<p>As explained in <a
+href="https://stackoverflow.com/a/2545242/2641825">Paste without
+autoindent</a> You can either read from the shell with:</p>
 <pre><code>:r! cat </code></pre>
-<p>And then paste <code>CTRL + SHIFT + V</code> the content, and <code>CTRL+D</code>. Also works over SSH.</p>
+<p>And then paste <code>CTRL + SHIFT + V</code> the content, and
+<code>CTRL+D</code>. Also works over SSH.</p>
 <p>Or use</p>
 <pre><code>:set paste
 :set nopaste</code></pre>
 <p>Set up a shortcut to toggle paste mode on and off with:</p>
 <pre><code>set pastetoggle=&lt;F3&gt;</code></pre>
-<p>Note: I don’t use paste toggle any more, bracketed paste works well.</p>
+<p>Note: I don’t use paste toggle any more, bracketed paste works
+well.</p>
 <div id="bracketed-paste" class="section level4">
 <h4>Bracketed paste</h4>
-<p><a href="https://stackoverflow.com/a/44507798/2641825">Enable bracketed paste in a session</a></p>
+<p><a href="https://stackoverflow.com/a/44507798/2641825">Enable
+bracketed paste in a session</a></p>
 <pre><code>bind &#39;set enable-bracketed-paste on&#39;    </code></pre>
 </div>
 </div>
 <div id="registers" class="section level3">
 <h3>Registers</h3>
-<p><a href="https://stackoverflow.com/a/1498026/2641825">How to use vim registers</a></p>
+<p><a href="https://stackoverflow.com/a/1498026/2641825">How to use vim
+registers</a></p>
 <blockquote>
-<p>" Registers in Vim let you run actions or commands on text stored within them. To access a register, you type "a before a command, where a is the name of a register. If you want to copy the current line into register k, you can type</p>
+<p>” Registers in Vim let you run actions or commands on text stored
+within them. To access a register, you type “a before a command, where a
+is the name of a register. If you want to copy the current line into
+register k, you can type</p>
 </blockquote>
 <pre><code>&quot;kyy</code></pre>
 <blockquote>
@@ -875,12 +1009,15 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 </blockquote>
 <pre><code>&quot;Kyy</code></pre>
 <blockquote>
-<p>You can then move through the document and paste it elsewhere using</p>
+<p>You can then move through the document and paste it elsewhere
+using</p>
 </blockquote>
 <pre><code>&quot;kp</code></pre>
 <p>To display the content of all registers:</p>
 <pre><code>:registers</code></pre>
-<p>For example yank the word “yank”, delete the word “delete” and copy the word “system” outside of vim in any program will give you the following registers:</p>
+<p>For example yank the word “yank”, delete the word “delete” and copy
+the word “system” outside of vim in any program will give you the
+following registers:</p>
 <pre><code>:registers
 --- Registers ---
 &quot;&quot;   delete
@@ -889,19 +1026,26 @@ Press P to paste before the cursor, or p to paste after. </code></pre>
 &quot;*   system
 &quot;+   system
 &quot;.   ^@yank^@delete^@</code></pre>
-<p>To clean vim registers as explained on a <a href="https://stackoverflow.com/a/41003241/2641825">SO answer</a>, enter this at the vim prompt:</p>
+<p>To clean vim registers as explained on a <a
+href="https://stackoverflow.com/a/41003241/2641825">SO answer</a>, enter
+this at the vim prompt:</p>
 <pre><code>for i in range(34,122) | silent! call setreg(nr2char(i), []) | endfor</code></pre>
 </div>
 <div id="replace-a-word" class="section level3">
 <h3>Replace a word</h3>
-<p><a href="https://unix.stackexchange.com/questions/88714/how-can-i-do-a-change-word-in-vim-using-the-current-paste-buffer">How can I do a change word in vim using the current paste buffer</a></p>
-<p>Select the current word, then select the word to replace and paste</p>
+<p><a
+href="https://unix.stackexchange.com/questions/88714/how-can-i-do-a-change-word-in-vim-using-the-current-paste-buffer">How
+can I do a change word in vim using the current paste buffer</a></p>
+<p>Select the current word, then select the word to replace and
+paste</p>
 <pre><code>ye
 vep</code></pre>
-<p>Or select the current word, then paste and delete the word to replace</p>
+<p>Or select the current word, then paste and delete the word to
+replace</p>
 <pre><code>ye
 Plde</code></pre>
-<p>Note this works only for one replacement because the yank register is then replaced with the deleted word.</p>
+<p>Note this works only for one replacement because the yank register is
+then replaced with the deleted word.</p>
 </div>
 </div>
 <div id="indentation" class="section level2">
@@ -912,12 +1056,18 @@ set expandtab
 set softtabstop=4
 set shiftwidth=4
 filetype indent on </code></pre>
-<p>More details on vim indentation in the <a href="https://wiki.python.org/moin/Vim">python wiki</a>. In particular the page <a href="https://vim.fandom.com/wiki/How_to_stop_auto_indenting">How to stop auto indentation</a> explains how to display indentation setting for the current file type:</p>
+<p>More details on vim indentation in the <a
+href="https://wiki.python.org/moin/Vim">python wiki</a>. In particular
+the page <a
+href="https://vim.fandom.com/wiki/How_to_stop_auto_indenting">How to
+stop auto indentation</a> explains how to display indentation setting
+for the current file type:</p>
 <pre><code>:verbose set ai? cin? cink? cino? si? inde? indk?</code></pre>
 </div>
 <div id="repeat-commands" class="section level2">
 <h2>Repeat Commands</h2>
-<p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating commands, Vim scripts and debugging</a></p>
+<p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating
+commands, Vim scripts and debugging</a></p>
 </div>
 <div id="save-and-rename-a-file" class="section level2">
 <h2>Save and rename a file</h2>
@@ -925,17 +1075,22 @@ filetype indent on </code></pre>
 <pre><code>:w</code></pre>
 <p>Save under a new name (save as) and edit that file</p>
 <pre><code>:sav</code></pre>
-<p>SO <a href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim">save as a new file and continue editing the original one</a></p>
+<p>SO <a
+href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim">save
+as a new file and continue editing the original one</a></p>
 <p>To move or rename a file within the vim file explorer:</p>
 <pre><code>R</code></pre>
 </div>
 <div id="wrap-lines" class="section level2">
 <h2>Wrap lines</h2>
-<p>Thoughtbot.com <a href="https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim">Wrap existing block of text to 80 characters</a>:</p>
+<p>Thoughtbot.com <a
+href="https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim">Wrap
+existing block of text to 80 characters</a>:</p>
 <pre><code>:set textwidth=80</code></pre>
 <p>Apply automatically to markdown files, by adding this to .vimrc</p>
 <pre><code>au BufRead,BufNewFile *.md setlocal textwidth=80</code></pre>
-<p>To format the text, select it with v and up or down movements, and press</p>
+<p>To format the text, select it with v and up or down movements, and
+press</p>
 <pre><code>gq</code></pre>
 <p>To disable auto wrapping, call</p>
 <pre><code>:set formatoptions=cq</code></pre>
@@ -945,7 +1100,9 @@ filetype indent on </code></pre>
 <h1>Select and visual mode</h1>
 <p>Vim documentation</p>
 <pre><code>:help visual-use</code></pre>
-<p><a href="https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it">Difference between visual and select mode</a></p>
+<p><a
+href="https://vi.stackexchange.com/questions/4891/what-is-the-select-mode-and-when-is-it-relevant-to-use-it">Difference
+between visual and select mode</a></p>
 <p>Various ways to select text in visual mode</p>
 <pre><code>vt&lt;char&gt; - till before a given character
 vf&lt;char&gt; - till a given character</code></pre>
@@ -957,7 +1114,8 @@ vf&lt;char&gt; - till a given character</code></pre>
 <pre><code>vi(</code></pre>
 <p>Select what is inside the current quote block</p>
 <pre><code>vi&quot;</code></pre>
-<p>These selection methods can also be used to delete <code>diw</code> and yank <code>yiw</code>.</p>
+<p>These selection methods can also be used to delete <code>diw</code>
+and yank <code>yiw</code>.</p>
 </div>
 <div id="enter-commands-save-and-quit" class="section level1">
 <h1>Enter commands, save and quit</h1>
@@ -971,13 +1129,20 @@ vf&lt;char&gt; - till a given character</code></pre>
 <pre><code>:q!</code></pre>
 <p>To save the content of the file:</p>
 <pre><code>:w</code></pre>
-<p>If you accidentally press CTRL+S the <a href="https://askubuntu.com/a/264253/315347">terminal will hang</a> Press <code>CTRL+Q</code> to regain control. See also <a href="https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator">Ctrl-s hang terminal emulator?</a> which provides a workaround: entering <code>stty -ixon</code> in .bashrc.</p>
+<p>If you accidentally press CTRL+S the <a
+href="https://askubuntu.com/a/264253/315347">terminal will hang</a>
+Press <code>CTRL+Q</code> to regain control. See also <a
+href="https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator">Ctrl-s
+hang terminal emulator?</a> which provides a workaround: entering
+<code>stty -ixon</code> in .bashrc.</p>
 <p>To save content and exit:</p>
 <pre><code>:wq</code></pre>
 </div>
 <div id="email-with-mutt" class="section level1">
 <h1>Email with Mutt</h1>
-<p>See also the [debian.html] page. The Arch Linux <a href="https://wiki.archlinux.org/index.php/Mutt#Installation">wiki page on Mutt</a> has a section explaining how to set it up with vim.</p>
+<p>See also the [debian.html] page. The Arch Linux <a
+href="https://wiki.archlinux.org/index.php/Mutt#Installation">wiki page
+on Mutt</a> has a section explaining how to set it up with vim.</p>
 </div>
 <div id="help" class="section level1">
 <h1>Help</h1>
@@ -986,17 +1151,23 @@ vf&lt;char&gt; - till a given character</code></pre>
 :h commandname - help on a particular command
 CTRL+] - jump to a highlighted topic
 CTRL+T - jump backwards</code></pre>
-<p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help pages</a> kept up-to-date automatically from the <a href="https://github.com/vim/vim">Vim source repository</a>.</p>
+<p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help
+pages</a> kept up-to-date automatically from the <a
+href="https://github.com/vim/vim">Vim source repository</a>.</p>
 <div id="messages" class="section level2">
 <h2>Messages</h2>
-<p>Did you see warning messages but they disappeared before you have had time to read them? Type the command |:messages| in Normal mode to see them again. (copied from nvim-r help)</p>
+<p>Did you see warning messages but they disappeared before you have had
+time to read them? Type the command |:messages| in Normal mode to see
+them again. (copied from nvim-r help)</p>
 </div>
 </div>
 <div id="insert" class="section level1">
 <h1>Insert</h1>
 <div id="current-file-name" class="section level2">
 <h2>Current file name</h2>
-<p><a href="https://unix.stackexchange.com/questions/57555/how-do-i-insert-the-current-filename-into-the-contents-in-vim">Insert the current file name in VIM</a> In insert mode press:</p>
+<p><a
+href="https://unix.stackexchange.com/questions/57555/how-do-i-insert-the-current-filename-into-the-contents-in-vim">Insert
+the current file name in VIM</a> In insert mode press:</p>
 <pre><code>&lt;c-r&gt;%</code></pre>
 <p>In normal mode:</p>
 <pre><code>:r! echo %</code></pre>
@@ -1011,7 +1182,9 @@ CTRL+T - jump backwards</code></pre>
 </div>
 <div id="date-or-time" class="section level2">
 <h2>Date or time</h2>
-<p>Vim wiki <a href="https://vim.fandom.com/wiki/Insert_current_date_or_time">insert date or time</a></p>
+<p>Vim wiki <a
+href="https://vim.fandom.com/wiki/Insert_current_date_or_time">insert
+date or time</a></p>
 <p>I added the following command to my .vimrc:</p>
 <pre><code>command! Date put =strftime(&#39;%Y-%m-%d&#39;)</code></pre>
 </div>
@@ -1033,11 +1206,17 @@ CTRL+T - jump backwards</code></pre>
 <h2>Quickfix window</h2>
 <p>Open the quickfix window with:</p>
 <pre><code>:copen</code></pre>
-<p>The result of some search operation seach as grep can be displayed in the quick fix window.</p>
+<p>The result of some search operation seach as grep can be displayed in
+the quick fix window.</p>
 </div>
 <div id="tabs-should-be-called-workspaces" class="section level2">
 <h2>Tabs should be called workspaces</h2>
-<p><a href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why do vim experts prefer buffers over tabs?</a> &gt; "“Vim experts” don’t prefer buffers over tabs: they use buffers as the file &gt; proxies they are and tab pages as the workspaces they are. Buffers and tab &gt; pages have different purposes"</p>
+<p><a
+href="https://stackoverflow.com/questions/26708822/why-do-vim-experts-prefer-buffers-over-tabs/26710166#26710166">Why
+do vim experts prefer buffers over tabs?</a> &gt; ““Vim experts” don’t
+prefer buffers over tabs: they use buffers as the file &gt; proxies they
+are and tab pages as the workspaces they are. Buffers and tab &gt; pages
+have different purposes”</p>
 <p>Open a file in a new tab</p>
 <pre><code>:tabnew {file}</code></pre>
 <p>Move to the next tab</p>
@@ -1064,7 +1243,9 @@ ctrl-w_         - maximize current window
 ctrl-w=         - make all equal size
 CTRL+z - suspend the process and get back to the shell
 fg - get back to vim</code></pre>
-<p><a href="https://robots.thoughtbot.com/vim-splits-move-faster-and-more-naturally#easier-split-navigations">Easier split navigations</a></p>
+<p><a
+href="https://robots.thoughtbot.com/vim-splits-move-faster-and-more-naturally#easier-split-navigations">Easier
+split navigations</a></p>
 <pre><code>nnoremap &lt;C-J&gt; &lt;C-W&gt;&lt;C-J&gt;
 nnoremap &lt;C-K&gt; &lt;C-W&gt;&lt;C-K&gt;
 nnoremap &lt;C-L&gt; &lt;C-W&gt;&lt;C-L&gt;
@@ -1076,9 +1257,12 @@ set splitright</code></pre>
 <pre><code>:sb buffername</code></pre>
 <p>For a vertical split</p>
 <pre><code>:vert sb buffername</code></pre>
-<div id="open-vim-with-two-files-in-two-splits-or-more" class="section level3">
+<div id="open-vim-with-two-files-in-two-splits-or-more"
+class="section level3">
 <h3>Open vim with two files in two splits or more</h3>
-<p><a href="https://vi.stackexchange.com/questions/732/how-to-open-multiple-files-in-split-mode">ViM Stack exchange</a> Open 2 files in 2 horizontal splits</p>
+<p><a
+href="https://vi.stackexchange.com/questions/732/how-to-open-multiple-files-in-split-mode">ViM
+Stack exchange</a> Open 2 files in 2 horizontal splits</p>
 <pre><code>vim -o file1.md file2.md</code></pre>
 <p>Limit the number of splits</p>
 <pre><code>vim -o2 *.md</code></pre>
@@ -1091,7 +1275,8 @@ set splitright</code></pre>
 <pre><code>res 10</code></pre>
 <p>Set current window width to 100 characters</p>
 <pre><code>vertical res 100</code></pre>
-<p>See <code>:help resize</code> for more commands. There are many possible key combinations to resize the window.</p>
+<p>See <code>:help resize</code> for more commands. There are many
+possible key combinations to resize the window.</p>
 <pre><code>:res[ize] [N]
 CTRL-W CTRL-_                   *CTRL-W_CTRL-_* *CTRL-W__*
 CTRL-W _    Set current window height to N (default: highest possible).
@@ -1105,25 +1290,42 @@ z{nr}&lt;CR&gt;   Set current window height to {nr}.</code></pre>
 </div>
 <div id="split-zoom-in-and-out" class="section level3">
 <h3>Split zoom in and out</h3>
-<p><a href="https://stackoverflow.com/a/30362564/2641825">zoom windows in vim</a></p>
+<p><a href="https://stackoverflow.com/a/30362564/2641825">zoom windows
+in vim</a></p>
 <pre><code>c-w-| to have window take over (if using vsplits). 
 c-w-_ for horizontal splits
 c-w-= to restore. </code></pre>
 </div>
 <div id="split-and-buffers" class="section level3">
 <h3>Split and buffers</h3>
-<p><a href="https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window">Delete buffer without losing the split window</a></p>
+<p><a
+href="https://stackoverflow.com/questions/4465095/vim-delete-buffer-without-losing-the-split-window">Delete
+buffer without losing the split window</a></p>
 <pre><code>bp|bd #</code></pre>
 </div>
 </div>
 <div id="vim-and-tmux" class="section level2">
 <h2>Vim and Tmux</h2>
-<p>See the <a href="bash.html">bash</a> page for the tmux side of the configuration.</p>
-<p>I use the <a href="https://github.com/christoomey/vim-tmux-navigator">vim-tmux-navigator</a></p>
-<p>It doesn’t work in a terminal buffer because of conflicts with fuzzy file search. <a href="https://github.com/christoomey/vim-tmux-navigator/pull/172">issue 172</a></p>
-<p><a href="https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl">vim-tmux-navigator to use tmux prefix instead of C-[hjkl]</a></p>
-<p>busnag.com <a href="https://www.bugsnag.com/blog/tmux-and-vim">tmux and vim</a> &gt; " like many vim users, I edited my .vimrc to simplify split navigation, so &gt; that I can jump between vim splits using ctrl-j, ctrl-k, etc.</p>
-<p>reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a> &gt; “Finally, I have Ctrl+[hjkl] setup such that I can navigate seamlessly between vim and tmux panes.”</p>
+<p>See the <a href="bash.html">bash</a> page for the tmux side of the
+configuration.</p>
+<p>I use the <a
+href="https://github.com/christoomey/vim-tmux-navigator">vim-tmux-navigator</a></p>
+<p>It doesn’t work in a terminal buffer because of conflicts with fuzzy
+file search. <a
+href="https://github.com/christoomey/vim-tmux-navigator/pull/172">issue
+172</a></p>
+<p><a
+href="https://superuser.com/questions/1467829/vim-tmux-navigator-to-use-tmux-prefix-instead-of-c-hjkl">vim-tmux-navigator
+to use tmux prefix instead of C-[hjkl]</a></p>
+<p>busnag.com <a href="https://www.bugsnag.com/blog/tmux-and-vim">tmux
+and vim</a> &gt; ” like many vim users, I edited my .vimrc to simplify
+split navigation, so &gt; that I can jump between vim splits using
+ctrl-j, ctrl-k, etc.</p>
+<p>reddit <a
+href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python
+workflow with terminal using tmux</a> &gt; “Finally, I have Ctrl+[hjkl]
+setup such that I can navigate seamlessly between vim and tmux
+panes.”</p>
 </div>
 </div>
 <div id="navigate" class="section level1">
@@ -1134,7 +1336,8 @@ c-w-= to restore. </code></pre>
 <pre><code>:set nu</code></pre>
 <p>Disable line numbers</p>
 <pre><code>:set nonu</code></pre>
-<p>Enter <code>:line number</code> to jump to a particular line number.</p>
+<p>Enter <code>:line number</code> to jump to a particular line
+number.</p>
 </div>
 <div id="explore-files" class="section level2">
 <h2>Explore files</h2>
@@ -1146,18 +1349,32 @@ c-w-= to restore. </code></pre>
 :Le
 :Ve
 :Te</code></pre>
-<p>To open a file in vim press enter. To open a file better suited for other applications, such as a pdf, an html file or an image, press</p>
+<p>To open a file in vim press enter. To open a file better suited for
+other applications, such as a pdf, an html file or an image, press</p>
 <pre><code>x</code></pre>
-<p>To <a href="https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file">return to file editing without opening any file</a> (and to switch back and forth between editing and explorer):</p>
+<p>To <a
+href="https://stackoverflow.com/questions/27691792/vim-quit-close-netrw-without-selecting-any-file">return
+to file editing without opening any file</a> (and to switch back and
+forth between editing and explorer):</p>
 <pre><code>:Rexplore
 :Re</code></pre>
-<p>In the file explorer, also called “netrw”, pressing <code>s</code> changes the way files are sorted by name, time, size. Pressing <code>x</code> on a file name opens that file with the relevant system program associated with it. For example pressing <code>x</code> on a pdf file opens that file in the evince reader on my system. Pressing <code>x</code> on a folder name opens the files explorer. The <code>i</code> key switches between different view types, tree view, detailed view, summarised view. To rename a file press <code>R</code> and to delete a file press <code>D</code>.</p>
-<p>To create a new file in the current directory visible in the explorer, press:</p>
+<p>In the file explorer, also called “netrw”, pressing <code>s</code>
+changes the way files are sorted by name, time, size. Pressing
+<code>x</code> on a file name opens that file with the relevant system
+program associated with it. For example pressing <code>x</code> on a pdf
+file opens that file in the evince reader on my system. Pressing
+<code>x</code> on a folder name opens the files explorer. The
+<code>i</code> key switches between different view types, tree view,
+detailed view, summarised view. To rename a file press <code>R</code>
+and to delete a file press <code>D</code>.</p>
+<p>To create a new file in the current directory visible in the
+explorer, press:</p>
 <pre><code>%</code></pre>
 <p>This is also works to create a new directory and file.</p>
 <p>To move or rename a file within the explorer:</p>
 <pre><code>R</code></pre>
-<p>A blog post on <a href="https://shapeshed.com/vim-netrw/">netrw</a>, vim’s file browser. Explains how to turn the banner off:</p>
+<p>A blog post on <a href="https://shapeshed.com/vim-netrw/">netrw</a>,
+vim’s file browser. Explains how to turn the banner off:</p>
 <pre><code>let g:netrw_banner = 0</code></pre>
 <p>You can put the banner back on by pressing <code>I</code>.</p>
 </div>
@@ -1169,37 +1386,62 @@ c-w-= to restore. </code></pre>
 <pre><code>gf</code></pre>
 <p>If the file is a pdf, an image or a web link, use:</p>
 <pre><code>gx</code></pre>
-<p>See :help gx for more information on how vim handles the file opening in various operating systems.</p>
+<p>See :help gx for more information on how vim handles the file opening
+in various operating systems.</p>
 </div>
 <div id="jump-back-and-forth" class="section level2">
 <h2>Jump back and forth</h2>
-<p>Vim wiki <a href="https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations">jumping to previously visited locations</a> &gt; “Like a web browser, you can go back, then forward:”</p>
+<p>Vim wiki <a
+href="https://vim.fandom.com/wiki/Jumping_to_previously_visited_locations">jumping
+to previously visited locations</a> &gt; “Like a web browser, you can go
+back, then forward:”</p>
 <pre><code>Press Ctrl-O to jump back to the previous (older) location.
 Press Ctrl-I (same as Tab) to jump forward to the next (newer) location. </code></pre>
 </div>
 <div id="markdown-table-of-content" class="section level2">
 <h2>Markdown Table of Content</h2>
-<p>Display a list of first level header in a markdown document (found in quick markdown navigation/TOC)</p>
+<p>Display a list of first level header in a markdown document (found in
+quick markdown navigation/TOC)</p>
 <pre><code>:g/^# /#</code></pre>
 <p>See also :</p>
 <ul>
 <li>The markdown TOC extension for vim.</li>
-<li><a href="https://github.com/euclio/vim-markdown-composer/blob/master/README.md">Vim markdown composer</a> a plugin that adds asynchronous Markdown preview to Neovim and Vim.</li>
+<li><a
+href="https://github.com/euclio/vim-markdown-composer/blob/master/README.md">Vim
+markdown composer</a> a plugin that adds asynchronous Markdown preview
+to Neovim and Vim.</li>
 </ul>
 <div id="vim-markdown-toc-not-used" class="section level3">
 <h3>Vim-markdown TOC (not used)</h3>
-<p>In <a href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this question</a>, I managed to create an auto command to activate vim-markdown for Rmd files. But now that I start using Nvim-R more intensively, I hit <a href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown issue 263</a>: activating vim-markdown removes syntax highlighting and auto completion of the R code chunks. I first extracted the Toc function into a small plugin. Then started using the Voom plugin.</p>
+<p>In <a
+href="https://vi.stackexchange.com/questions/24848/how-to-use-vim-markdown-toc-for-documents-with-extension-other-than-md">this
+question</a>, I managed to create an auto command to activate
+vim-markdown for Rmd files. But now that I start using Nvim-R more
+intensively, I hit <a
+href="https://github.com/plasticboy/vim-markdown/issues/263">vim-markdown
+issue 263</a>: activating vim-markdown removes syntax highlighting and
+auto completion of the R code chunks. I first extracted the Toc function
+into a small plugin. Then started using the Voom plugin.</p>
 </div>
 <div id="vim-pandoc-toc-not-used" class="section level3">
 <h3>Vim-pandoc TOC (not used)</h3>
-<p>The vim-pandoc plugin also provides a table of content for markdown files, accessible through the <code>:TOC</code> command.</p>
+<p>The vim-pandoc plugin also provides a table of content for markdown
+files, accessible through the <code>:TOC</code> command.</p>
 </div>
 <div id="voom-toc-used" class="section level3">
 <h3>Voom TOC (used)</h3>
-<p>I chose to create the table of content with the <a href="https://github.com/vim-voom/VOoM">Voom plugin</a> based on a suggestion on <a href="https://github.com/jalvesaq/Nvim-R/issues/505">Nvim-R issue 505</a>. I have this in my <code>.vimrc</code>:</p>
+<p>I chose to create the table of content with the <a
+href="https://github.com/vim-voom/VOoM">Voom plugin</a> based on a
+suggestion on <a
+href="https://github.com/jalvesaq/Nvim-R/issues/505">Nvim-R issue
+505</a>. I have this in my <code>.vimrc</code>:</p>
 <pre><code>let voom_ft_modes = {&#39;markdown&#39;: &#39;pandoc&#39;, &#39;rmd&#39;: &#39;pandoc&#39;, &#39;tex&#39;: &#39;latex&#39;}
 au BufRead,BufNewFile *.Rmd command! Toc Voom </code></pre>
-<p>In the outline pane, press enter once to display the corresponding header in the body pane. Press enter a second time to move the cursor to the body pane. In the body pane, press enter once to display the position of the cursor in the outline pane. Press enter a second time to move to the corresponding place in the outline pane.</p>
+<p>In the outline pane, press enter once to display the corresponding
+header in the body pane. Press enter a second time to move the cursor to
+the body pane. In the body pane, press enter once to display the
+position of the cursor in the outline pane. Press enter a second time to
+move to the corresponding place in the outline pane.</p>
 <p>Key mappings in the outline pane:</p>
 <pre><code>jk  move up and down in the outline pane. The view pane doesn&#39;t move.
 up/down arrow move and display the corresponding sections in the view pane.
@@ -1207,11 +1449,15 @@ up/down arrow move and display the corresponding sections in the view pane.
 left/right arrow fold/unfold the current node.
 O Recursively expand the current node and its siblings.
 C Recursively contract the current node and its siblings.</code></pre>
-<p>It’s also possible to move nodes with cut <code>dd</code> and paste behaviour <code>pp</code> and to promote/demote them as such:</p>
+<p>It’s also possible to move nodes with cut <code>dd</code> and paste
+behaviour <code>pp</code> and to promote/demote them as such:</p>
 <pre><code>&lt;LocalLeader&gt;l Move node(s) left, that is promote.
 &lt;LocalLeader&gt;r Move node(s) right, that is demote.</code></pre>
 <blockquote>
-<p>By default, commands Cut, Copy, Paste use the "+ register, that is the system clipboard (|registers|, |quote+|). This means you can move nodes between outlines in different instances of Vim, or copy/paste in other applications.</p>
+<p>By default, commands Cut, Copy, Paste use the “+ register, that is
+the system clipboard (|registers|, |quote+|). This means you can move
+nodes between outlines in different instances of Vim, or copy/paste in
+other applications.</p>
 </blockquote>
 </div>
 </div>
@@ -1227,7 +1473,9 @@ ctrl+b, ctrl+d move page up or page down
 H,L,M move to top, bottom and middle of visible window
 ^, $ move to the begining or end of a line
 in addition, I mapped m to $</code></pre>
-<p>Note on motion with wrapped lines: <a href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move cursor by display lines when wrapping</a></p>
+<p>Note on motion with wrapped lines: <a
+href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move
+cursor by display lines when wrapping</a></p>
 </div>
 <div id="quick-fix-window" class="section level2">
 <h2>Quick fix window</h2>
@@ -1236,9 +1484,13 @@ in addition, I mapped m to $</code></pre>
 </div>
 <div id="search-in-the-current-file" class="section level2">
 <h2>Search in the current file</h2>
-<p>Use <code>"/"</code> to search, then n forward and N backwards <code>"*"</code> to search for the word under the cursor (you can also create a mapping to search for a selected text)</p>
-<p>Use <code>:g/pattern</code> to display a list of all search result in the document.</p>
-<p>Search all occurrences of a pattern and populate the quick fix window:</p>
+<p>Use <code>"/"</code> to search, then n forward and N
+backwards <code>"*"</code> to search for the word under the cursor (you
+can also create a mapping to search for a selected text)</p>
+<p>Use <code>:g/pattern</code> to display a list of all search result in
+the document.</p>
+<p>Search all occurrences of a pattern and populate the quick fix
+window:</p>
 <pre><code>:vim /pattern/ % | cw</code></pre>
 <div id="highlight-search-matches" class="section level3">
 <h3>Highlight search matches</h3>
@@ -1257,12 +1509,18 @@ in addition, I mapped m to $</code></pre>
 </div>
 <div id="search-in-multiple-files" class="section level2">
 <h2>Search in multiple files</h2>
-<p>Define the <code>F3</code> shortcut in <code>.vimrc</code> to recursively search all files in the present working directory for the word under the cursor:</p>
+<p>Define the <code>F3</code> shortcut in <code>.vimrc</code> to
+recursively search all files in the present working directory for the
+word under the cursor:</p>
 <pre><code>nmap &lt;F3&gt; :vimgrep /&lt;C-R&gt;&lt;C-W&gt;/ **&lt;CR&gt;</code></pre>
 <p>Alternatively, use git grep from the fugitive plugin:</p>
 <pre><code>:Ggrep pattern</code></pre>
-<p>Both <code>vimgrep</code> and <code>Ggrep</code> will open a quick fix window displaying file names and line numbers for each matching character string.</p>
-<p><a href="https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep">open files on the match lines given by grep</a></p>
+<p>Both <code>vimgrep</code> and <code>Ggrep</code> will open a quick
+fix window displaying file names and line numbers for each matching
+character string.</p>
+<p><a
+href="https://stackoverflow.com/questions/2653419/vim-open-files-of-the-matches-on-the-lines-given-by-grep">open
+files on the match lines given by grep</a></p>
 <pre><code>:copen
 :grep -r pattern .</code></pre>
 <p>or specify specific files extensions</p>
@@ -1272,19 +1530,29 @@ in addition, I mapped m to $</code></pre>
 <h2>Working directory</h2>
 <p>Display the present working directory</p>
 <pre><code>:pwd</code></pre>
-<p><a href="http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file">Set working directory to the current file</a> (for all windows):</p>
+<p><a
+href="http://vim.wikia.com/wiki/Set_working_directory_to_the_current_file">Set
+working directory to the current file</a> (for all windows):</p>
 <pre><code>:cd %:p:h</code></pre>
-<p>Set working directory to the current file, for the current window only</p>
+<p>Set working directory to the current file, for the current window
+only</p>
 <pre><code>:lcd %:p:h</code></pre>
-<p>In these commands, % gives the name of the current file, %:p gives its full path, and %:p:h gives its directory (the “head” of the full path).</p>
-<p>Automatically change the working directory to the file currently edited</p>
+<p>In these commands, % gives the name of the current file, %:p gives
+its full path, and %:p:h gives its directory (the “head” of the full
+path).</p>
+<p>Automatically change the working directory to the file currently
+edited</p>
 <pre><code>set autochdir</code></pre>
-<p>autochdir conflicts with the ctags plugin taglist <a href="https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set">as explained here</a> so I deactivated it.</p>
+<p>autochdir conflicts with the ctags plugin taglist <a
+href="https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set">as
+explained here</a> so I deactivated it.</p>
 </div>
 </div>
 <div id="plugins" class="section level1">
 <h1>Plugins</h1>
-<p>Plugins are mentioned in diverse section of this document. This section is mostly to list plugins I used and potentially interesting plugins.</p>
+<p>Plugins are mentioned in diverse section of this document. This
+section is mostly to list plugins I used and potentially interesting
+plugins.</p>
 <p>Display plugins I currently use with vundle:</p>
 <pre><code>:PluginList</code></pre>
 <p>Copy of the list from my <code>.vimrc</code>:</p>
@@ -1315,29 +1583,50 @@ vim-slime
 vim-tmux-navigator</code></pre>
 <p>Potentially useful plugins</p>
 <ul>
-<li><a href="https://github.com/tpope/vim-fugitive">fugitive</a> git integration</li>
-<li><a href="https://github.com/bfrg/vim-qf-preview">Quick fix preview</a></li>
+<li><a href="https://github.com/tpope/vim-fugitive">fugitive</a> git
+integration</li>
+<li><a href="https://github.com/bfrg/vim-qf-preview">Quick fix
+preview</a></li>
 <li>Fuzzy search</li>
-<li>fzf command line fuzzy finder <a href="https://github.com/junegunn/fzf">fzf</a></li>
+<li>fzf command line fuzzy finder <a
+href="https://github.com/junegunn/fzf">fzf</a></li>
 <li>File explorer
 <ul>
 <li>or simply use the native vim explorer <code>:Explore</code></li>
 </ul></li>
-<li>Minibufexplorer and SO post on <a href="https://stackoverflow.com/questions/4865132/an-alternative-to-minibufexplorer-vim">alternatives to minibufexplorer</a></li>
-<li><a href="https://github.com/lervag/vimtex#alternatives">Vimtex</a> vim plugin for editing LaTeX files.</li>
-<li><a href="https://vim.spf13.com/">distribution spf13</a> probably not recommended but the home page contains a list of interesting plugins.</li>
-<li>See also the section programming with vim below for language specific plugins.</li>
+<li>Minibufexplorer and SO post on <a
+href="https://stackoverflow.com/questions/4865132/an-alternative-to-minibufexplorer-vim">alternatives
+to minibufexplorer</a></li>
+<li><a href="https://github.com/lervag/vimtex#alternatives">Vimtex</a>
+vim plugin for editing LaTeX files.</li>
+<li><a href="https://vim.spf13.com/">distribution spf13</a> probably not
+recommended but the home page contains a list of interesting
+plugins.</li>
+<li>See also the section programming with vim below for language
+specific plugins.</li>
 </ul>
 <div id="create-a-plugin" class="section level2">
 <h2>Create a plugin</h2>
 <ul>
-<li><a href="https://learnvimscriptthehardway.stevelosh.com/chapters/42.html">plugin layout in the dark ages</a> explains how to create file type plugins.</li>
+<li><a
+href="https://learnvimscriptthehardway.stevelosh.com/chapters/42.html">plugin
+layout in the dark ages</a> explains how to create file type
+plugins.</li>
 </ul>
-<p>I’m trying to extract a table of content functionality from a plugin that does many other things I don’t need.</p>
+<p>I’m trying to extract a table of content functionality from a plugin
+that does many other things I don’t need.</p>
 <ul>
-<li><a href="https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin" class="uri">https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin</a></li>
+<li><a
+href="https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin"
+class="uri">https://vi.stackexchange.com/questions/16470/setting-syntax-in-ftplugin</a></li>
 </ul>
-<p>I extracted the function into a plugin called <a href="https://github.com/paulrougieux/markdown-toc-toc">markdown-toc-toc</a> I placed the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and this fixes my issue. I now have both Nvim-R autocompletion and syntax highlight working correctly in R markdown chunks as well as a table of content for the markdown titles. Later on, I moved to the Voom plugin for the table of content.</p>
+<p>I extracted the function into a plugin called <a
+href="https://github.com/paulrougieux/markdown-toc-toc">markdown-toc-toc</a>
+I placed the plugin in ~/.vim/pack/plugins/start/markdown-toc-toc and
+this fixes my issue. I now have both Nvim-R autocompletion and syntax
+highlight working correctly in R markdown chunks as well as a table of
+content for the markdown titles. Later on, I moved to the Voom plugin
+for the table of content.</p>
 </div>
 <div id="deactivate-a-plugin" class="section level2">
 <h2>Deactivate a plugin</h2>
@@ -1345,7 +1634,9 @@ vim-tmux-navigator</code></pre>
 </div>
 <div id="detect-slow-plugins" class="section level2">
 <h2>Detect slow plugins</h2>
-<p><a href="https://stackoverflow.com/questions/12213597/how-to-see-which-plugins-are-making-vim-slow">How to see which plugins are making Vim slow?</a></p>
+<p><a
+href="https://stackoverflow.com/questions/12213597/how-to-see-which-plugins-are-making-vim-slow">How
+to see which plugins are making Vim slow?</a></p>
 <blockquote>
 <p>“You can use built-in profiling support: after launching vim do”</p>
 </blockquote>
@@ -1356,7 +1647,10 @@ vim-tmux-navigator</code></pre>
 :profile pause
 :noautocmd qall!</code></pre>
 <blockquote>
-<p>“If you’re having problems with screen update operations (^L, scrolling, etc) being slow, your problem may be an inefficient syntax highlighting file. You can test this by temporarily disabling syntax highlighting”</p>
+<p>“If you’re having problems with screen update operations (^L,
+scrolling, etc) being slow, your problem may be an inefficient syntax
+highlighting file. You can test this by temporarily disabling syntax
+highlighting”</p>
 </blockquote>
 <pre><code>:syn off</code></pre>
 <p>To profile the syntax file</p>
@@ -1364,18 +1658,26 @@ vim-tmux-navigator</code></pre>
 Run :syntime on to start profiling.
 Scroll through the file a bit.
 Run :syntime report to generate a report. The patterns listed first in the report are the ones which took the most time to process.</code></pre>
-<p>The matchparen plugin seemed to be slow on large markdown documents. It’s part of the vim distribution and loaded by default. vi.stackexchange <a href="https://vi.stackexchange.com/questions/5128/matchpairs-makes-vim-slow">matchpairs makes vim slow</a>. But it was called by the Pandoc syntax highlight file.</p>
+<p>The matchparen plugin seemed to be slow on large markdown documents.
+It’s part of the vim distribution and loaded by default.
+vi.stackexchange <a
+href="https://vi.stackexchange.com/questions/5128/matchpairs-makes-vim-slow">matchpairs
+makes vim slow</a>. But it was called by the Pandoc syntax highlight
+file.</p>
 </div>
-<div id="install-plugins-with-vims-built-in-plugin-support" class="section level2">
+<div id="install-plugins-with-vims-built-in-plugin-support"
+class="section level2">
 <h2>Install plugins with vim’s built-in plugin support</h2>
-<p>Install slime with Vim’s built-in package support (since Vim 7.4.1528):</p>
+<p>Install slime with Vim’s built-in package support (since Vim
+7.4.1528):</p>
 <pre><code> mkdir -p ~/.vim/pack/plugins/start
  cd ~/.vim/pack/plugins/start
  git clone https://github.com/jpalardy/vim-slime.git</code></pre>
 </div>
 <div id="install-plugins-with-vundle" class="section level2">
 <h2>Install plugins with Vundle</h2>
-<p>Since there is a built-in plugin support, maybe I don’t need Vundle after all?</p>
+<p>Since there is a built-in plugin support, maybe I don’t need Vundle
+after all?</p>
 <p>Edit your .vimrc and add the following at the beginning</p>
 <pre><code>set nocompatible              &quot; be iMproved, required
 filetype off                  &quot; required
@@ -1418,75 +1720,126 @@ filetype plugin indent on    &quot; required
 <h2>Latex editing</h2>
 <div id="vim-latex" class="section level3">
 <h3>vim Latex</h3>
-<p><a href="https://github.com/vim-latex/vim-latex">vim-latex</a> the one I used first.</p>
+<p><a href="https://github.com/vim-latex/vim-latex">vim-latex</a> the
+one I used first.</p>
 <ul>
-<li>Was complaining about my makefile, that it didn’t include a dvi section</li>
+<li>Was complaining about my makefile, that it didn’t include a dvi
+section</li>
 <li>Was creating nice taglist but with duplicated tags.</li>
 </ul>
 </div>
 <div id="vimtex" class="section level3">
 <h3>Vimtex</h3>
-<p><a href="https://github.com/lervag/vimtex#alternatives">vimtex</a> is more recent compared to vim-latex</p>
+<p><a href="https://github.com/lervag/vimtex#alternatives">vimtex</a> is
+more recent compared to vim-latex</p>
 <ul>
-<li>Completion uses omni completion, see <code>:help compl-omni</code> with CTRL-X CTRL-O</li>
+<li>Completion uses omni completion, see <code>:help compl-omni</code>
+with CTRL-X CTRL-O</li>
 <li>doesn’t complain about my minimalistic makefile</li>
-<li>doesn’t add anything to the taglist (maybe I should use gutentag?) but there is a table of content buffer.</li>
+<li>doesn’t add anything to the taglist (maybe I should use gutentag?)
+but there is a table of content buffer.</li>
 </ul>
-<p>Usage as explained in ̀<code>:help vimtex-default-mappings</code>:</p>
-<p>———————————————————————~ LHS RHS MODE~ ———————————————————————~ <localleader>lv |<plug>(vimtex-view)| <code>n</code> <localleader>lr |<plug>(vimtex-reverse-search)| <code>n</code> <localleader>ll |<plug>(vimtex-compile)| <code>n</code> ———————————————————————~</p>
+<p>Usage as explained in
+̀<code>:help vimtex-default-mappings</code>:</p>
+<p>———————————————————————~ LHS RHS MODE~ ———————————————————————~
+<localleader>lv |<plug>(vimtex-view)| <code>n</code> <localleader>lr
+|<plug>(vimtex-reverse-search)| <code>n</code> <localleader>ll
+|<plug>(vimtex-compile)| <code>n</code> ———————————————————————~</p>
 <p>I mapped <code>&lt;localleader&gt;</code> to <code>;</code>.</p>
 <p>Display a table of content:</p>
 <pre><code>:VimtexTocOpen
 :VimtexTocToggle</code></pre>
-<p>Define a shorter command name <code>Toc</code>, by placing this in the .vimrc</p>
+<p>Define a shorter command name <code>Toc</code>, by placing this in
+the .vimrc</p>
 <pre><code>au BufRead,BufNewFile *.tex command! Toc VimtexTocOpen</code></pre>
-<p>I first ran into this error when viewing git diffs or when jumping back to the tex file with Ctrl-O</p>
+<p>I first ran into this error when viewing git diffs or when jumping
+back to the tex file with Ctrl-O</p>
 <pre><code>Error detected while processing BufRead Autocommands for &quot;*.tex&quot;:
 E174: Command already exists: add ! to replace it: Toc VimtexTocOpen</code></pre>
 <p>Because I had the autocommand defined this way:</p>
 <pre><code>au BufRead,BufNewFile *.tex command Toc VimtexTocOpen</code></pre>
 <p>Compile</p>
 <pre><code>:VimtexCompile</code></pre>
-<p>Install prerequisite to view pdf files with forward (from vim to the pdf viewer) and backward (from the pdf viewer to vim) search. Note: Forward and backward search are not available for evince <a href="https://github.com/lervag/vimtex/issues/179">issue 179</a>.</p>
+<p>Install prerequisite to view pdf files with forward (from vim to the
+pdf viewer) and backward (from the pdf viewer to vim) search. Note:
+Forward and backward search are not available for evince <a
+href="https://github.com/lervag/vimtex/issues/179">issue 179</a>.</p>
 <pre><code>sudo apt install zathura
 sudo apt install xdotool</code></pre>
 <p>This bug report pushed me to learn about xdotool and xprop.</p>
-<p>There was a issue with the focus not moving to the zathura viewer. I reported it as <a href="https://github.com/lervag/vimtex/issues/1719">issue #1719</a>. The first step was to add client server support to vim. I asked a question on <a href="https://vi.stackexchange.com/questions/26025/how-to-install-vim-with-clientserver-on-debian">how to install vim with clientserver support</a>. But the issue remained even with client server enabled in vim.</p>
-<p>The second step was related to the fact that Debian 10 Buster uses wayland as a window manager. To force the use of x11 for zathura, in debian a zathura wrapper script containing:</p>
+<p>There was a issue with the focus not moving to the zathura viewer. I
+reported it as <a
+href="https://github.com/lervag/vimtex/issues/1719">issue #1719</a>. The
+first step was to add client server support to vim. I asked a question
+on <a
+href="https://vi.stackexchange.com/questions/26025/how-to-install-vim-with-clientserver-on-debian">how
+to install vim with clientserver support</a>. But the issue remained
+even with client server enabled in vim.</p>
+<p>The second step was related to the fact that Debian 10 Buster uses
+wayland as a window manager. To force the use of x11 for zathura, in
+debian a zathura wrapper script containing:</p>
 <pre><code>#!/usr/bin/bash
 GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
-<p>Can be placed under the default user bin located at ~/.local/bin. This is one of the first element of the <code>$PATH</code> environment variable.</p>
+<p>Can be placed under the default user bin located at ~/.local/bin.
+This is one of the first element of the <code>$PATH</code> environment
+variable.</p>
 </div>
 </div>
 <div id="python-programming" class="section level2">
 <h2>Python programming</h2>
-<p>Plugins * <a href="https://github.com/python-mode/python-mode">Python mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a> it’s incompatible with python mode (according to the readme) * more explanations in the Jedi section below * <a href="https://github.com/ivanov/vim-ipython">vim ipython</a> * [vim-test] see also the tests section below.</p>
+<p>Plugins * <a href="https://github.com/python-mode/python-mode">Python
+mode</a> * <a href="https://github.com/python-mode/python-mode">Jedi</a>
+it’s incompatible with python mode (according to the readme) * more
+explanations in the Jedi section below * <a
+href="https://github.com/ivanov/vim-ipython">vim ipython</a> *
+[vim-test] see also the tests section below.</p>
 <p>Blog posts</p>
 <ul>
-<li>wiki.python.org <a href="https://wiki.python.org/moin/Vim">vim</a> mentions:
+<li>wiki.python.org <a href="https://wiki.python.org/moin/Vim">vim</a>
+mentions:
 <ul>
-<li><a href="https://200ok.ch/posts/vim-as-python-ide.html">vim as a python IDE</a></li>
+<li><a href="https://200ok.ch/posts/vim-as-python-ide.html">vim as a
+python IDE</a></li>
 </ul></li>
-<li>realpython.com <a href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim and python a match made in heaven</a></li>
-<li>reddit <a href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode or Jedi?</a> python mode seems to be for starting, most people turn the features off.</li>
-<li>SO <a href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running python code in VIM</a> Make sure your files start with a shebang.</li>
-<li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></li>
-<li>Vim on Python wiki (set softtabstop=4) or your python development environment (set tabstop=4 and set softtabstop=4)</li>
-<li>full stack python <a href="https://www.fullstackpython.com/vim.html">vim</a></li>
-<li><a href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim and python script debugging</a></li>
+<li>realpython.com <a
+href="https://realpython.com/vim-and-python-a-match-made-in-heaven/">Vim
+and python a match made in heaven</a></li>
+<li>reddit <a
+href="https://www.reddit.com/r/Python/comments/5f2fri/developing_python_with_vim_what_plugin_to_choose/">python-mode
+or Jedi?</a> python mode seems to be for starting, most people turn the
+features off.</li>
+<li>SO <a
+href="https://stackoverflow.com/questions/18948491/running-python-code-in-vim">Running
+python code in VIM</a> Make sure your files start with a shebang.</li>
+<li>Plug-in <a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter
+vim</a></li>
+<li>Vim on Python wiki (set softtabstop=4) or your python development
+environment (set tabstop=4 and set softtabstop=4)</li>
+<li>full stack python <a
+href="https://www.fullstackpython.com/vim.html">vim</a></li>
+<li><a
+href="https://stackoverflow.com/questions/1901528/vim-and-python-scripts-debugging">vim
+and python script debugging</a></li>
 </ul>
-<p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python workflow with terminal using tmux</a></p>
+<p>Reddit <a
+href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">python
+workflow with terminal using tmux</a></p>
 <blockquote>
-<p>"I run my scripts using</p>
+<p>“I run my scripts using</p>
 <p>ipython -i script.py</p>
-<p>That way I drop to an ipython shell whenever it breaks or finishes running. I also insert</p>
+<p>That way I drop to an ipython shell whenever it breaks or finishes
+running. I also insert</p>
 <p>from ipython import embed; embed();</p>
-<p>Instead of using pdb. Its really neat."</p>
+<p>Instead of using pdb. Its really neat.”</p>
 </blockquote>
 <div id="ale-linter" class="section level3">
 <h3>Ale Linter</h3>
 <p>I use the Ale linter to check the code quality.</p>
-<p>To copy code it’s preferable to deactivate the 2 characters columns used by ale as explained in <a href="https://vi.stackexchange.com/questions/21563/is-it-possible-to-disable-the-column-on-the-left-that-is-created-by-ale">Is it possible to disable the column on the left that is created by ALE?</a></p>
+<p>To copy code it’s preferable to deactivate the 2 characters columns
+used by ale as explained in <a
+href="https://vi.stackexchange.com/questions/21563/is-it-possible-to-disable-the-column-on-the-left-that-is-created-by-ale">Is
+it possible to disable the column on the left that is created by
+ALE?</a></p>
 <pre><code>:set signcolumn=no</code></pre>
 <p>The 2 characters column can later be shown again with</p>
 <pre><code>:set signcolumn=yes</code></pre>
@@ -1494,36 +1847,61 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 <div id="jedi-vim" class="section level3">
 <h3>Jedi vim</h3>
 <ul>
-<li><a href="https://github.com/davidhalter/jedi">Jedi</a> autocompletion, also used by ipython.</li>
-<li><a href="https://github.com/davidhalter/jedi-vim/blob/master/doc/jedi-vim.txt">Jedi vim documentation</a></li>
+<li><a href="https://github.com/davidhalter/jedi">Jedi</a>
+autocompletion, also used by ipython.</li>
+<li><a
+href="https://github.com/davidhalter/jedi-vim/blob/master/doc/jedi-vim.txt">Jedi
+vim documentation</a></li>
 </ul>
-<p>Jedi Installation required enabling python mode in vim, available inside this Debian package:</p>
+<p>Jedi Installation required enabling python mode in vim, available
+inside this Debian package:</p>
 <pre><code>sudo apt install vim-nox</code></pre>
 <p>Autocomplete is turned on to complete a word, press:</p>
 <pre><code>Ctrl+Space</code></pre>
-<p>To cycle through proposition you can use <code>Ctrl+space</code> again or:</p>
+<p>To cycle through proposition you can use <code>Ctrl+space</code>
+again or:</p>
 <pre><code>Ctrl+P
 Ctrl+N</code></pre>
-<p>Enter for example a module name, then use Ctrl+N and Ctrl+P to choose among the objects and functions in that module.</p>
+<p>Enter for example a module name, then use Ctrl+N and Ctrl+P to choose
+among the objects and functions in that module.</p>
 <p>Jump to definition:</p>
 <pre><code>&lt;leader&gt;d</code></pre>
-<p>I remapped the <code>&lt;leader&gt;</code> key to <code>,</code> in my .vimrc</p>
+<p>I remapped the <code>&lt;leader&gt;</code> key to <code>,</code> in
+my .vimrc</p>
 <pre><code>:let mapleader = &quot;,&quot;</code></pre>
-<p>See above section on navigation, you can use <code>Ctrl-O</code> to jump back and <code>Ctrl-I</code>to jump forward.</p>
+<p>See above section on navigation, you can use <code>Ctrl-O</code> to
+jump back and <code>Ctrl-I</code>to jump forward.</p>
 </div>
 </div>
 <div id="r-programming" class="section level2">
 <h2>R programming</h2>
 <ul>
-<li>Medium Xiaoou WANG <a href="https://medium.com/@xiaoouwang/how-to-turn-vim-into-a-perfect-better-r-ide-and-rmarkdown-writer-than-rstudio-part-i-48e1293c9c05">How to turn vim into a perfect, better R IDE and Rmarkdown writer than Rstudio (part I)</a></li>
-<li>reddit <a href="https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/">R programmers, do you prefer vim or Rstudio?</a> &gt; “Vim with fzf helps open these subsection code files super easily, ag helps &gt; me find keywords across all the files in my code folder, ctags helps me find &gt; functions I’ve defined, ale tells where I’ve made some trivial mistake, &gt; gitgutter tells me where I’ve made changes I’d maybe like to revisit later. I &gt; find these plugins alone make coding in vim much easier than R studio and &gt; they aren’t even R specific.”</li>
-<li>free code camp <a href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning vim into an IDE</a> Uses <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with both vim and neo vim</li>
+<li>Medium Xiaoou WANG <a
+href="https://medium.com/@xiaoouwang/how-to-turn-vim-into-a-perfect-better-r-ide-and-rmarkdown-writer-than-rstudio-part-i-48e1293c9c05">How
+to turn vim into a perfect, better R IDE and Rmarkdown writer than
+Rstudio (part I)</a></li>
+<li>reddit <a
+href="https://www.reddit.com/r/vim/comments/92x9u8/r_programmers_do_you_prefer_vim_to_rstudio/">R
+programmers, do you prefer vim or Rstudio?</a> &gt; “Vim with fzf helps
+open these subsection code files super easily, ag helps &gt; me find
+keywords across all the files in my code folder, ctags helps me find
+&gt; functions I’ve defined, ale tells where I’ve made some trivial
+mistake, &gt; gitgutter tells me where I’ve made changes I’d maybe like
+to revisit later. I &gt; find these plugins alone make coding in vim
+much easier than R studio and &gt; they aren’t even R specific.”</li>
+<li>free code camp <a
+href="https://www.freecodecamp.org/news/turning-vim-into-an-r-ide-cd9602e8c217/">Turning
+vim into an IDE</a> Uses <a
+href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> which works with
+both vim and neo vim</li>
 </ul>
 <div id="nvim-r" class="section level3">
 <h3>Nvim-R</h3>
-<p><a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> supports knitr and mappings can be defined for example:</p>
+<p><a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> supports
+knitr and mappings can be defined for example:</p>
 <p>RSendChunk RDSendChunk</p>
-<p>I mapped the local leader key to “;” by adding the following to my .vimrc:</p>
+<p>I mapped the local leader key to “;” by adding the following to my
+.vimrc:</p>
 <pre><code>let maplocalleader = &quot;;&quot;</code></pre>
 <p>Start R</p>
 <ul>
@@ -1570,13 +1948,19 @@ Ctrl+N</code></pre>
 </div>
 <div id="tags" class="section level3">
 <h3>Tags</h3>
-<p>To generate tags for R files contained in a project’s <code>R/</code> subfolder, define the following bash function:</p>
+<p>To generate tags for R files contained in a project’s <code>R/</code>
+subfolder, define the following bash function:</p>
 <pre class="bash"><code>rtags() {
     Rscript -e &quot;rtags(ofile = &#39;et&#39;); nvimcom::etags2ctags(&#39;et&#39;, &#39;tags&#39;); unlink(&#39;et&#39;)&quot;  &amp;&amp; cat tags
 }</code></pre>
 <p>Usage:</p>
 <pre><code>cd ~/rp/eutradeflows/R  &amp;&amp; rtags</code></pre>
-<p>The bash function above was inspired by NVimR’s <code>:RBuildTags</code> command. Alternatively, you can call the line starting with <code>rtags</code> above from within Vim with <code>:RBuildTags</code>. But this requires moving to the <code>/R</code> subfolder first and moving back to the project root after having created the tags:</p>
+<p>The bash function above was inspired by NVimR’s
+<code>:RBuildTags</code> command. Alternatively, you can call the line
+starting with <code>rtags</code> above from within Vim with
+<code>:RBuildTags</code>. But this requires moving to the
+<code>/R</code> subfolder first and moving back to the project root
+after having created the tags:</p>
 <pre><code>R &gt; setwd(&quot;R&quot;) # R command
 
 :RBuildTags # VIM command
@@ -1584,37 +1968,53 @@ Ctrl+N</code></pre>
 R &gt; setwd(&quot;..&quot;) # R command</code></pre>
 <p>Display tag files currently seen by vim:</p>
 <pre><code>:set tags</code></pre>
-<p>Navigate tag files with <code>CTRL+]</code> (<code>CTRL+ù</code> on my setup).</p>
-<p><a href="https://stackoverflow.com/a/14465438/2641825" class="uri">https://stackoverflow.com/a/14465438/2641825</a></p>
-<p>An NVim-R issue about displaying a nice <a href="https://github.com/jalvesaq/Nvim-R/issues/517">list of tags for R functions</a>.</p>
-<p>I have added some of my packages to the tag files always seen by vim:</p>
+<p>Navigate tag files with <code>CTRL+]</code> (<code>CTRL+ù</code> on
+my setup).</p>
+<p><a href="https://stackoverflow.com/a/14465438/2641825"
+class="uri">https://stackoverflow.com/a/14465438/2641825</a></p>
+<p>An NVim-R issue about displaying a nice <a
+href="https://github.com/jalvesaq/Nvim-R/issues/517">list of tags for R
+functions</a>.</p>
+<p>I have added some of my packages to the tag files always seen by
+vim:</p>
 <pre><code>autocmd FileType r set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags
 autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/tags</code></pre>
 <p>Setting up tags as explained in :help Nvim-R</p>
 <blockquote>
-<p>You could, for example, download and unpack R’s source code, start R inside the ~/.cache/Nvim-R directory and do the following commands:</p>
+<p>You could, for example, download and unpack R’s source code, start R
+inside the ~/.cache/Nvim-R directory and do the following commands:</p>
 </blockquote>
 <pre><code> rtags(path = &quot;/path/to/R/source/code&quot;, recursive = TRUE, ofile = &quot;RTAGS&quot;)
  etags2ctags(&quot;RTAGS&quot;, &quot;Rtags&quot;)</code></pre>
 <blockquote>
-<p>Then, you would quit R and do the following command in the terminal emulator:</p>
+<p>Then, you would quit R and do the following command in the terminal
+emulator:</p>
 </blockquote>
 <pre><code> ctags --languages=C,Fortran,Java,Tcl -R -f RsrcTags /path/to/R/source/code</code></pre>
 <blockquote>
-<p>Finally, you would put the following in your |vimrc|, optionally inside an |autocmd-group|:</p>
+<p>Finally, you would put the following in your |vimrc|, optionally
+inside an |autocmd-group|:</p>
 </blockquote>
 <pre><code> autocmd FileType r set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags
  autocmd FileType rnoweb set tags+=~/.cache/Nvim-R/Rtags,~/.cache/Nvim-R/RsrcTags</code></pre>
-<p>Config example <a href="https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899" class="uri">https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899</a></p>
+<p>Config example <a
+href="https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899"
+class="uri">https://gist.github.com/tgirke/7a7c197b443243937f68c422e5471899</a></p>
 </div>
 <div id="knitr-issue" class="section level3">
 <h3>Knitr issue</h3>
-<p>Posted this to <a href="https://github.com/jalvesaq/Nvim-R/issues/509" class="uri">https://github.com/jalvesaq/Nvim-R/issues/509</a></p>
-<p>One solution based on <code>:help Nvim-R-key-bindings</code>, is to use <code>SendCmdToR</code> as such:</p>
+<p>Posted this to <a
+href="https://github.com/jalvesaq/Nvim-R/issues/509"
+class="uri">https://github.com/jalvesaq/Nvim-R/issues/509</a></p>
+<p>One solution based on <code>:help Nvim-R-key-bindings</code>, is to
+use <code>SendCmdToR</code> as such:</p>
 <pre><code>:call g:SendCmdToR(&quot;setwd(opts_knit$get()$root.dir)&quot;)</code></pre>
-<p>I mapped this to <code>&lt;localleader&gt;wd</code> by editing my <code>.vimrc</code> as follows:</p>
+<p>I mapped this to <code>&lt;localleader&gt;wd</code> by editing my
+<code>.vimrc</code> as follows:</p>
 <pre><code>map &lt;silent&gt; &lt;LocalLeader&gt;wd  :call g:SendCmdToR(&quot;setwd(opts_knit$get()$root.dir)&quot;)&lt;CR&gt;</code></pre>
-<p>To use it, I run the setup chunk with <code>&lt;localleader&gt;ca</code>, then I call <code>&lt;localleader&gt;wd</code>.</p>
+<p>To use it, I run the setup chunk with
+<code>&lt;localleader&gt;ca</code>, then I call
+<code>&lt;localleader&gt;wd</code>.</p>
 </div>
 </div>
 </div>
@@ -1622,20 +2022,27 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 <h1>Programming tools</h1>
 <div id="debugger" class="section level2">
 <h2>Debugger</h2>
-<p>vi.stackexchange <a href="https://vi.stackexchange.com/questions/17962/python-debugging">Python debugging</a> <a href="https://github.com/gotcha/vimpdb">vimpdb</a></p>
+<p>vi.stackexchange <a
+href="https://vi.stackexchange.com/questions/17962/python-debugging">Python
+debugging</a> <a href="https://github.com/gotcha/vimpdb">vimpdb</a></p>
 </div>
 <div id="git-fugitive" class="section level2">
 <h2>Git fugitive</h2>
-<p>Once the fugitive plugin is installed the <code>:G</code> command can be used run any git command, such as:</p>
+<p>Once the fugitive plugin is installed the <code>:G</code> command can
+be used run any git command, such as:</p>
 <pre><code>:G status
 :G pull 
 :G log</code></pre>
-<p>The output of these command may appear in a vim buffer, or it may appear in a terminal, depending on whether or not fugitive has a special way to handle the output of git.</p>
+<p>The output of these command may appear in a vim buffer, or it may
+appear in a terminal, depending on whether or not fugitive has a special
+way to handle the output of git.</p>
 <div id="summary-buffer" class="section level3">
 <h3>Summary buffer</h3>
-<p>You can also call the command alone to open a fugitive summary buffer:</p>
+<p>You can also call the command alone to open a fugitive summary
+buffer:</p>
 <pre><code>:G</code></pre>
-<p>Within this summary buffer many things can be done with mappings. Move to the next file and expand inline diffs:</p>
+<p>Within this summary buffer many things can be done with mappings.
+Move to the next file and expand inline diffs:</p>
 <pre><code>i</code></pre>
 <p>Expand inline diffs of the file under the cursor :</p>
 <pre><code>&gt;</code></pre>
@@ -1650,7 +2057,12 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 -</code></pre>
 <p>Create a commit</p>
 <pre><code>cc</code></pre>
-<p>Discard the change under the cursor. This uses <code>checkout</code> or <code>clean</code> under the hood. A command is echoed that shows how to undo the change. Consult <code>:messages</code> to see it again. You can use this during a merge conflict do discard “our” changes (–theirs) in the “Unstaged” section or discard “their” changes (–ours) in the “Staged” section.</p>
+<p>Discard the change under the cursor. This uses <code>checkout</code>
+or <code>clean</code> under the hood. A command is echoed that shows how
+to undo the change. Consult <code>:messages</code> to see it again. You
+can use this during a merge conflict do discard “our” changes (–theirs)
+in the “Unstaged” section or discard “their” changes (–ours) in the
+“Staged” section.</p>
 <pre><code>X</code></pre>
 </div>
 <div id="git-commands-within-vim" class="section level3">
@@ -1659,7 +2071,8 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 <pre><code>:G blame</code></pre>
 <p>Git log of the current file only</p>
 <pre><code>:G log %</code></pre>
-<p>Since the word diff provided by fugitive is not colourized, I created an alias to display a word diff</p>
+<p>Since the word diff provided by fugitive is not colourized, I created
+an alias to display a word diff</p>
 <pre><code>:Gwdiff</code></pre>
 <p>It’s defined in .vimrc as:</p>
 <pre><code>command! Gwdiff vert term git diff --word-diff</code></pre>
@@ -1667,26 +2080,38 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 </div>
 <div id="linter" class="section level2">
 <h2>Linter</h2>
-<p>I have installed the <a href="https://github.com/dense-analysis/ale">ALE linter</a> and use it for python code. To temporarily disable ALE in a buffer:</p>
+<p>I have installed the <a
+href="https://github.com/dense-analysis/ale">ALE linter</a> and use it
+for python code. To temporarily disable ALE in a buffer:</p>
 <pre><code>:let b:ale_enabled = 0</code></pre>
 <p>To enable it:</p>
 <pre><code>:let b:ale_enabled = 1</code></pre>
 <p>For the python options, see:</p>
 <pre><code>:h ale-python-options</code></pre>
-<p>I’ve added this option to my .vimrc to show which linter is complaining</p>
+<p>I’ve added this option to my .vimrc to show which linter is
+complaining</p>
 <pre><code>let g:ale_echo_msg_format = &#39;[%linter%] %s&#39;</code></pre>
 <p>The linters I see most in python code are pylint and flake8.</p>
-<p>Pylint complains about <a href="https://github.com/PyCQA/pylint/issues/2018">variable names that are too short</a></p>
-<p>See the <a href="python.html">python page</a> for the configuration details of the linters.</p>
+<p>Pylint complains about <a
+href="https://github.com/PyCQA/pylint/issues/2018">variable names that
+are too short</a></p>
+<p>See the <a href="python.html">python page</a> for the configuration
+details of the linters.</p>
 </div>
 <div id="navigate-code-with-tags" class="section level2">
 <h2>Navigate code with tags</h2>
-<p>Install <a href="https://github.com/universal-ctags/ctags">universal ctags</a>, the updated version</p>
+<p>Install <a href="https://github.com/universal-ctags/ctags">universal
+ctags</a>, the updated version</p>
 <pre><code>sudo apt install universal-ctags</code></pre>
-<p>This is an updated version exuberant ctags (not updated since 2009).</p>
-<p>I have defined shortcuts for the French AZERTY keyboard. I use <code>ctrl %</code> to jump to a tag, because it’s besides the letter M, accessible with the little finger.</p>
+<p>This is an updated version exuberant ctags (not updated since
+2009).</p>
+<p>I have defined shortcuts for the French AZERTY keyboard. I use
+<code>ctrl %</code> to jump to a tag, because it’s besides the letter M,
+accessible with the little finger.</p>
 <ul>
-<li>Reddit <a href="https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/">comparison of taglist and tagbar</a></li>
+<li>Reddit <a
+href="https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/">comparison
+of taglist and tagbar</a></li>
 </ul>
 <p>Help page for NvimR</p>
 <pre><code>:help RBuildTags</code></pre>
@@ -1694,19 +2119,31 @@ autocmd FileType rmd set tags+=~/rp/tradeharvester/R/tags,~/rp/eutradeflows/R/ta
 <h3>Taglist</h3>
 <p>Install the taglist plugin with vundle</p>
 <pre><code>Plugin &#39;yegappan/taglist&#39;</code></pre>
-<p><a href="http://vim-taglist.sourceforge.net/manual.html#taglist-internet">taglist manual</a></p>
+<p><a
+href="http://vim-taglist.sourceforge.net/manual.html#taglist-internet">taglist
+manual</a></p>
 <blockquote>
-<p>“You can open the taglist window using the”:TlistOpen" or the “:TlistToggle” commands. The “:TlistOpen” command opens the taglist window and jumps to it. The “:TlistToggle” command opens or closes (toggle) the taglist window and the cursor remains in the current window."</p>
+<p>“You can open the taglist window using the”:TlistOpen” or the
+“:TlistToggle” commands. The “:TlistOpen” command opens the taglist
+window and jumps to it. The “:TlistToggle” command opens or closes
+(toggle) the taglist window and the cursor remains in the current
+window.”</p>
 </blockquote>
 <p>Help:</p>
 <pre><code>:help taglist-intro</code></pre>
 </div>
 <div id="tagbar" class="section level3">
 <h3>Tagbar</h3>
-<p>I don’t use it because it opens only one file in the list, see feature request <a href="https://github.com/majutsushi/tagbar/issues/31">open multiple files like taglist 31</a></p>
-<p>An alternative plugin called <a href="https://github.com/majutsushi/tagbar">tagbar</a> enables</p>
+<p>I don’t use it because it opens only one file in the list, see
+feature request <a
+href="https://github.com/majutsushi/tagbar/issues/31">open multiple
+files like taglist 31</a></p>
+<p>An alternative plugin called <a
+href="https://github.com/majutsushi/tagbar">tagbar</a> enables</p>
 <pre><code>https://github.com/majutsushi/tagbar</code></pre>
-<p><a href="">latex related issues</a> <a href="https://github.com/majutsushi/tagbar/issues/336">Issue 336 too much space</a> Recommends:</p>
+<p><a href="">latex related issues</a> <a
+href="https://github.com/majutsushi/tagbar/issues/336">Issue 336 too
+much space</a> Recommends:</p>
 <pre><code>let g:tagbar_compact = 1</code></pre>
 <p>Here are the settings I used when I tried tagbar:</p>
 <pre><code>&quot; Settings for plugin &#39;majutsushi/tagbar&#39;
@@ -1720,12 +2157,24 @@ let g:tagbar_compact = 1</code></pre>
 </div>
 <div id="slime-to-send-code-to-target-terminal" class="section level2">
 <h2>Slime to send code to target terminal</h2>
-<p><a href="https://github.com/jpalardy/vim-slime">vim slime</a> &gt; “Grab some text and send it to a target, most probably: GNU Screen, tmux or Vim Terminal”</p>
-<p>Tmux is not the default, to use it you will have to add this line to your .vimrc:</p>
+<p><a href="https://github.com/jpalardy/vim-slime">vim slime</a> &gt;
+“Grab some text and send it to a target, most probably: GNU Screen, tmux
+or Vim Terminal”</p>
+<p>Tmux is not the default, to use it you will have to add this line to
+your .vimrc:</p>
 <pre><code>let g:slime_target = &quot;tmux&quot;</code></pre>
-<p>Then add this to configure the sending of commands to a <a href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read Eval Print Loop</a>: in the general use case of vim in a split tmux window with a REPL in the other pane:</p>
+<p>Then add this to configure the sending of commands to a <a
+href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read
+Eval Print Loop</a>: in the general use case of vim in a split tmux
+window with a REPL in the other pane:</p>
 <pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
-<p>Excessive indentation issues can arrise when slime sends indented lines to the ipython console. For example after a function definition, such as <code>def function_name():</code> ipython places the cursor at the indented place (4 spaces) and slime sends an additional 4 (or more spaces) to indent the line further. This shouldn’t be done when slime is sending intput. Ipython’s auto indentation behaviour can be turned off by sending the following command to ipython:</p>
+<p>Excessive indentation issues can arrise when slime sends indented
+lines to the ipython console. For example after a function definition,
+such as <code>def function_name():</code> ipython places the cursor at
+the indented place (4 spaces) and slime sends an additional 4 (or more
+spaces) to indent the line further. This shouldn’t be done when slime is
+sending intput. Ipython’s auto indentation behaviour can be turned off
+by sending the following command to ipython:</p>
 <pre><code>%autoindent off</code></pre>
 </div>
 <div id="syntax-highlight" class="section level2">
@@ -1734,12 +2183,20 @@ let g:tagbar_compact = 1</code></pre>
 <pre><code>syn off</code></pre>
 <p>Start Vim with syntax highlight turned off</p>
 <pre><code>vim -c &#39;syn off&#39;</code></pre>
-<p>You can also specify a rule that vim should turn off syntax highlight for large files <a href="https://stackoverflow.com/questions/53729940/how-do-i-start-vim-with-syntax-highlighting-off">Stackoverflow question</a>.</p>
+<p>You can also specify a rule that vim should turn off syntax highlight
+for large files <a
+href="https://stackoverflow.com/questions/53729940/how-do-i-start-vim-with-syntax-highlighting-off">Stackoverflow
+question</a>.</p>
 <div id="concealing" class="section level3">
 <h3>Concealing</h3>
 <div id="markdown" class="section level4">
 <h4>Markdown</h4>
-<p>Use the shorthand version <code>:set cole=0</code> to turn off concealing of markdown bold <code>**</code> and italic <code>*</code> marks as well as the replacement of <code># Title</code> to <code>§ Title</code>. More explanations in <a href="https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json">How to prevent vim from hiding symbols in Markdown and JSON</a></p>
+<p>Use the shorthand version <code>:set cole=0</code> to turn off
+concealing of markdown bold <code>**</code> and italic <code>*</code>
+marks as well as the replacement of <code># Title</code> to
+<code>§ Title</code>. More explanations in <a
+href="https://vi.stackexchange.com/questions/7258/how-do-i-prevent-vim-from-hiding-symbols-in-markdown-and-json">How
+to prevent vim from hiding symbols in Markdown and JSON</a></p>
 <pre><code>:set cole=0</code></pre>
 <p>Or set the file type to text</p>
 <pre><code>:set ft=text</code></pre>
@@ -1748,40 +2205,59 @@ let g:tagbar_compact = 1</code></pre>
 </div>
 <div id="tests" class="section level2">
 <h2>Tests</h2>
-<p><a href="https://github.com/vim-test/vim-test">Vim Test</a> Works with pytest and other testing suites for many languages. Test results appear in the quick fix window.</p>
-<p><a href="https://github.com/alfredodeza/pytest.vim">pytest vim</a> Run pytest from within vim.</p>
+<p><a href="https://github.com/vim-test/vim-test">Vim Test</a> Works
+with pytest and other testing suites for many languages. Test results
+appear in the quick fix window.</p>
+<p><a href="https://github.com/alfredodeza/pytest.vim">pytest vim</a>
+Run pytest from within vim.</p>
 </div>
 </div>
 <div id="terminal-interaction" class="section level1">
 <h1>Terminal interaction</h1>
 <div id="bang-commands" class="section level2">
 <h2>Bang commands</h2>
-<p>Use a Bang! to run a command directly, for example to see how many words are in the file, run:</p>
+<p>Use a Bang! to run a command directly, for example to see how many
+words are in the file, run:</p>
 <pre><code>:! wc %</code></pre>
 <p>To insert the word count directly in the file, run:</p>
 <pre><code>!! wc %</code></pre>
-<p>You can copy (<code>y $</code>) and paste a command in the vim command line with <code>CTRL + R + "</code>.</p>
+<p>You can copy (<code>y $</code>) and paste a command in the vim
+command line with <code>CTRL + R + "</code>.</p>
 <p>Insert text from a specified file into the current buffer:</p>
 <pre><code>:r textfile</code></pre>
-<p>You can also read in the output of shell applications. For example, if you wanted to include a list of files from a specific directory, you could include them using a read command:</p>
+<p>You can also read in the output of shell applications. For example,
+if you wanted to include a list of files from a specific directory, you
+could include them using a read command:</p>
 <pre><code>:r ! ls -1 /home/user/directory</code></pre>
 <p>Or simply using the double bang</p>
 <pre><code> !! ls</code></pre>
 </div>
 <div id="shell" class="section level2">
 <h2>Shell</h2>
-<p><a href="https://www.linux.com/learn/vim-tips-working-external-commands">Working with external commands</a> explains how to start a shell:</p>
+<p><a
+href="https://www.linux.com/learn/vim-tips-working-external-commands">Working
+with external commands</a> explains how to start a shell:</p>
 <pre><code>:shell</code></pre>
 <p>Then exit the shell normally with <code>exit</code>.</p>
 <p>See also terminal buffer below.</p>
 </div>
 <div id="terminal-buffer" class="section level2">
 <h2>Terminal buffer</h2>
-<p>You can start a terminal inside a vim split by entering the command:</p>
+<p>You can start a terminal inside a vim split by entering the
+command:</p>
 <pre><code>:terminal</code></pre>
-<p>To <a href="https://vi.stackexchange.com/questions/20643/how-to-enter-normal-mode-while-in-terminal-buffer">enter the normal mode in a terminal buffer</a>:</p>
+<p>To <a
+href="https://vi.stackexchange.com/questions/20643/how-to-enter-normal-mode-while-in-terminal-buffer">enter
+the normal mode in a terminal buffer</a>:</p>
 <pre><code>CTRL+W+N</code></pre>
-<p>Reddit <a href="https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/">does anybody use terminal instead of tmux and a normal terminal?</a> Some users prefer tmux panes and windows, others prefer vim terminal. I have not used vim terminal buffers enough to know how to use them properly. For example <a href="https://vimawesome.com/plugin/vim-slime#vim-terminal">slime is also working with vim’s terminal</a></p>
+<p>Reddit <a
+href="https://www.reddit.com/r/vim/comments/8zlsdo/does_anybody_use_terminal_instead_of_tmux_and_a/">does
+anybody use terminal instead of tmux and a normal terminal?</a> Some
+users prefer tmux panes and windows, others prefer vim terminal. I have
+not used vim terminal buffers enough to know how to use them properly.
+For example <a
+href="https://vimawesome.com/plugin/vim-slime#vim-terminal">slime is
+also working with vim’s terminal</a></p>
 <p>To start a vertical terminal:</p>
 <pre><code>:vert term</code></pre>
 <p>Open a terminal in a new tab:</p>
@@ -1790,7 +2266,8 @@ let g:tagbar_compact = 1</code></pre>
 <pre><code>:term make</code></pre>
 <p>Start ipython3:</p>
 <pre><code>:vert term ipython3</code></pre>
-<p>Change the terminal window size to be 4 lines high (works for all subsequent opening of a terminal <code>:term</code>)</p>
+<p>Change the terminal window size to be 4 lines high (works for all
+subsequent opening of a terminal <code>:term</code>)</p>
 <pre><code>:set termwinsize=4x
 :set tws=4x</code></pre>
 <p>Change the size of the current terminal</p>
@@ -1801,7 +2278,11 @@ let g:tagbar_compact = 1</code></pre>
 <h1>Tools</h1>
 <div id="count-words" class="section level2">
 <h2>Count words</h2>
-<p><a href="https://vim.fandom.com/wiki/Word_count">Word coung</a>: &gt; To count the number of words in the current buffer, press g then Ctrl-g. To &gt; count the number of words in a block, select the block (for example, type V5j &gt; to select 6 lines) or vip to select the current paragraph and again press</p>
+<p><a href="https://vim.fandom.com/wiki/Word_count">Word coung</a>: &gt;
+To count the number of words in the current buffer, press g then Ctrl-g.
+To &gt; count the number of words in a block, select the block (for
+example, type V5j &gt; to select 6 lines) or vip to select the current
+paragraph and again press</p>
 <pre><code>g
 Ctrl-g</code></pre>
 </div>
@@ -1814,25 +2295,42 @@ q   stop recording
 @n  execute your macro
 @@  execute your macro again </code></pre>
 <blockquote>
-<p>“Suppose you have a macro which operates on the text in a single line. You can run the macro on each line in a visual selection in a single operation: Visually select some lines (for example, type vip to select the current paragraph). Type :normal <span class="citation">@q</span> to run the macro from register q on each line.”</p>
+<p>“Suppose you have a macro which operates on the text in a single
+line. You can run the macro on each line in a visual selection in a
+single operation: Visually select some lines (for example, type vip to
+select the current paragraph). Type :normal <span
+class="citation">@q</span> to run the macro from register q on each
+line.”</p>
 </blockquote>
-<p><a href="https://stackoverflow.com/a/10414748/2641825">Macro to add a new line below each line</a></p>
+<p><a href="https://stackoverflow.com/a/10414748/2641825">Macro to add a
+new line below each line</a></p>
 <pre><code>qq     &quot; start recording to register q (you could use any register from a to z)
 o      &quot; insert an empty line below cursor
 &lt;Esc&gt;  &quot; switch to normal mode
 jjj    &quot; move the cursor 3 lines downward
 q      &quot; stop recording</code></pre>
-<p>Then just move to the start line and type <a href="mailto:1000@q" class="email">1000@q</a> to execute your macro 1000 times.</p>
+<p>Then just move to the start line and type <a href="mailto:1000@q"
+class="email">1000@q</a> to execute your macro 1000 times.</p>
 </div>
 <div id="spell-check" class="section level2">
 <h2>Spell check</h2>
-<p><a href="https://superuser.com/questions/911412/how-to-configure-vim-spellcheck-to-use-two-languages">How to configure vim spellcheck to use two languages</a> To use the spellcheck for two languages, add this to your <code>~/.vimrc</code>:</p>
+<p><a
+href="https://superuser.com/questions/911412/how-to-configure-vim-spellcheck-to-use-two-languages">How
+to configure vim spellcheck to use two languages</a> To use the
+spellcheck for two languages, add this to your
+<code>~/.vimrc</code>:</p>
 <pre><code>set spell spelllang=en_gb,fr</code></pre>
-<p>To use the spellcheck only temporary for an additional language (italian in this case):</p>
+<p>To use the spellcheck only temporary for an additional language
+(italian in this case):</p>
 <pre><code>set spell spelllang=it
 set spell spelllang=de</code></pre>
-<p>This might require installing addition Debian packages on the system.</p>
-<p>On the first use, vim may give a warning that some word lists are missing. <a href="https://www.monolune.com/how-to-make-vim-download-missing-word-lists/">How to make vim download missing word lists</a> To solve this issue, turn spell check off</p>
+<p>This might require installing addition Debian packages on the
+system.</p>
+<p>On the first use, vim may give a warning that some word lists are
+missing. <a
+href="https://www.monolune.com/how-to-make-vim-download-missing-word-lists/">How
+to make vim download missing word lists</a> To solve this issue, turn
+spell check off</p>
 <pre><code>:set nospell </code></pre>
 <p>Turn spell check on</p>
 <pre><code>:set spell</code></pre>
@@ -1841,69 +2339,118 @@ set spell spelllang=de</code></pre>
 <pre><code>:setlocal spell spelllang=en_gb   </code></pre>
 <p>Find alternative for highlighted word:</p>
 <pre><code>z=</code></pre>
-<p><a href="https://superuser.com/questions/133208/how-to-make-vim-spellcheck-remember-a-new-word">How to make vim spell check remember a word</a> Mark word as correct, this creates a spell file under /home/user/.vim/spell:</p>
+<p><a
+href="https://superuser.com/questions/133208/how-to-make-vim-spellcheck-remember-a-new-word">How
+to make vim spell check remember a word</a> Mark word as correct, this
+creates a spell file under /home/user/.vim/spell:</p>
 <pre><code>zg </code></pre>
 <p>Mark word as incorrect</p>
 <pre><code>zw</code></pre>
 </div>
 <div id="vim-diff" class="section level2">
 <h2>Vim diff</h2>
-<p>View differences between <code>file1</code> and <code>file2</code> (vim documentation)</p>
+<p>View differences between <code>file1</code> and <code>file2</code>
+(vim documentation)</p>
 <pre><code>vimdiff file1 file2</code></pre>
 </div>
 </div>
 <div id="blogs-and-resources" class="section level1">
 <h1>Blogs and resources</h1>
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my 2014 blog post on Vim commands</a>.</p>
+<p>This page is the continuation of <a
+href="https://paulremote.blogspot.de/2014/07/vim-commands.html">my 2014
+blog post on Vim commands</a>.</p>
 <div id="other-editors" class="section level2">
 <h2>Other editors</h2>
 <ul>
-<li><p><a href="https://www.spacemacs.org/doc/VIMUSERS.html">Spacemacs</a></p>
+<li><p><a
+href="https://www.spacemacs.org/doc/VIMUSERS.html">Spacemacs</a></p>
 <blockquote>
-<p>“Spacemacs is an attempt to improve on both vim and Emacs using the superior modal editing of vim and the nicer configuration language of Emacs.”</p>
+<p>“Spacemacs is an attempt to improve on both vim and Emacs using the
+superior modal editing of vim and the nicer configuration language of
+Emacs.”</p>
 </blockquote></li>
-<li><p><a href="https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1">Why atom cant replace vim</a></p>
+<li><p><a
+href="https://medium.com/@mkozlows/why-atom-cant-replace-vim-433852f4b4d1">Why
+atom cant replace vim</a></p>
 <blockquote>
-<p>“This philosophy of minimalist commands that can be composed together is the fundamental originating philosophy of Unix, and Vim exemplifies it like no other editor.”</p>
+<p>“This philosophy of minimalist commands that can be composed together
+is the fundamental originating philosophy of Unix, and Vim exemplifies
+it like no other editor.”</p>
 </blockquote></li>
-<li><p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter vim</a></p></li>
-<li><p><a href="https://www.maketecheasier.com/useful-emacs-packages/">5 emacs packages for better productivity</a>: Org mode, magit, evil mode, focus mode, darkroom</p></li>
+<li><p><a href="https://github.com/jupyter-vim/jupyter-vim">Jupyter
+vim</a></p></li>
+<li><p><a href="https://www.maketecheasier.com/useful-emacs-packages/">5
+emacs packages for better productivity</a>: Org mode, magit, evil mode,
+focus mode, darkroom</p></li>
 </ul>
 </div>
 <div id="demonstrations-of-vim-use" class="section level2">
 <h2>Demonstrations of vim use</h2>
-<p>Reddit <a href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python workflow with terminal using tmux</a> I tried slime.</p>
-<p><a href="https://github.com/tridactyl/tridactyl">Browse the web in vim mode</a></p>
-<p><a href="https://towardsdatascience.com/boosting-your-data-science-workflow-with-vim-tmux-14505c5e016e">Boosting your data science workflow with vim+tmux</a></p>
+<p>Reddit <a
+href="https://www.reddit.com/r/vim/comments/chdl60/python_workflow_with_terminal_using_tmux/">Python
+workflow with terminal using tmux</a> I tried slime.</p>
+<p><a href="https://github.com/tridactyl/tridactyl">Browse the web in
+vim mode</a></p>
+<p><a
+href="https://towardsdatascience.com/boosting-your-data-science-workflow-with-vim-tmux-14505c5e016e">Boosting
+your data science workflow with vim+tmux</a></p>
 </div>
 <div id="learning-vim" class="section level2">
 <h2>Learning vim</h2>
 <ul>
-<li><p><a href="https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/">Should I introduce vim to my kid</a> &gt; “Learn to support, not to shoehorn.”</p></li>
+<li><p><a
+href="https://www.reddit.com/r/vim/comments/aak1lf/should_i_introduce_vim_to_my_kid/">Should
+I introduce vim to my kid</a> &gt; “Learn to support, not to
+shoehorn.”</p></li>
 <li><p><a href="https://vim-adventures.com/">Vim adventures</a></p></li>
-<li><p><a href="https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/">Learn vim basic featurs</a></p></li>
-<li><p><a href="https://github.com/mhinz/vim-galore#the-vim-philosophy">Vim Galore</a> introduction to vim maintained by a group of users</p></li>
+<li><p><a
+href="https://www.freecodecamp.org/news/learn-linux-vim-basic-features-19134461ab85/">Learn
+vim basic featurs</a></p></li>
+<li><p><a
+href="https://github.com/mhinz/vim-galore#the-vim-philosophy">Vim
+Galore</a> introduction to vim maintained by a group of users</p></li>
 </ul>
 </div>
 <div id="the-history-of-vim" class="section level2">
 <h2>The history of vim</h2>
 <ul>
-<li><a href="https://www.binpress.com/vim-creator-bram-moolenaar-interview/">Vim creator Bram Moolenaar interview</a></li>
+<li><a
+href="https://www.binpress.com/vim-creator-bram-moolenaar-interview/">Vim
+creator Bram Moolenaar interview</a></li>
 </ul>
 <blockquote>
-<p>“The project I encountered in Kibaale is completely different. The foreigners who work there are volunteers, they have sponsors themselves to make it possible to live and work there. All the donations for children go to the project and are spent there. Also for staff and vehicles, but that’s local staff that then spend their money in the country, thus indirectly it helps others. And in the end seeing the children grow up, finish their studies and find a job is wonderful.”</p>
+<p>“The project I encountered in Kibaale is completely different. The
+foreigners who work there are volunteers, they have sponsors themselves
+to make it possible to live and work there. All the donations for
+children go to the project and are spent there. Also for staff and
+vehicles, but that’s local staff that then spend their money in the
+country, thus indirectly it helps others. And in the end seeing the
+children grow up, finish their studies and find a job is wonderful.”</p>
 </blockquote>
 <ul>
 <li><a href="https://en.wikipedia.org/wiki/Vi">Vi</a></li>
 </ul>
 <blockquote>
-<p>“The original code for vi was written by Bill Joy in 1976, as the visual mode for a line editor called ex that Joy had written with Chuck Haley.[3] Bill Joy’s ex 1.1 was released as part of the first Berkeley Software Distribution (BSD) Unix release in March 1978. It was not until version 2.0 of ex, released as part of Second BSD in May 1979 that the editor was installed under the name”vi" (which took users straight into ex’s visual mode),[4] and the name by which it is known today. […] On the free software process</p>
+<p>“The original code for vi was written by Bill Joy in 1976, as the
+visual mode for a line editor called ex that Joy had written with Chuck
+Haley.[3] Bill Joy’s ex 1.1 was released as part of the first Berkeley
+Software Distribution (BSD) Unix release in March 1978. It was not until
+version 2.0 of ex, released as part of Second BSD in May 1979 that the
+editor was installed under the name”vi” (which took users straight into
+ex’s visual mode),[4] and the name by which it is known today. […] On
+the free software process</p>
 </blockquote>
 <ul>
-<li>Vim is based on vi, itself based on the <a href="https://en.wikipedia.org/wiki/Ex_(text_editor)">ex editor</a></li>
+<li>Vim is based on vi, itself based on the <a
+href="https://en.wikipedia.org/wiki/Ex_(text_editor)">ex editor</a></li>
 </ul>
 <blockquote>
-<p>“The core ex commands which relate to search and replace are essential to vi. For instance, the ex command :%s/XXX/YYY/g replaces every instance of XXX with YYY, and works in vi too. The % means every line in the file. The ‘g’ stands for global and means replace every instance on every line (if it was not specified, then only the first instance on each line would be replaced).”</p>
+<p>“The core ex commands which relate to search and replace are
+essential to vi. For instance, the ex command :%s/XXX/YYY/g replaces
+every instance of XXX with YYY, and works in vi too. The % means every
+line in the file. The ‘g’ stands for global and means replace every
+instance on every line (if it was not specified, then only the first
+instance on each line would be replaced).”</p>
 </blockquote>
 </div>
 </div>

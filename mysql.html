@@ -443,11 +443,16 @@ div.tocify {
 </div>
 
 
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/12/mysql-commands.html">my blog post on MySQL commands</a></p>
-<p>I currently use the MariaDB client on Debian GNU/Linux. I have kept <code>mysql &gt;</code> prompts below.</p>
-<div id="as-root-setup-users-and-create-databases" class="section level1">
+<p>This page is the continuation of <a
+href="https://paulremote.blogspot.de/2013/12/mysql-commands.html">my
+blog post on MySQL commands</a></p>
+<p>I currently use the MariaDB client on Debian GNU/Linux. I have kept
+<code>mysql &gt;</code> prompts below.</p>
+<div id="as-root-setup-users-and-create-databases"
+class="section level1">
 <h1>As root, setup users and create databases</h1>
-<p>As root, create a database and grant permissions to a new user To connect to the mysql client as root, in the shell</p>
+<p>As root, create a database and grant permissions to a new user To
+connect to the mysql client as root, in the shell</p>
 <pre><code>sudo mysql 
 # or
 mysql -u root -p </code></pre>
@@ -468,7 +473,8 @@ mysql -u root -p </code></pre>
 </div>
 <div id="graphical-clients" class="section level1">
 <h1>Graphical clients</h1>
-<p>On Ubuntu, I used mysql navigator by shi bok jang. On Debian, I used mysql workbench</p>
+<p>On Ubuntu, I used mysql navigator by shi bok jang. On Debian, I used
+mysql workbench</p>
 <p>Lately I mostly use the command line client.</p>
 </div>
 <div id="user-operations" class="section level1">
@@ -488,19 +494,24 @@ mysql -u root -p </code></pre>
 <pre><code>mysql</code></pre>
 <p>Then in the mysql client:</p>
 <pre><code>mysql&gt; connect databasename;</code></pre>
-<p>If you have the correct privileges, you can create a database with a pipe. How to create a database</p>
+<p>If you have the correct privileges, you can create a database with a
+pipe. How to create a database</p>
 <pre><code>echo &quot;create database databasename&quot; | mysql -u username -p </code></pre>
 </div>
 <div id="configuration-file-my.cnf" class="section level2">
 <h2>Configuration file my.cnf</h2>
-<p>It’s not desirable to share user name and password in software disseminated over the internet. User name, password and database names can be placed under groups in the configuration file. For example for a given project enter this group in ~/.my.cnf</p>
+<p>It’s not desirable to share user name and password in software
+disseminated over the internet. User name, password and database names
+can be placed under groups in the configuration file. For example for a
+given project enter this group in ~/.my.cnf</p>
 <pre><code>[project_name]
 
 user = user
 password = password
 host = localhost
 database = dbname</code></pre>
-<p>Then simply specify group=project_name to the client that accesses the database.</p>
+<p>Then simply specify group=project_name to the client that accesses
+the database.</p>
 </div>
 </div>
 <div id="table-operations" class="section level1">
@@ -510,8 +521,13 @@ database = dbname</code></pre>
 </div>
 <div id="database-operations" class="section level1">
 <h1>Database operations</h1>
-<p><code>mysqldump</code> and <code>mysqladmin</code> commands below work if your shell user name is the same as your mysql user name. If it’s different add -u username to the command. If you have configured <code>~/.my.cnf</code> (see below) you don’t even need the <code>-p</code> switch.</p>
-<div id="show-information-about-databases-tables-columns" class="section level2">
+<p><code>mysqldump</code> and <code>mysqladmin</code> commands below
+work if your shell user name is the same as your mysql user name. If
+it’s different add -u username to the command. If you have configured
+<code>~/.my.cnf</code> (see below) you don’t even need the
+<code>-p</code> switch.</p>
+<div id="show-information-about-databases-tables-columns"
+class="section level2">
 <h2>Show information about databases, tables, columns</h2>
 <p>List all databases (in mysql client)</p>
 <pre><code>mysql&gt; show databases; </code></pre>
@@ -519,7 +535,12 @@ database = dbname</code></pre>
 <pre><code>mysql&gt; show tables;</code></pre>
 <p>Show column information</p>
 <pre><code>mysql&gt; show columns from tablename;</code></pre>
-<p>Show the <a href="https://chartio.com/resources/tutorials/how-to-get-the-size-of-a-table-in-mysql/">size of a table</a>:: select TABLE_NAME, round((DATA_LENGTH + INDEX_LENGTH)/1024/1024) AS <code>Size (MB)</code> from information_schema.TABLES where TABLE_SCHEMA = “tradeflows” and TABLE_NAME = “vld_comext_monthly”;</p>
+<p>Show the <a
+href="https://chartio.com/resources/tutorials/how-to-get-the-size-of-a-table-in-mysql/">size
+of a table</a>:: select TABLE_NAME, round((DATA_LENGTH +
+INDEX_LENGTH)/1024/1024) AS <code>Size (MB)</code> from
+information_schema.TABLES where TABLE_SCHEMA = “tradeflows” and
+TABLE_NAME = “vld_comext_monthly”;</p>
 </div>
 <div id="drop" class="section level2">
 <h2>Drop</h2>

@@ -445,17 +445,35 @@ div.tocify {
 
 <div id="from-python-to-common-lisp" class="section level1">
 <h1>From Python to Common Lisp</h1>
-<p>Dimitri Fontaine 2014 <a href="https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/">Why is pgloader faster ?</a></p>
+<p>Dimitri Fontaine 2014 <a
+href="https://tapoueh.org/blog/2014/05/why-is-pgloader-so-much-faster/">Why
+is pgloader faster ?</a></p>
 <blockquote>
-<p>“In searching for a modern programming language the best candidate I found was actually Common Lisp.”</p>
+<p>“In searching for a modern programming language the best candidate I
+found was actually Common Lisp.”</p>
 </blockquote>
 <blockquote>
-<p>“Not only is Common Lisp code compiled to machine code when using most Common Lisp Implementations such as SBCL or Clozure Common Lisp; it’s also possible to actually benefit from parallel computing and threads in Common Lisp. In the pgloader case I’ve been using the lparallel utilities, in particular its queuing facility to be able to implement asynchronous IOs where a thread reads the source data and preprocess it, fills up a batch at a time in a buffer that is then pushed down to the writer thread, that handles the COPY protocol and operations. So my current analysis is that the new thread based architecture used with a very powerful compiler for the Common Lisp high-level language are allowing pgloader to enter a whole new field of data loading performances.”</p>
+<p>“Not only is Common Lisp code compiled to machine code when using
+most Common Lisp Implementations such as SBCL or Clozure Common Lisp;
+it’s also possible to actually benefit from parallel computing and
+threads in Common Lisp. In the pgloader case I’ve been using the
+lparallel utilities, in particular its queuing facility to be able to
+implement asynchronous IOs where a thread reads the source data and
+preprocess it, fills up a batch at a time in a buffer that is then
+pushed down to the writer thread, that handles the COPY protocol and
+operations. So my current analysis is that the new thread based
+architecture used with a very powerful compiler for the Common Lisp
+high-level language are allowing pgloader to enter a whole new field of
+data loading performances.”</p>
 </blockquote>
 </div>
 <div id="vim-plugins-for-lisp" class="section level1">
 <h1>Vim plugins for Lisp</h1>
-<p>Vim Slime is a vim plugin inspired by the original Superior Lisp Interaction Mode for Emacs. Going down that rabbit hole, I found a link to this <a href="www.norvig.com/luv-slides.ps">1990ies Lisp style guide</a>, which has quite a nice way to formulate decisions frame works for what constitutes good programming.</p>
+<p>Vim Slime is a vim plugin inspired by the original Superior Lisp
+Interaction Mode for Emacs. Going down that rabbit hole, I found a link
+to this <a href="www.norvig.com/luv-slides.ps">1990ies Lisp style
+guide</a>, which has quite a nice way to formulate decisions frame works
+for what constitutes good programming.</p>
 </div>
 
 
