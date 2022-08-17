@@ -196,6 +196,55 @@ to set separate files for attribution.
 [How to specify multiple authords in setup.py?](https://stackoverflow.com/questions/9999829/how-to-specify-multiple-authors-emails-in-setup-py)
 
 
+### Non code files
+
+The Python packaging documentation on [adding non code
+files](https://python-packaging.readthedocs.io/en/latest/non-code-files.html)
+
+> "The mechanism that provides this is the MANIFEST.in file. This is
+> relatively quite simple: MANIFEST.in is really just a list of relative file
+> paths specifying files or globs to include.:
+
+    include README.rst
+    include docs/*.txt
+    include funniest/data.json
+
+> "In order for these files to be copied at install time to the package’s
+> folder inside site-packages, you’ll need to supply include_package_data=True
+> to the setup() function."
+
+> "Files which are to be used by your installed library (e.g. data files to
+> support a particular computation method) should usually be placed inside of
+> the Python module directory itself. E.g. in our case, a data file might be at
+> `funniest/funniest/data.json`. That way, code which loads those files can
+> easily specify a relative path from the consuming module’s `__file__`
+> variable."
+
+The Python packaging [documentation on the Manifest commands](https://packaging.python.org/en/latest/guides/using-manifest-in/) 
+The syntax of recursive-include  graft commands.
+
+> Add all files under directories matching dir-pattern that match any of the
+> listed patterns
+
+    recursive-include dir-pattern pat1 pat2
+
+> Add all files under directories matching dir-pattern
+
+    graft dir-pattern
+
+The Python packaging documentation on [source
+dist](https://docs.python.org/3/distutils/sourcedist.html) gives an example of
+the patterns
+
+    include *.txt
+    recursive-include examples *.txt *.py
+    prune examples/sample?/build
+
+> " The meanings should be fairly clear: include all files in the distribution
+> root matching `*.txt`, all files anywhere under the examples directory matching
+> `*.txt` or `*.py`, and exclude all directories matching examples/sample?/build.
+
+
 ### Version
 
 [SO What is the correct way to share package version with setup.py and the
@@ -234,6 +283,10 @@ Increment the version number in all files and the git tag with:
     bumpversion minor
     bumpversion major
 
+Push the corresponding tags to the remote repository
+
+    git push origin --tags
+
 Check the updated version in setup.py
 
     python setup.py --version 
@@ -243,6 +296,23 @@ Start an ipython prompt to test the package version
     ipython
     import packagename
     packagename.__version__
+
+
+## Location of the python
+
+[Get the location of the python
+executable](https://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically)
+with
+
+    >>> import sys
+    >>> print(sys.executable)
+
+In virtual env, it can return the symlink to another folder. In that case, the
+path can be deduced from 
+
+    >>> import os
+    >>> os.__file__
+
 
 
 ## Virtual environments
@@ -288,22 +358,54 @@ Sample code with a function and if conditions:
 	function('')
 	function('lalala')
 
+# Command line
+
+## Parsing arguments with argparse
+
+[Argparse Tutorial](https://docs.python.org/3/howto/argparse.html#) explain how
+to create a python program that processes command line arguments. Save the
+following in `prog.py`
+
+    import argparse
+    parser = argparse.ArgumentParser()
+    parser.add_argument("square", type=int,
+                        help="display a square of a given number")
+    parser.add_argument("-v", "--verbosity", type=int,
+                        help="increase output verbosity")
+    args = parser.parse_args()
+    answer = args.square**2
+    if args.verbosity == 2:
+        print(f"the square of {args.square} equals {answer}")
+    elif args.verbosity == 1:
+        print(f"{args.square}^2 == {answer}")
+    else:
+        print(answer)
+
+Usage
+
+    $ python3 prog.py 4
+    16
+    $ python3 prog.py 4 -v
+    usage: prog.py [-h] [-v VERBOSITY] square
+    prog.py: error: argument -v/--verbosity: expected one argument
+    $ python3 prog.py 4 -v 1
+    4^2 == 16
+    $ python3 prog.py 4 -v 2
+    the square of 4 equals 16
+    $ python3 prog.py 4 -v 3
+    16
+
+[SO answer](https://stackoverflow.com/a/42829692/2641825) explains that when
+using **ipython**, you need to separate ipython arguments from your script
+arguments using `--`.
+
+
 # Databases
 
 ## SQL Alchemy
 
-The
-[pandas.to_sql](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html#io-sql-method)
-method uses sqlalchemy to write pandas data frame to a PostgreSQL database.
-
-> "The pandas.io.sql module provides a collection of query wrappers to both
-> facilitate data retrieval and to reduce dependency on DB-specific API.
-> Database abstraction is provided by SQLAlchemy if installed. In addition you
-> will need a driver library for your database. Examples of such drivers are
-> psycopg2 for PostgreSQL or pymysql for MySQL. For SQLite this is included in
-> Python’s standard library by default." 
-
-SQL Alchemy works with [metadata
+SQL Alchemy is a database abstraction layer. Interaction with the database is
+built upon [metadata
 objects](https://docs.sqlalchemy.org/en/14/core/schema.html):
 
 > The core of SQLAlchemy’s query and object mapping operations are supported by
@@ -367,7 +469,6 @@ You can also use the `user_table` metadata element `name` to check if it exists 
 
 ### ORM querying guide
 
-
 #### Select where
 
 SQL Alchemy [Object Relational Model Querying
@@ -414,7 +515,21 @@ valid according to the documentation.
         session.commit()
 
 
-#### ORM query to pandas
+### ORM query to pandas 
+
+The
+[pandas.to_sql](https://pandas.pydata.org/pandas-docs/stable/user_guide/io.html#io-sql-method)
+method uses sqlalchemy to write pandas data frame to a PostgreSQL database.
+
+> "The pandas.io.sql module provides a collection of query wrappers to both
+> facilitate data retrieval and to reduce dependency on DB-specific API.
+> Database abstraction is provided by SQLAlchemy if installed. In addition you
+> will need a driver library for your database. Examples of such drivers are
+> psycopg2 for PostgreSQL or pymysql for MySQL. For SQLite this is included in
+> Python’s standard library by default." 
+
+
+#### table.select(), select() or a session
 
 Repeat the example table defined above, read the result of a
 [select](https://docs.sqlalchemy.org/en/14/tutorial/data_select.html#the-select-sql-expression-construct)
@@ -457,6 +572,53 @@ Read the whole table into pandas
     df3 = pandas.read_sql_table("user", engine)
 
 [Stack Overflow Answer](https://stackoverflow.com/a/69812326/2641825)
+
+
+#### Define and insert the iris dataset
+
+Define an ORM structure for the iris dataset, then use pandas to insert the
+data into an SQLite database. Pandas inserts with `if_exists="append"` argument
+so that it keeps the structure defined in SQL Alchemy.
+
+    import seaborn
+    import pandas
+    from sqlalchemy import create_engine
+    from sqlalchemy import MetaData, Table, Column, Text, Float
+    from sqlalchemy.orm import Session
+
+Define metadata and create the table
+
+    engine = create_engine('sqlite://')
+    meta = MetaData()
+    meta.bind = engine
+    iris_table = Table('iris',
+                       meta,
+                       Column("sepal_length", Float),
+                       Column("sepal_width", Float),
+                       Column("petal_length", Float),
+                       Column("petal_width", Float),
+                       Column("species", Text))
+    iris_table.create()
+
+Load data into the table
+
+    iris = seaborn.load_dataset("iris")
+    iris.to_sql(name="iris",
+                con=engine,
+                if_exists="append",
+                index=False,
+                chunksize=10 ** 6,
+                )
+
+
+#### Unique values
+
+The SQL ALchemy `iris_table` from above can be used to build a select statement
+that extracts unique values:
+
+    from sqlalchemy import distinct, select
+    stmt = select(distinct(iris_table.c.species))
+    df = pandas.read_sql_query(stmt, engine)
 
 
 ## PostgreSQL
@@ -666,7 +828,6 @@ Using `extend`:
 
 Instances of [set](https://docs.python.org/3/library/stdtypes.html#set)
 provide the following operations:
-
 
 	issubset(other)
 	set <= other
@@ -2186,6 +2347,13 @@ December.
     flights.query("month=='December'")
 
 
+### Min or max in group
+
+Min or max in each group
+
+    df.loc[df.groupby('A')['B val'].idxmin()]
+
+
 ### Slice, get the first elements of each group
 
 - [How do I select the first row in each group in
@@ -2200,11 +2368,9 @@ groupby](https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-fir
     df.sort_values('B').groupby('A').nth(list(range(2)))
     df.sort_values('B').groupby('A').head(2)
 
-### Min or max in group
+### Transform and apply
 
-Min or max in each group
-
-    df.loc[df.groupby('A')['B val'].idxmin()]
+[SO answer explaining the difference between transform and apply](https://stackoverflow.com/a/47143056/2641825)
 
 
 ## Index
@@ -2310,10 +2476,13 @@ https://github.com/vaexio/vaex
 
 
 
-## Read and write csv
+## IO Input Output
 
+### CSV
 
-### Compressed csv
+Read and write csv
+
+#### Compressed csv
 
 Write a compressed csv file as a gzip archive
 
@@ -2335,7 +2504,7 @@ Read compressed csv files
     df.equals(df2)
 
 
-### From an API
+#### From an API
 
 Pandas data frames can be used to read CSV files from the [Comtrade
 data API](https://comtrade.un.org/Data/). For example, using the default API
@@ -2349,10 +2518,195 @@ URL for all countries:
                            # otherwise str "01" becomes an int 1.
                            dtype={'Commodity Code': str, 'bli': str})
 
-
 Then use df.to_csv to write the data frame to a csv file
 
      df1.to_csv("/tmp/comtrade.csv")
+
+
+### Feather
+
+Load a sample data frame and save it to a feather file
+
+    import pandas
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    iris.to_feather("/tmp/iris.feather")
+
+Load the data from the feather file
+
+    iris2 = pandas.read_feather("/tmp/iris.feather")
+    iris2.equals(iris)
+
+
+### Parquet
+
+Write to one file defaults to [snappy compression](https://en.wikipedia.org/wiki/Snappy_(compression)
+
+    import pandas
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    iris.to_parquet("/tmp/iris.parquet")
+
+Read back the file
+
+    iris3 = pandas.read_parquet("/tmp/iris.parquet")
+    iris3.equals(iris)
+
+You can also use gzip compression for a smaller file size (but slower read and write times)
+
+    iris.to_parquet("/tmp/iris.parquet.gzip", compression='gzip') 
+
+
+#### Partition column
+
+Write to multiple files along a column used as partition variable
+
+    iris.to_parquet("/tmp/iris",partition_cols="species") 
+
+The partitioned dataset is saved under a sub directory for each unique value of
+the partition variable. For example there is a sub directory for each species
+in the `/tmp/iris` directory
+
+    iris
+    ├── species=setosa
+    │   └── 1609afe5535d4e2b94e65f1892210269.parquet
+    ├── species=versicolor
+    │   └── 18dd7ae6d0794fd48dad37bf8950d813.parquet
+    └── species=virginica
+        └── e0a9786251f54eed9f16380c8f5c3db3.parquet
+
+On can read a single file in memory
+
+    virginica = pandas.read_parquet("/tmp/iris/species=virginica")
+
+Note it has lost the species column
+
+Read all files in memory
+
+    iris4 = pandas.read_parquet("/tmp/iris")
+
+Note the data frame is slightly different. Values are the same but the species
+columns has become a categorical variable.
+
+    iris4.equals(iris)
+    # False
+    iris4.species
+    # ...
+    # Name: species, Length: 150, dtype: category
+    # Categories (3, object): ['setosa', 'versicolor', 'virginica']
+
+Changing it back to a strings makes the 2 data frames equals again.
+
+    iris4["species"] = iris4["species"].astype("str")
+    iris4.equals(iris)
+    # True
+
+Read files with a filter. See `help(pyarrow.parquet.read_pandas)` for arguments
+concerning the pyarrow engine.
+    
+    selection = [("species", "in", ["versicolor","virginica"])]
+    iris5 = pandas.read_parquet("/tmp/iris", filters=selection)
+
+In fact, the filter variable doesn't have to be a partition variable.
+
+    selection = [("species", "in", ["versicolor","virginica"]), 
+                 ("petal_width", ">", 2.4)]
+    iris6 = pandas.read_parquet("/tmp/iris", filters=selection)
+
+This works as well on the single file version
+
+    iris7 = pandas.read_parquet("/tmp/iris.parquet", filters=selection)
+    # Change column type for the comparison
+    iris6["species"] = iris6["species"].astype("str")
+    iris7.equals(iris6)
+
+But if the query is only on the partition variable, read time can be increased
+by a lot.
+
+
+#### What is the difference between Apache Arrow and Apache Parquet?
+
+[Apache Arrow FAQ](https://arrow.apache.org/faq/#what-about-the-feather-file-format)
+
+> Parquet is a storage format designed for maximum space efficiency, using
+> advanced compression and encoding techniques. It is ideal when wanting to
+> minimize disk usage while storing gigabytes of data, or perhaps more. This
+> efficiency comes at the cost of relatively expensive reading into memory, as
+> Parquet data cannot be directly operated on but must be decoded in large
+> chunks.
+
+> Conversely, Arrow is an in-memory format meant for direct and efficient use
+> for computational purposes. Arrow data is not compressed (or only lightly so,
+> when using dictionary encoding) but laid out in natural format for the CPU,
+> so that data can be accessed at arbitrary places at full speed.
+
+> Therefore, Arrow and Parquet complement each other and are commonly used
+> together in applications. Storing your data on disk using Parquet and reading
+> it into memory in the Arrow format will allow you to make the most of your
+> computing hardware."
+
+> What about “Arrow files” then?
+
+> Apache Arrow defines an inter-process communication (IPC) mechanism to
+> transfer a collection of Arrow columnar arrays (called a “record batch”). It
+> can be used synchronously between processes using the Arrow “stream format”,
+> or asynchronously by first persisting data on storage using the Arrow “file
+> format”.
+
+> The Arrow IPC mechanism is based on the Arrow in-memory format, such that
+> there is no translation necessary between the on-disk representation and the
+> in-memory representation. Therefore, performing analytics on an Arrow IPC
+> file can use memory-mapping, avoiding any deserialization cost and extra
+> copies.
+
+> Some things to keep in mind when comparing the Arrow IPC file format and the
+> Parquet format:
+
+>     Parquet is designed for long-term storage and archival purposes, meaning
+>     if you write a file today, you can expect that any system that says they
+>     can “read Parquet” will be able to read the file in 5 years or 10 years.
+>     While the Arrow on-disk format is stable and will be readable by future
+>     versions of the libraries, it does not prioritize the requirements of
+>     long-term archival storage.
+
+>     Reading Parquet files generally requires efficient yet relatively complex
+>     decoding, while reading Arrow IPC files does not involve any decoding
+>     because the on-disk representation is the same as the in-memory
+>     representation.
+
+>     Parquet files are often much smaller than Arrow IPC files because of the
+>     columnar data compression strategies that Parquet uses. If your disk
+>     storage or network is slow, Parquet may be a better choice even for
+>     short-term storage or caching.
+
+
+#### One large parquet file or many smaller files?
+
+[Is it better to have one large parquet file or lots of smaller parquet
+files?](https://stackoverflow.com/a/59535659/2641825)
+
+> "Notice that Parquet files are internally split into row groups
+> https://parquet.apache.org/documentation/latest/ So by making parquet files
+> larger, row groups can still be the same if your baseline parquet files were
+> not small/tiny. There is no huge direct penalty on processing, but opposite,
+> there are more opportunities for readers to take advantage of perhaps larger/
+> more optimal row groups if your parquet files were smaller/tiny for example
+> as row groups can't span multiple parquet files."
+
+> "Also larger parquet files don't limit parallelism of readers, as each
+> parquet file can be broken up logically into multiple splits (consisting of
+> one or more row groups)."
+
+> "The only downside of larger parquet files is it takes more memory to create
+> them. So you can watch out if you need to bump up Spark executors' memory."
+
+
+#### See also
+
+- It's not possible to [store multiple data frames of different widths with parquet](https://stackoverflow.com/questions/50456673/storing-multiple-dataframes-of-different-widths-with-parquet)
+
+- [Control row groups size with pandas
+  df.to_parquet](https://stackoverflow.com/questions/59972588/control-row-groups-with-pandas-dataframe-to-parquet)
 
 
 ## Reshape
@@ -2567,6 +2921,16 @@ Or assign the selector to reuse it:
     selector = df.index.isin(['cobra','viper'])
     df.loc[selector]
     df.loc[~selector]
+
+
+#### Multiple conditions
+
+    import pandas
+    df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
+                          index=['cobra', 'viper', 'sidewinder'],
+                          columns=['max_speed', 'shield'])
+    df.loc[(df["max_speed"] > 1) & (df["shield"] < 7)]
+    df.query("max_speed > 1 & shield < 7")
 
 
 #### Multi-index selection with loc
@@ -2816,6 +3180,12 @@ Replace elements in a character vector:
 
     df['a'].replace('a','b',regex=True)
 
+Extract the first 2 or last 2 characters
+
+    df = pandas.DataFrame({'a':['bla','bli','quoi?']})
+    df["a"].str[:2]
+    df["a"].str[-2:]
+
 
 ### Separate a columns in two based on a split pattern
 
@@ -2968,6 +3338,25 @@ You can use:
 Data located in the home folder
 
      data_dir = Path.home() / "repos/data/"
+
+
+### Dir name or parent directory
+
+[SO question](https://stackoverflow.com/a/35490226/2641825) that illustrate different levels of parents 
+
+    import os
+    import pathlib
+    p = pathlib.Path('/path/to/my/file')
+    p.parents[0]
+    p.parents[1]
+    p.parent
+
+> "Note that os.path.dirname and pathlib treat paths with a trailing slash
+> differently. The pathlib parent of some/path/ is some: While os.path.dirname
+> on some/path/ returns some/path":
+
+    pathlib.Path('some/path/').parent
+    os.path.dirname('some/path/')
 
 
 ### List all files in a directory
@@ -3347,6 +3736,20 @@ Show all Seaborn sample datasets
         print(seaborn.load_dataset(dataset).head())
 
 
+## Squarify treemaps
+
+Plot a [tree map from the python graph
+gallery](https://www.python-graph-gallery.com/treemap/)
+
+    import matplotlib.pyplot as plt
+    import squarify    # pip install squarify (algorithm for treemap)
+    import pandas
+    df = pandas.DataFrame({'nb_people':[8,3,4,2], 'group':["group A", "group B", "group C", "group D"] })
+    squarify.plot(sizes=df['nb_people'], label=df['group'], alpha=.8 )
+    plt.axis('off')
+    plt.show()
+
+
 ## Vega
 
 The tool tip feature is nice in an interactive notebook.
@@ -3405,6 +3808,13 @@ Time a function:
 > function `%timeit`. `%%timeit` operates on cells." 
 
     %timeit wait()
+
+[Time a code block](https://stackoverflow.com/a/15707125/2641825):
+
+    import timeit
+    start_time = timeit.default_timer()
+    # code you want to evaluate
+    elapsed = timeit.default_timer() - start_time
 
 
 # R and python
@@ -3642,11 +4052,13 @@ See also string operations in pandas character vectors.
 providing various ways to concatenate python strings.
 
 
-## String formatting
+## Number formatting in strings
 
 [How to print number with commas as thousands separators?](https://stackoverflow.com/a/10742904/2641825)
 
     f'{1e6:,}' 
+
+See also string operations in pandas with df["x"].str methods.
 
 
 ## Regex substitution
@@ -3695,6 +4107,16 @@ Search charcters that are not value
     [x for x in l if not re.search("value", x)]
 
 
+## Split
+
+[Split lines in a string](https://stackoverflow.com/a/172454/2641825)
+
+    input = """bla
+    bla
+    bla"""
+    for line in input.splitlines():
+        print(line, "\n")
+
 
 # Statistics
 
@@ -3734,6 +4156,10 @@ Finding](https://docs.scipy.org/doc/scipy/reference/optimize.html)
 is "the uncompromising Python code formater"
 
 Run `black` as a pre commit hook with `pre-commit` as explained below.
+
+In vim, you can run black on the current file with:
+
+    :!black %
 
 
 ## Flake 8
@@ -3922,7 +4348,6 @@ Explained in a [SO answer](https://stackoverflow.com/a/67419279/2641825)
 > happens when you use with. 
 
 
-
 # System information
 
 Platform type
@@ -3940,6 +4365,18 @@ Sys and os return different results 'linux' or 'posix'.
 More details are given by
 
     os.uname()
+
+
+## Environment variables
+
+Get an environment variable
+
+    import os
+    os.environ["XYZ"]
+
+Set an environment variable
+
+    os.environ["XYZ"]  = "/tmp"
 
 
 ## Memory
@@ -4045,6 +4482,34 @@ Test pandas data frame with
 
     assert_frame_equal
     assert_series_equal # tricky to use
+
+
+### Expected exceptions
+
+pytest [assert](https://docs.pytest.org/en/6.2.x/assert.html)
+
+> "In order to write assertions about raised exceptions, you can use
+> pytest.raises() as a context manager like this:"
+
+    import pytest
+    def test_zero_division():
+        with pytest.raises(ZeroDivisionError):
+            1 / 0
+
+> "and if you need to have access to the actual exception info you may use:"
+
+    def test_recursion_depth():
+        with pytest.raises(RuntimeError) as excinfo:
+
+            def f():
+                f()
+
+            f()
+        assert "maximum recursion" in str(excinfo.value)
+
+> "excinfo is an ExceptionInfo instance, which is a wrapper around the actual
+> exception raised. The main attributes of interest are .type, .value and
+> .traceback."
 
 
 ## Test use in projects
@@ -4158,7 +4623,8 @@ Analysis](https://bashtage.github.io/linearmodels/panel/examples/data-formats.ht
 
 Explains multi index with stacking and unstacking.
 
-
+- [Sphinx reStructuredText vs markdown for project
+  documentation](https://www.zverovich.net/2016/06/16/rst-vs-markdown.html)
 
 
 ## Foundations
@@ -4177,6 +4643,28 @@ Explains multi index with stacking and unstacking.
 
     > "We support and maintain python.org, The Python Package Index, Python
     > Documentation, and many other services the Python Community relies on."
+
+
+## Interviews
+
+[Interview with Alex
+Martelli](https://mappingthejourney.com/single-post/2017/06/21/episode-2-interview-with-alex-martelli-python-guru/)
+
+> "Larry Page in his dormitory at Stanford had written or tried to write a web
+> spider to get a copy of some subset of the web on his computers so he could
+> try his famous Page algorithm. He was trying to use the brand-new language
+> Java in 1.0 beta version, and it kept crashing. So he asked for help from his
+> roommate and his roommate took a look at said ‘oh you’re using that Java
+> disaster’. Of course, it crashed and did it in 100 lines of Python. It runs
+> perfectly, and that’s how Google became possible through 100 lines of Python.
+> But I had no idea until about five years ago that it had played so crucial
+> role so early on."
+
+> " Similarly, if I hadn’t heard it from the mouth of Guido himself, I would
+> never have known that Python was at the heart of the web. The very first Web
+> server and web browser were written by the inventor of the World Wide Web,
+> HTTP, and HTML in Python. He wasn’t really a programmer; he was a physicist
+> and Python was far easier to use than anything else."
 
 
 ## Podcasts
