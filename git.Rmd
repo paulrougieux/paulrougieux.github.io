@@ -151,6 +151,10 @@ Extract:
 > "I really should just learn another editor, rather than continue to polish
 > this turd."
 
+Add minor changes to the previous commit (git commit --amend):
+
+    git commit --amend
+
 
 # Autocompletion
 
@@ -178,17 +182,18 @@ To compare the tip of 2 branches
 
     git diff branch1..branch2
 
-To merge changes back to the master branch:
+To merge changes back to the main branch:
 
-    git checkout master
+    git checkout main
 
     git merge branch1
 
 If there were conflicts, they will be presented in this way:
 
-    "The area where a pair of conflicting changes happened is marked with markers &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, and &gt;&gt;&gt;&gt;&gt;&gt;&gt;. The part before the ======= is typically your side, and the part afterwards is typically their side."
-
-
+    "The area where a pair of conflicting changes happened is marked with
+    markers &lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, and
+    &gt;&gt;&gt;&gt;&gt;&gt;&gt;. The part before the ======= is typically your
+    side, and the part afterwards is typically their side."
 
 If I am on a detached head, it is recommended to create a temporary branch (stackoverflow).
 
@@ -200,7 +205,7 @@ If I am on a detached head, it is recommended to create a temporary branch (stac
 
     git  commit -m "description of changes"
 
-    git checkout master
+    git checkout main
 
     git merge temp
 
@@ -211,11 +216,32 @@ Delete uncommitted changes in current working directory:
 See also below git clean.
 
 
-Add minor change to the previous commit (git commit --amend):
+## Merge branches
 
-    git commit --amend
+To merge `branch1` changes to the `main` branch:
 
-I use to have this branching strategy:
+    git checkout main
+
+    git merge branch1
+
+In case of conflict, you can edit the corresponding file(s) manually in a text
+editor, or you can decide to keep one of the 2 versions by checking out. For
+example if you are in the `main` branch
+
+    git checkout --ours <filename>
+
+will get the file as it is in the main branch, while
+
+    git checkout --theirs <filename>
+
+will get the file as it is in `branch1`. And vice-versa if you are currently in
+a feature branch `git checkout --ours <filename>` will get the file as it is in
+the feature branch.
+
+
+## Branching strategy
+
+For solo projects, I use to have this branching strategy:
 
 > I never work in the master branch, always in a development branch called
 > `develop`. I merge `develop` in `master`, only before pushing modifications
@@ -224,6 +250,8 @@ I use to have this branching strategy:
 
 But I have now changed to a simpler strategy where I work only on the master branch. 
 
+For collaborative projects, we use feature branches or also a dev and a main
+branch.
 
 
 ## Delete a branch
@@ -235,6 +263,13 @@ I might need to delete a branch at some point:
 Delete a remote branch
 
     git push --delete origin branch_name
+
+Check if a branch has been merged before deleting it
+
+   git merge-base main compare
+ 
+Will return the latest common commit between the 2 branches.
+
 
 # Configuring git 
 
@@ -255,11 +290,13 @@ explains how to change the email for the current repository only
 
     git config user.email personal@example.org
 
+
 ## Other config --global options
 
 [How do I make Git use the editor of my choice for commits?](https://stackoverflow.com/a/2596835/2641825)
 
     git config --global core.editor "vim"
+
 
 ## Remembering passwords
 
@@ -268,6 +305,7 @@ explains how to change the email for the current repository only
     git config credential.helper store
 
 Alternativelly, it's better to use ssh keys to connect to git repositories.
+
 
 # Display changes
 
@@ -278,29 +316,11 @@ To view modified files that have not been committed and to view commit history y
 
     git log --pretty=oneline 
 
-Shows the changes between the working directory and the index.
-
-    git diff
-
-Shows the changes between the index and the HEAD
-
-    git diff --cached
-
-Shows all the changes between the working directory and HEAD
-
-    git diff HEAD
-
-The 3 lines above were copied from this question on git diff.
-
-Show which change happened in a particular commit 
-
-    git show <commit-hash>
-
 Show when the tip of branches have been updated
 
     git reflog
 
- Alternatively, call the repository browser with:
+Alternatively, call the repository browser with:
 
     gitk
 
@@ -319,13 +339,43 @@ The new alias can then be used with
 Use tags to specify important points in history, such as software versions.
 
 
+## Diff
+
+Shows the changes between the working directory and the index.
+
+    git diff
+
+Shows the changes between the index and the HEAD
+
+    git diff --cached
+
+Shows all the changes between the working directory and HEAD
+
+    git diff HEAD
+
+Show which change happened in a particular commit 
+
+    git show <commit-hash>
+
+Compare between 2 commits
+
+    git diff <commit hash 1> <commit hash 2>
+
+[List all revision of a given line number in the git
+history](https://stackoverflow.com/a/17803762/2641825)
+
+    FILE=filename.csv
+    LINE=1
+    git log --format=format:%H $FILE | xargs -L 1 git blame $FILE -L $LINE,$LINE
+
+Useful to track different versions of CSV files headers.
+
+
 ## Blame
 
 To see the commit number and author of each line in a file use
 
     git blame filename
-
-
 
 
 # Illustrations
@@ -607,6 +657,35 @@ Revert an unwanted commit with a new commit doing exactly the reverse operation
 
     git revert <commit hash>
 
+Linus Torvald's [advice on reverting a merge]( Linus Torvald's advice on
+reverting a merge)
+
+> "When you have a problem you are chasing down, and you hit a "revert this
+> merge", what you're hitting is essentially a single commit that contains all
+> the changes (but obviously in reverse) of all the commits that got merged. So
+> it's debugging hell, because now you don't have lots of small changes that
+> you can try to pinpoint which _part_ of it changes.
+
+> But does it all work? Sure it does. You can revert a merge, and from a purely
+> technical angle, Git did it very naturally and had no real troubles. It just
+> considered it a change from "state before merge" to "state after merge", and
+> that was it. Nothing complicated, nothing odd, nothing really dangerous. Git
+> will do it without even thinking about it.
+
+> So from a technical angle, there's nothing wrong with reverting a merge, but
+> from a workflow angle it's something that you generally should try to avoid.
+
+> If at all possible, for example, if you find a problem that got merged into
+> the main tree, rather than revert the merge, try _really_ hard to bisect the
+> problem down into the branch you merged, and just fix it, or try to revert
+> the individual commit that caused it.
+
+> Yes, it's more complex, and no, it's not always going to work (sometimes the
+> answer is: "oops, I really shouldn't have merged it, because it wasn't ready
+> yet, and I really need to undo _all_ of the merge"). So then you really
+> should revert the merge, but when you want to re-do the merge, you now need
+> to do it by reverting the revert."
+
 
 # GUI Graphical User Interface
 
@@ -873,6 +952,11 @@ renamed files.
 # Replace and search text
 
 ## Searching text with grep
+
+Example from the git grep help page. Looks for time_t in all tracked .c and .h
+files in the working directory and its subdirectories.
+
+    git grep 'time_t' -- '*.[ch]'
 
 Search all files in the subdirectory "subdir" for lines containing the words "factor" and "item". Show 2 lines of context (2 leading and 2 trailing lines).
 

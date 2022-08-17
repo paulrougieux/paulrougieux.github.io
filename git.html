@@ -445,28 +445,48 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog post on git commands</a>.</p>
-<p>My typical git use consists in archiving file modifications for personal projects. Sometimes I share these projects with a colleague. We are then 2 persons working concurrently on the same project, pushing and pulling changes several times per day.</p>
+<p>This page is the continuation of <a
+href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog
+post on git commands</a>.</p>
+<p>My typical git use consists in archiving file modifications for
+personal projects. Sometimes I share these projects with a colleague. We
+are then 2 persons working concurrently on the same project, pushing and
+pulling changes several times per day.</p>
 <div id="simple-workflow-for-one-user" class="section level2">
 <h2>Simple workflow for one user</h2>
-<p>We suppose someone has helped you initialise a git repository. Before you modify files, get the latest version of files from the remote repository:</p>
+<p>We suppose someone has helped you initialise a git repository. Before
+you modify files, get the latest version of files from the remote
+repository:</p>
 <pre><code>git pull</code></pre>
-<p>Work and modify files in the folder. At some point, when your work has reached a certain status, you might want to archive it before you move on to something else. The few commands below tell git to archive the work.</p>
-<p>Show which files have been modified in the folder under git control:</p>
+<p>Work and modify files in the folder. At some point, when your work
+has reached a certain status, you might want to archive it before you
+move on to something else. The few commands below tell git to archive
+the work.</p>
+<p>Show which files have been modified in the folder under git
+control:</p>
 <pre><code>git status</code></pre>
 <p>Add a file to be committed</p>
 <pre><code>git add filename</code></pre>
 <p>Or add all files:</p>
 <pre><code>git add --all</code></pre>
-<p>Note: you might use a graphical git client with check boxes to add the files to be committed. Commit and describe changes</p>
+<p>Note: you might use a graphical git client with check boxes to add
+the files to be committed. Commit and describe changes</p>
 <pre><code>git commit -m &quot;describe changes made to those files&quot;</code></pre>
-<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m "describe changes"</code> each time your reach a consistant change status. Before you leave your computer, push the content to the remote repository with:</p>
+<p>Now you can continue working and changing files. Repeat the
+<code>git add --all</code> and
+<code>git commit -m "describe changes"</code> each time your reach a
+consistant change status. Before you leave your computer, push the
+content to the remote repository with:</p>
 <pre><code>git push</code></pre>
-<p>In case you work with other people on this remote repository, Before you push, you might want to integrate work done by others in your repository. If any new work has been added by others on the remote repository, git will ask you to first do:</p>
+<p>In case you work with other people on this remote repository, Before
+you push, you might want to integrate work done by others in your
+repository. If any new work has been added by others on the remote
+repository, git will ask you to first do:</p>
 <pre><code>git pull </code></pre>
 <p>and then:</p>
 <pre><code>git push</code></pre>
-<p>This simple work flow works well for one user pulling from- and pushing to- a master branch on a remote repository.</p>
+<p>This simple work flow works well for one user pulling from- and
+pushing to- a master branch on a remote repository.</p>
 <p>Sometimes the vi editor starts. To exit the vi editor:</p>
 <pre><code>ESC:q!</code></pre>
 </div>
@@ -478,8 +498,16 @@ div.tocify {
 <pre><code># If the branch doesn&#39;t exist, create it first.
 git branch develop
 git checkout develop</code></pre>
-<p>Work and modify files in the folder. At some point, when your work has reached a certain status, you might want to archive it before you move on to something else. The few commands below tell git to archive the work. All file modifications will be archived with a commit hash which is a unique key describing your changes. The most important part is entering a commit message, it should be sufficiently general to describe your changes with a high level of abstraction and sufficiently specific to be understood amoung all other changes later.</p>
-<p>First show which files have been modified in the folder under git control:</p>
+<p>Work and modify files in the folder. At some point, when your work
+has reached a certain status, you might want to archive it before you
+move on to something else. The few commands below tell git to archive
+the work. All file modifications will be archived with a commit hash
+which is a unique key describing your changes. The most important part
+is entering a commit message, it should be sufficiently general to
+describe your changes with a high level of abstraction and sufficiently
+specific to be understood amoung all other changes later.</p>
+<p>First show which files have been modified in the folder under git
+control:</p>
 <pre><code>git status</code></pre>
 <p>Add a file to be committed</p>
 <pre><code>git add filename
@@ -487,13 +515,19 @@ git checkout develop</code></pre>
 git add --all</code></pre>
 <p>Commit and describe changes</p>
 <pre><code>git commit -m &quot;describe changes made to those files&quot;</code></pre>
-<p>Now you can continue working and changing files. Repeat the <code>git add --all</code> and <code>git commit -m "describe changes"</code> each time your reach a consistant change status.</p>
-<p>At some point you will be ready to upload your content to a remote archive. Merge to the master branch</p>
+<p>Now you can continue working and changing files. Repeat the
+<code>git add --all</code> and
+<code>git commit -m "describe changes"</code> each time your reach a
+consistant change status.</p>
+<p>At some point you will be ready to upload your content to a remote
+archive. Merge to the master branch</p>
 <pre><code>git checkout master
 git merge develop</code></pre>
 <p>Push contents to the remote repository</p>
 <pre><code>git push</code></pre>
-<p>See below how to set-up the remote repository with <code>git remote add origin ssh:repositoryurl</code> and pushing content for the first time with <code>git push -u origin master</code>.</p>
+<p>See below how to set-up the remote repository with
+<code>git remote add origin ssh:repositoryurl</code> and pushing content
+for the first time with <code>git push -u origin master</code>.</p>
 <p>Check status again</p>
 <pre><code>git status</code></pre>
 <p>Go back to the development branch</p>
@@ -507,21 +541,32 @@ git merge develop</code></pre>
 <h2>Add patterns</h2>
 <p>Add modified markdown files to the next git commit</p>
 <pre><code>git add *.md</code></pre>
-<p>The star * is a <a href="https://git-scm.com/docs/git-add#Documentation/git-add.txt-ltpathspecgt82308203">file glob pattern</a> that matches all other path components in between.</p>
+<p>The star * is a <a
+href="https://git-scm.com/docs/git-add#Documentation/git-add.txt-ltpathspecgt82308203">file
+glob pattern</a> that matches all other path components in between.</p>
 </div>
 <div id="commit-messages" class="section level2">
 <h2>Commit messages</h2>
-<p>Example of a long commit message (like a letter) torvalds/uemacs <a href="https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61">Stop using ‘short’ for line and allocation sizes</a>.</p>
+<p>Example of a long commit message (like a letter) torvalds/uemacs <a
+href="https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61">Stop
+using ‘short’ for line and allocation sizes</a>.</p>
 <p>Extract:</p>
 <blockquote>
-<p>“I really should just learn another editor, rather than continue to polish this turd.”</p>
+<p>“I really should just learn another editor, rather than continue to
+polish this turd.”</p>
 </blockquote>
+<p>Add minor changes to the previous commit (git commit –amend):</p>
+<pre><code>git commit --amend</code></pre>
 </div>
 </div>
 <div id="autocompletion" class="section level1">
 <h1>Autocompletion</h1>
-<p>git has an <a href="https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion">auto complete</a> feature available in a script: <code>git-completion.bash</code>.</p>
-<p>That script can be loaded in bashrc at the start of the shell. A debian package was made to simply load git-completion.bash for you:</p>
+<p>git has an <a
+href="https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion">auto
+complete</a> feature available in a script:
+<code>git-completion.bash</code>.</p>
+<p>That script can be loaded in bashrc at the start of the shell. A
+debian package was made to simply load git-completion.bash for you:</p>
 <pre><code>sudo apt install bash-completion</code></pre>
 </div>
 <div id="branching" class="section level1">
@@ -533,13 +578,17 @@ git checkout new_branch_name</code></pre>
 <pre><code>git diff branch1 branch2 file_name</code></pre>
 <p>To compare the tip of 2 branches</p>
 <pre><code>git diff branch1..branch2</code></pre>
-<p>To merge changes back to the master branch:</p>
-<pre><code>git checkout master
+<p>To merge changes back to the main branch:</p>
+<pre><code>git checkout main
 
 git merge branch1</code></pre>
 <p>If there were conflicts, they will be presented in this way:</p>
-<pre><code>&quot;The area where a pair of conflicting changes happened is marked with markers &amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;, =======, and &amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;. The part before the ======= is typically your side, and the part afterwards is typically their side.&quot;</code></pre>
-<p>If I am on a detached head, it is recommended to create a temporary branch (stackoverflow).</p>
+<pre><code>&quot;The area where a pair of conflicting changes happened is marked with
+markers &amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;&amp;lt;, =======, and
+&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;&amp;gt;. The part before the ======= is typically your
+side, and the part afterwards is typically their side.&quot;</code></pre>
+<p>If I am on a detached head, it is recommended to create a temporary
+branch (stackoverflow).</p>
 <pre><code>git branch temp
 
 git checkout temp
@@ -548,25 +597,54 @@ git add -a
 
 git  commit -m &quot;description of changes&quot;
 
-git checkout master
+git checkout main
 
 git merge temp</code></pre>
 <p>Delete uncommitted changes in current working directory:</p>
 <pre><code>git checkout branch_name .</code></pre>
 <p>See also below git clean.</p>
-<p>Add minor change to the previous commit (git commit –amend):</p>
-<pre><code>git commit --amend</code></pre>
-<p>I use to have this branching strategy:</p>
+<div id="merge-branches" class="section level2">
+<h2>Merge branches</h2>
+<p>To merge <code>branch1</code> changes to the <code>main</code>
+branch:</p>
+<pre><code>git checkout main
+
+git merge branch1</code></pre>
+<p>In case of conflict, you can edit the corresponding file(s) manually
+in a text editor, or you can decide to keep one of the 2 versions by
+checking out. For example if you are in the <code>main</code> branch</p>
+<pre><code>git checkout --ours &lt;filename&gt;</code></pre>
+<p>will get the file as it is in the main branch, while</p>
+<pre><code>git checkout --theirs &lt;filename&gt;</code></pre>
+<p>will get the file as it is in <code>branch1</code>. And vice-versa if
+you are currently in a feature branch
+<code>git checkout --ours &lt;filename&gt;</code> will get the file as
+it is in the feature branch.</p>
+</div>
+<div id="branching-strategy" class="section level2">
+<h2>Branching strategy</h2>
+<p>For solo projects, I use to have this branching strategy:</p>
 <blockquote>
-<p>I never work in the master branch, always in a development branch called <code>develop</code>. I merge <code>develop</code> in <code>master</code>, only before pushing modifications back to my remote archive. This simple branching strategy makes it much easier to deal with potential changes in the remote master branch.</p>
+<p>I never work in the master branch, always in a development branch
+called <code>develop</code>. I merge <code>develop</code> in
+<code>master</code>, only before pushing modifications back to my remote
+archive. This simple branching strategy makes it much easier to deal
+with potential changes in the remote master branch.</p>
 </blockquote>
-<p>But I have now changed to a simpler strategy where I work only on the master branch.</p>
+<p>But I have now changed to a simpler strategy where I work only on the
+master branch.</p>
+<p>For collaborative projects, we use feature branches or also a dev and
+a main branch.</p>
+</div>
 <div id="delete-a-branch" class="section level2">
 <h2>Delete a branch</h2>
 <p>I might need to delete a branch at some point:</p>
 <pre><code>git branch -d branch_name </code></pre>
 <p>Delete a remote branch</p>
 <pre><code>git push --delete origin branch_name</code></pre>
+<p>Check if a branch has been merged before deleting it</p>
+<p>git merge-base main compare</p>
+<p>Will return the latest common commit between the 2 branches.</p>
 </div>
 </div>
 <div id="configuring-git" class="section level1">
@@ -579,48 +657,68 @@ git merge temp</code></pre>
 <pre><code>git config --global user.name &quot;Your Name&quot; 
 
 git config --global user.email you@example.com</code></pre>
-<p>Stackoverflow <a href="https://stackoverflow.com/a/9063238/2641825">git multiple user names for different projects</a> explains how to change the email for the current repository only</p>
+<p>Stackoverflow <a
+href="https://stackoverflow.com/a/9063238/2641825">git multiple user
+names for different projects</a> explains how to change the email for
+the current repository only</p>
 <pre><code>git config user.email personal@example.org</code></pre>
 </div>
 <div id="other-config-global-options" class="section level2">
 <h2>Other config –global options</h2>
-<p><a href="https://stackoverflow.com/a/2596835/2641825">How do I make Git use the editor of my choice for commits?</a></p>
+<p><a href="https://stackoverflow.com/a/2596835/2641825">How do I make
+Git use the editor of my choice for commits?</a></p>
 <pre><code>git config --global core.editor &quot;vim&quot;</code></pre>
 </div>
 <div id="remembering-passwords" class="section level2">
 <h2>Remembering passwords</h2>
-<p><a href="https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git">How to save user name and password in git</a></p>
+<p><a
+href="https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git">How
+to save user name and password in git</a></p>
 <pre><code>git config credential.helper store</code></pre>
-<p>Alternativelly, it’s better to use ssh keys to connect to git repositories.</p>
+<p>Alternativelly, it’s better to use ssh keys to connect to git
+repositories.</p>
 </div>
 </div>
 <div id="display-changes" class="section level1">
 <h1>Display changes</h1>
-<p>To view modified files that have not been committed and to view commit history you can use:</p>
+<p>To view modified files that have not been committed and to view
+commit history you can use:</p>
 <pre><code>git status
 git log
 
 git log --pretty=oneline </code></pre>
+<p>Show when the tip of branches have been updated</p>
+<pre><code>git reflog</code></pre>
+<p>Alternatively, call the repository browser with:</p>
+<pre><code>gitk</code></pre>
+<p>To view a shorter version of the log file, and get an idea at where I
+am in the history:</p>
+<pre><code>git log --graph --decorate --all --pretty=oneline</code></pre>
+<p>You can define an alias for git log as explained be Fred here:</p>
+<pre><code>git config --global alias.lg &quot;log --color --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit&quot; </code></pre>
+<p>The new alias can then be used with</p>
+<pre><code>git lg </code></pre>
+<p>Use tags to specify important points in history, such as software
+versions.</p>
+<div id="diff" class="section level2">
+<h2>Diff</h2>
 <p>Shows the changes between the working directory and the index.</p>
 <pre><code>git diff</code></pre>
 <p>Shows the changes between the index and the HEAD</p>
 <pre><code>git diff --cached</code></pre>
 <p>Shows all the changes between the working directory and HEAD</p>
 <pre><code>git diff HEAD</code></pre>
-<p>The 3 lines above were copied from this question on git diff.</p>
 <p>Show which change happened in a particular commit</p>
 <pre><code>git show &lt;commit-hash&gt;</code></pre>
-<p>Show when the tip of branches have been updated</p>
-<pre><code>git reflog</code></pre>
-<p>Alternatively, call the repository browser with:</p>
-<pre><code>gitk</code></pre>
-<p>To view a shorter version of the log file, and get an idea at where I am in the history:</p>
-<pre><code>git log --graph --decorate --all --pretty=oneline</code></pre>
-<p>You can define an alias for git log as explained be Fred here:</p>
-<pre><code>git config --global alias.lg &quot;log --color --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr)%C(bold blue)&amp;lt;%an&amp;gt;%Creset&#39; --abbrev-commit&quot; </code></pre>
-<p>The new alias can then be used with</p>
-<pre><code>git lg </code></pre>
-<p>Use tags to specify important points in history, such as software versions.</p>
+<p>Compare between 2 commits</p>
+<pre><code>git diff &lt;commit hash 1&gt; &lt;commit hash 2&gt;</code></pre>
+<p><a href="https://stackoverflow.com/a/17803762/2641825">List all
+revision of a given line number in the git history</a></p>
+<pre><code>FILE=filename.csv
+LINE=1
+git log --format=format:%H $FILE | xargs -L 1 git blame $FILE -L $LINE,$LINE</code></pre>
+<p>Useful to track different versions of CSV files headers.</p>
+</div>
 <div id="blame" class="section level2">
 <h2>Blame</h2>
 <p>To see the commit number and author of each line in a file use</p>
@@ -629,14 +727,18 @@ git log --pretty=oneline </code></pre>
 </div>
 <div id="illustrations" class="section level1">
 <h1>Illustrations</h1>
-<p><a href="https://en.wikipedia.org/wiki/File:Git_operations.svg">Data flows and storage levels in the Git revision control system</a>.</p>
+<p><a href="https://en.wikipedia.org/wiki/File:Git_operations.svg">Data
+flows and storage levels in the Git revision control system</a>.</p>
 </div>
 <div id="gitignore" class="section level1">
 <h1>.gitignore</h1>
-<p>To ignore all files in a folder but not the folder itself. Put this .gitignore into the folder, then git add .gitignore</p>
+<p>To ignore all files in a folder but not the folder itself. Put this
+.gitignore into the folder, then git add .gitignore</p>
 <pre><code>*
 !.gitignore</code></pre>
-<p>To exclude everything except a specific directory foo/bar (note the /* - without the slash, the wildcard would also exclude everything within foo/bar):</p>
+<p>To exclude everything except a specific directory foo/bar (note the
+/* - without the slash, the wildcard would also exclude everything
+within foo/bar):</p>
 <pre><code>/*
 !/foo
 /foo/*
@@ -644,19 +746,29 @@ git log --pretty=oneline </code></pre>
 </div>
 <div id="gitkeep" class="section level1">
 <h1>.gitkeep</h1>
-<p><a href="https://stackoverflow.com/questions/115983/how-can-i-add-a-blank-directory-to-a-git-repository">So question how can I add a blank directory to a git repository</a></p>
-<p>some answers suggest using <code>.gitkeep</code> or simply <code>.keep</code> because files starting with “.git” should be reserved for git usage.</p>
+<p><a
+href="https://stackoverflow.com/questions/115983/how-can-i-add-a-blank-directory-to-a-git-repository">So
+question how can I add a blank directory to a git repository</a></p>
+<p>some answers suggest using <code>.gitkeep</code> or simply
+<code>.keep</code> because files starting with “.git” should be reserved
+for git usage.</p>
 </div>
 <div id="git-run-to-automate-many-repositories" class="section level1">
 <h1>Git run to automate many repositories</h1>
-<p>Git run enables to pull from many repositories with a single command</p>
+<p>Git run enables to pull from many repositories with a single
+command</p>
 <p>configuration was a bit complicated on debian</p>
 <p>Install nodejs and npm from the backports</p>
 <pre><code>sudo apt -t stretch-backports install nodejs
 sudo apt -t stretch-backports install npm
 sudo apt install build-essential</code></pre>
-<p>Configure nmp to run only for the local user <a href="https://stackoverflow.com/a/40905762/2641825">configure npm to use a different directory</a> citing docs.npmjs.com <a href="https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory">Manually change npm’s default directory</a></p>
-<p>in your home directory, create a directory for global installations:</p>
+<p>Configure nmp to run only for the local user <a
+href="https://stackoverflow.com/a/40905762/2641825">configure npm to use
+a different directory</a> citing docs.npmjs.com <a
+href="https://docs.npmjs.com/resolving-eacces-permissions-errors-when-installing-packages-globally#manually-change-npms-default-directory">Manually
+change npm’s default directory</a></p>
+<p>in your home directory, create a directory for global
+installations:</p>
 <pre><code>mkdir ~/.npm-global</code></pre>
 <p>Configure npm to use the new directory path:</p>
 <pre><code>npm config set prefix &#39;~/.npm-global&#39;</code></pre>
@@ -666,7 +778,8 @@ sudo apt install build-essential</code></pre>
 <pre><code>vim ~/.bash_aliases</code></pre>
 <p>and add this line:</p>
 <pre><code>export PATH=~/.npm-global/bin:$PATH</code></pre>
-<p>Then the configuration file is a .json file on the home folder. Edit it:</p>
+<p>Then the configuration file is a .json file on the home folder. Edit
+it:</p>
 <pre><code>vim ~/.grconfig.json</code></pre>
 <p>For example:</p>
 <pre><code>{
@@ -691,14 +804,17 @@ gr git pull</code></pre>
 <h2>Log</h2>
 <p>Display the modification log</p>
 <pre><code>git log </code></pre>
-<p>In the log, you can copy the beginning of a commit hash for use as <code>commit_sha</code> in the reset commands below.</p>
-<p>Display the log of a particular branch (after a fetch for example)</p>
+<p>In the log, you can copy the beginning of a commit hash for use as
+<code>commit_sha</code> in the reset commands below.</p>
+<p>Display the log of a particular branch (after a fetch for
+example)</p>
 <pre><code>git log origin/master </code></pre>
 <p>Display the log of a particular file</p>
 <pre><code>git log path/filename</code></pre>
 <p>Display a compact log for one file or one directory only</p>
 <pre><code>git log --abbrev-commit --pretty=oneline path_to_file</code></pre>
-<p>Edit <code>~/.gitconfig</code> to define an alias that shows the last 10 log entries in a compact way:</p>
+<p>Edit <code>~/.gitconfig</code> to define an alias that shows the last
+10 log entries in a compact way:</p>
 <pre><code>lkj    = log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)&lt;%an&gt;%Creset&#39; --abbrev-commit -10</code></pre>
 <p>This alias also works with the log of one file only</p>
 <pre><code>git lkj path/filename</code></pre>
@@ -706,18 +822,28 @@ gr git pull</code></pre>
 <h3>Show commit statistics</h3>
 <p>Show the number of lines modified in each files for each commit:</p>
 <pre><code>git log --numstat </code></pre>
-<p>A one liner version showing the number of files changes, number of lines inserted and deleted <a href="https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line">how to get log with short stat in one line</a>:</p>
+<p>A one liner version showing the number of files changes, number of
+lines inserted and deleted <a
+href="https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line">how
+to get log with short stat in one line</a>:</p>
 <pre><code>git log --pretty=&quot;@%h&quot;  --shortstat |  tr &quot;\n&quot; &quot; &quot; | tr &quot;@&quot; &quot;\n&quot;</code></pre>
 </div>
 <div id="export-the-log-to-csv" class="section level3">
 <h3>Export the log to csv</h3>
-<p>SO <a href="https://stackoverflow.com/questions/10418056/how-do-i-generate-a-git-commit-log-for-the-last-month-and-export-it-as-csv/10418356">Export git log as csv</a>:</p>
+<p>SO <a
+href="https://stackoverflow.com/questions/10418056/how-do-i-generate-a-git-commit-log-for-the-last-month-and-export-it-as-csv/10418356">Export
+git log as csv</a>:</p>
 <pre><code>git log --pretty=format:&#39;%h,%an,%ad,&quot;%s&quot;&#39; --date=iso -10</code></pre>
 <p>Edit <code>~/.gitconfig</code> to define it as an alias:</p>
 <pre><code>logcsv = log --pretty=format:&#39;%h,%an,%ad,\&quot;%s\&quot;&#39; --date=iso</code></pre>
-<p>Another version adding stats on the number of files changes, number of lines inserted and deleted based on <a href="https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line">how to get log with short stat in one line</a>:</p>
+<p>Another version adding stats on the number of files changes, number
+of lines inserted and deleted based on <a
+href="https://stackoverflow.com/questions/21137477/how-to-get-git-log-with-short-stat-in-one-line">how
+to get log with short stat in one line</a>:</p>
 <pre><code>git log --pretty=format:&#39;linebegin%h,%an,%ad,&quot;%s&quot;&#39; --shortstat --date=iso |  tr &quot;\n&quot; &quot;,&quot; | sed -E &#39;s/linebegin|,*$/\n/g&#39;</code></pre>
-<p>Simpler solution using paste to glue lines together (there is an issue with extra spaces at the beginning and in the middle of some lines):</p>
+<p>Simpler solution using paste to glue lines together (there is an
+issue with extra spaces at the beginning and in the middle of some
+lines):</p>
 <pre><code>git log --pretty=format:&#39;%h,%an,%ad,&quot;%s&quot;,&#39; --shortstat --date=iso | paste - - - #&gt; /tmp/gitlog.csv</code></pre>
 </div>
 <div id="tig" class="section level3">
@@ -727,33 +853,62 @@ gr git pull</code></pre>
 </div>
 <div id="rewriting-history" class="section level2">
 <h2>Rewriting history</h2>
-<p>In case you entered a wrong commit message, you can edit the last commit message with:</p>
+<p>In case you entered a wrong commit message, you can edit the last
+commit message with:</p>
 <pre><code>git commit --amend </code></pre>
-<p>In case you forgot a file, you can add a file to the last commit with:</p>
+<p>In case you forgot a file, you can add a file to the last commit
+with:</p>
 <pre><code>git add filename
 git commit --amend</code></pre>
-<p>A comment in <a href="https://stackoverflow.com/questions/14369155/how-to-change-past-commit-to-include-a-missed-file">How to change past commit to include a missed file?</a> specifies that commits before and after <code>--amend</code> have different hashes, even if only the commit message is changed. The use of <code>--amend</code> is only for private commits, which have not yet been shared with others.</p>
-<p>Rewriting commits older than the previous one is much harder. It requires the use of git rebase. I regularly want to fix typo in the git log, but it is not possible it was made unflexible on purpose. Explained in this <a href="https://stackoverflow.com/a/457396/2641825">Stackoverflow Answer</a></p>
+<p>A comment in <a
+href="https://stackoverflow.com/questions/14369155/how-to-change-past-commit-to-include-a-missed-file">How
+to change past commit to include a missed file?</a> specifies that
+commits before and after <code>--amend</code> have different hashes,
+even if only the commit message is changed. The use of
+<code>--amend</code> is only for private commits, which have not yet
+been shared with others.</p>
+<p>Rewriting commits older than the previous one is much harder. It
+requires the use of git rebase. I regularly want to fix typo in the git
+log, but it is not possible it was made unflexible on purpose. Explained
+in this <a
+href="https://stackoverflow.com/a/457396/2641825">Stackoverflow
+Answer</a></p>
 <blockquote>
-<p>“The real reason git doesn’t allow you to change the commit message ends up being very simple: that way, you can trust the messages. If you allowed people to change them afterwards, the messages are inherently not very trustworthy.”</p>
+<p>“The real reason git doesn’t allow you to change the commit message
+ends up being very simple: that way, you can trust the messages. If you
+allowed people to change them afterwards, the messages are inherently
+not very trustworthy.”</p>
 </blockquote>
 <div id="rebase" class="section level3">
 <h3>Rebase</h3>
-<p>It is safe to use rebase as long as the commits have not been pushed to another repository. To rename older commits, simply run:</p>
+<p>It is safe to use rebase as long as the commits have not been pushed
+to another repository. To rename older commits, simply run:</p>
 <pre><code>git rebase -i
 git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
-<p>Rebase will show the last 3 commits by default in the vim editor. Each line starts with “pick” followed by the commit hash and commit message. You can then replace the “pick” word in the vim editor by the command you want to achieve, press “escape”, “:wq” and peform the git command on the selected commit.</p>
+<p>Rebase will show the last 3 commits by default in the vim editor.
+Each line starts with “pick” followed by the commit hash and commit
+message. You can then replace the “pick” word in the vim editor by the
+command you want to achieve, press “escape”, “:wq” and peform the git
+command on the selected commit.</p>
 <p>See also :</p>
 <ul>
 <li>Answers to a StackOverflow question<br />
-<a href="https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit">How to modify a specified commit?</a>.</li>
-<li><a href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10 things I hate about git</a> Translation of the man page which he considers hard to understand: “git-rebase – Sequentially regenerate a series of commits so they can be applied directly to the head node”</li>
+<a
+href="https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit">How
+to modify a specified commit?</a>.</li>
+<li><a
+href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10
+things I hate about git</a> Translation of the man page which he
+considers hard to understand: “git-rebase – Sequentially regenerate a
+series of commits so they can be applied directly to the head node”</li>
 </ul>
 </div>
 </div>
 <div id="clean" class="section level2">
 <h2>Clean</h2>
-<p>Remove all files also those not tracked by git because they are in .gitignore. For example output pdf files and auxiliary files generated from latex or from pandoc.</p>
+<p>Remove all files also those not tracked by git because they are in
+.gitignore. For example output pdf files and auxiliary files generated
+from latex or from pandoc.</p>
 <pre><code>git clean -xf</code></pre>
 <p>Remove local (untracked) files from my current Git branch</p>
 <p>Show what will be deleted with the -n option:</p>
@@ -765,15 +920,22 @@ git rebase -i @~9   # Show the last 9 commits in a text editor</code></pre>
 </div>
 <div id="reset-whole-folder" class="section level2">
 <h2>Reset whole folder</h2>
-<p>Identify the commit identity in the log and copy its sha number. Then to go back to this state for the whole folder:</p>
+<p>Identify the commit identity in the log and copy its sha number. Then
+to go back to this state for the whole folder:</p>
 <pre><code>git reset --hard commit_sha</code></pre>
 <p>Do this <strong>before pushing</strong> only!</p>
-<p>Once you have pushed the changes, you need to revert the commit and commit those changes as well:</p>
+<p>Once you have pushed the changes, you need to revert the commit and
+commit those changes as well:</p>
 <pre><code>git revert -m 1 HEAD~
 git revert commit_sha</code></pre>
-<p>See <a href="https://stackoverflow.com/questions/9804211/can-not-push-changes-after-using-git-reset-hard" class="uri">https://stackoverflow.com/questions/9804211/can-not-push-changes-after-using-git-reset-hard</a></p>
-<p>Use the begining of a <code>commit_sha</code> copied from the log.</p>
-<p>To remove a commit where I accidentaly commited a very large file. I used <a href="https://stackoverflow.com/a/39768343/2641825">how to remove a too large file in a commit</a>:</p>
+<p>See <a
+href="https://stackoverflow.com/questions/9804211/can-not-push-changes-after-using-git-reset-hard"
+class="uri">https://stackoverflow.com/questions/9804211/can-not-push-changes-after-using-git-reset-hard</a></p>
+<p>Use the begining of a <code>commit_sha</code> copied from the
+log.</p>
+<p>To remove a commit where I accidentaly commited a very large file. I
+used <a href="https://stackoverflow.com/a/39768343/2641825">how to
+remove a too large file in a commit</a>:</p>
 <pre><code>git reset HEAD^</code></pre>
 <p>Then added the large file to .gitignore and committed again.</p>
 </div>
@@ -781,7 +943,8 @@ git revert commit_sha</code></pre>
 <h2>Reset only one file</h2>
 <p>To go back to this state for only one file, see git checkout</p>
 <pre><code>git checkout commit_hash  path_to_file/file_name</code></pre>
-<p>No need to enter the commit hash to get to get the file from the latest commit</p>
+<p>No need to enter the commit hash to get to get the file from the
+latest commit</p>
 <pre><code>git checkout path_to_file/file_name</code></pre>
 <p>Checkout the older revision of a file under a new name</p>
 <pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
@@ -789,23 +952,76 @@ git revert commit_sha</code></pre>
 </div>
 <div id="revert" class="section level2">
 <h2>Revert</h2>
-<p>Revert an unwanted commit with a new commit doing exactly the reverse operation</p>
+<p>Revert an unwanted commit with a new commit doing exactly the reverse
+operation</p>
 <pre><code>git revert &lt;commit hash&gt;</code></pre>
+<p>Linus Torvald’s <a
+href="Linus%20Torvald&#39;s%20advice%20on%20reverting%20a%20merge">advice
+on reverting a merge</a></p>
+<blockquote>
+<p>“When you have a problem you are chasing down, and you hit a”revert
+this merge”, what you’re hitting is essentially a single commit that
+contains all the changes (but obviously in reverse) of all the commits
+that got merged. So it’s debugging hell, because now you don’t have lots
+of small changes that you can try to pinpoint which <em>part</em> of it
+changes.</p>
+</blockquote>
+<blockquote>
+<p>But does it all work? Sure it does. You can revert a merge, and from
+a purely technical angle, Git did it very naturally and had no real
+troubles. It just considered it a change from “state before merge” to
+“state after merge”, and that was it. Nothing complicated, nothing odd,
+nothing really dangerous. Git will do it without even thinking about
+it.</p>
+</blockquote>
+<blockquote>
+<p>So from a technical angle, there’s nothing wrong with reverting a
+merge, but from a workflow angle it’s something that you generally
+should try to avoid.</p>
+</blockquote>
+<blockquote>
+<p>If at all possible, for example, if you find a problem that got
+merged into the main tree, rather than revert the merge, try
+<em>really</em> hard to bisect the problem down into the branch you
+merged, and just fix it, or try to revert the individual commit that
+caused it.</p>
+</blockquote>
+<blockquote>
+<p>Yes, it’s more complex, and no, it’s not always going to work
+(sometimes the answer is: “oops, I really shouldn’t have merged it,
+because it wasn’t ready yet, and I really need to undo <em>all</em> of
+the merge”). So then you really should revert the merge, but when you
+want to re-do the merge, you now need to do it by reverting the
+revert.”</p>
+</blockquote>
 </div>
 </div>
 <div id="gui-graphical-user-interface" class="section level1">
 <h1>GUI Graphical User Interface</h1>
 <p>For colleagues who need a GUI:</p>
 <ul>
-<li><a href="http://gitextensions.github.io/" class="uri">http://gitextensions.github.io/</a> recommended on <a href="http://gitextensions.github.io/">this SO answer</a></li>
+<li><a href="http://gitextensions.github.io/"
+class="uri">http://gitextensions.github.io/</a> recommended on <a
+href="http://gitextensions.github.io/">this SO answer</a></li>
 <li><a href="https://desktop.github.com/">Github Desktop</a></li>
 </ul>
-<p>A section of the git book on <a href="https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Graphical-Interfaces">Graphical User Interfaces</a> describes the default git-gui and gitk graphical user interfaces to prepare commits and view the git log history. It also describes the github desktop client and in particular it’s “sync” feature:</p>
+<p>A section of the git book on <a
+href="https://git-scm.com/book/en/v2/Appendix-A%3A-Git-in-Other-Environments-Graphical-Interfaces">Graphical
+User Interfaces</a> describes the default git-gui and gitk graphical
+user interfaces to prepare commits and view the git log history. It also
+describes the github desktop client and in particular it’s “sync”
+feature:</p>
 <blockquote>
-<p>“The main way you interact with other repositories over the network is through the “Sync” feature. Git internally has separate operations for pushing, fetching, merging, and rebasing, but the GitHub clients collapse all of these into one multi-step feature. Here’s what happens when you click the Sync button:</p>
+<p>“The main way you interact with other repositories over the network
+is through the “Sync” feature. Git internally has separate operations
+for pushing, fetching, merging, and rebasing, but the GitHub clients
+collapse all of these into one multi-step feature. Here’s what happens
+when you click the Sync button:</p>
 <pre><code>git pull --rebase. If this fails because of a merge conflict, fall back to git pull --no-rebase.
 git push.</code></pre>
-<p>This is the most common sequence of network commands when working in this style, so squashing them into one command saves a lot of time. "</p>
+<p>This is the most common sequence of network commands when working in
+this style, so squashing them into one command saves a lot of time.
+”</p>
 </blockquote>
 </div>
 <div id="help" class="section level1">
@@ -821,9 +1037,13 @@ git push.</code></pre>
 <h3>Issue triage</h3>
 <p>On the Gitlab labels page:</p>
 <blockquote>
-<p>“Labels can be applied to issues and merge requests. Star a label to make it a priority label. Order the prioritized labels to change their relative priority, by dragging.”</p>
+<p>“Labels can be applied to issues and merge requests. Star a label to
+make it a priority label. Order the prioritized labels to change their
+relative priority, by dragging.”</p>
 </blockquote>
-<p><a href="https://about.gitlab.com/handbook/engineering/quality/issue-triage/#priority">Issue triage by priority</a></p>
+<p><a
+href="https://about.gitlab.com/handbook/engineering/quality/issue-triage/#priority">Issue
+triage by priority</a></p>
 <table>
 <colgroup>
 <col width="11%" />
@@ -841,17 +1061,20 @@ git push.</code></pre>
 <tr class="odd">
 <td><code>~priority::1</code></td>
 <td>Urgent</td>
-<td>We will address this as soon as possible regardless of the limit on our team capacity.</td>
+<td>We will address this as soon as possible regardless of the limit on
+our team capacity.</td>
 </tr>
 <tr class="even">
 <td><code>~priority::2</code></td>
 <td>High</td>
-<td>We will address this soon and will provide capacity from our team for it in the next few releases.</td>
+<td>We will address this soon and will provide capacity from our team
+for it in the next few releases.</td>
 </tr>
 <tr class="odd">
 <td><code>~priority::3</code></td>
 <td>Medium</td>
-<td>We want to address this but may have other higher priority items.</td>
+<td>We want to address this but may have other higher priority
+items.</td>
 </tr>
 <tr class="even">
 <td><code>~priority::4</code></td>
@@ -863,14 +1086,16 @@ git push.</code></pre>
 </div>
 <div id="ci-continuous-integration" class="section level3">
 <h3>CI Continuous Integration</h3>
-<p>By default, job artifacts are not kept on failure. To enable this add a <code>when</code> clause to <code>.gitlab-ci.yaml</code></p>
+<p>By default, job artifacts are not kept on failure. To enable this add
+a <code>when</code> clause to <code>.gitlab-ci.yaml</code></p>
 <pre><code>  artifacts:
     when: always
     paths:
     - notebooks</code></pre>
 <div id="usage-quotas" class="section level4">
 <h4>Usage quotas</h4>
-<p>Check usage quotas for a group at (replace group_name by the actual group name):</p>
+<p>Check usage quotas for a group at (replace group_name by the actual
+group name):</p>
 <pre><code>https://gitlab.com/groups/group_name/-/usage_quotas</code></pre>
 <p>For a user at (link works as is):</p>
 <pre><code>https://gitlab.com/-/profile/usage_quotas#pipelines-quota-tab</code></pre>
@@ -880,9 +1105,17 @@ git push.</code></pre>
 </div>
 <div id="line-endings" class="section level1">
 <h1>Line endings</h1>
-<p><a href="https://stackoverflow.com/questions/7156694/git-how-to-renormalize-line-endings-in-all-files-in-all-revisions">How to renormalize line endings in all files in all revisions?</a></p>
+<p><a
+href="https://stackoverflow.com/questions/7156694/git-how-to-renormalize-line-endings-in-all-files-in-all-revisions">How
+to renormalize line endings in all files in all revisions?</a></p>
 <pre><code>git add --renormalize .</code></pre>
-<p>This is usually taken care of at the system level. But sometimes when you share files with windows machines (accessing them on a shared folder for example) you end up with commits that show a lot of modifications because the windows line ending LRLF appears in the linux machine. <a href="https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings">Configuring git to handle line endings</a> To force the line ending to be LF only, create a .gitattributes file which contains:</p>
+<p>This is usually taken care of at the system level. But sometimes when
+you share files with windows machines (accessing them on a shared folder
+for example) you end up with commits that show a lot of modifications
+because the windows line ending LRLF appears in the linux machine. <a
+href="https://help.github.com/en/github/using-git/configuring-git-to-handle-line-endings">Configuring
+git to handle line endings</a> To force the line ending to be LF only,
+create a .gitattributes file which contains:</p>
 <pre><code>text eol=lf</code></pre>
 </div>
 <div id="publishing-project-documentation" class="section level1">
@@ -890,32 +1123,64 @@ git push.</code></pre>
 <div id="on-github" class="section level2">
 <h2>On Github</h2>
 <p>Older content related to pages built from branches.</p>
-<p>SO answer to the question “How to add a git repo as a submodule of itself? (Or: How to generate GitHub Pages programmatically?)”: An alternative to using Git Submodules to generate GitHub Pages is to use Git Subtree Merge Strategy.</p>
-<p>In fact I didn’t use quite that strategy and I instead cloned a temporary copy of my repository. Created the gh-page branch. Pushed it to github. Then I went back to the original repository (where I have a few large untracked data files I find handy to keep for analyses purposes).</p>
-<p>Then within the inst folder, I cloned only the gh-branch. To clone only one branch:</p>
+<p>SO answer to the question “How to add a git repo as a submodule of
+itself? (Or: How to generate GitHub Pages programmatically?)”: An
+alternative to using Git Submodules to generate GitHub Pages is to use
+Git Subtree Merge Strategy.</p>
+<p>In fact I didn’t use quite that strategy and I instead cloned a
+temporary copy of my repository. Created the gh-page branch. Pushed it
+to github. Then I went back to the original repository (where I have a
+few large untracked data files I find handy to keep for analyses
+purposes).</p>
+<p>Then within the inst folder, I cloned only the gh-branch. To clone
+only one branch:</p>
 <pre><code>git clone -b mybranch --single-branch git://sub.domain.com/repo.git</code></pre>
-<p>Then I renamed the folder to “web”, so that I had a inst/web folder, tracking the gh-branch. inst/web is ignored in the main repository.</p>
+<p>Then I renamed the folder to “web”, so that I had a inst/web folder,
+tracking the gh-branch. inst/web is ignored in the main repository.</p>
 </div>
 <div id="on-gitlab" class="section level2">
 <h2>On Gitlab</h2>
-<p>Gitlab has an integrated CI mechanism, * <a href="https://docs.gitlab.com/ee/user/project/pages/getting_started/pages_ci_cd_template.html">Create a pages website by using a CI / CD template</a> * <a href="https://www.r-bloggers.com/2020/09/rendering-an-r-markdown-presentation-to-gitlab-pages/">Rendering an R markdown presentation to gitlab pages</a> uses the <code>rocker/verse:4.0.0</code> docker image. Posted on September 16, 2020. * <a href="https://rlesur.gitlab.io/bookdown-gitlab-pages/">GitLab CI for your bookdown project</a> Uses the <code>rocker/verse:4.0.2</code> docker image. Posted on 2020-09-08. A setup generating pages for the master branch and also for merge requests.</p>
-<p>To generate html pages from markdown and publish them, I added a <code>.gitlab-ci.yml</code> to the repository. The CI deployment is visible on the <a href="https://gitlab.com/paulrougieux/paulrougieux/-/jobs">paulrougieux.jobs</a> page. Clicking on “running” displays the latest activity of an ongoing build. It starts with “Pulling docker image rocker/verse:4.0.0 …”. Once the build is finished, the completed page is visible at <a href="https://paulrougieux.gitlab.io/paulrougieux/" class="uri">https://paulrougieux.gitlab.io/paulrougieux/</a></p>
+<p>Gitlab has an integrated CI mechanism, * <a
+href="https://docs.gitlab.com/ee/user/project/pages/getting_started/pages_ci_cd_template.html">Create
+a pages website by using a CI / CD template</a> * <a
+href="https://www.r-bloggers.com/2020/09/rendering-an-r-markdown-presentation-to-gitlab-pages/">Rendering
+an R markdown presentation to gitlab pages</a> uses the
+<code>rocker/verse:4.0.0</code> docker image. Posted on September 16,
+2020. * <a href="https://rlesur.gitlab.io/bookdown-gitlab-pages/">GitLab
+CI for your bookdown project</a> Uses the
+<code>rocker/verse:4.0.2</code> docker image. Posted on 2020-09-08. A
+setup generating pages for the master branch and also for merge
+requests.</p>
+<p>To generate html pages from markdown and publish them, I added a
+<code>.gitlab-ci.yml</code> to the repository. The CI deployment is
+visible on the <a
+href="https://gitlab.com/paulrougieux/paulrougieux/-/jobs">paulrougieux.jobs</a>
+page. Clicking on “running” displays the latest activity of an ongoing
+build. It starts with “Pulling docker image rocker/verse:4.0.0 …”. Once
+the build is finished, the completed page is visible at <a
+href="https://paulrougieux.gitlab.io/paulrougieux/"
+class="uri">https://paulrougieux.gitlab.io/paulrougieux/</a></p>
 </div>
 </div>
 <div id="remote" class="section level1">
 <h1>Remote</h1>
-<p><a href="https://git-scm.com/docs/git-remote#git-remote-emaddem">Add a remote repository</a> with:</p>
+<p><a href="https://git-scm.com/docs/git-remote#git-remote-emaddem">Add
+a remote repository</a> with:</p>
 <pre><code>git remote add git@github.com:paulrougieux/paulrougieux.github.io.git
 # or
 git remote add reponame https://repositoryurl </code></pre>
-<p><a href="https://git-scm.com/docs/git-remote#git-remote-emset-urlem">Change the url of a remote repository</a></p>
+<p><a
+href="https://git-scm.com/docs/git-remote#git-remote-emset-urlem">Change
+the url of a remote repository</a></p>
 <pre><code>git remote set-url origin git@github.com:paulrougieux/paulrougieux.github.io.git</code></pre>
-<p>When a repository is connected to several remote repositories, you can push content to repositories by specifying their names</p>
+<p>When a repository is connected to several remote repositories, you
+can push content to repositories by specifying their names</p>
 <pre><code>git push -u origin master
 git push -u anotherrepository master</code></pre>
 <p>To change the default git remote, push with :</p>
 <pre><code>git push -u origin master</code></pre>
-<p>Then later push of that branch to that remote can be made simply with:</p>
+<p>Then later push of that branch to that remote can be made simply
+with:</p>
 <pre><code>git push</code></pre>
 <p>Another command without specifying the remote and the branch</p>
 <pre><code>$ git push -u
@@ -923,16 +1188,21 @@ git push -u anotherrepository master</code></pre>
 fatal: The current branch master has no upstream branch.
 To push the current branch and set the remote as upstream, use
     git push --set-upstream origin master</code></pre>
-<p>After I run this set upstream flag, I can push to the remote server. Then I get this message</p>
+<p>After I run this set upstream flag, I can push to the remote server.
+Then I get this message</p>
 <pre><code>[...]
  * [new branch]      master -&amp;gt; masterBranch master set up to track remote branch master from origin. </code></pre>
 <p>I’ll have to figure out what this does.</p>
 <div id="push-to-multiple-remotes" class="section level2">
 <h2>Push to multiple remotes</h2>
-<p>Based on <a href="https://jigarius.com/blog/multiple-git-remote-repositories">this blog post</a> I added the push remote twice to the origin repo as such :</p>
+<p>Based on <a
+href="https://jigarius.com/blog/multiple-git-remote-repositories">this
+blog post</a> I added the push remote twice to the origin repo as such
+:</p>
 <pre><code>git remote set-url --add --push origin  git@gitlab.com:paulrougieux/paulrougieux.git
 git remote set-url --add --push origin  git@github.com:paulrougieux/paulrougieux.github.io.git</code></pre>
-<p>The output of git push -v shows that it is now pushing to both repositories</p>
+<p>The output of git push -v shows that it is now pushing to both
+repositories</p>
 <pre><code>git push -v
 Pushing to git@gitlab.com:paulrougieux/paulrougieux.git
 To gitlab.com:paulrougieux/paulrougieux.git
@@ -947,17 +1217,25 @@ Everything up-to-date</code></pre>
 </div>
 <div id="pull-rebase-versus-merge" class="section level2">
 <h2>Pull rebase versus merge</h2>
-<p><a href="https://sdqweb.ipd.kit.edu/wiki/Git_pull_--rebase_vs._--merge">Explanation on rebase versus merge</a></p>
+<p><a
+href="https://sdqweb.ipd.kit.edu/wiki/Git_pull_--rebase_vs._--merge">Explanation
+on rebase versus merge</a></p>
 <blockquote>
-<p>“If you pull remote changes with the flag –rebase, then your local changes are <strong>reapplied on top</strong> of the remote changes.”</p>
+<p>“If you pull remote changes with the flag –rebase, then your local
+changes are <strong>reapplied on top</strong> of the remote
+changes.”</p>
 </blockquote>
 <pre><code>git pull --rebase</code></pre>
 <blockquote>
-<p>“If you pull remote changes with the flag –merge, which is also the default, then your local changes are merged with the remote changes. This results in a <strong>merge commit</strong> that points to the latest local commit and the latest remote commit.”</p>
+<p>“If you pull remote changes with the flag –merge, which is also the
+default, then your local changes are merged with the remote changes.
+This results in a <strong>merge commit</strong> that points to the
+latest local commit and the latest remote commit.”</p>
 </blockquote>
 <pre><code>git pull --merge</code></pre>
 <blockquote>
-<p>“It is best practice to always rebase your local commits when you pull before pushing them.”</p>
+<p>“It is best practice to always rebase your local commits when you
+pull before pushing them.”</p>
 </blockquote>
 <p>This can be set as a global configuration with</p>
 <pre><code>git config --global pull.rebase true</code></pre>
@@ -970,7 +1248,8 @@ Everything up-to-date</code></pre>
 <p>Change the case of a file on a windows FAT 32 system:</p>
 <pre><code>git mv load.r load2.R
 git mv load2.R load.R</code></pre>
-<p>If a file or folder has been renamed outside of git, I get this warning:</p>
+<p>If a file or folder has been renamed outside of git, I get this
+warning:</p>
 <pre><code>$ git add .
 warning: You ran &#39;git add&#39; with neither &#39;-A (--all)&#39; or &#39;--ignore-remo
 whose behaviour will change in Git 2.0 with respect to paths you removed
@@ -981,24 +1260,36 @@ removed from your working tree are ignored with this version of Git.
   ignores paths you removed from your working tree.
 
 * &#39;git add --all &#39; will let you also record the removals.</code></pre>
-<p>Therefore I think I should always run “git add –all” after I have removed or renamed files.</p>
+<p>Therefore I think I should always run “git add –all” after I have
+removed or renamed files.</p>
 </div>
 <div id="replace-and-search-text" class="section level1">
 <h1>Replace and search text</h1>
 <div id="searching-text-with-grep" class="section level2">
 <h2>Searching text with grep</h2>
-<p>Search all files in the subdirectory “subdir” for lines containing the words “factor” and “item”. Show 2 lines of context (2 leading and 2 trailing lines).</p>
+<p>Example from the git grep help page. Looks for time_t in all tracked
+.c and .h files in the working directory and its subdirectories.</p>
+<pre><code>git grep &#39;time_t&#39; -- &#39;*.[ch]&#39;</code></pre>
+<p>Search all files in the subdirectory “subdir” for lines containing
+the words “factor” and “item”. Show 2 lines of context (2 leading and 2
+trailing lines).</p>
 <pre><code>git grep -e item --and -e factor -C 2 -- subdir/</code></pre>
-<p>Search all R markdown files containing the word lyx ignore the case:</p>
+<p>Search all R markdown files containing the word lyx ignore the
+case:</p>
 <pre><code>git grep -i lyx -- *.Rmd</code></pre>
-<p>Stackoverflow: <a href="https://stackoverflow.com/questions/2928584/how-to-grep-search-committed-code-in-the-git-history">How to search committed code in the git history?</a></p>
+<p>Stackoverflow: <a
+href="https://stackoverflow.com/questions/2928584/how-to-grep-search-committed-code-in-the-git-history">How
+to search committed code in the git history?</a></p>
 <p>Search in all possible locations in all commits</p>
 <pre><code>git grep &lt;regexp&gt; $(git rev-list --all)</code></pre>
 <p>Search for a particular location in the git repo</p>
 <pre><code>git grep &lt;regexp&gt; $(git rev-list --all -- lib/util) -- lib/util</code></pre>
-<p>The above grep commands will give you a list of commit sha where the grep pattern was present in the repo. You can then checkout the older revision of a file under a new name</p>
+<p>The above grep commands will give you a list of commit sha where the
+grep pattern was present in the repo. You can then checkout the older
+revision of a file under a new name</p>
 <pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
-<div id="searching-for-two-terms-on-the-same-line" class="section level3">
+<div id="searching-for-two-terms-on-the-same-line"
+class="section level3">
 <h3>Searching for two terms on the same line</h3>
 <p>For example:</p>
 <pre><code>git grep -e module_dir --and -e &quot;import&quot;</code></pre>
@@ -1008,23 +1299,31 @@ removed from your working tree are ignored with this version of Git.
 <h2>Replacing strings</h2>
 <p>Use git grep to replace strings in many files in the directory :</p>
 <pre><code>git grep -l &#39;original_text&#39; | xargs sed -i &#39;s/original_text/new_text/g&#39;</code></pre>
-<p>See also the refactor function in the <a href="bash.html">bash</a> page.</p>
+<p>See also the refactor function in the <a href="bash.html">bash</a>
+page.</p>
 </div>
 </div>
 <div id="statistics" class="section level1">
 <h1>Statistics</h1>
-<p>Count the number of lines of code for each language in a remote git repository according to this <a href="https://stackoverflow.com/a/29012789/2641825">stackoverflow answer</a></p>
+<p>Count the number of lines of code for each language in a remote git
+repository according to this <a
+href="https://stackoverflow.com/a/29012789/2641825">stackoverflow
+answer</a></p>
 <pre><code>#!/usr/bin/env bash
 git clone --depth 1 &quot;$1&quot; temp-linecount-repo &amp;&amp;
   printf &quot;(&#39;temp-linecount-repo&#39; will be deleted automatically)\n\n\n&quot; &amp;&amp;
   cloc temp-linecount-repo &amp;&amp;
   rm -rf temp-linecount-repo</code></pre>
 <blockquote>
-<p>“This script requires CLOC (“Count Lines of Code”) to be installed. cloc can probably be installed with your package manager"</p>
+<p>“This script requires CLOC (“Count Lines of Code”) to be installed.
+cloc can probably be installed with your package manager”</p>
 </blockquote>
 <pre><code>sudo apt install cloc</code></pre>
 <blockquote>
-<p>“You can install the script by saving its code to a file <code>cloc-git</code>, running <code>chmod +x cloc-git</code>, and then moving the file to a folder in your <code>$PATH</code> such as <code>/usr/local/bin</code>.”</p>
+<p>“You can install the script by saving its code to a file
+<code>cloc-git</code>, running <code>chmod +x cloc-git</code>, and then
+moving the file to a folder in your <code>$PATH</code> such as
+<code>/usr/local/bin</code>.”</p>
 </blockquote>
 <p>Usage</p>
 <pre><code>cloc-git https://github.com/evalEmpire/perl5i.git</code></pre>
@@ -1034,11 +1333,13 @@ git clone --depth 1 &quot;$1&quot; temp-linecount-repo &amp;&amp;
 <p>Creating an annotated tag</p>
 <pre><code>git tag -a v1.4 -m &#39;my version 1.4&#39;
 git tag v0.0.2  -m &quot;Version 0.0.2&quot;</code></pre>
-<p>A regular push command won’t push a tag (bitbucket), to push all your tags :</p>
+<p>A regular push command won’t push a tag (bitbucket), to push all your
+tags :</p>
 <pre><code>git push origin --tags</code></pre>
 <p>List tags</p>
 <pre><code>git tag -l</code></pre>
-<p>You can add a tag after the fact. To tag an earlier commit, specify the commit checksum or part of it:</p>
+<p>You can add a tag after the fact. To tag an earlier commit, specify
+the commit checksum or part of it:</p>
 <pre><code>git log --pretty=oneline
 
 git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
@@ -1048,11 +1349,15 @@ git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
 <pre><code>git push --delete origin tagname</code></pre>
 <p>Return all files in the repository to a particular tag:</p>
 <pre><code>git checkout tags/v0.1</code></pre>
-<p>Optionally you can checkout and create a new branch to commit your changes with:</p>
+<p>Optionally you can checkout and create a new branch to commit your
+changes with:</p>
 <pre><code>git checkout tags/o.1 -b newbranchname</code></pre>
-<p>Git tools <a href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">signing your work</a>Signed tags Generate a pgp key</p>
+<p>Git tools <a
+href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">signing
+your work</a>Signed tags Generate a pgp key</p>
 <pre><code>gpg --gen-key</code></pre>
-<p>More information on gpg key publishing in the <a href="bash.html">bash page</a>. Display what keys are available</p>
+<p>More information on gpg key publishing in the <a
+href="bash.html">bash page</a>. Display what keys are available</p>
 <pre><code>gpg --list-keys</code></pre>
 <p>Configure git to use the key</p>
 <pre><code> git config --global user.signingkey 0A46826A
@@ -1065,10 +1370,18 @@ git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
 <p>In multiple repos (using git run):</p>
 <pre><code>gr git grep &quot;^TODO &quot;</code></pre>
 </div>
-<div id="uploading-content-to-online-git-platforms" class="section level1">
+<div id="uploading-content-to-online-git-platforms"
+class="section level1">
 <h1>Uploading content to online git platforms</h1>
-<p>Git is useful as a version management on its own. But it’s even more usefull when code can be back-up online. * Free public git storage is availble on <a href="http://github.com/">Github</a>. * Free public and private git storage are available on <a href="http://bitbucket.org/">Bitbucket</a>, with up to 5 collaborators per project. * Free public and private git storage are available on <a href="https://gitlab.com/">Gitlab</a>.</p>
-<p>Commands I’ve used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:</p>
+<p>Git is useful as a version management on its own. But it’s even more
+usefull when code can be back-up online. * Free public git storage is
+availble on <a href="http://github.com/">Github</a>. * Free public and
+private git storage are available on <a
+href="http://bitbucket.org/">Bitbucket</a>, with up to 5 collaborators
+per project. * Free public and private git storage are available on <a
+href="https://gitlab.com/">Gitlab</a>.</p>
+<p>Commands I’ve used to upload content to an existing repository
+github.com/paul4forest/forestproductsdemand are:</p>
 <pre><code>    git remote add origin https://github.com/paul4forest/forestproductsdemand
     git pull origin master
     git add
@@ -1081,13 +1394,20 @@ git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
     git remote add origin ssh://git@bitbucket.org/username/bbreponame.git
     # Upload and set the local changes as upstream
     git push -u origin master</code></pre>
-<p>See also this discussion on <a href="http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time">why do I need to set upstream</a>?</p>
+<p>See also this discussion on <a
+href="http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time">why
+do I need to set upstream</a>?</p>
 <p>Commands to copy an existing repository from bitbucket :</p>
 <pre><code> git clone git@bitbucket.org/username/bbreponame.git</code></pre>
 <div id="setting-up-ssh-keys" class="section level2">
 <h2>Setting up SSH keys</h2>
-<p>See <a href="https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating a new SSH key and adding it to the ssh-agent</a> and <a href="https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account">Adding a new SSH key to your GitHub account</a></p>
-<p>To test if my new ssh key worked with github, I created a branch and pushed it to github. Then I deleted the branch locally and remotely:</p>
+<p>See <a
+href="https://help.github.com/en/articles/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent">Generating
+a new SSH key and adding it to the ssh-agent</a> and <a
+href="https://help.github.com/en/articles/adding-a-new-ssh-key-to-your-github-account">Adding
+a new SSH key to your GitHub account</a></p>
+<p>To test if my new ssh key worked with github, I created a branch and
+pushed it to github. Then I deleted the branch locally and remotely:</p>
 <pre><code>git branch &quot;key&quot;
 git checkout key
 git push --set-upstream origin key
@@ -1097,12 +1417,18 @@ git branch -d key
 git push origin --delete key</code></pre>
 </div>
 </div>
-<div id="stash-to-keep-uncommitted-changes-in-the-current-branch-while-working-quickly-in-another-branch" class="section level1">
-<h1>Stash to Keep uncommitted changes in the current branch while working quickly in another branch</h1>
+<div
+id="stash-to-keep-uncommitted-changes-in-the-current-branch-while-working-quickly-in-another-branch"
+class="section level1">
+<h1>Stash to Keep uncommitted changes in the current branch while
+working quickly in another branch</h1>
 <p>For example you edit a file in branch develop</p>
 <pre><code>git checkout develop
 echo &quot;blabla&quot; &gt; newfile.txt</code></pre>
-<p>Imagine you are in the middle of your work and need to do an urgent modification in another branch. To move to another branch, you would normaly need to commit this change. If you don’t want to commit the change yet. You can store temporary changes with the command:</p>
+<p>Imagine you are in the middle of your work and need to do an urgent
+modification in another branch. To move to another branch, you would
+normaly need to commit this change. If you don’t want to commit the
+change yet. You can store temporary changes with the command:</p>
 <pre><code>git stash</code></pre>
 <p>Move to the master branch</p>
 <pre><code>git checkout master
@@ -1113,7 +1439,12 @@ git stash pop</code></pre>
 </div>
 <div id="subversion" class="section level1">
 <h1>Subversion</h1>
-<p>Subversion is another version control system. It is different than git and should be on another page, but since I don’t expect to use it very much, it probably makes sense to keep a Subversion section under the git page here. See also wiki.debian.org <a href="https://wiki.debian.org/SmallSVNTutorial">small SVN tutorial</a>.</p>
+<p>Subversion is another version control system. It is different than
+git and should be on another page, but since I don’t expect to use it
+very much, it probably makes sense to keep a Subversion section under
+the git page here. See also wiki.debian.org <a
+href="https://wiki.debian.org/SmallSVNTutorial">small SVN
+tutorial</a>.</p>
 <p>Install subversion from the Debian repository</p>
 <pre><code>sudo apt install subversion</code></pre>
 <p>Load the latest version of some repository</p>
@@ -1140,17 +1471,23 @@ Getting Started with GitHub + Git</code></pre>
 <pre><code>Mixing private and public repository in Git workflow</code></pre>
 <p>Book:</p>
 <ul>
-<li><a href="https://git-scm.com/book/en/v2">Pro Git book</a> good introduction.</li>
+<li><a href="https://git-scm.com/book/en/v2">Pro Git book</a> good
+introduction.</li>
 </ul>
 <p>Tutorial:</p>
 <ul>
 <li>Git foundations</li>
-<li><a href="https://www.willingconsulting.com/post/2019-07-01-locations-and-git/">Definition and pictures of git and related services</a></li>
+<li><a
+href="https://www.willingconsulting.com/post/2019-07-01-locations-and-git/">Definition
+and pictures of git and related services</a></li>
 </ul>
 <p>Blogs:</p>
 <ul>
-<li><a href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10 things I hate about git</a></li>
-<li><a href="http://fperez.org/py4science/git.html">list of git resources</a> by Fernando Perez, the creator of ipython</li>
+<li><a
+href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10
+things I hate about git</a></li>
+<li><a href="http://fperez.org/py4science/git.html">list of git
+resources</a> by Fernando Perez, the creator of ipython</li>
 </ul>
 </div>
 
