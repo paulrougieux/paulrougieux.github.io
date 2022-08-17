@@ -172,6 +172,18 @@ In the following form (do not forget the semicolon at the end):
     Acquire::http::Proxy "http://user:password@proxy.server:port/";
 
 
+### Search packages
+
+Search packages with apt
+
+    apt search <name>
+
+Search packages with aptitude, the high level interface to the package manager
+
+    aptitude search <name>
+
+Search packages on the [Debian
+website](https://www.debian.org/distrib/packages).
 
 
 ## Installing Debian software from backports
@@ -522,9 +534,10 @@ Add the following line to that file:
 Copy the links, then download the software and signature file
 
     cd ~/downloads
+    curl -O
+    # For example
     curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb
     curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb.asc
-    curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.14.0.4-1_amd64.deb.asc
     
     cat expressvpn_*_amd64.deb.asc
 

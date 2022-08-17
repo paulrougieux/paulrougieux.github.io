@@ -443,18 +443,29 @@ div.tocify {
 </div>
 
 
-<p>This page is the continuation of <a href="https://paulremote.blogspot.fr/search/label/Debian">several blog posts related to Debian</a></p>
+<p>This page is the continuation of <a
+href="https://paulremote.blogspot.fr/search/label/Debian">several blog
+posts related to Debian</a></p>
 <div id="installing-debian" class="section level1">
 <h1>Installing Debian</h1>
-<p>The Debian GNU Linux operating system is available as a torrent download or a http download at <a href="https://www.debian.org/CD/">debian.org/CD</a>:</p>
+<p>The Debian GNU Linux operating system is available as a torrent
+download or a http download at <a
+href="https://www.debian.org/CD/">debian.org/CD</a>:</p>
 <ul>
-<li>The <a href="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/">net install CD</a> is sufficient to install Debian.</li>
-<li>On <a href="https://www.debian.org/CD/live/">debian.org/CD/live/</a> you can get “Live images which you can use to try Debian first and then install the contents of the image.”</li>
+<li>The <a
+href="https://cdimage.debian.org/debian-cd/current/amd64/iso-cd/">net
+install CD</a> is sufficient to install Debian.</li>
+<li>On <a href="https://www.debian.org/CD/live/">debian.org/CD/live/</a>
+you can get “Live images which you can use to try Debian first and then
+install the contents of the image.”</li>
 </ul>
 <p>Verify the checksum</p>
 <pre><code>shasum debian-10.1.0-amd64-netinst.iso</code></pre>
-<p>To copy the image to a usb key follow the <a href="https://www.debian.org/releases/stable/amd64/ch04s03.html.en">instruction on how to copy the iso image to a usb key</a></p>
-<p>Find the device name of my USB key (it had a previous Debian system on it):</p>
+<p>To copy the image to a usb key follow the <a
+href="https://www.debian.org/releases/stable/amd64/ch04s03.html.en">instruction
+on how to copy the iso image to a usb key</a></p>
+<p>Find the device name of my USB key (it had a previous Debian system
+on it):</p>
 <pre><code>sudo fdisk -l
 # /dev/sdb1 </code></pre>
 <p>Unmount the USB key</p>
@@ -464,8 +475,10 @@ sudo umount &quot;/media/gabriele/Debian Inst&quot;
 # or
 sudo umount &quot;/media/paul/Debian 10.1.0 amd64 n&quot;</code></pre>
 <p>Transfer the iso image to the key</p>
-<p>sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb # or sudo cp debian-10.1.0-amd64-netinst.iso /dev/sdb</p>
-<p>The iso should be copied to <code>sdb</code> and not to <code>sdb1</code> ! Then the USB drive can be used to boot a laptop.</p>
+<p>sudo cp debian-live-9.5.0-amd64-gnome.iso /dev/sdb # or sudo cp
+debian-10.1.0-amd64-netinst.iso /dev/sdb</p>
+<p>The iso should be copied to <code>sdb</code> and not to
+<code>sdb1</code> ! Then the USB drive can be used to boot a laptop.</p>
 <div id="after-the-installation" class="section level2">
 <h2>After the installation</h2>
 <p>Add my user name to the super user group</p>
@@ -477,28 +490,51 @@ sudo umount &quot;/media/paul/Debian 10.1.0 amd64 n&quot;</code></pre>
 </div>
 <div id="debian-on-a-hp-elitbook" class="section level2">
 <h2>Debian on a HP Elitbook</h2>
-<p>Note: on a HP laptop make sure that the “legacy boot” is enabled and that the “secure boot” is disabled. On another HP laptop, I had to disable the fast boot so that I could boot from a USB device. The boot devices can be chosen by pressing ESC at start up, then F9.</p>
+<p>Note: on a HP laptop make sure that the “legacy boot” is enabled and
+that the “secure boot” is disabled. On another HP laptop, I had to
+disable the fast boot so that I could boot from a USB device. The boot
+devices can be chosen by pressing ESC at start up, then F9.</p>
 <p>Debian installation went smoothly.</p>
-<p>After the installation, there was one issue with the wifi card having a non-free driver. I had to place the package <a href="https://packages.debian.org/stretch/firmware-iwlwifi">firmware-iwlwifi</a> on a USB key. The download link is at the bottom of the page (<a href="https://packages.debian.org/stretch/all/firmware-iwlwifi/download">all</a>. Then installed it from the usb key with</p>
+<p>After the installation, there was one issue with the wifi card having
+a non-free driver. I had to place the package <a
+href="https://packages.debian.org/stretch/firmware-iwlwifi">firmware-iwlwifi</a>
+on a USB key. The download link is at the bottom of the page (<a
+href="https://packages.debian.org/stretch/all/firmware-iwlwifi/download">all</a>.
+Then installed it from the usb key with</p>
 <pre><code>sudo apt install ./firmware-iwlwifi_20161130-3_all.deb</code></pre>
-<p>Alternatively, the .ucode file can also be found in <a href="http://http.debian.net/debian/pool/non-free/f/firmware-nonfree/firmware-nonfree_20161130.orig.tar.xz">firmware-nonfree_20161130.orig.tar.xz</a> And given directly during the installation step.</p>
+<p>Alternatively, the .ucode file can also be found in <a
+href="http://http.debian.net/debian/pool/non-free/f/firmware-nonfree/firmware-nonfree_20161130.orig.tar.xz">firmware-nonfree_20161130.orig.tar.xz</a>
+And given directly during the installation step.</p>
 <p>After that extra step, the wifi card was working inside Debian.</p>
-<p>See also my 2014 blog post : <a href="https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html">Debian GNU Linux installation on a LENOVO T400</a></p>
-<p>“BootDevice Not Found” issue in a HP Elitebook: <a href="https://wiki.debian.org/GrubEFIReinstall">Grub-EFI reinstall</a> The issue happenned on a partitionned disk. The fix was to completely erase the main disk and to reinstall a new debian on a single partition.</p>
+<p>See also my 2014 blog post : <a
+href="https://paulremote.blogspot.com/2014/05/debian-gnu-linux-installation.html">Debian
+GNU Linux installation on a LENOVO T400</a></p>
+<p>“BootDevice Not Found” issue in a HP Elitebook: <a
+href="https://wiki.debian.org/GrubEFIReinstall">Grub-EFI reinstall</a>
+The issue happenned on a partitionned disk. The fix was to completely
+erase the main disk and to reinstall a new debian on a single
+partition.</p>
 <div id="screen-rotation-issue" class="section level3">
 <h3>Screen rotation issue</h3>
-<p><a href="https://unix.stackexchange.com/a/381398/85530">Debian / Gnome: disable sensor-based screen rotation</a></p>
+<p><a href="https://unix.stackexchange.com/a/381398/85530">Debian /
+Gnome: disable sensor-based screen rotation</a></p>
 <pre><code>gsettings set org.gnome.settings-daemon.peripherals.touchscreen orientation-lock true</code></pre>
-<p>or use lock orientation in the dash. But this doesn’t solve the issue on the home screen.</p>
-<p><a href="https://askubuntu.com/a/1054060">Screen rotation in Ubuntu 18.04</a> Also mentioned in <a href="https://www.reddit.com/r/gnome/comments/6ndc8d/incorrect_display_orientation_after_bootup/">reddit incorrect display orientation after bootup</a></p>
+<p>or use lock orientation in the dash. But this doesn’t solve the issue
+on the home screen.</p>
+<p><a href="https://askubuntu.com/a/1054060">Screen rotation in Ubuntu
+18.04</a> Also mentioned in <a
+href="https://www.reddit.com/r/gnome/comments/6ndc8d/incorrect_display_orientation_after_bootup/">reddit
+incorrect display orientation after bootup</a></p>
 <pre><code>gsettings set org.gnome.settings-daemon.plugins.orientation active false</code></pre>
-<p><a href="https://unix.stackexchange.com/a/518564/85530">Also after boot</a></p>
+<p><a href="https://unix.stackexchange.com/a/518564/85530">Also after
+boot</a></p>
 <p>Edit this file:</p>
 <pre><code>vim  /etc/udev/hwdb.d/60-sensor.hwdb </code></pre>
 <p>The default matrix is:</p>
 <pre><code>sensor:modalias:*
       ACCEL_MOUNT_MATRIX=1, 0, 0; 0, 1, 0; 0, 0, 1</code></pre>
-<p>I used this setting to fix the orientation of an HP Elitebook laptop.</p>
+<p>I used this setting to fix the orientation of an HP Elitebook
+laptop.</p>
 <pre><code>sensor:modalias:*
   ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1</code></pre>
 </div>
@@ -507,7 +543,8 @@ sudo umount &quot;/media/paul/Debian 10.1.0 amd64 n&quot;</code></pre>
 <div id="debian-development" class="section level1">
 <h1>Debian Development</h1>
 <ul>
-<li><a href="https://salsa.debian.org/public">Debian Salsa</a> code repository.</li>
+<li><a href="https://salsa.debian.org/public">Debian Salsa</a> code
+repository.</li>
 </ul>
 <div id="documentation" class="section level2">
 <h2>Documentation</h2>
@@ -524,7 +561,8 @@ sudo umount &quot;/media/paul/Debian 10.1.0 amd64 n&quot;</code></pre>
 <pre><code>sudo apt install packagename</code></pre>
 <div id="apt-behind-a-proxy" class="section level3">
 <h3>APT behind a proxy</h3>
-<p><a href="https://askubuntu.com/a/809808/315347">Hash sum mismatch issue, fix bad proxy</a></p>
+<p><a href="https://askubuntu.com/a/809808/315347">Hash sum mismatch
+issue, fix bad proxy</a></p>
 <pre><code>sudo vim /etc/apt/apt.conf.d/99fixbadproxy</code></pre>
 <p>Enter:</p>
 <pre><code>Acquire::http::Pipeline-Depth 0;
@@ -532,16 +570,32 @@ Acquire::http::No-Cache true;
 Acquire::BrokenProxy    true;</code></pre>
 <p>Now run the update command:</p>
 <pre><code>sudo apt update</code></pre>
-<p><a href="https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-the-proxy-for-apt-for-ubuntu-18-04/">How to set the proxy for APT</a> I entered the proxy url in this apt configuration file:</p>
+<p><a
+href="https://www.serverlab.ca/tutorials/linux/administration-linux/how-to-set-the-proxy-for-apt-for-ubuntu-18-04/">How
+to set the proxy for APT</a> I entered the proxy url in this apt
+configuration file:</p>
 <pre><code>vim /etc/apt/apt.conf.d/proxy.conf</code></pre>
 <p>In the following form (do not forget the semicolon at the end):</p>
 <pre><code>Acquire::http::Proxy &quot;http://user:password@proxy.server:port/&quot;;</code></pre>
 </div>
+<div id="search-packages" class="section level3">
+<h3>Search packages</h3>
+<p>Search packages with apt</p>
+<pre><code>apt search &lt;name&gt;</code></pre>
+<p>Search packages with aptitude, the high level interface to the
+package manager</p>
+<pre><code>aptitude search &lt;name&gt;</code></pre>
+<p>Search packages on the <a
+href="https://www.debian.org/distrib/packages">Debian website</a>.</p>
 </div>
-<div id="installing-debian-software-from-backports" class="section level2">
+</div>
+<div id="installing-debian-software-from-backports"
+class="section level2">
 <h2>Installing Debian software from backports</h2>
-<p><a href="https://backports.debian.org/">backports.debian.org</a> contains a list of backports available for each LTS Debian version.</p>
-<p>Add the main, contrib and non-free backports to /etc/apt/sources.list :</p>
+<p><a href="https://backports.debian.org/">backports.debian.org</a>
+contains a list of backports available for each LTS Debian version.</p>
+<p>Add the main, contrib and non-free backports to /etc/apt/sources.list
+:</p>
 <pre><code>deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free</code></pre>
 <p>Install from backports</p>
 <pre><code>sudo apt -t stretch-backports install nodejs</code></pre>
@@ -553,23 +607,33 @@ Acquire::BrokenProxy    true;</code></pre>
 sudo dpkg -i packagename.deb</code></pre>
 <p>or</p>
 <pre><code>sudo apt install ./packagename.deb</code></pre>
-<p>Stack overflow <a href="https://unix.stackexchange.com/a/159114/85530">How to install a deb file, by dpkg -i or by apt?</a> “When you use apt to install a package, under the hood it uses dpkg.”</p>
-<p>If there are missingdependencies and you fix them you can retry the previsouly failed installed with:</p>
+<p>Stack overflow <a
+href="https://unix.stackexchange.com/a/159114/85530">How to install a
+deb file, by dpkg -i or by apt?</a> “When you use apt to install a
+package, under the hood it uses dpkg.”</p>
+<p>If there are missingdependencies and you fix them you can retry the
+previsouly failed installed with:</p>
 <pre><code>sudo dpkg --configure -a</code></pre>
 <p>Remove a package with:</p>
 <pre><code>sudo dpkg -r packagename</code></pre>
 </div>
 <div id="anbox" class="section level2">
 <h2>Anbox</h2>
-<p><a href="https://anbox.io/">Android in a box</a> is an android emulator that runs on Linux. To install it on debian I added the contrib and non-free backports to /etc/apt/sources.list :</p>
+<p><a href="https://anbox.io/">Android in a box</a> is an android
+emulator that runs on Linux. To install it on debian I added the contrib
+and non-free backports to /etc/apt/sources.list :</p>
 <pre><code>deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free</code></pre>
 <p>Then installed anbox from the backports:</p>
 <pre><code>sudo apt -t stretch-backports install anbox</code></pre>
-<p>I have encountered <a href="https://github.com/anbox/anbox/issues/211">issue 211</a></p>
+<p>I have encountered <a
+href="https://github.com/anbox/anbox/issues/211">issue 211</a></p>
 </div>
 <div id="cewe-photobuch" class="section level2">
 <h2>CEWE Photobuch</h2>
-<p>Download one of the setup files from CEWE or partner shops <code>setup_CEWE_FOTOWELT.tgz</code>, <code>setup_CEWE_Photoworld.tgz</code>, <code>setup_dm_Fotowelt.tgz</code> Extract it :</p>
+<p>Download one of the setup files from CEWE or partner shops
+<code>setup_CEWE_FOTOWELT.tgz</code>,
+<code>setup_CEWE_Photoworld.tgz</code>,
+<code>setup_dm_Fotowelt.tgz</code> Extract it :</p>
 <pre><code>tar --extract -f setup_CEWE_FOTOWELT.tgz --one-top-level</code></pre>
 <p>Launch the installer (no need to be sudo):</p>
 <pre><code>cd setup_CEWE_FOTOWELT/
@@ -577,13 +641,18 @@ sudo dpkg -i packagename.deb</code></pre>
 </div>
 <div id="lyx" class="section level2">
 <h2>Lyx</h2>
-<p>wiki.lyx.org <a href="https://wiki.lyx.org/LyX/LyXOnDebian">LyXOnDebian</a> explains how to install Lyx on Debian:</p>
+<p>wiki.lyx.org <a
+href="https://wiki.lyx.org/LyX/LyXOnDebian">LyXOnDebian</a> explains how
+to install Lyx on Debian:</p>
 <pre><code>sudo apt install lyx</code></pre>
-<p>Lyx couldn’t access some layout files, I first thought I needed install latex layouts:</p>
+<p>Lyx couldn’t access some layout files, I first thought I needed
+install latex layouts:</p>
 <pre><code>sudo apt install texlive-latex-recommended
 sudo apt install texlive-latex-extra</code></pre>
 <p>But these were already installed.</p>
-<p>Default version of Lyx is 2.2 on debian strech. wiki.lyx.org <a href="https://wiki.lyx.org/LyX/LyXOnDebian">LyXOnDebian</a> explains how to install lyx 2.3 from the backports on Debian stretch.</p>
+<p>Default version of Lyx is 2.2 on debian strech. wiki.lyx.org <a
+href="https://wiki.lyx.org/LyX/LyXOnDebian">LyXOnDebian</a> explains how
+to install lyx 2.3 from the backports on Debian stretch.</p>
 <pre><code>sudo vim /etc/apt/sources.list
 # Add deb http://ftp.debian.org/debian stretch-backports main 
 # Or a mirror, for example
@@ -593,15 +662,25 @@ sudo apt-get -t stretch-backports install lyx</code></pre>
 </div>
 <div id="mutt-and-neomutt" class="section level2">
 <h2>Mutt and Neomutt</h2>
-<p>packages.debian.org <a href="https://packages.debian.org/buster/neomutt">Neomutt</a></p>
-<p>The Arch Linux <a href="https://wiki.archlinux.org/index.php/Mutt#Installation">setup page</a> explains that :</p>
+<p>packages.debian.org <a
+href="https://packages.debian.org/buster/neomutt">Neomutt</a></p>
+<p>The Arch Linux <a
+href="https://wiki.archlinux.org/index.php/Mutt#Installation">setup
+page</a> explains that :</p>
 <blockquote>
-<p>“The NeoMutt project aims to bring together all the patches for Mutt. It adds a large set of features. Lots of old Mutt patches have been brought up-to-date, tidied and documented.”</p>
+<p>“The NeoMutt project aims to bring together all the patches for Mutt.
+It adds a large set of features. Lots of old Mutt patches have been
+brought up-to-date, tidied and documented.”</p>
 </blockquote>
 <p>It also has a section on setting up the vim editor with Mutt.</p>
-<p><a href="https://posteo.de/en/help/how-do-i-set-up-posteo-in-an-email-client-pop3-imap-and-smtp">How do I set up posteo in an email client?</a></p>
-<p>Mutt configuration example <a href="https://github.com/manuel-io/dotfiles/blob/master/muttrc">in a dotfile</a> with connection to posteo and vim editor.</p>
-<p>Example of Mutt setup for professional email coming from an Exchange server.</p>
+<p><a
+href="https://posteo.de/en/help/how-do-i-set-up-posteo-in-an-email-client-pop3-imap-and-smtp">How
+do I set up posteo in an email client?</a></p>
+<p>Mutt configuration example <a
+href="https://github.com/manuel-io/dotfiles/blob/master/muttrc">in a
+dotfile</a> with connection to posteo and vim editor.</p>
+<p>Example of Mutt setup for professional email coming from an Exchange
+server.</p>
 </div>
 <div id="python" class="section level2">
 <h2>Python</h2>
@@ -612,7 +691,9 @@ sudo apt-get -t stretch-backports install lyx</code></pre>
 <h2>R and Rstudio</h2>
 <div id="installing-r-from-the-cran-mirror" class="section level3">
 <h3>Installing R from the CRAN mirror</h3>
-<p>Install R from the CRAN repository, see <a href="https://cran.r-project.org/bin/linux/debian/">Cran mirror of Debian packages</a></p>
+<p>Install R from the CRAN repository, see <a
+href="https://cran.r-project.org/bin/linux/debian/">Cran mirror of
+Debian packages</a></p>
 <p>Add the following to /etc/apt/sources.list</p>
 <pre><code>deb https://cran.stat.unipd.it/bin/linux/debian buster-cran35/
 deb http://cloud.r-project.org/bin/linux/debian buster-cran40/</code></pre>
@@ -622,8 +703,13 @@ deb http://cloud.r-project.org/bin/linux/debian buster-cran40/</code></pre>
 <pre><code>sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;FCAE2A0E115C3D8A&#39;
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;B8F25A8A73EACF41&#39;
 sudo apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key &#39;51716619E084DAB9&#39;</code></pre>
-<p>Based on this stackoverflow answer <a href="https://unix.stackexchange.com/a/110594/85530">about key server receive fail error</a> I had to use a server providing a connection on port 80 because the default port is apparently blocked by a firewall on my network.</p>
-<p>Then run the following to upgrade R to the lastest version availale on your CRAN mirror:</p>
+<p>Based on this stackoverflow answer <a
+href="https://unix.stackexchange.com/a/110594/85530">about key server
+receive fail error</a> I had to use a server providing a connection on
+port 80 because the default port is apparently blocked by a firewall on
+my network.</p>
+<p>Then run the following to upgrade R to the lastest version availale
+on your CRAN mirror:</p>
 <pre><code>sudo apt update
 sudo apt install r-base r-base-dev</code></pre>
 <p>Or if you already had an old R version on your system:</p>
@@ -633,43 +719,60 @@ sudo apt install r-base r-base-dev</code></pre>
 <h3>Installing Rstudio</h3>
 <p>Download Rstudio for Debian</p>
 <ul>
-<li><a href="https://www.rstudio.com/products/rstudio/download/preview/">Rstudio download</a></li>
-<li><a href="https://www.rstudio.com/products/rstudio/download/preview/">Rstudio preview download</a></li>
+<li><a
+href="https://www.rstudio.com/products/rstudio/download/preview/">Rstudio
+download</a></li>
+<li><a
+href="https://www.rstudio.com/products/rstudio/download/preview/">Rstudio
+preview download</a></li>
 </ul>
 <p>Run</p>
 <pre><code>dpkg -i rstudio-version-number.deb</code></pre>
 <p>Dependency error: rstudio depends on libclang-dev Install it</p>
 <pre><code>sudo apt install libclang-dev</code></pre>
-<p><a href="https://support.rstudio.com/hc/en-us/articles/200554736-How-To-Uninstall-RStudio-Desktop">Uninstall rstudio</a></p>
+<p><a
+href="https://support.rstudio.com/hc/en-us/articles/200554736-How-To-Uninstall-RStudio-Desktop">Uninstall
+rstudio</a></p>
 <pre><code>sudo apt remove rstudio</code></pre>
 </div>
 </div>
 <div id="remmina" class="section level2">
 <h2>Remmina</h2>
-<p>Installing from the backports (see above section on how to add the backports in sources.list)</p>
+<p>Installing from the backports (see above section on how to add the
+backports in sources.list)</p>
 <pre><code>sudo apt-get -t stretch-backports install remmina </code></pre>
 </div>
 <div id="riot" class="section level2">
 <h2>Riot</h2>
-<p><a href="https://riot.im/download/desktop/">Desktop Riot installation</a></p>
+<p><a href="https://riot.im/download/desktop/">Desktop Riot
+installation</a></p>
 <pre><code>sudo apt install -y lsb-release wget apt-transport-https
 sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
 echo &quot;deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] https://packages.riot.im/debian/ $(lsb_release -cs) main&quot; |
     sudo tee /etc/apt/sources.list.d/riot-im.list
 sudo apt update
 sudo apt install riot-web</code></pre>
-<p>In an earlier version riot the source.list was mentionned directly in /etc/apt/sources.list. I needed to remove it as explained <a href="https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818">here</a>:</p>
+<p>In an earlier version riot the source.list was mentionned directly in
+/etc/apt/sources.list. I needed to remove it as explained <a
+href="https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818">here</a>:</p>
 <blockquote>
-<p>“You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that”</p>
+<p>“You have riot.im/packages in your apt sources list somewhere, which
+is the old repository location. You need to remove that”</p>
 </blockquote>
 </div>
 <div id="sane" class="section level2">
 <h2>Sane</h2>
-<p>The Flatbed scanner Canoscan lide 400 is supported on Linux according to the <a href="http://www.sane-project.org/sane-backends.html">sane backends</a> page.</p>
-<p>When the scanner is plugged in, I can see it’s USB id <code>0x04a9/0x1912</code> (mentioned in the sane backends web page) in the output of</p>
+<p>The Flatbed scanner Canoscan lide 400 is supported on Linux according
+to the <a href="http://www.sane-project.org/sane-backends.html">sane
+backends</a> page.</p>
+<p>When the scanner is plugged in, I can see it’s USB id
+<code>0x04a9/0x1912</code> (mentioned in the sane backends web page) in
+the output of</p>
 <pre><code>lsusb | grep -i canon
 #Bus 002 Device 115: ID 04a9:1912 Canon, Inc.</code></pre>
-<p>Install sane from source following these instructions <a href="http://forums.debian.net/viewtopic.php?f=16&amp;t=141668" class="uri">http://forums.debian.net/viewtopic.php?f=16&amp;t=141668</a></p>
+<p>Install sane from source following these instructions <a
+href="http://forums.debian.net/viewtopic.php?f=16&amp;t=141668"
+class="uri">http://forums.debian.net/viewtopic.php?f=16&amp;t=141668</a></p>
 <p>Install build dependencies</p>
 <pre><code>sudo apt install sane
 sudo apt install build-essential make autoconf-archive
@@ -690,7 +793,8 @@ cd /usr/lib/x86_64-linux-gnu/sane/
 ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
 cd ~/rp/zz_forks/backends/
 ls backend/libsane-pixma.la</code></pre>
-<p>The problem is that the ‘.so.28’ file doesn’t exist, I tried with another file</p>
+<p>The problem is that the ‘.so.28’ file doesn’t exist, I tried with
+another file</p>
 <pre><code>sudo cp backend/libsane-pixma.la /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.la
 sudo ln -s libsane-pixma.la /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1
 ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*</code></pre>
@@ -715,30 +819,53 @@ make install</code></pre>
 </div>
 <div id="microsoft" class="section level2">
 <h2>Microsoft</h2>
-<p>Yes I know, these software shouldn’t be here, but I have to use these things for work and study.</p>
+<p>Yes I know, these software shouldn’t be here, but I have to use these
+things for work and study.</p>
 <div id="skype" class="section level3">
 <h3>Skype</h3>
-<p>Debian wiki <a href="https://wiki.debian.org/skype">skype</a>: Download .deb file from <a href="https://www.skype.com/en/get-skype/" class="uri">https://www.skype.com/en/get-skype/</a></p>
+<p>Debian wiki <a href="https://wiki.debian.org/skype">skype</a>:
+Download .deb file from <a href="https://www.skype.com/en/get-skype/"
+class="uri">https://www.skype.com/en/get-skype/</a></p>
 <pre><code>wget https://go.skype.com/skypeforlinux-64.deb</code></pre>
 <p>Install</p>
 <pre><code>sudo apt install ./skypeforlinux-64.deb</code></pre>
 </div>
 <div id="teams" class="section level3">
 <h3>Teams</h3>
-<p><a href="https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/download-app#desktopAppDownloadregion">Donwload teams from microsoft</a></p>
+<p><a
+href="https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/download-app#desktopAppDownloadregion">Donwload
+teams from microsoft</a></p>
 <p>Install</p>
 <pre><code>sudo apt install ./teams_1.3.00.25560_amd64.deb</code></pre>
-<p><a href="https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html">Microphone stopped working in teams</a> I had a sound issue. I managed to reactivate the sound under Debian settings / sound / applications there by reactivating the sound for cmus this somehow also affected teams and I could hear the audio again in teams after that. Or maybe I also change the settings for Skype? In any case I have sound again in teams now. Yes, after looking at another laptop with teams only (no Skype) I’m sure that teams appears as “Skype” in that Debian settings / sound / applications menu.</p>
-<p>Questions related to the lack of screen sharing capability on Linux:</p>
+<p><a
+href="https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html">Microphone
+stopped working in teams</a> I had a sound issue. I managed to
+reactivate the sound under Debian settings / sound / applications there
+by reactivating the sound for cmus this somehow also affected teams and
+I could hear the audio again in teams after that. Or maybe I also change
+the settings for Skype? In any case I have sound again in teams now.
+Yes, after looking at another laptop with teams only (no Skype) I’m sure
+that teams appears as “Skype” in that Debian settings / sound /
+applications menu.</p>
+<p>Questions related to the lack of screen sharing capability on
+Linux:</p>
 <ul>
-<li><p><a href="https://superuser.com/questions/1674579/how-to-share-your-screen-or-at-least-a-pdf-presentation-with-microsoft-teams-on">How to share your screen or at least a pdf presentation with microsoft teams on linux?</a> Paul asked this question.</p></li>
-<li><p><a href="https://docs.microsoft.com/en-us/answers/questions/34407/screensharing-not-working-in-the-official-ms-teams.html">Screensharing not working in the official MS Teams for Linux</a></p></li>
+<li><p><a
+href="https://superuser.com/questions/1674579/how-to-share-your-screen-or-at-least-a-pdf-presentation-with-microsoft-teams-on">How
+to share your screen or at least a pdf presentation with microsoft teams
+on linux?</a> Paul asked this question.</p></li>
+<li><p><a
+href="https://docs.microsoft.com/en-us/answers/questions/34407/screensharing-not-working-in-the-official-ms-teams.html">Screensharing
+not working in the official MS Teams for Linux</a></p></li>
 </ul>
 </div>
 </div>
 <div id="vim" class="section level2">
 <h2>Vim</h2>
-<p>Edit the keyboard configuration as explained in [mapping caps lock to escape in Debian] (<a href="https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/" class="uri">https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/</a>)</p>
+<p>Edit the keyboard configuration as explained in [mapping caps lock to
+escape in Debian] (<a
+href="https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/"
+class="uri">https://martin.hoppenheit.info/blog/2014/mapping-caps-lock-to-escape-in-debian/</a>)</p>
 <p>sudo vim /etc/default/keyboard</p>
 <p>Add the following line to that file:</p>
 <pre><code>XKBOPTIONS=&quot;caps:escape&quot;</code></pre>
@@ -749,12 +876,15 @@ make install</code></pre>
 <h3>ExpressVPN</h3>
 <p>Copy the links, then download the software and signature file</p>
 <pre><code>cd ~/downloads
+curl -O
+# For example
 curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb
 curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.13.0.8-1_amd64.deb.asc
-curl -O https://www.expressvpn.works/clients/linux/expressvpn_3.14.0.4-1_amd64.deb.asc
 
 cat expressvpn_*_amd64.deb.asc</code></pre>
-<p><a href="https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/">Check the signature</a></p>
+<p><a
+href="https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/">Check
+the signature</a></p>
 <pre><code>gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 0xAFF2A1415F6A3A38
 gpg --fingerprint release@expressvpn.com
 gpg --verify expressvpn_3.13.0.8-1_amd64.deb.asc
@@ -765,23 +895,31 @@ gpg --verify expressvpn_3.14.0.4-1_amd64.deb.asc</code></pre>
 </div>
 <div id="wajig" class="section level2">
 <h2>Wajig</h2>
-<p>Debian and ubuntu system administration <a href="https://wajig.readthedocs.io/en/latest/">wajig docs</a></p>
+<p>Debian and ubuntu system administration <a
+href="https://wajig.readthedocs.io/en/latest/">wajig docs</a></p>
 </div>
 <div id="zathura" class="section level2">
 <h2>Zathura</h2>
 <p>Usage</p>
 <pre><code>Tab    Show index and switch to Index mode</code></pre>
-<p>The configuration file is located at ~/.config/zathura/zathurarc. More information in <code>man zathurarc</code>.</p>
-<p><a href="https://www.noudaldenhoven.nl/wordpress/?p=166">Invert color</a> is map to Ctrl+r by default, to map it to Ctrl+i, edit the configuration file</p>
+<p>The configuration file is located at ~/.config/zathura/zathurarc.
+More information in <code>man zathurarc</code>.</p>
+<p><a href="https://www.noudaldenhoven.nl/wordpress/?p=166">Invert
+color</a> is map to Ctrl+r by default, to map it to Ctrl+i, edit the
+configuration file</p>
 <pre><code>map &lt;C-i&gt; recolor</code></pre>
-<p><a href="https://unix.stackexchange.com/questions/339487/how-to-enable-copy-to-clipboard-with-zathura-pdf-poppler">Copy to clipboard</a> (instead of middle mouse button clipboard)</p>
+<p><a
+href="https://unix.stackexchange.com/questions/339487/how-to-enable-copy-to-clipboard-with-zathura-pdf-poppler">Copy
+to clipboard</a> (instead of middle mouse button clipboard)</p>
 <pre><code>set selection-clipboard clipboard</code></pre>
 <p>Scroll</p>
 <pre><code>set scroll-full-overlap 0.08</code></pre>
 </div>
 <div id="zoom" class="section level2">
 <h2>Zoom</h2>
-<p><a href="https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Linux#h_adcc0b66-b2f4-468b-bc7a-12c182f354b7">Zoom install on Linux</a></p>
+<p><a
+href="https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Linux#h_adcc0b66-b2f4-468b-bc7a-12c182f354b7">Zoom
+install on Linux</a></p>
 <pre><code>cd ~/downloads/
 rm zoom_amd64.deb
 wget https://zoom.us/client/latest/zoom_amd64.deb
@@ -804,7 +942,8 @@ sudo apt install ./zoom_amd64.deb </code></pre>
 <h1>Audio</h1>
 <div id="audio-setup" class="section level2">
 <h2>Audio Setup</h2>
-<p>To remove background noise edit the pulseaudio configuration file:</p>
+<p>To remove background noise edit the pulseaudio configuration
+file:</p>
 <pre><code>vim /etc/pulse.default.pa</code></pre>
 <p>Add these lines</p>
 <pre><code>load-module module-echo-cancel source_name=logitechheadset
@@ -813,37 +952,65 @@ set-default-source logitechheadset</code></pre>
 </div>
 <div id="audio-issues" class="section level2">
 <h2>Audio Issues</h2>
-<p>“dummy output” issue. Seen on a <a href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian Forum</a> one of the answer to Pulse Audio shows “dummy output” linked to that KDE PulseAudio page: <a href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE PulseAudio Integration</a> “One thing that can happen is that some other process”hogs" the audio device during PulseAudio startup. When this happens PA is unable to use the device until it is restarted. If PA is unable to open your hardware, you will automatically be given a “Dummy Output”. As the name suggests, anything that is “Played” via this device is inaudible). This “Dummy Output” should be easily visible in both KMix and Phonon. If this happens, then you can debug which process is hogging the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that apps which have the /dev/snd/control* devices open are unlikely to interfere)."</p>
-<p>Debian wiki <a href="https://wiki.debian.org/PulseAudio#Missing_playback_devices_or_audio_capture">Missing playback devices or audio capture</a> deleting the configuration files and restarting pulseaudio. The following commands restored audio:</p>
+<p>“dummy output” issue. Seen on a <a
+href="http://forums.debian.net/viewtopic.php?f=7&amp;t=104263">Debian
+Forum</a> one of the answer to Pulse Audio shows “dummy output” linked
+to that KDE PulseAudio page: <a
+href="https://www.freedesktop.org/wiki/Software/PulseAudio/Desktops/KDE/">KDE
+PulseAudio Integration</a> “One thing that can happen is that some other
+process”hogs” the audio device during PulseAudio startup. When this
+happens PA is unable to use the device until it is restarted. If PA is
+unable to open your hardware, you will automatically be given a “Dummy
+Output”. As the name suggests, anything that is “Played” via this device
+is inaudible). This “Dummy Output” should be easily visible in both KMix
+and Phonon. If this happens, then you can debug which process is hogging
+the hardware via the command: sudo lsof /dev/snd/* /dev/dsp* (Note that
+apps which have the /dev/snd/control* devices open are unlikely to
+interfere).”</p>
+<p>Debian wiki <a
+href="https://wiki.debian.org/PulseAudio#Missing_playback_devices_or_audio_capture">Missing
+playback devices or audio capture</a> deleting the configuration files
+and restarting pulseaudio. The following commands restored audio:</p>
 <pre><code>$ rm -r ~/.config/pulse /tmp/pulse-*
 $ pulseaudio --kill
 $ pulseaudio --start</code></pre>
 </div>
 <div id="media-keys" class="section level2">
 <h2>Media keys</h2>
-<p>Some keyboards have media keys stop, previous, play/pause, next. I’d like to remap them to play pause in cmus. In the mean time I have set ‘Ctrl+Shift+P’ as a shortcut in settings/keyboard, ‘+’ at the bottom:</p>
+<p>Some keyboards have media keys stop, previous, play/pause, next. I’d
+like to remap them to play pause in cmus. In the mean time I have set
+‘Ctrl+Shift+P’ as a shortcut in settings/keyboard, ‘+’ at the
+bottom:</p>
 <pre><code>cmus-remote --pause</code></pre>
 </div>
 </div>
 <div id="fonts" class="section level1">
 <h1>Fonts</h1>
-<p>Some programs require fonts that are not installed by default. For example:</p>
+<p>Some programs require fonts that are not installed by default. For
+example:</p>
 <pre><code>sudo apt install fonts-crosextra-carlito fonts-crosextra-caladea
 sudo apt install fonts-deva-extra</code></pre>
-<p><a href="https://wiki.debian.org/Fonts/Missing">List of missing fonts</a> <a href="https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts">SubstitutingCalibriAndCambriaFonts</a></p>
+<p><a href="https://wiki.debian.org/Fonts/Missing">List of missing
+fonts</a> <a
+href="https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts">SubstitutingCalibriAndCambriaFonts</a></p>
 </div>
 <div id="gnome" class="section level1">
 <h1>Gnome</h1>
-<p><a href="https://askubuntu.com/questions/69648/gnome-shell-pressing-the-super-key-does-not-work/1179193#1179193">Gnome shell pressing the super key does not work</a></p>
+<p><a
+href="https://askubuntu.com/questions/69648/gnome-shell-pressing-the-super-key-does-not-work/1179193#1179193">Gnome
+shell pressing the super key does not work</a></p>
 <blockquote>
-<p>“You might have locked your super button. Try unlock it on your keyboard. It usually has two icons - a window key and a lock.”</p>
+<p>“You might have locked your super button. Try unlock it on your
+keyboard. It usually has two icons - a window key and a lock.”</p>
 </blockquote>
-<p>There is indeed a lock on my mechanical keyboard if I unlock it, the super key works again.</p>
+<p>There is indeed a lock on my mechanical keyboard if I unlock it, the
+super key works again.</p>
 </div>
 <div id="keyboard" class="section level1">
 <h1>Keyboard</h1>
 <ul>
-<li><a href="https://github.com/r03/azerty">A better AZERTY for developers</a></li>
+<li><a href="https://github.com/r03/azerty">A better AZERTY for
+developers</a></li>
 </ul>
 </div>
 <div id="network" class="section level1">
@@ -852,7 +1019,13 @@ sudo apt install fonts-deva-extra</code></pre>
 <pre><code>sudo service network-manager restart</code></pre>
 <p>Or</p>
 <pre><code>sudo systemctl restart NetworkManager</code></pre>
-<p><a href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences between systemctl and service commands</a>. <a href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What is the difference between service and systemctl</a> &gt; “[…], service is designed as a high-level wrapper to”abstract" out various service managers like init.d, initctl, and (of course) systemctl."</p>
+<p><a
+href="https://askubuntu.com/questions/903354/difference-between-systemctl-and-service-commands">Differences
+between systemctl and service commands</a>. <a
+href="https://serverfault.com/questions/867322/what-is-the-difference-between-service-and-systemctl">What
+is the difference between service and systemctl</a> &gt; “[…], service
+is designed as a high-level wrapper to”abstract” out various service
+managers like init.d, initctl, and (of course) systemctl.”</p>
 </div>
 <div id="nginx" class="section level1">
 <h1>NGINX</h1>
@@ -860,7 +1033,10 @@ sudo apt install fonts-deva-extra</code></pre>
 <pre><code>sudo apt install nginx</code></pre>
 <div id="configure-http-only" class="section level2">
 <h2>Configure HTTP only</h2>
-<p>Attempt at an nginx configuration for server_name.net, based on the default nginx config (comments removed) at /etc/nginx/sites-enabled/default. Directory listing is enabled through autoindex on.</p>
+<p>Attempt at an nginx configuration for server_name.net, based on the
+default nginx config (comments removed) at
+/etc/nginx/sites-enabled/default. Directory listing is enabled through
+autoindex on.</p>
 <p>Create a configuration file in sites-available:</p>
 <pre><code>vim /etc/nginx/sites-available/server_name.net</code></pre>
 <p>Insert the following</p>
@@ -886,7 +1062,9 @@ sudo apt install fonts-deva-extra</code></pre>
 <pre><code>su
 
 apt install python3-certbot-nginx</code></pre>
-<p>Make a certificate for nginx as explained on the <a href="https://wiki.debian.org/LetsEncrypt">debian wiki page for letsencrypt</a>.</p>
+<p>Make a certificate for nginx as explained on the <a
+href="https://wiki.debian.org/LetsEncrypt">debian wiki page for
+letsencrypt</a>.</p>
 <pre><code>export PATH=/usr/sbin:$PATH
 certbot --nginx -d edartra.de --post-hook &quot;/usr/sbin/service nginx restart&quot;</code></pre>
 <p>Enable auto renewal of certificate:</p>
@@ -895,10 +1073,12 @@ certbot --nginx -d edartra.de --post-hook &quot;/usr/sbin/service nginx restart&
 crontab -e</code></pre>
 <p>Add the following line</p>
 <pre><code>16 3 * * * certbot renew --post-hook &quot;systemctl reload nginx&quot;</code></pre>
-<p>Note: In my case the certbot command failed with the following message:</p>
+<p>Note: In my case the certbot command failed with the following
+message:</p>
 <pre><code>The error was: NoInstallationError(&quot;Could not find a usable &#39;nginx&#39; binary. Ensure
 nginX EXIsts, the binary is executable, and your PATH is set correctly.&quot;)</code></pre>
-<p>Because <code>/usr/sbin</code> was missing from the PATH. To add it temporarily before running the <code>certbot</code> command:</p>
+<p>Because <code>/usr/sbin</code> was missing from the PATH. To add it
+temporarily before running the <code>certbot</code> command:</p>
 <pre><code>export PATH=/usr/sbin:$PATH</code></pre>
 </div>
 <div id="configure-http-redirect-to-https" class="section level2">
@@ -934,44 +1114,72 @@ server {
 </div>
 <div id="mouse-and-touchpad" class="section level1">
 <h1>Mouse and Touchpad</h1>
-<p>Under Gnome Settings / Mouse and Touchpad, I set Natural scrolling off under the mouse and the touchpad sections.</p>
+<p>Under Gnome Settings / Mouse and Touchpad, I set Natural scrolling
+off under the mouse and the touchpad sections.</p>
 </div>
 <div id="printer" class="section level1">
 <h1>Printer</h1>
-<p><a href="https://askubuntu.com/questions/345083/how-do-i-disable-automatic-remote-printer-installation">Disable automatic remote printer installation</a></p>
+<p><a
+href="https://askubuntu.com/questions/345083/how-do-i-disable-automatic-remote-printer-installation">Disable
+automatic remote printer installation</a></p>
 </div>
 <div id="screen-display" class="section level1">
 <h1>Screen display</h1>
-<p>The issue is that sometimes the display menu doesn’t provide all resolutions available for a given additional screen. Typically resolution suggested are lower than the one recommended by the screen.</p>
+<p>The issue is that sometimes the display menu doesn’t provide all
+resolutions available for a given additional screen. Typically
+resolution suggested are lower than the one recommended by the
+screen.</p>
 <div id="wayland" class="section level2">
 <h2>Wayland</h2>
-<div id="make-another-screen-resolution-available" class="section level3">
+<div id="make-another-screen-resolution-available"
+class="section level3">
 <h3>Make another screen resolution available</h3>
-<p>Ask Ubuntu <a href="https://askubuntu.com/a/973582">Adding a custom resolution with Wayland</a> I tried <a href="https://askubuntu.com/a/1210275/315347">this answer</a> and added this to the kernel boot parameter. Note from ubuntu wiki <a href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">kernel boot parameter</a> “Be sure to add a SPACE after”splash" before adding your new parameter.) Click the Save button, then close the editor window. "</p>
+<p>Ask Ubuntu <a href="https://askubuntu.com/a/973582">Adding a custom
+resolution with Wayland</a> I tried <a
+href="https://askubuntu.com/a/1210275/315347">this answer</a> and added
+this to the kernel boot parameter. Note from ubuntu wiki <a
+href="https://wiki.ubuntu.com/Kernel/KernelBootParameters">kernel boot
+parameter</a> “Be sure to add a SPACE after”splash” before adding your
+new parameter.) Click the Save button, then close the editor window.
+”</p>
 <pre><code>sudo vim /etc/default/grub</code></pre>
 <p>Then edit this line</p>
 <pre><code>GRUB_CMDLINE_LINUX_DEFAULT=&quot;quiet video=DP-2:1920x1200@60&quot;</code></pre>
 <p>Then update grub</p>
 <pre><code>sudo update-grub</code></pre>
-<p>This did make the new resolution available in the Gnome display settings.</p>
+<p>This did make the new resolution available in the Gnome display
+settings.</p>
 </div>
 <div id="switch-between-wayland-and-xorg" class="section level3">
 <h3>Switch between Wayland and Xorg</h3>
-<p>itsfoss.com <a href="https://itsfoss.com/switch-xorg-wayland/">switch-xorg-wayland</a></p>
+<p>itsfoss.com <a
+href="https://itsfoss.com/switch-xorg-wayland/">switch-xorg-wayland</a></p>
 <pre><code>echo $XDG_SESSION_TYPE</code></pre>
 </div>
 </div>
 <div id="custom-wrapper-script-for-x11" class="section level2">
 <h2>Custom wrapper script for x11</h2>
-<p>Debian 10 Buster uses wayland as a window manager. To force the use of x11 for zathura, in debian a zathura wrapper script containing:</p>
+<p>Debian 10 Buster uses wayland as a window manager. To force the use
+of x11 for zathura, in debian a zathura wrapper script containing:</p>
 <pre><code>#!/usr/bin/bash
 GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
-<p>Can be placed under the default user bin located at ~/.local/bin. This is one of the first element of the <code>$PATH</code> environment variable.</p>
+<p>Can be placed under the default user bin located at ~/.local/bin.
+This is one of the first element of the <code>$PATH</code> environment
+variable.</p>
 </div>
 <div id="outdated-solution-using-xrandr" class="section level2">
 <h2>Outdated solution using xrandr</h2>
-<p><a href="https://forums.fedoraforum.org/showthread.php?312000-Wayland-xrandr-equivalent">xrandr doesn’t work with Wayland</a> Askubuntu <a href="https://askubuntu.com/a/973582">wrandr will not work with wayland</a> The information on setting a resolution with cvt is still relevant. CVT calculates VESA CVT mode lines.</p>
-<p><a href="https://www.ma-no.org/en/software/how-to-force-screen-s-resolution-in-ubuntu-and-make-it-permanent">How to force screen resolution in Ubuntu and make it permanent</a> The lack of auto detection of the available resolution probably mostly arises with VGA ports. See all active screens with the RandR extension:</p>
+<p><a
+href="https://forums.fedoraforum.org/showthread.php?312000-Wayland-xrandr-equivalent">xrandr
+doesn’t work with Wayland</a> Askubuntu <a
+href="https://askubuntu.com/a/973582">wrandr will not work with
+wayland</a> The information on setting a resolution with cvt is still
+relevant. CVT calculates VESA CVT mode lines.</p>
+<p><a
+href="https://www.ma-no.org/en/software/how-to-force-screen-s-resolution-in-ubuntu-and-make-it-permanent">How
+to force screen resolution in Ubuntu and make it permanent</a> The lack
+of auto detection of the available resolution probably mostly arises
+with VGA ports. See all active screens with the RandR extension:</p>
 <pre><code>xrandr</code></pre>
 <p>Create a new resolution using cvt :</p>
 <pre><code>cvt 1920 1200 60
@@ -979,12 +1187,16 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 # Modeline &quot;1920x1200_60.00&quot;  193.25  1920 2056 2256 2592  1200 1203 1209 1245 -hsync +vsync</code></pre>
 <p>Use the output of the cvt command to create a new mode</p>
 <pre><code>sudo xrandr --newmode &quot;1920x1200_60.00&quot;  193.25  1920 2056 2256 2592  1200 1203 1209 1245 -hsync +vsync</code></pre>
-<p>An <a href="https://askubuntu.com/a/448113">askubuntu answer</a> suggests the same command without sudo.</p>
+<p>An <a href="https://askubuntu.com/a/448113">askubuntu answer</a>
+suggests the same command without sudo.</p>
 <p>Find the display</p>
 <pre><code>xrandr | grep -e &quot; connected [^(]&quot; | sed -e &quot;s/\([A-Z0-9]\+\) connected.*/\1/&quot;</code></pre>
-<p>Add new display mode where is the output from the previous command</p>
+<p>Add new display mode where is the output from the previous
+command</p>
 <pre><code>xrandr --addmode XWAYLAND1 1920x1200_60.00</code></pre>
-<p>This will add the new resolution to your existing list of supported resolutions. You can then choose the right option from the “display settings” or following command</p>
+<p>This will add the new resolution to your existing list of supported
+resolutions. You can then choose the right option from the “display
+settings” or following command</p>
 <pre><code>xrandr --output XWAYLAND1 --mode &quot;1920x1200_60.00&quot;</code></pre>
 </div>
 </div>
@@ -1006,7 +1218,9 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 </div>
 <div id="tools" class="section level1">
 <h1>Tools</h1>
-<p>These tools are not specific to Debian. I place them here because I use Debian as my main system. If a section gets too large it may get moved to another page in the future.</p>
+<p>These tools are not specific to Debian. I place them here because I
+use Debian as my main system. If a section gets too large it may get
+moved to another page in the future.</p>
 <div id="gimp" class="section level2">
 <h2>Gimp</h2>
 <p>The most important Gimp shortcuts are:</p>
@@ -1014,15 +1228,19 @@ GDK_BACKEND=x11 /usr/bin/zathura &quot;$@&quot;</code></pre>
 <li>CTRL + B to open the tool Box</li>
 <li>CTRL + L to open the Layers dialog</li>
 </ul>
-<p>A <a href="http://gimptips.com/articles/gimp-keyboard-shortcuts">list of Gimp Shortcuts</a></p>
+<p>A <a href="http://gimptips.com/articles/gimp-keyboard-shortcuts">list
+of Gimp Shortcuts</a></p>
 </div>
 </div>
 <div id="upgrade-debian-version" class="section level1">
 <h1>Upgrade Debian version</h1>
 <div id="from-jessie-8-to-stretch-9" class="section level2">
 <h2>From Jessie 8 to Stretch 9</h2>
-<p>I followed the documentation on <a href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.html">upgrades from Debian 8, Jessie</a></p>
-<p>In bash store the output of apt-get install with many dependency issues in a text file</p>
+<p>I followed the documentation on <a
+href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.html">upgrades
+from Debian 8, Jessie</a></p>
+<p>In bash store the output of apt-get install with many dependency
+issues in a text file</p>
 <pre><code>$ sudo apt-get -f install &gt; aptgetfinstall.txt</code></pre>
 <p>Using R to extract all packages and try to remove them</p>
 <pre><code>R&gt; bli &lt;- readLines(&quot;aptgetfinstall;txt&quot;)
@@ -1036,28 +1254,47 @@ R&gt; pkgissues &lt;- unlist(lapply(blil, &quot;[[&quot;, 1))</code></pre>
 <div id="from-stretch-9-to-buster-10" class="section level2">
 <h2>From stretch 9 to buster 10</h2>
 <ul>
-<li><p>debian.org <a href="https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading">buster upgrading</a></p></li>
-<li><p>tecadmin.net <a href="https://tecadmin.net/upgrade-debian-9-to-debian-10-buster/">upgrade debian 9 to debian 10 buster</a></p>
+<li><p>debian.org <a
+href="https://www.debian.org/releases/buster/amd64/release-notes/ch-upgrading">buster
+upgrading</a></p></li>
+<li><p>tecadmin.net <a
+href="https://tecadmin.net/upgrade-debian-9-to-debian-10-buster/">upgrade
+debian 9 to debian 10 buster</a></p>
 <p>sudo apt update sudo apt upgrade</p></li>
 </ul>
 <p>Edit the sources.list files to replace “stretch” by “buster”</p>
 <pre><code>sudo vim /etc/apt/sources.list
 # in vim :%s/stretch/buster/g</code></pre>
-<p>Attention, I had another sources.list file under a subdirectory I had to comment the sources mention there as well, otherwise the system wouldn’t uprgade most packages.</p>
+<p>Attention, I had another sources.list file under a subdirectory I had
+to comment the sources mention there as well, otherwise the system
+wouldn’t uprgade most packages.</p>
 <pre><code>sudo vim  /etc/apt/sources.list.d/base.list
 sudo apt update
 sudo apt upgrade
 sudo apt dist-upgrade</code></pre>
-<p>The update steps mentioned above worked well in October 2019, but one year later, in October 2020 I tried to update another laptop from Debian 9 to 10 and many Debian packages were kept back. The GNOME desktop became unstable and I couldn’t log in any longer. I could still log into the command line to make a proper backup of all the data to a USB drive. I ended up reinstalling a fresh version of Debian buster 10 to that laptop. The lesson I learned from this, is that it’s better to update to a new stable release pretty soon after it’s released.</p>
-<p><a href="https://www.debian.org/releases/">Debian releases</a>: &gt; “Debian is version 10, codenamed buster was initially released as version &gt; 10 on July 6th, 2019 and its latest update, version 10.6, was released on &gt; September 26th, 2020.”</p>
+<p>The update steps mentioned above worked well in October 2019, but one
+year later, in October 2020 I tried to update another laptop from Debian
+9 to 10 and many Debian packages were kept back. The GNOME desktop
+became unstable and I couldn’t log in any longer. I could still log into
+the command line to make a proper backup of all the data to a USB drive.
+I ended up reinstalling a fresh version of Debian buster 10 to that
+laptop. The lesson I learned from this, is that it’s better to update to
+a new stable release pretty soon after it’s released.</p>
+<p><a href="https://www.debian.org/releases/">Debian releases</a>: &gt;
+“Debian is version 10, codenamed buster was initially released as
+version &gt; 10 on July 6th, 2019 and its latest update, version 10.6,
+was released on &gt; September 26th, 2020.”</p>
 </div>
 <div id="from-buster-10-to-bullseye-11" class="section level2">
 <h2>From Buster 10 to bullseye 11</h2>
-<p>Following the updates at <a href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup" class="uri">https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup</a></p>
+<p>Following the updates at <a
+href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup"
+class="uri">https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup</a></p>
 <p>First update the current version of your system</p>
 <pre><code>sudo apt update
 sudo apt update </code></pre>
-<p>Added the following lines to /etc/apt/sources.list and commented all the other lines</p>
+<p>Added the following lines to /etc/apt/sources.list and commented all
+the other lines</p>
 <pre><code>deb http://deb.debian.org/debian bullseye main contrib non-free
 deb-src http://deb.debian.org/debian bullseye main contrib non-free
 
@@ -1075,9 +1312,11 @@ sudo apt full-upgrade</code></pre>
 </div>
 <div id="blogs" class="section level1">
 <h1>Blogs</h1>
-<p>Uses this “A collection of nerdy interviews asking people from all walks of life what they use to get the job done”.</p>
+<p>Uses this “A collection of nerdy interviews asking people from all
+walks of life what they use to get the job done”.</p>
 <ul>
-<li><a href="https://usesthis.com/interviews/john.macfarlane/">John Mac Farlane</a>, the author of pandoc uses Debian and Vim.</li>
+<li><a href="https://usesthis.com/interviews/john.macfarlane/">John Mac
+Farlane</a>, the author of pandoc uses Debian and Vim.</li>
 </ul>
 </div>
 
