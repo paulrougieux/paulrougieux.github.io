@@ -78,6 +78,15 @@ For example copy the readme file to the clipboard used by CTRL+C CTRL+V:
     xclip -selection c README.md
 
 
+## Pdf to images
+
+[How to convert pdf to
+images](https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image)
+
+    cd ~/downloads
+    convert -density 150 input.pdf -quality 90 output.png
+
+
 ## Images to pdf
 
 Convert one or more images to pdf
@@ -165,7 +174,7 @@ Only change format
 See also more image modification commands in the edit image files section below.
 
 
-## Documents between various formats with Pandoc
+## Pandoc convert documents between various formats
 
 [Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
 to convert text files from one format to another.
@@ -251,7 +260,7 @@ Then this should work :
 
 There is still an issue with the encoding of the bibliography.
 
-#### Margins and font size
+#### Paper size and margins
 
 Change the margin to 0.5 cm
 
@@ -260,6 +269,16 @@ Change the margin to 0.5 cm
     author: "Bob Marley"
     geometry: margin=0.5cm
     ---
+
+A4 paper
+
+    ---
+    title: LETTERA
+    papersize: A4
+    ---
+
+
+#### Font size
 
 Change the font to 12pt, the max available in the default template.
 
@@ -930,6 +949,26 @@ Search a text pattern in all PDF files present in a directory:
     pdfgrep pattern *.pdf
 
 
+## Look at lines of a text file with less
+
+Less and vim can handle very large text files (several Gb).
+Go to a specific line using less
+
+    <line number>g
+
+To display line numbers in less
+
+    -N
+
+Go to a specific line using vim
+
+    :<line number>
+
+To display line numbers in vim
+
+    :set nu
+
+
 # List files
 
 List all files in a directory
@@ -1333,6 +1372,7 @@ Using `xargs`, the output of echo is interpreted as a file name
 
     echo README.md | xargs cat
 
+
 ## Try catch
 
 [Is there a try catch command in
@@ -1346,6 +1386,7 @@ bash](https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-
 
 > Similarly, using &&, command2 will run if command1 is successful
 
+
 ## Variables
 
 [Variables](https://www.shellscript.sh/variables1.html)
@@ -1353,13 +1394,22 @@ bash](https://stackoverflow.com/questions/22009364/is-there-a-try-catch-command-
     message = "Hello World"
     echo $message
 
+
 ## Wild cards
 
 Search for a pattern in python and R files:
 
     grep -n <pattern> *{py,R}
 
+
 # Read 
+
+## Hexadecimal dump
+
+Show the last 3 lines of a file as a hexadecimal dump
+
+    xxd -s -0x30 Trade_DetailedTradeMatrix_E_All_Data_\(Normalized\).csv
+
 
 ## Play Midi files
 
@@ -1472,6 +1522,22 @@ configuration menu, under the applications tab.
 
 [Read CSV in
 bash](https://www.cyberciti.biz/faq/unix-linux-bash-read-comma-separated-cvsfile/)
+
+
+## Read text files
+
+With less or vim (see the vim page).
+
+
+### Head and tail
+
+Display the first 2 lines of a text file
+
+    head -2 file.txt
+
+Display the last 2 lines of a text file
+
+    tail -2 file.txt
 
 
 # Record a terminal session
