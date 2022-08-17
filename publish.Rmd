@@ -334,6 +334,33 @@ intermediate files.
 	     ls -lh ../*.pdf
 
 
+## Math
+
+### Equation numbering
+
+Equations written in the format below are numbered automatically. It's possible
+to set the counter to 8 so that equation numbering starts at 9.
+
+    \setcounter{equation}{8}
+    \begin{equation}
+    \sumᵢ\ cₒₙᵢfₑᵣₒᵤₛ{Fᵢ︐dᵗ} + \sumᵢ\ bᵣₒₐdₗₑₐᵥₑₛ Fᵢ︐dᵗ = 1
+    \end{equation}
+
+
+### Spacing
+
+Overleaf [spacing in math mode](https://www.overleaf.com/learn/latex/Spacing_in_math_mode)
+> Description of spacing commands
+
+    LaTeX code 	Description
+    \quad 	space equal to the current font size (= 18 mu)
+    \, 	3/18 of \quad (= 3 mu)
+    \: 	4/18 of \quad (= 4 mu)
+    \; 	5/18 of \quad (= 5 mu)
+    \! 	-3/18 of \quad (= -3 mu)
+    \ (space after backslash!) 	equivalent of space in normal text
+    \qquad 	twice of \quad (= 36 mu) 
+
 ## Multicol
 
 [Documentation of the Latex multicol
@@ -352,6 +379,17 @@ package](https://ftp.gwdg.de/pub/ctan/macros/latex/required/tools/multicol.pdf)
     \begin{multicols}{3}
     [\section{The User
     Interface}] ...
+
+
+# Markdown papers
+
+The Journal of Open Source Software requires papers to be written in markdown
+format. An [example paper on their
+website](https://joss.readthedocs.io/en/latest/submitting.html#example-paper-and-bibliography) 
+illustrate how to use the markdown format and the bibliography.
+
+The bibliography uses the [Pandoc citation style
+guide](https://pandoc.org/MANUAL.html#extension-citations).
 
 
 # Motivation
