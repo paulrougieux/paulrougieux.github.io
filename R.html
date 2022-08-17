@@ -449,12 +449,53 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This page is the continuation of <a href="https://paulremote.blogspot.de/2014/04/r-commands.html">my blog post on R commands</a>. On the blog, see also <a href="http://paulremote.blogspot.fr/2013/10/why-r.html">why use R</a> and the <a href="http://paulremote.blogspot.com/feeds/posts/default/-/R">RSS feed of posts labelled R</a>.</p>
+<p>This page is the continuation of <a
+href="https://paulremote.blogspot.de/2014/04/r-commands.html">my blog
+post on R commands</a>. On the blog, see also <a
+href="http://paulremote.blogspot.fr/2013/10/why-r.html">why use R</a>
+and the <a
+href="http://paulremote.blogspot.com/feeds/posts/default/-/R">RSS feed
+of posts labelled R</a>.</p>
 <p>See also documentation at:</p>
 <ul>
-<li>The Comprehensive R Archive Network CRAN <a href="https://cran.r-project.org/manuals.html">manuals</a></li>
-<li>The Tidyverse <a href="http://www.tidyverse.org/packages/">packages</a></li>
+<li>The Comprehensive R Archive Network CRAN <a
+href="https://cran.r-project.org/manuals.html">manuals</a></li>
+<li>The Tidyverse <a
+href="http://www.tidyverse.org/packages/">packages</a></li>
 </ul>
+<div id="history-of-r" class="section level2">
+<h2>History of R</h2>
+<p><a
+href="https://en.wikipedia.org/wiki/Exploratory_data_analysis">Exploratory
+data analysis</a></p>
+<blockquote>
+<p>“Tukey defined data analysis in 1961 as:”Procedures for analyzing
+data, techniques for interpreting the results of such procedures, ways
+of planning the gathering of data to make its analysis easier, more
+precise or more accurate, and all the machinery and results of
+(mathematical) statistics which apply to analyzing data. Tukey’s
+championing of EDA encouraged the development of statistical computing
+packages, especially S at Bell Labs. The S programming language inspired
+the systems S-PLUS and R. This family of statistical-computing
+environments featured vastly improved dynamic visualization
+capabilities, which allowed statisticians to identify outliers, trends
+and patterns in data that merited further study.”</p>
+</blockquote>
+<p><a href="https://en.wikipedia.org/wiki/S_(programming_language)">S
+programming language</a></p>
+<blockquote>
+<p>“S is one of several statistical computing languages that were
+designed at Bell Laboratories, and first took form between 1975–1976. Up
+to that time, much of the statistical computing was done by directly
+calling Fortran subroutines; however, S was designed to offer an
+alternate and more interactive approach, motivated in part by
+exploratory data analysis advocated by John Tukey. Early design
+decisions that hold even today include interactive graphics devices
+(printers and character terminals at the time), and providing easily
+accessible documentation for the functions.”</p>
+</blockquote>
+<p>See also the comparison between R and Python below.</p>
+</div>
 </div>
 <div id="control-flow" class="section level1">
 <h1>Control flow</h1>
@@ -469,13 +510,17 @@ div.tocify {
 </div>
 <div id="data-table" class="section level1">
 <h1>Data table</h1>
-<p><a href="https://h2oai.github.io/db-benchmark/#task">Database like operation benchmark</a> between data table, dplyr, python pandas and other database like tools.</p>
+<p><a href="https://h2oai.github.io/db-benchmark/#task">Database like
+operation benchmark</a> between data table, dplyr, python pandas and
+other database like tools.</p>
 </div>
 <div id="data-types" class="section level1">
 <h1>Data types</h1>
 <div id="data-frames" class="section level2">
 <h2>Data frames</h2>
-<p>The data type used in must analysis. Data frames are an aligned collection of vectors with observation in rows and variables in columns.</p>
+<p>The data type used in must analysis. Data frames are an aligned
+collection of vectors with observation in rows and variables in
+columns.</p>
 <div id="size-in-memory" class="section level3">
 <h3>Size in memory</h3>
 <p>Print the size of a data frame in memory</p>
@@ -486,8 +531,13 @@ div.tocify {
 <h2>Vectors</h2>
 <div id="everything-is-a-vector" class="section level3">
 <h3>Everything is a vector</h3>
-<p>There are no scalar values in R, only vectors, this makes it very natural to process times series or cross sectional data over many N observations as if we were processing only one instance of the variable.</p>
-<p><a href="https://stackoverflow.com/a/7500961/2641825">SO answer concerning indexing up to end of vector/matrix</a> “Sometimes it’s easier to tell R what you don’t want”</p>
+<p>There are no scalar values in R, only vectors, this makes it very
+natural to process times series or cross sectional data over many N
+observations as if we were processing only one instance of the
+variable.</p>
+<p><a href="https://stackoverflow.com/a/7500961/2641825">SO answer
+concerning indexing up to end of vector/matrix</a> “Sometimes it’s
+easier to tell R what you don’t want”</p>
 <pre><code>x &lt;- c(5,5,4,3,2,1)
 x[-(1:3)]
 x[-c(1,3,6)]</code></pre>
@@ -522,14 +572,17 @@ format(max(tralala),&quot;%Y-%m&quot;) </code></pre>
 </div>
 <div id="factors" class="section level3">
 <h3>Factors</h3>
-<p><a href="https://stackoverflow.com/questions/45148897/how-to-reorder-factor-levels-in-a-tidy-way/59246372#59246372">My answer to the question how to reorder factor levels the tidy way</a></p>
+<p><a
+href="https://stackoverflow.com/questions/45148897/how-to-reorder-factor-levels-in-a-tidy-way/59246372#59246372">My
+answer to the question how to reorder factor levels the tidy way</a></p>
 <p>If you happen to have a character vector to order, for example:</p>
 <pre><code>iris2 &lt;- iris %&gt;%
     mutate(Species = as.character(Species)) %&gt;%
     group_by(Species) %&gt;%
     mutate(mean_sepal_width = mean(Sepal.Width)) %&gt;%
     ungroup()</code></pre>
-<p>You can also order the factor level using the behavior of the forcats::as_factor function :</p>
+<p>You can also order the factor level using the behavior of the
+forcats::as_factor function :</p>
 <pre><code>&quot;Compared to base R, this function creates levels in the order in which they appear&quot;
 
 library(forcats)
@@ -541,7 +594,9 @@ iris2 %&gt;%
     ggplot() +
     aes(Species, Sepal.Width, color = Species) +
     geom_point()</code></pre>
-<p>Notice how the species names on the x axis are not ordered alphabetically but by increasing value of their mean_sepal_width. Remove the line containing as_factor to see the difference.</p>
+<p>Notice how the species names on the x axis are not ordered
+alphabetically but by increasing value of their mean_sepal_width. Remove
+the line containing as_factor to see the difference.</p>
 </div>
 <div id="strings" class="section level3">
 <h3>Strings</h3>
@@ -549,14 +604,16 @@ iris2 %&gt;%
 <pre><code>## Using the following letters: a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z.</code></pre>
 <div id="levenshtein-distance-between-words" class="section level4">
 <h4>Levenshtein distance between words</h4>
-<p>Cf. <a href="https://en.wikipedia.org/wiki/Levenshtein_distance" class="uri">https://en.wikipedia.org/wiki/Levenshtein_distance</a></p>
+<p>Cf. <a href="https://en.wikipedia.org/wiki/Levenshtein_distance"
+class="uri">https://en.wikipedia.org/wiki/Levenshtein_distance</a></p>
 <pre><code>adist(&quot;kitten&quot;, &quot;sitting&quot;)</code></pre>
 </div>
 </div>
 </div>
 <div id="lists" class="section level2">
 <h2>Lists</h2>
-<p>Given a list structure x, unlist simplifies it to produce a vector which contains all the atomic components which occur in x.</p>
+<p>Given a list structure x, unlist simplifies it to produce a vector
+which contains all the atomic components which occur in x.</p>
 <pre class="r"><code>l1 &lt;- list(a=&quot;a&quot;, b=&quot;2,&quot;, c=&quot;pi+2i&quot;)
 str(l1)</code></pre>
 <pre><code>## List of 3
@@ -569,7 +626,8 @@ str(l1)</code></pre>
 <pre class="r"><code>str(unlist(l1))</code></pre>
 <pre><code>##  Named chr [1:3] &quot;a&quot; &quot;2,&quot; &quot;pi+2i&quot;
 ##  - attr(*, &quot;names&quot;)= chr [1:3] &quot;a&quot; &quot;b&quot; &quot;c&quot;</code></pre>
-<p>Extract the first element of a nested list <a href="https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list">SO</a></p>
+<p>Extract the first element of a nested list <a
+href="https://stackoverflow.com/questions/20428742/select-first-element-of-nested-list">SO</a></p>
 <pre class="r"><code>minyearmaxyear &lt;- list(c(2001, 2009), c(2010, 2014), c(2015, 2100))
 library(purrr)
 map(minyearmaxyear, 1)</code></pre>
@@ -583,16 +641,19 @@ map(minyearmaxyear, 1)</code></pre>
 ## [1] 2015</code></pre>
 <div id="remove-items-from-a-list" class="section level3">
 <h3>Remove items from a list</h3>
-<p><a href="https://stackoverflow.com/a/50143588/2641825">Remove elements from a named list</a> in R.</p>
+<p><a href="https://stackoverflow.com/a/50143588/2641825">Remove
+elements from a named list</a> in R.</p>
 <pre><code>l &lt;- list(a = 1, b = 2)
 l &lt;- within(l, rm(a)) </code></pre>
-<p><a href="https://stackoverflow.com/a/4685169/2641825">Remove elements from an unnamed list</a></p>
+<p><a href="https://stackoverflow.com/a/4685169/2641825">Remove elements
+from an unnamed list</a></p>
 <pre><code>l &lt;- list(1,2)
 l[1] &lt;- NULL</code></pre>
 </div>
 <div id="bind-data-frames-in-a-list" class="section level3">
 <h3>Bind data frames in a list</h3>
-<p><a href="https://stackoverflow.com/a/72277344/2641825">Bind data frames in a list</a></p>
+<p><a href="https://stackoverflow.com/a/72277344/2641825">Bind data
+frames in a list</a></p>
 <pre><code># Large list if data frames
 l_df &lt;- list(head(iris), iris[c(92:95),], tail(iris))
 df_stack &lt;- data.frame()
@@ -603,7 +664,8 @@ for (i in 1:length(l_df)){
 }
 # Reset row names
 row.names(df_stack) &lt;- NULL</code></pre>
-<p>This will take less memory than binding the data frame in this way:</p>
+<p>This will take less memory than binding the data frame in this
+way:</p>
 <pre><code>l_df &lt;- list(head(iris), iris[c(92:95),], tail(iris))
 dfdt = data.table::rbindlist(l_df)</code></pre>
 <p>And should give a similar result</p>
@@ -619,30 +681,44 @@ dfdt = data.table::rbindlist(l_df)</code></pre>
 </div>
 <div id="debug" class="section level1">
 <h1>Debug</h1>
-<p><a href="https://adv-r.hadley.nz/debugging.html#debugging">Hadley Wickham on debugging</a></p>
+<p><a href="https://adv-r.hadley.nz/debugging.html#debugging">Hadley
+Wickham on debugging</a></p>
 <blockquote>
-<p>“NB: You shouldn’t need to use these tools when writing new functions. If you find yourself using them frequently with new code, reconsider your approach. Instead of trying to write one big function all at once, work interactively on small pieces. If you start small, you can quickly identify why something doesn’t work, and don’t need sophisticated debugging tools.”</p>
+<p>“NB: You shouldn’t need to use these tools when writing new
+functions. If you find yourself using them frequently with new code,
+reconsider your approach. Instead of trying to write one big function
+all at once, work interactively on small pieces. If you start small, you
+can quickly identify why something doesn’t work, and don’t need
+sophisticated debugging tools.”</p>
 </blockquote>
 <div id="debug-with-base-r" class="section level2">
 <h2>Debug with base R</h2>
 <p>Print the call stack of the last error:</p>
 <pre><code>traceback()</code></pre>
-<p>Start a <a href="https://adv-r.hadley.nz/debugging.html#browser-commands">browser at a particular position in code</a>:</p>
+<p>Start a <a
+href="https://adv-r.hadley.nz/debugging.html#browser-commands">browser
+at a particular position in code</a>:</p>
 <pre><code> browser()</code></pre>
 <blockquote>
-<p>Next, n: executes the next step in the function. If you have a variable named n, you’ll need print(n) to display its value.</p>
+<p>Next, n: executes the next step in the function. If you have a
+variable named n, you’ll need print(n) to display its value.</p>
 </blockquote>
 <blockquote>
-<p>Step into, or s: works like next, but if the next step is a function, it will step into that function so you can explore it interactively.</p>
+<p>Step into, or s: works like next, but if the next step is a function,
+it will step into that function so you can explore it interactively.</p>
 </blockquote>
 <blockquote>
 <p>Finish, or f: finishes execution of the current loop or function.</p>
 </blockquote>
 <blockquote>
-<p>Continue, c: leaves interactive debugging and continues regular execution of the function. This is useful if you’ve fixed the bad state and want to check that the function proceeds correctly.</p>
+<p>Continue, c: leaves interactive debugging and continues regular
+execution of the function. This is useful if you’ve fixed the bad state
+and want to check that the function proceeds correctly.</p>
 </blockquote>
 <blockquote>
-<p>Stop, Q: stops debugging, terminates the function, and returns to the global workspace. Use this once you’ve figured out where the problem is, and you’re ready to fix it and reload the code.</p>
+<p>Stop, Q: stops debugging, terminates the function, and returns to the
+global workspace. Use this once you’ve figured out where the problem is,
+and you’re ready to fix it and reload the code.</p>
 </blockquote>
 </div>
 <div id="debug-with-rlang" class="section level2">
@@ -654,7 +730,8 @@ dfdt = data.table::rbindlist(l_df)</code></pre>
 <p>More information on the behaviour of backtrace:</p>
 <pre><code>help(trace_back, package=rlang)</code></pre>
 <blockquote>
-<p>“Because of lazy evaluation, the call stack in R is actually a tree, which the ‘summary()’ method of this object will reveal.”</p>
+<p>“Because of lazy evaluation, the call stack in R is actually a tree,
+which the ‘summary()’ method of this object will reveal.”</p>
 </blockquote>
 </div>
 </div>
@@ -673,8 +750,17 @@ rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection<
 </div>
 <div id="editors" class="section level1">
 <h1>Editors</h1>
-<p>I use Vim and the great <a href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> plugin to edit R markdown documents and R scripts. I browse the table of content of R markdown files with the Voom plugin. I create R packages with Makefiles. I use the fugitive plugin to manage my git commits. See my <a href="Vim.html">Vim page</a> for more information.</p>
-<p>Rstudio is a great editors for those who prefer a graphical user interface. It has a Vim mode. In fact I trained my muscle memory for Vim movement keys inside RStudio initially. Rstudio also has a lot of menus and buttons to work with Rmarkdown documents, view the state of a git repository and build packages.</p>
+<p>I use Vim and the great <a
+href="https://github.com/jalvesaq/Nvim-R">Nvim-R</a> plugin to edit R
+markdown documents and R scripts. I browse the table of content of R
+markdown files with the Voom plugin. I create R packages with Makefiles.
+I use the fugitive plugin to manage my git commits. See my <a
+href="Vim.html">Vim page</a> for more information.</p>
+<p>Rstudio is a great editors for those who prefer a graphical user
+interface. It has a Vim mode. In fact I trained my muscle memory for Vim
+movement keys inside RStudio initially. Rstudio also has a lot of menus
+and buttons to work with Rmarkdown documents, view the state of a git
+repository and build packages.</p>
 </div>
 <div id="input-output" class="section level1">
 <h1>Input output</h1>
@@ -683,9 +769,11 @@ list.files(tempdir())
 dir.create(&quot;blabla&quot;)</code></pre>
 <div id="apache-arrow" class="section level2">
 <h2>Apache Arrow</h2>
-<p><a href="https://github.com/apache/arrow/tree/master/r">Apache arrow R packages</a></p>
+<p><a href="https://github.com/apache/arrow/tree/master/r">Apache arrow
+R packages</a></p>
 <blockquote>
-<p>“Read and write Feather files (read_feather(), write_feather()), a format optimized for speed and interoperability”</p>
+<p>“Read and write Feather files (read_feather(), write_feather()), a
+format optimized for speed and interoperability”</p>
 </blockquote>
 </div>
 <div id="csv-files" class="section level2">
@@ -693,7 +781,8 @@ dir.create(&quot;blabla&quot;)</code></pre>
 <p>Read one csv file with default R function.</p>
 <pre><code>read.csv(&quot;data.csv&quot;, )</code></pre>
 <p>Read many csv files with functions from the tidyverse packages.</p>
-<p>First write sample csv files to a temporary directory. It’s more complicated than I thought it would be.</p>
+<p>First write sample csv files to a temporary directory. It’s more
+complicated than I thought it would be.</p>
 <pre><code>data_folder &lt;- file.path(tempdir(), &quot;iris&quot;)
 dir.create(data_folder)
 iris %&gt;%
@@ -705,14 +794,20 @@ iris %&gt;%
     by_row(~write.csv(.$data, 
                       file = file.path(data_folder, paste0(.$species_group, &quot;.csv&quot;)),
                       row.names = FALSE))</code></pre>
-<p>Read these csv files into one data frame. Note the Species column has to be present in the csv files, otherwise we would loose that information.</p>
+<p>Read these csv files into one data frame. Note the Species column has
+to be present in the csv files, otherwise we would loose that
+information.</p>
 <pre><code>iris_csv &lt;- list.files(data_folder, full.names = TRUE) %&gt;% 
     map_dfr(read_csv)</code></pre>
-<p><code>write_csv</code> returned an <code>Error in write_delim(...) is.data.frame(x) is not TRUE</code> That’s why we used <code>write.csv</code> instead.</p>
+<p><code>write_csv</code> returned an
+<code>Error in write_delim(...) is.data.frame(x) is not TRUE</code>
+That’s why we used <code>write.csv</code> instead.</p>
 </div>
 <div id="rds-files" class="section level2">
 <h2>RDS files</h2>
-<p>RDS is a Serialization Interface for Single Objects. Objects are saved to binary data and compressed to the gzip format, see <code>help(saveRDS)</code> for more details.</p>
+<p>RDS is a Serialization Interface for Single Objects. Objects are
+saved to binary data and compressed to the gzip format, see
+<code>help(saveRDS)</code> for more details.</p>
 <p>Write a dataset to an rds file:</p>
 <pre><code>saveRDS(iris, &quot;/tmp/iris.rds&quot;)</code></pre>
 <p>Read a dataset from an rds file</p>
@@ -753,11 +848,15 @@ tr(,&quot;tsp&quot;)
 </div>
 <div id="replace-text-in-column-names" class="section level2">
 <h2>Replace text in column names</h2>
-<p>Add the first row to the column name, useful for some double headed csv files coming from pandas.</p>
+<p>Add the first row to the column name, useful for some double headed
+csv files coming from pandas.</p>
 <pre><code>paste(names(df), df[1,])</code></pre>
-<p>Replace a regular expression with optional numerical pattern and final space</p>
+<p>Replace a regular expression with optional numerical pattern and
+final space</p>
 <pre><code>names(df) &lt;- gsub(&quot;.per.hectare.[0-9]* *&quot;, &quot;_&quot;, names(df))</code></pre>
-<p><a href="https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-not/18239222">And in a regular expression</a></p>
+<p>Using and, or <a
+href="https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-not/18239222">in
+a regular expression</a></p>
 <pre><code>|</code></pre>
 <p>Change columns to snake case</p>
 <pre class="r"><code>column_names &lt;- c(&quot;Bla, Bla&quot;, &quot;Hips, Hops&quot;, &quot;Yield/Carcass Weight&quot;,
@@ -778,10 +877,14 @@ gsub(&quot;[^[:alnum:]]+&quot;,&quot;_&quot;,tolower(column_names))</code></pre>
 </div>
 <div id="installing-r-and-packages" class="section level1">
 <h1>Installing R and packages</h1>
-<p>To install R and Rstudio on Debian, see the <a href="debian.html#r_and_rstudio">debian.html#r_and_rstudio</a> page on this site.</p>
-<p>To install packages simply enter the following at an R command prompt:</p>
+<p>To install R and Rstudio on Debian, see the <a
+href="debian.html#r_and_rstudio">debian.html#r_and_rstudio</a> page on
+this site.</p>
+<p>To install packages simply enter the following at an R command
+prompt:</p>
 <pre><code>install.packages(&quot;package_name&quot;)</code></pre>
-<p>Some packages have dependencies that need to be installed at the OS level. Error messages:</p>
+<p>Some packages have dependencies that need to be installed at the OS
+level. Error messages:</p>
 <pre><code>&quot;Configuration failed because libcurl was not found.&quot; 
 &quot;Configuration failed because libxml-2.0 was not found.&quot;
 &quot;Configuration failed because openssl was not found.&quot;</code></pre>
@@ -793,7 +896,8 @@ sudo apt install libssl-dev</code></pre>
 <h2>Install from source file</h2>
 <p>To install from a source file</p>
 <pre><code>install.packages(&quot;~/rp/FAOSTATpackage/FAOSTAT_2.2.1.tar.gz&quot;, repos=NULL)</code></pre>
-<p>System information used by <code>install.packages()</code> to determine default installation parameters</p>
+<p>System information used by <code>install.packages()</code> to
+determine default installation parameters</p>
 <pre><code>getOption(&quot;repos&quot;)
 getOption(&quot;pkgType&quot;)</code></pre>
 </div>
@@ -818,7 +922,11 @@ installed.packages()</code></pre>
 <h3>Rmarkdown site generator</h3>
 <p>This website is generated from R Markdown documents with:</p>
 <pre><code> Rscript -e &quot;rmarkdown::render_site()&quot;</code></pre>
-<p>The advantage of the rmarkdown site generator is that it creates pages with a floating, foldable table of content. It’s nice for pages that have a lot of subdivisions like this blog. The structure of a website is specified in a yaml file. For example, the code below creates a navigation bar:</p>
+<p>The advantage of the rmarkdown site generator is that it creates
+pages with a floating, foldable table of content. It’s nice for pages
+that have a lot of subdivisions like this blog. The structure of a
+website is specified in a yaml file. For example, the code below creates
+a navigation bar:</p>
 <pre><code>navbar:
   title: &quot;Paul Rougieux&quot;
   left:
@@ -833,36 +941,61 @@ installed.packages()</code></pre>
 </div>
 <div id="bookdown-site-generator" class="section level3">
 <h3>Bookdown site generator</h3>
-<p>For blogs that fit into a book structure, with chapters, the bookdown package create a single clickable table of content for the whole site. It can also export the content to pdf format.</p>
-<p>Specifying input from many sub directories in <code>_bookdown.yml</code>:</p>
+<p>For blogs that fit into a book structure, with chapters, the bookdown
+package create a single clickable table of content for the whole site.
+It can also export the content to pdf format.</p>
+<p>Specifying input from many sub directories in
+<code>_bookdown.yml</code>:</p>
 <pre><code>rmd_files: [&quot;index.Rmd&quot;, &quot;chapters/chapt1.RMD&quot;, &quot;chapters/chapt2.RMD&quot;]</code></pre>
-<p>Attention this will only work in the Merge and Knit strategy, as explained in the <a href="https://bookdown.org/yihui/bookdown/new-session.html">book chapter on two rendering approaches</a></p>
+<p>Attention this will only work in the Merge and Knit strategy, as
+explained in the <a
+href="https://bookdown.org/yihui/bookdown/new-session.html">book chapter
+on two rendering approaches</a></p>
 <blockquote>
-<p>“We call these two approaches “Merge and Knit” (M-K) and “Knit and Merge” (K-M), respectively." “K-M does not allow Rmd files to be in subdirectories, but M-K does.”</p>
+<p>“We call these two approaches “Merge and Knit” (M-K) and “Knit and
+Merge” (K-M), respectively.” “K-M does not allow Rmd files to be in
+subdirectories, but M-K does.”</p>
 </blockquote>
 </div>
 </div>
 <div id="cross-references" class="section level2">
 <h2>Cross references</h2>
-<p><a href="https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html">R markdown cross ref</a></p>
+<p><a
+href="https://bookdown.org/yihui/rmarkdown-cookbook/cross-ref.html">R
+markdown cross ref</a></p>
 <blockquote>
-<p>“Cross-referencing is not provided directly within the base rmarkdown package, but is provided as an extension in bookdown (Xie 2020c). We must therefore use an output format from bookdown (e.g., html_document2, pdf_document2, and word_document2, etc.) in the YAML output field.”</p>
+<p>“Cross-referencing is not provided directly within the base rmarkdown
+package, but is provided as an extension in bookdown (Xie 2020c). We
+must therefore use an output format from bookdown (e.g., html_document2,
+pdf_document2, and word_document2, etc.) in the YAML output field.”</p>
 </blockquote>
 <ul>
-<li>Bookdown issue with flextable <a href="https://github.com/rstudio/bookdown/issues/746">Table and figure cross references in word</a> Now solved with the following implementation</li>
+<li>Bookdown issue with flextable <a
+href="https://github.com/rstudio/bookdown/issues/746">Table and figure
+cross references in word</a> Now solved with the following
+implementation</li>
 </ul>
 <pre class="r"><code>iris %&gt;% head() %&gt;% flextable()</code></pre>
-<p>This is a reference to flextable @ref(tab:irishead). The chunk name should not contain an underscore, otherwise the cross reference will not work. See <a href="https://github.com/rstudio/bookdown/issues/941">bookdown issue 941</a>.</p>
-<p>See more flextable caption examples in <code>system.file(package = "flextable", "examples", "rmd", "captions")</code></p>
+<p>This is a reference to flextable @ref(tab:irishead). The chunk name
+should not contain an underscore, otherwise the cross reference will not
+work. See <a
+href="https://github.com/rstudio/bookdown/issues/941">bookdown issue
+941</a>.</p>
+<p>See more flextable caption examples in
+<code>system.file(package = "flextable", "examples", "rmd", "captions")</code></p>
 </div>
 <div id="flextable-and-officer-package" class="section level2">
 <h2>Flextable and officer package</h2>
-<p>The officer package makes it possible to create improved word and powerpoint documents. The flextable package has a few functions to generate tables for word documents (otherwise they look funny).</p>
-<p>Before installing flextable, the following system dependencies were required:</p>
+<p>The officer package makes it possible to create improved word and
+powerpoint documents. The flextable package has a few functions to
+generate tables for word documents (otherwise they look funny).</p>
+<p>Before installing flextable, the following system dependencies were
+required:</p>
 <pre><code>sudo apt install libcairo2-dev libjpeg-dev libgif-dev</code></pre>
 <p>Installation in R:</p>
 <pre><code>install.packages(&quot;flextable&quot;)</code></pre>
-<p>This is to work with colleagues who are not in the latex/pdf world.</p>
+<p>This is to work with colleagues who are not in the latex/pdf
+world.</p>
 <div id="landscape-pages" class="section level3">
 <h3>Landscape pages</h3>
 <pre class="r"><code>library(officer)
@@ -943,7 +1076,9 @@ doc &lt;- read_docx() %&gt;%
 </tr>
 </tbody>
 </table>
-<p>Examples copie from yihui’s <a href="https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-caption">R markdown cookbook</a>.</p>
+<p>Examples copie from yihui’s <a
+href="https://bookdown.org/yihui/rmarkdown-cookbook/kable.html#kable-caption">R
+markdown cookbook</a>.</p>
 <pre class="r"><code>set.seed(100)
 d &lt;- cbind(X1 = runif(3), 
            X2 = 10^c(3, 5, 7), 
@@ -1061,7 +1196,8 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 </tr>
 </tbody>
 </table>
-<p>The format is recognised automatically by knitr based on the nature of the output document.</p>
+<p>The format is recognised automatically by knitr based on the nature
+of the output document.</p>
 <pre class="r"><code>cat(kable(head(iris, 1), format = &quot;html&quot;))</code></pre>
 <pre><code>## &lt;table&gt;
 ##  &lt;thead&gt;
@@ -1096,12 +1232,21 @@ knitr::kable(d, digits = 3, format.args = list(big.mark = &quot;,&quot;,
 <pre><code>## | Sepal.Length| Sepal.Width| Petal.Length| Petal.Width|Species | |------------:|-----------:|------------:|-----------:|:-------| |          5.1|         3.5|          1.4|         0.2|setosa  |</code></pre>
 <div id="booktabs" class="section level3">
 <h3>Booktabs</h3>
-<p>Booktabs tables look nicer in latex document, they can be created by specifying the argument <code>booktabs = TRUE</code> into the <code>kable()</code> call.</p>
-<p>Knitr adds an extra space every five lines into booktabs tables for readability. This is undesirable for short tables. To remove this space specify the <code>linesep = ""</code> argument to <code>kable()</code> as explained in this <a href="https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown">SO answer</a>.</p>
+<p>Booktabs tables look nicer in latex document, they can be created by
+specifying the argument <code>booktabs = TRUE</code> into the
+<code>kable()</code> call.</p>
+<p>Knitr adds an extra space every five lines into booktabs tables for
+readability. This is undesirable for short tables. To remove this space
+specify the <code>linesep = ""</code> argument to <code>kable()</code>
+as explained in this <a
+href="https://stackoverflow.com/questions/49015578/space-after-every-five-rows-in-kable-output-with-booktabs-option-in-r-markdown">SO
+answer</a>.</p>
 </div>
 <div id="kableextra-formatting" class="section level3">
 <h3>KableExtra formatting</h3>
-<p>The package <code>kableExtra</code> can <a href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html#Group_rows_via_multi-row_cell">group rows via multi-row cells</a></p>
+<p>The package <code>kableExtra</code> can <a
+href="https://cran.r-project.org/web/packages/kableExtra/vignettes/awesome_table_in_html.html#Group_rows_via_multi-row_cell">group
+rows via multi-row cells</a></p>
 <p>Html format</p>
 <pre><code>library(dplyr)
 iris3 &lt;- iris %&gt;% group_by(Species) %&gt;% slice(1:3)
@@ -1116,40 +1261,56 @@ iris3 %&gt;%
 </div>
 <div id="output" class="section level2">
 <h2>Output</h2>
-<p>The default output is in HTML. The nature of the notebook output can be defined in the preamble section of the R markdown document.</p>
+<p>The default output is in HTML. The nature of the notebook output can
+be defined in the preamble section of the R markdown document.</p>
 <div id="pdf" class="section level3">
 <h3>PDF</h3>
-<p>It’s often useful to have a table of content at the start of long documents.</p>
+<p>It’s often useful to have a table of content at the start of long
+documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;15 June, 2022&quot;
+date:  &quot;17 August, 2022&quot;
 output:
   pdf_document:
     number_sections: yes
     toc: yes
 ---</code></pre>
-<p>I usually have this line at the beginning of R markdown files to generate the pdf output from command line:</p>
+<p>I usually have this line at the beginning of R markdown files to
+generate the pdf output from command line:</p>
 <pre><code>cd ~/rp/path_to_repo/notebooks/ &amp;&amp;  Rscript -e &quot;rmarkdown::render(&#39;file_name.Rmd&#39;, &#39;pdf_document&#39;)&quot;</code></pre>
 </div>
 <div id="power-point-documents" class="section level3">
 <h3>Power point documents</h3>
-<p>It’s possible to specify a power point template in the knitr preamble as such:</p>
+<p>It’s possible to specify a power point template in the knitr preamble
+as such:</p>
 <pre><code>---
 title: &quot;Title&quot;
 output:
   powerpoint_presentation:
     reference_doc: presentation_template.pptx
 ---</code></pre>
-<p>More details in <a href="https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html" class="uri">https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html</a> I ran into some issues: - <a href="https://stackoverflow.com/questions/56243502/how-to-fix-could-not-find-shape-for-powerpoint-content-error-pandoc-document-c" class="uri">https://stackoverflow.com/questions/56243502/how-to-fix-could-not-find-shape-for-powerpoint-content-error-pandoc-document-c</a> - <a href="https://github.com/jgm/pandoc/issues/5402" class="uri">https://github.com/jgm/pandoc/issues/5402</a> And the fact that I cannot edit the slide master from power point online is annoying.</p>
+<p>More details in <a
+href="https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html"
+class="uri">https://bookdown.org/yihui/rmarkdown/powerpoint-presentation.html</a>
+I ran into some issues: - <a
+href="https://stackoverflow.com/questions/56243502/how-to-fix-could-not-find-shape-for-powerpoint-content-error-pandoc-document-c"
+class="uri">https://stackoverflow.com/questions/56243502/how-to-fix-could-not-find-shape-for-powerpoint-content-error-pandoc-document-c</a>
+- <a href="https://github.com/jgm/pandoc/issues/5402"
+class="uri">https://github.com/jgm/pandoc/issues/5402</a> And the fact
+that I cannot edit the slide master from power point online is
+annoying.</p>
 </div>
 </div>
 <div id="python-engine" class="section level2">
 <h2>Python engine</h2>
-<p>Rstudio: <a href="https://rstudio.github.io/reticulate/articles/r_markdown.html">R Mardown python engine</a></p>
+<p>Rstudio: <a
+href="https://rstudio.github.io/reticulate/articles/r_markdown.html">R
+Mardown python engine</a></p>
 <p>See also the reticulate package mentioned below.</p>
 <div id="reticulate-to-call-python-from-r" class="section level3">
 <h3>Reticulate to call python from R</h3>
-<p>Example of a python chunk followed by an R chunk calling a python method defined in that package.</p>
+<p>Example of a python chunk followed by an R chunk calling a python
+method defined in that package.</p>
 <p>λ{python eval=FALSE} from biotrade.faostat import faostat —</p>
 <pre class="r"><code>soy_prod &lt;- py$faostat$db$select(table=&quot;crop_production&quot;, product = &quot;soy&quot;)</code></pre>
 <p>More information in the vignette:</p>
@@ -1158,7 +1319,8 @@ output:
 <div id="using-reticulate-in-an-r-packages" class="section level3">
 <h3>Using Reticulate in an R packages</h3>
 <blockquote>
-<p>“When you do this, you should use the delay_load flag to the import() function, for example:”</p>
+<p>“When you do this, you should use the delay_load flag to the import()
+function, for example:”</p>
 </blockquote>
 <pre><code># global reference to scipy (will be initialized in .onLoad)
 scipy &lt;- NULL
@@ -1171,17 +1333,24 @@ scipy &lt;- NULL
 <p>“Using the delay_load flag has two important benefits:”</p>
 </blockquote>
 <blockquote>
-<p>“It allows you to successfully load your package even when Python / Python packages are not installed on the target system (this is particularly important when testing on CRAN build machines).”</p>
+<p>“It allows you to successfully load your package even when Python /
+Python packages are not installed on the target system (this is
+particularly important when testing on CRAN build machines).”</p>
 </blockquote>
 <blockquote>
-<p>“It allows users to specify a desired location for Python before interacting with your package.”</p>
+<p>“It allows users to specify a desired location for Python before
+interacting with your package.”</p>
 </blockquote>
 <div id="example-r-packages-that-use-reticulate" class="section level4">
 <h4>Example R packages that use reticulate</h4>
 <ul>
-<li>spicyr <a href="https://cran.r-project.org/web/packages/spacyr/index.html" class="uri">https://cran.r-project.org/web/packages/spacyr/index.html</a>
+<li>spicyr <a
+href="https://cran.r-project.org/web/packages/spacyr/index.html"
+class="uri">https://cran.r-project.org/web/packages/spacyr/index.html</a>
 <ul>
-<li>Vignette <a href="https://cran.r-project.org/web/packages/spacyr/vignettes/using_spacyr.html" class="uri">https://cran.r-project.org/web/packages/spacyr/vignettes/using_spacyr.html</a></li>
+<li>Vignette <a
+href="https://cran.r-project.org/web/packages/spacyr/vignettes/using_spacyr.html"
+class="uri">https://cran.r-project.org/web/packages/spacyr/vignettes/using_spacyr.html</a></li>
 </ul></li>
 </ul>
 </div>
@@ -1192,10 +1361,16 @@ scipy &lt;- NULL
 <h1>Reproducibility and cloud computing</h1>
 <div id="cloudyr-project" class="section level2">
 <h2>Cloudyr project</h2>
-<p>The <a href="https://cloudyr.github.io/packages/index.html">cloudyr project</a> is a collection of R packages to enable cloud computing.</p>
-<p>R packages that are actively maintained can be seen on the <a href="https://github.com/cloudyr">github project page of cloudyr</a>.</p>
+<p>The <a href="https://cloudyr.github.io/packages/index.html">cloudyr
+project</a> is a collection of R packages to enable cloud computing.</p>
+<p>R packages that are actively maintained can be seen on the <a
+href="https://github.com/cloudyr">github project page of
+cloudyr</a>.</p>
 <ul>
-<li><p>For example the <a href="https://github.com/cloudyr/googleCloudVisionR">googleCloudVisionR</a> package gets the following image annotations for a picture of golden retriever puppies</p>
+<li><p>For example the <a
+href="https://github.com/cloudyr/googleCloudVisionR">googleCloudVisionR</a>
+package gets the following image annotations for a picture of golden
+retriever puppies</p>
 <pre><code>    description     score topicality
             Dog 0.9953705  0.9953705
          Mammal 0.9890478  0.9890478
@@ -1208,21 +1383,33 @@ scipy &lt;- NULL
 </div>
 <div id="rocker" class="section level2">
 <h2>Rocker</h2>
-<p><a href="https://github.com/rocker-org/rocker">rocker-org/rocker</a> provides a series of docker images for various R development purposes.</p>
-<p>Bioconductor <a href="https://www.bioconductor.org/help/docker/#intro">docker intro</a></p>
+<p><a href="https://github.com/rocker-org/rocker">rocker-org/rocker</a>
+provides a series of docker images for various R development
+purposes.</p>
+<p>Bioconductor <a
+href="https://www.bioconductor.org/help/docker/#intro">docker
+intro</a></p>
 <blockquote>
-<p>“With Bioconductor containers, we hope to enhance Reproducibility: If you run some code in a container today, you can run it again in the same container (with the same tag) years later and know that nothing in the container has changed. You should always take note of the tag you used if you think you might want to reproduce some work later.”</p>
+<p>“With Bioconductor containers, we hope to enhance Reproducibility: If
+you run some code in a container today, you can run it again in the same
+container (with the same tag) years later and know that nothing in the
+container has changed. You should always take note of the tag you used
+if you think you might want to reproduce some work later.”</p>
 </blockquote>
 </div>
 </div>
 <div id="rscript" class="section level1">
 <h1>Rscript</h1>
-<p>Capture arguments in an Rscript on windows and write them to a file</p>
+<p>Capture arguments in an Rscript on windows and write them to a
+file</p>
 <pre><code>&quot;C:\Program Files\R\R-3.5.0\bin\Rscript.exe&quot; --verbose -e &quot;args = commandArgs(trailingOnly=TRUE)&quot; -e &quot;writeLines(args,&#39;C:\\Dev\\args.txt&#39;)&quot; &quot;file1.csv&quot; &quot;file2.csv&quot; &quot;file3.csv&quot;</code></pre>
-<p>Arguments can be extracted one by one with args[1] commandArgs() returns a <strong>character vector</strong> containing the name of the executable and the user-supplied command line arguments.</p>
+<p>Arguments can be extracted one by one with args[1] commandArgs()
+returns a <strong>character vector</strong> containing the name of the
+executable and the user-supplied command line arguments.</p>
 <div id="set-knitr-options" class="section level2">
 <h2>Set knitr options</h2>
-<p>Those 2 commands are different. Sets the options for chunk, within a knitr chunk inside the .Rmd document</p>
+<p>Those 2 commands are different. Sets the options for chunk, within a
+knitr chunk inside the .Rmd document</p>
 <pre><code>opts_chunk$set(fig.width=10)</code></pre>
 <p>Sets the options for knitr outside the .Rmd document</p>
 <pre><code>opts_knit$set()</code></pre>
@@ -1258,7 +1445,12 @@ df %&gt;%
 </div>
 <div id="packages" class="section level1">
 <h1>Packages</h1>
-<p>You might want to read the CRAN manual on <a href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R Extensions</a>, and its section on <a href="https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies">Package dependencies</a>. See also Hadley’s book on R package and its section on <a href="http://r-pkgs.had.co.nz/namespace.html">Namespace</a></p>
+<p>You might want to read the CRAN manual on <a
+href="https://cran.r-project.org/doc/manuals/R-exts.html">Writing R
+Extensions</a>, and its section on <a
+href="https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies">Package
+dependencies</a>. See also Hadley’s book on R package and its section on
+<a href="http://r-pkgs.had.co.nz/namespace.html">Namespace</a></p>
 <p>Use the devtools library to start a package folder structure:</p>
 <pre><code>devtools::create(&quot;package_name&quot;)</code></pre>
 <p>Use git to track code modifications (shell commands):</p>
@@ -1266,24 +1458,42 @@ df %&gt;%
 $ git init</code></pre>
 <div id="documentation" class="section level2">
 <h2>Documentation</h2>
-<p>The roxygen2 package helps with function documentation. Documentation can be written in the form of comments #’ tags such as <code>@param</code> and <code>@description</code> structure the documentation of each function.</p>
-<p>For an introcution to roxygen2, call <code>vignette("roxygen2", package = "roxygen2")</code> at the R prompt.</p>
-<p>Since roxygen2 version 6, markdown formating can be used in the documentation, by specifying the <code>@md</code> tag.</p>
+<p>The roxygen2 package helps with function documentation. Documentation
+can be written in the form of comments #’ tags such as
+<code>@param</code> and <code>@description</code> structure the
+documentation of each function.</p>
+<p>For an introcution to roxygen2, call
+<code>vignette("roxygen2", package = "roxygen2")</code> at the R
+prompt.</p>
+<p>Since roxygen2 version 6, markdown formating can be used in the
+documentation, by specifying the <code>@md</code> tag.</p>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
-<p>Examples are crucial to demonstrate the use of a fonction. They can be specified in a roxygen block called <code>@examples</code>:</p>
+<p>Examples are crucial to demonstrate the use of a fonction. They can
+be specified in a roxygen block called <code>@examples</code>:</p>
 <pre><code>#&#39; @examples</code></pre>
-<p>Wrap the examples in donttest if you don’t want R CMD check to test them at package building time.</p>
+<p>Wrap the examples in donttest if you don’t want R CMD check to test
+them at package building time.</p>
 <pre><code>#&#39; \donttest{d</code></pre>
-<p>It is also possible to wrap them in another statement called <code>dontrun</code>, but this is not recomended on CRAN according to this <a href="https://stackoverflow.com/a/44997778/2641825">Stackoverflow question</a>.</p>
+<p>It is also possible to wrap them in another statement called
+<code>dontrun</code>, but this is not recomended on CRAN according to
+this <a
+href="https://stackoverflow.com/a/44997778/2641825">Stackoverflow
+question</a>.</p>
 </div>
 <div id="vignettes" class="section level3">
 <h3>Vignettes</h3>
-<p><a href="http://r-pkgs.had.co.nz/vignettes.html">Vignettes: long-form documentation</a></p>
+<p><a href="http://r-pkgs.had.co.nz/vignettes.html">Vignettes: long-form
+documentation</a></p>
 <pre><code>devtools::use_vignette(&quot;my-vignette&quot;)</code></pre>
-<p><a href="https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission">Where to put package vignettes for CRAN submission</a></p>
+<p><a
+href="https://stackoverflow.com/questions/12325223/where-to-put-package-vignettes-for-cran-submission">Where
+to put package vignettes for CRAN submission</a></p>
 <blockquote>
-<p>“You put the .Rnw sources in vignettes/ as you did, but you missed out a critical step; don’t check the source tree. The expected workflow is to build the source tarball and then check that tarball. Building the tarball will create the vignette PDF.”</p>
+<p>“You put the .Rnw sources in vignettes/ as you did, but you missed
+out a critical step; don’t check the source tree. The expected workflow
+is to build the source tarball and then check that tarball. Building the
+tarball will create the vignette PDF.”</p>
 </blockquote>
 <pre><code>R CMD build ../foo/pkg
 R CMD check ./pkg-0.4.tar.gz</code></pre>
@@ -1291,84 +1501,152 @@ R CMD check ./pkg-0.4.tar.gz</code></pre>
 <ul>
 <li><p>sh: 1: /usr/bin/texi2dvi: not found</p>
 <p>sudo apt-get install texinfo</p></li>
-<li><p><a href="https://github.com/clonghurst/Res.plotter/issues/3">Warning about “vignette without corresponding PDF/HTML”?</a></p></li>
+<li><p><a
+href="https://github.com/clonghurst/Res.plotter/issues/3">Warning about
+“vignette without corresponding PDF/HTML”?</a></p></li>
 </ul>
 <blockquote>
-<p>“Maybe you’re running R CMD check using the directory name rather than the .tar.gz file?”</p>
+<p>“Maybe you’re running R CMD check using the directory name rather
+than the .tar.gz file?”</p>
 </blockquote>
 <ul>
-<li><a href="https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette">Inconsolata missing to build R vignette</a></li>
+<li><a
+href="https://stackoverflow.com/questions/34524357/inconsolata-missing-to-build-r-vignette">Inconsolata
+missing to build R vignette</a></li>
 </ul>
 <blockquote>
 <p>“Installing texlive-fonts-extra should take care of it.”</p>
 </blockquote>
-<p>R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings No solution for this one but I guess it’s ok since it concerns country names?</p>
+<p>R CMD checking data for non-ASCII characters found 179 marked UTF-8
+strings No solution for this one but I guess it’s ok since it concerns
+country names?</p>
 </div>
 </div>
 <div id="unit-tests" class="section level2">
 <h2>Unit tests</h2>
 <p>Back in R, add testing infrastructure:</p>
 <pre><code>devtools::use_testthat()</code></pre>
-<p>When checking the package with R CMD CHECK, <a href="https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when">How can I handle R CMD check “no visible binding for global variable”?</a> These notes are caused by variables used with dplyr verbs and ggplot2 aesthetics.</p>
+<p>When checking the package with R CMD CHECK, <a
+href="https://stackoverflow.com/questions/9439256/how-can-i-handle-r-cmd-check-no-visible-binding-for-global-variable-notes-when">How
+can I handle R CMD check “no visible binding for global variable”?</a>
+These notes are caused by variables used with dplyr verbs and ggplot2
+aesthetics.</p>
 </div>
 <div id="continuous-integration" class="section level2">
 <h2>Continuous Integration</h2>
-<p>It is good to know if your package can be installed on a fresh system. Continuous integration systems make this possible each time you submit a modification to your repository.</p>
-<p>I have used travis-ci which is free for open github repositories. <a href="https://docs.travis-ci.com/user/languages/r/">Instructions to build an R project on travis</a>. Unit tests are also run on travis, in addition to R CMD CHECK. Package dependencies can be configured in a <code>.travis.yml</code> file that is read by the travis machine performing the build. For package that are not on Cran, it’s possible to specify a dependency field under <code>r_github_packages</code>.</p>
-<p>In 2020 RopenSci moved away from Travis CI because of a change of mannagement which removed support for open source projects. In <a href="https://ropensci.org/blog/2020/11/19/moving-away-travis/">this post</a> Jeroen Ooms thanks Travis CI for greatly enabling CI since 2012.</p>
+<p>It is good to know if your package can be installed on a fresh
+system. Continuous integration systems make this possible each time you
+submit a modification to your repository.</p>
+<p>I have used travis-ci which is free for open github repositories. <a
+href="https://docs.travis-ci.com/user/languages/r/">Instructions to
+build an R project on travis</a>. Unit tests are also run on travis, in
+addition to R CMD CHECK. Package dependencies can be configured in a
+<code>.travis.yml</code> file that is read by the travis machine
+performing the build. For package that are not on Cran, it’s possible to
+specify a dependency field under <code>r_github_packages</code>.</p>
+<p>In 2020 RopenSci moved away from Travis CI because of a change of
+mannagement which removed support for open source projects. In <a
+href="https://ropensci.org/blog/2020/11/19/moving-away-travis/">this
+post</a> Jeroen Ooms thanks Travis CI for greatly enabling CI since
+2012.</p>
 </div>
 <div id="make-file" class="section level2">
 <h2>Make file</h2>
 <ul>
-<li>kbroman <a href="https://kbroman.org/minimal_make/">minimal make</a></li>
-<li>Cran <a href="https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build">how to use make files with R CMD build</a></li>
+<li>kbroman <a href="https://kbroman.org/minimal_make/">minimal
+make</a></li>
+<li>Cran <a
+href="https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-cmd-build">how
+to use make files with R CMD build</a></li>
 </ul>
 <p>I copied the make file from the knitr package.</p>
 </div>
 <div id="submitting-to-cran" class="section level2">
 <h2>Submitting to CRAN</h2>
-<p><a href="https://cran.r-project.org/submit.html">Submit package to CRAN</a> The second page will ask to</p>
+<p><a href="https://cran.r-project.org/submit.html">Submit package to
+CRAN</a> The second page will ask to</p>
 <ul>
 <li>Step 1 (Upload) the <code>*.tar.gz</code> file.</li>
-<li>Step 2 (Submission) review information from the package’s DESCRIPTION file.</li>
+<li>Step 2 (Submission) review information from the package’s
+DESCRIPTION file.</li>
 <li>Step 3 (Confirmation)</li>
 </ul>
-<p>The maintainer of this package has been sent an email to confirm the submission. After their confirmation the package will be passed to CRAN for review.</p>
-<p>In general enter the Git tag after the submission has been completed, because it is very likely that additional information will need to be added to the package before or during the submission process.</p>
+<p>The maintainer of this package has been sent an email to confirm the
+submission. After their confirmation the package will be passed to CRAN
+for review.</p>
+<p>In general enter the Git tag after the submission has been completed,
+because it is very likely that additional information will need to be
+added to the package before or during the submission process.</p>
 <div id="crans-automated-check-of-urls-validity" class="section level3">
 <h3>CRAN’s automated check of URL’s validity</h3>
-<p>Upon submission CRAN runs an automated check of URL validity. This <a href="https://blog.r-hub.io/2020/12/01/url-checks/">blog post</a> explains that URLS in vignettes and function documentations are checked.</p>
+<p>Upon submission CRAN runs an automated check of URL validity. This <a
+href="https://blog.r-hub.io/2020/12/01/url-checks/">blog post</a>
+explains that URLS in vignettes and function documentations are
+checked.</p>
 </div>
-<div id="is-it-possible-to-rename-a-package-on-cran" class="section level3">
+<div id="is-it-possible-to-rename-a-package-on-cran"
+class="section level3">
 <h3>Is it possible to rename a package on CRAN</h3>
-<p><a href="https://stat.ethz.ch/pipermail/r-devel/2013-August/067264.html">Uwe Ligges on the R-devel mailing list</a>:</p>
+<p><a
+href="https://stat.ethz.ch/pipermail/r-devel/2013-August/067264.html">Uwe
+Ligges on the R-devel mailing list</a>:</p>
 <blockquote>
-<p>“Renaming packages should be reduced to an absolute minimum and would probably only accepted for legal concerns related to inappropriate package names.”</p>
+<p>“Renaming packages should be reduced to an absolute minimum and would
+probably only accepted for legal concerns related to inappropriate
+package names.”</p>
 </blockquote>
-<p><a href="https://stackoverflow.com/questions/22654421/how-to-rename-an-existing-r-package-on-cran">Related SO question</a></p>
+<p><a
+href="https://stackoverflow.com/questions/22654421/how-to-rename-an-existing-r-package-on-cran">Related
+SO question</a></p>
 </div>
 </div>
 </div>
 <div id="plots" class="section level1">
 <h1>Plots</h1>
 <ul>
-<li>R graph gallery <a href="https://r-graph-gallery.com/" class="uri">https://r-graph-gallery.com/</a></li>
+<li>R graph gallery <a href="https://r-graph-gallery.com/"
+class="uri">https://r-graph-gallery.com/</a></li>
 </ul>
 <div id="plotting-with-ggplot2" class="section level2">
 <h2>Plotting with ggplot2</h2>
 <pre><code>geom_bar
 geom_tile + a gradient produce heat maps</code></pre>
+<div id="ab-lines" class="section level3">
+<h3>AB lines</h3>
+<p>Plot a line with a slope of 1, y=x</p>
+<pre><code>library(ggplot2)
+ggplot() +
+    geom_abline(slope=1)</code></pre>
+<p><a
+href="http://www.sthda.com/english/wiki/ggplot2-add-straight-lines-to-a-plot-horizontal-vertical-and-regression-lines">Plot
+a linear regression line</a></p>
+<pre><code>library(stats)
+library(ggplot2)
+reg &lt;- lm(mpg ~ wt, data = mtcars)
+coeff=coefficients(reg)
+# Equation of the line :
+eq = paste0(&quot;y = &quot;, round(coeff[2],1), &quot;*x + &quot;, round(coeff[1],1))
+# Plot
+sp &lt;- ggplot(data=mtcars, aes(x=wt, y=mpg)) + geom_point()
+sp + geom_abline(intercept = 37, slope = -5)+
+  ggtitle(eq)</code></pre>
+</div>
 <div id="axes" class="section level3">
 <h3>Axes</h3>
-<p>Increase number of axis ticks by specifying an integer break vector</p>
+<p>Increase number of axis ticks by specifying an integer break
+vector</p>
 <pre><code>scale_x_continuous(breaks = 1:10)</code></pre>
-<p>When dates are on the x axis, use a time scale and specify the breaks as a time vector</p>
+<p>When dates are on the x axis, use a time scale and specify the breaks
+as a time vector</p>
 <pre><code>scale_x_date(breaks = lubridate::parse_date_time(2000:2020, &quot;%y&quot;))</code></pre>
-<p>Alternatively breaks can be specified as an interval, and minor breaks as well</p>
+<p>Alternatively breaks can be specified as an interval, and minor
+breaks as well</p>
 <pre><code>scale_x_datetime(date_breaks = &quot;5 years&quot;, labels = scales::date_format(&quot;%Y&quot;), date_minor_breaks = &quot;1 year&quot;)</code></pre>
 <div id="rotate-the-tick-text" class="section level4">
 <h4>Rotate the tick text</h4>
-<p>Rotate the tick text of the X axis. SO question <a href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2">rotating axis labels in ggplot2</a></p>
+<p>Rotate the tick text of the X axis. SO question <a
+href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labels-in-ggplot2">rotating
+axis labels in ggplot2</a></p>
 <pre><code>theme(axis.text.x=element_text(angle = 90, hjust=0))</code></pre>
 </div>
 </div>
@@ -1395,10 +1673,13 @@ plot + # With a fill aeasthetic
 
 plot + # with a color aesthetic 
      guides(col = guide_legend(ncol = 1))</code></pre>
-<p>See ggplot2 reference <a href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide legend</a>.</p>
+<p>See ggplot2 reference <a
+href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide
+legend</a>.</p>
 <div id="one-legend-for-each-sub-plot" class="section level4">
 <h4>One legend for each sub plot</h4>
-<p><a href="https://stackoverflow.com/a/14841379/2641825">Different legends for each sub plot using grid extra</a></p>
+<p><a href="https://stackoverflow.com/a/14841379/2641825">Different
+legends for each sub plot using grid extra</a></p>
 <pre><code>library(ggplot2)
 library(gridExtra)
 df &lt;- data.frame(country = rep(c(&quot;X&quot;, &quot;Y&quot;, &quot;Z&quot;), each=9),
@@ -1454,15 +1735,31 @@ iris2 %&gt;%
 <p>As shown in the example above, the labeller can parse:</p>
 <ol style="list-style-type: decimal">
 <li><p>A character vector such as “m^2” for simple formulas</p></li>
-<li><p>An <code>expression</code> for more complex math with indices</p></li>
-<li><p>The output of <code>bquote</code> to include numerical values in the formula. See also <a href="https://stackoverflow.com/a/58048944/2641825">this answer</a> on how to use <code>bquote</code> with numerical vectors of more than one value.</p></li>
-<li><p>see <a href="https://stackoverflow.com/a/51863090/2641825">this other answer</a> on how to apply the labeller to one of the faceting variables only. In our case we apply it to the <code>species_math</code> variable only.</p></li>
+<li><p>An <code>expression</code> for more complex math with
+indices</p></li>
+<li><p>The output of <code>bquote</code> to include numerical values in
+the formula. See also <a
+href="https://stackoverflow.com/a/58048944/2641825">this answer</a> on
+how to use <code>bquote</code> with numerical vectors of more than one
+value.</p></li>
+<li><p>see <a href="https://stackoverflow.com/a/51863090/2641825">this
+other answer</a> on how to apply the labeller to one of the faceting
+variables only. In our case we apply it to the <code>species_math</code>
+variable only.</p></li>
 </ol>
-<p>The syntax is different from Latex math formulas because <code>label_parsed</code> interprets labels as <code>plotmath</code> expressions. For example indices are written <code>x_i</code> in Latex and <code>x[i]</code> in plot math expressions, and Greek letters are written directly as <code>alpha</code> instead of <code>\alpha</code> in Latex. You can find many formulas in the help page of the <a href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html">plotmath</a> function. Good luck with the <code>plotmath</code> examples.</p>
+<p>The syntax is different from Latex math formulas because
+<code>label_parsed</code> interprets labels as <code>plotmath</code>
+expressions. For example indices are written <code>x_i</code> in Latex
+and <code>x[i]</code> in plot math expressions, and Greek letters are
+written directly as <code>alpha</code> instead of <code>\alpha</code> in
+Latex. You can find many formulas in the help page of the <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html">plotmath</a>
+function. Good luck with the <code>plotmath</code> examples.</p>
 </div>
 <div id="save-plots-to-pdf" class="section level3">
 <h3>Save plots to pdf</h3>
-<p>Use <a href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a>:</p>
+<p>Use <a
+href="https://ggplot2.tidyverse.org/reference/ggsave.html">ggsave</a>:</p>
 <pre><code>ggplot(mtcars, aes(mpg, wt)) + geom_point()
 ggsave(&quot;mtcars.pdf&quot;)</code></pre>
 </div>
@@ -1476,7 +1773,9 @@ ggsave(&quot;mtcars.pdf&quot;)</code></pre>
 <h2>Geoms</h2>
 <div id="bar-plots-with-geom_col" class="section level3">
 <h3>Bar plots with geom_col</h3>
-<p>Use geom_col for bar plots where the height of the column represent the value of a variable. Use geom_bar for plots where the height of the column represents a count of number of occurrences.</p>
+<p>Use geom_col for bar plots where the height of the column represent
+the value of a variable. Use geom_bar for plots where the height of the
+column represents a count of number of occurrences.</p>
 </div>
 <div id="geom_ribbon" class="section level3">
 <h3>geom_ribbon</h3>
@@ -1485,7 +1784,9 @@ ggsave(&quot;mtcars.pdf&quot;)</code></pre>
  ggplot(huron, aes(year)) +
    geom_ribbon(aes(ymin = level - 1, ymax = level + 1), fill = &quot;grey70&quot;) +
    geom_line(aes(y = level))</code></pre>
-<p><a href="https://stackoverflow.com/questions/7755041/ggplot-remove-lines-at-ribbon-edges">Add or remove lines at the border of the ribbon</a>:</p>
+<p><a
+href="https://stackoverflow.com/questions/7755041/ggplot-remove-lines-at-ribbon-edges">Add
+or remove lines at the border of the ribbon</a>:</p>
 <pre><code> ggplot(huron, aes(year)) +
    geom_ribbon(aes(ymin = level - 1, ymax = level + 1), 
                outline.type=&quot;lower&quot;, fill = &quot;grey70&quot;, color=&quot;red&quot;) +
@@ -1500,14 +1801,23 @@ ggsave(&quot;mtcars.pdf&quot;)</code></pre>
 </div>
 <div id="choropleth-maps" class="section level2">
 <h2>Choropleth maps</h2>
-<p><a href="https://www.r-graph-gallery.com/choropleth-map.html">Choropleth map</a></p>
-<p>Shape files to make choropleth maps of Europe: <a href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts">GISCO: Geographical Information and maps</a></p>
+<p><a
+href="https://www.r-graph-gallery.com/choropleth-map.html">Choropleth
+map</a></p>
+<p>Shape files to make choropleth maps of Europe: <a
+href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts">GISCO:
+Geographical Information and maps</a></p>
 </div>
 <div id="palettes" class="section level2">
 <h2>Palettes</h2>
-<p><a href="https://data.library.virginia.edu/setting-up-color-palettes-in-r/">Setting up colour palettes in R</a></p>
+<p><a
+href="https://data.library.virginia.edu/setting-up-color-palettes-in-r/">Setting
+up colour palettes in R</a></p>
 <blockquote>
-<p>To create a RColorBrewer palette, use the brewer.pal function. It takes two arguments: n, the number of colors in the palette; and name, the name of the palette. Let’s make a palette of 8 colors from the qualitative palette, “Set2”.</p>
+<p>To create a RColorBrewer palette, use the brewer.pal function. It
+takes two arguments: n, the number of colors in the palette; and name,
+the name of the palette. Let’s make a palette of 8 colors from the
+qualitative palette, “Set2”.</p>
 </blockquote>
 <pre><code>library(RColorBrewer)
 brewer.pal(n = 8, name = &quot;Set2&quot;) 
@@ -1519,7 +1829,9 @@ palette(brewer.pal(n = 8, name = &quot;Set2&quot;))</code></pre>
     scale_color_brewer(palette = &quot;Set2&quot;)</code></pre>
 <div id="manual-colours" class="section level3">
 <h3>Manual colours</h3>
-<p>Use a named vector to set a palette in ggplot2 as explained in <a href="https://ggplot2.tidyverse.org/reference/scale_manual.html">ggplot2 scale_manual</a></p>
+<p>Use a named vector to set a palette in ggplot2 as explained in <a
+href="https://ggplot2.tidyverse.org/reference/scale_manual.html">ggplot2
+scale_manual</a></p>
 <pre><code>p &lt;- ggplot(iris, aes(x=Sepal.Length, y=Petal.Length, color=Species)) +
         geom_point() 
 p + scale_colour_manual(values = c(setosa=&#39;black&#39;, versicolor=&#39;red&#39;, virginica=&#39;green&#39;))</code></pre>
@@ -1538,14 +1850,17 @@ p + scale_colour_manual(values = iris_palette)</code></pre>
 </div>
 <div id="add-more-colours-to-a-palette" class="section level3">
 <h3>Add more colours to a palette</h3>
-<p><a href="https://www.datanovia.com/en/blog/easy-way-to-expand-color-palettes-in-r/">Expand colour palettes in R</a></p>
+<p><a
+href="https://www.datanovia.com/en/blog/easy-way-to-expand-color-palettes-in-r/">Expand
+colour palettes in R</a></p>
 <p>Expand from 8 colours to more colours:</p>
 <pre><code>mycolors &lt;- colorRampPalette(brewer.pal(8, &quot;Set2&quot;))(nb.cols)</code></pre>
 </div>
 </div>
 <div id="text-labels" class="section level2">
 <h2>Text labels</h2>
-<p>ggplot2 <a href="https://ggplot2.tidyverse.org/reference/geom_text.html">text</a></p>
+<p>ggplot2 <a
+href="https://ggplot2.tidyverse.org/reference/geom_text.html">text</a></p>
 <p>Use position jitter</p>
 <pre class="r"><code>#  Reduce the number of points so it becomes more readable
 iris2 &lt;- iris %&gt;% 
@@ -1563,7 +1878,8 @@ ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
 <p>Change the text size</p>
 <pre class="r"><code>ggplot(iris2, aes(x = Petal.Width, y=Sepal.Width, color = Species)) +
     ggrepel::geom_text_repel(aes(label = Species), size=8)</code></pre>
-<p><a href="https://ggrepel.slowkow.com/articles/examples.html">More ggrepel examples</a></p>
+<p><a href="https://ggrepel.slowkow.com/articles/examples.html">More
+ggrepel examples</a></p>
 <p>Justification</p>
 <pre class="r"><code>df &lt;- data.frame(
   x = c(1, 1, 2, 2, 1.5),
@@ -1578,7 +1894,8 @@ ggplot(df, aes(x, y)) +
 </div>
 <div id="python-compared-to-r" class="section level1">
 <h1>Python compared to R</h1>
-<p>See also the <a href="python.html">python</a> page for a comparison between pandas methods and R data frames functions.</p>
+<p>See also the <a href="python.html">python</a> page for a comparison
+between pandas methods and R data frames functions.</p>
 <pre><code>l = c(1,2,3)
 s = l
 s[3]
@@ -1588,7 +1905,9 @@ s
 [1] &quot;1&quot; &quot;2&quot; &quot;a&quot;
 l
 [1] 1 2 3</code></pre>
-<p>Using the address function to see the address of these objects in memory We can see that s and l share the same address. The address only changes when we asign something to s.</p>
+<p>Using the address function to see the address of these objects in
+memory We can see that s and l share the same address. The address only
+changes when we asign something to s.</p>
 <pre><code>library(pryr)
 l = c(1,2,3)
 s = l
@@ -1613,16 +1932,24 @@ address(bli)
 bli = paste(bli, &quot;sdf&quot;)
 address(bli)
 [1] &quot;0x38d1d60&quot;</code></pre>
-<p>TODO Compare to the same code in python to see the difference between the above and passing by reference.</p>
+<p>TODO Compare to the same code in python to see the difference between
+the above and passing by reference.</p>
 </div>
 <div id="shiny" class="section level1">
 <h1>Shiny</h1>
-<p><a href="https://shiny.rstudio.com/gallery/kmeans-example.html">K means example</a></p>
+<p><a href="https://shiny.rstudio.com/gallery/kmeans-example.html">K
+means example</a></p>
 <div id="app.r" class="section level2">
 <h2>App.R</h2>
-<p><a href="https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/">Shiny tutorial lesson 1</a></p>
+<p><a
+href="https://shiny.rstudio.com/tutorial/written-tutorial/lesson1/">Shiny
+tutorial lesson 1</a></p>
 <blockquote>
-<p>“Note: Prior to version 0.10.2, Shiny did not support single-file apps and the ui object and server function needed to be contained in separate scripts called ui.R and server.R, respectively. This functionality is still supported in Shiny, however the tutorial and much of the supporting documentation focus on single-file apps.”</p>
+<p>“Note: Prior to version 0.10.2, Shiny did not support single-file
+apps and the ui object and server function needed to be contained in
+separate scripts called ui.R and server.R, respectively. This
+functionality is still supported in Shiny, however the tutorial and much
+of the supporting documentation focus on single-file apps.”</p>
 </blockquote>
 </div>
 </div>
@@ -1669,11 +1996,15 @@ cars %&gt;%
 ## 17    23            1    54  54      54
 ## 18    24            4    70  93.8   120
 ## 19    25            1    85  85      85</code></pre>
-<p>group_by() creates a tbl_df objects which is a wrapper around a data.frame to enable some functionalities. Note that print returns its output on a tbl_df object. So print() can be used inside the pipe without stopping the workflow.</p>
+<p>group_by() creates a tbl_df objects which is a wrapper around a
+data.frame to enable some functionalities. Note that print returns its
+output on a tbl_df object. So print() can be used inside the pipe
+without stopping the workflow.</p>
 </div>
 <div id="across" class="section level3">
 <h3>Across</h3>
-<p>Apply the same transformation to multiple columns, allowing to use select semantics inside summarise and mutate.</p>
+<p>Apply the same transformation to multiple columns, allowing to use
+select semantics inside summarise and mutate.</p>
 <pre class="r"><code>cars %&gt;%
     group_by(speed) %&gt;%
     summarise(across(dist, list(n = length , min = min, mean = mean, max = max)))</code></pre>
@@ -1737,12 +2068,16 @@ iris %&gt;%
 <pre><code>vignette(&quot;colwise&quot;, package=&quot;dplyr&quot;)</code></pre>
 <p>The vignette mentions this about <code>rename</code>:</p>
 <blockquote>
-<p>“across() doesn’t work with select() or rename() because they already use tidy select syntax; if you want to transform column names with a function, you can use rename_with().”</p>
+<p>“across() doesn’t work with select() or rename() because they already
+use tidy select syntax; if you want to transform column names with a
+function, you can use rename_with().”</p>
 </blockquote>
 </div>
 <div id="mutate-to-create-a-new-vector" class="section level3">
 <h3>Mutate to create a new vector</h3>
-<p>Mutate multiple variables in the dataframe at once using the <code>vars()</code> helper function to scope the mutation: Note <code>mutate_at</code> has been superseded by the across function.</p>
+<p>Mutate multiple variables in the dataframe at once using the
+<code>vars()</code> helper function to scope the mutation: Note
+<code>mutate_at</code> has been superseded by the across function.</p>
 <pre class="r"><code>iris %&gt;%
     mutate_at(vars(starts_with(&quot;Petal&quot;)), round) %&gt;%
     head()</code></pre>
@@ -1756,24 +2091,40 @@ iris %&gt;%
 </div>
 <div id="rename-columns" class="section level3">
 <h3>Rename columns</h3>
-<p><code>rename_with</code> from the <code>dplyr</code> package can use either a function or a formula to rename a selection of columns given as the <code>.cols</code> argument. For example passing the function name <code>toupper</code>:</p>
+<p><code>rename_with</code> from the <code>dplyr</code> package can use
+either a function or a formula to rename a selection of columns given as
+the <code>.cols</code> argument. For example passing the function name
+<code>toupper</code>:</p>
 <pre><code>library(dplyr)
 rename_with(head(iris), toupper, starts_with(&quot;Petal&quot;))</code></pre>
 <p>Is equivalent to passing the formula <code>~ toupper(.x)</code>:</p>
 <pre><code>rename_with(head(iris), ~ toupper(.x), starts_with(&quot;Petal&quot;))</code></pre>
-<p>To rename all columns, you can also use <code>set_names</code> from the rlang package. We now use <code>paste0</code> as a renaming function. <code>pasteO</code> takes 2 arguments, as a result there are different ways to pass the second argument depending on whether we use a function or a formula.</p>
+<p>To rename all columns, you can also use <code>set_names</code> from
+the rlang package. We now use <code>paste0</code> as a renaming
+function. <code>pasteO</code> takes 2 arguments, as a result there are
+different ways to pass the second argument depending on whether we use a
+function or a formula.</p>
 <pre><code>rlang::set_names(head(iris), paste0, &quot;_hi&quot;)
 rlang::set_names(head(iris), ~ paste0(.x, &quot;_hi&quot;))</code></pre>
-<p>The same can be achieved with <code>rename_with</code> by passing the data frame as first argument <code>.data</code>, the function as second argument <code>.fn</code>, all columns as third argument <code>.cols=everything()</code> and the function parameters as the fourth argument <code>...</code>. Alternatively you can place the second, third and fourth arguments in a formula given as the second argument.</p>
+<p>The same can be achieved with <code>rename_with</code> by passing the
+data frame as first argument <code>.data</code>, the function as second
+argument <code>.fn</code>, all columns as third argument
+<code>.cols=everything()</code> and the function parameters as the
+fourth argument <code>...</code>. Alternatively you can place the
+second, third and fourth arguments in a formula given as the second
+argument.</p>
 <pre><code>rename_with(head(iris), paste0, everything(), &quot;_hi&quot;)
 rename_with(head(iris), ~ paste0(.x, &quot;_hi&quot;))</code></pre>
-<p><code>rename_with</code> only works with data frames. <code>set_names</code> is more generic and can also perform vector renaming</p>
+<p><code>rename_with</code> only works with data frames.
+<code>set_names</code> is more generic and can also perform vector
+renaming</p>
 <pre><code>rlang::set_names(1:4, c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;, &quot;d&quot;))</code></pre>
 </div>
 <div id="recode-values-in-a-vector" class="section level3">
 <h3>Recode values in a vector</h3>
 <blockquote>
-<p>“Replace numeric values based on their position or their name, and character or factor values only by their name.”</p>
+<p>“Replace numeric values based on their position or their name, and
+character or factor values only by their name.”</p>
 </blockquote>
 <pre><code>char_vec &lt;- sample(c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), 10, replace = TRUE)
 recode(char_vec, a = &quot;Apple&quot;)</code></pre>
@@ -1784,7 +2135,9 @@ recode(char_vec, a = &quot;Apple&quot;)</code></pre>
 </div>
 <div id="purrr" class="section level2">
 <h2>purrr</h2>
-<p>Hadley Wickham’s answer to a SO question <a href="https://stackoverflow.com/a/47123420/2641825">Why use purrr::map instead of lapply?</a></p>
+<p>Hadley Wickham’s answer to a SO question <a
+href="https://stackoverflow.com/a/47123420/2641825">Why use purrr::map
+instead of lapply?</a></p>
 <div id="map-a-function-to-nested-data-sets" class="section level3">
 <h3>Map a function to nested data sets</h3>
 <p>Load data</p>
@@ -1800,18 +2153,23 @@ forestEU &lt;- forestEU_wide  %&gt;%
 </div>
 <div id="tricks" class="section level2">
 <h2>Tricks</h2>
-<p>David Robinson <a href="https://www.youtube.com/watch?v=NDHSBUN_rVU">Ten tricks in the tidyverse</a></p>
+<p>David Robinson <a
+href="https://www.youtube.com/watch?v=NDHSBUN_rVU">Ten tricks in the
+tidyverse</a></p>
 <ol style="list-style-type: decimal">
-<li>count with weight, sort and renamining count(x, …, wt = NULL, sort = FALSE, name = “n”)</li>
+<li>count with weight, sort and renamining count(x, …, wt = NULL, sort =
+FALSE, name = “n”)</li>
 <li>creating variables in count()</li>
 <li>add_count()</li>
-<li>summarize with a list column (to create many models for example)</li>
+<li>summarize with a list column (to create many models for
+example)</li>
 <li>fct_reorder() + geom_col() + coord_flip()</li>
 <li>fct_lump() to lump less frequent values together</li>
 <li>use a log scale scale_x/y_log10</li>
 <li>crossing()</li>
 <li>separate()</li>
-<li>extract() use a regular expression such as <code>S(.*)E(.*)</code> to extract series and episode from a string of the form “S32E44”.</li>
+<li>extract() use a regular expression such as <code>S(.*)E(.*)</code>
+to extract series and episode from a string of the form “S32E44”.</li>
 </ol>
 </div>
 <div id="purrr-1" class="section level2">
@@ -1827,8 +2185,13 @@ forestEU &lt;- forestEU_wide  %&gt;%
 forestEU %&gt;%
     filter(Country==&quot;Austria&quot;) %&gt;%
     country_interpolation()</code></pre>
-<p>Interpolate for all countries Perform the Interpolation on all countries</p>
-<p>See documentation in * many models <a href="https://r4ds.had.co.nz/many-models.html" class="uri">https://r4ds.had.co.nz/many-models.html</a> * blog <a href="https://emoriebeck.github.io/R-tutorials/purrr/" class="uri">https://emoriebeck.github.io/R-tutorials/purrr/</a></p>
+<p>Interpolate for all countries Perform the Interpolation on all
+countries</p>
+<p>See documentation in * many models <a
+href="https://r4ds.had.co.nz/many-models.html"
+class="uri">https://r4ds.had.co.nz/many-models.html</a> * blog <a
+href="https://emoriebeck.github.io/R-tutorials/purrr/"
+class="uri">https://emoriebeck.github.io/R-tutorials/purrr/</a></p>
 <pre class="r"><code>forestEU_nested &lt;- forestEU %&gt;%
       # Remove empty area
       filter(!is.na(Area)) %&gt;% 
@@ -1842,7 +2205,9 @@ forestEU_interpolated &lt;- forestEU_nested %&gt;% unnest(interpolated)</code></
 </div>
 <div id="read-many-csv" class="section level3">
 <h3>Read many csv</h3>
-<p>See iris_csv file created in the csv section of this document. Read these csv files into one data frame. Note the Species column has to be present in the csv files, otherwise we would loose that information.</p>
+<p>See iris_csv file created in the csv section of this document. Read
+these csv files into one data frame. Note the Species column has to be
+present in the csv files, otherwise we would loose that information.</p>
 <pre class="r"><code>iris_csv &lt;- list.files(data_folder, full.names = TRUE) %&gt;% 
     purrr::map_dfr(read_csv)</code></pre>
 </div>
@@ -1857,8 +2222,12 @@ forestEU_nested &lt;- forestEU_nested %&gt;%
 <div id="tidy-evaluation" class="section level2">
 <h2>tidy evaluation</h2>
 <ul>
-<li>Advanced R <a href="https://adv-r.hadley.nz/meta.html">metaprogramming section</a></li>
-<li><a href="https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/">Examples of tidy evaluation with plots</a></li>
+<li>Advanced R <a
+href="https://adv-r.hadley.nz/meta.html">metaprogramming
+section</a></li>
+<li><a
+href="https://www.tidyverse.org/articles/2018/07/ggplot2-tidy-evaluation/">Examples
+of tidy evaluation with plots</a></li>
 </ul>
 <pre class="r"><code>scatter_plot &lt;- function(data, x, y) {
     x &lt;- enquo(x)
@@ -1875,32 +2244,55 @@ scatter_plot(mtcars, disp, drat)</code></pre>
 }
 add1000(iris, Sepal.Length)</code></pre>
 <ul>
-<li><a href="https://thinkr.fr/tidyeval/">Tidy evaluation explained in French</a></li>
+<li><a href="https://thinkr.fr/tidyeval/">Tidy evaluation explained in
+French</a></li>
 </ul>
 </div>
 <div id="tidy-select" class="section level2">
 <h2>Tidy select</h2>
-<p>Tidy select <a href="https://tidyselect.r-lib.org/reference/language.html">selection language</a> explains the various selection function such as <code>all_of</code>, <code>contains</code> and <code>starts_with</code>.</p>
+<p>Tidy select <a
+href="https://tidyselect.r-lib.org/reference/language.html">selection
+language</a> explains the various selection function such as
+<code>all_of</code>, <code>contains</code> and
+<code>starts_with</code>.</p>
 <pre class="r"><code>library(dplyr)
 iris2 &lt;- head(iris, 1)
 select(iris2, contains(&quot;w&quot;)) # Literal string
 select(iris2, matches(&quot;w&quot;)) # Regular expression
 select(iris2, starts_with(&quot;S&quot;))
 select(iris2, all_of(c(&quot;Sepal.Length&quot;, &quot;Petal.Width&quot;)))</code></pre>
-<p>The selection can be inverted by using s minus sign in front of it. Not it’s not a question mark as explained in this <a href="https://stackoverflow.com/a/45941792/2641825">SO answer</a> because the selection fonctions return numerical vectors of integer column positions (not boolean values).</p>
+<p>The selection can be inverted by using s minus sign in front of it.
+Not it’s not a question mark as explained in this <a
+href="https://stackoverflow.com/a/45941792/2641825">SO answer</a>
+because the selection fonctions return numerical vectors of integer
+column positions (not boolean values).</p>
 <pre class="r"><code>library(dplyr)
 select(head(iris), -matches(&quot;w&quot;) )</code></pre>
 </div>
 <div id="tidyr" class="section level2">
 <h2>tidyr</h2>
-<p><a href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidyr vignette on tidy data</a> In the section on “Multiple types in one table”:</p>
+<p><a
+href="https://cran.r-project.org/web/packages/tidyr/vignettes/tidy-data.html">tidyr
+vignette on tidy data</a> In the section on “Multiple types in one
+table”:</p>
 <blockquote>
-<p>Datasets often involve values collected at multiple levels, on different types of observational units. During tidying, each type of observational unit should be stored in its own table. This is closely related to the idea of database normalisation, where each fact is expressed in only one place. It’s important because otherwise inconsistencies can arise.</p>
+<p>Datasets often involve values collected at multiple levels, on
+different types of observational units. During tidying, each type of
+observational unit should be stored in its own table. This is closely
+related to the idea of database normalisation, where each fact is
+expressed in only one place. It’s important because otherwise
+inconsistencies can arise.</p>
 </blockquote>
 <blockquote>
-<p>Normalisation is useful for tidying and eliminating inconsistencies. However, there are few data analysis tools that work directly with relational data, so analysis usually also requires denormalisation or the merging the datasets back into one table.</p>
+<p>Normalisation is useful for tidying and eliminating inconsistencies.
+However, there are few data analysis tools that work directly with
+relational data, so analysis usually also requires denormalisation or
+the merging the datasets back into one table.</p>
 </blockquote>
-<p>Example use of <code>tidyr::nest()</code> to generate a group of plots: <a href="http://www.brodrigues.co/blog/2017-03-29-make-ggplot2-purrr/">make ggplot2 purrr</a>.</p>
+<p>Example use of <code>tidyr::nest()</code> to generate a group of
+plots: <a
+href="http://www.brodrigues.co/blog/2017-03-29-make-ggplot2-purrr/">make
+ggplot2 purrr</a>.</p>
 <pre class="r"><code>library(tidyr)
 library(dplyr)
 library(purrr)
@@ -1921,7 +2313,8 @@ piris$plot[2]</code></pre>
 <h1>Time series</h1>
 <div id="moving-averages" class="section level2">
 <h2>Moving averages</h2>
-<p>Use the rollmean function from the zoo package. It defaults to centered.</p>
+<p>Use the rollmean function from the zoo package. It defaults to
+centered.</p>
 <pre><code> library(zoo)
  x.Date &lt;- as.Date(paste(2004, rep(1:4, 4:1), sample(1:28, 10), sep = &quot;-&quot;))
  x &lt;- zoo(rnorm(12), x.Date)
@@ -1937,9 +2330,13 @@ piris$plot[2]</code></pre>
 </div>
 <div id="working-directory" class="section level1">
 <h1>Working directory</h1>
-<p>Hadley Wickham on a <a href="https://stackoverflow.com/questions/4216753/check-existence-of-directory-and-create-if-doesnt-exist">Stackoverflow comment</a>:</p>
+<p>Hadley Wickham on a <a
+href="https://stackoverflow.com/questions/4216753/check-existence-of-directory-and-create-if-doesnt-exist">Stackoverflow
+comment</a>:</p>
 <blockquote>
-<p>“You should never use setwd() in R code - it basically defeats the idea of using a working directory because you can no longer easily move your code between computers. – hadley Nov 20 ’10 at 23:44”</p>
+<p>“You should never use setwd() in R code - it basically defeats the
+idea of using a working directory because you can no longer easily move
+your code between computers. – hadley Nov 20 ’10 at 23:44”</p>
 </blockquote>
 </div>
 <div id="further-resources" class="section level1">
@@ -1947,36 +2344,73 @@ piris$plot[2]</code></pre>
 <div id="blogs" class="section level2">
 <h2>Blogs</h2>
 <ul>
-<li><p><a href="https://www.tinyverse.org/">tinyverse</a> “Lightweight is the right weight”</p>
+<li><p><a href="https://www.tinyverse.org/">tinyverse</a> “Lightweight
+is the right weight”</p>
 <ul>
-<li><p>Dirk Eddelbuettel <a href="http://dirk.eddelbuettel.com/blog/2018/02/28/#017_dependencies">dependencies</a></p>
+<li><p>Dirk Eddelbuettel <a
+href="http://dirk.eddelbuettel.com/blog/2018/02/28/#017_dependencies">dependencies</a></p>
 <blockquote>
-<p>“I relied on the liteq package by Gabor which does the job: enqueue jobs, and reliably dequeue them (also in a parallel fashion) and more. It looks light enough:”</p>
+<p>“I relied on the liteq package by Gabor which does the job: enqueue
+jobs, and reliably dequeue them (also in a parallel fashion) and more.
+It looks light enough:”</p>
 </blockquote>
 <pre><code>  R&gt; tools::package_dependencies(package=&quot;liteq&quot;, recursive=FALSE, db=AP)$liteq
   [1] &quot;assertthat&quot; &quot;DBI&quot;        &quot;rappdirs&quot;   &quot;RSQLite&quot;</code></pre>
 <blockquote>
-<p>“Two dependencies because it uses an internal SQLite database, one for internal tooling and one for configuration.” All good then? Not so fast. The devil here is the very innocuous and versatile RSQLite package because when we look at fully recursive dependencies all hell breaks loose: Now we went from four to twenty-four, due to the twenty-two dependencies pulled in by RSQLite."</p>
+<p>“Two dependencies because it uses an internal SQLite database, one
+for internal tooling and one for configuration.” All good then? Not so
+fast. The devil here is the very innocuous and versatile RSQLite package
+because when we look at fully recursive dependencies all hell breaks
+loose: Now we went from four to twenty-four, due to the twenty-two
+dependencies pulled in by RSQLite.”</p>
 </blockquote></li>
 </ul></li>
-<li><p>Gavin Simpson <a href="http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/">My aversion to pipers</a> shows an Hadley tweet explaining that pipe might not be good in package development.</p></li>
-<li><p>5 R packages for text analysis <a href="https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb" class="uri">https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb</a></p></li>
+<li><p>Gavin Simpson <a
+href="http://www.fromthebottomoftheheap.net/2015/06/03/my-aversion-to-pipes/">My
+aversion to pipers</a> shows an Hadley tweet explaining that pipe might
+not be good in package development.</p></li>
+<li><p>5 R packages for text analysis <a
+href="https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb"
+class="uri">https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb</a></p></li>
+</ul>
+</div>
+<div id="shiny-apps-by-international-organizations"
+class="section level2">
+<h2>Shiny apps by international organizations</h2>
+<ul>
+<li>The human mortality database <a
+href="https://mpidr.shinyapps.io/stmortality/">short term mortality
+fluctuations visualization toolkit</a>, <a
+href="https://github.molgen.mpg.de/nemeth/stmortality">Git
+repository</a>, <a
+href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0246663">Plos
+One paper</a></li>
 </ul>
 </div>
 <div id="stackoverflow" class="section level2">
 <h2>Stackoverflow</h2>
 <ul>
-<li><a href="https://codeblog.jonskeet.uk/2012/11/24/stack-overflow-question-checklist/">Stack overflow question checklist</a> general programming</li>
-<li><a href="https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example">How to make a great R reproducible example</a></li>
+<li><a
+href="https://codeblog.jonskeet.uk/2012/11/24/stack-overflow-question-checklist/">Stack
+overflow question checklist</a> general programming</li>
+<li><a
+href="https://stackoverflow.com/questions/5963269/how-to-make-a-great-r-reproducible-example">How
+to make a great R reproducible example</a></li>
 </ul>
 </div>
 <div id="teaching-r" class="section level2">
 <h2>Teaching R</h2>
 <ul>
-<li><p><a href="http://varianceexplained.org/r/teach-tidyverse/">Teach the tidyverse to beginners</a></p></li>
-<li><p><a href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">Vectorization in R, Why?</a></p></li>
-<li><p><a href="https://github.com/carpentries/conversations/issues/18">Recommendations for resources for after workshops</a></p></li>
-<li><p><a href="https://education.rstudio.com/learn/">Rstudio education</a></p></li>
+<li><p><a href="http://varianceexplained.org/r/teach-tidyverse/">Teach
+the tidyverse to beginners</a></p></li>
+<li><p><a
+href="http://www.noamross.net/blog/2014/4/16/vectorization-in-r--why.html">Vectorization
+in R, Why?</a></p></li>
+<li><p><a
+href="https://github.com/carpentries/conversations/issues/18">Recommendations
+for resources for after workshops</a></p></li>
+<li><p><a href="https://education.rstudio.com/learn/">Rstudio
+education</a></p></li>
 </ul>
 </div>
 </div>

@@ -25,6 +25,37 @@ See also documentation at:
  * The Tidyverse [packages](http://www.tidyverse.org/packages/)
 
 
+## History of R
+
+[Exploratory data
+analysis](https://en.wikipedia.org/wiki/Exploratory_data_analysis)
+
+> "Tukey defined data analysis in 1961 as: "Procedures for analyzing data,
+> techniques for interpreting the results of such procedures, ways of planning
+> the gathering of data to make its analysis easier, more precise or more
+> accurate, and all the machinery and results of (mathematical) statistics
+> which apply to analyzing data. Tukey's championing of EDA encouraged the
+> development of statistical computing packages, especially S at Bell Labs.
+> The S programming language inspired the systems S-PLUS and R. This family of
+> statistical-computing environments featured vastly improved dynamic
+> visualization capabilities, which allowed statisticians to identify outliers,
+> trends and patterns in data that merited further study."
+
+[S programming
+language](https://en.wikipedia.org/wiki/S_(programming_language))
+
+> "S is one of several statistical computing languages that were designed at
+> Bell Laboratories, and first took form between 1975–1976. Up to that time,
+> much of the statistical computing was done by directly calling Fortran
+> subroutines; however, S was designed to offer an alternate and more
+> interactive approach, motivated in part by exploratory data analysis
+> advocated by John Tukey. Early design decisions that hold even today
+> include interactive graphics devices (printers and character terminals at the
+> time), and providing easily accessible documentation for the functions."
+
+See also the comparison between R and Python below.
+
+
 # Control flow
 
 dplyr::case_when is a generalised vectorised if. Example use:
@@ -418,7 +449,7 @@ Replace a regular expression with optional numerical pattern and final space
 
     names(df) <- gsub(".per.hectare.[0-9]* *", "_", names(df))
 
-[And in a regular
+Using and, or [in a regular
 expression](https://stackoverflow.com/questions/18237852/grep-in-r-using-or-and-not/18239222)
 
     |
@@ -1011,6 +1042,30 @@ vignettes and function documentations are checked.
 
     geom_bar
     geom_tile + a gradient produce heat maps
+
+
+### AB lines
+
+Plot a line with a slope of 1, y=x
+
+    library(ggplot2)
+    ggplot() +
+        geom_abline(slope=1)
+
+[Plot a linear regression
+line](http://www.sthda.com/english/wiki/ggplot2-add-straight-lines-to-a-plot-horizontal-vertical-and-regression-lines)
+
+    library(stats)
+    library(ggplot2)
+    reg <- lm(mpg ~ wt, data = mtcars)
+    coeff=coefficients(reg)
+    # Equation of the line :
+    eq = paste0("y = ", round(coeff[2],1), "*x + ", round(coeff[1],1))
+    # Plot
+    sp <- ggplot(data=mtcars, aes(x=wt, y=mpg)) + geom_point()
+    sp + geom_abline(intercept = 37, slope = -5)+
+      ggtitle(eq)
+
 
 ### Axes
 
@@ -1762,6 +1817,12 @@ comment](https://stackoverflow.com/questions/4216753/check-existence-of-director
 - 5 R packages for text analysis https://towardsdatascience.com/r-packages-for-text-analysis-ad8d86684adb
 
 
+## Shiny apps by international organizations
+
+- The human mortality database [short term mortality fluctuations visualization
+  toolkit](https://mpidr.shinyapps.io/stmortality/), [Git
+  repository](https://github.molgen.mpg.de/nemeth/stmortality), [Plos One
+  paper](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0246663)
 
 
 ## Stackoverflow
