@@ -13,7 +13,7 @@
 
 <title>docker.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -147,11 +147,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -704,6 +708,21 @@ python</a></p>
 <div id="docker-for-r" class="section level2">
 <h2>Docker for R</h2>
 <p>Docker hub <a href="https://hub.docker.com/_/r-base">R-base</a></p>
+<p>Set the directory with <code>-w</code> and run an R script</p>
+<pre><code>docker exec -it -w /src/path_to_project backend Rscript  &quot;script.R&quot;</code></pre>
+<p>Or start a bash session in docker and use R from there</p>
+<pre><code>docker exec -it backend bash
+cd /src/wood_prices/notebooks &amp;&amp; Rscript render_notebooks.R
+docker exec -it backend bash -c &quot;cd /src/wood_prices/notebooks &amp;&amp; Rscript render_notebooks.R&quot;</code></pre>
+<div id="compile-an-r-markdown-notebook-with-docker"
+class="section level3">
+<h3>Compile an R markdown notebook with docker</h3>
+<p>The <a href="https://hub.docker.com/r/rocker/r-rmd">r-rmd
+container</a> was made specifically to compile R markdown notebooks.</p>
+<p>Set the directory to the notebook location and render the
+notebook</p>
+<pre><code>docker exec -it -w /path/to/project container_name Rscript -e &quot;rmarkdown::render(&#39;notebook_name.Rmd&#39;)&quot;</code></pre>
+</div>
 </div>
 <div id="docker-within-docker" class="section level2">
 <h2>Docker within docker</h2>

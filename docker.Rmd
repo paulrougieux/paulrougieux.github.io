@@ -314,6 +314,26 @@ Remove images
 
 Docker hub [R-base](https://hub.docker.com/_/r-base)
 
+Set the directory with `-w` and run an R script
+
+    docker exec -it -w /src/path_to_project backend Rscript  "script.R"
+
+Or start a bash session in docker and use R from there
+
+    docker exec -it backend bash
+    cd /src/wood_prices/notebooks && Rscript render_notebooks.R
+    docker exec -it backend bash -c "cd /src/wood_prices/notebooks && Rscript render_notebooks.R"
+
+
+### Compile an R markdown notebook with docker
+
+The [r-rmd container](https://hub.docker.com/r/rocker/r-rmd)
+was made specifically to compile R markdown notebooks.
+
+Set the directory to the notebook location and render the notebook
+
+    docker exec -it -w /path/to/project container_name Rscript -e "rmarkdown::render('notebook_name.Rmd')"
+
 
 ## Docker within docker
 
