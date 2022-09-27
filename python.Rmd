@@ -196,7 +196,7 @@ to set separate files for attribution.
 [How to specify multiple authords in setup.py?](https://stackoverflow.com/questions/9999829/how-to-specify-multiple-authors-emails-in-setup-py)
 
 
-### Non code files
+### Add non code files
 
 The Python packaging documentation on [adding non code
 files](https://python-packaging.readthedocs.io/en/latest/non-code-files.html)
@@ -833,6 +833,13 @@ provide the following operations:
 	set <= other
 
 	    Test whether every element in the set is in other.
+For example  [SO answer using
+issubset](https://stackoverflow.com/a/3931655/2641825)
+
+    l = [1,2,3]
+    m = [1,2]
+    set(m).issubset(l)
+    # True
 
 	set < other
 
@@ -1295,6 +1302,12 @@ jupyter notebook so that plots are displayed inline
 
     %matplotlib inline
 
+Change the size of a plot displayed in a notebook
+
+    import seaborn
+    p = seaborn.lineplot(x="year", y="value", hue="source", data=df1)
+    p.figure.set_figwidth(15)
+
 
 ## Security and authentication on a public server
 
@@ -1428,6 +1441,14 @@ Display variables in the error message:
     raise ValueError("This is wrong: %s" % "wrong_value")
     msg = "Value %s and value %s have problems."
     raise ValueError(msg % (1, 2))
+
+
+## Warnings
+
+Send a warning to the user
+
+    import warnings
+    warnings.warn("there is no data")
 
 
 ## Logging
@@ -1646,6 +1667,11 @@ Cookbook](https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-wit
 > differential equations and constraints."
 
 
+## Panel data regressions
+
+- The package
+  [linearmodels](https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.html#linearmodels.panel.model.PanelOLS)
+  provides fixed effects estimator for panel data.
 
 
 # Numpy vectors and matrices (arrays)
@@ -1966,6 +1992,11 @@ Or by passing a list of tuples and defining the `columns` argument
         columns=["x", "y"]
     )
 
+Random numbers
+
+    import numpy as np
+    df = pandas.DataFrame({'x':np.random.random(100)})
+
 
 ### Use the assign method
 
@@ -2108,6 +2139,13 @@ Set value for all items matching the list of labels
     # sidewinder          7      50
 
 
+### Map values with a dictionary
+
+    df = pandas.DataFrame({'lettre':['p','q','r','r','s','v','p']})
+    mapping = {'p':'pour','q':'quoi','r':'roi'}
+    df["mot"] = df["lettre"].map(mapping)
+
+
 ## Convert data frames
 
 Convert 2 columns to a dictionary
@@ -2184,6 +2222,19 @@ Select only certain columns in a list
     [name for name in cols if 'a' in name]
 
 
+### Remove empty columns
+
+Remove empty columns
+
+    import pandas
+    import numpy as np
+    df = pandas.DataFrame({'A' : ['bli', 'bla', 'bla', 'bla', 'bla'],
+                           'B' : [np.nan, '2','2', '4', '1'],
+                           'C' : np.nan})
+    columns_to_keep = [x for x in df.columns if not all(df[x].isna())]
+    df = df[columns_to_keep].copy()
+
+
 ### Rename columns
 
 Rename the 'a' column to 'new'
@@ -2202,15 +2253,6 @@ Remove parenthesis and dots in column names
 
     df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
 
-### Replace the content of columns
-
-Replace Comtrade product code by the FAOSTAT product codes
-
-    # Create a dictionary from 2 columns of a data frame
-    product_dict = product_mapping.set_index('comtrade_code').to_dict()['faostat_code']
-    df_comtrade["product_code"] = df_comtrade["product_code"].replace(product_dict)
-
-
 ### Reorder columns
 
 Place the last column first
@@ -2221,6 +2263,15 @@ Place the last column first
    
 This [SO Answer](https://stackoverflow.com/a/58776941/2641825) provide 6
 different ways to reorder columns.
+
+
+### Replace the content of columns
+
+Replace Comtrade product code by the FAOSTAT product codes
+
+    # Create a dictionary from 2 columns of a data frame
+    product_dict = product_mapping.set_index('comtrade_code').to_dict()['faostat_code']
+    df_comtrade["product_code"] = df_comtrade["product_code"].replace(product_dict)
 
 
 ### Variable Type
@@ -2624,6 +2675,48 @@ But if the query is only on the partition variable, read time can be increased
 by a lot.
 
 
+#### Experiment with the parquet format using filters and partition columns.
+
+Note the detaset to perform these comparisons is
+not made available here. I keep these for information purposes.
+
+Compare a read of 2 countries with the read of the whole dataset
+
+    # start_time = timeit.default_timer()
+    # selection = [("reporter", "in", ["France","Germany"])]
+    # ft_frde = pandas.read_parquet(la_fo_data_dir / "comtrade_forest_footprint.parquet",
+    #                                             filters=selection)
+    # print("Reading 2 countries took:",timeit.default_timer() - start_time)
+    #
+    # start_time = timeit.default_timer()
+    # ft2 = pandas.read_parquet(la_fo_data_dir / "comtrade_forest_footprint.parquet")
+    # print("Reading the whole dataset took:",timeit.default_timer() - start_time)
+    #
+
+Time comparison when the reporter is used as a partition column
+It's about 10 times faster!
+
+    # ft.to_parquet("/tmp/ft", partition_cols="reporter")
+    # start_time = timeit.default_timer()
+    # selection = [("reporter", "in", ["France","Germany"])]
+    # ft_frde2 = pandas.read_parquet("/tmp/ft", filters=selection)
+    # print("Reading 2 countries took:",timeit.default_timer() - start_time)
+    #
+    # # Save to a compressed csv file in biotrade_data
+    # # file_path = la_fo_data_dir / "comtrade_forest_footprint.csv.gz"
+    # # ft.to_csv(file_path, index=False, compression="gzip")
+
+Also try the feather format. 
+
+    # # Save to a feather file
+    # ft.to_feather(la_fo_data_dir / "comtrade_forest_footprint.feather")
+    #
+    # # Read time of a feather file
+    # start_time = timeit.default_timer()
+    # ft_frde2 = pandas.read_feather(la_fo_data_dir / "comtrade_forest_footprint.feather")
+    # print("Reading a feather file took:",timeit.default_timer() - start_time)
+
+
 #### What is the difference between Apache Arrow and Apache Parquet?
 
 [Apache Arrow FAQ](https://arrow.apache.org/faq/#what-about-the-feather-file-format)
@@ -2707,6 +2800,9 @@ files?](https://stackoverflow.com/a/59535659/2641825)
 
 - [Control row groups size with pandas
   df.to_parquet](https://stackoverflow.com/questions/59972588/control-row-groups-with-pandas-dataframe-to-parquet)
+
+- [Benchmark of feather, hdf, msgpack, parquet and
+  pickle](https://towardsdatascience.com/the-best-format-to-save-pandas-data-414dca023e0d)
 
 
 ## Reshape
@@ -3069,6 +3165,11 @@ Query the columns of a Data Frame with a boolean expression.
     A  B  C
     5  2  6
 
+Two queries
+
+    df.query("A < B and B < C")
+    df.query("A < B or B < C")
+
 Query using a variable
 
     limit = 3
@@ -3366,6 +3467,18 @@ If `p` is a pathlib object you can list file names as such:
     [x.name for x in p.glob('**/*.csv')]
 
 
+### Check if a directory is empty
+
+Check if a directory is empty using pathlib
+
+    import pathlib
+    p1 = pathlib.Path("/tmp/")
+    p2 = pathlib.Path("/tmp/thisisempty/")
+    p2.mkdir()
+    any(p1.iterdir()) # returns True
+    any(p2.iterdir()) # returns False
+
+
 ## Temporary directories and files
 
 Docs.python.org [tempfile
@@ -3557,16 +3670,36 @@ Create a facet grid plot
     from plotnine import ggplot, aes, geom_line, facet_grid, labs
 
 
-
-
 ## Seaborn
 
-All seaborn examples below require the following imports and datasets:
+All Seaborn examples below require the following imports and datasets:
 
     import seaborn
     iris = seaborn.load_dataset("iris")
     tips = seaborn.load_dataset("tips") 
     from matplotlib import pyplot as plt
+
+
+### Scatter plot
+
+Create a scatter plot with a title and axis labels
+
+    p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
+    p.set(xlabel = "Petal Length", ylabel = "Petal Width", title = "Flower sizes")
+    plt.show()
+
+
+### Line plot
+
+Create a line plot with a title and axis labels.
+
+    import numpy as np
+    df = pandas.DataFrame({'value':np.random.random(100), 
+                           'year':range(1901,2001)})
+    p = seaborn.lineplot(x="year", y="value", data=df)
+    p.set(ylabel = "Random variation", title = "Title here")
+    plt.show()
+    
 
 ### Axes limit
 
@@ -3575,15 +3708,12 @@ Set limits on the one axis in a Seaborn plot:
     p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
     p.set(ylim=(-2,None))
 
-
 In Seaborn facet grid.
 [How to set xlim and ylim in seaborn facet grid](https://stackoverflow.com/a/25213614/2641825)
 
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
     g = g.map(plt.hist, "total_bill")
     g.set(ylim=(0, None)) 
-
-
 
 
 ### Grid plot
@@ -3724,7 +3854,7 @@ Create a scatter plot
 
 Group by another variable and show the groups with different colors:
     
-    searborn(x="total_bill", y="tip", hue="time", data=tips)
+    seaborn(x="total_bill", y="tip", hue="time", data=tips)
 
 
 ### Sample data
@@ -3991,7 +4121,21 @@ Another [SO answer on the same topic](https://stackoverflow.com/a/64449660/26418
 
 ### Blogs and quotes on Pandas and R
 
- * pandas.pydata.org [Comparison with R](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
+ - [Moving from R to
+   python](https://www.kdnuggets.com/2017/02/moving-r-python-libraries.html)
+
+> "One thing that is a blessing and a curse in R is that the machine learning
+> algorithms are generally segmented by package. [...]  it can be a pain for
+> day-to-day use where you might be switching between algorithms. [...]
+> scikit-learn provides a common set of ML algorithms all under the same API. 
+
+> "one thing that R still does better than Python is plotting. Hands down, R is
+> better in just about every facet. Even so, Python plotting has matured though
+> it's a fractured community."
+
+ * pandas.pydata.org [Comparison with
+   R](https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html)
+
  * [Tydiverse style pandas](https://stmorse.github.io/journal/tidyverse-style-pandas.html) 
 
 > "Tidyverse allows a mix of quoted and unquoted references to variable names.
@@ -4434,6 +4578,12 @@ A good post about TDD
 > Kent Beck says this much better than I would ever do.
 > '''From this perspective, the integration/unit test frontier is a frontier of design, not of tools or frameworks or how long tests run or how many lines of code we wrote get executed while running the test.'''
 > Kent Beck"
+
+
+## Assertions
+
+
+- [Use of Assertions](https://blog.regehr.org/archives/1091)
 
 
 ## Unit tests

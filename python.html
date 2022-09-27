@@ -15,7 +15,7 @@
 
 <title>Python Commands</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -149,11 +149,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -603,8 +607,8 @@ and to set separate files for attribution.</p>
 href="https://stackoverflow.com/questions/9999829/how-to-specify-multiple-authors-emails-in-setup-py">How
 to specify multiple authords in setup.py?</a></p>
 </div>
-<div id="non-code-files" class="section level3">
-<h3>Non code files</h3>
+<div id="add-non-code-files" class="section level3">
+<h3>Add non code files</h3>
 <p>The Python packaging documentation on <a
 href="https://python-packaging.readthedocs.io/en/latest/non-code-files.html">adding
 non code files</a></p>
@@ -1180,7 +1184,13 @@ provide the following operations:</p>
 <pre><code>issubset(other)
 set &lt;= other
 
-    Test whether every element in the set is in other.
+    Test whether every element in the set is in other.</code></pre>
+<p>For example <a href="https://stackoverflow.com/a/3931655/2641825">SO
+answer using issubset</a></p>
+<pre><code>l = [1,2,3]
+m = [1,2]
+set(m).issubset(l)
+# True
 
 set &lt; other
 
@@ -1615,6 +1625,10 @@ href="https://stackoverflow.com/a/24884342/2641825">sometimes necessary
 to add the following</a> at the beginning of a jupyter notebook so that
 plots are displayed inline</p>
 <pre><code>%matplotlib inline</code></pre>
+<p>Change the size of a plot displayed in a notebook</p>
+<pre><code>import seaborn
+p = seaborn.lineplot(x=&quot;year&quot;, y=&quot;value&quot;, hue=&quot;source&quot;, data=df1)
+p.figure.set_figwidth(15)</code></pre>
 </div>
 <div id="security-and-authentication-on-a-public-server"
 class="section level2">
@@ -1729,6 +1743,12 @@ raise NameError(&quot;Wrong name: %s&quot; % &quot;quack quack quack&quot;)</cod
 <pre><code>raise ValueError(&quot;This is wrong: %s&quot; % &quot;wrong_value&quot;)
 msg = &quot;Value %s and value %s have problems.&quot;
 raise ValueError(msg % (1, 2))</code></pre>
+</div>
+<div id="warnings" class="section level2">
+<h2>Warnings</h2>
+<p>Send a warning to the user</p>
+<pre><code>import warnings
+warnings.warn(&quot;there is no data&quot;)</code></pre>
 </div>
 <div id="logging" class="section level2">
 <h2>Logging</h2>
@@ -2229,6 +2249,9 @@ argument</p>
     list(zip(range(0,3), [&#39;a&#39;,&#39;b&#39;,&#39;c&#39;])), 
     columns=[&quot;x&quot;, &quot;y&quot;]
 )</code></pre>
+<p>Random numbers</p>
+<pre><code>import numpy as np
+df = pandas.DataFrame({&#39;x&#39;:np.random.random(100)})</code></pre>
 </div>
 <div id="use-the-assign-method" class="section level3">
 <h3>Use the assign method</h3>
@@ -2361,6 +2384,12 @@ df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
 # viper               4      50
 # sidewinder          7      50</code></pre>
 </div>
+<div id="map-values-with-a-dictionary" class="section level3">
+<h3>Map values with a dictionary</h3>
+<pre><code>df = pandas.DataFrame({&#39;lettre&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;,&#39;r&#39;,&#39;s&#39;,&#39;v&#39;,&#39;p&#39;]})
+mapping = {&#39;p&#39;:&#39;pour&#39;,&#39;q&#39;:&#39;quoi&#39;,&#39;r&#39;:&#39;roi&#39;}
+df[&quot;mot&quot;] = df[&quot;lettre&quot;].map(mapping)</code></pre>
+</div>
 </div>
 <div id="convert-data-frames" class="section level2">
 <h2>Convert data frames</h2>
@@ -2428,6 +2457,17 @@ df.columns</code></pre>
 cols = df.columns.tolist()
 [name for name in cols if &#39;a&#39; in name]</code></pre>
 </div>
+<div id="remove-empty-columns" class="section level3">
+<h3>Remove empty columns</h3>
+<p>Remove empty columns</p>
+<pre><code>import pandas
+import numpy as np
+df = pandas.DataFrame({&#39;A&#39; : [&#39;bli&#39;, &#39;bla&#39;, &#39;bla&#39;, &#39;bla&#39;, &#39;bla&#39;],
+                       &#39;B&#39; : [np.nan, &#39;2&#39;,&#39;2&#39;, &#39;4&#39;, &#39;1&#39;],
+                       &#39;C&#39; : np.nan})
+columns_to_keep = [x for x in df.columns if not all(df[x].isna())]
+df = df[columns_to_keep].copy()</code></pre>
+</div>
 <div id="rename-columns" class="section level3">
 <h3>Rename columns</h3>
 <p>Rename the ‘a’ column to ‘new’</p>
@@ -2441,13 +2481,6 @@ df.rename(columns=lambda x: re.sub(r&quot;\W+&quot;, &quot;_&quot;, str(x)).lowe
 <p>Remove parenthesis and dots in column names</p>
 <pre><code>df.rename(columns=lambda x: re.sub(r&quot;[()\.]&quot;, &quot;&quot;, x), inplace=True)</code></pre>
 </div>
-<div id="replace-the-content-of-columns" class="section level3">
-<h3>Replace the content of columns</h3>
-<p>Replace Comtrade product code by the FAOSTAT product codes</p>
-<pre><code># Create a dictionary from 2 columns of a data frame
-product_dict = product_mapping.set_index(&#39;comtrade_code&#39;).to_dict()[&#39;faostat_code&#39;]
-df_comtrade[&quot;product_code&quot;] = df_comtrade[&quot;product_code&quot;].replace(product_dict)</code></pre>
-</div>
 <div id="reorder-columns" class="section level3">
 <h3>Reorder columns</h3>
 <p>Place the last column first</p>
@@ -2456,6 +2489,13 @@ df_comtrade[&quot;product_code&quot;] = df_comtrade[&quot;product_code&quot;].re
   df = df[cols]</code></pre>
 <p>This <a href="https://stackoverflow.com/a/58776941/2641825">SO
 Answer</a> provide 6 different ways to reorder columns.</p>
+</div>
+<div id="replace-the-content-of-columns" class="section level3">
+<h3>Replace the content of columns</h3>
+<p>Replace Comtrade product code by the FAOSTAT product codes</p>
+<pre><code># Create a dictionary from 2 columns of a data frame
+product_dict = product_mapping.set_index(&#39;comtrade_code&#39;).to_dict()[&#39;faostat_code&#39;]
+df_comtrade[&quot;product_code&quot;] = df_comtrade[&quot;product_code&quot;].replace(product_dict)</code></pre>
 </div>
 <div id="variable-type" class="section level3">
 <h3>Variable Type</h3>
@@ -2796,6 +2836,44 @@ iris7.equals(iris6)</code></pre>
 <p>But if the query is only on the partition variable, read time can be
 increased by a lot.</p>
 </div>
+<div
+id="experiment-with-the-parquet-format-using-filters-and-partition-columns."
+class="section level4">
+<h4>Experiment with the parquet format using filters and partition
+columns.</h4>
+<p>Note the detaset to perform these comparisons is not made available
+here. I keep these for information purposes.</p>
+<p>Compare a read of 2 countries with the read of the whole dataset</p>
+<pre><code># start_time = timeit.default_timer()
+# selection = [(&quot;reporter&quot;, &quot;in&quot;, [&quot;France&quot;,&quot;Germany&quot;])]
+# ft_frde = pandas.read_parquet(la_fo_data_dir / &quot;comtrade_forest_footprint.parquet&quot;,
+#                                             filters=selection)
+# print(&quot;Reading 2 countries took:&quot;,timeit.default_timer() - start_time)
+#
+# start_time = timeit.default_timer()
+# ft2 = pandas.read_parquet(la_fo_data_dir / &quot;comtrade_forest_footprint.parquet&quot;)
+# print(&quot;Reading the whole dataset took:&quot;,timeit.default_timer() - start_time)
+#</code></pre>
+<p>Time comparison when the reporter is used as a partition column It’s
+about 10 times faster!</p>
+<pre><code># ft.to_parquet(&quot;/tmp/ft&quot;, partition_cols=&quot;reporter&quot;)
+# start_time = timeit.default_timer()
+# selection = [(&quot;reporter&quot;, &quot;in&quot;, [&quot;France&quot;,&quot;Germany&quot;])]
+# ft_frde2 = pandas.read_parquet(&quot;/tmp/ft&quot;, filters=selection)
+# print(&quot;Reading 2 countries took:&quot;,timeit.default_timer() - start_time)
+#
+# # Save to a compressed csv file in biotrade_data
+# # file_path = la_fo_data_dir / &quot;comtrade_forest_footprint.csv.gz&quot;
+# # ft.to_csv(file_path, index=False, compression=&quot;gzip&quot;)</code></pre>
+<p>Also try the feather format.</p>
+<pre><code># # Save to a feather file
+# ft.to_feather(la_fo_data_dir / &quot;comtrade_forest_footprint.feather&quot;)
+#
+# # Read time of a feather file
+# start_time = timeit.default_timer()
+# ft_frde2 = pandas.read_feather(la_fo_data_dir / &quot;comtrade_forest_footprint.feather&quot;)
+# print(&quot;Reading a feather file took:&quot;,timeit.default_timer() - start_time)</code></pre>
+</div>
 <div id="what-is-the-difference-between-apache-arrow-and-apache-parquet"
 class="section level4">
 <h4>What is the difference between Apache Arrow and Apache Parquet?</h4>
@@ -2901,6 +2979,9 @@ multiple data frames of different widths with parquet</a></p></li>
 <li><p><a
 href="https://stackoverflow.com/questions/59972588/control-row-groups-with-pandas-dataframe-to-parquet">Control
 row groups size with pandas df.to_parquet</a></p></li>
+<li><p><a
+href="https://towardsdatascience.com/the-best-format-to-save-pandas-data-414dca023e0d">Benchmark
+of feather, hdf, msgpack, parquet and pickle</a></p></li>
 </ul>
 </div>
 </div>
@@ -3210,6 +3291,9 @@ df.query(&quot;A &gt; B&quot;)
 
 A  B  C
 5  2  6</code></pre>
+<p>Two queries</p>
+<pre><code>df.query(&quot;A &lt; B and B &lt; C&quot;)
+df.query(&quot;A &lt; B or B &lt; C&quot;)</code></pre>
 <p>Query using a variable</p>
 <pre><code>limit = 3
 df.query(&quot;A &gt; @limit&quot;)
@@ -3473,6 +3557,16 @@ os.path.dirname(&#39;some/path/&#39;)</code></pre>
 such:</p>
 <pre><code>[x.name for x in p.glob(&#39;**/*.csv&#39;)]</code></pre>
 </div>
+<div id="check-if-a-directory-is-empty" class="section level3">
+<h3>Check if a directory is empty</h3>
+<p>Check if a directory is empty using pathlib</p>
+<pre><code>import pathlib
+p1 = pathlib.Path(&quot;/tmp/&quot;)
+p2 = pathlib.Path(&quot;/tmp/thisisempty/&quot;)
+p2.mkdir()
+any(p1.iterdir()) # returns True
+any(p2.iterdir()) # returns False</code></pre>
+</div>
 </div>
 <div id="temporary-directories-and-files" class="section level2">
 <h2>Temporary directories and files</h2>
@@ -3645,12 +3739,29 @@ plotnine.options.figure_size = (12, 8)</code></pre>
 </div>
 <div id="seaborn" class="section level2">
 <h2>Seaborn</h2>
-<p>All seaborn examples below require the following imports and
+<p>All Seaborn examples below require the following imports and
 datasets:</p>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;)
 tips = seaborn.load_dataset(&quot;tips&quot;) 
 from matplotlib import pyplot as plt</code></pre>
+<div id="scatter-plot" class="section level3">
+<h3>Scatter plot</h3>
+<p>Create a scatter plot with a title and axis labels</p>
+<pre><code>p = seaborn.scatterplot(&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;,data=iris)
+p.set(xlabel = &quot;Petal Length&quot;, ylabel = &quot;Petal Width&quot;, title = &quot;Flower sizes&quot;)
+plt.show()</code></pre>
+</div>
+<div id="line-plot" class="section level3">
+<h3>Line plot</h3>
+<p>Create a line plot with a title and axis labels.</p>
+<pre><code>import numpy as np
+df = pandas.DataFrame({&#39;value&#39;:np.random.random(100), 
+                       &#39;year&#39;:range(1901,2001)})
+p = seaborn.lineplot(x=&quot;year&quot;, y=&quot;value&quot;, data=df)
+p.set(ylabel = &quot;Random variation&quot;, title = &quot;Title here&quot;)
+plt.show()</code></pre>
+</div>
 <div id="axes-limit" class="section level3">
 <h3>Axes limit</h3>
 <p>Set limits on the one axis in a Seaborn plot:</p>
@@ -3780,7 +3891,7 @@ inches.</p>
 </blockquote>
 </div>
 </div>
-<div id="scatter-plot" class="section level3">
+<div id="scatter-plot-1" class="section level3">
 <h3>Scatter Plot</h3>
 <p>Create a scatter plot</p>
 <pre><code>import seaborn
@@ -3790,7 +3901,7 @@ seaborn.scatterplot(x=&quot;total_bill&quot;, y=&quot;tip&quot;, data=tips)
 plt.show()</code></pre>
 <p>Group by another variable and show the groups with different
 colors:</p>
-<pre><code>searborn(x=&quot;total_bill&quot;, y=&quot;tip&quot;, hue=&quot;time&quot;, data=tips)</code></pre>
+<pre><code>seaborn(x=&quot;total_bill&quot;, y=&quot;tip&quot;, hue=&quot;time&quot;, data=tips)</code></pre>
 </div>
 <div id="sample-data" class="section level3">
 <h3>Sample data</h3>
@@ -4190,12 +4301,29 @@ answer on the same topic</a></p>
 <div id="blogs-and-quotes-on-pandas-and-r" class="section level3">
 <h3>Blogs and quotes on Pandas and R</h3>
 <ul>
-<li>pandas.pydata.org <a
-href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison
-with R</a></li>
 <li><a
+href="https://www.kdnuggets.com/2017/02/moving-r-python-libraries.html">Moving
+from R to python</a></li>
+</ul>
+<blockquote>
+<p>“One thing that is a blessing and a curse in R is that the machine
+learning algorithms are generally segmented by package. […] it can be a
+pain for day-to-day use where you might be switching between algorithms.
+[…] scikit-learn provides a common set of ML algorithms all under the
+same API.</p>
+</blockquote>
+<blockquote>
+<p>“one thing that R still does better than Python is plotting. Hands
+down, R is better in just about every facet. Even so, Python plotting
+has matured though it’s a fractured community.”</p>
+</blockquote>
+<ul>
+<li><p>pandas.pydata.org <a
+href="https://pandas.pydata.org/pandas-docs/stable/getting_started/comparison/comparison_with_r.html">Comparison
+with R</a></p></li>
+<li><p><a
 href="https://stmorse.github.io/journal/tidyverse-style-pandas.html">Tydiverse
-style pandas</a></li>
+style pandas</a></p></li>
 </ul>
 <blockquote>
 <p>“Tidyverse allows a mix of quoted and unquoted references to variable
@@ -4598,6 +4726,13 @@ design, not of tools or frameworks or how long tests run or how many
 lines of code we wrote get executed while running the test.’’’ Kent
 Beck”</p>
 </blockquote>
+<div id="assertions" class="section level2">
+<h2>Assertions</h2>
+<ul>
+<li><a href="https://blog.regehr.org/archives/1091">Use of
+Assertions</a></li>
+</ul>
+</div>
 <div id="unit-tests" class="section level2">
 <h2>Unit tests</h2>
 <p>See</p>
