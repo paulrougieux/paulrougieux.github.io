@@ -13,7 +13,7 @@
 
 <title>Vim Commands</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -147,11 +147,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -507,6 +511,9 @@ Theme gallery</a></li>
 <li><a href="https://github.com/rafalbromirski/vim-aurora">Custom theme
 aurora</a></li>
 </ul>
+<p>For a while I used:</p>
+<pre><code>set background=dark
+colorscheme jellybeans</code></pre>
 </div>
 <div id="key-mapping-and-shortcuts" class="section level2">
 <h2>Key mapping and shortcuts</h2>
@@ -577,6 +584,10 @@ augroup END</code></pre>
 <h1>Convert</h1>
 <div id="pandoc" class="section level2">
 <h2>Pandoc</h2>
+<p>Vim uses a syntax highlight system that changes quotes and
+backsticks. It prevents copy pasting from vim using the tmux copy
+mechanism. To turn it off before a copy:</p>
+<pre><code>syn off</code></pre>
 <div id="from-markdown-to-other-formats-with-pandoc"
 class="section level3">
 <h3>From markdown to other formats with pandoc</h3>
@@ -661,9 +672,17 @@ Then press Escape, the inserted text will appear on all lines.</code></pre>
 href="http://vim.wikia.com/wiki/Inserting_text_in_multiple_lines">vim.wikia</a>)</p>
 <pre><code>Use Ctrl+V to enter visual block mode
 Move down with jj to select the columns of text in the lines you want to comment.
-Then hit $ to select all lines until the end of the line.
+Then hit **$** to select all lines until the end of the line.
 Then press Shift+A and type the text you want to insert.
 The press Escape, the inserted text will appear at the end of all lines.</code></pre>
+<p><a
+href="https://stackoverflow.com/questions/11303032/how-to-add-text-at-the-end-of-each-line-in-vim">How
+to add text at the end of each line in Vim?</a></p>
+<blockquote>
+<p>“Visual select a paragraph <code>vip</code>, switch to Visual block
+mode <code>CTRL V</code>, append to all lines <code>$A</code> a comma ,,
+then press Esc to confirm.”</p>
+</blockquote>
 <div id="increment-numbers-in-a-list" class="section level3">
 <h3>Increment numbers in a list</h3>
 <p>Use the <code>range</code> command as explained in the <a
@@ -900,6 +919,8 @@ parenthesis to match a particular pattern. <code>\d</code> matches any
 digit.</p>
 <p>Remove bracketed references from text copied from Wikipedia.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
+<p>Remove all numbers in a list of authors</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\d//g</code></pre>
 </div>
 </div>
 <div id="replace-spaces-and-new-lines" class="section level3">
@@ -1714,8 +1735,8 @@ filetype plugin indent on    &quot; required
 <pre><code>:PluginInstall</code></pre>
 </div>
 </div>
-<div id="programming-languages" class="section level1">
-<h1>Programming languages</h1>
+<div id="programming" class="section level1">
+<h1>Programming</h1>
 <div id="latex-editing" class="section level2">
 <h2>Latex editing</h2>
 <div id="vim-latex" class="section level3">
@@ -1834,7 +1855,8 @@ running. I also insert</p>
 </blockquote>
 <div id="ale-linter" class="section level3">
 <h3>Ale Linter</h3>
-<p>I use the Ale linter to check the code quality.</p>
+<p>I use the <a href="https://github.com/dense-analysis/ale">ALE
+linter</a> to check the quality of python code.</p>
 <p>To copy code it’s preferable to deactivate the 2 characters columns
 used by ale as explained in <a
 href="https://vi.stackexchange.com/questions/21563/is-it-possible-to-disable-the-column-on-the-left-that-is-created-by-ale">Is
@@ -1843,6 +1865,21 @@ ALE?</a></p>
 <pre><code>:set signcolumn=no</code></pre>
 <p>The 2 characters column can later be shown again with</p>
 <pre><code>:set signcolumn=yes</code></pre>
+<p>To temporarily disable ALE in a buffer:</p>
+<pre><code>:let b:ale_enabled = 0</code></pre>
+<p>To enable it:</p>
+<pre><code>:let b:ale_enabled = 1</code></pre>
+<p>For the python options, see:</p>
+<pre><code>:h ale-python-options</code></pre>
+<p>I’ve added this option to my .vimrc to show which linter is
+complaining</p>
+<pre><code>let g:ale_echo_msg_format = &#39;[%linter%] %s&#39;</code></pre>
+<p>The linters I see most in python code are pylint and flake8.</p>
+<p>Pylint complains about <a
+href="https://github.com/PyCQA/pylint/issues/2018">variable names that
+are too short</a></p>
+<p>See the <a href="python.html">python page</a> for the configuration
+details of the linters.</p>
 </div>
 <div id="jedi-vim" class="section level3">
 <h3>Jedi vim</h3>
@@ -1909,14 +1946,14 @@ knitr and mappings can be defined for example:</p>
 </ul>
 <p>Sending code to R:</p>
 <ul>
-<li>Line ;l</li>
-<li>Line (and down) ;d</li>
-<li>Line (and write output as a comment) ;o</li>
 <li>Chunk (cur, echo and down) ;ca</li>
 <li>Chunk (cur) ;cc</li>
 <li>Chunk (cur, echo) ;ce</li>
 <li>Chunk (cur, down) ;cd</li>
 <li>Chunk (from first to here) ;ch</li>
+<li>Line ;l</li>
+<li>Line (and down) ;d</li>
+<li>Line (and write output as a comment) ;o</li>
 <li>Selection ;ss</li>
 <li>Selection (echo) ;se</li>
 <li>Selection (evaluate and insert output in new tab) ;so</li>
@@ -2017,9 +2054,6 @@ use <code>SendCmdToR</code> as such:</p>
 <code>&lt;localleader&gt;wd</code>.</p>
 </div>
 </div>
-</div>
-<div id="programming-tools" class="section level1">
-<h1>Programming tools</h1>
 <div id="debugger" class="section level2">
 <h2>Debugger</h2>
 <p>vi.stackexchange <a
@@ -2078,26 +2112,6 @@ an alias to display a word diff</p>
 <pre><code>command! Gwdiff vert term git diff --word-diff</code></pre>
 </div>
 </div>
-<div id="linter" class="section level2">
-<h2>Linter</h2>
-<p>I have installed the <a
-href="https://github.com/dense-analysis/ale">ALE linter</a> and use it
-for python code. To temporarily disable ALE in a buffer:</p>
-<pre><code>:let b:ale_enabled = 0</code></pre>
-<p>To enable it:</p>
-<pre><code>:let b:ale_enabled = 1</code></pre>
-<p>For the python options, see:</p>
-<pre><code>:h ale-python-options</code></pre>
-<p>I’ve added this option to my .vimrc to show which linter is
-complaining</p>
-<pre><code>let g:ale_echo_msg_format = &#39;[%linter%] %s&#39;</code></pre>
-<p>The linters I see most in python code are pylint and flake8.</p>
-<p>Pylint complains about <a
-href="https://github.com/PyCQA/pylint/issues/2018">variable names that
-are too short</a></p>
-<p>See the <a href="python.html">python page</a> for the configuration
-details of the linters.</p>
-</div>
 <div id="navigate-code-with-tags" class="section level2">
 <h2>Navigate code with tags</h2>
 <p>Install <a href="https://github.com/universal-ctags/ctags">universal
@@ -2155,8 +2169,9 @@ let g:tagbar_left = 1
 let g:tagbar_compact = 1</code></pre>
 </div>
 </div>
-<div id="slime-to-send-code-to-target-terminal" class="section level2">
-<h2>Slime to send code to target terminal</h2>
+<div id="slime-to-send-code-to-a-target-terminal"
+class="section level2">
+<h2>Slime to send code to a target terminal</h2>
 <p><a href="https://github.com/jpalardy/vim-slime">vim slime</a> &gt;
 “Grab some text and send it to a target, most probably: GNU Screen, tmux
 or Vim Terminal”</p>
