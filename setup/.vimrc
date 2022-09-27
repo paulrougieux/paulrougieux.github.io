@@ -133,11 +133,18 @@ vnoremap <Down> gj
 " # Colour theme "
 """"""""""""""""""
 set t_Co=256
-" terminal’s color palette #444444 is suggested by jellybeans.vim,
+" terminal’s colour palette #444444 is suggested by jellybeans.vim,
 " I used 353131
-" This is suggested by a stackoverflow answer
-set background=dark
-"autocmd vimenter * colorscheme gruvbox
+" Change the background colour
+"set background=dark
+
+" copied from https://github.com/nanotech/jellybeans.vim#screenshots
+" These settings have to be before setting the colour scheme
+let g:jellybeans_overrides = {
+\    'background': { 'guibg': '303030' },
+\    'signcolumn': { 'guibg': '000000' },
+\}
+" Use the jelly beans colour scheme
 colorscheme jellybeans
 
 " Underline bad spelling instead of highlighting it
@@ -359,4 +366,4 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " https://github.com/jpalardy/vim-slime/issues/131
 let g:slime_python_ipython = 1
 
-" To reload :source ~/.vimrc
+" To reload this file :source ~/.vimrc
