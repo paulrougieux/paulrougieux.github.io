@@ -992,6 +992,13 @@ For example:
     git grep -e module_dir --and -e "import"
 
 
+### Excluding a pattern from the search
+
+For example ([SO](https://stackoverflow.com/questions/56203430/how-to-use-git-grep-not)):
+
+    git grep -e "index=True" --and --not -e "ignore_index"
+
+
 ## Replacing strings
 
 Use git grep to replace strings in many files in the directory :
