@@ -13,7 +13,7 @@
 
 <title>Bash Commands</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -147,11 +147,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -1310,7 +1314,11 @@ user”.</p>
 <p><a
 href="https://askubuntu.com/questions/356650/how-to-open-multiple-files-with-the-default-program-from-terminal">Open
 many files with xdg-open</a></p>
-<pre><code>ls *.pdf| xargs -n 1 open</code></pre>
+<pre><code>find -iname &#39;*.pdf&#39; -print0 | xargs -0 -n 1 xdg-open</code></pre>
+<p>These simpler version of the same command have issues with files that
+have spaces or quotes in their names</p>
+<pre><code>ls *.pdf| xargs -n 1 open
+ls *.pdf |xargs -L 1 open</code></pre>
 </div>
 </div>
 <div id="move-copy-rename-compress-files" class="section level1">
@@ -1894,6 +1902,23 @@ display the fingerprint in md5format, enter:</p>
 <p><a
 href="https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated">How
 to generate an SSH key fingerprint</a></p>
+</div>
+<div id="forward-agent-and-alternatives" class="section level3">
+<h3>Forward agent and alternatives</h3>
+<ul>
+<li><a
+href="https://heipei.io/2015/02/26/SSH-Agent-Forwarding-considered-harmful/">SSH
+Agent Forwarding considered harmful</a>
+<ul>
+<li><a href="https://news.ycombinator.com/item?id=9425805">Related
+discussion on hacker news</a></li>
+</ul></li>
+<li><a
+href="https://book.hacktricks.xyz/linux-hardening/privilege-escalation/ssh-forward-agent-exploitation">SSH
+forward agent exploitation</a></li>
+</ul>
+<p>Alternatives: - use ProxyCommand - Use a github or gitlab deploy
+token to clone a repository on the server</p>
 </div>
 <div id="log-in-to-a-secure-shell-and-secure-copy"
 class="section level3">

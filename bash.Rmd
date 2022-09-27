@@ -1079,8 +1079,13 @@ The alias makes it possible to open files with the simple command
 [Open many files with
 xdg-open](https://askubuntu.com/questions/356650/how-to-open-multiple-files-with-the-default-program-from-terminal)
 
-    ls *.pdf| xargs -n 1 open
+    find -iname '*.pdf' -print0 | xargs -0 -n 1 xdg-open
 
+These simpler version of the same command have issues with files that have
+spaces or quotes in their names
+
+    ls *.pdf| xargs -n 1 open
+    ls *.pdf |xargs -L 1 open
 
 
 # Move, copy, rename, compress files
@@ -1668,6 +1673,18 @@ To display the fingerprint in md5format, enter:
 
 [How to generate an SSH key fingerprint](https://superuser.com/questions/421997/what-is-a-ssh-key-fingerprint-and-how-is-it-generated)
 
+
+
+### Forward agent and alternatives
+
+- [SSH Agent Forwarding considered harmful](https://heipei.io/2015/02/26/SSH-Agent-Forwarding-considered-harmful/)
+    - [Related discussion on hacker news](https://news.ycombinator.com/item?id=9425805)
+- [SSH forward agent
+  exploitation](https://book.hacktricks.xyz/linux-hardening/privilege-escalation/ssh-forward-agent-exploitation)
+
+Alternatives:
+- use ProxyCommand
+- Use a github or gitlab deploy token to clone a repository on the server
 
 
 ### Log in to a secure shell and secure copy
