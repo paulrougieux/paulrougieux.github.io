@@ -15,7 +15,7 @@
 
 <title>R Commands</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -149,11 +149,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -608,6 +612,12 @@ the line containing as_factor to see the difference.</p>
 class="uri">https://en.wikipedia.org/wiki/Levenshtein_distance</a></p>
 <pre><code>adist(&quot;kitten&quot;, &quot;sitting&quot;)</code></pre>
 </div>
+<div id="capitalise-first-letter" class="section level4">
+<h4>Capitalise first letter</h4>
+<p>Capitalise the first letter of each word</p>
+<pre><code>stringr::str_to_title(&quot;bla bla bla&quot;)
+# [1] &quot;Bla Bla Bla&quot;</code></pre>
+</div>
 </div>
 </div>
 <div id="lists" class="section level2">
@@ -767,14 +777,36 @@ repository and build packages.</p>
 <pre><code>getwd()
 list.files(tempdir()) 
 dir.create(&quot;blabla&quot;)</code></pre>
-<div id="apache-arrow" class="section level2">
-<h2>Apache Arrow</h2>
+<div id="apache-arrow-and-parquet-files" class="section level2">
+<h2>Apache Arrow and parquet files</h2>
 <p><a href="https://github.com/apache/arrow/tree/master/r">Apache arrow
 R packages</a></p>
 <blockquote>
 <p>“Read and write Feather files (read_feather(), write_feather()), a
 format optimized for speed and interoperability”</p>
 </blockquote>
+<pre><code>library(arrow)
+read_parquet() # to read a single file
+open_dataset() # to open a dataset sharded over multiple files</code></pre>
+<p>help(open_dataset)</p>
+<blockquote>
+<p>” Call ‘open_dataset()’ to point to a directory of data files and
+return a ‘Dataset’, then use ‘dplyr’ methods to query it.”’</p>
+</blockquote>
+<pre class="r"><code>library(arrow)
+library(dplyr)
+# Set up directory for examples
+tf &lt;- tempfile()
+dir.create(tf)
+on.exit(unlink(tf))
+
+data &lt;- dplyr::group_by(iris, Species)
+write_dataset(data, tf)
+
+# open only the setosa part
+setosa &lt;- open_dataset(tf) %&gt;%
+    filter(Species == &quot;setosa&quot;) %&gt;%
+    collect()</code></pre>
 </div>
 <div id="csv-files" class="section level2">
 <h2>CSV files</h2>
@@ -783,7 +815,11 @@ format optimized for speed and interoperability”</p>
 <p>Read many csv files with functions from the tidyverse packages.</p>
 <p>First write sample csv files to a temporary directory. It’s more
 complicated than I thought it would be.</p>
-<pre><code>data_folder &lt;- file.path(tempdir(), &quot;iris&quot;)
+<pre><code>library(dplyr)
+library(purrr)
+library(purrrlyr)
+library(readr)
+data_folder &lt;- file.path(tempdir(), &quot;iris&quot;)
 dir.create(data_folder)
 iris %&gt;%
     # Keep the Species column in the output
@@ -1257,6 +1293,11 @@ iris3 %&gt;%
 <pre><code>iris3 %&gt;%
     knitr::kable(format = &quot;latex&quot;) %&gt;%
     kableExtra::collapse_rows(columns = 5, valign = &quot;top&quot;)</code></pre>
+<p>Make wider columns</p>
+<pre><code>iris %&gt;%
+    knitr::kable(format = &#39;markdown&#39;, caption = &#39;Flower measurements&#39;) %&gt;%
+    kableExtra::column_spec(5, width = &quot;30em&quot;)
+`</code></pre>
 </div>
 </div>
 <div id="output" class="section level2">
@@ -1269,7 +1310,7 @@ be defined in the preamble section of the R markdown document.</p>
 documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;17 August, 2022&quot;
+date:  &quot;27 September, 2022&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1441,6 +1482,30 @@ df %&gt;%
   unite(&quot;xy&quot;, x:y) %&gt;%
   separate(xy, c(&quot;x&quot;, &quot;y&quot;))
 # (but note `x` and `y` contain now &quot;NA&quot; not NA)</code></pre>
+</div>
+</div>
+<div id="maps" class="section level1">
+<h1>Maps</h1>
+<div id="choropleth-maps" class="section level2">
+<h2>Choropleth maps</h2>
+<ul>
+<li><p><a
+href="https://www.r-graph-gallery.com/choropleth-map.html">Choropleth
+map</a></p></li>
+<li><p>Shape files to make choropleth maps of Europe: <a
+href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts">GISCO:
+Geographical Information and maps</a></p></li>
+<li><p><a
+href="https://ropengov.github.io/eurostat/articles/maps.html">Map
+example of the eurostat R package</a></p></li>
+<li><p><a href="https://ropengov.github.io/giscoR/">Gisco R</a> related
+to the above Eurostat package</p></li>
+</ul>
+<p>Other potentially interesting packages:</p>
+<ul>
+<li><a
+href="https://cran.r-project.org/web/packages/googleway/index.html">Googleway</a></li>
+</ul>
 </div>
 </div>
 <div id="packages" class="section level1">
@@ -1631,17 +1696,11 @@ sp &lt;- ggplot(data=mtcars, aes(x=wt, y=mpg)) + geom_point()
 sp + geom_abline(intercept = 37, slope = -5)+
   ggtitle(eq)</code></pre>
 </div>
-<div id="axes" class="section level3">
-<h3>Axes</h3>
+<div id="axes-scales" class="section level3">
+<h3>Axes, scales</h3>
 <p>Increase number of axis ticks by specifying an integer break
 vector</p>
 <pre><code>scale_x_continuous(breaks = 1:10)</code></pre>
-<p>When dates are on the x axis, use a time scale and specify the breaks
-as a time vector</p>
-<pre><code>scale_x_date(breaks = lubridate::parse_date_time(2000:2020, &quot;%y&quot;))</code></pre>
-<p>Alternatively breaks can be specified as an interval, and minor
-breaks as well</p>
-<pre><code>scale_x_datetime(date_breaks = &quot;5 years&quot;, labels = scales::date_format(&quot;%Y&quot;), date_minor_breaks = &quot;1 year&quot;)</code></pre>
 <div id="rotate-the-tick-text" class="section level4">
 <h4>Rotate the tick text</h4>
 <p>Rotate the tick text of the X axis. SO question <a
@@ -1649,10 +1708,25 @@ href="https://stackoverflow.com/questions/1330989/rotating-and-spacing-axis-labe
 axis labels in ggplot2</a></p>
 <pre><code>theme(axis.text.x=element_text(angle = 90, hjust=0))</code></pre>
 </div>
+<div id="dates-1" class="section level4">
+<h4>Dates</h4>
+<p>When dates are on the x axis, use a time scale and specify the breaks
+as a time vector</p>
+<pre><code>scale_x_date(breaks = lubridate::parse_date_time(2000:2020, &quot;%y&quot;))</code></pre>
+<p>Alternatively breaks can be specified as an interval, and minor
+breaks as well</p>
+<pre><code>scale_x_datetime(date_breaks = &quot;5 years&quot;, labels = scales::date_format(&quot;%Y&quot;), date_minor_breaks = &quot;1 year&quot;)</code></pre>
+</div>
+<div id="percentages" class="section level4">
+<h4>Percentages</h4>
+<p>To display shares as percentages, use
+<code>scales::percent</code></p>
+<pre><code>scale_y_continuous(labels = scales::percent)</code></pre>
+</div>
 </div>
 <div id="legend" class="section level3">
 <h3>Legend</h3>
-<p>Place the legend at the bottom of the plot:</p>
+<p>Place the legend below a plot:</p>
 <pre><code>library(ggplot2)
 ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) + 
     geom_point() + 
@@ -1661,6 +1735,10 @@ ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) +
 <pre><code>ggplot(iris, aes(Petal.Width, Sepal.Width, color=Species)) + 
     geom_point() + 
     theme(legend.position=&quot;none&quot;)</code></pre>
+<p><a
+href="https://stackoverflow.com/questions/14604435/turning-off-some-legends-in-a-ggplot">Remove
+only part of the legend</a></p>
+<pre><code>guides(colour = &quot;none&quot;)</code></pre>
 <p>Change the name of a particular sub element in the legend:</p>
 <pre><code>labs(color=&quot;Iris Species&quot;)
 labs(linetype=&quot;Sawnwood product group&quot;)
@@ -1703,6 +1781,8 @@ do.call(grid.arrange, out)
 </div>
 <div id="math-formulas-in-facet-labels" class="section level3">
 <h3>Math formulas in facet labels</h3>
+<p>Note to add a new line to a facet label, simply insert it with</p>
+<pre><code>facet_variable = gsub(&quot; &quot;,&quot;\n&quot;, facet_variable)</code></pre>
 <pre class="r"><code>library(dplyr)
 library(ggplot2)
 
@@ -1731,7 +1811,7 @@ iris2 %&gt;%
     geom_point() +
     facet_wrap(species_math ~ mean_length + Species,
                labeller = labeller(species_math = label_parsed, mean_length = label_parsed))</code></pre>
-<p><img src="R_files/figure-html/unnamed-chunk-14-1.png" width="672" /></p>
+<p><img src="R_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
 <p>As shown in the example above, the labeller can parse:</p>
 <ol style="list-style-type: decimal">
 <li><p>A character vector such as “m^2” for simple formulas</p></li>
@@ -1798,15 +1878,6 @@ or remove lines at the border of the ribbon</a>:</p>
                linetype=0) +
    geom_line(aes(y = level))</code></pre>
 </div>
-</div>
-<div id="choropleth-maps" class="section level2">
-<h2>Choropleth maps</h2>
-<p><a
-href="https://www.r-graph-gallery.com/choropleth-map.html">Choropleth
-map</a></p>
-<p>Shape files to make choropleth maps of Europe: <a
-href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts">GISCO:
-Geographical Information and maps</a></p>
 </div>
 <div id="palettes" class="section level2">
 <h2>Palettes</h2>
@@ -2000,6 +2071,18 @@ cars %&gt;%
 data.frame to enable some functionalities. Note that print returns its
 output on a tbl_df object. So print() can be used inside the pipe
 without stopping the workflow.</p>
+<div id="count-and-tally" class="section level4">
+<h4>Count and tally</h4>
+<p>Count the unique values of one or more variables</p>
+<pre><code>count(iris, Species, sort=TRUE)</code></pre>
+<p>is equivalent to</p>
+<pre><code>iris %&gt;%
+    group_by(Species) %&gt;%
+    tally(sort=TRUE)</code></pre>
+<p>The <code>wt</code> argument can be used to perform weighted
+counts</p>
+<pre><code>count(iris, Species, wt=Sepal.Length, sort=TRUE)</code></pre>
+</div>
 </div>
 <div id="across" class="section level3">
 <h3>Across</h3>
