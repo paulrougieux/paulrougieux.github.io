@@ -13,7 +13,7 @@
 
 <title>publish.knit</title>
 
-<script src="site_libs/header-attrs-2.14/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -147,11 +147,15 @@ $(document).ready(function () {
     href = "index.html";
   var menuAnchor = $('a[href="' + href + '"]');
 
-  // mark it active
-  menuAnchor.tab('show');
-
-  // if it's got a parent navbar menu mark it active as well
-  menuAnchor.closest('li.dropdown').addClass('active');
+  // mark the anchor link active (and if it's in a dropdown, also mark that active)
+  var dropdown = menuAnchor.closest('li.dropdown');
+  if (window.bootstrap) { // Bootstrap 4+
+    menuAnchor.addClass('active');
+    dropdown.find('> .dropdown-toggle').addClass('active');
+  } else { // Bootstrap 3
+    menuAnchor.parent().addClass('active');
+    dropdown.addClass('active');
+  }
 
   // Navbar adjustments
   var navHeight = $(".navbar").first().height() + 15;
@@ -902,8 +906,8 @@ reading was started with”</p>
 Interface}] ...</code></pre>
 </div>
 </div>
-<div id="markdown-papers" class="section level1">
-<h1>Markdown papers</h1>
+<div id="markdown" class="section level1">
+<h1>Markdown</h1>
 <p>The Journal of Open Source Software requires papers to be written in
 markdown format. An <a
 href="https://joss.readthedocs.io/en/latest/submitting.html#example-paper-and-bibliography">example
@@ -912,6 +916,36 @@ the bibliography.</p>
 <p>The bibliography uses the <a
 href="https://pandoc.org/MANUAL.html#extension-citations">Pandoc
 citation style guide</a>.</p>
+<div id="pandoc-and-markdown" class="section level2">
+<h2>Pandoc and markdown</h2>
+<p>See also the bash page which explains pandoc use.</p>
+<ul>
+<li><a
+href="https://opensource.com/article/18/9/pandoc-research-paper">How to
+use Pandoc to produce a research paper</a> using the latex template of a
+journal to specify authorship in the way requested by the journal.</li>
+</ul>
+</div>
+<div id="github-flavoured-markdown" class="section level2">
+<h2>Github flavoured markdown</h2>
+<ul>
+<li><p><a
+href="https://gist.github.com/pierrejoubert73/902cc94d79424356a8d20be2b382e1ab">How
+to add a collapsible section</a></p>
+<details>
+<summary>
+<p>Click me</p>
+</summary>
+<pre class="r"><code>  plot(iris)</code></pre>
+</details></li>
+</ul>
+<blockquote>
+<p>Rules: Have an empty line after the <code>&lt;/summary&gt;</code> tag
+or markdown/code blocks will not render. Have an empty line after each
+<code>&lt;/details&gt;</code> tag if you have multiple collapsible
+sections.</p>
+</blockquote>
+</div>
 </div>
 <div id="motivation" class="section level1">
 <h1>Motivation</h1>

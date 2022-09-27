@@ -381,7 +381,7 @@ package](https://ftp.gwdg.de/pub/ctan/macros/latex/required/tools/multicol.pdf)
     Interface}] ...
 
 
-# Markdown papers
+# Markdown
 
 The Journal of Open Source Software requires papers to be written in markdown
 format. An [example paper on their
@@ -390,6 +390,34 @@ illustrate how to use the markdown format and the bibliography.
 
 The bibliography uses the [Pandoc citation style
 guide](https://pandoc.org/MANUAL.html#extension-citations).
+
+
+## Pandoc and markdown
+
+See also the bash page which explains pandoc use.
+
+- [How to use Pandoc to produce a research
+  paper](https://opensource.com/article/18/9/pandoc-research-paper)
+  using the latex template of a journal to specify authorship in the way
+  requested by the journal.
+
+
+## Github flavoured markdown
+
+- [How to add a collapsible
+  section](https://gist.github.com/pierrejoubert73/902cc94d79424356a8d20be2b382e1ab)
+
+    <details>
+    <summary>Click me</summary>
+
+    ```R
+    plot(iris)
+    ```
+    </details>
+
+> Rules: Have an empty line after the `</summary>` tag or markdown/code blocks
+> will not render. Have an empty line after each `</details>` tag if you have
+> multiple collapsible sections.
 
 
 # Motivation
