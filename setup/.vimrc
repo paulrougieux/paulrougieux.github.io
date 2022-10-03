@@ -260,6 +260,7 @@ au BufRead,BufNewFile *.Rmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x>
 " folder
 " nmap <LocalLeader>t command! '<,'>s/ /_/g
 
+command! -range=% Hyphen <line1>,<line2>s/\(\i\)- /\1/g
 
 """"""""""""""""""""""""""
 " # Python configuration "
