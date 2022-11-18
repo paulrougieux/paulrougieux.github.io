@@ -672,6 +672,8 @@ the current repository only</p>
 <p><a href="https://stackoverflow.com/a/2596835/2641825">How do I make
 Git use the editor of my choice for commits?</a></p>
 <pre><code>git config --global core.editor &quot;vim&quot;</code></pre>
+<p>Edit the global configuration file</p>
+<pre><code>git config --global --edit</code></pre>
 </div>
 <div id="remembering-passwords" class="section level2">
 <h2>Remembering passwords</h2>
@@ -704,16 +706,14 @@ am in the history:</p>
 <pre><code>git lg </code></pre>
 <p>Use tags to specify important points in history, such as software
 versions.</p>
-<div id="diff" class="section level2">
-<h2>Diff</h2>
+<div id="diff-the-working-directory" class="section level2">
+<h2>Diff the working directory</h2>
 <p>Shows the changes between the working directory and the index.</p>
 <pre><code>git diff</code></pre>
 <p>Shows the changes between the index and the HEAD</p>
 <pre><code>git diff --cached</code></pre>
 <p>Shows all the changes between the working directory and HEAD</p>
 <pre><code>git diff HEAD</code></pre>
-<p>Show which change happened in a particular commit</p>
-<pre><code>git show &lt;commit-hash&gt;</code></pre>
 <p>Compare between 2 commits</p>
 <pre><code>git diff &lt;commit hash 1&gt; &lt;commit hash 2&gt;</code></pre>
 <p><a href="https://stackoverflow.com/a/17803762/2641825">List all
@@ -722,6 +722,21 @@ revision of a given line number in the git history</a></p>
 LINE=1
 git log --format=format:%H $FILE | xargs -L 1 git blame $FILE -L $LINE,$LINE</code></pre>
 <p>Useful to track different versions of CSV files headers.</p>
+<div id="diff-csv-files" class="section level3">
+<h3>Diff csv files</h3>
+<p>To consider commas a separator when using word diff in csv file, you
+can use</p>
+<pre><code>git diff --word-diff-regex=&quot;[^[:space:],]+&quot;
+# Or 
+git diff --color-words=&quot;[^[:space:],]+&quot; x.csv y.csv</code></pre>
+</div>
+</div>
+<div id="show-changes-in-previous-commits" class="section level2">
+<h2>Show changes in previous commits</h2>
+<p>Show which change happened in a particular commit</p>
+<pre><code>git show &lt;commit-hash&gt;</code></pre>
+<p>Show only word changes</p>
+<pre><code>git show --word-diff &lt;commit-hash&gt;</code></pre>
 </div>
 <div id="blame" class="section level2">
 <h2>Blame</h2>
@@ -822,8 +837,8 @@ example)</p>
 <pre><code>lkj    = log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)&lt;%an&gt;%Creset&#39; --abbrev-commit -10</code></pre>
 <p>This alias also works with the log of one file only</p>
 <pre><code>git lkj path/filename</code></pre>
-<div id="show-commit-statistics" class="section level3">
-<h3>Show commit statistics</h3>
+<div id="commit-statistics" class="section level3">
+<h3>Commit statistics</h3>
 <p>Show the number of lines modified in each files for each commit:</p>
 <pre><code>git log --numstat </code></pre>
 <p>A one liner version showing the number of files changes, number of
@@ -1372,6 +1387,14 @@ href="bash.html">bash page</a>. Display what keys are available</p>
 <p>Configure git to use the key</p>
 <pre><code> git config --global user.signingkey 0A46826A
  git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0</code></pre>
+<div id="push-tags" class="section level2">
+<h2>Push tags</h2>
+<p>A regular push command won’t push a tag (bitbucket), to push all your
+tags :</p>
+<pre><code>git push origin --tags</code></pre>
+<p>Or</p>
+<pre><code>git push --tags</code></pre>
+</div>
 </div>
 <div id="to-do-lists" class="section level1">
 <h1>TO DO lists</h1>

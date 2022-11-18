@@ -297,6 +297,10 @@ explains how to change the email for the current repository only
 
     git config --global core.editor "vim"
 
+Edit the global configuration file
+
+    git config --global --edit
+
 
 ## Remembering passwords
 
@@ -339,7 +343,7 @@ The new alias can then be used with
 Use tags to specify important points in history, such as software versions.
 
 
-## Diff
+## Diff the working directory
 
 Shows the changes between the working directory and the index.
 
@@ -353,10 +357,6 @@ Shows all the changes between the working directory and HEAD
 
     git diff HEAD
 
-Show which change happened in a particular commit 
-
-    git show <commit-hash>
-
 Compare between 2 commits
 
     git diff <commit hash 1> <commit hash 2>
@@ -369,6 +369,26 @@ history](https://stackoverflow.com/a/17803762/2641825)
     git log --format=format:%H $FILE | xargs -L 1 git blame $FILE -L $LINE,$LINE
 
 Useful to track different versions of CSV files headers.
+
+
+### Diff csv files
+
+To consider commas a separator when using word diff in csv file, you can use
+    
+    git diff --word-diff-regex="[^[:space:],]+"
+    # Or 
+    git diff --color-words="[^[:space:],]+" x.csv y.csv
+
+
+## Show changes in previous commits
+
+Show which change happened in a particular commit 
+
+    git show <commit-hash>
+
+Show only word changes
+
+    git show --word-diff <commit-hash>
 
 
 ## Blame
@@ -500,7 +520,7 @@ This alias also works with the log of one file only
     git lkj path/filename
 
 
-### Show commit statistics
+### Commit statistics
 
 Show the number of lines modified in each files for each commit: 
 
@@ -1084,6 +1104,18 @@ Configure git to use the key
 
      git config --global user.signingkey 0A46826A
      git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0
+
+
+## Push tags
+
+A regular push command won't push a tag (bitbucket), to push all your tags :
+
+    git push origin --tags
+
+Or 
+
+    git push --tags
+
 
 
 # TO DO lists
