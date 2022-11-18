@@ -1616,6 +1616,87 @@ Document python functions with the sphinx convention
        """
 
 
+# Geopandas
+
+geopandas help topic
+
+- [Input output](https://geopandas.org/en/stable/docs/user_guide/io.html)
+  reading and writing files
+
+All geopandas examples below require the following imports:
+
+    from matplotlib import pyplot as plt
+    import geopandas
+
+
+## Map of the World
+
+Plot a world map of GDP per capita
+
+    world = geopandas.read_file(geopandas.datasets.get_path('naturalearth_lowres'))
+    world = world[(world.pop_est>0) & (world.name!="Antarctica")]
+    world['gdp_per_cap'] = world.gdp_md_est / world.pop_est
+    world.plot(column='gdp_per_cap')
+    plt.show()
+
+
+## Map of Europe
+
+Load the JSON data from the Eurostat [NUTS
+page](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts21)
+(Nomenclature of territorial units for statistics) using the EPSG 3035 projection.
+
+    nuts = geopandas.read_file("~/downloads/NUTS_RG_20M_2021_3035.geojson")
+    ax = nuts.plot()
+    ax.set_xlim(2000000, 8000000)
+    ax.set_ylim(1000000, 5500000)
+    nuts.boundary.plot(color="darkgreen", ax=ax)
+    plt.show()
+
+NUTS ID have either 2, 3, 4 or 5 characters
+
+    nuts.NUTS_ID.str.len().unique()
+    # array([2, 3, 4, 5])
+    nuts["id_n"] = nuts.NUTS_ID.str.len()
+    def map_borders(df):
+        ax = df.plot()
+        ax.set_xlim(2000000, 8000000)
+        ax.set_ylim(1000000, 5500000)
+        df.boundary.plot(color="grey", ax=ax)
+        return(ax)
+
+Map NUTS 0 which has 2 character codes
+
+    nuts0 = nuts.query("id_n == 2")
+    map_borders(nuts0)
+    plt.show()
+
+Map NUTS 1 which has 3 character codes
+
+    nuts1 = nuts.query("id_n == 3")
+    map_borders(nuts1)
+    plt.show()
+
+Map NUTS 2 which has 4 character codes
+
+    nuts2 = nuts.query("id_n == 4")
+    map_borders(nuts2)
+    plt.show()
+    # Drop the geometry and write the description columns to a csv file
+    nuts2.drop(columns="geometry").to_csv("/tmp/nuts2.csv")
+
+Blogs and help pages:
+
+- Jan's blog, a quick visual comparison of the EPSG 3035, EPSG 4326 and EPSG 3857
+  projections on [plotting maps with european data in python part
+  i](https://jan-46106.medium.com/plotting-maps-with-european-data-in-python-part-i-decd83837de4)
+
+    - I chose EPSG 3035 because it represents areas in a comparable way. 
+    - Use `.boundary.plot()`to plot boundaries.
+
+- towardsdatascience.com [using eurostat statistical data on Europe with python](https://towardsdatascience.com/using-eurostat-statistical-data-on-europe-with-python-2d77c9b7b02b) Setting x an y limits to the map of continental Europe only
+
+
 # Math
 
 [How to do maths in python 3 with operators](https://www.digitalocean.com/community/tutorials/how-to-do-math-in-python-3-with-operators) 
@@ -1672,6 +1753,9 @@ Cookbook](https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-wit
 - The package
   [linearmodels](https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.html#linearmodels.panel.model.PanelOLS)
   provides fixed effects estimator for panel data.
+
+- blog [Panel data with
+  python](https://towardsdatascience.com/a-guide-to-panel-data-regression-theoretics-and-implementation-with-python-4c84c5055cf8)
 
 
 # Numpy vectors and matrices (arrays)
@@ -2156,6 +2240,48 @@ Convert 2 columns to a dictionary
     df.set_index('b').to_dict()['c']
 
 
+### Convert a column to string, float or integer
+
+Convert a string to a numeric type
+
+    s = pandas.Series(["1", "2", "a"])
+    pandas.to_numeric(s, errors="coerce")
+
+    # The following would return an error
+    s.astype(float)
+    s.astype(int)
+    # And errors="ignore" would not convert at all
+    s.astype(float, errors="ignore")
+    pandas.to_numeric(s, errors="ignore")
+
+
+Convert an integer to a string type
+
+    s = pandas.Series(range(3))
+    s.astype(str)
+
+
+### Convert one value to a scalar
+
+SO question [Convert to
+scalar](https://stackoverflow.com/questions/47910328/convert-pandas-dataframe-value-to-scalar)
+
+- iat()
+
+    > "Access a single value for a row/column pair by integer position. Similar to
+    > iloc, in that both provide integer-based lookups. Use iat if you only need to
+    > get or set a single value in a DataFrame or Series."
+
+- squeeze()
+
+    > "Squeeze 1 dimensional axis objects into scalars. Series or DataFrames with a
+    > single element are squeezed to a scalar. DataFrames with a single column or a
+    > single row are squeezed to a Series. Otherwise the object is unchanged. This
+    > method is most useful when you don’t know if your object is a Series or
+    > DataFrame, but you do know it has just a single column. In that case you can
+    > safely call squeeze to ensure you have a Series."
+
+
 ## Compare data frames
 
 Pure equality example from
@@ -2429,6 +2555,24 @@ groupby](https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-fir
 Index can be converted back to a data frame
 See also index selection in the ".loc" section.
 
+### Drop index levels
+
+Example from [pandas DataFrame
+drop](https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop.html)
+
+    import pandas
+    midx = pandas.MultiIndex(levels=[['lama', 'cow', 'falcon'],
+                                 ['speed', 'weight', 'length']],
+                         codes=[[0, 0, 0, 1, 1, 1, 2, 2, 2],
+                                [0, 1, 2, 0, 1, 2, 0, 1, 2]])
+    df = pandas.DataFrame(index=midx, columns=['big', 'small'],
+                      data=[[45, 30], [200, 100], [1.5, 1], [30, 20],
+                            [250, 150], [1.5, 0.8], [320, 250],
+                            [1, 0.8], [0.3, 0.2]])
+    df
+    df.drop(index='cow', columns='small')
+    df.drop(index='length', level=1)
+
 
 ### Recursive computation on a index in a loop
 
@@ -2460,12 +2604,14 @@ vector computation.
         df.loc[t, "y"] = pow(df.loc[t-1, "y"], df.loc[t, "x"]/2)
     df
 
-Multi index case
+
+#### Multi index case
+
 I would like to compute the consumption equation of a partial equilibrium
 model.
 
-    pandas.DataFrame({'x':range(0,3), 
-                      'y':['a','b','c']})
+    df = pandas.DataFrame({'x':range(0,3), 
+                           'y':['a','b','c']})
 
     for t in range(gfpmx_data.base_year + 1, years.max()+1):
         # TODO: replace this loop by vectorized operations using only the index on years
@@ -2495,6 +2641,22 @@ Lower level method using `unique()` on a multi index and returning a data frame
 
     penguins.set_index(["species", "island"]).index.unique().to_frame(False)
 
+
+### Query index greater or smaller than
+
+See also the query section for other ways to query data frames.
+
+[SO answer](https://stackoverflow.com/a/18103894/2641825)
+
+    df = pandas.DataFrame({'i':range(0,3), 
+                           'j':['a','b','c'],
+                           'x':range(22,25)})
+    df = df.set_index(["i","j"])
+    df.loc[(df.index.get_level_values('i') > 1)]
+
+Using query instead
+
+    df.query("i>1")
 
 
 ## PyArrow
@@ -2826,6 +2988,16 @@ Reshape using `melt`
     cheese
     cheese.melt(id_vars=["first", "last"], var_name="quantity")
 
+Another example
+
+    grading_matrix = pandas.DataFrame({"dbh":["d1", "d2", "d3"],
+                                       "abies":["p","q","r"],
+                                       "picea":["m","n","o"],
+                                       "larix":["m","n","o"]})
+    grading_long = grading_matrix.melt(id_vars="dbh", 
+                                       var_name="species", 
+                                       value_name="grading")
+
 Reshape using the `wide_to_long` convenience function
 
     import numpy as np
@@ -2873,7 +3045,6 @@ Rename the (sometimes confusing) axis names
     # 2     4.0  3.0  NaN  5.0
 
 
-
 ## Replace
 
 [Python pandas equivalent for replace](https://stackoverflow.com/questions/12152716/python-pandas-equivalent-for-replace)
@@ -2919,6 +3090,8 @@ Replace NA values by another value
 
 
 ## Select with loc, iloc, query, isin and xs
+
+There are many ways to select data in pandas (squarebraquets, loc, iloc, query, isin). In a first stage, during data preparation it's better to keep data out of the index. But in a second stage, when you are doing modelling, multi indexes become useful. And especially slicers to computes on part of the dataset - only some years, only some products, only some countries . For this, tools such as df.xs or https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.IndexSlice.html are needed.
 
  * blog [Select pandas data frame rows and columns using iloc and loc](https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/)
 
@@ -3088,16 +3261,47 @@ Invert a selection on the second index
     df.loc[~df.index.isin(["mark i"], level=1)]
 
 
-#### Multi-index slicers
+#### Multi-index slicers to select the second index element
+
+[Using
+slicers](https://pandas.pydata.org/pandas-docs/stable/user_guide/advanced.html#using-slicers)
+
+> "You can use pandas.IndexSlice to facilitate a more natural syntax using `:`,
+> rather than using `slice(None)`."
+
+Other example from [a SO
+question](https://stackoverflow.com/questions/56340906/ilocing-one-level-of-a-multiindex)
+
+    import pandas
+    df = pandas.DataFrame(index = pandas.MultiIndex.from_product([range(2010,2020),
+                          ['mike', 'matt', 'dave', 'frank', 'larry'], ]))
+    df['x']=0
+    df.index.names=['year', 'people']
+    df.loc[2010]
+    df.loc[(2010,"mike")]
+
+These two `df.loc[2010]`,  `df.loc[(2010,"mike")]` work, but 
+
+    df.loc["mike"]
+
+Returns a `KeyError: 'mike'`. To select on the second index level only, you
+need a multi index slicer. 
+
+    idx = pandas.IndexSlice
+    df.loc[idx[:, "mike"],:]
+
+You can also use `df.xs`
+
+    df.xs("mike", level=1)
+    df.xs("mike", level="people")
 
 [Using loc on just the second index in multi
 index](https://stackoverflow.com/a/50414126/2641825)
-Using the same data frame as above.
+Other example using the same data frame as the previous section. 
 
     idx = pandas.IndexSlice
     df.loc[idx[:, "mark i"],:]
     df.xs("mark i", level=1)
-   
 
 
 ### iloc 
@@ -3182,6 +3386,10 @@ Query using a variable
 Query for a variable in a list
 
     df.query("A in [3,6]")
+
+Query for a variable not in a list
+
+    df.query("A not in [3,6]")
 
 
 #### str.contains and str.startswith
@@ -3277,15 +3485,24 @@ Concatenate all values in a character vector:
 
     df['a'].str.cat()
 
-Replace elements in a character vector:
-
-    df['a'].replace('a','b',regex=True)
 
 Extract the first 2 or last 2 characters
 
     df = pandas.DataFrame({'a':['bla','bli','quoi?']})
     df["a"].str[:2]
     df["a"].str[-2:]
+
+
+### Search and replace
+
+Search one element or another in a character vector:
+
+    df = pandas.DataFrame({'a':['bla','ble','bli']})
+    df[df['a'].str.contains('a|i')]
+
+Replace elements in a character vector:
+
+    df['a'].replace('a|i','b',regex=True)
 
 
 ### Separate a columns in two based on a split pattern
@@ -3416,10 +3633,142 @@ On a data frame
 
 ## Xarray
 
+[DataArray](https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray)
+
+    > "xarray.DataArray is xarray’s implementation of a labeled, multi-dimensional
+    > array. It has several key properties:
+    > 
+    > - values: a numpy.ndarray holding the array’s values
+    > 
+    > - dims: dimension names for each axis (e.g., ('x', 'y', 'z'))
+    > 
+    > - coords: a dict-like container of arrays (coordinates) that label each point
+    >   (e.g., 1-dimensional arrays of numbers, datetime objects or strings)
+    > 
+    > - attrs: dict to hold arbitrary metadata (attributes)
+    > 
+    > Xarray uses dims and coords to enable its core metadata aware operations.
+    > Dimensions provide names that xarray uses instead of the axis argument found in
+    > many numpy functions. Coordinates enable fast label based indexing and
+    > alignment, building on the functionality of the index found on a pandas
+    > DataFrame or Series."
+
+
+[Dataset](https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataset)
+
+    > "xarray.Dataset is xarray’s multi-dimensional equivalent of a DataFrame. It is a
+    > dict-like container of labeled arrays (DataArray objects) with aligned
+    > dimensions. It is designed as an in-memory representation of the data model
+    > from the netCDF file format.
+    > 
+    > In addition to the dict-like interface of the dataset itself, which can be used
+    > to access any variable in a dataset, datasets have four key properties:
+    > 
+    > dims: a dictionary mapping from dimension names to the fixed length of each
+    > dimension (e.g., {'x': 6, 'y': 6, 'time': 8})
+    > 
+    > data_vars: a dict-like container of DataArrays corresponding to variables
+    > 
+    > coords: another dict-like container of DataArrays intended to label points
+    > used in data_vars (e.g., arrays of numbers, datetime objects or strings)
+    > attrs: dict to hold arbitrary metadata
+    > 
+    > The distinction between whether a variable falls in data or coordinates
+    > (borrowed from CF conventions) is mostly semantic, and you can probably get
+    > away with ignoring it if you like: dictionary like access on a dataset will
+    > supply variables found in either category. However, xarray does make use of the
+    > distinction for indexing and computations. Coordinates indicate
+    > constant/fixed/independent quantities, unlike the varying/measured/dependent
+    > quantities that belong in data."
+
+
+[converting between datasets and
+arrays](https://docs.xarray.dev/en/stable/user-guide/reshaping.html#converting-between-datasets-and-arrays)
+
+    > "This method broadcasts all data variables in the dataset against each other,
+    > then concatenates them along a new dimension into a new array while
+    > preserving coordinates."
+
+
+### Create xarray from pandas
+
+Round trip from pandas to xarray and back from the [xarray user guide page on
+pandas](https://docs.xarray.dev/en/stable/user-guide/pandas.html).
+
+    import xarray
+    import numpy as np
+    ds = xarray.Dataset(
+        {"foo": (("x", "y"), np.random.randn(2, 3))},
+        coords={
+            "x": [10, 20],
+            "y": ["a", "b", "c"],
+            "along_x": ("x", np.random.randn(2)),
+            "scalar": 123,
+        },
+    )
+    ds
+
+Convert the xarray dataset to a pandas data frame
+
+    df = ds.to_dataframe()
+    df
+
+Convert the data frame back to a dataset
+
+    xarray.Dataset.from_dataframe(df)
+
+> "Notice that that dimensions of variables in the Dataset have now expanded
+> after the round-trip conversion to a DataFrame. This is because every object
+> in a DataFrame must have the same indices, so we need to broadcast the data
+> of each array to the full size of the new MultiIndex. Likewise, all the
+> coordinates (other than indexes) ended up as variables, because pandas does
+> not distinguish non-index coordinates."
+
+You can also use 
+
+    xarray.DataArray(df)
+
+
+### Panel data
+
+[transitioning from pandas panel to xarray](https://docs.xarray.dev/en/stable/user-guide/pandas.html#transitioning-from-pandas-panel-to-xarray)
+
+> "As discussed elsewhere in the docs, there are two primary data structures
+> in xarray: DataArray and Dataset. You can imagine a DataArray as a
+> n-dimensional pandas Series (i.e. a single typed array), and a Dataset as the
+> DataFrame equivalent (i.e. a dict of aligned DataArray objects).
+> So you can represent a Panel, in two ways:
+> 
+>    As a 3-dimensional DataArray,
+> 
+>    Or as a Dataset containing a number of 2-dimensional DataArray objects.
+
+
+### IO
+
 - [How to read netcdf files in chunks with Xarray and Dask](https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python)
 
 
 # Paths
+
+## Copy or move files
+
+Write to a text file using a [context
+manager](https://book.pythontips.com/en/latest/context_managers.html), then
+copy the file somewhere else. 
+
+    with open("/tmp/bli.md", "w") as f:
+        f.write('Hola!')
+
+Copy a file
+
+    import shutil
+    shutil.copy("/tmp/bli.md", "/tmp/bla.md")
+
+Move a file
+
+    shutil.move("/tmp/bli.md", "/tmp/bla.md")
+
 
 ## Pathlib
 
@@ -4158,6 +4507,14 @@ because we hat to use df["x"] to assign vectors to new column names whereas we
 could use df.x to display them.
 
 
+## Xarray, pandas and R
+
+The [xarray user guide page on pandas](https://docs.xarray.dev/en/stable/user-guide/pandas.html) cites Hadley Whickham's paper on tidy data:
+
+> "Tabular data is easiest to work with when it meets the criteria for tidy
+> data".
+
+
 ## Personal reflection
 
 R is great for statistical analysis and plotting. You can also use it to
@@ -4827,3 +5184,7 @@ Martelli](https://mappingthejourney.com/single-post/2017/06/21/episode-2-intervi
 - Interesting how Samuel Colvin talks about serialization [automate your data
   exchange with pydantic](https://talkpython.fm/episodes/show/313/automate
   your data exchange with pydantic)
+
+## Teaching
+
+

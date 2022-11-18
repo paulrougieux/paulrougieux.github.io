@@ -1923,6 +1923,80 @@ href="https://stackoverflow.com/a/40596167">SO Answer</a></p>
    &quot;&quot;&quot;</code></pre>
 </div>
 </div>
+<div id="geopandas" class="section level1">
+<h1>Geopandas</h1>
+<p>geopandas help topic</p>
+<ul>
+<li><a
+href="https://geopandas.org/en/stable/docs/user_guide/io.html">Input
+output</a> reading and writing files</li>
+</ul>
+<p>All geopandas examples below require the following imports:</p>
+<pre><code>from matplotlib import pyplot as plt
+import geopandas</code></pre>
+<div id="map-of-the-world" class="section level2">
+<h2>Map of the World</h2>
+<p>Plot a world map of GDP per capita</p>
+<pre><code>world = geopandas.read_file(geopandas.datasets.get_path(&#39;naturalearth_lowres&#39;))
+world = world[(world.pop_est&gt;0) &amp; (world.name!=&quot;Antarctica&quot;)]
+world[&#39;gdp_per_cap&#39;] = world.gdp_md_est / world.pop_est
+world.plot(column=&#39;gdp_per_cap&#39;)
+plt.show()</code></pre>
+</div>
+<div id="map-of-europe" class="section level2">
+<h2>Map of Europe</h2>
+<p>Load the JSON data from the Eurostat <a
+href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts21">NUTS
+page</a> (Nomenclature of territorial units for statistics) using the
+EPSG 3035 projection.</p>
+<pre><code>nuts = geopandas.read_file(&quot;~/downloads/NUTS_RG_20M_2021_3035.geojson&quot;)
+ax = nuts.plot()
+ax.set_xlim(2000000, 8000000)
+ax.set_ylim(1000000, 5500000)
+nuts.boundary.plot(color=&quot;darkgreen&quot;, ax=ax)
+plt.show()</code></pre>
+<p>NUTS ID have either 2, 3, 4 or 5 characters</p>
+<pre><code>nuts.NUTS_ID.str.len().unique()
+# array([2, 3, 4, 5])
+nuts[&quot;id_n&quot;] = nuts.NUTS_ID.str.len()
+def map_borders(df):
+    ax = df.plot()
+    ax.set_xlim(2000000, 8000000)
+    ax.set_ylim(1000000, 5500000)
+    df.boundary.plot(color=&quot;grey&quot;, ax=ax)
+    return(ax)</code></pre>
+<p>Map NUTS 0 which has 2 character codes</p>
+<pre><code>nuts0 = nuts.query(&quot;id_n == 2&quot;)
+map_borders(nuts0)
+plt.show()</code></pre>
+<p>Map NUTS 1 which has 3 character codes</p>
+<pre><code>nuts1 = nuts.query(&quot;id_n == 3&quot;)
+map_borders(nuts1)
+plt.show()</code></pre>
+<p>Map NUTS 2 which has 4 character codes</p>
+<pre><code>nuts2 = nuts.query(&quot;id_n == 4&quot;)
+map_borders(nuts2)
+plt.show()
+# Drop the geometry and write the description columns to a csv file
+nuts2.drop(columns=&quot;geometry&quot;).to_csv(&quot;/tmp/nuts2.csv&quot;)</code></pre>
+<p>Blogs and help pages:</p>
+<ul>
+<li><p>Jan’s blog, a quick visual comparison of the EPSG 3035, EPSG 4326
+and EPSG 3857 projections on <a
+href="https://jan-46106.medium.com/plotting-maps-with-european-data-in-python-part-i-decd83837de4">plotting
+maps with european data in python part i</a></p>
+<ul>
+<li>I chose EPSG 3035 because it represents areas in a comparable
+way.</li>
+<li>Use <code>.boundary.plot()</code>to plot boundaries.</li>
+</ul></li>
+<li><p>towardsdatascience.com <a
+href="https://towardsdatascience.com/using-eurostat-statistical-data-on-europe-with-python-2d77c9b7b02b">using
+eurostat statistical data on Europe with python</a> Setting x an y
+limits to the map of continental Europe only</p></li>
+</ul>
+</div>
+</div>
 <div id="math" class="section level1">
 <h1>Math</h1>
 <p><a
@@ -1971,6 +2045,17 @@ Cookbook</a></p>
 be described by linear or nonlinear algebraic, differential, and partial
 differential equations and constraints.”</p>
 </blockquote>
+</div>
+<div id="panel-data-regressions" class="section level2">
+<h2>Panel data regressions</h2>
+<ul>
+<li><p>The package <a
+href="https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.html#linearmodels.panel.model.PanelOLS">linearmodels</a>
+provides fixed effects estimator for panel data.</p></li>
+<li><p>blog <a
+href="https://towardsdatascience.com/a-guide-to-panel-data-regression-theoretics-and-implementation-with-python-4c84c5055cf8">Panel
+data with python</a></p></li>
+</ul>
 </div>
 </div>
 <div id="numpy-vectors-and-matrices-arrays" class="section level1">
@@ -2398,6 +2483,48 @@ df[&quot;mot&quot;] = df[&quot;lettre&quot;].map(mapping)</code></pre>
                        &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
                        &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
 df.set_index(&#39;b&#39;).to_dict()[&#39;c&#39;]</code></pre>
+<div id="convert-a-column-to-string-float-or-integer"
+class="section level3">
+<h3>Convert a column to string, float or integer</h3>
+<p>Convert a string to a numeric type</p>
+<pre><code>s = pandas.Series([&quot;1&quot;, &quot;2&quot;, &quot;a&quot;])
+pandas.to_numeric(s, errors=&quot;coerce&quot;)
+
+# The following would return an error
+s.astype(float)
+s.astype(int)
+# And errors=&quot;ignore&quot; would not convert at all
+s.astype(float, errors=&quot;ignore&quot;)
+pandas.to_numeric(s, errors=&quot;ignore&quot;)</code></pre>
+<p>Convert an integer to a string type</p>
+<pre><code>s = pandas.Series(range(3))
+s.astype(str)</code></pre>
+</div>
+<div id="convert-one-value-to-a-scalar" class="section level3">
+<h3>Convert one value to a scalar</h3>
+<p>SO question <a
+href="https://stackoverflow.com/questions/47910328/convert-pandas-dataframe-value-to-scalar">Convert
+to scalar</a></p>
+<ul>
+<li><p>iat()</p>
+<blockquote>
+<p>“Access a single value for a row/column pair by integer position.
+Similar to iloc, in that both provide integer-based lookups. Use iat if
+you only need to get or set a single value in a DataFrame or
+Series.”</p>
+</blockquote></li>
+<li><p>squeeze()</p>
+<blockquote>
+<p>“Squeeze 1 dimensional axis objects into scalars. Series or
+DataFrames with a single element are squeezed to a scalar. DataFrames
+with a single column or a single row are squeezed to a Series. Otherwise
+the object is unchanged. This method is most useful when you don’t know
+if your object is a Series or DataFrame, but you do know it has just a
+single column. In that case you can safely call squeeze to ensure you
+have a Series.”</p>
+</blockquote></li>
+</ul>
+</div>
 </div>
 <div id="compare-data-frames" class="section level2">
 <h2>Compare data frames</h2>
@@ -2628,6 +2755,24 @@ explaining the difference between transform and apply</a></p>
 <h2>Index</h2>
 <p>Index can be converted back to a data frame See also index selection
 in the “.loc” section.</p>
+<div id="drop-index-levels" class="section level3">
+<h3>Drop index levels</h3>
+<p>Example from <a
+href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.drop.html">pandas
+DataFrame drop</a></p>
+<pre><code>import pandas
+midx = pandas.MultiIndex(levels=[[&#39;lama&#39;, &#39;cow&#39;, &#39;falcon&#39;],
+                             [&#39;speed&#39;, &#39;weight&#39;, &#39;length&#39;]],
+                     codes=[[0, 0, 0, 1, 1, 1, 2, 2, 2],
+                            [0, 1, 2, 0, 1, 2, 0, 1, 2]])
+df = pandas.DataFrame(index=midx, columns=[&#39;big&#39;, &#39;small&#39;],
+                  data=[[45, 30], [200, 100], [1.5, 1], [30, 20],
+                        [250, 150], [1.5, 0.8], [320, 250],
+                        [1, 0.8], [0.3, 0.2]])
+df
+df.drop(index=&#39;cow&#39;, columns=&#39;small&#39;)
+df.drop(index=&#39;length&#39;, level=1)</code></pre>
+</div>
 <div id="recursive-computation-on-a-index-in-a-loop"
 class="section level3">
 <h3>Recursive computation on a index in a loop</h3>
@@ -2655,10 +2800,13 @@ df.loc[min(years), &quot;y&quot;] = 2
 for t in range(min(years)+1, max(years)+1):
     df.loc[t, &quot;y&quot;] = pow(df.loc[t-1, &quot;y&quot;], df.loc[t, &quot;x&quot;]/2)
 df</code></pre>
-<p>Multi index case I would like to compute the consumption equation of
-a partial equilibrium model.</p>
-<pre><code>pandas.DataFrame({&#39;x&#39;:range(0,3), 
-                  &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
+</div>
+<div id="multi-index-case" class="section level4">
+<h4>Multi index case</h4>
+<p>I would like to compute the consumption equation of a partial
+equilibrium model.</p>
+<pre><code>df = pandas.DataFrame({&#39;x&#39;:range(0,3), 
+                       &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
 
 for t in range(gfpmx_data.base_year + 1, years.max()+1):
     # TODO: replace this loop by vectorized operations using only the index on years
@@ -2686,6 +2834,19 @@ penguins[[&quot;species&quot;, &quot;island&quot;]].value_counts()</code></pre>
 <p>Lower level method using <code>unique()</code> on a multi index and
 returning a data frame</p>
 <pre><code>penguins.set_index([&quot;species&quot;, &quot;island&quot;]).index.unique().to_frame(False)</code></pre>
+</div>
+<div id="query-index-greater-or-smaller-than" class="section level3">
+<h3>Query index greater or smaller than</h3>
+<p>See also the query section for other ways to query data frames.</p>
+<p><a href="https://stackoverflow.com/a/18103894/2641825">SO
+answer</a></p>
+<pre><code>df = pandas.DataFrame({&#39;i&#39;:range(0,3), 
+                       &#39;j&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;],
+                       &#39;x&#39;:range(22,25)})
+df = df.set_index([&quot;i&quot;,&quot;j&quot;])
+df.loc[(df.index.get_level_values(&#39;i&#39;) &gt; 1)]</code></pre>
+<p>Using query instead</p>
+<pre><code>df.query(&quot;i&gt;1&quot;)</code></pre>
 </div>
 </div>
 <div id="pyarrow" class="section level2">
@@ -3007,6 +3168,14 @@ objects).</p>
 )
 cheese
 cheese.melt(id_vars=[&quot;first&quot;, &quot;last&quot;], var_name=&quot;quantity&quot;)</code></pre>
+<p>Another example</p>
+<pre><code>grading_matrix = pandas.DataFrame({&quot;dbh&quot;:[&quot;d1&quot;, &quot;d2&quot;, &quot;d3&quot;],
+                                   &quot;abies&quot;:[&quot;p&quot;,&quot;q&quot;,&quot;r&quot;],
+                                   &quot;picea&quot;:[&quot;m&quot;,&quot;n&quot;,&quot;o&quot;],
+                                   &quot;larix&quot;:[&quot;m&quot;,&quot;n&quot;,&quot;o&quot;]})
+grading_long = grading_matrix.melt(id_vars=&quot;dbh&quot;, 
+                                   var_name=&quot;species&quot;, 
+                                   value_name=&quot;grading&quot;)</code></pre>
 <p>Reshape using the <code>wide_to_long</code> convenience function</p>
 <pre><code>import numpy as np
 dft = pandas.DataFrame(
@@ -3094,6 +3263,15 @@ df</code></pre>
 </div>
 <div id="select-with-loc-iloc-query-isin-and-xs" class="section level2">
 <h2>Select with loc, iloc, query, isin and xs</h2>
+<p>There are many ways to select data in pandas (squarebraquets, loc,
+iloc, query, isin). In a first stage, during data preparation it’s
+better to keep data out of the index. But in a second stage, when you
+are doing modelling, multi indexes become useful. And especially slicers
+to computes on part of the dataset - only some years, only some
+products, only some countries . For this, tools such as df.xs or <a
+href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.IndexSlice.html"
+class="uri">https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.IndexSlice.html</a>
+are needed.</p>
 <ul>
 <li>blog <a
 href="https://www.shanelynn.ie/select-pandas-dataframe-rows-and-columns-using-iloc-loc-and-ix/">Select
@@ -3226,11 +3404,39 @@ returns a Series.</p>
 <p>Invert a selection on the second index</p>
 <pre><code>df.loc[~df.index.isin([&quot;mark i&quot;], level=1)]</code></pre>
 </div>
-<div id="multi-index-slicers" class="section level4">
-<h4>Multi-index slicers</h4>
+<div id="multi-index-slicers-to-select-the-second-index-element"
+class="section level4">
+<h4>Multi-index slicers to select the second index element</h4>
+<p><a
+href="https://pandas.pydata.org/pandas-docs/stable/user_guide/advanced.html#using-slicers">Using
+slicers</a></p>
+<blockquote>
+<p>“You can use pandas.IndexSlice to facilitate a more natural syntax
+using <code>:</code>, rather than using <code>slice(None)</code>.”</p>
+</blockquote>
+<p>Other example from <a
+href="https://stackoverflow.com/questions/56340906/ilocing-one-level-of-a-multiindex">a
+SO question</a></p>
+<pre><code>import pandas
+df = pandas.DataFrame(index = pandas.MultiIndex.from_product([range(2010,2020),
+                      [&#39;mike&#39;, &#39;matt&#39;, &#39;dave&#39;, &#39;frank&#39;, &#39;larry&#39;], ]))
+df[&#39;x&#39;]=0
+df.index.names=[&#39;year&#39;, &#39;people&#39;]
+df.loc[2010]
+df.loc[(2010,&quot;mike&quot;)]</code></pre>
+<p>These two <code>df.loc[2010]</code>,
+<code>df.loc[(2010,"mike")]</code> work, but</p>
+<pre><code>df.loc[&quot;mike&quot;]</code></pre>
+<p>Returns a <code>KeyError: 'mike'</code>. To select on the second
+index level only, you need a multi index slicer.</p>
+<pre><code>idx = pandas.IndexSlice
+df.loc[idx[:, &quot;mike&quot;],:]</code></pre>
+<p>You can also use <code>df.xs</code></p>
+<pre><code>df.xs(&quot;mike&quot;, level=1)
+df.xs(&quot;mike&quot;, level=&quot;people&quot;)</code></pre>
 <p><a href="https://stackoverflow.com/a/50414126/2641825">Using loc on
-just the second index in multi index</a> Using the same data frame as
-above.</p>
+just the second index in multi index</a> Other example using the same
+data frame as the previous section.</p>
 <pre><code>idx = pandas.IndexSlice
 df.loc[idx[:, &quot;mark i&quot;],:]
 df.xs(&quot;mark i&quot;, level=1)</code></pre>
@@ -3303,6 +3509,8 @@ A  B  C
 5  2  6</code></pre>
 <p>Query for a variable in a list</p>
 <pre><code>df.query(&quot;A in [3,6]&quot;)</code></pre>
+<p>Query for a variable not in a list</p>
+<pre><code>df.query(&quot;A not in [3,6]&quot;)</code></pre>
 <div id="str.contains-and-str.startswith" class="section level4">
 <h4>str.contains and str.startswith</h4>
 <p>str.contains and str.startswith do not work with the default numexpre
@@ -3387,12 +3595,18 @@ class StringMethods(pandas.core.base.NoNewAttributesMixin).</p>
 help(df.a.str)</code></pre>
 <p>Concatenate all values in a character vector:</p>
 <pre><code>df[&#39;a&#39;].str.cat()</code></pre>
-<p>Replace elements in a character vector:</p>
-<pre><code>df[&#39;a&#39;].replace(&#39;a&#39;,&#39;b&#39;,regex=True)</code></pre>
 <p>Extract the first 2 or last 2 characters</p>
 <pre><code>df = pandas.DataFrame({&#39;a&#39;:[&#39;bla&#39;,&#39;bli&#39;,&#39;quoi?&#39;]})
 df[&quot;a&quot;].str[:2]
 df[&quot;a&quot;].str[-2:]</code></pre>
+<div id="search-and-replace" class="section level3">
+<h3>Search and replace</h3>
+<p>Search one element or another in a character vector:</p>
+<pre><code>df = pandas.DataFrame({&#39;a&#39;:[&#39;bla&#39;,&#39;ble&#39;,&#39;bli&#39;]})
+df[df[&#39;a&#39;].str.contains(&#39;a|i&#39;)]</code></pre>
+<p>Replace elements in a character vector:</p>
+<pre><code>df[&#39;a&#39;].replace(&#39;a|i&#39;,&#39;b&#39;,regex=True)</code></pre>
+</div>
 <div id="separate-a-columns-in-two-based-on-a-split-pattern"
 class="section level3">
 <h3>Separate a columns in two based on a split pattern</h3>
@@ -3511,6 +3725,109 @@ df1.where(df1.isna(), df2)</code></pre>
 </div>
 <div id="xarray" class="section level2">
 <h2>Xarray</h2>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray">DataArray</a></p>
+<pre><code>&gt; &quot;xarray.DataArray is xarray’s implementation of a labeled, multi-dimensional
+&gt; array. It has several key properties:
+&gt; 
+&gt; - values: a numpy.ndarray holding the array’s values
+&gt; 
+&gt; - dims: dimension names for each axis (e.g., (&#39;x&#39;, &#39;y&#39;, &#39;z&#39;))
+&gt; 
+&gt; - coords: a dict-like container of arrays (coordinates) that label each point
+&gt;   (e.g., 1-dimensional arrays of numbers, datetime objects or strings)
+&gt; 
+&gt; - attrs: dict to hold arbitrary metadata (attributes)
+&gt; 
+&gt; Xarray uses dims and coords to enable its core metadata aware operations.
+&gt; Dimensions provide names that xarray uses instead of the axis argument found in
+&gt; many numpy functions. Coordinates enable fast label based indexing and
+&gt; alignment, building on the functionality of the index found on a pandas
+&gt; DataFrame or Series.&quot;</code></pre>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataset">Dataset</a></p>
+<pre><code>&gt; &quot;xarray.Dataset is xarray’s multi-dimensional equivalent of a DataFrame. It is a
+&gt; dict-like container of labeled arrays (DataArray objects) with aligned
+&gt; dimensions. It is designed as an in-memory representation of the data model
+&gt; from the netCDF file format.
+&gt; 
+&gt; In addition to the dict-like interface of the dataset itself, which can be used
+&gt; to access any variable in a dataset, datasets have four key properties:
+&gt; 
+&gt; dims: a dictionary mapping from dimension names to the fixed length of each
+&gt; dimension (e.g., {&#39;x&#39;: 6, &#39;y&#39;: 6, &#39;time&#39;: 8})
+&gt; 
+&gt; data_vars: a dict-like container of DataArrays corresponding to variables
+&gt; 
+&gt; coords: another dict-like container of DataArrays intended to label points
+&gt; used in data_vars (e.g., arrays of numbers, datetime objects or strings)
+&gt; attrs: dict to hold arbitrary metadata
+&gt; 
+&gt; The distinction between whether a variable falls in data or coordinates
+&gt; (borrowed from CF conventions) is mostly semantic, and you can probably get
+&gt; away with ignoring it if you like: dictionary like access on a dataset will
+&gt; supply variables found in either category. However, xarray does make use of the
+&gt; distinction for indexing and computations. Coordinates indicate
+&gt; constant/fixed/independent quantities, unlike the varying/measured/dependent
+&gt; quantities that belong in data.&quot;</code></pre>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/reshaping.html#converting-between-datasets-and-arrays">converting
+between datasets and arrays</a></p>
+<pre><code>&gt; &quot;This method broadcasts all data variables in the dataset against each other,
+&gt; then concatenates them along a new dimension into a new array while
+&gt; preserving coordinates.&quot;</code></pre>
+<div id="create-xarray-from-pandas" class="section level3">
+<h3>Create xarray from pandas</h3>
+<p>Round trip from pandas to xarray and back from the <a
+href="https://docs.xarray.dev/en/stable/user-guide/pandas.html">xarray
+user guide page on pandas</a>.</p>
+<pre><code>import xarray
+import numpy as np
+ds = xarray.Dataset(
+    {&quot;foo&quot;: ((&quot;x&quot;, &quot;y&quot;), np.random.randn(2, 3))},
+    coords={
+        &quot;x&quot;: [10, 20],
+        &quot;y&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;],
+        &quot;along_x&quot;: (&quot;x&quot;, np.random.randn(2)),
+        &quot;scalar&quot;: 123,
+    },
+)
+ds</code></pre>
+<p>Convert the xarray dataset to a pandas data frame</p>
+<pre><code>df = ds.to_dataframe()
+df</code></pre>
+<p>Convert the data frame back to a dataset</p>
+<pre><code>xarray.Dataset.from_dataframe(df)</code></pre>
+<blockquote>
+<p>“Notice that that dimensions of variables in the Dataset have now
+expanded after the round-trip conversion to a DataFrame. This is because
+every object in a DataFrame must have the same indices, so we need to
+broadcast the data of each array to the full size of the new MultiIndex.
+Likewise, all the coordinates (other than indexes) ended up as
+variables, because pandas does not distinguish non-index
+coordinates.”</p>
+</blockquote>
+<p>You can also use</p>
+<pre><code>xarray.DataArray(df)</code></pre>
+</div>
+<div id="panel-data" class="section level3">
+<h3>Panel data</h3>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/pandas.html#transitioning-from-pandas-panel-to-xarray">transitioning
+from pandas panel to xarray</a></p>
+<blockquote>
+<p>“As discussed elsewhere in the docs, there are two primary data
+structures in xarray: DataArray and Dataset. You can imagine a DataArray
+as a n-dimensional pandas Series (i.e. a single typed array), and a
+Dataset as the DataFrame equivalent (i.e. a dict of aligned DataArray
+objects). So you can represent a Panel, in two ways:</p>
+<p>As a 3-dimensional DataArray,</p>
+<p>Or as a Dataset containing a number of 2-dimensional DataArray
+objects.</p>
+</blockquote>
+</div>
+<div id="io" class="section level3">
+<h3>IO</h3>
 <ul>
 <li><a
 href="https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python">How
@@ -3518,8 +3835,22 @@ to read netcdf files in chunks with Xarray and Dask</a></li>
 </ul>
 </div>
 </div>
+</div>
 <div id="paths" class="section level1">
 <h1>Paths</h1>
+<div id="copy-or-move-files" class="section level2">
+<h2>Copy or move files</h2>
+<p>Write to a text file using a <a
+href="https://book.pythontips.com/en/latest/context_managers.html">context
+manager</a>, then copy the file somewhere else.</p>
+<pre><code>with open(&quot;/tmp/bli.md&quot;, &quot;w&quot;) as f:
+    f.write(&#39;Hola!&#39;)</code></pre>
+<p>Copy a file</p>
+<pre><code>import shutil
+shutil.copy(&quot;/tmp/bli.md&quot;, &quot;/tmp/bla.md&quot;)</code></pre>
+<p>Move a file</p>
+<pre><code>shutil.move(&quot;/tmp/bli.md&quot;, &quot;/tmp/bla.md&quot;)</code></pre>
+</div>
 <div id="pathlib" class="section level2">
 <h2>Pathlib</h2>
 <p>Pathlib is an object oriented path API for python as explained in <a
@@ -4347,6 +4678,17 @@ assign vectors to new column names whereas we could use df.x to display
 them.</p>
 </div>
 </div>
+<div id="xarray-pandas-and-r" class="section level2">
+<h2>Xarray, pandas and R</h2>
+<p>The <a
+href="https://docs.xarray.dev/en/stable/user-guide/pandas.html">xarray
+user guide page on pandas</a> cites Hadley Whickham’s paper on tidy
+data:</p>
+<blockquote>
+<p>“Tabular data is easiest to work with when it meets the criteria for
+tidy data”.</p>
+</blockquote>
+</div>
 <div id="personal-reflection" class="section level2">
 <h2>Personal reflection</h2>
 <p>R is great for statistical analysis and plotting. You can also use it
@@ -5009,6 +5351,9 @@ science year in review</a></p></li>
 href="https://talkpython.fm/episodes/show/313/automate%20your%20data%20exchange%20with%20pydantic">automate
 your data exchange with pydantic</a></p></li>
 </ul>
+</div>
+<div id="teaching" class="section level2">
+<h2>Teaching</h2>
 </div>
 </div>
 
