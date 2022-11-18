@@ -1,5 +1,4 @@
 ---
-title: "R Commands"
 author: "Paul Rougieux"
 date: "17 August 2017"
 output: 
@@ -313,7 +312,9 @@ More information on the behaviour of backtrace:
 > the ‘summary()’ method of this object will reveal." 
 
 
-# Environement
+# Environnement
+
+## R environment
 
 List objects in the global environment:
 
@@ -324,7 +325,7 @@ List objects coming from a specific loaded package:
     ls("package:stats")
     ls("package:stats", pattern="smooth")
  
-Remove all objects in the environement except one:
+Remove all objects in the environment except one:
 
     rm(list=ls()[!ls()=="object_to_keep"]) 
     rm(list=ls()[!ls()=="con"]) # Remove all except a database connection
@@ -332,6 +333,13 @@ Remove all objects in the environement except one:
 Get the current environment
 
     rlang::current_env()
+
+
+## Read system environment variables
+
+Read an environment variable from the operating system
+
+    data_path <- Sys.getenv("PROJECT_DATA")
 
 
 # Editors
@@ -560,8 +568,7 @@ sessionInfo()
 installed.packages()
 ```
 
-# knitr
-
+# R Markdown
 
 ## Create websites
 
@@ -796,6 +803,72 @@ And the fact that I cannot edit the slide master from power point online is
 annoying.
 
 
+### Figure numbering
+
+Using bookdown it's possible to use figure numbering as explain in this [SO
+answer](https://stackoverflow.com/a/47029553/2641825)
+
+    ---
+    output: bookdown::html_document2
+    ---
+
+    # Section name {#id}
+
+    ```{r pressure, echo=FALSE, fig.cap='test plot'}
+    plot(pressure)
+    ```
+
+    To cross-reference the figure, use `\@ref(fig:pressure)` 
+    to produce Figure \@ref(fig:pressure). All this is found within the section \@ref(id).
+
+This doesn't work with word documents because the word document format is not
+available for bookdown. 
+
+
+### Word document
+
+Render an Rmarkdown notebook as word document with the rmarkdown package:
+
+    Rscript -e "rmarkdown::render('chapter.Rmd', output_format='word_document')"
+
+Sample Rmarkdown document to be rendered with quarto
+
+    ---
+    title: "My Document"
+    format:
+      docx:
+        toc: true
+    ---
+
+    # Section name
+
+    ```{r echo=FALSE}
+    #| label: fig-plot
+    #| fig-cap: "Plot"
+    plot(pressure)
+    ```
+
+    For example, see @fig-plot.
+
+Render with:
+
+    quarto render document.qmd
+
+
+Create a template:
+
+    quarto pandoc -o custom-reference-doc.docx \
+       --print-default-data-file reference.docx
+
+
+Other notes:
+
+- The redoc package was developped in 2019, but abandoned.
+  https://bookdown.org/yihui/rmarkdown-cookbook/word-redoc.html
+
+
+
+
 ## Python engine
 
 Rstudio: [R Mardown python engine](https://rstudio.github.io/reticulate/articles/r_markdown.html)
@@ -805,20 +878,40 @@ See also the reticulate package mentioned below.
 
 ### Reticulate to call python from R
 
-Example of a python chunk followed by an R chunk calling a python method
-defined in that package.
+Example of a python chunk followed by an R chunk.
 
-λ{python eval=FALSE}
-from biotrade.faostat import faostat
-—
+    # ---
+    # title: "The Ultimate Question"
+    # ---
 
-```{r eval=FALSE}
-soy_prod <- py$faostat$db$select(table="crop_production", product = "soy")
-```
+    # ```{r setup}
+    # library(reticulate)
+    # ```
+
+    # ```{python}
+    # import pandas
+    # df = pandas.DataFrame({'x':[2,3,7], 'y':['life','universe','everything']})
+    # ```
+
+    # ```{r}
+    # str(py$df)
+    # prod(py$df$x)
+    # ```
 
 More information in the vignette:
 
     vignette("calling_python", package="reticulate")
+
+This can also be used to call python functions in R
+
+    λ{python eval=FALSE}
+    from biotrade.faostat import faostat
+    —
+
+    ```{r eval=FALSE}
+    soy_prod <- py$faostat$db$select(table="crop_production", product = "soy")
+    ```
+
 
 ### Using Reticulate in an R packages
 
@@ -1204,6 +1297,17 @@ Make a multi column legend
 
 See ggplot2 reference [guide
 legend](https://ggplot2.tidyverse.org/reference/guide_legend.html).
+
+
+#### Change the order of legend items
+
+[Reorder items in the fill
+legend](https://www.statology.org/ggplot-legend-order/):
+
+    library(ggplot2)
+    ggplot(iris, aes(x=Species, y=Petal.Width, fill=Species)) +
+      geom_boxplot() +
+      scale_fill_discrete(breaks= c("virginica", "setosa", "versicolor"))
 
 
 #### One legend for each sub plot
@@ -1623,10 +1727,11 @@ iris %>%
 
 `rename_with` from the `dplyr` package can use either a function or a formula
 to rename a selection of columns given as the `.cols` argument. For example
-passing the function name `toupper`: 
+passing the function name `toupper` or `tolower`: 
 
     library(dplyr)
     rename_with(head(iris), toupper, starts_with("Petal"))
+    rename_with(head(iris), tolower, starts_with("Petal"))
 
 Is equivalent to passing the formula `~ toupper(.x)`:
 
@@ -1882,7 +1987,73 @@ comment](https://stackoverflow.com/questions/4216753/check-existence-of-director
 > using a working directory because you can no longer easily move your code
 > between computers. – hadley Nov 20 '10 at 23:44 "
 
+Content copied from my [StackOverflow answer](https://stackoverflow.com/a/47045842/2641825).
 
+**TLDR**: The [here](https://cran.r-project.org/web/packages/here/index.html) package (available on CRAN) helps you build a path from a project's root directory. R projects configured with `here()` can be shared with colleagues working on different laptops or servers and paths built relative to the project's root directory will still work. The development version is at [github.com/r-lib/here](https://github.com/r-lib/here).
+
+## With git
+
+You certainly store your R code in a directory. This directory is probably part of a git repository and/or an R studio project. I would recommend building all paths relative to that project's root directory. For example let's say that you have an R script that creates reusable plotting functions and that you have an R markdown notebook that loads that script and plots graphs in a nice (so nice) document. The project tree would look something like this
+
+    ├── notebooks
+    │   ├── analysis.Rmd
+    ├── R
+    │   ├── prepare_data.R
+    │   ├── prepare_figures.R
+
+From the `analysis.Rmd` notebook, you would import plotting function with `here()` as such:
+
+    source(file.path(here::here("R"), "prepare_figures.R"))
+
+## Why?
+
+From the  [Ode to the here package](https://github.com/jennybc/here_here#readme):
+
+> Do you:
+>    Have setwd() in your scripts? PLEASE STOP DOING THAT.
+        This makes your script very fragile, hard-wired to exactly one time and place. As soon as you rename or move directories, it breaks. Or maybe you get a new computer? Or maybe someone else needs to run your code?
+> [...]
+> Classic problem presentation: Awkwardness around building paths and/or setting working directory in projects with subdirectories. Especially if you use R Markdown and knitr, which trips up alot of people with its default behavior of “working directory = directory where this file lives”. [...]
+
+Install the [here](https://cran.r-project.org/web/packages/here/index.html) package:
+
+    install.packages("here")
+    library(here)
+    here()
+    here("construct","a","path")
+
+Documentation of the `here()` function:
+
+> Starting with the current working directory during package load time,
+> here will walk the directory hierarchy upwards until it finds
+> a directory that satisfies at least one of the following conditions:
+>
+> * contains a file matching [.]Rproj$ with contents matching ^Version: in
+> the first line
+> * [... other options ...]
+> * contains a directory .git
+>
+> Once established, the root directory doesn't change during the active
+> R session. here() then appends the arguments to the root directory.
+
+The development version of the [here package is available on github](https://github.com/r-lib/here).
+
+
+## What about
+
+### What about files outside the project directory?
+
+If you are loading or sourcing files outside the project directory, the recommended way is to use an environment variable at the Operating System level. Other users of your R code on different laptops or servers would need to set the same environment variable. The advantage is that it is portable.
+
+    data_path <- Sys.getenv("PROJECT_DATA")
+    df <- read.csv(file.path(data_path, "file_name.csv"))
+
+
+Note: There is a long list of [environmental variables](https://stat.ethz.ch/R-manual/R-devel/library/base/html/EnvVar.html) which can affect an R session.
+
+### What about many projects sourcing each other?
+
+It's time to [create an R package](https://r-pkgs.org/).
 
 # Further resources
 

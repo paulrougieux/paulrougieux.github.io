@@ -13,7 +13,7 @@
 
 <meta name="date" content="2017-08-17" />
 
-<title>R Commands</title>
+<title>R.knit</title>
 
 <script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -444,9 +444,6 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">R Commands</h1>
-<h4 class="author">Paul Rougieux</h4>
-<h4 class="date">17 August 2017</h4>
 
 </div>
 
@@ -745,18 +742,26 @@ which the ‘summary()’ method of this object will reveal.”</p>
 </blockquote>
 </div>
 </div>
-<div id="environement" class="section level1">
-<h1>Environement</h1>
+<div id="environnement" class="section level1">
+<h1>Environnement</h1>
+<div id="r-environment" class="section level2">
+<h2>R environment</h2>
 <p>List objects in the global environment:</p>
 <pre><code>ls</code></pre>
 <p>List objects coming from a specific loaded package:</p>
 <pre><code>ls(&quot;package:stats&quot;)
 ls(&quot;package:stats&quot;, pattern=&quot;smooth&quot;)</code></pre>
-<p>Remove all objects in the environement except one:</p>
+<p>Remove all objects in the environment except one:</p>
 <pre><code>rm(list=ls()[!ls()==&quot;object_to_keep&quot;]) 
 rm(list=ls()[!ls()==&quot;con&quot;]) # Remove all except a database connection</code></pre>
 <p>Get the current environment</p>
 <pre><code>rlang::current_env()</code></pre>
+</div>
+<div id="read-system-environment-variables" class="section level2">
+<h2>Read system environment variables</h2>
+<p>Read an environment variable from the operating system</p>
+<pre><code>data_path &lt;- Sys.getenv(&quot;PROJECT_DATA&quot;)</code></pre>
+</div>
 </div>
 <div id="editors" class="section level1">
 <h1>Editors</h1>
@@ -950,8 +955,8 @@ getOption(&quot;pkgType&quot;)</code></pre>
 <pre class="r"><code>sessionInfo()
 installed.packages()</code></pre>
 </div>
-<div id="knitr" class="section level1">
-<h1>knitr</h1>
+<div id="r-markdown" class="section level1">
+<h1>R Markdown</h1>
 <div id="create-websites" class="section level2">
 <h2>Create websites</h2>
 <div id="rmarkdown-site-generator" class="section level3">
@@ -1310,7 +1315,7 @@ be defined in the preamble section of the R markdown document.</p>
 documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;27 September, 2022&quot;
+date:  &quot;18 November, 2022&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1341,6 +1346,60 @@ class="uri">https://github.com/jgm/pandoc/issues/5402</a> And the fact
 that I cannot edit the slide master from power point online is
 annoying.</p>
 </div>
+<div id="figure-numbering" class="section level3">
+<h3>Figure numbering</h3>
+<p>Using bookdown it’s possible to use figure numbering as explain in
+this <a href="https://stackoverflow.com/a/47029553/2641825">SO
+answer</a></p>
+<pre><code>---
+output: bookdown::html_document2
+---
+
+# Section name {#id}
+
+&lt;div class=&quot;figure&quot;&gt;
+&lt;img src=&quot;R_files/figure-html/pressure-1.png&quot; alt=&quot;test plot&quot; width=&quot;672&quot; /&gt;
+&lt;p class=&quot;caption&quot;&gt;test plot&lt;/p&gt;
+&lt;/div&gt;
+
+To cross-reference the figure, use `\@ref(fig:pressure)` 
+to produce Figure \@ref(fig:pressure). All this is found within the section \@ref(id).</code></pre>
+<p>This doesn’t work with word documents because the word document
+format is not available for bookdown.</p>
+</div>
+<div id="word-document" class="section level3">
+<h3>Word document</h3>
+<p>Render an Rmarkdown notebook as word document with the rmarkdown
+package:</p>
+<pre><code>Rscript -e &quot;rmarkdown::render(&#39;chapter.Rmd&#39;, output_format=&#39;word_document&#39;)&quot;</code></pre>
+<p>Sample Rmarkdown document to be rendered with quarto</p>
+<pre><code>---
+title: &quot;My Document&quot;
+format:
+  docx:
+    toc: true
+---
+
+# Section name
+
+&lt;div class=&quot;figure&quot;&gt;
+&lt;img src=&quot;R_files/figure-html/fig-plot-1.png&quot; alt=&quot;Plot&quot; width=&quot;672&quot; /&gt;
+&lt;p class=&quot;caption&quot;&gt;Plot&lt;/p&gt;
+&lt;/div&gt;
+
+For example, see @fig-plot.</code></pre>
+<p>Render with:</p>
+<pre><code>quarto render document.qmd</code></pre>
+<p>Create a template:</p>
+<pre><code>quarto pandoc -o custom-reference-doc.docx \
+   --print-default-data-file reference.docx</code></pre>
+<p>Other notes:</p>
+<ul>
+<li>The redoc package was developped in 2019, but abandoned. <a
+href="https://bookdown.org/yihui/rmarkdown-cookbook/word-redoc.html"
+class="uri">https://bookdown.org/yihui/rmarkdown-cookbook/word-redoc.html</a></li>
+</ul>
+</div>
 </div>
 <div id="python-engine" class="section level2">
 <h2>Python engine</h2>
@@ -1350,12 +1409,35 @@ Mardown python engine</a></p>
 <p>See also the reticulate package mentioned below.</p>
 <div id="reticulate-to-call-python-from-r" class="section level3">
 <h3>Reticulate to call python from R</h3>
-<p>Example of a python chunk followed by an R chunk calling a python
-method defined in that package.</p>
-<p>λ{python eval=FALSE} from biotrade.faostat import faostat —</p>
-<pre class="r"><code>soy_prod &lt;- py$faostat$db$select(table=&quot;crop_production&quot;, product = &quot;soy&quot;)</code></pre>
+<p>Example of a python chunk followed by an R chunk.</p>
+<pre><code># ---
+# title: &quot;The Ultimate Question&quot;
+# ---
+
+# ```{r setup}
+# library(reticulate)
+# ```
+
+# ```{python}
+# import pandas
+# df = pandas.DataFrame({&#39;x&#39;:[2,3,7], &#39;y&#39;:[&#39;life&#39;,&#39;universe&#39;,&#39;everything&#39;]})
+# ```
+
+# ```{r}
+# str(py$df)
+# prod(py$df$x)
+# ```</code></pre>
 <p>More information in the vignette:</p>
 <pre><code>vignette(&quot;calling_python&quot;, package=&quot;reticulate&quot;)</code></pre>
+<p>This can also be used to call python functions in R</p>
+<pre><code>λ{python eval=FALSE}
+from biotrade.faostat import faostat
+—
+
+
+```r
+soy_prod &lt;- py$faostat$db$select(table=&quot;crop_production&quot;, product = &quot;soy&quot;)
+```</code></pre>
 </div>
 <div id="using-reticulate-in-an-r-packages" class="section level3">
 <h3>Using Reticulate in an R packages</h3>
@@ -1754,6 +1836,15 @@ plot + # with a color aesthetic
 <p>See ggplot2 reference <a
 href="https://ggplot2.tidyverse.org/reference/guide_legend.html">guide
 legend</a>.</p>
+<div id="change-the-order-of-legend-items" class="section level4">
+<h4>Change the order of legend items</h4>
+<p><a href="https://www.statology.org/ggplot-legend-order/">Reorder
+items in the fill legend</a>:</p>
+<pre><code>library(ggplot2)
+ggplot(iris, aes(x=Species, y=Petal.Width, fill=Species)) +
+  geom_boxplot() +
+  scale_fill_discrete(breaks= c(&quot;virginica&quot;, &quot;setosa&quot;, &quot;versicolor&quot;))</code></pre>
+</div>
 <div id="one-legend-for-each-sub-plot" class="section level4">
 <h4>One legend for each sub plot</h4>
 <p><a href="https://stackoverflow.com/a/14841379/2641825">Different
@@ -1811,7 +1902,7 @@ iris2 %&gt;%
     geom_point() +
     facet_wrap(species_math ~ mean_length + Species,
                labeller = labeller(species_math = label_parsed, mean_length = label_parsed))</code></pre>
-<p><img src="R_files/figure-html/unnamed-chunk-15-1.png" width="672" /></p>
+<p><img src="R_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
 <p>As shown in the example above, the labeller can parse:</p>
 <ol style="list-style-type: decimal">
 <li><p>A character vector such as “m^2” for simple formulas</p></li>
@@ -2177,9 +2268,10 @@ function, you can use rename_with().”</p>
 <p><code>rename_with</code> from the <code>dplyr</code> package can use
 either a function or a formula to rename a selection of columns given as
 the <code>.cols</code> argument. For example passing the function name
-<code>toupper</code>:</p>
+<code>toupper</code> or <code>tolower</code>:</p>
 <pre><code>library(dplyr)
-rename_with(head(iris), toupper, starts_with(&quot;Petal&quot;))</code></pre>
+rename_with(head(iris), toupper, starts_with(&quot;Petal&quot;))
+rename_with(head(iris), tolower, starts_with(&quot;Petal&quot;))</code></pre>
 <p>Is equivalent to passing the formula <code>~ toupper(.x)</code>:</p>
 <pre><code>rename_with(head(iris), ~ toupper(.x), starts_with(&quot;Petal&quot;))</code></pre>
 <p>To rename all columns, you can also use <code>set_names</code> from
@@ -2421,6 +2513,98 @@ comment</a>:</p>
 idea of using a working directory because you can no longer easily move
 your code between computers. – hadley Nov 20 ’10 at 23:44”</p>
 </blockquote>
+<p>Content copied from my <a
+href="https://stackoverflow.com/a/47045842/2641825">StackOverflow
+answer</a>.</p>
+<p><strong>TLDR</strong>: The <a
+href="https://cran.r-project.org/web/packages/here/index.html">here</a>
+package (available on CRAN) helps you build a path from a project’s root
+directory. R projects configured with <code>here()</code> can be shared
+with colleagues working on different laptops or servers and paths built
+relative to the project’s root directory will still work. The
+development version is at <a
+href="https://github.com/r-lib/here">github.com/r-lib/here</a>.</p>
+<div id="with-git" class="section level2">
+<h2>With git</h2>
+<p>You certainly store your R code in a directory. This directory is
+probably part of a git repository and/or an R studio project. I would
+recommend building all paths relative to that project’s root directory.
+For example let’s say that you have an R script that creates reusable
+plotting functions and that you have an R markdown notebook that loads
+that script and plots graphs in a nice (so nice) document. The project
+tree would look something like this</p>
+<pre><code>├── notebooks
+│   ├── analysis.Rmd
+├── R
+│   ├── prepare_data.R
+│   ├── prepare_figures.R</code></pre>
+<p>From the <code>analysis.Rmd</code> notebook, you would import
+plotting function with <code>here()</code> as such:</p>
+<pre><code>source(file.path(here::here(&quot;R&quot;), &quot;prepare_figures.R&quot;))</code></pre>
+</div>
+<div id="why" class="section level2">
+<h2>Why?</h2>
+<p>From the <a href="https://github.com/jennybc/here_here#readme">Ode to
+the here package</a>:</p>
+<blockquote>
+<p>Do you: Have setwd() in your scripts? PLEASE STOP DOING THAT. This
+makes your script very fragile, hard-wired to exactly one time and
+place. As soon as you rename or move directories, it breaks. Or maybe
+you get a new computer? Or maybe someone else needs to run your code?
+[…] Classic problem presentation: Awkwardness around building paths
+and/or setting working directory in projects with subdirectories.
+Especially if you use R Markdown and knitr, which trips up alot of
+people with its default behavior of “working directory = directory where
+this file lives”. […]</p>
+</blockquote>
+<p>Install the <a
+href="https://cran.r-project.org/web/packages/here/index.html">here</a>
+package:</p>
+<pre><code>install.packages(&quot;here&quot;)
+library(here)
+here()
+here(&quot;construct&quot;,&quot;a&quot;,&quot;path&quot;)</code></pre>
+<p>Documentation of the <code>here()</code> function:</p>
+<blockquote>
+<p>Starting with the current working directory during package load time,
+here will walk the directory hierarchy upwards until it finds a
+directory that satisfies at least one of the following conditions:</p>
+<ul>
+<li>contains a file matching [.]Rproj$ with contents matching ^Version:
+in the first line</li>
+<li>[… other options …]</li>
+<li>contains a directory .git</li>
+</ul>
+<p>Once established, the root directory doesn’t change during the active
+R session. here() then appends the arguments to the root directory.</p>
+</blockquote>
+<p>The development version of the <a
+href="https://github.com/r-lib/here">here package is available on
+github</a>.</p>
+</div>
+<div id="what-about" class="section level2">
+<h2>What about</h2>
+<div id="what-about-files-outside-the-project-directory"
+class="section level3">
+<h3>What about files outside the project directory?</h3>
+<p>If you are loading or sourcing files outside the project directory,
+the recommended way is to use an environment variable at the Operating
+System level. Other users of your R code on different laptops or servers
+would need to set the same environment variable. The advantage is that
+it is portable.</p>
+<pre><code>data_path &lt;- Sys.getenv(&quot;PROJECT_DATA&quot;)
+df &lt;- read.csv(file.path(data_path, &quot;file_name.csv&quot;))</code></pre>
+<p>Note: There is a long list of <a
+href="https://stat.ethz.ch/R-manual/R-devel/library/base/html/EnvVar.html">environmental
+variables</a> which can affect an R session.</p>
+</div>
+<div id="what-about-many-projects-sourcing-each-other"
+class="section level3">
+<h3>What about many projects sourcing each other?</h3>
+<p>It’s time to <a href="https://r-pkgs.org/">create an R
+package</a>.</p>
+</div>
+</div>
 </div>
 <div id="further-resources" class="section level1">
 <h1>Further resources</h1>
@@ -2495,6 +2679,14 @@ for resources for after workshops</a></p></li>
 <li><p><a href="https://education.rstudio.com/learn/">Rstudio
 education</a></p></li>
 </ul>
+<div id="economics" class="section level3">
+<h3>Economics</h3>
+<ul>
+<li><a
+href="https://www.econometrics-with-r.org/index.html">Introduction to
+econometrics with R</a></li>
+</ul>
+</div>
 </div>
 </div>
 
