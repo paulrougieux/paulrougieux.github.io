@@ -573,6 +573,7 @@ echo &quot;The pdf document containing all images is located at: /tmp/bli/output
 </div>
 <div id="images-to-other-formats" class="section level2">
 <h2>Images to other formats</h2>
+<p>See also the resize section.</p>
 <p>Convert a png image to a jpgeg image</p>
 <pre><code>convert canto_dei_sanfedisti.png canto_dei_sanfedisti.jpg</code></pre>
 <p>Convert a png image with an alpha layer to an image without alpha
@@ -802,6 +803,13 @@ count.</p>
 find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
 </div>
 </div>
+<div id="documentation" class="section level1">
+<h1>Documentation</h1>
+<p>Read the documentation of a bash tool</p>
+<pre><code>man ls</code></pre>
+<p>Open man pages in vim</p>
+<pre><code>man ls | vi -</code></pre>
+</div>
 <div id="dos" class="section level1">
 <h1>DOS</h1>
 <p>Here are some DOS commands because sometimes you need to work on
@@ -1025,6 +1033,13 @@ pdf</a></p>
 <pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf</code></pre>
 <p>Also works with several distant groups of pages</p>
 <pre><code>pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf</code></pre>
+</div>
+<div id="rotate-pdf" class="section level3">
+<h3>Rotate PDF</h3>
+<p><a href="https://unix.stackexchange.com/a/394068">Stack Exchange
+Linux and Unix answer</a>:</p>
+<pre><code>pdftk input.pdf cat 1-endwest output output.pdf
+pdftk input.pdf cat 1-endwest output output.pdf</code></pre>
 </div>
 <div id="split-pdf" class="section level3">
 <h3>Split PDF</h3>
@@ -1401,28 +1416,35 @@ command</a></p>
 <pre><code>rename &#39;s/((?:\..+)?)\.~(\d+)~$/_$2$1/&#39; *.~*~</code></pre>
 <p>to keep the numbering of duplicated files before the extension.</p>
 </div>
-<div id="compress-and-decompress-files" class="section level2">
-<h2>Compress and decompress files</h2>
-<p>Compress a file using gzip or 7z compression</p>
-<pre><code>gzip &lt;filename&gt;
-7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
-<p>Decompress a single file from several archive formats:</p>
-<pre><code>bzip2 -d &lt;filename.bz2&gt;
-gunzip &lt;filename.gz&gt;</code></pre>
-<p><a href="https://askubuntu.com/a/499809/315347">Askubuntu to extract
-a .tgz file with tar you need to use,</a></p>
-<pre><code>tar -xvzf /path/to/file.tgz
-tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
-# Extract in a folder that has the archive name
-tar --extract -f /path/to/file.tgz --one-top-leve
-7zr e &lt;filename.7z&gt; # extract all files in the same directory 
-7zr x &lt;filename.7z&gt; # keep directory structure (see also multiple files below)</code></pre>
+<div id="compress-multiple-files" class="section level2">
+<h2>Compress multiple files</h2>
+<div id="z-archive" class="section level3">
+<h3>7z archive</h3>
+<p>Compress</p>
+<pre><code>7zr a -si&lt;filename&gt; &lt;filename&gt;.7z </code></pre>
+<p>Extract to current directory</p>
+<pre><code>7zr x &lt;filename.7z&gt; # keep directory structure (see also multiple files below)
+7zr e &lt;filename.7z&gt; # extract all files in the same directory </code></pre>
+<p>List content of an archive</p>
+<pre><code>7zr l &lt;filename.7z&gt;</code></pre>
 <p>Convert a 7z file to gz using a pipe similar to <a
 href="https://superuser.com/a/357980/419414">this answer</a>.</p>
 <pre><code>7zr e -so &lt;filename.7z&gt; | gzip -c &gt; &lt;filename.gz&gt;</code></pre>
 </div>
-<div id="compress-multiple-files" class="section level2">
-<h2>Compress multiple files</h2>
+<div id="bzip-archive" class="section level3">
+<h3>Bzip archive</h3>
+<p>Uncompress bzip file</p>
+<pre><code>bzip2 -d &lt;filename.bz2&gt;</code></pre>
+</div>
+<div id="gzip-archive" class="section level3">
+<h3>Gzip archive</h3>
+<p>Compress a file using gzip compression</p>
+<pre><code>gzip &lt;filename&gt;</code></pre>
+<p>Decompress a file</p>
+<pre><code>gunzip &lt;filename.gz&gt;</code></pre>
+</div>
+<div id="tar-gzip-archive" class="section level3">
+<h3>Tar gzip archive</h3>
 <p>How do I compress a whole directory?</p>
 <pre><code>tar -zcvf archive-name.tar.gz directory-name </code></pre>
 <p>Where</p>
@@ -1430,13 +1452,17 @@ href="https://superuser.com/a/357980/419414">this answer</a>.</p>
 -c: Create archive
 -v: Verbose i.e display progress while creating archive
 -f: Archive File name</code></pre>
+<p><a href="https://askubuntu.com/a/499809/315347">Askubuntu to extract
+a .tgz file with tar you need to use,</a></p>
+<pre><code>tar -xvzf /path/to/file.tgz
+tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
+# Extract in a folder that has the archive name
+tar --extract -f /path/to/file.tgz --one-top-leve</code></pre>
 <p>Decompress an archive containing multiple files Keep full path of
 files within the archive To extract content from the archive in the
 current directory</p>
-<pre><code>tar -zxvf archive-name.tar.gz 
-7zr x &lt;filename.7z&gt;  </code></pre>
-<p>List content of an archive</p>
-<pre><code>7zr l &lt;filename.7z&gt;</code></pre>
+<pre><code>tar -zxvf archive-name.tar.gz </code></pre>
+</div>
 <div id="zip-archive" class="section level3">
 <h3>Zip archive</h3>
 <p>Create the zip archive of a directory</p>
@@ -1767,6 +1793,10 @@ pane</p>
 <pre><code>:suppr</code></pre>
 <p>Save the modified playlist file</p>
 <pre><code>:save</code></pre>
+<p>You can also create a playlist within cmus with</p>
+<pre><code>:pl-create playlist_name</code></pre>
+<p>Export the playlist with</p>
+<pre><code>:pl-export playlist_enfants</code></pre>
 </div>
 <div id="cmus-and-other-audio-programs" class="section level3">
 <h3>Cmus and other audio programs</h3>

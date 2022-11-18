@@ -155,6 +155,8 @@ image sizes to 2000 pixel wide and generate a pdf.
 
 ## Images to other formats
 
+See also the resize section.
+
 Convert a png image to a jpgeg image
 
     convert canto_dei_sanfedisti.png canto_dei_sanfedisti.jpg
@@ -431,6 +433,18 @@ Count the number of lines in all files, and give the total line count.
 
     find . -name '*.py' | xargs wc -l # python code
     find . -name '*.R' | xargs wc -l # R code
+
+
+# Documentation
+
+Read the documentation of a bash tool
+
+    man ls
+
+Open man pages in vim
+
+    man ls | vi -
+
 
 # DOS
 
@@ -715,6 +729,15 @@ Alternatively, pdftk can be used to merge PDF files
 Also works with several distant groups of pages
 
     pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf
+
+### Rotate PDF
+
+[Stack Exchange Linux and Unix
+answer](https://unix.stackexchange.com/a/394068):
+
+    pdftk input.pdf cat 1-endwest output output.pdf
+    pdftk input.pdf cat 1-endwest output output.pdf
+
 
 ### Split PDF
 
@@ -1188,32 +1211,47 @@ command](https://unix.stackexchange.com/a/371393/85530)
 to keep the numbering of duplicated files before the extension. 
 
 
-## Compress and decompress files
+## Compress multiple files
 
-Compress a file using gzip or 7z compression
-    
-    gzip <filename>
+### 7z archive
+
+Compress
+
     7zr a -si<filename> <filename>.7z 
 
-Decompress a single file from several archive formats:
+Extract to current directory
 
-    bzip2 -d <filename.bz2>
-    gunzip <filename.gz>
-
-[Askubuntu to extract a .tgz file with tar you need to use,](https://askubuntu.com/a/499809/315347)
-
-    tar -xvzf /path/to/file.tgz
-    tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
-    # Extract in a folder that has the archive name
-    tar --extract -f /path/to/file.tgz --one-top-leve
-    7zr e <filename.7z> # extract all files in the same directory 
     7zr x <filename.7z> # keep directory structure (see also multiple files below)
+    7zr e <filename.7z> # extract all files in the same directory 
+
+List content of an archive
+
+    7zr l <filename.7z>
 
 Convert a 7z file to gz using a pipe similar to [this answer](https://superuser.com/a/357980/419414).
 
     7zr e -so <filename.7z> | gzip -c > <filename.gz>
 
-## Compress multiple files
+
+### Bzip archive
+
+Uncompress bzip file
+
+    bzip2 -d <filename.bz2>
+
+
+### Gzip archive
+
+Compress a file using gzip compression
+    
+    gzip <filename>
+
+Decompress a file 
+
+    gunzip <filename.gz>
+
+
+### Tar gzip archive
 
 How do I compress a whole directory?
 
@@ -1226,24 +1264,25 @@ Where
     -v: Verbose i.e display progress while creating archive
     -f: Archive File name
 
+[Askubuntu to extract a .tgz file with tar you need to use,](https://askubuntu.com/a/499809/315347)
+
+    tar -xvzf /path/to/file.tgz
+    tar -xvzf /path/to/file.tgz -C /path/where/to/extract/ 
+    # Extract in a folder that has the archive name
+    tar --extract -f /path/to/file.tgz --one-top-leve
+
 Decompress an archive containing multiple files
 Keep full path of files within the archive
 To extract content from the archive in the current directory
 
     tar -zxvf archive-name.tar.gz 
-    7zr x <filename.7z>  
 
-List content of an archive
-
-    7zr l <filename.7z>
 
 ### Zip archive
 
 Create the zip archive of a directory
 
     zip dir.zip -r dir
-
-
 
 
 ## Recursive copy of some files
@@ -1265,6 +1304,7 @@ flatten a file hierarchy for a description.
 For example to rename all upper-case .JPG extension into lower-case .jpg extension.
 
     rename 's/\.JPG$/\.jpg/' *.JPG
+
 
 # Program with bash
 
@@ -1513,6 +1553,14 @@ Delete a song from the playlist view (4)
 Save the modified playlist file
 
     :save
+
+You can also create a playlist within cmus with
+
+    :pl-create playlist_name
+
+Export the playlist with
+
+    :pl-export playlist_enfants
 
 
 ### Cmus and other audio programs
