@@ -188,6 +188,54 @@ entry.](https://tex.stackexchange.com/questions/373754/how-to-add-page-numbers-t
 
 In the bst file, you can also check for chapter entries.
 
+
+### Bibtex special character
+
+See also the lyx page.
+
+[How to write “ä” and other umlauts and accented letters in bibliography?](https://tex.stackexchange.com/a/57745/44254)
+
+    {\"a} {\aa} 
+    {\c c}
+    {\^e} {\`e} {\'e} 
+    {\u g}
+    {\`i} {\.I} 
+    {\l}
+    {\~n}
+    {\o} {\H o}
+    {\'u}
+    {\v r} {\ss}
+
+
+### Sample bib file content
+
+An article citation can usually be copied from the journal website or from
+a search engine
+
+    @article{,
+    title = {},
+    journal = {},
+    volume = {},
+    pages = {},
+    year = {},
+    issn = {},
+    doi = {},
+    url = {},
+    author = {},
+    keywords = {},
+    }
+
+A website entry
+
+    @www{,
+    title = {},
+    author = {},
+    journal = {},
+    year = {},
+    url = {},
+    }
+
+
 ### Compilation errors
 
 [Error: LaTeX Error: Something's wrong--perhaps a missing \item](https://tex.stackexchange.com/a/561933/44254)
@@ -418,6 +466,27 @@ See also the bash page which explains pandoc use.
 > Rules: Have an empty line after the `</summary>` tag or markdown/code blocks
 > will not render. Have an empty line after each `</details>` tag if you have
 > multiple collapsible sections.
+
+
+## Gitlab markdown
+
+https://docs.gitlab.com/ee/user/markdown.html#task-lists
+
+> "To create a task list, follow the format of an ordered or unordered list"
+
+    - [x] Completed task
+    - [~] Inapplicable task
+    - [ ] Incomplete task
+      - [x] Sub-task 1
+      - [~] Sub-task 2
+      - [ ] Sub-task 3
+
+    1. [x] Completed task
+    1. [~] Inapplicable task
+    1. [ ] Incomplete task
+       1. [x] Sub-task 1
+       1. [~] Sub-task 2
+       1. [ ] Sub-task 3
 
 
 # Motivation

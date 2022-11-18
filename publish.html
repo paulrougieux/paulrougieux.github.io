@@ -727,6 +727,47 @@ class="citation">@inbook</span> the bibliography will show both pages
 and chapter of the book you are citing.”</p>
 </blockquote>
 <p>In the bst file, you can also check for chapter entries.</p>
+<div id="bibtex-special-character" class="section level3">
+<h3>Bibtex special character</h3>
+<p>See also the lyx page.</p>
+<p><a href="https://tex.stackexchange.com/a/57745/44254">How to write
+“ä” and other umlauts and accented letters in bibliography?</a></p>
+<pre><code>{\&quot;a} {\aa} 
+{\c c}
+{\^e} {\`e} {\&#39;e} 
+{\u g}
+{\`i} {\.I} 
+{\l}
+{\~n}
+{\o} {\H o}
+{\&#39;u}
+{\v r} {\ss}</code></pre>
+</div>
+<div id="sample-bib-file-content" class="section level3">
+<h3>Sample bib file content</h3>
+<p>An article citation can usually be copied from the journal website or
+from a search engine</p>
+<pre><code>@article{,
+title = {},
+journal = {},
+volume = {},
+pages = {},
+year = {},
+issn = {},
+doi = {},
+url = {},
+author = {},
+keywords = {},
+}</code></pre>
+<p>A website entry</p>
+<pre><code>@www{,
+title = {},
+author = {},
+journal = {},
+year = {},
+url = {},
+}</code></pre>
+</div>
 <div id="compilation-errors" class="section level3">
 <h3>Compilation errors</h3>
 <p><a href="https://tex.stackexchange.com/a/561933/44254">Error: LaTeX
@@ -945,6 +986,28 @@ or markdown/code blocks will not render. Have an empty line after each
 <code>&lt;/details&gt;</code> tag if you have multiple collapsible
 sections.</p>
 </blockquote>
+</div>
+<div id="gitlab-markdown" class="section level2">
+<h2>Gitlab markdown</h2>
+<p><a href="https://docs.gitlab.com/ee/user/markdown.html#task-lists"
+class="uri">https://docs.gitlab.com/ee/user/markdown.html#task-lists</a></p>
+<blockquote>
+<p>“To create a task list, follow the format of an ordered or unordered
+list”</p>
+</blockquote>
+<pre><code>- [x] Completed task
+- [~] Inapplicable task
+- [ ] Incomplete task
+  - [x] Sub-task 1
+  - [~] Sub-task 2
+  - [ ] Sub-task 3
+
+1. [x] Completed task
+1. [~] Inapplicable task
+1. [ ] Incomplete task
+   1. [x] Sub-task 1
+   1. [~] Sub-task 2
+   1. [ ] Sub-task 3</code></pre>
 </div>
 </div>
 <div id="motivation" class="section level1">
