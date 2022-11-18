@@ -683,6 +683,12 @@ to add text at the end of each line in Vim?</a></p>
 mode <code>CTRL V</code>, append to all lines <code>$A</code> a comma ,,
 then press Esc to confirm.”</p>
 </blockquote>
+</div>
+<div id="edit-zip-files" class="section level2">
+<h2>Edit zip files</h2>
+<p>It’s possible to edit text files inside a zip archive with vim. Open
+the file as such:</p>
+<pre><code>vim file.zip</code></pre>
 <div id="increment-numbers-in-a-list" class="section level3">
 <h3>Increment numbers in a list</h3>
 <p>Use the <code>range</code> command as explained in the <a
@@ -892,6 +898,37 @@ the line:</p>
 <p>To change the current line from upper to lower case:</p>
 <pre><code>guu</code></pre>
 </div>
+<div id="grouping-and-back-references" class="section level3">
+<h3>Grouping and back references</h3>
+<p><a href="http://vimregex.com/" class="uri">http://vimregex.com/</a>
+Grouping and Backreferences</p>
+<blockquote>
+<p>“ou can group parts of the pattern expression enclosing them with
+<code>"\(" and "\)"</code> and refer to them inside the replacement
+pattern by their special number \1, \2 … \9. Typical example is swapping
+first two words of the line:</p>
+</blockquote>
+<pre><code>s:\(\w\+\)\(\s\+\)\(\w\+\):\3\2\1:</code></pre>
+<blockquote>
+<p>” where \1 holds the first word, \2 - any number of spaces or tabs in
+between and \3 - the second word. How to decide what number holds what
+pair of () ? - count opening <code>"\("</code> from the left. ”</p>
+</blockquote>
+</div>
+<div id="markdown-fixes" class="section level3">
+<h3>Markdown fixes</h3>
+<p>Several search and replace patterns to fix text copied from web pages
+or pdf files into markdown.</p>
+<p>Place quotes around variables that contain a dollar sign (otherwise
+interpreted as a formula start in markdown):</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\(\w*\$\)/`\1`/g</code></pre>
+<p>Remove hyphenation at the end of lines in a paragraph</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\(\i\)- /\1/g</code></pre>
+<p>I put this into a command in my  <code>.vimrc</code></p>
+<pre><code>command! -range=% Hyphen &lt;line1&gt;,&lt;line2&gt;s/\(\i\)- /\1/g</code></pre>
+<p>TODO: “the 30- year average” should not be replace but only by a
+space.</p>
+</div>
 <div id="patterns" class="section level3">
 <h3>Patterns</h3>
 <p>To place quotes around variables that contain a dollar sign
@@ -922,6 +959,12 @@ digit.</p>
 <p>Remove all numbers in a list of authors</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\d//g</code></pre>
 </div>
+</div>
+<div id="replace-list-items" class="section level3">
+<h3>Replace list items</h3>
+<p>Replace simple list items with a curly braces counter (to count the
+number of times I want to read a publication or a paper)</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\n- /\r- {1} /g</code></pre>
 </div>
 <div id="replace-spaces-and-new-lines" class="section level3">
 <h3>Replace spaces and new lines</h3>

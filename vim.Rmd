@@ -277,6 +277,14 @@ Similarly to enter text at the end of multiple lines ([vim.wikia](http://vim.wik
 > all lines `$A` a comma ,, then press Esc to confirm."
 
 
+## Edit zip files
+
+It's possible to edit text files inside a zip archive with vim.
+Open the file as such:
+
+    vim file.zip
+
+
 ### Increment numbers in a list
 
 
@@ -484,6 +492,7 @@ For example to [remove the last 2 characters of each line in a selection](https:
 
     :'<,'>s/..$//
 
+
 ### Character classes
 
 See also patterns below.
@@ -502,6 +511,7 @@ To replace all identifier characters, use
     :'<,'>s/\i/-/g
 
 And then `smöl` gets replaced by `----`.
+
 
 ### Collection 
 
@@ -533,6 +543,45 @@ For example to convert to lower case from the cursor to the end of the line:
 To change the current line from upper to lower case: 
 
     guu
+
+### Grouping and back references
+
+http://vimregex.com/ Grouping and Backreferences
+
+
+> "ou can group parts of the pattern expression enclosing them with `"\(" and
+> "\)"` and refer to them inside the replacement pattern by their special
+> number \1, \2 ... \9. Typical example is swapping first two words of the
+> line:
+
+    s:\(\w\+\)\(\s\+\)\(\w\+\):\3\2\1:
+
+> " where \1 holds the first word, \2 - any number of spaces or tabs in between
+> and \3 - the second word. How to decide what number holds what pair of \(\) ?
+> - count opening `"\("` from the left. "
+
+
+### Markdown fixes
+
+Several search and replace patterns to fix text copied from web pages or pdf
+files into markdown.
+
+Place quotes around variables that contain a dollar sign (otherwise
+interpreted as a formula start in markdown):
+
+    :'<,'>s/\(\w*\$\)/`\1`/g
+
+
+Remove hyphenation at the end of lines in a paragraph
+
+    :'<,'>s/\(\i\)- /\1/g
+
+I put this into a command in my \ `.vimrc`
+
+    command! -range=% Hyphen <line1>,<line2>s/\(\i\)- /\1/g
+
+TODO: "the 30- year average" should not be replace but only by a space.
+
 
 ### Patterns
 
@@ -573,6 +622,14 @@ Remove bracketed references from text copied from Wikipedia.
 Remove all numbers in a list of authors
 
     :'<,'>s/\d//g
+
+
+### Replace list items
+
+Replace simple list items with a curly braces counter (to count the number of times I
+want to read a publication or a paper)
+
+    :'<,'>s/\n- /\r- {1} /g
 
 
 ### Replace spaces and new lines
