@@ -1136,6 +1136,8 @@ in function</p>
 <p>Loop over the key and values of a dictionary</p>
 <pre><code>for key, value in ceci.items():
     print(key, &quot;has the value&quot;, value)</code></pre>
+<p>Invert keys and values</p>
+<pre><code>{value:key for key,value in ceci.items()}</code></pre>
 </div>
 <div id="iterator" class="section level3">
 <h3>Iterator</h3>
@@ -1923,8 +1925,32 @@ href="https://stackoverflow.com/a/40596167">SO Answer</a></p>
    &quot;&quot;&quot;</code></pre>
 </div>
 </div>
-<div id="geopandas" class="section level1">
-<h1>Geopandas</h1>
+<div id="mapping" class="section level1">
+<h1>Mapping</h1>
+<div id="cartopy-drawing-maps" class="section level2">
+<h2>Cartopy drawing maps</h2>
+<ul>
+<li><p><a href="https://pypi.org/project/Cartopy/"
+class="uri">https://pypi.org/project/Cartopy/</a></p>
+<blockquote>
+<p>“A cartographic python library with Matplotlib support for
+visualisation”</p>
+</blockquote></li>
+<li><p><a
+href="https://geopandas.org/en/stable/gallery/cartopy_convert.html">Plotting
+with cartopy and geopandas</a></p></li>
+</ul>
+</div>
+<div id="raster" class="section level2">
+<h2>Raster</h2>
+<p>See the sections on</p>
+<ul>
+<li>Rasterio</li>
+<li>xarray</li>
+</ul>
+</div>
+<div id="geopandas---polygons-and-related-data" class="section level2">
+<h2>Geopandas - Polygons and related data</h2>
 <p>geopandas help topic</p>
 <ul>
 <li><a
@@ -1934,8 +1960,13 @@ output</a> reading and writing files</li>
 <p>All geopandas examples below require the following imports:</p>
 <pre><code>from matplotlib import pyplot as plt
 import geopandas</code></pre>
-<div id="map-of-the-world" class="section level2">
-<h2>Map of the World</h2>
+<ul>
+<li><a
+href="https://geopandas.org/en/stable/gallery/geopandas_rasterio_sample.html">Using
+geopandas with rasterio to sample point data</a></li>
+</ul>
+<div id="map-of-the-world" class="section level3">
+<h3>Map of the World</h3>
 <p>Plot a world map of GDP per capita</p>
 <pre><code>world = geopandas.read_file(geopandas.datasets.get_path(&#39;naturalearth_lowres&#39;))
 world = world[(world.pop_est&gt;0) &amp; (world.name!=&quot;Antarctica&quot;)]
@@ -1943,8 +1974,8 @@ world[&#39;gdp_per_cap&#39;] = world.gdp_md_est / world.pop_est
 world.plot(column=&#39;gdp_per_cap&#39;)
 plt.show()</code></pre>
 </div>
-<div id="map-of-europe" class="section level2">
-<h2>Map of Europe</h2>
+<div id="map-of-europe" class="section level3">
+<h3>Map of Europe</h3>
 <p>Load the JSON data from the Eurostat <a
 href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts21">NUTS
 page</a> (Nomenclature of territorial units for statistics) using the
@@ -1995,6 +2026,7 @@ href="https://towardsdatascience.com/using-eurostat-statistical-data-on-europe-w
 eurostat statistical data on Europe with python</a> Setting x an y
 limits to the map of continental Europe only</p></li>
 </ul>
+</div>
 </div>
 </div>
 <div id="math" class="section level1">
@@ -2568,6 +2600,18 @@ pandas.concat([s1, s2], axis=1)</code></pre>
 <p>Stackoverflow <a
 href="https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883">Pandas
 merging</a></p>
+<p>pandas merge right_on do not keep variable name <a
+href="https://stackoverflow.com/questions/39985861/pandas-merge-on-columns-with-different-names-and-avoid-duplicates">Stack
+Overflow</a></p>
+<p>Propose 3 solutions:</p>
+<ul>
+<li><p>rename the original data frame to merge on varables that have the
+same name</p></li>
+<li><p>merge and drop the redundant column with a different
+name</p></li>
+<li><p>set the merge column as an index in the right data frame and use
+right_index=True</p></li>
+</ul>
 </div>
 </div>
 <div id="columns" class="section level2">
@@ -2619,6 +2663,7 @@ Answer</a> provide 6 different ways to reorder columns.</p>
 </div>
 <div id="replace-the-content-of-columns" class="section level3">
 <h3>Replace the content of columns</h3>
+<p>See also string operations in pandas.</p>
 <p>Replace Comtrade product code by the FAOSTAT product codes</p>
 <pre><code># Create a dictionary from 2 columns of a data frame
 product_dict = product_mapping.set_index(&#39;comtrade_code&#39;).to_dict()[&#39;faostat_code&#39;]
@@ -2671,6 +2716,9 @@ pandas.to_datetime(&#39;20200103&#39;)</code></pre>
 <pre><code>s = pandas.Series(pandas.date_range(&quot;2000-01-01&quot;, periods=3, freq=&quot;Y&quot;))
 print(s)
 print(s.dt.year)</code></pre>
+<p>Convert integer years to a time series</p>
+<pre><code>s = pandas.Series([2020, 2021, 2022])
+pandas.to_datetime(s, format=&quot;%Y&quot;)</code></pre>
 </div>
 <div id="group-by-operations" class="section level2">
 <h2>Group by operations</h2>
@@ -2728,8 +2776,10 @@ flights.query(&quot;month==&#39;December&#39;&quot;)</code></pre>
 </div>
 <div id="min-or-max-in-group" class="section level3">
 <h3>Min or max in group</h3>
-<p>Min or max in each group</p>
+<p>Extract the min in each group</p>
 <pre><code>df.loc[df.groupby(&#39;A&#39;)[&#39;B val&#39;].idxmin()]</code></pre>
+<p>Sort by max in each group</p>
+<pre><code>  df.groupby(&#39;reporter&#39;)[&quot;value&quot;].max().sort_values(ascending=False)</code></pre>
 </div>
 <div id="slice-get-the-first-elements-of-each-group"
 class="section level3">
@@ -2738,8 +2788,8 @@ class="section level3">
 <li><p><a
 href="https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-first-row-in-each-group-by-group">How
 do I select the first row in each group in groupby</a></p>
-<p>import pandas import numpy as np df = pandas.DataFrame({‘A’ : [‘foo’,
-‘foo’, ‘bar’, ‘bar’, ‘bar’], ‘B’ : [‘1’, ‘2’,‘2’, ‘4’, ‘1’], ‘C’ :
+<p>import pandas import numpy as np df = pandas.DataFrame({‘A’ : [‘bla’,
+‘bla’, ‘bli’, ‘bli’, ‘bli’], ‘B’ : [‘1’, ‘2’,‘2’, ‘4’, ‘1’], ‘C’ :
 [np.nan, ‘X’, ‘Y’, ‘Y’, ‘Y’]}) df.sort_values(‘B’).groupby(‘A’).nth(0)
 df.sort_values(‘B’).groupby(‘A’).nth(list(range(2)))
 df.sort_values(‘B’).groupby(‘A’).head(2)</p></li>
@@ -2749,6 +2799,18 @@ df.sort_values(‘B’).groupby(‘A’).head(2)</p></li>
 <h3>Transform and apply</h3>
 <p><a href="https://stackoverflow.com/a/47143056/2641825">SO answer
 explaining the difference between transform and apply</a></p>
+</div>
+<div id="concatenate-strings-in-the-same-group" class="section level3">
+<h3>Concatenate strings in the same group</h3>
+<p>Based on <a
+href="https://stackoverflow.com/questions/27298178/concatenate-strings-from-several-rows-using-pandas-groupby/74641478#74641478">SO
+answer</a></p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;A&#39; : [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;], 
+                       &#39;B&#39; : [&#39;i&#39;, &#39;j&#39;, &#39;k&#39;, &#39;i&#39;, &#39;j&#39;], 
+                       &#39;X&#39; : [1, 2, 2, 1, 3]})
+df.groupby(&quot;X&quot;, as_index=False)[&quot;A&quot;].agg(&#39; &#39;.join)
+df.groupby(&quot;X&quot;, as_index=False)[[&quot;A&quot;, &quot;B&quot;]].agg(&#39; &#39;.join)</code></pre>
 </div>
 </div>
 <div id="index" class="section level2">
@@ -2932,6 +2994,19 @@ iris.to_feather(&quot;/tmp/iris.feather&quot;)</code></pre>
 <pre><code>iris2 = pandas.read_feather(&quot;/tmp/iris.feather&quot;)
 iris2.equals(iris)</code></pre>
 </div>
+<div id="gamms-gdx" class="section level3">
+<h3>Gamms GDX</h3>
+<p>GDX files store data for the GAMMS modelling platform. They can be
+loaded into pandas data frames with the gdxpds package as explained in
+the <a
+href="https://nrel.github.io/gdx-pandas/overview.html#direct-conversion">gdpxpds
+documentation</a>:</p>
+<pre><code>import gdxpds
+gdx_file = &#39;C:\path_to_my_gdx\data.gdx&#39;
+dataframes = gdxpds.to_dataframes(gdx_file)
+for symbol_name, df in dataframes.items():
+    print(&quot;Doing work with {}.&quot;.format(symbol_name))</code></pre>
+</div>
 <div id="parquet" class="section level3">
 <h3>Parquet</h3>
 <p>Write to one file defaults to [snappy compression](<a
@@ -2979,9 +3054,12 @@ again.</p>
 <pre><code>iris4[&quot;species&quot;] = iris4[&quot;species&quot;].astype(&quot;str&quot;)
 iris4.equals(iris)
 # True</code></pre>
-<p>Read files with a filter. See
+</div>
+<div id="filters" class="section level4">
+<h4>Filters</h4>
+<p>Read only part of the content from parquet files with a filter. See
 <code>help(pyarrow.parquet.read_pandas)</code> for arguments concerning
-the pyarrow engine.</p>
+the pyarrow engine. Reusing example files from the previous section:</p>
 <pre><code>selection = [(&quot;species&quot;, &quot;in&quot;, [&quot;versicolor&quot;,&quot;virginica&quot;])]
 iris5 = pandas.read_parquet(&quot;/tmp/iris&quot;, filters=selection)</code></pre>
 <p>In fact, the filter variable doesn’t have to be a partition
@@ -2994,8 +3072,9 @@ iris6 = pandas.read_parquet(&quot;/tmp/iris&quot;, filters=selection)</code></pr
 # Change column type for the comparison
 iris6[&quot;species&quot;] = iris6[&quot;species&quot;].astype(&quot;str&quot;)
 iris7.equals(iris6)</code></pre>
-<p>But if the query is only on the partition variable, read time can be
-increased by a lot.</p>
+<p>Depending on whether or not the query is on the partition variable,
+read time can be increased by a lot. See experiment in the next
+section.</p>
 </div>
 <div
 id="experiment-with-the-parquet-format-using-filters-and-partition-columns."
@@ -3229,6 +3308,8 @@ s.replace([&quot;ape&quot;, &quot;monkey&quot;], [&quot;lion&quot;, &quot;panda&
 s.replace(&quot;a&quot;, &quot;x&quot;, regex=True)
 `s.replace({&quot;ape&quot;: &quot;lion&quot;, &quot;monkey&quot;: &quot;panda&quot;})`
 pandas.Series([&quot;bla&quot;, &quot;bla&quot;]).replace(&quot;a&quot;,&quot;i&quot;,regex=True)</code></pre>
+<p>Replace by the upper case value</p>
+<pre><code>s.str.upper()</code></pre>
 <div id="replace-values-where-a-condition-is-false"
 class="section level3">
 <h3>Replace values where a condition is false</h3>
@@ -3602,10 +3683,12 @@ df[&quot;a&quot;].str[-2:]</code></pre>
 <div id="search-and-replace" class="section level3">
 <h3>Search and replace</h3>
 <p>Search one element or another in a character vector:</p>
-<pre><code>df = pandas.DataFrame({&#39;a&#39;:[&#39;bla&#39;,&#39;ble&#39;,&#39;bli&#39;]})
+<pre><code>df = pandas.DataFrame({&#39;a&#39;:[&#39;bla&#39;,&#39;ble&#39;,&#39;bli2&#39;]})
 df[df[&#39;a&#39;].str.contains(&#39;a|i&#39;)]</code></pre>
 <p>Replace elements in a character vector:</p>
 <pre><code>df[&#39;a&#39;].replace(&#39;a|i&#39;,&#39;b&#39;,regex=True)</code></pre>
+<p>Keep only numbers</p>
+<pre><code>df[&quot;a&quot;].replace(&#39;[a-zA-Z]&#39;, &#39;&#39;, regex=True)</code></pre>
 </div>
 <div id="separate-a-columns-in-two-based-on-a-split-pattern"
 class="section level3">
@@ -3725,6 +3808,26 @@ df1.where(df1.isna(), df2)</code></pre>
 </div>
 <div id="xarray" class="section level2">
 <h2>Xarray</h2>
+<p>Create a data array and plot it, example from the <a
+href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html#attributes">xarray
+quick overview</a>:</p>
+<pre><code>import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+da2 = xr.DataArray(np.random.randn(2, 3), dims=(&quot;x&quot;, &quot;y&quot;), coords={&quot;x&quot;: [10, 20]})
+da2.attrs[&quot;long_name&quot;] = &quot;random velocity&quot;
+da2.attrs[&quot;units&quot;] = &quot;metres/sec&quot;
+da2.attrs[&quot;description&quot;] = &quot;A random variable created as an example.&quot;
+da2.attrs[&quot;random_attribute&quot;] = 123
+da2.attrs
+da2.plot()
+plt.show()</code></pre>
+<p>Create another data array with one dimension only and multiply it
+with the two dimensional array</p>
+<pre><code>da1 = xr.DataArray([1,2], coords={&quot;x&quot;:[10,20]})
+da2 * da1</code></pre>
+<div id="definitions-of-data-array-and-dataset" class="section level3">
+<h3>Definitions of data array and dataset</h3>
 <p><a
 href="https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray">DataArray</a></p>
 <pre><code>&gt; &quot;xarray.DataArray is xarray’s implementation of a labeled, multi-dimensional
@@ -3776,6 +3879,7 @@ between datasets and arrays</a></p>
 <pre><code>&gt; &quot;This method broadcasts all data variables in the dataset against each other,
 &gt; then concatenates them along a new dimension into a new array while
 &gt; preserving coordinates.&quot;</code></pre>
+</div>
 <div id="create-xarray-from-pandas" class="section level3">
 <h3>Create xarray from pandas</h3>
 <p>Round trip from pandas to xarray and back from the <a
@@ -3826,6 +3930,19 @@ objects). So you can represent a Panel, in two ways:</p>
 objects.</p>
 </blockquote>
 </div>
+<div id="plots" class="section level3">
+<h3>Plots</h3>
+<ul>
+<li><p><a
+href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#scatter">Xarray
+scatter plots</a></p>
+<blockquote>
+<p>“For more advanced scatter plots, we recommend converting the
+relevant data variables to a pandas DataFrame and using the extensive
+plotting capabilities of seaborn.”</p>
+</blockquote></li>
+</ul>
+</div>
 <div id="io" class="section level3">
 <h3>IO</h3>
 <ul>
@@ -3864,6 +3981,16 @@ os.path.join(&#39;~&#39;,&#39;downloads&#39;)</code></pre>
 Path(&#39;~&#39;) / &#39;downloads&#39;</code></pre>
 <p>Data located in the home folder</p>
 <pre><code> data_dir = Path.home() / &quot;repos/data/&quot;</code></pre>
+<div id="check-if-a-directory-is-empty" class="section level3">
+<h3>Check if a directory is empty</h3>
+<p>Check if a directory is empty using pathlib</p>
+<pre><code>import pathlib
+p1 = pathlib.Path(&quot;/tmp/&quot;)
+p2 = pathlib.Path(&quot;/tmp/thisisempty/&quot;)
+p2.mkdir()
+any(p1.iterdir()) # returns True
+any(p2.iterdir()) # returns False</code></pre>
+</div>
 <div id="dir-name-or-parent-directory" class="section level3">
 <h3>Dir name or parent directory</h3>
 <p><a href="https://stackoverflow.com/a/35490226/2641825">SO
@@ -3882,21 +4009,17 @@ os.path.dirname on some/path/ returns some/path”:</p>
 <pre><code>pathlib.Path(&#39;some/path/&#39;).parent
 os.path.dirname(&#39;some/path/&#39;)</code></pre>
 </div>
+<div id="home" class="section level3">
+<h3>Home</h3>
+<p>Cross platform way to refer to the home directory</p>
+<pre><code>from pathlib import Path
+Path.home()</code></pre>
+</div>
 <div id="list-all-files-in-a-directory" class="section level3">
 <h3>List all files in a directory</h3>
 <p>If <code>p</code> is a pathlib object you can list file names as
 such:</p>
 <pre><code>[x.name for x in p.glob(&#39;**/*.csv&#39;)]</code></pre>
-</div>
-<div id="check-if-a-directory-is-empty" class="section level3">
-<h3>Check if a directory is empty</h3>
-<p>Check if a directory is empty using pathlib</p>
-<pre><code>import pathlib
-p1 = pathlib.Path(&quot;/tmp/&quot;)
-p2 = pathlib.Path(&quot;/tmp/thisisempty/&quot;)
-p2.mkdir()
-any(p1.iterdir()) # returns True
-any(p2.iterdir()) # returns False</code></pre>
 </div>
 </div>
 <div id="temporary-directories-and-files" class="section level2">
@@ -4022,8 +4145,14 @@ type(plot)
 #help(plot)
 plot.set_xticks(range(0,31,10), minor=False)
 plt.show()</code></pre>
-<p>Save the figure to a pdf file:</p>
+</div>
+<div id="save-to-a-pdf-file" class="section level4">
+<h4>Save to a pdf file</h4>
+<p>With a plot object</p>
 <pre><code>plot.get_figure().savefig(&#39;/tmp/output.pdf&#39;, format=&#39;pdf&#39;)</code></pre>
+<p>With the pyplot object, only works immediately after building the
+plot. This also works with seaborn plots.</p>
+<pre><code>plt.savefig(&quot;/tmp/bli.pdf&quot;)</code></pre>
 </div>
 <div id="pandas-plots-side-by-side" class="section level4">
 <h4>Pandas plots side by side</h4>
@@ -4075,7 +4204,13 @@ datasets:</p>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;)
 tips = seaborn.load_dataset(&quot;tips&quot;) 
+fmri = seaborn.load_dataset(&quot;fmri&quot;)
 from matplotlib import pyplot as plt</code></pre>
+<p>Resources</p>
+<ul>
+<li><a href="https://seaborn.pydata.org/examples/index.html">Seaborn
+gallery</a></li>
+</ul>
 <div id="scatter-plot" class="section level3">
 <h3>Scatter plot</h3>
 <p>Create a scatter plot with a title and axis labels</p>
@@ -4105,20 +4240,19 @@ ylim in seaborn facet grid</a></p>
 g = g.map(plt.hist, &quot;total_bill&quot;)
 g.set(ylim=(0, None)) </code></pre>
 </div>
-<div id="grid-plot" class="section level3">
-<h3>Grid plot</h3>
-<div id="grid-scatter-plot" class="section level4">
-<h4>Grid scatter plot</h4>
-<p>Draw a scatter plot for each iris species</p>
-<pre><code>g = seaborn.FacetGrid(iris, col=&quot;species&quot;, height=6, width=2)
-iris[&#39;species&#39;] = iris[&#39;species&#39;].astype(&#39;category&#39;)
-g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)
-plt.show()</code></pre>
-<p>Notice that if you don’t change the color to a categorical variable,
-it will not vary across the species. I reported <a
-href="https://github.com/mwaskom/seaborn/issues/2028">this
-issue</a>.</p>
-</div>
+<div id="facet-grid-plot" class="section level3">
+<h3>Facet grid plot</h3>
+<p>Use Figure-level interface for drawing plots onto a FacetGrid:</p>
+<ul>
+<li><p>catplot for drawing categorical plots</p></li>
+<li><p>relplot for drawing relational plots</p>
+<ul>
+<li>kind=“scatter” (the default) for scatter plots</li>
+<li>kind=“line” for line plots</li>
+</ul></li>
+</ul>
+<p>The figure level interfaces return FacetGrid objects which can be
+reused to add subsequent layers.</p>
 <div id="grid-bar-plot" class="section level4">
 <h4>Grid Bar plot</h4>
 <p>Draw a facet bar plot <a
@@ -4134,20 +4268,39 @@ plt.show()</code></pre>
 </div>
 <div id="grid-line-plot" class="section level4">
 <h4>Grid line plot</h4>
-<blockquote>
-<p>This function provides access to several different axes-level
-functions that show the relationship between two variables with semantic
-mappings of subsets. The <code>kind</code> parameter selects the
-underlying axes-level function to use:</p>
-</blockquote>
-<blockquote>
+<p>help(searborn.relplot)</p>
+<pre><code>&gt; &quot;This function provides access to several different axes-level functions
+&gt; that show the relationship between two variables with semantic mappings
+&gt; of subsets. The ``kind`` parameter selects the underlying axes-level
+&gt; function to use:
+&gt;     - :func:`scatterplot` with ``kind=&quot;scatter&quot;``; the default
+&gt;     - :func:`lineplot` with ``kind=&quot;line&quot;``
+&gt; Extra keyword arguments are passed to the underlying function, so you should
+&gt; refer to the documentation for each to see kind-specific options.&quot;</code></pre>
+<p>Example:</p>
 <ul>
-<li>:func:<code>scatterplot</code> (with <code>kind="scatter"</code>;
-the default)</li>
-<li>:func:<code>lineplot</code> (with <code>kind="line"</code>)</li>
+<li>plot signal through time and facet along the region</li>
+<li>use different axes size. This requires passing a dictionary to
+FacetGrid.</li>
+<li>Add a y label</li>
+<li>adjust the left margin so that the y label doesn’t overwrite the
+axis</li>
+<li>Set the Y limit to zero</li>
 </ul>
-</blockquote>
-<p><a href="https://seaborn.pydata.org/examples/faceted_lineplot.html"
+<pre><code>
+g = seaborn.relplot(
+    data=fmri, x=&quot;timepoint&quot;, y=&quot;signal&quot;, col=&quot;region&quot;,
+    hue=&quot;event&quot;, style=&quot;event&quot;, kind=&quot;line&quot;,
+    col_wrap=1, height=3,
+    facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False}
+)
+g.fig.supylabel(&quot;Adaptive Engagement of Cognitive Control&quot;)
+g.fig.subplots_adjust(left=0.28)
+g.set(ylim=(0, None))
+plt.show()
+</code></pre>
+<p>Older example from <a
+href="https://seaborn.pydata.org/examples/faceted_lineplot.html"
 class="uri">https://seaborn.pydata.org/examples/faceted_lineplot.html</a></p>
 <pre><code>import seaborn as sns
 sns.set_theme(style=&quot;ticks&quot;)
@@ -4170,9 +4323,97 @@ g.fig.suptitle(&quot;Dots example&quot;)
 g.set_ylabels(&quot;Y label&quot;)
 plt.subplots_adjust(top=0.9)</code></pre>
 </div>
+<div id="grid-scatter-plot" class="section level4">
+<h4>Grid scatter plot</h4>
+<p>Draw a scatter plot for each iris species, using the recommended
+<code>relplot()</code> function:</p>
+<pre><code>g = seaborn.relplot(x=&#39;petal_length&#39;, y=&#39;petal_width&#39;, col=&#39;species&#39;, hue=&#39;species&#39;, data=iris)
+plt.show()</code></pre>
+<p>help(seaborn.relplot) explains that it returns a FacetGrid
+object:</p>
+<pre><code>&gt; &quot; After plotting, the :class:`FacetGrid` with the plot is returned and can be
+&gt; used directly to tweak supporting plot details or add other layers.&quot;</code></pre>
+<p>Old way: using FacetGrid directly requires changing the species to a
+categorical variable in order to have a different colour for each
+species.</p>
+<pre><code>g = seaborn.FacetGrid(iris, col=&quot;species&quot;, height=6)
+iris[&#39;species&#39;] = iris[&#39;species&#39;].astype(&#39;category&#39;)
+# Use map_dataframe to name the arguments
+g.map_dataframe(seaborn.scatterplot,x=&#39;petal_length&#39;,y=&#39;petal_width&#39;,hue=&#39;species&#39;)
+plt.show()
+
+# Old way without named argument
+g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)
+plt.show()</code></pre>
+<p>Notice that if you don’t change the color to a categorical variable,
+it will not vary across the species. I reported <a
+href="https://github.com/mwaskom/seaborn/issues/2028">this issue</a>
+which led me to update the searborn documentation in this <a
+href="https://github.com/mwaskom/seaborn/pull/2030/commits/88a45dddeb6ac4c88ab49da195e7a05843ad4aaf">merge
+request</a>.</p>
+<blockquote>
+<p>“When using seaborn functions that infer semantic mappings from a
+dataset, care must be taken to synchronize those mappings across facets.
+In other words some mechanism needs to ensure that the same mapping is
+used in each facet. This can be achieved for example by passing pallete
+dictionnaries or by defining categorical types in your dataframe. In
+most cases, it will be better to use a figure-level function
+(e.g. :func:<code>relplot</code> or :func:<code>catplot</code>) than to
+use :class:<code>FacetGrid</code> directly.”</p>
+</blockquote>
 </div>
-<div id="title" class="section level3">
-<h3>Title</h3>
+<div id="grid-text" class="section level4">
+<h4>Grid Text</h4>
+<p>From [SO answer][<a
+href="https://stackoverflow.com/a/59775753/2641825"
+class="uri">https://stackoverflow.com/a/59775753/2641825</a>)</p>
+<pre><code>import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
+data = [[&#39;APOLLOHOSP&#39;, 8, 6, &#39;High&#39;, &#39;small&#39;],
+        [&#39;ANUP&#39;, 8, 7, &#39;High&#39;, &#39;small&#39;],
+        [&#39;SIS&#39;, 4, 6, &#39;High&#39;, &#39;mid&#39;],
+        [&#39;HAWKINCOOK&#39;, 5, 2, &#39;Low&#39;, &#39;mid&#39;],
+        [&#39;NEULANDLAB&#39;, 6, 4, &#39;Low&#39;, &#39;large&#39;],
+        [&#39;ORIENTELEC&#39;, 7, 9, &#39;Low&#39;, &#39;mid&#39;],
+        [&#39;AXISBANK&#39;, 2, 3, &#39;Medium&#39;, &#39;mid&#39;],
+        [&#39;DMART&#39;, 4, 1, &#39;Medium&#39;, &#39;large&#39;],
+        [&#39;ARVIND&#39;, 2, 10, &#39;Medium&#39;, &#39;small&#39;],
+        [&#39;TCI&#39;, 1, 7, &#39;High&#39;, &#39;mid&#39;],
+        [&#39;MIDHANI&#39;, 5, 5, &#39;Low&#39;, &#39;large&#39;],
+        [&#39;RITES&#39;, 6, 4, &#39;Medium&#39;, &#39;mid&#39;],
+        [&#39;COROMANDEL&#39;, 9, 9, &#39;High&#39;, &#39;small&#39;],
+        [&#39;SBIN&#39;, 10, 3, &#39;Medium&#39;, &#39;large&#39;]]
+mx = pd.DataFrame(data=data, columns=[&quot;code&quot;, &quot;Growth&quot;, &quot;Value&quot;, &quot;Risk&quot;, &quot;Mcap&quot;])
+plotnum = {&#39;small&#39;: 0, &#39;mid&#39;: 1, &#39;large&#39;: 2}
+p1 = sns.relplot(x=&quot;Growth&quot;, y=&quot;Value&quot;, hue=&quot;Risk&quot;, col=&quot;Mcap&quot;, data=mx, s=200, palette=[&#39;r&#39;, &#39;g&#39;, &#39;y&#39;])
+
+for ax in p1.axes[0]:
+    ax.set_xlim(0.0, max(mx[&quot;Growth&quot;]) + 1.9)
+for row in mx.itertuples():
+    print(row)
+    ax = p1.axes[0, plotnum[row.Mcap]]
+    ax.text(row.Growth + 0.5, row.Value, row.code, horizontalalignment=&#39;left&#39;)
+plt.show()</code></pre>
+</div>
+<div id="grid-axes" class="section level4">
+<h4>Grid axes</h4>
+<p>Use scientific notation on the axes of a <code>g</code> FacetGrid
+object:</p>
+<pre><code>for axes in g.axes.flat:
+    axes.ticklabel_format(axis=&#39;both&#39;, style=&#39;scientific&#39;, scilimits=(0, 0))</code></pre>
+</div>
+</div>
+<div id="pair-plot" class="section level3">
+<h3>Pair plot</h3>
+<p><a
+href="https://seaborn.pydata.org/generated/seaborn.pairplot.html#">seaborn.pairplot</a></p>
+<blockquote>
+<p>“Plot pairwise relationships in a dataset.”</p>
+</blockquote>
+</div>
+<div id="title-and-axis-labels" class="section level3">
+<h3>Title and axis labels</h3>
 <p>Use <code>set_title</code> to add a title:</p>
 <pre><code>(seaborn
  .scatterplot(x=&quot;total_bill&quot;, y=&quot;tip&quot;, data=tips)
@@ -4181,7 +4422,11 @@ plt.subplots_adjust(top=0.9)</code></pre>
 <p>Set a common title for grid plots</p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
 g = g.map(plt.hist, &quot;total_bill&quot;)
+# Supplementary title
 g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
+<p>Add axis labels</p>
+<pre><code> g.fig.supxlabel(&quot;time in years&quot;)
+ g.fig.supylabel(&quot;weight in kg&quot;)</code></pre>
 <p>In case the title is overwritten on the subplots, you might need to
 use <a
 href="https://stackoverflow.com/a/28650623/2641825">fig.subplot_adjust()</a>
@@ -4919,6 +5164,17 @@ href="https://www.reddit.com/r/Python/comments/82hgzm/any_advantages_of_flake8_o
 advantages of Flake8 over PyLint</a> some answers suggest keeping
 both.</li>
 </ul>
+<div id="ignore-unused-import-warning" class="section level3">
+<h3>Ignore unused import warning</h3>
+<p>Use case:</p>
+<pre><code>  # Make agg_trade_eu_row available here for backward compatibility
+  # so that the following import statement continues to work:
+  # &gt;&gt;&gt; from biotrade.faostat.aggregate import agg_trade_eu_row
+  from biotrade.common.aggregate import agg_trade_eu_row # noqa # pylint: disable=unused-import</code></pre>
+<p><a href="https://stackoverflow.com/a/36741413/2641825">SO
+answer</a></p>
+<pre><code>import &lt;module&gt; # noqa # pylint: disable=unused-import</code></pre>
+</div>
 <div id="dangerous-default-argument" class="section level3">
 <h3>Dangerous default argument</h3>
 <ul>

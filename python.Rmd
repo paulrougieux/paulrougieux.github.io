@@ -774,6 +774,10 @@ Loop over the key and values of a dictionary
     for key, value in ceci.items():
         print(key, "has the value", value)
 
+Invert keys and values
+
+    {value:key for key,value in ceci.items()}
+
 
 ### Iterator
 
@@ -1616,7 +1620,27 @@ Document python functions with the sphinx convention
        """
 
 
-# Geopandas
+# Mapping
+
+## Cartopy drawing maps
+
+- https://pypi.org/project/Cartopy/
+
+    > "A cartographic python library with Matplotlib support for visualisation"
+
+- [Plotting with cartopy and
+  geopandas](https://geopandas.org/en/stable/gallery/cartopy_convert.html)
+
+
+## Raster 
+
+See the sections on 
+
+- Rasterio
+- xarray
+
+
+## Geopandas - Polygons and related data
 
 geopandas help topic
 
@@ -1628,8 +1652,11 @@ All geopandas examples below require the following imports:
     from matplotlib import pyplot as plt
     import geopandas
 
+- [Using geopandas with rasterio to sample point
+  data](https://geopandas.org/en/stable/gallery/geopandas_rasterio_sample.html)
 
-## Map of the World
+
+### Map of the World
 
 Plot a world map of GDP per capita
 
@@ -1640,7 +1667,7 @@ Plot a world map of GDP per capita
     plt.show()
 
 
-## Map of Europe
+### Map of Europe
 
 Load the JSON data from the Eurostat [NUTS
 page](https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts21)
@@ -2327,6 +2354,19 @@ and `axis=1` concatenate on the columns.
 
 Stackoverflow [Pandas merging](https://stackoverflow.com/questions/53645882/pandas-merging-101/53645883#53645883)
 
+pandas merge right_on do not keep variable name
+[Stack
+Overflow](https://stackoverflow.com/questions/39985861/pandas-merge-on-columns-with-different-names-and-avoid-duplicates)
+
+Propose 3 solutions:
+
+- rename the original data frame to merge on varables that have the same name
+
+* merge and drop the redundant column with a different name
+
+- set the merge column as an index in the right data frame and use
+  right_index=True
+
 
 ## Columns
 
@@ -2393,6 +2433,8 @@ different ways to reorder columns.
 
 ### Replace the content of columns
 
+See also string operations in pandas.
+
 Replace Comtrade product code by the FAOSTAT product codes
 
     # Create a dictionary from 2 columns of a data frame
@@ -2455,6 +2497,11 @@ Extract the year
     s = pandas.Series(pandas.date_range("2000-01-01", periods=3, freq="Y"))
     print(s)
     print(s.dt.year)
+
+Convert integer years to a time series
+
+    s = pandas.Series([2020, 2021, 2022])
+    pandas.to_datetime(s, format="%Y")
 
 
 ## Group by operations
@@ -2526,9 +2573,13 @@ December.
 
 ### Min or max in group
 
-Min or max in each group
+Extract the min in each group
 
     df.loc[df.groupby('A')['B val'].idxmin()]
+
+Sort by max in each group
+
+      df.groupby('reporter')["value"].max().sort_values(ascending=False)
 
 
 ### Slice, get the first elements of each group
@@ -2538,16 +2589,29 @@ groupby](https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-fir
 
     import pandas
     import numpy as np
-    df = pandas.DataFrame({'A' : ['foo', 'foo', 'bar', 'bar', 'bar'],
+    df = pandas.DataFrame({'A' : ['bla', 'bla', 'bli', 'bli', 'bli'],
                            'B' : ['1', '2','2', '4', '1'],
                            'C' : [np.nan, 'X', 'Y', 'Y', 'Y']})
     df.sort_values('B').groupby('A').nth(0)
     df.sort_values('B').groupby('A').nth(list(range(2)))
     df.sort_values('B').groupby('A').head(2)
 
+
 ### Transform and apply
 
 [SO answer explaining the difference between transform and apply](https://stackoverflow.com/a/47143056/2641825)
+
+
+### Concatenate strings in the same group
+
+Based on [SO answer](https://stackoverflow.com/questions/27298178/concatenate-strings-from-several-rows-using-pandas-groupby/74641478#74641478)
+
+    import pandas
+    df = pandas.DataFrame({'A' : ['a', 'a', 'b', 'c', 'c'], 
+                           'B' : ['i', 'j', 'k', 'i', 'j'], 
+                           'X' : [1, 2, 2, 1, 3]})
+    df.groupby("X", as_index=False)["A"].agg(' '.join)
+    df.groupby("X", as_index=False)[["A", "B"]].agg(' '.join)
 
 
 ## Index
@@ -2751,6 +2815,19 @@ Load the data from the feather file
     iris2.equals(iris)
 
 
+### Gamms GDX 
+
+GDX files store data for the GAMMS modelling platform. They can be loaded into
+pandas data frames with the gdxpds package as explained in the [gdpxpds
+documentation](https://nrel.github.io/gdx-pandas/overview.html#direct-conversion):
+
+    import gdxpds
+    gdx_file = 'C:\path_to_my_gdx\data.gdx'
+    dataframes = gdxpds.to_dataframes(gdx_file)
+    for symbol_name, df in dataframes.items():
+        print("Doing work with {}.".format(symbol_name))
+
+
 ### Parquet
 
 Write to one file defaults to [snappy compression](https://en.wikipedia.org/wiki/Snappy_(compression)
@@ -2814,8 +2891,12 @@ Changing it back to a strings makes the 2 data frames equals again.
     iris4.equals(iris)
     # True
 
-Read files with a filter. See `help(pyarrow.parquet.read_pandas)` for arguments
-concerning the pyarrow engine.
+
+#### Filters
+
+Read  only part of the content from parquet files with a filter. See
+`help(pyarrow.parquet.read_pandas)` for arguments concerning the pyarrow
+engine. Reusing example files from the previous section:
     
     selection = [("species", "in", ["versicolor","virginica"])]
     iris5 = pandas.read_parquet("/tmp/iris", filters=selection)
@@ -2833,8 +2914,8 @@ This works as well on the single file version
     iris6["species"] = iris6["species"].astype("str")
     iris7.equals(iris6)
 
-But if the query is only on the partition variable, read time can be increased
-by a lot.
+Depending on whether or not the query is on the partition variable, read time
+can be increased by a lot. See experiment in the next section.
 
 
 #### Experiment with the parquet format using filters and partition columns.
@@ -3055,6 +3136,10 @@ Rename the (sometimes confusing) axis names
     s.replace("a", "x", regex=True)
     `s.replace({"ape": "lion", "monkey": "panda"})`
     pandas.Series(["bla", "bla"]).replace("a","i",regex=True)
+
+Replace by the upper case value
+
+    s.str.upper()
 
 
 ### Replace values where a condition is false
@@ -3497,12 +3582,16 @@ Extract the first 2 or last 2 characters
 
 Search one element or another in a character vector:
 
-    df = pandas.DataFrame({'a':['bla','ble','bli']})
+    df = pandas.DataFrame({'a':['bla','ble','bli2']})
     df[df['a'].str.contains('a|i')]
 
 Replace elements in a character vector:
 
     df['a'].replace('a|i','b',regex=True)
+
+Keep only numbers
+
+    df["a"].replace('[a-zA-Z]', '', regex=True)
 
 
 ### Separate a columns in two based on a split pattern
@@ -3633,6 +3722,31 @@ On a data frame
 
 ## Xarray
 
+Create a data array and plot it, example from the [xarray quick
+overview](https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html#attributes):
+
+    import numpy as np
+    import xarray as xr
+    import matplotlib.pyplot as plt
+    da2 = xr.DataArray(np.random.randn(2, 3), dims=("x", "y"), coords={"x": [10, 20]})
+    da2.attrs["long_name"] = "random velocity"
+    da2.attrs["units"] = "metres/sec"
+    da2.attrs["description"] = "A random variable created as an example."
+    da2.attrs["random_attribute"] = 123
+    da2.attrs
+    da2.plot()
+    plt.show()
+
+Create another data array with one dimension only and multiply it with the two
+dimensional array
+
+    da1 = xr.DataArray([1,2], coords={"x":[10,20]})
+    da2 * da1
+
+
+
+### Definitions of data array and dataset
+
 [DataArray](https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray)
 
     > "xarray.DataArray is xarray’s implementation of a labeled, multi-dimensional
@@ -3744,6 +3858,16 @@ You can also use
 >    Or as a Dataset containing a number of 2-dimensional DataArray objects.
 
 
+### Plots
+
+- [Xarray scatter
+plots](https://docs.xarray.dev/en/stable/user-guide/plotting.html#scatter)
+
+    > "For more advanced scatter plots, we recommend converting the relevant data
+    > variables to a pandas DataFrame and using the extensive plotting capabilities
+    > of seaborn."
+
+
 ### IO
 
 - [How to read netcdf files in chunks with Xarray and Dask](https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python)
@@ -3790,6 +3914,18 @@ Data located in the home folder
      data_dir = Path.home() / "repos/data/"
 
 
+### Check if a directory is empty
+
+Check if a directory is empty using pathlib
+
+    import pathlib
+    p1 = pathlib.Path("/tmp/")
+    p2 = pathlib.Path("/tmp/thisisempty/")
+    p2.mkdir()
+    any(p1.iterdir()) # returns True
+    any(p2.iterdir()) # returns False
+
+
 ### Dir name or parent directory
 
 [SO question](https://stackoverflow.com/a/35490226/2641825) that illustrate different levels of parents 
@@ -3809,23 +3945,19 @@ Data located in the home folder
     os.path.dirname('some/path/')
 
 
+### Home
+
+Cross platform way to refer to the home directory
+
+    from pathlib import Path
+    Path.home()
+
+
 ### List all files in a directory
 
 If `p` is a pathlib object you can list file names as such: 
 
     [x.name for x in p.glob('**/*.csv')]
-
-
-### Check if a directory is empty
-
-Check if a directory is empty using pathlib
-
-    import pathlib
-    p1 = pathlib.Path("/tmp/")
-    p2 = pathlib.Path("/tmp/thisisempty/")
-    p2.mkdir()
-    any(p1.iterdir()) # returns True
-    any(p2.iterdir()) # returns False
 
 
 ## Temporary directories and files
@@ -3969,9 +4101,16 @@ Create some data and change the xticks labels
     plot.set_xticks(range(0,31,10), minor=False)
     plt.show()
 
-Save the figure to a pdf file:
+#### Save to a pdf file
+
+With a plot object
 
     plot.get_figure().savefig('/tmp/output.pdf', format='pdf')
+
+With the pyplot object, only works immediately after building the plot.
+This also works with seaborn plots.
+
+    plt.savefig("/tmp/bli.pdf")
 
 
 #### Pandas plots side by side
@@ -4026,7 +4165,13 @@ All Seaborn examples below require the following imports and datasets:
     import seaborn
     iris = seaborn.load_dataset("iris")
     tips = seaborn.load_dataset("tips") 
+    fmri = seaborn.load_dataset("fmri")
     from matplotlib import pyplot as plt
+
+Resources
+
+
+- [Seaborn gallery](https://seaborn.pydata.org/examples/index.html)
 
 
 ### Scatter plot
@@ -4065,20 +4210,19 @@ In Seaborn facet grid.
     g.set(ylim=(0, None)) 
 
 
-### Grid plot
+### Facet grid plot
 
+Use Figure-level interface for drawing plots onto a FacetGrid:
 
-#### Grid scatter plot
+- catplot for drawing categorical plots
 
-Draw a scatter plot for each iris species
+- relplot for drawing relational plots
 
-    g = seaborn.FacetGrid(iris, col="species", height=6, width=2)
-    iris['species'] = iris['species'].astype('category')
-    g.map(seaborn.scatterplot,'petal_length','petal_width','species')
-    plt.show()
+  - kind="scatter" (the default) for scatter plots
+  - kind="line" for line plots
 
-Notice that if you don't change the color to a categorical variable, it will not vary across the species. 
-I reported [this issue](https://github.com/mwaskom/seaborn/issues/2028).
+The figure level interfaces return FacetGrid objects which can be reused to add
+subsequent layers.
 
 
 #### Grid Bar plot 
@@ -4097,16 +4241,41 @@ for each combination of size and smoker/non smoker
 
 #### Grid line plot
 
+help(searborn.relplot)
 
->   This function provides access to several different axes-level functions
->   that show the relationship between two variables with semantic mappings
->   of subsets. The ``kind`` parameter selects the underlying axes-level
->   function to use:
+    > "This function provides access to several different axes-level functions
+    > that show the relationship between two variables with semantic mappings
+    > of subsets. The ``kind`` parameter selects the underlying axes-level
+    > function to use:
+    >     - :func:`scatterplot` with ``kind="scatter"``; the default
+    >     - :func:`lineplot` with ``kind="line"``
+    > Extra keyword arguments are passed to the underlying function, so you should
+    > refer to the documentation for each to see kind-specific options."
 
->   - :func:`scatterplot` (with ``kind="scatter"``; the default)
->   - :func:`lineplot` (with ``kind="line"``)
+Example:
 
+- plot signal through time and facet along the region
+- use different axes size. This requires passing a dictionary to FacetGrid.
+- Add a y label
+- adjust the left margin so that the y label doesn't overwrite the axis
+- Set the Y limit to zero
 
+```
+
+g = seaborn.relplot(
+    data=fmri, x="timepoint", y="signal", col="region",
+    hue="event", style="event", kind="line",
+    col_wrap=1, height=3,
+    facet_kws={'sharey': False, 'sharex': False}
+)
+g.fig.supylabel("Adaptive Engagement of Cognitive Control")
+g.fig.subplots_adjust(left=0.28)
+g.set(ylim=(0, None))
+plt.show()
+
+```
+
+Older example from
 https://seaborn.pydata.org/examples/faceted_lineplot.html
 
     import seaborn as sns
@@ -4131,7 +4300,97 @@ https://seaborn.pydata.org/examples/faceted_lineplot.html
     plt.subplots_adjust(top=0.9)
 
 
-### Title
+#### Grid scatter plot
+
+Draw a scatter plot for each iris species, using the recommended `relplot()`
+function:
+
+    g = seaborn.relplot(x='petal_length', y='petal_width', col='species', hue='species', data=iris)
+    plt.show()
+
+help(seaborn.relplot) explains that it returns a FacetGrid object:
+
+    > " After plotting, the :class:`FacetGrid` with the plot is returned and can be
+    > used directly to tweak supporting plot details or add other layers."
+
+Old way: using FacetGrid directly requires changing the species to a categorical
+variable in order to have a different colour for each species.
+
+    g = seaborn.FacetGrid(iris, col="species", height=6)
+    iris['species'] = iris['species'].astype('category')
+    # Use map_dataframe to name the arguments
+    g.map_dataframe(seaborn.scatterplot,x='petal_length',y='petal_width',hue='species')
+    plt.show()
+
+    # Old way without named argument
+    g.map(seaborn.scatterplot,'petal_length','petal_width','species')
+    plt.show()
+
+Notice that if you don't change the color to a categorical variable, it will
+not vary across the species. I reported [this
+issue](https://github.com/mwaskom/seaborn/issues/2028) which led me to update
+the searborn documentation in this [merge
+request](https://github.com/mwaskom/seaborn/pull/2030/commits/88a45dddeb6ac4c88ab49da195e7a05843ad4aaf).
+
+> "When using seaborn functions that infer semantic mappings from a dataset,
+> care must be taken to synchronize those mappings across facets. In other
+> words some mechanism needs to ensure that the same mapping is used in each
+> facet. This can be achieved for example by passing pallete dictionnaries or
+> by defining categorical types in your dataframe. In most cases, it will be
+> better to use a figure-level function (e.g. :func:`relplot` or
+> :func:`catplot`) than to use :class:`FacetGrid` directly."
+
+
+#### Grid Text
+
+From [SO answer][https://stackoverflow.com/a/59775753/2641825)
+
+    import pandas as pd
+    import seaborn as sns
+    from matplotlib import pyplot as plt
+    data = [['APOLLOHOSP', 8, 6, 'High', 'small'],
+            ['ANUP', 8, 7, 'High', 'small'],
+            ['SIS', 4, 6, 'High', 'mid'],
+            ['HAWKINCOOK', 5, 2, 'Low', 'mid'],
+            ['NEULANDLAB', 6, 4, 'Low', 'large'],
+            ['ORIENTELEC', 7, 9, 'Low', 'mid'],
+            ['AXISBANK', 2, 3, 'Medium', 'mid'],
+            ['DMART', 4, 1, 'Medium', 'large'],
+            ['ARVIND', 2, 10, 'Medium', 'small'],
+            ['TCI', 1, 7, 'High', 'mid'],
+            ['MIDHANI', 5, 5, 'Low', 'large'],
+            ['RITES', 6, 4, 'Medium', 'mid'],
+            ['COROMANDEL', 9, 9, 'High', 'small'],
+            ['SBIN', 10, 3, 'Medium', 'large']]
+    mx = pd.DataFrame(data=data, columns=["code", "Growth", "Value", "Risk", "Mcap"])
+    plotnum = {'small': 0, 'mid': 1, 'large': 2}
+    p1 = sns.relplot(x="Growth", y="Value", hue="Risk", col="Mcap", data=mx, s=200, palette=['r', 'g', 'y'])
+
+    for ax in p1.axes[0]:
+        ax.set_xlim(0.0, max(mx["Growth"]) + 1.9)
+    for row in mx.itertuples():
+        print(row)
+        ax = p1.axes[0, plotnum[row.Mcap]]
+        ax.text(row.Growth + 0.5, row.Value, row.code, horizontalalignment='left')
+    plt.show()
+
+
+#### Grid axes
+
+Use scientific notation on the axes of a `g` FacetGrid object:
+
+    for axes in g.axes.flat:
+        axes.ticklabel_format(axis='both', style='scientific', scilimits=(0, 0))
+
+
+### Pair plot
+
+[seaborn.pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html#)
+
+> "Plot pairwise relationships in a dataset."
+
+
+### Title and axis labels
 
 Use `set_title` to add a title:
 
@@ -4144,7 +4403,13 @@ Set a common title for grid plots
 
     g = seaborn.FacetGrid(tips, col="time", row="smoker")
     g = g.map(plt.hist, "total_bill")
+    # Supplementary title
     g.fig.suptitle('I don't smoke and I don't tip.')
+
+Add axis labels
+
+     g.fig.supxlabel("time in years")
+     g.fig.supylabel("weight in kg")
 
 In case the title is overwritten on the subplots, you might need to use 
 [fig.subplot_adjust()](https://stackoverflow.com/a/28650623/2641825) 
@@ -4776,6 +5041,18 @@ Blog
   PyLint](https://www.reddit.com/r/Python/comments/82hgzm/any_advantages_of_flake8_over_pylint/)
   some answers suggest keeping both.
 
+### Ignore unused import warning
+
+Use case: 
+
+      # Make agg_trade_eu_row available here for backward compatibility
+      # so that the following import statement continues to work:
+      # >>> from biotrade.faostat.aggregate import agg_trade_eu_row
+      from biotrade.common.aggregate import agg_trade_eu_row # noqa # pylint: disable=unused-import
+
+[SO answer](https://stackoverflow.com/a/36741413/2641825)
+
+    import <module> # noqa # pylint: disable=unused-import
 
 
 ###  Dangerous default argument
