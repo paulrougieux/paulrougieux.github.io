@@ -298,7 +298,7 @@ Start an ipython prompt to test the package version
     packagename.__version__
 
 
-## Location of the python
+## Location the python executable
 
 [Get the location of the python
 executable](https://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically)
@@ -675,9 +675,11 @@ I have set the following shortcuts to be similar to RStudio:
 * F1 inspect current object (i.e. display function and classes documentation)
 * F2 go to function definition
 
+
 ## Vim 
 
 See my page on [vim.html](vim.html).
+
 
 # Neural Networks
 
@@ -887,6 +889,20 @@ But this is not a union:
 
 	    Return a new set with elements in either the set or other but not both.
     
+
+### Type hints
+
+For example 
+
+    import panda
+    from pathlib import Path
+    def csv_to_df(path: [str, Path]) -> pandas.DataFrame:
+        return pd.read_csv(path)
+
+- Issue with https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e
+
+    pandas.DataFrame and spark.sql.DataFrame
+
 
 ## Programming objects
 
@@ -3744,7 +3760,6 @@ dimensional array
     da2 * da1
 
 
-
 ### Definitions of data array and dataset
 
 [DataArray](https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray)
@@ -3843,29 +3858,105 @@ You can also use
     xarray.DataArray(df)
 
 
+### Data variables
+
+The equivalent to `df.columns` in pandas would be `ds.data_vars` for an xarray
+dataset.
+
+
+### Indexing
+
+#### Assigning values with indexing
+
+https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with-indexing
+
+> To select and assign values to a portion of a DataArray() you can use
+> indexing with `.loc` or `.where`.
+
+    import xarray
+    import matplotlib.pyplot as plt
+    ds = xarray.tutorial.open_dataset("air_temperature")
+    ds["empty"] = xarray.full_like(ds.air.mean("time"), fill_value=0)
+    ds["empty"].loc[dict(lon=260, lat=30)] = 100
+    lc = ds.coords["lon"]
+    la = ds.coords["lat"]
+    ds["empty"].loc[ 
+    dict(lon=lc[(lc > 220) & (lc < 260)], lat=la[(la > 20) & (la < 60)]) 
+    ] = 100
+    # Plot
+    ds.empty.plot()
+    plt.show()
+    # Write to a csv file
+    ds.empty.to_dataframe().to_csv("/tmp/empty.csv")
+
+> "Warning Do not try to assign values when using any of the indexing methods
+> `.isel` or `.sel`:"
+
+    da = xarray.DataArray([0, 1, 2, 3], dims=["x"])
+    # This will return an error 
+    da.isel(x=[0, 1, 2]) = -1
+    # SyntaxError: cannot assign to function call
+    # Do not do this
+    da.isel(x=[0, 1, 2])[1] = -1
+    # Use a dictionnary instead
+    da[dict(x=[1])] =  -1
+    # Also works with broadcasting
+    da[dict(x=[0, 1, 2])] =  -1
+
+
+#### Querying index variables
+
+
+Keep only data that is below the base year into the dataset.
+
+    base_year = 2018
+    ds.sel(year = ds.year <= base_year)
+    ds.query(year = "year <= 2018")
+    ds.query(year = "year <= @base_year")
+    # Returns an error
+    # SyntaxError: The '@' prefix is not allowed in top-level eval calls.
+    # please refer to your variables by name without the '@' prefix.
+
+
 ### Panel data
 
 [transitioning from pandas panel to xarray](https://docs.xarray.dev/en/stable/user-guide/pandas.html#transitioning-from-pandas-panel-to-xarray)
 
-> "As discussed elsewhere in the docs, there are two primary data structures
-> in xarray: DataArray and Dataset. You can imagine a DataArray as a
-> n-dimensional pandas Series (i.e. a single typed array), and a Dataset as the
-> DataFrame equivalent (i.e. a dict of aligned DataArray objects).
-> So you can represent a Panel, in two ways:
-> 
->    As a 3-dimensional DataArray,
-> 
->    Or as a Dataset containing a number of 2-dimensional DataArray objects.
+    > "As discussed elsewhere in the docs, there are two primary data structures
+    > in xarray: DataArray and Dataset. You can imagine a DataArray as a
+    > n-dimensional pandas Series (i.e. a single typed array), and a Dataset as the
+    > DataFrame equivalent (i.e. a dict of aligned DataArray objects).
+    > So you can represent a Panel, in two ways:
+    > 
+    >    As a 3-dimensional DataArray,
+    > 
+    >    Or as a Dataset containing a number of 2-dimensional DataArray objects.
+
+
+    > "Variables in Dataset objects can use a subset of its dimensions. For
+    > example, you can have one dataset with Person x Score x Time, and another
+    > with Person x Score."
 
 
 ### Plots
 
-- [Xarray scatter
+- [Xarray plotting
+  introduction](https://docs.xarray.dev/en/stable/user-guide/plotting.html#introduction)
+
+- [Scatter
 plots](https://docs.xarray.dev/en/stable/user-guide/plotting.html#scatter)
 
     > "For more advanced scatter plots, we recommend converting the relevant data
     > variables to a pandas DataFrame and using the extensive plotting capabilities
     > of seaborn."
+
+- [Facetting](https://docs.xarray.dev/en/stable/user-guide/plotting.html#faceting)
+
+    > "The easiest way to create faceted plots is to pass in row or col
+    > arguments to the xarray plotting methods/functions. This returns a
+    > xarray.plot.FacetGrid object."
+
+    spda.loc[dict(country=['Ukraine', 'Uzbekistan'])].plot(col="country")
 
 
 ### IO

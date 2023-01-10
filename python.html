@@ -704,8 +704,8 @@ packagename.__version__</code></pre>
 </div>
 </div>
 </div>
-<div id="location-of-the-python" class="section level2">
-<h2>Location of the python</h2>
+<div id="location-the-python-executable" class="section level2">
+<h2>Location the python executable</h2>
 <p><a
 href="https://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically">Get
 the location of the python executable</a> with</p>
@@ -1231,6 +1231,20 @@ symmetric_difference(other)
 set ^ other
 
     Return a new set with elements in either the set or other but not both.</code></pre>
+</div>
+<div id="type-hints" class="section level3">
+<h3>Type hints</h3>
+<p>For example</p>
+<pre><code>import panda
+from pathlib import Path
+def csv_to_df(path: [str, Path]) -&gt; pandas.DataFrame:
+    return pd.read_csv(path)</code></pre>
+<ul>
+<li><p>Issue with <a
+href="https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e"
+class="uri">https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e</a></p>
+<p>pandas.DataFrame and spark.sql.DataFrame</p></li>
+</ul>
 </div>
 </div>
 <div id="programming-objects" class="section level2">
@@ -3914,33 +3928,107 @@ coordinates.”</p>
 <p>You can also use</p>
 <pre><code>xarray.DataArray(df)</code></pre>
 </div>
+<div id="data-variables" class="section level3">
+<h3>Data variables</h3>
+<p>The equivalent to <code>df.columns</code> in pandas would be
+<code>ds.data_vars</code> for an xarray dataset.</p>
+</div>
+<div id="indexing" class="section level3">
+<h3>Indexing</h3>
+<div id="assigning-values-with-indexing" class="section level4">
+<h4>Assigning values with indexing</h4>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with-indexing"
+class="uri">https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with-indexing</a></p>
+<blockquote>
+<p>To select and assign values to a portion of a DataArray() you can use
+indexing with <code>.loc</code> or <code>.where</code>.</p>
+</blockquote>
+<pre><code>import xarray
+import matplotlib.pyplot as plt
+ds = xarray.tutorial.open_dataset(&quot;air_temperature&quot;)
+ds[&quot;empty&quot;] = xarray.full_like(ds.air.mean(&quot;time&quot;), fill_value=0)
+ds[&quot;empty&quot;].loc[dict(lon=260, lat=30)] = 100
+lc = ds.coords[&quot;lon&quot;]
+la = ds.coords[&quot;lat&quot;]
+ds[&quot;empty&quot;].loc[ 
+dict(lon=lc[(lc &gt; 220) &amp; (lc &lt; 260)], lat=la[(la &gt; 20) &amp; (la &lt; 60)]) 
+] = 100
+# Plot
+ds.empty.plot()
+plt.show()
+# Write to a csv file
+ds.empty.to_dataframe().to_csv(&quot;/tmp/empty.csv&quot;)</code></pre>
+<blockquote>
+<p>“Warning Do not try to assign values when using any of the indexing
+methods <code>.isel</code> or <code>.sel</code>:”</p>
+</blockquote>
+<pre><code>da = xarray.DataArray([0, 1, 2, 3], dims=[&quot;x&quot;])
+# This will return an error 
+da.isel(x=[0, 1, 2]) = -1
+# SyntaxError: cannot assign to function call
+# Do not do this
+da.isel(x=[0, 1, 2])[1] = -1
+# Use a dictionnary instead
+da[dict(x=[1])] =  -1
+# Also works with broadcasting
+da[dict(x=[0, 1, 2])] =  -1</code></pre>
+</div>
+<div id="querying-index-variables" class="section level4">
+<h4>Querying index variables</h4>
+<p>Keep only data that is below the base year into the dataset.</p>
+<pre><code>base_year = 2018
+ds.sel(year = ds.year &lt;= base_year)
+ds.query(year = &quot;year &lt;= 2018&quot;)
+ds.query(year = &quot;year &lt;= @base_year&quot;)
+# Returns an error
+# SyntaxError: The &#39;@&#39; prefix is not allowed in top-level eval calls.
+# please refer to your variables by name without the &#39;@&#39; prefix.</code></pre>
+</div>
+</div>
 <div id="panel-data" class="section level3">
 <h3>Panel data</h3>
 <p><a
 href="https://docs.xarray.dev/en/stable/user-guide/pandas.html#transitioning-from-pandas-panel-to-xarray">transitioning
 from pandas panel to xarray</a></p>
-<blockquote>
-<p>“As discussed elsewhere in the docs, there are two primary data
-structures in xarray: DataArray and Dataset. You can imagine a DataArray
-as a n-dimensional pandas Series (i.e. a single typed array), and a
-Dataset as the DataFrame equivalent (i.e. a dict of aligned DataArray
-objects). So you can represent a Panel, in two ways:</p>
-<p>As a 3-dimensional DataArray,</p>
-<p>Or as a Dataset containing a number of 2-dimensional DataArray
-objects.</p>
-</blockquote>
+<pre><code>&gt; &quot;As discussed elsewhere in the docs, there are two primary data structures
+&gt; in xarray: DataArray and Dataset. You can imagine a DataArray as a
+&gt; n-dimensional pandas Series (i.e. a single typed array), and a Dataset as the
+&gt; DataFrame equivalent (i.e. a dict of aligned DataArray objects).
+&gt; So you can represent a Panel, in two ways:
+&gt; 
+&gt;    As a 3-dimensional DataArray,
+&gt; 
+&gt;    Or as a Dataset containing a number of 2-dimensional DataArray objects.
+
+
+&gt; &quot;Variables in Dataset objects can use a subset of its dimensions. For
+&gt; example, you can have one dataset with Person x Score x Time, and another
+&gt; with Person x Score.&quot;</code></pre>
 </div>
 <div id="plots" class="section level3">
 <h3>Plots</h3>
 <ul>
 <li><p><a
-href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#scatter">Xarray
-scatter plots</a></p>
+href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#introduction">Xarray
+plotting introduction</a></p></li>
+<li><p><a
+href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#scatter">Scatter
+plots</a></p>
 <blockquote>
 <p>“For more advanced scatter plots, we recommend converting the
 relevant data variables to a pandas DataFrame and using the extensive
 plotting capabilities of seaborn.”</p>
 </blockquote></li>
+<li><p><a
+href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#faceting">Facetting</a></p>
+<blockquote>
+<p>“The easiest way to create faceted plots is to pass in row or col
+arguments to the xarray plotting methods/functions. This returns a
+xarray.plot.FacetGrid object.”</p>
+</blockquote>
+<p>spda.loc[dict(country=[‘Ukraine’,
+‘Uzbekistan’])].plot(col=“country”)</p></li>
 </ul>
 </div>
 <div id="io" class="section level3">
