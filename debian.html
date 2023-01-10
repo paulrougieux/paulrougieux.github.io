@@ -893,6 +893,12 @@ the signature</a></p>
 gpg --fingerprint release@expressvpn.com
 gpg --verify expressvpn_3.13.0.8-1_amd64.deb.asc
 gpg --verify expressvpn_3.14.0.4-1_amd64.deb.asc</code></pre>
+<p>You might want to define the trust level of the express vpn key (to
+make sure subsequent installs are verified with the same key over
+time)</p>
+<pre><code>gpg --edit-key release@expressvpn.com
+gpg&gt; trust # 3 = I trust marginally
+Your decision? 3</code></pre>
 <p>Install</p>
 <pre><code>sudo apt install ./expressvpn_3.14.0.4-1_amd64.deb</code></pre>
 </div>

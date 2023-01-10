@@ -549,6 +549,13 @@ signature](https://www.expressvpn.com/support/vpn-setup/pgp-for-linux/)
     gpg --verify expressvpn_3.13.0.8-1_amd64.deb.asc
     gpg --verify expressvpn_3.14.0.4-1_amd64.deb.asc
 
+You might want to define the trust level of the express vpn key (to make sure
+subsequent installs are verified with the same key over time)
+
+    gpg --edit-key release@expressvpn.com
+    gpg> trust # 3 = I trust marginally
+    Your decision? 3
+
 Install 
 
     sudo apt install ./expressvpn_3.14.0.4-1_amd64.deb
