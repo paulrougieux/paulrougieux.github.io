@@ -101,9 +101,10 @@ nmap <F3> :vimgrep /<C-R><C-W>/ **<CR>
 nnoremap <silent> <F8> :TlistToggle<CR>
 
 " Add date 
-"command! Date i<C-R>=strftime("%Y-%m-%d %a %I:%M %p")<CR><Esc>
-"command! Date "=strftime('%Y-%m-%d')<CR>P
 command! Date put =strftime('%Y-%m-%d')
+
+" Add a read counter item to a list of papers to read
+iabbrev azer - {1}
 
 " Pomodoro entry
 nmap <LocalLeader>m $4b
