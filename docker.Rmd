@@ -422,6 +422,27 @@ the rocker container to generate this site on gitlab-ci, see the configuration
 file at [.gitlab-ci.yml](.gitlab-ci.yml).
 
 
+
+### Convert a JOSS paper to pdf
+
+Use gitlab-ci to convert a Journal of Open Source Software (JOSS) markdown
+paper to a pdf file:
+
+```
+md-to-pdf:
+  stage: convert
+  image:
+    name: openjournals/inara
+    entrypoint: [""]
+  before_script: []
+  script:
+    - inara -p -o pdf paper/paper.md
+  artifacts:
+    paths:
+      - paper/paper.pdf
+```
+
+
 # Security
 
 docs.docker.com [Manage sensitive data with Docker secrets](https://docs.docker.com/engine/swarm/secrets/)

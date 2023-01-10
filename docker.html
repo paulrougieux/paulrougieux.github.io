@@ -802,6 +802,22 @@ language. I use the rocker container to generate this site on gitlab-ci,
 see the configuration file at <a
 href=".gitlab-ci.yml">.gitlab-ci.yml</a>.</p>
 </div>
+<div id="convert-a-joss-paper-to-pdf" class="section level3">
+<h3>Convert a JOSS paper to pdf</h3>
+<p>Use gitlab-ci to convert a Journal of Open Source Software (JOSS)
+markdown paper to a pdf file:</p>
+<pre><code>md-to-pdf:
+  stage: convert
+  image:
+    name: openjournals/inara
+    entrypoint: [&quot;&quot;]
+  before_script: []
+  script:
+    - inara -p -o pdf paper/paper.md
+  artifacts:
+    paths:
+      - paper/paper.pdf</code></pre>
+</div>
 </div>
 </div>
 <div id="security" class="section level1">
