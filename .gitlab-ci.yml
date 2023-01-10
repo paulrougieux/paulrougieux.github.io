@@ -5,6 +5,7 @@ pages:
   stage: deploy
   script:
   - Rscript -e "rmarkdown::render_site()"
+  # GitLab Pages will only publish files in the public directory
   - mkdir public
   - cp *.html public/
   - cp -r  site_libs/ public/
