@@ -560,6 +560,9 @@ The tig utility is a repository browser for git log and git diff.
 
 ## Rewriting history
 
+
+### Amend to the previous commit
+
 In case you entered a wrong commit message, you can edit the last commit message with:
 
     git commit --amend 
@@ -584,7 +587,7 @@ Explained in this [Stackoverflow Answer](https://stackoverflow.com/a/457396/2641
 > "The real reason git doesn't allow you to change the commit message ends up being very simple: that way, you can trust the messages. If you allowed people to change them afterwards, the messages are inherently not very trustworthy." 
 
 
-### Rebase
+### Rebase your changes on top of the remote head commit
 
 It is safe to use rebase as long as the commits have not been pushed 
 to another repository. 
@@ -603,6 +606,15 @@ See also :
  * Answers to a StackOverflow question  
 [How to modify a specified commit?](https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit).
  * [10 things I hate about git](https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/) Translation of the man page which he considers hard to understand: "git-rebase – Sequentially regenerate a series of commits so they can be applied directly to the head node"
+
+
+### Git history when changing a licence
+
+[SO question](https://opensource.stackexchange.com/a/6952/28620) in a case
+where the project was not made available publicly yet.
+
+- Use `rebase -i`
+- or use `git filter-branch`
 
 
 ## Clean
@@ -707,6 +719,21 @@ reverting a merge)
 > to do it by reverting the revert."
 
 
+# Going forward in time
+
+
+## Cherry pick one commit
+
+I was on a dev branch and committed a change to the README file. But in fact I
+wanted this change - related to installations instructions - to be visible by
+all users immediately. So that commit should have been on the main branch.
+The problem is that I had other commit in the dev branch that were not ready
+yet to be shared on the main branch. In order to pick just the commit that
+changed the README file and put it in the main branch I did:
+
+    git cherry-pick <commit-hash>
+
+
 # GUI Graphical User Interface
 
 For colleagues who need a GUI: 
@@ -775,6 +802,17 @@ To enable this add a `when` clause to `.gitlab-ci.yaml`
         when: always
         paths:
         - notebooks
+
+
+
+### gitlab pages
+
+Site URL available in the project repository under Settings/Pages
+
+> The app's built output files are in a folder named "public" 
+
+The public folder also needs to be published as an artifact. 
+See the `.gitlab-ci.yml` file in this repository.
 
 
 #### Usage quotas
@@ -1002,6 +1040,13 @@ pattern was present in the repo. You can then checkout the older revision of a
 file under a new name
 
     git show commit_sha:filename > new_file_name
+
+
+### Unique results
+
+Get unique list of import statements in python files
+
+    git grep -h  import -- "*.py" | sort --unique
 
 
 ### Searching for two terms on the same line

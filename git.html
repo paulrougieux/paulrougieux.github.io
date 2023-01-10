@@ -872,6 +872,8 @@ lines):</p>
 </div>
 <div id="rewriting-history" class="section level2">
 <h2>Rewriting history</h2>
+<div id="amend-to-the-previous-commit" class="section level3">
+<h3>Amend to the previous commit</h3>
 <p>In case you entered a wrong commit message, you can edit the last
 commit message with:</p>
 <pre><code>git commit --amend </code></pre>
@@ -898,8 +900,10 @@ ends up being very simple: that way, you can trust the messages. If you
 allowed people to change them afterwards, the messages are inherently
 not very trustworthy.”</p>
 </blockquote>
-<div id="rebase" class="section level3">
-<h3>Rebase</h3>
+</div>
+<div id="rebase-your-changes-on-top-of-the-remote-head-commit"
+class="section level3">
+<h3>Rebase your changes on top of the remote head commit</h3>
 <p>It is safe to use rebase as long as the commits have not been pushed
 to another repository. To rename older commits, simply run:</p>
 <pre><code>git rebase -i
@@ -920,6 +924,16 @@ href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10
 things I hate about git</a> Translation of the man page which he
 considers hard to understand: “git-rebase – Sequentially regenerate a
 series of commits so they can be applied directly to the head node”</li>
+</ul>
+</div>
+<div id="git-history-when-changing-a-licence" class="section level3">
+<h3>Git history when changing a licence</h3>
+<p><a href="https://opensource.stackexchange.com/a/6952/28620">SO
+question</a> in a case where the project was not made available publicly
+yet.</p>
+<ul>
+<li>Use <code>rebase -i</code></li>
+<li>or use <code>git filter-branch</code></li>
 </ul>
 </div>
 </div>
@@ -1013,6 +1027,20 @@ the merge”). So then you really should revert the merge, but when you
 want to re-do the merge, you now need to do it by reverting the
 revert.”</p>
 </blockquote>
+</div>
+</div>
+<div id="going-forward-in-time" class="section level1">
+<h1>Going forward in time</h1>
+<div id="cherry-pick-one-commit" class="section level2">
+<h2>Cherry pick one commit</h2>
+<p>I was on a dev branch and committed a change to the README file. But
+in fact I wanted this change - related to installations instructions -
+to be visible by all users immediately. So that commit should have been
+on the main branch. The problem is that I had other commit in the dev
+branch that were not ready yet to be shared on the main branch. In order
+to pick just the commit that changed the README file and put it in the
+main branch I did:</p>
+<pre><code>git cherry-pick &lt;commit-hash&gt;</code></pre>
 </div>
 </div>
 <div id="gui-graphical-user-interface" class="section level1">
@@ -1111,6 +1139,15 @@ a <code>when</code> clause to <code>.gitlab-ci.yaml</code></p>
     when: always
     paths:
     - notebooks</code></pre>
+</div>
+<div id="gitlab-pages" class="section level3">
+<h3>gitlab pages</h3>
+<p>Site URL available in the project repository under Settings/Pages</p>
+<blockquote>
+<p>The app’s built output files are in a folder named “public”</p>
+</blockquote>
+<p>The public folder also needs to be published as an artifact. See the
+<code>.gitlab-ci.yml</code> file in this repository.</p>
 <div id="usage-quotas" class="section level4">
 <h4>Usage quotas</h4>
 <p>Check usage quotas for a group at (replace group_name by the actual
@@ -1307,6 +1344,11 @@ to search committed code in the git history?</a></p>
 grep pattern was present in the repo. You can then checkout the older
 revision of a file under a new name</p>
 <pre><code>git show commit_sha:filename &gt; new_file_name</code></pre>
+<div id="unique-results" class="section level3">
+<h3>Unique results</h3>
+<p>Get unique list of import statements in python files</p>
+<pre><code>git grep -h  import -- &quot;*.py&quot; | sort --unique</code></pre>
+</div>
 <div id="searching-for-two-terms-on-the-same-line"
 class="section level3">
 <h3>Searching for two terms on the same line</h3>
