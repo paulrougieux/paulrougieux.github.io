@@ -857,6 +857,19 @@ selection:</p>
 href="https://stackoverflow.com/a/36264759/2641825">remove the last 2
 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
+<div id="abbreviations-and-boilerplate-code" class="section level3">
+<h3>Abbreviations and boilerplate code</h3>
+<p>Add a read counter item to a list of papers to read</p>
+<pre><code>iabbrev azer - {1}</code></pre>
+<ul>
+<li><p>Vim wiki <a
+href="https://vim.fandom.com/wiki/Use_abbreviations_for_frequently-used_words">abbreviations</a></p>
+<p>iabbrev teh the</p></li>
+<li><p><a
+href="https://stackoverflow.com/questions/55469524/how-to-write-vim-function-to-paste-a-template-text-into-current-file">SO
+question on boilerplate code</a></p></li>
+</ul>
+</div>
 <div id="character-classes" class="section level3">
 <h3>Character classes</h3>
 <p>See also patterns below.</p>
@@ -1540,6 +1553,12 @@ in addition, I mapped m to $</code></pre>
 <p>Note on motion with wrapped lines: <a
 href="https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping">Move
 cursor by display lines when wrapping</a></p>
+<div id="go-to-the-matching-curly-brace-or-parenthesis"
+class="section level3">
+<h3>Go to the matching curly brace or parenthesis</h3>
+<p>To go to the matching curly brace or parenthesis</p>
+<pre><code>%</code></pre>
+</div>
 </div>
 <div id="quick-fix-window" class="section level2">
 <h2>Quick fix window</h2>
@@ -1944,6 +1963,8 @@ again or:</p>
 Ctrl+N</code></pre>
 <p>Enter for example a module name, then use Ctrl+N and Ctrl+P to choose
 among the objects and functions in that module.</p>
+<p>Show the help of a function or object:</p>
+<pre><code>K</code></pre>
 <p>Jump to definition:</p>
 <pre><code>&lt;leader&gt;d</code></pre>
 <p>I remapped the <code>&lt;leader&gt;</code> key to <code>,</code> in

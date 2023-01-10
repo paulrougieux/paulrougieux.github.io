@@ -493,6 +493,19 @@ For example to [remove the last 2 characters of each line in a selection](https:
     :'<,'>s/..$//
 
 
+### Abbreviations and boilerplate code
+
+Add a read counter item to a list of papers to read
+
+    iabbrev azer - {1}
+
+- Vim wiki [abbreviations](https://vim.fandom.com/wiki/Use_abbreviations_for_frequently-used_words)
+
+    iabbrev teh the
+
+- [SO question on boilerplate code](https://stackoverflow.com/questions/55469524/how-to-write-vim-function-to-paste-a-template-text-into-current-file)
+
+
 ### Character classes
 
 See also patterns below.
@@ -1335,6 +1348,14 @@ In command mode, the following motions are activated:
 Note on motion with wrapped lines:
 [Move cursor by display lines when wrapping](https://vim.fandom.com/wiki/Move_cursor_by_display_lines_when_wrapping)
 
+
+### Go to the matching curly brace or parenthesis
+
+To go to the matching curly brace or parenthesis
+
+    %
+
+
 ## Quick fix window
 
 Help 
@@ -1770,6 +1791,10 @@ To cycle through proposition you can use `Ctrl+space` again or:
 
 Enter for example a module name, then use Ctrl+N and
 Ctrl+P to choose among the objects and functions in that module. 
+
+Show the help of a function or object:
+
+    K
 
 Jump to definition:
 
