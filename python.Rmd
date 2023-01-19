@@ -3819,7 +3819,38 @@ arrays](https://docs.xarray.dev/en/stable/user-guide/reshaping.html#converting-b
     > preserving coordinates."
 
 
-### Create xarray from pandas
+### Copy shallow and deep
+
+The documentation of the
+[DataArray.copy](https://docs.xarray.dev/en/stable/generated/xarray.DataArray.copy.html)
+and
+[Dataset.copy](https://docs.xarray.dev/en/stable/generated/xarray.Dataset.copy.html)
+methods show they both have a `deep` argument. If this argument is set to
+`False` (the default) it will only return a new view on the dataset.
+Illustration below, a dataset is passed to a function that removes values above
+a threshold. When `deep=False` the input data is changed as well even though we
+used the `copy()` method. We really have to use `copy(deep=True)` to make sure
+that the input data remains un modified.
+
+    import xarray
+    import numpy as np
+    ds = xarray.Dataset(
+        {"a": (("x", "y"), np.random.randn(2, 3))},
+        coords={"x": [10, 20], "y": ["a", "b", "c"]},
+    )
+    ds
+    def remove_x_larger_than(ds_in, threshold, deep):
+        """Remove values of x larger than the threshold"""
+        ds_out = ds_in.copy(deep=deep)
+        ds_out.loc[dict(x=ds_out.coords["x"]>threshold)] = np.nan
+        return ds_out
+    remove_x_larger_than(ds, threshold=10, deep=True)
+    print(ds)
+    remove_x_larger_than(ds, threshold=10, deep=False)
+    print(ds)
+
+
+### Create a dataset
 
 Round trip from pandas to xarray and back from the [xarray user guide page on
 pandas](https://docs.xarray.dev/en/stable/user-guide/pandas.html).
@@ -3836,6 +3867,8 @@ pandas](https://docs.xarray.dev/en/stable/user-guide/pandas.html).
         },
     )
     ds
+
+#### Convert xarray to pandas and back
 
 Convert the xarray dataset to a pandas data frame
 
@@ -4265,6 +4298,61 @@ Resources
 - [Seaborn gallery](https://seaborn.pydata.org/examples/index.html)
 
 
+### Axis labels and titles
+
+Use p.set() to set a y label and a title
+
+    p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
+    p.set(xlabel = "Petal Length", ylabel = "Petal Width", title = "Flower sizes")
+    plt.show()
+
+Use `set_title` to add a title:
+
+    (seaborn
+     .scatterplot(x="total_bill", y="tip", data=tips)
+     .set_title('Progression of tips along the bill amount')
+    )
+
+
+#### Labels on grid plots
+
+Set a common title for grid plots
+
+    g = seaborn.FacetGrid(tips, col="time", row="smoker")
+    g = g.map(plt.hist, "total_bill")
+    # Supplementary title
+    g.fig.suptitle('I don't smoke and I don't tip.')
+
+Add axis labels for grid plots
+
+     g.fig.supxlabel("time in years")
+     g.fig.supylabel("weight in kg")
+
+In case the title is overwritten on the subplots, you might need to use 
+[fig.subplot_adjust()](https://stackoverflow.com/a/28650623/2641825) 
+as such:
+
+    g.fig.subplots_adjust(top=.95)
+
+
+### Bar plot
+
+Bar plot
+
+    import matplotlib.pyplot as plt
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    iris_agg = iris.groupby("species").agg(sum)
+    iris_agg_long = iris_agg.melt(ignore_index=False).reset_index()
+    seaborn.barplot(data=iris_agg_long, x="variable", y="value", hue="species")
+
+Rotate index labels
+
+    plt.xticks(rotation=70)
+    plt.tight_layout()
+    plt.show()
+
+
 ### Scatter plot
 
 Create a scatter plot with a title and axis labels
@@ -4473,40 +4561,16 @@ Use scientific notation on the axes of a `g` FacetGrid object:
     for axes in g.axes.flat:
         axes.ticklabel_format(axis='both', style='scientific', scilimits=(0, 0))
 
+Do not use scientific notation on the axes
+
+
+    plt.ticklabel_format(style='plain', axis='y')
 
 ### Pair plot
 
 [seaborn.pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html#)
 
 > "Plot pairwise relationships in a dataset."
-
-
-### Title and axis labels
-
-Use `set_title` to add a title:
-
-    (seaborn
-     .scatterplot(x="total_bill", y="tip", data=tips)
-     .set_title('Progression of tips along the bill amount')
-    )
-
-Set a common title for grid plots
-
-    g = seaborn.FacetGrid(tips, col="time", row="smoker")
-    g = g.map(plt.hist, "total_bill")
-    # Supplementary title
-    g.fig.suptitle('I don't smoke and I don't tip.')
-
-Add axis labels
-
-     g.fig.supxlabel("time in years")
-     g.fig.supylabel("weight in kg")
-
-In case the title is overwritten on the subplots, you might need to use 
-[fig.subplot_adjust()](https://stackoverflow.com/a/28650623/2641825) 
-as such:
-
-    g.fig.subplots_adjust(top=.95)
 
 
 ### Figure size
@@ -4545,6 +4609,11 @@ the `height` and `aspect` arguments of the FacetGrid call as such:
 `help(seaborn.FacetGrid)`
 
 > ``aspect * height`` gives the width of each facet in inches.
+
+
+### Save figures to image files
+
+    plt.savefig("file_name.svg", bbox_inches='tight')
 
 
 ### Scatter Plot

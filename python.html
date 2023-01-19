@@ -3894,8 +3894,39 @@ between datasets and arrays</a></p>
 &gt; then concatenates them along a new dimension into a new array while
 &gt; preserving coordinates.&quot;</code></pre>
 </div>
-<div id="create-xarray-from-pandas" class="section level3">
-<h3>Create xarray from pandas</h3>
+<div id="copy-shallow-and-deep" class="section level3">
+<h3>Copy shallow and deep</h3>
+<p>The documentation of the <a
+href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.copy.html">DataArray.copy</a>
+and <a
+href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.copy.html">Dataset.copy</a>
+methods show they both have a <code>deep</code> argument. If this
+argument is set to <code>False</code> (the default) it will only return
+a new view on the dataset. Illustration below, a dataset is passed to a
+function that removes values above a threshold. When
+<code>deep=False</code> the input data is changed as well even though we
+used the <code>copy()</code> method. We really have to use
+<code>copy(deep=True)</code> to make sure that the input data remains un
+modified.</p>
+<pre><code>import xarray
+import numpy as np
+ds = xarray.Dataset(
+    {&quot;a&quot;: ((&quot;x&quot;, &quot;y&quot;), np.random.randn(2, 3))},
+    coords={&quot;x&quot;: [10, 20], &quot;y&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]},
+)
+ds
+def remove_x_larger_than(ds_in, threshold, deep):
+    &quot;&quot;&quot;Remove values of x larger than the threshold&quot;&quot;&quot;
+    ds_out = ds_in.copy(deep=deep)
+    ds_out.loc[dict(x=ds_out.coords[&quot;x&quot;]&gt;threshold)] = np.nan
+    return ds_out
+remove_x_larger_than(ds, threshold=10, deep=True)
+print(ds)
+remove_x_larger_than(ds, threshold=10, deep=False)
+print(ds)</code></pre>
+</div>
+<div id="create-a-dataset" class="section level3">
+<h3>Create a dataset</h3>
 <p>Round trip from pandas to xarray and back from the <a
 href="https://docs.xarray.dev/en/stable/user-guide/pandas.html">xarray
 user guide page on pandas</a>.</p>
@@ -3911,6 +3942,8 @@ ds = xarray.Dataset(
     },
 )
 ds</code></pre>
+<div id="convert-xarray-to-pandas-and-back" class="section level4">
+<h4>Convert xarray to pandas and back</h4>
 <p>Convert the xarray dataset to a pandas data frame</p>
 <pre><code>df = ds.to_dataframe()
 df</code></pre>
@@ -3927,6 +3960,7 @@ coordinates.”</p>
 </blockquote>
 <p>You can also use</p>
 <pre><code>xarray.DataArray(df)</code></pre>
+</div>
 </div>
 <div id="data-variables" class="section level3">
 <h3>Data variables</h3>
@@ -4299,6 +4333,48 @@ from matplotlib import pyplot as plt</code></pre>
 <li><a href="https://seaborn.pydata.org/examples/index.html">Seaborn
 gallery</a></li>
 </ul>
+<div id="axis-labels-and-titles" class="section level3">
+<h3>Axis labels and titles</h3>
+<p>Use p.set() to set a y label and a title</p>
+<pre><code>p = seaborn.scatterplot(&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;,data=iris)
+p.set(xlabel = &quot;Petal Length&quot;, ylabel = &quot;Petal Width&quot;, title = &quot;Flower sizes&quot;)
+plt.show()</code></pre>
+<p>Use <code>set_title</code> to add a title:</p>
+<pre><code>(seaborn
+ .scatterplot(x=&quot;total_bill&quot;, y=&quot;tip&quot;, data=tips)
+ .set_title(&#39;Progression of tips along the bill amount&#39;)
+)</code></pre>
+<div id="labels-on-grid-plots" class="section level4">
+<h4>Labels on grid plots</h4>
+<p>Set a common title for grid plots</p>
+<pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
+g = g.map(plt.hist, &quot;total_bill&quot;)
+# Supplementary title
+g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
+<p>Add axis labels for grid plots</p>
+<pre><code> g.fig.supxlabel(&quot;time in years&quot;)
+ g.fig.supylabel(&quot;weight in kg&quot;)</code></pre>
+<p>In case the title is overwritten on the subplots, you might need to
+use <a
+href="https://stackoverflow.com/a/28650623/2641825">fig.subplot_adjust()</a>
+as such:</p>
+<pre><code>g.fig.subplots_adjust(top=.95)</code></pre>
+</div>
+</div>
+<div id="bar-plot" class="section level3">
+<h3>Bar plot</h3>
+<p>Bar plot</p>
+<pre><code>import matplotlib.pyplot as plt
+import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+iris_agg = iris.groupby(&quot;species&quot;).agg(sum)
+iris_agg_long = iris_agg.melt(ignore_index=False).reset_index()
+seaborn.barplot(data=iris_agg_long, x=&quot;variable&quot;, y=&quot;value&quot;, hue=&quot;species&quot;)</code></pre>
+<p>Rotate index labels</p>
+<pre><code>plt.xticks(rotation=70)
+plt.tight_layout()
+plt.show()</code></pre>
+</div>
 <div id="scatter-plot" class="section level3">
 <h3>Scatter plot</h3>
 <p>Create a scatter plot with a title and axis labels</p>
@@ -4490,6 +4566,8 @@ plt.show()</code></pre>
 object:</p>
 <pre><code>for axes in g.axes.flat:
     axes.ticklabel_format(axis=&#39;both&#39;, style=&#39;scientific&#39;, scilimits=(0, 0))</code></pre>
+<p>Do not use scientific notation on the axes</p>
+<pre><code>plt.ticklabel_format(style=&#39;plain&#39;, axis=&#39;y&#39;)</code></pre>
 </div>
 </div>
 <div id="pair-plot" class="section level3">
@@ -4499,27 +4577,6 @@ href="https://seaborn.pydata.org/generated/seaborn.pairplot.html#">seaborn.pairp
 <blockquote>
 <p>“Plot pairwise relationships in a dataset.”</p>
 </blockquote>
-</div>
-<div id="title-and-axis-labels" class="section level3">
-<h3>Title and axis labels</h3>
-<p>Use <code>set_title</code> to add a title:</p>
-<pre><code>(seaborn
- .scatterplot(x=&quot;total_bill&quot;, y=&quot;tip&quot;, data=tips)
- .set_title(&#39;Progression of tips along the bill amount&#39;)
-)</code></pre>
-<p>Set a common title for grid plots</p>
-<pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
-g = g.map(plt.hist, &quot;total_bill&quot;)
-# Supplementary title
-g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
-<p>Add axis labels</p>
-<pre><code> g.fig.supxlabel(&quot;time in years&quot;)
- g.fig.supylabel(&quot;weight in kg&quot;)</code></pre>
-<p>In case the title is overwritten on the subplots, you might need to
-use <a
-href="https://stackoverflow.com/a/28650623/2641825">fig.subplot_adjust()</a>
-as such:</p>
-<pre><code>g.fig.subplots_adjust(top=.95)</code></pre>
 </div>
 <div id="figure-size-1" class="section level3">
 <h3>Figure size</h3>
@@ -4554,6 +4611,10 @@ pyplot.show()</code></pre>
 inches.</p>
 </blockquote>
 </div>
+</div>
+<div id="save-figures-to-image-files" class="section level3">
+<h3>Save figures to image files</h3>
+<pre><code>plt.savefig(&quot;file_name.svg&quot;, bbox_inches=&#39;tight&#39;)</code></pre>
 </div>
 <div id="scatter-plot-1" class="section level3">
 <h3>Scatter Plot</h3>
