@@ -393,6 +393,18 @@ Extract tables from a pdf with [tabula](https://tabula.technology/)
 
 Then visit http://127.0.0.1:8080/
 
+
+## Powerpoint to Markdown
+
+Using the python package https://github.com/ssine/pptx2md
+
+    pptx2md file_name.pptx
+
+To install the package the first time:
+
+    pip install pptx2md
+
+
 ## ASCII art
 
 Convert text to large ascii art
