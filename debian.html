@@ -1004,6 +1004,41 @@ sudo apt install fonts-deva-extra</code></pre>
 fonts</a> <a
 href="https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts">SubstitutingCalibriAndCambriaFonts</a></p>
 </div>
+<div id="firefox" class="section level1">
+<h1>Firefox</h1>
+<p>In a remote desktop session of Apache Guacamole inside a tab in
+Firefox. Copy-paste works only in one direction. I can copy from inside
+the remote desktop session and paste into the host system, but it
+doesn’t work in the other direction, I can not copy from the host system
+to the remote desktop session.</p>
+<ul>
+<li><p>Blog post on “Firefox copy and paste with Apache Guacamole” <a
+href="https://sudoedit.com/firefox-async-clipboard/"
+class="uri">https://sudoedit.com/firefox-async-clipboard/</a></p>
+<ul>
+<li>Based on this, I changed
+<code>dom.events.testing.asyncClipboard</code> to true in an attempt to
+enable pasting into a remote desktop session in Firefox. –&gt; This
+didn’t work, reverted to false.</li>
+</ul></li>
+<li><p>Based on the Stackoverflow pages I also changed</p>
+<ul>
+<li><p><code>dom.events.asyncClipboard.readText</code> to true. –&gt;
+This didn’t work, reverted to false.</p></li>
+<li><p><code>dom.events.asyncClipboard.clipboardItem</code> set to true
+–&gt; This didn’t work.</p></li>
+</ul></li>
+</ul>
+<p>Related pages:</p>
+<ul>
+<li><p><a
+href="https://stackoverflow.com/questions/71710391/firefox-paste-text-from-clipboard-into-input"
+class="uri">https://stackoverflow.com/questions/71710391/firefox-paste-text-from-clipboard-into-input</a></p></li>
+<li><p><a
+href="https://stackoverflow.com/questions/67440036/navigator-clipboard-readtext-is-not-working-in-firefox"
+class="uri">https://stackoverflow.com/questions/67440036/navigator-clipboard-readtext-is-not-working-in-firefox</a></p></li>
+</ul>
+</div>
 <div id="gnome" class="section level1">
 <h1>Gnome</h1>
 <p><a

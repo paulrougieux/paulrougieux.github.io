@@ -666,6 +666,35 @@ For example:
 [SubstitutingCalibriAndCambriaFonts](https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts)
 
 
+# Firefox
+
+In a remote desktop session of Apache Guacamole inside a tab in Firefox.
+Copy-paste works only in one direction. I can copy from inside the remote
+desktop session and paste into the host system, but it doesn't work in the
+other direction, I can not copy from the host system to the remote desktop
+session.
+
+- Blog post on "Firefox copy and paste with Apache Guacamole"
+  https://sudoedit.com/firefox-async-clipboard/
+
+    - Based on this, I changed `dom.events.testing.asyncClipboard` to true in an
+      attempt to enable pasting into a remote desktop session in Firefox. --> This
+      didn't work, reverted to false.
+
+- Based on the Stackoverflow pages I also changed
+
+    - `dom.events.asyncClipboard.readText` to true. --> This didn't work,
+      reverted to false.
+
+    - `dom.events.asyncClipboard.clipboardItem` set to true --> This didn't work.
+
+Related pages:
+
+- https://stackoverflow.com/questions/71710391/firefox-paste-text-from-clipboard-into-input
+
+- https://stackoverflow.com/questions/67440036/navigator-clipboard-readtext-is-not-working-in-firefox
+
+
 # Gnome
 
 [Gnome shell pressing the super key does not
