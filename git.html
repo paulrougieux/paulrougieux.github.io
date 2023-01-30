@@ -607,24 +607,6 @@ git merge temp</code></pre>
 <p>Delete uncommitted changes in current working directory:</p>
 <pre><code>git checkout branch_name .</code></pre>
 <p>See also below git clean.</p>
-<div id="merge-branches" class="section level2">
-<h2>Merge branches</h2>
-<p>To merge <code>branch1</code> changes to the <code>main</code>
-branch:</p>
-<pre><code>git checkout main
-
-git merge branch1</code></pre>
-<p>In case of conflict, you can edit the corresponding file(s) manually
-in a text editor, or you can decide to keep one of the 2 versions by
-checking out. For example if you are in the <code>main</code> branch</p>
-<pre><code>git checkout --ours &lt;filename&gt;</code></pre>
-<p>will get the file as it is in the main branch, while</p>
-<pre><code>git checkout --theirs &lt;filename&gt;</code></pre>
-<p>will get the file as it is in <code>branch1</code>. And vice-versa if
-you are currently in a feature branch
-<code>git checkout --ours &lt;filename&gt;</code> will get the file as
-it is in the feature branch.</p>
-</div>
 <div id="branching-strategy" class="section level2">
 <h2>Branching strategy</h2>
 <p>For solo projects, I use to have this branching strategy:</p>
@@ -649,6 +631,36 @@ a main branch.</p>
 <p>Check if a branch has been merged before deleting it</p>
 <p>git merge-base main compare</p>
 <p>Will return the latest common commit between the 2 branches.</p>
+</div>
+<div id="merge-branches" class="section level2">
+<h2>Merge branches</h2>
+<p>To merge <code>branch1</code> changes to the <code>main</code>
+branch:</p>
+<pre><code>git checkout main
+
+git merge branch1</code></pre>
+<p>In case of conflict, you can edit the corresponding file(s) manually
+in a text editor, or you can decide to keep one of the 2 versions by
+checking out. For example if you are in the <code>main</code> branch</p>
+<pre><code>git checkout --ours &lt;filename&gt;</code></pre>
+<p>will get the file as it is in the main branch, while</p>
+<pre><code>git checkout --theirs &lt;filename&gt;</code></pre>
+<p>will get the file as it is in <code>branch1</code>. And vice-versa if
+you are currently in a feature branch
+<code>git checkout --ours &lt;filename&gt;</code> will get the file as
+it is in the feature branch.</p>
+</div>
+<div id="checkout-a-remote-branch" class="section level2">
+<h2>Checkout a remote branch</h2>
+<p>When you fetch a remote repository, you get all its branches. The
+remote branches can be viewed with:</p>
+<pre><code>git branch -r</code></pre>
+<p>If there is only one branch with that name, you can simply do
+(without the remote prefix, only the branch name):</p>
+<pre><code>git checkout &lt;branch name&gt;</code></pre>
+<p>To create a local branch that tracks the remote branch. You’ll be
+able to make changes to that local branch and push them to the remote
+branch later.</p>
 </div>
 </div>
 <div id="configuring-git" class="section level1">
@@ -1148,6 +1160,17 @@ a <code>when</code> clause to <code>.gitlab-ci.yaml</code></p>
 </blockquote>
 <p>The public folder also needs to be published as an artifact. See the
 <code>.gitlab-ci.yml</code> file in this repository.</p>
+</div>
+<div id="deploy-token" class="section level3">
+<h3>Deploy token</h3>
+<p>Create a deploy token on the repository page. It also works at the
+project level for several repos.</p>
+<p>A deploy token makes it possible to clone in an unauthenticated
+way.</p>
+<p><a
+href="git%20clone%20https://username:token@gitlab.com/user/repo.git">SO
+answer</a></p>
+<pre><code>git clone https://username:token@gitlab.com/user/repo.git</code></pre>
 <div id="usage-quotas" class="section level4">
 <h4>Usage quotas</h4>
 <p>Check usage quotas for a group at (replace group_name by the actual
