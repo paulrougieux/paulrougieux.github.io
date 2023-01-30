@@ -574,6 +574,14 @@ http://vimregex.com/ Grouping and Backreferences
 > - count opening `"\("` from the left. "
 
 
+### HTML markup
+
+[Remove html tags, not the
+content](https://stackoverflow.com/a/6264260/2641825)
+
+    yitvatp
+
+
 ### Markdown fixes
 
 Several search and replace patterns to fix text copied from web pages or pdf
