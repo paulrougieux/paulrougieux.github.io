@@ -35,7 +35,8 @@ https://doi.org/10.1016/j.jfe.2014.07.001
 
 2017: "The Forest Products Trade Flow Database – A reproducible method and tool to support the analysis of international forest products trade", 
 with Jo Van Brusselen, Marko Lovrić, Janne Kiljunen, Simo Varis and Sergey Zudin,
-[EFI Technical Report No 100](http://www.efi.int/portal/virtual_library/publications/technical_reports/),
+[EFI Technical Report No 100](https://efi.int/publications-bank/forest-products-trade-flow-database-reproducible-method-and-tool-support-analysis),
+([pdf](https://efi.int/sites/default/files/files/publication-bank/2018/tr_100.pdf))
 ([R code](https://github.com/EuropeanForestInstitute/tradeflows))
 
 
