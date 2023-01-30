@@ -1576,9 +1576,16 @@ def plot_iris(species):
     ax.set_ylim(0,4)</code></pre>
 </div>
 </div>
+<div id="display-options-for-pandas-data-frames" class="section level2">
+<h2>Display options for pandas data frames</h2>
+<p><a
+href="https://pandas.pydata.org/docs/user_guide/options.html#frequently-used-options"
+class="uri">https://pandas.pydata.org/docs/user_guide/options.html#frequently-used-options</a></p>
+<p>Precision</p>
+<pre><code>pandas.set_option(&#39;display.precision&#39;, 2)</code></pre>
 <div id="display-all-rows-and-columns-of-a-data-frame"
-class="section level2">
-<h2>Display all rows and columns of a data frame</h2>
+class="section level3">
+<h3>Display all rows and columns of a data frame</h3>
 <p>Display all columns</p>
 <pre><code>pandas.options.display.max_columns = None</code></pre>
 <p>Display max rows</p>
@@ -1587,7 +1594,11 @@ class="section level2">
 href="https://stackoverflow.com/a/47113685/2641825">as in this
 answer</a></p>
 <pre><code>with pd.option_context(&#39;display.max_rows&#39;, 100, &#39;display.max_columns&#39;, 10):
-some pandas stuff</code></pre>
+some pandas stuff
+
+with pandas.option_context(&#39;display.max_rows&#39;, 100, &#39;display.max_columns&#39;, 10):
+    display(large_prod)</code></pre>
+</div>
 </div>
 <div id="docker-stacks" class="section level2">
 <h2>Docker stacks</h2>
@@ -2642,8 +2653,24 @@ df.columns</code></pre>
 cols = df.columns.tolist()
 [name for name in cols if &#39;a&#39; in name]</code></pre>
 </div>
-<div id="remove-empty-columns" class="section level3">
-<h3>Remove empty columns</h3>
+<div id="na-values-in-columns" class="section level3">
+<h3>NA values in columns</h3>
+<div id="diagnostic-na-values" class="section level4">
+<h4>Diagnostic NA values</h4>
+<p>A function that prints the number and proportion of NA values:</p>
+<pre><code>def nrows_available(df, var):
+    &quot;&quot;&quot;Number of rows where this variables is not NA&quot;&quot;&quot;
+    avail = sum(df[var] == df[var])
+    not_avail = sum(df[var] != df[var])
+    assert(not_avail + avail == len(df))
+    print(f&quot;{var} is available in {avail} rows&quot;,
+          f&quot;and NA in the other {not_avail} rows&quot;,
+          f&quot;{round(avail/len(df)*100)}% are available.&quot;)
+nrows_available(placette, &quot;tpespar1&quot;)
+nrows_available(placette, &quot;tpespar2&quot;)</code></pre>
+</div>
+<div id="remove-empty-columns" class="section level4">
+<h4>Remove empty columns</h4>
 <p>Remove empty columns</p>
 <pre><code>import pandas
 import numpy as np
@@ -2652,6 +2679,7 @@ df = pandas.DataFrame({&#39;A&#39; : [&#39;bli&#39;, &#39;bla&#39;, &#39;bla&#39
                        &#39;C&#39; : np.nan})
 columns_to_keep = [x for x in df.columns if not all(df[x].isna())]
 df = df[columns_to_keep].copy()</code></pre>
+</div>
 </div>
 <div id="rename-columns" class="section level3">
 <h3>Rename columns</h3>
@@ -2693,6 +2721,25 @@ s.astype(float).to_list()</code></pre>
 <p>Note using NA values is not possible with the base integer type, it
 requires a special type Int64 as explained in this <a
 href="https://stackoverflow.com/a/67270477/2641825">SO answer</a></p>
+<div id="find-mixed-data-types" class="section level4">
+<h4>Find mixed data types</h4>
+<p>When loading data sometimes more than one type are detected per
+column with a warning such as this one:</p>
+<pre><code>arbre = pandas.read_csv(zf.open(&quot;ARBRE.csv&quot;), sep=&quot;;&quot;)
+DtypeWarning: Columns (4,5,9,14,21,36) have mixed types.
+Specify dtype option on import or set low_memory=False.</code></pre>
+<p>Create sample data with a column that has 2 data types</p>
+<pre><code>import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+# Change one row to another type
+iris.loc[0,&quot;sepal_length&quot;] = iris.loc[0,&quot;sepal_length&quot;].astype(str)
+iris.loc[1,&quot;sepal_length&quot;] = iris.loc[1,&quot;sepal_length&quot;].astype(str)</code></pre>
+<p>Find columns that use more than one type</p>
+<pre><code>for col in iris.columns:
+    unique_types = iris[col].apply(type).unique()
+    if len(unique_types) &gt; 1:
+        print(col, unique_types)</code></pre>
+</div>
 </div>
 <div id="memory-usage" class="section level3">
 <h3>Memory usage</h3>
@@ -2980,6 +3027,19 @@ df.to_csv(&#39;/tmp/df.csv.zip&#39;, index=False, compression=compression_opts)<
 df.equals(df1)
 df2 = pandas.read_csv(&quot;/tmp/df.csv.zip&quot;)
 df.equals(df2)</code></pre>
+<div id="many-files-in-one-zip-archive" class="section level5">
+<h5>Many files in one zip archive</h5>
+<p><code>pandas.read_csv</code> can only read zip archive that contain
+one file only. If there are more than one file in the archive, you can
+use a <code>ZipFile</code> object to provide access to the correct file
+inside the archive, see <a
+href="https://stackoverflow.com/a/56786517/2641825">SO answer</a>.</p>
+<pre><code>import zipfile
+import pandas
+zf = zipfile.ZipFile(&quot;archive_name.zip&quot;)
+print(&quot;Files in the archive:&quot;, zf.namelist())
+df = pandas.read_csv(zf.open(&quot;file_name.csv&quot;))</code></pre>
+</div>
 </div>
 <div id="from-an-api" class="section level4">
 <h4>From an API</h4>
@@ -3627,6 +3687,11 @@ alist of values to select rows</a></p>
 df[df[&#39;A&#39;].isin([3, 6])]
 df.loc[df[&#39;A&#39;].isin([3, 6])]
 df.query(&quot;A in [3,6]&quot;)</code></pre>
+</div>
+<div id="square-brackets" class="section level3">
+<h3>Square brackets</h3>
+<p>Select the second column with square brackets</p>
+<pre><code>df[df.columns[1]]</code></pre>
 </div>
 <div id="xs-cross-sections" class="section level3">
 <h3>xs cross sections</h3>
@@ -4417,6 +4482,20 @@ g.set(ylim=(0, None)) </code></pre>
 </ul>
 <p>The figure level interfaces return FacetGrid objects which can be
 reused to add subsequent layers.</p>
+<div id="facet-title-and-size" class="section level4">
+<h4>Facet title and size</h4>
+<p>Change row and column labels to display only the content (not
+“<code>label=</code>”) and change the size to 30.</p>
+<pre><code>import seaborn
+seaborn.set_theme(style=&quot;darkgrid&quot;)
+df = seaborn.load_dataset(&quot;penguins&quot;)
+g = seaborn.displot(
+    df, x=&quot;flipper_length_mm&quot;, col=&quot;species&quot;, row=&quot;sex&quot;,
+    binwidth=3, height=3, facet_kws=dict(margin_titles=True),
+)
+g.fig.subplots_adjust(top=.9, bottom=0.1, right=0.9)
+g.set_titles(row_template=&quot;{row_name}&quot;, col_template=&quot;{col_name}&quot;, size=30)</code></pre>
+</div>
 <div id="grid-bar-plot" class="section level4">
 <h4>Grid Bar plot</h4>
 <p>Draw a facet bar plot <a
@@ -4429,6 +4508,18 @@ tips=sns.load_dataset(&quot;tips&quot;)
 g = sns.FacetGrid(tips, col = &#39;size&#39;,  row = &#39;smoker&#39;, hue = &#39;day&#39;)
 g = (g.map(sns.barplot, &#39;time&#39;, &#39;total_bill&#39;, ci = None).add_legend())
 plt.show()</code></pre>
+</div>
+<div id="grid-histogram" class="section level4">
+<h4>Grid histogram</h4>
+<p><a href="https://seaborn.pydata.org/examples/faceted_histogram.html"
+class="uri">https://seaborn.pydata.org/examples/faceted_histogram.html</a></p>
+<pre><code>import seaborn
+seaborn.set_theme(style=&quot;darkgrid&quot;)
+df = seaborn.load_dataset(&quot;penguins&quot;)
+seaborn.displot(
+    df, x=&quot;flipper_length_mm&quot;, col=&quot;species&quot;, row=&quot;sex&quot;,
+    binwidth=3, height=3, facet_kws=dict(margin_titles=True),
+)</code></pre>
 </div>
 <div id="grid-line-plot" class="section level4">
 <h4>Grid line plot</h4>

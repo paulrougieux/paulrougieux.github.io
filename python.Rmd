@@ -1250,7 +1250,16 @@ Use the `@interact` decorator
         ax.set_ylim(0,4)
 
 
-## Display all rows and columns of a data frame
+## Display options for pandas data frames
+
+https://pandas.pydata.org/docs/user_guide/options.html#frequently-used-options
+
+Precision
+
+    pandas.set_option('display.precision', 2)
+
+
+### Display all rows and columns of a data frame
 
 Display all columns
 
@@ -1260,10 +1269,14 @@ Display max rows
 
     pandas.set_option('display.max_rows', 500)
 
-With a  context manager [as in this answer](https://stackoverflow.com/a/47113685/2641825)
+With a context manager [as in this answer](https://stackoverflow.com/a/47113685/2641825)
 
     with pd.option_context('display.max_rows', 100, 'display.max_columns', 10):
     some pandas stuff
+
+    with pandas.option_context('display.max_rows', 100, 'display.max_columns', 10):
+        display(large_prod)
+
 
 ## Docker stacks
 
@@ -2404,7 +2417,25 @@ Select only certain columns in a list
     [name for name in cols if 'a' in name]
 
 
-### Remove empty columns
+### NA values in columns
+
+#### Diagnostic NA values
+
+A function that prints the number and proportion of NA values:
+
+    def nrows_available(df, var):
+        """Number of rows where this variables is not NA"""
+        avail = sum(df[var] == df[var])
+        not_avail = sum(df[var] != df[var])
+        assert(not_avail + avail == len(df))
+        print(f"{var} is available in {avail} rows",
+              f"and NA in the other {not_avail} rows",
+              f"{round(avail/len(df)*100)}% are available.")
+    nrows_available(placette, "tpespar1")
+    nrows_available(placette, "tpespar2")
+
+
+#### Remove empty columns
 
 Remove empty columns
 
@@ -2470,6 +2501,35 @@ To change the type of a column use astype:
 Note using NA values is not possible with the base integer type, it requires a
 special type Int64 as explained in this [SO
 answer](https://stackoverflow.com/a/67270477/2641825)
+
+
+#### Find mixed data types
+
+When loading data sometimes more than one type are detected per column with a
+warning such as this one: 
+
+    arbre = pandas.read_csv(zf.open("ARBRE.csv"), sep=";")
+    DtypeWarning: Columns (4,5,9,14,21,36) have mixed types.
+    Specify dtype option on import or set low_memory=False.
+
+Create sample data with a column that has 2 data types
+
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    # Change one row to another type
+    iris.loc[0,"sepal_length"] = iris.loc[0,"sepal_length"].astype(str)
+    iris.loc[1,"sepal_length"] = iris.loc[1,"sepal_length"].astype(str)
+
+Find columns that use more than one type
+
+    for col in iris.columns:
+        unique_types = iris[col].apply(type).unique()
+        if len(unique_types) > 1:
+            print(col, unique_types)
+
+
+
+
 
 
 ### Memory usage
@@ -2795,6 +2855,20 @@ Read compressed csv files
     df.equals(df1)
     df2 = pandas.read_csv("/tmp/df.csv.zip")
     df.equals(df2)
+
+
+##### Many files in one zip archive
+
+`pandas.read_csv` can only read zip archive that contain one file only. If
+there are more than one file in the archive, you can use a `ZipFile` object to
+provide access to the correct file inside the archive, see [SO
+answer](https://stackoverflow.com/a/56786517/2641825).
+
+    import zipfile
+    import pandas
+    zf = zipfile.ZipFile("archive_name.zip")
+    print("Files in the archive:", zf.namelist())
+    df = pandas.read_csv(zf.open("file_name.csv"))
 
 
 #### From an API
@@ -3514,6 +3588,13 @@ contain "oak" but not "cloak" and query sawnwood products starting with "4407 ":
     df[df['A'].isin([3, 6])]
     df.loc[df['A'].isin([3, 6])]
     df.query("A in [3,6]")
+
+
+### Square brackets
+
+Select the second column with square brackets
+
+    df[df.columns[1]]
 
 
 ### xs cross sections
@@ -4404,6 +4485,22 @@ The figure level interfaces return FacetGrid objects which can be reused to add
 subsequent layers.
 
 
+#### Facet title and size
+
+Change row and column labels to display only the content (not "`label=`") and
+change the size to 30.
+
+    import seaborn
+    seaborn.set_theme(style="darkgrid")
+    df = seaborn.load_dataset("penguins")
+    g = seaborn.displot(
+        df, x="flipper_length_mm", col="species", row="sex",
+        binwidth=3, height=3, facet_kws=dict(margin_titles=True),
+    )
+    g.fig.subplots_adjust(top=.9, bottom=0.1, right=0.9)
+    g.set_titles(row_template="{row_name}", col_template="{col_name}", size=30)
+
+
 #### Grid Bar plot 
 
 Draw a facet bar plot [from SO](https://stackoverflow.com/a/62225095/2641825)
@@ -4417,6 +4514,18 @@ for each combination of size and smoker/non smoker
     g = (g.map(sns.barplot, 'time', 'total_bill', ci = None).add_legend())
     plt.show()
 
+
+#### Grid histogram
+
+https://seaborn.pydata.org/examples/faceted_histogram.html
+
+    import seaborn
+    seaborn.set_theme(style="darkgrid")
+    df = seaborn.load_dataset("penguins")
+    seaborn.displot(
+        df, x="flipper_length_mm", col="species", row="sex",
+        binwidth=3, height=3, facet_kws=dict(margin_titles=True),
+    )
 
 #### Grid line plot
 
