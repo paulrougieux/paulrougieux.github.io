@@ -98,6 +98,14 @@ tells you an update is available, you can then choose whether or not to install
 it.
 
 
+### Channels
+
+In case a python package is not available in the default conda channel use, you
+can change the channel as follows:
+
+    conda install -c conda-forge <package_name>
+
+
 ### Install
 
 Documentation conda.io  [installing
@@ -120,6 +128,7 @@ packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs
     conda install scipy curl
 
 > Note: It is best to install all packages at once, so that all of the dependencies are installed at the same time.
+
 
 
 ### Update
@@ -2797,6 +2806,27 @@ See also the query section for other ways to query data frames.
 Using query instead
 
     df.query("i>1")
+
+
+## Interpolate
+
+[pandas
+interpolate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.html)
+
+    import pandas
+    import numpy as np
+    s = pandas.Series([0, 2, np.nan, 8])
+    s.interpolate(method='polynomial', order=2)
+    s.interpolate(method='linear')
+
+
+[Interpolate within a
+groupby](https://stackoverflow.com/questions/37057187/pandas-interpolate-within-a-groupby)
+
+    # Interpolate the whole data frame
+    df.groupby("a").transform(pandas.DataFrame.interpolate)
+    # Only one column
+    df.groupby("a")["b"].transform(pandas.Series.interpolate)
 
 
 ## PyArrow
