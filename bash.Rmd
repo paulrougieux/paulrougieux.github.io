@@ -1978,6 +1978,56 @@ keys.openpgp.org [FAQ](https://keys.openpgp.org/about/faq)
 > ITSELF. "
 
 
+### Linux Kernel Maintainer PGP guide
+
+- Linux [Kernel Maintainer PGP
+guide](https://docs.kernel.org/process/maintainer-pgp-guide.html)
+
+    > "Trusting the developers, not infrastructure
+
+    > Ever since the 2011 compromise of core kernel.org systems, the main operating
+    > principle of the Kernel Archives project has been to assume that any part of
+    > the infrastructure can be compromised at any time. For this reason, the
+    > administrators have taken deliberate steps to emphasize that trust must
+    > always be placed with developers and never with the code hosting
+    > infrastructure, regardless of how good the security practices for the latter
+    > may be.
+
+    > The above guiding principle is the reason why this guide is needed. We want
+    > to make sure that by placing trust into developers we do not simply shift the
+    > blame for potential future security incidents to someone else. The goal is to
+    > provide a set of guidelines developers can use to create a secure working
+    > environment and safeguard the PGP keys used to establish the integrity of the
+    > Linux kernel itself."
+
+    > Start by getting a small USB “thumb” drive (preferably two!) that you will
+    > use for backup purposes. You will need to encrypt them using LUKS – refer to
+    > your distro’s documentation on how to accomplish this. For the encryption
+    > passphrase, you can use the same one as on your PGP key. Once the encryption
+    > process is over, re-insert the USB drive and make sure it gets properly
+    > mounted. Copy your entire .gnupg directory over to the encrypted storage:
+
+    > "Remove the Certify key from your homedir - The files in our home directory
+    > are not as well protected as we like to think. They can be leaked or
+    > stolen via many different means: , by accident when making quick homedir
+    > copies to set up a new workstation, by systems administrator negligence
+    > or malice, via poorly secured backups, via malware in desktop apps
+    > (browsers,pdf viewers,etc), via coercion when crossing international
+    > borders Protecting your key with a good passphrase greatly helps reduce
+    > the risk of any of the above, but passphrases can be discovered via
+    > keyloggers, shoulder-surfing, or any number of other means. For this
+    > reason, the recommended setup is to remove your Certify key from your
+    > home directory and store it on offline storage."
+
+    > Configure git to use your PGP key If you only have one secret key in your
+    > keyring, then you don’t really need to do anything extra, as it becomes your
+    > default key. However, if you happen to have multiple secret keys, you can
+    > tell git which key should be used ([fpr] is the fingerprint of your key):
+
+        git config --global user.signingKey [fpr]
+
+
+
 # System
 
 ## Disk usage and memory
