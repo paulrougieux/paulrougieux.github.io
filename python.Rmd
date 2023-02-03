@@ -97,13 +97,32 @@ Use conda update command to check to see if a new update is available. If conda
 tells you an update is available, you can then choose whether or not to install
 it.
 
+- [conda vs pip vs virtualenv commands](https://docs.conda.io/projects/conda/en/latest/commands.html#conda-vs-pip-vs-virtualenv-commands)
+
+    > "If you have used pip and virtualenv in the past, you can use conda to
+    > perform all of the same operations. Pip is a package manager and virtualenv
+    > is an environment manager. conda is both."
+
 
 ### Channels
 
 In case a python package is not available in the default conda channel use, you
-can change the channel as follows:
+can change the channel to
+[conda-forge](https://conda-forge.org/docs/user/introduction.html) as follows:
 
     conda install -c conda-forge <package_name>
+
+[conda-forge](https://conda-forge.org/docs/user/introduction.html):
+
+    > - "The conda team, from Anaconda, Inc., packages a multitude of packages and
+    > provides them to all users free of charge in their default channel."
+
+    > "conda-forge is a community effort that tackles these issues:
+    >  - All packages are shared in a single channel named conda-forge.
+    >  - Care is taken that all packages are up-to-date.
+    >  - Common standards ensure that all packages have compatible versions.
+    >  - By default, we build packages for macOS, Linux AMD64 and Windows
+    >    AMD64."
 
 
 ### Install
@@ -130,6 +149,14 @@ packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs
 > Note: It is best to install all packages at once, so that all of the dependencies are installed at the same time.
 
 
+
+### Pip and conda
+
+- [Using pip in a conda
+  environment](https://www.anaconda.com/blog/using-pip-in-a-conda-environment)
+
+    > "Use pip only after conda. Install as many
+    > requirements as possible with conda, then use pip"
 
 ### Update
 
@@ -326,8 +353,38 @@ path can be deduced from
 
 ## Virtual environments
 
-[Pipenv](https://pipenv.pypa.io/en/latest/)
-makes pip and virtual env work together. 
+- [Pipenv](https://pipenv.pypa.io/en/latest/) makes pip and virtual
+  environments work together. 
+
+    > "There is a subtle but very important distinction to be made between
+    > applications and libraries. This is a very common source of confusion in the
+    > Python community."
+
+    > "Libraries provide reusable functionality to other libraries and applications
+    > (let’s use the umbrella term projects here). They are required to work
+    > alongside other libraries, all with their own set of sub-dependencies. They
+    > define abstract dependencies. To avoid version conflicts in sub-dependencies
+    > of different libraries within a project, libraries should never ever pin
+    > dependency versions. Although they may specify lower or (less frequently)
+    > upper bounds, if they rely on some specific feature/fix/bug. Library
+    > dependencies are specified via install_requires in setup.py."
+
+    > "Libraries are ultimately meant to be used in some application. Applications
+    > are different in that they usually are not depended on by other projects.
+    > They are meant to be deployed into some specific environment and only then
+    > should the exact versions of all their dependencies and sub-dependencies be
+    > made concrete. To make this process easier is currently the main goal of
+    > Pipenv."
+
+    - Install on Debian
+
+        sudo apt install pipenv
+
+- [pyenv](https://github.com/pyenv/pyenv) makes it possible to manage different
+  python versions. But within the containing environment you can also install
+  different packages with pip.
+
+- Illustration of the complementarity between pyenv and pipenv.
 
 
 # Compilers
@@ -4409,7 +4466,9 @@ Resources
 - [Seaborn gallery](https://seaborn.pydata.org/examples/index.html)
 
 
-### Axis labels and titles
+### Axes
+
+#### labels and titles
 
 Use p.set() to set a y label and a title
 
@@ -4446,6 +4505,21 @@ as such:
     g.fig.subplots_adjust(top=.95)
 
 
+#### Axes limit
+
+Set limits on the one axis in a Seaborn plot:
+
+    p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
+    p.set(ylim=(-2,None))
+
+In Seaborn facet grid.
+[How to set xlim and ylim in seaborn facet grid](https://stackoverflow.com/a/25213614/2641825)
+
+    g = seaborn.FacetGrid(tips, col="time", row="smoker")
+    g = g.map(plt.hist, "total_bill")
+    g.set(ylim=(0, None)) 
+
+
 ### Bar plot
 
 Bar plot
@@ -4464,43 +4538,7 @@ Rotate index labels
     plt.show()
 
 
-### Scatter plot
-
-Create a scatter plot with a title and axis labels
-
-    p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
-    p.set(xlabel = "Petal Length", ylabel = "Petal Width", title = "Flower sizes")
-    plt.show()
-
-
-### Line plot
-
-Create a line plot with a title and axis labels.
-
-    import numpy as np
-    df = pandas.DataFrame({'value':np.random.random(100), 
-                           'year':range(1901,2001)})
-    p = seaborn.lineplot(x="year", y="value", data=df)
-    p.set(ylabel = "Random variation", title = "Title here")
-    plt.show()
-    
-
-### Axes limit
-
-Set limits on the one axis in a Seaborn plot:
-
-    p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
-    p.set(ylim=(-2,None))
-
-In Seaborn facet grid.
-[How to set xlim and ylim in seaborn facet grid](https://stackoverflow.com/a/25213614/2641825)
-
-    g = seaborn.FacetGrid(tips, col="time", row="smoker")
-    g = g.map(plt.hist, "total_bill")
-    g.set(ylim=(0, None)) 
-
-
-### Facet grid plot
+### Facet grid plots
 
 Use Figure-level interface for drawing plots onto a FacetGrid:
 
@@ -4705,13 +4743,6 @@ Do not use scientific notation on the axes
 
     plt.ticklabel_format(style='plain', axis='y')
 
-### Pair plot
-
-[seaborn.pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html#)
-
-> "Plot pairwise relationships in a dataset."
-
-
 ### Figure size
 
 Resize a scatter plot
@@ -4750,7 +4781,30 @@ the `height` and `aspect` arguments of the FacetGrid call as such:
 > ``aspect * height`` gives the width of each facet in inches.
 
 
-### Save figures to image files
+### Histogram
+
+histogram with a log scale
+
+### Line plot
+
+Create a line plot with a title and axis labels.
+
+    import numpy as np
+    df = pandas.DataFrame({'value':np.random.random(100), 
+                           'year':range(1901,2001)})
+    p = seaborn.lineplot(x="year", y="value", data=df)
+    p.set(ylabel = "Random variation", title = "Title here")
+    plt.show()
+    
+
+### Pair plot
+
+[seaborn.pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html#)
+
+> "Plot pairwise relationships in a dataset."
+
+
+### Save figures to image or pdf files
 
     plt.savefig("file_name.svg", bbox_inches='tight')
 
@@ -4768,6 +4822,15 @@ Create a scatter plot
 Group by another variable and show the groups with different colors:
     
     seaborn(x="total_bill", y="tip", hue="time", data=tips)
+
+
+### Scatter plot
+
+Create a scatter plot with a title and axis labels
+
+    p = seaborn.scatterplot('petal_length','petal_width','species',data=iris)
+    p.set(xlabel = "Petal Length", ylabel = "Petal Width", title = "Flower sizes")
+    plt.show()
 
 
 ### Sample data
@@ -5107,6 +5170,30 @@ discussing [the idea of non standard evaluation in
 python](https://www.mail-archive.com/python-ideas@python.org/msg15694.html).
 - A [comparison of a python implementation and an R implementation using non
   standard evaluation](https://third-bit.com/2018/11/16/non-standard-evaluation/).
+
+
+# Security
+
+- [Compromised PyTorch-nightly dependency chain between December 25th and
+December 30th, 2022.](https://pytorch.org/blog/compromised-nightly-dependency/)
+
+    > "PyTorch-nightly Linux packages installed via pip during that time installed
+    > a dependency, torchtriton, which was compromised on the Python Package Index
+    > (PyPI) code repository and ran a malicious binary. This is what is known as a
+    > supply chain attack and directly affects dependencies for packages that are
+    > hosted on public package indices."
+
+- Anaconda was not affected https://www.anaconda.com/blog/anaconda-unaffected-by-pytorch-security-incident 
+
+    > "Conda users installing packages from Anaconda’s “main” channel are
+    > not impacted. This is because Anaconda’s official channels (the
+    > location where all our packages are stored) only contain packages built
+    > from stable upstream releases, while the affected PyTorch releases
+    > were nightly, development builds.
+
+    > "Update: we have confirmed with the
+    > conda-forge maintainers thattheir PyTorch packages are also built from stable
+    > upstream releases andare similarly not impacted."
 
 
 # String 
@@ -5492,6 +5579,33 @@ killed?](https://stackoverflow.com/questions/47408608/how-can-i-find-the-reason-
 [Why does python script randomly gets
 killed?](https://stackoverflow.com/questions/1811173/why-does-my-python-script-randomly-get-killed).
 
+
+## Where are python module stored
+
+Show the location of an imported module:
+
+    import module_name
+    print(module_name.__file__)
+
+For example on a system you might have built-in modules stored in one directory,
+user installed modules in another place and development modules yet in another
+place:
+
+    import os
+    os.__file__
+    # '/usr/lib/python3.9/os.py'
+
+    import pandas
+    pandas.__file__
+    # '/home/paul/.local/lib/python3.9/site-packages/pandas/__init__.py'
+
+    import biotrade
+    biotrade.__file__
+    # '/home/paul/repos/forobs/biotrade/biotrade/__init__.py'
+
+Show all modules installed in a system:
+
+    help("modules")
 
 
 # Test driven development
