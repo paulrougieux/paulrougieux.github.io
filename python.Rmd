@@ -410,6 +410,8 @@ https://github.com/serge-sans-paille/pythran
 
 # Control flow
 
+## If 
+
 dotnetperls: [not python](https://www.dotnetperls.com/not-python)
 
 Sample code with a function and if conditions:
@@ -423,6 +425,18 @@ Sample code with a function and if conditions:
 	function(False)
 	function('')
 	function('lalala')
+
+
+## For 
+
+A for loop with a continue statement
+
+    print("I print all numbers in the range except 2.")
+    for i in range(5):
+        if i==2:
+            continue
+        print(i)
+
 
 # Command line
 
@@ -1517,13 +1531,14 @@ Exceptions](https://docs.python.org/3/tutorial/errors.html#handling-exceptions).
 
 Handle empty data in pandas
 
-    from pandas.errors import EmptyDataError
+    import pandas
     try:
         df = gfpmx_data[s]
         columns = df.columns
-    except EmptyDataError:
+    except pandas.errors.EmptyDataError:
         print(f"no data in file {s}")
         columns = []
+
 
 
 ## Raising Exceptions
