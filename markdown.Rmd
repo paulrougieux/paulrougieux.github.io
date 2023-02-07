@@ -1,0 +1,224 @@
+---
+title: "Markdown"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+```{r setup}
+knitr::opts_chunk$set(eval=FALSE)
+```
+
+
+# Introduction
+
+This page contains a reference to markdown syntax rules.
+
+https://commonmark.org/ is an attempt at standardizing markdown syntax. The
+common mark [help page](https://commonmark.org/help/) explains the syntax.
+
+
+# Images
+
+![Image](https://avatars0.githubusercontent.com/u/5647397?v=4&s=460) 
+
+
+# Pandoc convert to and from other file formats
+
+See also the [bash](bash.html) page.
+
+[Pandoc demos](https://pandoc.org/demos.html) contains a lot of example commands 
+to convert text files from one format to another.
+[Pandoc user guide](https://pandoc.org/MANUAL.html)
+
+Convert a markdown document to pdf
+
+    pandoc filname.md -o filename.pdf
+    # If there are utf-8 encoding issues, use another engine
+    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex
+
+Convert a markdown document to pptx
+
+    pandoc filname.md -o filename.pptx
+
+Convert an odt document to markdown
+
+    pandoc filename.odt -o filename.md 
+
+Convert a Microsoft Word document to markdown
+
+    pandoc filename.docx -o filename.md 
+
+Convert a Microsoft Word document to markdown and keep images
+
+    pandoc --extract-media figures input.docx -o output.md
+
+Images are contained in a `media` subfolder in Word documents, the instruction
+above leads to a `figure/media` sub folder. To avoid this [use the current
+directory path](https://stackoverflow.com/a/52593892/2641825)
+
+    pandoc --extract-media=. input.docx -o output.md
+
+Convert an html code snippets to markdown and display the output at the command line
+
+    echo "Link: <a href="https://www.linphone.org/">Linphone</a>"| pandoc -f html -t markdown
+    # Link: [Linphone](https://www.linphone.org/)
+
+Convert an entire web page to markdown
+
+    pandoc https://pandoc.org/help.html -t markdown
+
+[Markdown has two different header
+styles](https://pandoc.org/MANUAL.html#headers) The default is to use
+setext-style headers for levels 1-2, and then ATX headers. To use ATX style
+headers only in markdown output:
+
+    pandoc --atx-headers filename.docx -o filename.md 
+
+
+## Bash script for bulk conversion
+
+Convert many markdown files with this [bash script for
+pandoc](https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs) 
+
+    for mdfile in *.md; do
+    pdffile=${mdfile%.md}.pdf
+    echo $pdffile
+    done
+
+Convert all docx documents to markdown in the current folder
+
+    for docxfile in *.docx; do
+    mdfile=${docxfile%.docx}.md
+    echo "converting $docxfile to $mdfile"
+    pandoc "$docxfile" -o "$mdfile"
+    done
+
+Pandoc can convert to PDF, but not from PDF.
+
+You can also create template files as explained in super user [markdown to latex conversion with a custom preamble](https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044)
+
+See also the makefile for pandoc in the programming with bash / makefile
+section below.
+
+# Yaml front matter for styles
+
+## Bibliography
+
+Custom yaml front matter for a markdown document that contains reading notes
+with citations. See also the vim.Rmd document on pandoc bibliographies.
+
+    ---
+    title: Reading notes
+    author: Paul Rougieux
+    bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
+    abstract: Reading notes at the JRC
+    header-includes: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[CO,CE]{Reading notes}
+        \fancyfoot[CO,CE]{JRC}
+        \fancyfoot[LE,RO]{\thepage}
+    ---
+    \tableofcontents{}
+    ...file content... this is probably not the way to do it    
+    \bibliography{../bibliography/jrc_ispra}
+    \bibliographystyle{apalike}
+
+This is probably not the way to do it, the bibliography should be included in the pandoc call? 
+Note this requires citeproc
+
+    sudo apt install pandoc-citeproc
+
+Then this should work :
+
+    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib
+
+There is still an issue with the encoding of the bibliography.
+
+## Paper size and margins
+
+Change the margin to 0.5 cm
+
+    ---
+    title: "Songs of freedom"
+    author: "Bob Marley"
+    geometry: margin=0.5cm
+    ---
+
+A4 paper
+
+    ---
+    title: LETTERA
+    papersize: A4
+    ---
+
+
+## Font size
+
+Change the font to 12pt, the max available in the default template.
+
+    ---
+    fontsize: 12pt
+    ---
+
+To get bigger fonts (up to 20pt) as explained in this [SO
+answer](https://stackoverflow.com/a/46055046), you can use the `extsizes`
+package by adding `documentclass: extarticle`.
+
+## Page numbers
+
+Adding headers and footers to pandoc suggests using:
+
+    ---
+    title: Test
+    author: Author Name
+    header-includes: |
+        \usepackage{fancyhdr}
+        \pagestyle{fancy}
+        \fancyhead[CO,CE]{This is fancy}
+        \fancyfoot[CO,CE]{So is this}
+        \fancyfoot[LE,RO]{\thepage}
+    abstract: This is a pandoc test . . . 
+    ---
+
+
+## Table of content
+
+Add a table of content at the beginning of the document
+
+    ---
+    title: "Work plan"
+    geometry: margin=2cm
+    toc: yes
+    ---
+
+When specified in the yaml front matter only, the table of content appears in pdf output but not in html output. This may be
+due to a difference in the latex and html templates? Display the
+content of the latex and html templates
+    
+    pandoc -D latex
+    pandoc -D html
+
+However calling the --toc argument does create a table of content in the html file:
+
+    pandoc -s --toc notes.md -o notes.html
+
+## Two column layout and class options
+
+The `openany` option for the book document class, allows opening a chapter on any
+page left or right, otherwise the book class forces chapter opening on the left
+page only and inserts a blank page.
+
+    ---
+    title: "Songs"
+    geometry: margin=0.5cm
+    documentclass: book
+    classoption:
+    - twocolumn
+    - openany
+    ---
+
+
+
