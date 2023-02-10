@@ -142,6 +142,14 @@ that matches all other path components in between.
 
 ## Commit messages
 
+Commit messages descripe at a high level what has been changed in the code.
+
+On [the linux kernel
+repository](https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/)
+commit messages start with a capital letter and do not have a dot at the end. 
+This style is also what is written in the [tidyverse style
+guide](https://style.tidyverse.org/gitgithub.html).
+
 Example of a long commit message (like a letter) torvalds/uemacs [Stop using
 'short' for line and allocation sizes
 ](https://github.com/torvalds/uemacs/commit/fa00fe882f719351fdf7a4c4100baf4f3eab4d61). 
@@ -681,6 +689,7 @@ I used [how to remove a too large file in a commit](https://stackoverflow.com/a/
     git reset HEAD^
 
 Then added the large file to .gitignore and committed again. 
+
 
 ## Reset only one file
 
