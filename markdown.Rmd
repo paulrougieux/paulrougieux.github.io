@@ -50,7 +50,7 @@ Convert a Microsoft Word document to markdown
 
     pandoc filename.docx -o filename.md 
 
-Convert a Microsoft Word document to markdown and keep images
+Convert a Microsoft Word document to markdown and **keep images**
 
     pandoc --extract-media figures input.docx -o output.md
 

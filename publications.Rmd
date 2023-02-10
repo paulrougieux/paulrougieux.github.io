@@ -39,6 +39,12 @@ with Jo Van Brusselen, Marko Lovrić, Janne Kiljunen, Simo Varis and Sergey Zudi
 ([pdf](https://efi.int/sites/default/files/files/publication-bank/2018/tr_100.pdf))
 ([R code](https://github.com/EuropeanForestInstitute/tradeflows))
 
+2022: Blujdea, V., Rougieux, P., Sinclair, L., Morken, S., Pilli, R., Grassi,
+G., Mubareka, S. and Kurz, W., The JRC Forest Carbon Model: description of
+EU-CBM-HAT, EUR 31299 EN, Publications Office of the European Union,
+Luxembourg, 2022, ISBN 978-92-76-58867-2, http://dx.doi.org/10.2760/244051,
+JRC130609. ([python package](https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat))
+
 
 ## PhD Thesis
 
