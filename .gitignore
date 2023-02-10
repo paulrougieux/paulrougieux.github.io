@@ -9,3 +9,5 @@ todo.html
 
 # Ignore generated images
 *.png
+# Except some of them
+!R_files/figure-html/math_in_facet_labels-1.png
