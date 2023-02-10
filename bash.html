@@ -392,7 +392,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="clustering.html">Clustering</a>
+      <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
       <a href="musical_scales.html">Musical scales</a>
@@ -589,166 +589,13 @@ section below.</p>
 <div id="pandoc-convert-documents-between-various-formats"
 class="section level2">
 <h2>Pandoc convert documents between various formats</h2>
-<p><a href="https://pandoc.org/demos.html">Pandoc demos</a> contains a
-lot of example commands to convert text files from one format to
-another. <a href="https://pandoc.org/MANUAL.html">Pandoc user
-guide</a></p>
+<p>See also the <a href="markdown.html">markdown</a> page. It contains
+more examples and formatting instructions such as how to use a
+bibliography, change the font size or use a two column layout.</p>
 <p>Convert a markdown document to pdf</p>
-<pre><code>pandoc filname.md -o filename.pdf
-# If there are utf-8 encoding issues, use another engine
-pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex</code></pre>
+<pre><code>pandoc filname.md -o filename.pdf</code></pre>
 <p>Convert a markdown document to pptx</p>
 <pre><code>pandoc filname.md -o filename.pptx</code></pre>
-<p>Convert an odt document to markdown</p>
-<pre><code>pandoc filename.odt -o filename.md </code></pre>
-<p>Convert a Microsoft Word document to markdown</p>
-<pre><code>pandoc filename.docx -o filename.md </code></pre>
-<p>Convert a Microsoft Word document to markdown and keep images</p>
-<pre><code>pandoc --extract-media figures input.docx -o output.md</code></pre>
-<p>Images are contained in a <code>media</code> subfolder in Word
-documents, the instruction above leads to a <code>figure/media</code>
-sub folder. To avoid this <a
-href="https://stackoverflow.com/a/52593892/2641825">use the current
-directory path</a></p>
-<pre><code>pandoc --extract-media=. input.docx -o output.md</code></pre>
-<p>Convert an html code snippets to markdown and display the output at
-the command line</p>
-<pre><code>echo &quot;Link: &lt;a href=&quot;https://www.linphone.org/&quot;&gt;Linphone&lt;/a&gt;&quot;| pandoc -f html -t markdown
-# Link: [Linphone](https://www.linphone.org/)</code></pre>
-<p>Convert an entire web page to markdown</p>
-<pre><code>pandoc https://pandoc.org/help.html -t markdown</code></pre>
-<p><a href="https://pandoc.org/MANUAL.html#headers">Markdown has two
-different header styles</a> The default is to use setext-style headers
-for levels 1-2, and then ATX headers. To use ATX style headers only in
-markdown output:</p>
-<pre><code>pandoc --atx-headers filename.docx -o filename.md </code></pre>
-<div id="yaml-front-matter-for-styles" class="section level3">
-<h3>Yaml front matter for styles</h3>
-<div id="bibliography" class="section level4">
-<h4>Bibliography</h4>
-<p>Custom yaml front matter for a markdown document that contains
-reading notes with citations. See also the vim.Rmd document on pandoc
-bibliographies.</p>
-<pre><code>---
-title: Reading notes
-author: Paul Rougieux
-bibliography: /home/paul/rp/bioeconomy_papers/bibliography/jrc_ispra.bib
-abstract: Reading notes at the JRC
-header-includes: |
-    \usepackage{fancyhdr}
-    \pagestyle{fancy}
-    \fancyhead[CO,CE]{Reading notes}
-    \fancyfoot[CO,CE]{JRC}
-    \fancyfoot[LE,RO]{\thepage}
----
-\tableofcontents{}
-...file content... this is probably not the way to do it    
-\bibliography{../bibliography/jrc_ispra}
-\bibliographystyle{apalike}</code></pre>
-<p>This is probably not the way to do it, the bibliography should be
-included in the pandoc call? Note this requires citeproc</p>
-<pre><code>sudo apt install pandoc-citeproc</code></pre>
-<p>Then this should work :</p>
-<pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
-<p>There is still an issue with the encoding of the bibliography.</p>
-</div>
-<div id="paper-size-and-margins" class="section level4">
-<h4>Paper size and margins</h4>
-<p>Change the margin to 0.5 cm</p>
-<pre><code>---
-title: &quot;Songs of freedom&quot;
-author: &quot;Bob Marley&quot;
-geometry: margin=0.5cm
----</code></pre>
-<p>A4 paper</p>
-<pre><code>---
-title: LETTERA
-papersize: A4
----</code></pre>
-</div>
-<div id="font-size" class="section level4">
-<h4>Font size</h4>
-<p>Change the font to 12pt, the max available in the default
-template.</p>
-<pre><code>---
-fontsize: 12pt
----</code></pre>
-<p>To get bigger fonts (up to 20pt) as explained in this <a
-href="https://stackoverflow.com/a/46055046">SO answer</a>, you can use
-the <code>extsizes</code> package by adding
-<code>documentclass: extarticle</code>.</p>
-</div>
-<div id="page-numbers" class="section level4">
-<h4>Page numbers</h4>
-<p>Adding headers and footers to pandoc suggests using:</p>
-<pre><code>---
-title: Test
-author: Author Name
-header-includes: |
-    \usepackage{fancyhdr}
-    \pagestyle{fancy}
-    \fancyhead[CO,CE]{This is fancy}
-    \fancyfoot[CO,CE]{So is this}
-    \fancyfoot[LE,RO]{\thepage}
-abstract: This is a pandoc test . . . 
----</code></pre>
-</div>
-<div id="table-of-content" class="section level4">
-<h4>Table of content</h4>
-<p>Add a table of content at the beginning of the document</p>
-<pre><code>---
-title: &quot;Work plan&quot;
-geometry: margin=2cm
-toc: yes
----</code></pre>
-<p>When specified in the yaml front matter only, the table of content
-appears in pdf output but not in html output. This may be due to a
-difference in the latex and html templates? Display the content of the
-latex and html templates</p>
-<pre><code>pandoc -D latex
-pandoc -D html</code></pre>
-<p>However calling the –toc argument does create a table of content in
-the html file:</p>
-<pre><code>pandoc -s --toc notes.md -o notes.html</code></pre>
-</div>
-<div id="two-column-layout-and-class-options" class="section level4">
-<h4>Two column layout and class options</h4>
-<p>The <code>openany</code> option for the book document class, allows
-opening a chapter on any page left or right, otherwise the book class
-forces chapter opening on the left page only and inserts a blank
-page.</p>
-<pre><code>---
-title: &quot;Songs&quot;
-geometry: margin=0.5cm
-documentclass: book
-classoption:
-- twocolumn
-- openany
----</code></pre>
-</div>
-</div>
-<div id="bash-script-for-bulk-conversion" class="section level3">
-<h3>Bash script for bulk conversion</h3>
-<p>Convert many markdown files with this <a
-href="https://github.com/FHefner/pandoc-docs/blob/master/pandoc-docs">bash
-script for pandoc</a></p>
-<pre><code>for mdfile in *.md; do
-pdffile=${mdfile%.md}.pdf
-echo $pdffile
-done</code></pre>
-<p>Convert all docx documents to markdown in the current folder</p>
-<pre><code>for docxfile in *.docx; do
-mdfile=${docxfile%.docx}.md
-echo &quot;converting $docxfile to $mdfile&quot;
-pandoc &quot;$docxfile&quot; -o &quot;$mdfile&quot;
-done</code></pre>
-<p>Pandoc can convert to PDF, but not from PDF.</p>
-<p>You can also create template files as explained in super user <a
-href="https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a-custom-preamble-using-pandoc/356044#356044">markdown
-to latex conversion with a custom preamble</a></p>
-<p>See also the makefile for pandoc in the programming with bash /
-makefile section below.</p>
-</div>
 </div>
 <div id="pdf-to-text-with-pdfminer" class="section level2">
 <h2>Pdf to text with pdfminer</h2>
@@ -915,12 +762,17 @@ href="https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-
 Lines starting with ‘#’, ‘;’ or ‘]’ are considered as comments and
 ignored.</p>
 </blockquote>
-<p>Download in a lower resolution (copied from example in man
-<code>youtube-dl</code>)</p>
+<div id="lower-resolution" class="section level3">
+<h3>Lower resolution</h3>
+<p>See the man page “FORMAT SELECTION”. Download in a lower resolution
+(copied from example in man <code>youtube-dl</code>)</p>
 <pre><code>youtube-dl -f &#39;bestvideo[height&lt;=480]+bestaudio/best[height&lt;=480]&#39; --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file /tmp/dl.md</code></pre>
+<p>Video format selection</p>
+<pre><code>youtube-dl -f &#39;bestvideo[height&lt;=480]+bestaudio/best[height&lt;=480]&#39; &lt;URL&gt;</code></pre>
 <p>Download only audio (using a low resolution for the video which is
 dropped)</p>
 <pre><code>youtube-dl -f &#39;bestaudio/best[height&lt;=480]&#39; --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file /tmp/dl.md</code></pre>
+</div>
 </div>
 <div id="parse-html-files-for-urls" class="section level2">
 <h2>Parse html files for URLS</h2>
@@ -2152,6 +2004,65 @@ terms of reliability, abuse-resistance, privacy, and usability. We might
 do something similar to it, but keys.openpgp.org will never be part of
 the SKS pool ITSELF. ”</p>
 </blockquote>
+</div>
+<div id="linux-kernel-maintainer-pgp-guide" class="section level3">
+<h3>Linux Kernel Maintainer PGP guide</h3>
+<ul>
+<li><p>Linux <a
+href="https://docs.kernel.org/process/maintainer-pgp-guide.html">Kernel
+Maintainer PGP guide</a></p>
+<blockquote>
+<p>“Trusting the developers, not infrastructure</p>
+</blockquote>
+<blockquote>
+<p>Ever since the 2011 compromise of core kernel.org systems, the main
+operating principle of the Kernel Archives project has been to assume
+that any part of the infrastructure can be compromised at any time. For
+this reason, the administrators have taken deliberate steps to emphasize
+that trust must always be placed with developers and never with the code
+hosting infrastructure, regardless of how good the security practices
+for the latter may be.</p>
+</blockquote>
+<blockquote>
+<p>The above guiding principle is the reason why this guide is needed.
+We want to make sure that by placing trust into developers we do not
+simply shift the blame for potential future security incidents to
+someone else. The goal is to provide a set of guidelines developers can
+use to create a secure working environment and safeguard the PGP keys
+used to establish the integrity of the Linux kernel itself.”</p>
+</blockquote>
+<blockquote>
+<p>Start by getting a small USB “thumb” drive (preferably two!) that you
+will use for backup purposes. You will need to encrypt them using LUKS –
+refer to your distro’s documentation on how to accomplish this. For the
+encryption passphrase, you can use the same one as on your PGP key. Once
+the encryption process is over, re-insert the USB drive and make sure it
+gets properly mounted. Copy your entire .gnupg directory over to the
+encrypted storage:</p>
+</blockquote>
+<blockquote>
+<p>“Remove the Certify key from your homedir - The files in our home
+directory are not as well protected as we like to think. They can be
+leaked or stolen via many different means: , by accident when making
+quick homedir copies to set up a new workstation, by systems
+administrator negligence or malice, via poorly secured backups, via
+malware in desktop apps (browsers,pdf viewers,etc), via coercion when
+crossing international borders Protecting your key with a good
+passphrase greatly helps reduce the risk of any of the above, but
+passphrases can be discovered via keyloggers, shoulder-surfing, or any
+number of other means. For this reason, the recommended setup is to
+remove your Certify key from your home directory and store it on offline
+storage.”</p>
+</blockquote>
+<blockquote>
+<p>Configure git to use your PGP key If you only have one secret key in
+your keyring, then you don’t really need to do anything extra, as it
+becomes your default key. However, if you happen to have multiple secret
+keys, you can tell git which key should be used ([fpr] is the
+fingerprint of your key):</p>
+</blockquote>
+<pre><code>  git config --global user.signingKey [fpr]</code></pre></li>
+</ul>
 </div>
 </div>
 </div>

@@ -403,9 +403,16 @@ You can also download multiple URLs from a batch file:
 >   File  containing URLs to download ('-' for stdin), one URL per line. Lines
 >   starting with '#', ';' or ']' are considered as comments and ignored.
 
+### Lower resolution
+
+See the man page "FORMAT SELECTION".
 Download in a lower resolution (copied from example in man `youtube-dl`)
 
     youtube-dl -f 'bestvideo[height<=480]+bestaudio/best[height<=480]' --extract-audio --audio-format vorbis --sleep-interval 30 -i --batch-file /tmp/dl.md
+
+Video format selection
+
+    youtube-dl -f 'bestvideo[height<=480]+bestaudio/best[height<=480]' <URL>
 
 Download only audio (using a low resolution for the video which is dropped)
 
