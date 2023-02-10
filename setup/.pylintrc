@@ -1,2 +1,2 @@
 [pylint]
-good-names=df
+good-names=df,ds,t

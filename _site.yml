@@ -36,8 +36,8 @@ navbar:
     - text: "Algos"
       icon: fa-microchip
       menu:
-        - text: "Clustering"
-          href: clustering.html
+        - text: "Carbon Budget Model"
+          href: carbon_budget_model.html
         - text: "Musical scales"
           href: musical_scales.html
     - text: "Data"
