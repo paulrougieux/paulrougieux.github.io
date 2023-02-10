@@ -20,6 +20,19 @@ The purpose of this notebook is to display notes used in various music
 scales.
 
 
+## See also
+
+Packages that work with chords:
+
+- R package [chorrrds](https://github.com/r-music/chorrrds) provides "tools to
+  use in combination with the music chords" such as the "`deg_maj` and
+  `deg_min` data frames, that contains all of the minor and major main scales
+  and its respective degrees". I did not try it. 
+
+- R package [pichor](https://mikl.dk/post/2019-07-27-pichor/) displays piano
+  chords and chord inversions. I did not try it.
+
+
 # Setup
 
 Create a data frame that contains the twelve notes of the chromatic scale used later in the analysis.
