@@ -11,6 +11,8 @@ library(knitr)
 knitr::opts_chunk$set(echo = TRUE)
 library(ggplot2)
 library(dplyr)
+# Render this document with the makefile or render it alone with:
+# Rscript -e "rmarkdown::render('~/repos/paulrougieux.github.io/R.Rmd')"
 ```
 
 # Introduction
@@ -511,6 +513,11 @@ column_names <- c("Bla, Bla", "Hips, Hops", "Yield/Carcass Weight",
 gsub("[^[:alnum:]]","_",tolower(column_names))
 # Replace one or more occurrences by an underscore
 gsub("[^[:alnum:]]+","_",tolower(column_names))
+
+iris2 <- iris
+names(iris2) <- gsub("[^[:alnum:]]+","_",tolower(names(iris2)))
+print(names(iris))
+# [1] "sepal_length" "sepal_width"  "petal_length" "petal_width"  "species"
 ```
 
 
@@ -1345,7 +1352,7 @@ Note to add a new line to a facet label, simply insert it with
 
     facet_variable = gsub(" ","\n", facet_variable)
 
-```{r}
+```{r math_in_facet_labels}
 library(dplyr)
 library(ggplot2)
 

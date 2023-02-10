@@ -394,7 +394,7 @@ div.tocify {
   </a>
   <ul class="dropdown-menu" role="menu">
     <li>
-      <a href="clustering.html">Clustering</a>
+      <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
       <a href="musical_scales.html">Musical scales</a>
@@ -914,6 +914,11 @@ gsub(&quot;[^[:alnum:]]+&quot;,&quot;_&quot;,tolower(column_names))</code></pre>
 ## [3] &quot;yield_carcass_weight&quot;          &quot;production&quot;                   
 ## [5] &quot;producing_animals_slaughtered&quot; &quot;area_harvested&quot;               
 ## [7] &quot;yield&quot;</code></pre>
+<pre class="r"><code>iris2 &lt;- iris
+names(iris2) &lt;- gsub(&quot;[^[:alnum:]]+&quot;,&quot;_&quot;,tolower(names(iris2)))
+print(names(iris))</code></pre>
+<pre><code>## [1] &quot;Sepal.Length&quot; &quot;Sepal.Width&quot;  &quot;Petal.Length&quot; &quot;Petal.Width&quot;  &quot;Species&quot;</code></pre>
+<pre class="r"><code># [1] &quot;sepal_length&quot; &quot;sepal_width&quot;  &quot;petal_length&quot; &quot;petal_width&quot;  &quot;species&quot;</code></pre>
 </div>
 </div>
 <div id="installing-r-and-packages" class="section level1">
@@ -1315,7 +1320,7 @@ be defined in the preamble section of the R markdown document.</p>
 documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;30 January, 2023&quot;
+date:  &quot;10 February, 2023&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1902,7 +1907,7 @@ iris2 %&gt;%
     geom_point() +
     facet_wrap(species_math ~ mean_length + Species,
                labeller = labeller(species_math = label_parsed, mean_length = label_parsed))</code></pre>
-<p><img src="R_files/figure-html/unnamed-chunk-16-1.png" width="672" /></p>
+<p><img src="R_files/figure-html/math_in_facet_labels-1.png" width="672" /></p>
 <p>As shown in the example above, the labeller can parse:</p>
 <ol style="list-style-type: decimal">
 <li><p>A character vector such as “m^2” for simple formulas</p></li>
