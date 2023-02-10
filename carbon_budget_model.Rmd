@@ -1,0 +1,37 @@
+---
+title: "Carbon Budget Model"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+
+```{r setup, echo=FALSE, warning=FALSE, message=FALSE}
+```
+
+# Introduction
+
+- The [Carbon Budget
+  Model](https://www.nrcan.gc.ca/climate-change/climate-change-impacts-forests/carbon-accounting/carbon-budget-model/13107)
+  was developed by the forest carbon accounting team of the Canadian Forest
+  Service. 
+
+    - [libcbm model](https://github.com/cat-cfs/libcbm_py) is an updated
+      version that can run as a python package. It was also developed by Forest
+      Carbon Accounting team of the Canadian Forest Service.
+
+- The forest carbon model
+  [eu_cbm_hat](https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat) is a python
+  package that enables the assessment of forest CO2 emissions and removals
+  under scenarios of forest management, natural disturbances, forest-related
+  land use changes. 
+
+    - `eu_cbm_hat` depends on the [libcbm
+      model](https://github.com/cat-cfs/libcbm_py) developed by Forest Carbon
+      Accounting team of the Canadian Forest Service.
+
+    - It uses [pandas data frames](https://pandas.pydata.org/) to transform and
+      load data.
+
+
