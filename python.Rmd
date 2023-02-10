@@ -334,7 +334,15 @@ Start an ipython prompt to test the package version
     packagename.__version__
 
 
-## Location the python executable
+## Location 
+
+### Of a package
+
+The location of a package can be obtained from
+`package_name.__file__`.
+
+
+### Of the python executable
 
 [Get the location of the python
 executable](https://stackoverflow.com/questions/749711/how-to-get-the-python-exe-location-programmatically)
@@ -348,7 +356,6 @@ path can be deduced from
 
     >>> import os
     >>> os.__file__
-
 
 
 ## Virtual environments
@@ -927,6 +934,10 @@ issubset](https://stackoverflow.com/a/3931655/2641825)
     set(m).issubset(l)
     # True
 
+    seta = {1,2,3}
+    setb = {1,2}
+    setb.issubset(seta)
+
 	set < other
 
 	    Test whether the set is a proper subset of other, that is, set <= other and set != other.
@@ -954,10 +965,13 @@ But this is not a union:
 
     set(range(3,10)) or set(range(5))
 
+Return a new set with elements common to the set and all others.
+
 	intersection(*others)
 	set & other & ...
 
-	    Return a new set with elements common to the set and all others.
+    bli.intersection({1,2})
+    # {1, 2}
 
 	difference(*others)
 	set - other - ...
@@ -2377,20 +2391,23 @@ Convert 2 columns to a dictionary
     df.set_index('b').to_dict()['c']
 
 
-### Convert a column to string, float or integer
+### Convert a column to numeric or string
 
-Convert a string to a numeric type
+Convert a string to a numeric type using the argument `errors="coerce"`:
 
     s = pandas.Series(["1", "2", "a"])
     pandas.to_numeric(s, errors="coerce")
 
-    # The following would return an error
+The following would return an error
+
     s.astype(float)
     s.astype(int)
-    # And errors="ignore" would not convert at all
+
+And using the `df[col].astype()` method with `errors="ignore"` would not
+convert at all:
+
     s.astype(float, errors="ignore")
     pandas.to_numeric(s, errors="ignore")
-
 
 Convert an integer to a string type
 
@@ -2638,6 +2655,28 @@ Changing a repeated data series to a categorical can help reduce memory usage
     iris2["species"] = iris["species"].astype('category')
     print(sys.getsizeof(iris2))
     print(sys.getsizeof(iris))
+
+
+## Copy data frame indices and data
+
+Use copy() to make a copy of a data frame's indices and data.
+
+    import seaborn
+    iris1 = seaborn.load_dataset("iris")
+    iris2 = iris1.copy()
+    iris2["x"] = 0
+    print(iris2.head(1))
+    print(iris1.head(1))
+    iris2.equals(iris1)
+
+If you don't make a copy, modifying a new assigned data farme  also modifies
+the original data frame
+
+    iris3 = iris1
+    iris3["x"] = 0
+    print(iris3.head(1))
+    print(iris1.head(1))
+    iris3.equals(iris1)
 
 
 ## Datetime operations
@@ -3943,7 +3982,7 @@ dimensional array
     da2 * da1
 
 
-### Definitions of data array and dataset
+### Textual definition of data array and dataset
 
 [DataArray](https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray)
 
@@ -4051,6 +4090,18 @@ pandas](https://docs.xarray.dev/en/stable/user-guide/pandas.html).
     )
     ds
 
+
+#### Dimensions
+
+x and y are dimensions.
+
+#### Attributes
+
+We can add attributes to qualify metadata.
+
+    ds.attrs["product"] = "sponge"
+
+
 #### Convert xarray to pandas and back
 
 Convert the xarray dataset to a pandas data frame
@@ -4073,11 +4124,18 @@ You can also use
 
     xarray.DataArray(df)
 
-
 ### Data variables
 
-The equivalent to `df.columns` in pandas would be `ds.data_vars` for an xarray
-dataset.
+The equivalent to `df.columns` in pandas would be `list(sawn.data_vars)` for an
+xarray dataset. `ds.data_vars` displays the data variables with the beginning
+of their content. If you loop on it it will just display a string
+
+    for x in ds.data_vars:
+        print(x, type(x))
+
+A list of variables
+
+    list(sawn.data_vars)
 
 
 ### Indexing
