@@ -19,8 +19,10 @@ navbar:
           href: docker.html
         - text: "Git"
           href: git.html
-        - text: "Lyx"
-          href: lyx.html
+        - text: "Latex and Lyx"
+          href: latex_and_lyx.html
+        - text: "Markdown"
+          href: markdown.html
         - text: "MySQL"
           href: mysql.html
         - text: "PostgreSQL"

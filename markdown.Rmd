@@ -6,14 +6,10 @@ output:
     toc_float: true
 ---
 
-```{r setup}
-knitr::opts_chunk$set(eval=FALSE)
-```
-
 
 # Introduction
 
-This page describes how to use markdown to edit text such as reading notes,
+This page describes how to use markdown to edit texts such as reading notes,
 meeting notes, technical documentation or even scientific publications.
 
 [Common Mark](https://commonmark.org/) is an attempt at standardizing markdown

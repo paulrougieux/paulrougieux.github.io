@@ -360,7 +360,10 @@ div.tocify {
       <a href="git.html">Git</a>
     </li>
     <li>
-      <a href="lyx.html">Lyx</a>
+      <a href="latex_and_lyx.html">Latex and Lyx</a>
+    </li>
+    <li>
+      <a href="markdown.html">Markdown</a>
     </li>
     <li>
       <a href="mysql.html">MySQL</a>
@@ -447,33 +450,30 @@ div.tocify {
 </div>
 
 
-<p>The Lyx “What You See is What You Mean” editor is available at Lyx
-and from your package manager. Citations</p>
-<p>Lyx nicely integrates with a bibtex bibliography. You can create a
-shortcut such as CTRL+SHIFT+C to insert a reference. A small menu will
-pop-up to choose from the references.</p>
-<p>Unfortunately “BibTeX does not support files encoded in UTF-8”. To
-get characters such as “é” encoded correctly latin1 has to be used.This
-can be set as the database property in Jabref.</p>
-<div id="shortcuts" class="section level1">
-<h1>Shortcuts</h1>
-<p>Under Tools / preferences / Editing / Shortcuts / Stackoverflow
-question on how to find the command name for a shortcut. I mapped:</p>
-<pre><code>citation-insert to Ctrl+Alt+C 
-href-insert to Ctrl+K
-label-insert to Ctrl+Alt+L
-statistics to Ctrl+Alt+T</code></pre>
-<p>See also the Lyx wiki page on shortcuts.</p>
-<p>Lyx shortcuts are storred in bind files. The default bind file is
-called cua. To restore default bind file, one can simply delete the user
-directory, as explained on this <a
-href="https://latex.org/forum/viewtopic.php?t=21551">forum post</a></p>
-<p>See also the setup directory where I saved a bind file.</p>
+<div id="introduction" class="section level1">
+<h1>Introduction</h1>
+<p>This page describes how to use Latex and Lyx to edit scientific
+publications.</p>
 </div>
 <div id="bibliography" class="section level1">
 <h1>Bibliography</h1>
-<div id="bibliography-encoding" class="section level2">
-<h2>Bibliography encoding</h2>
+<p><a
+href="https://tex.stackexchange.com/questions/373754/how-to-add-page-numbers-to-book-related-bibliographic-entries/373777">How
+to add a page number to a bibliographic entry.</a></p>
+<blockquote>
+<p>“Try using <span class="citation">@inbook</span> instead of <span
+class="citation">@book</span>. The .bst file of this journal has several
+definitions for citing books. When using <span
+class="citation">@book</span> in your .bib file you are implying that
+you are citing the whole book, and therefore there is no need for page
+numbergs. When using <span class="citation">@inbook</span> you mean to
+say that you are citing a certain part of the book. If you use <span
+class="citation">@inbook</span> the bibliography will show both pages
+and chapter of the book you are citing.”</p>
+</blockquote>
+<p>In the bst file, you can also check for chapter entries.</p>
+<div id="bibtex-special-character" class="section level2">
+<h2>Bibtex special character</h2>
 <p>bib file have an old encoding format. It’s possible to use utf8 in
 bibtex, but for compatibility reason I stick with the old format.</p>
 <p><a href="https://tex.stackexchange.com/a/57745/44254">How to write
@@ -488,6 +488,47 @@ bibtex, but for compatibility reason I stick with the old format.</p>
 {\o} {\H o}
 {\&#39;u}
 {\v r} {\ss}</code></pre>
+</div>
+<div id="sample-bib-file-content" class="section level2">
+<h2>Sample bib file content</h2>
+<p>An article citation can usually be copied from the journal website or
+from a search engine</p>
+<pre><code>@article{,
+title = {},
+journal = {},
+volume = {},
+pages = {},
+year = {},
+issn = {},
+doi = {},
+url = {},
+author = {},
+keywords = {},
+}</code></pre>
+<p>A website entry</p>
+<pre><code>@www{,
+title = {},
+author = {},
+journal = {},
+year = {},
+url = {},
+}</code></pre>
+</div>
+<div id="compilation-errors" class="section level2">
+<h2>Compilation errors</h2>
+<p><a href="https://tex.stackexchange.com/a/561933/44254">Error: LaTeX
+Error: Something’s wrong–perhaps a missing</a></p>
+<blockquote>
+<p>“In case the error keeps presenting even you already added a
+<code>\cite{something}</code> in your paper, then you have to clear the
+auxiliary files. In details, delete any files ended with .log .aux .bbl
+.blg.”</p>
+</blockquote>
+<p>Error message:</p>
+<pre><code>! Argument of \UTFviii@two@octets has an extra }.</code></pre>
+<p>Tex.stackexchange <a
+href="https://tex.stackexchange.com/a/372332/44254">answer</a> Change ü
+to {"u} in Düsseldorf in the bibliography.</p>
 </div>
 <div id="merge-and-filter-bibliographies" class="section level2">
 <h2>Merge and filter bibliographies</h2>
@@ -513,8 +554,202 @@ Replace long.bib by short.bib in the .tex file.</code></pre>
 this automatically?</p>
 </div>
 </div>
-<div id="encoding" class="section level1">
-<h1>Encoding</h1>
+<div id="latex" class="section level1">
+<h1>Latex</h1>
+<ul>
+<li><a
+href="http://www.utc.fr/~jlaforet/Suppl/latex-cheatsheet.pdf">Latex
+cheat sheet</a></li>
+</ul>
+<div id="diff" class="section level2">
+<h2>Diff</h2>
+<p>Install Latex diff on Debian:</p>
+<pre><code>sudo apt install latexdiff</code></pre>
+<div id="latexdiff-and-git" class="section level3">
+<h3>Latexdiff and git</h3>
+<div id="latexdiff-git" class="section level4">
+<h4>Latexdiff-git</h4>
+<p>Latexdiff can handle files in version control systems. I didn’t know
+this and checked out the old file by hand before performing the
+comparison. First I describe the way I should have done it as explained
+in man latexdiff-vc</p>
+<pre><code>latexdiff-git -r rev1 -r rev2 eutr_impact.tex
+mv eutr_impact-diff*.tex eutr_impact.tex
+latexmk -pdf -bibtex -f template.tex</code></pre>
+<p>You can also use <code>--flatten</code>:</p>
+<blockquote>
+<p>“The generic usage of this function is :”latexdiff-vc –flatten -r
+rev1 [-r rev2] master.tex” where master.tex is the project file
+containing the highest level of includes etc.”</p>
+</blockquote>
+<pre><code>   latexdiff-git --flatten -r 5445bfd -r b47fefa template.tex
+   latexmk -pdf -bibtex -f template-diff5445bfd-b47fefa.tex</code></pre>
+<p>But that document didn’t compile for some reason. So I used the
+solution above with the diff made on the sub-document subsequently moved
+to another document.</p>
+<p><a
+href="https://tex.stackexchange.com/questions/15121/error-when-trying-to-generate-a-pdf-from-a-latexdiff-document">You
+may need to add some definiotniosn in the Latex preamble of the main
+document</a></p>
+<pre><code>%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+%DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+\RequirePackage[normalem]{ulem} %DIF PREAMBLE
+\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+\providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+\providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+%DIF SAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+\providecommand{\DIFaddend}{} %DIF PREAMBLE
+\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+\providecommand{\DIFdelend}{} %DIF PREAMBLE
+%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF</code></pre>
+</div>
+<div id="without-latexdiff-git" class="section level4">
+<h4>Without latexdiff-git</h4>
+<p>Old way of doing things without using the latexdiff-vc helper.
+Generate diff version of latex files. In the instructions below, the
+manuscript was made of 2 documents <code>template.tex </code> which
+called <code>\input{content.tex}</code>.</p>
+<p>Checkout contents from commit 9ce6b9 on 2020 December 1st and prepare
+the diff in the /tmp dir:</p>
+<pre><code># Delete and re-create a temp dir and copy everything in it
+rm -rf /tmp/article_diff/
+cp -r ~/repos/article_pub /tmp/article_diff
+# Copy the old and new versions of the manuscript to the tmp folder
+cd ~/repos/article_pub/latex_template
+git show 9ce6b9:./content.tex &gt; /tmp/article_diff/latex_template/content_before_review.tex
+git show 9ce6b9:./template.tex &gt; /tmp/article_diff/latex_template/template_before_review.tex
+cp content.tex /tmp/article_diff/latex_template/content_now.tex
+cp template.tex /tmp/article_diff/latex_template/template_now.tex</code></pre>
+<p>Generate the diff</p>
+<pre><code>cd /tmp/article_diff/latex_template
+latexdiff template_before_review.tex template_now.tex &gt; template.tex
+latexdiff content_before_review.tex content_now.tex &gt; content.tex</code></pre>
+<p>Compile the diff document, enter quiet mode with “Q” if there are
+error messages</p>
+<pre><code> latexmk -pdf -bibtex -use-make template.tex</code></pre>
+</div>
+</div>
+</div>
+<div id="fancy-headers" class="section level2">
+<h2>Fancy Headers</h2>
+<p><a href="https://tex.stackexchange.com/a/598241/44254">Fancy header
+on cusom page widths</a></p>
+<blockquote>
+<p>“<code>\fancyhfoffset{0pt}</code> makes fancyhdr recalculate for each
+page, based on the then current .”</p>
+</blockquote>
+<pre><code> \fancyhfoffset{0pt}</code></pre>
+</div>
+<div id="makefile" class="section level2">
+<h2>Makefile</h2>
+<p>Make can be use to automate the compilation of the latex file, place
+the supporting figures and documents in a zip archive and subsequently
+remove the intermediate files.</p>
+<pre><code># Usage:
+# make        # Generate the pdf and zip files for the submission. 
+# make render # Render the pdf, keep all automatically generated files for Latex diagnostics.
+# make clean  # Keep a copy of the pdf one level above and remove automatically generated files.
+# make zip    # Generate the zip archive of the article and figures for the submission process.
+#
+all: render clean zip
+
+render:
+     latexmk -pdf -bibtex -use-make forests-1032372-proofreading.tex
+
+clean:
+     cp forests-1032372-proofreading.pdf ../manuscript.pdf || echo &quot;forests-1032372-proofreading.tex not there.&quot;
+     git clean -xf
+
+zip: # Remove the zip archive otherwise deleted files will remain in the archive and it will be simply updated
+     rm ../manuscript.zip ../figures.zip || echo &quot;No existing zip archive to delete.&quot;
+     zip ../manuscript.zip -r *
+     zip ../figures.zip -r figures/*
+     echo &quot;Verify that the pdf and zip archives have been updated by checking their update time.&quot;
+     ls -lh ../*.zip
+     ls -lh ../*.pdf</code></pre>
+</div>
+<div id="math" class="section level2">
+<h2>Math</h2>
+<div id="equation-numbering" class="section level3">
+<h3>Equation numbering</h3>
+<p>Equations written in the format below are numbered automatically.
+It’s possible to set the counter to 8 so that equation numbering starts
+at 9.</p>
+<pre><code>\setcounter{equation}{8}
+\begin{equation}
+\sumᵢ\ cₒₙᵢfₑᵣₒᵤₛ{Fᵢ︐dᵗ} + \sumᵢ\ bᵣₒₐdₗₑₐᵥₑₛ Fᵢ︐dᵗ = 1
+\end{equation}</code></pre>
+</div>
+<div id="spacing" class="section level3">
+<h3>Spacing</h3>
+<p>Overleaf <a
+href="https://www.overleaf.com/learn/latex/Spacing_in_math_mode">spacing
+in math mode</a> &gt; Description of spacing commands</p>
+<pre><code>LaTeX code  Description
+\quad   space equal to the current font size (= 18 mu)
+\,  3/18 of \quad (= 3 mu)
+\:  4/18 of \quad (= 4 mu)
+\;  5/18 of \quad (= 5 mu)
+\!  -3/18 of \quad (= -3 mu)
+\ (space after backslash!)  equivalent of space in normal text
+\qquad  twice of \quad (= 36 mu) </code></pre>
+</div>
+</div>
+<div id="multicol" class="section level2">
+<h2>Multicol</h2>
+<p><a
+href="https://ftp.gwdg.de/pub/ctan/macros/latex/required/tools/multicol.pdf">Documentation
+of the Latex multicol package</a></p>
+<pre><code>\begin{multicols}{⟨number ⟩}
+⟨multicolumn text⟩
+\end{multicols}</code></pre>
+<blockquote>
+<p>“It is often convenient to spread some text over all columns, just
+before the multicolumn output, without any page break in be- tween. To
+achieve this the multi- cols environment has an optional second argument
+which can be used for this purpose. For exam- ple, the text you are now
+reading was started with”</p>
+</blockquote>
+<pre><code>\begin{multicols}{3}
+[\section{The User
+Interface}] ...</code></pre>
+</div>
+</div>
+<div id="lyx" class="section level1">
+<h1>Lyx</h1>
+<p>The Lyx “What You See is What You Mean” editor is available at Lyx
+and from your package manager. Citations</p>
+<p>Lyx nicely integrates with a bibtex bibliography. You can create a
+shortcut such as CTRL+SHIFT+C to insert a reference. A small menu will
+pop-up to choose from the references.</p>
+<p>Unfortunately “BibTeX does not support files encoded in UTF-8”. To
+get characters such as “é” encoded correctly latin1 has to be used.This
+can be set as the database property in Jabref.</p>
+<div id="shortcuts" class="section level2">
+<h2>Shortcuts</h2>
+<p>Under Tools / preferences / Editing / Shortcuts / Stackoverflow
+question on how to find the command name for a shortcut. I mapped:</p>
+<pre><code>citation-insert to Ctrl+Alt+C 
+href-insert to Ctrl+K
+label-insert to Ctrl+Alt+L
+statistics to Ctrl+Alt+T</code></pre>
+<p>See also the Lyx wiki page on shortcuts.</p>
+<p>Lyx shortcuts are storred in bind files. The default bind file is
+called cua. To restore default bind file, one can simply delete the user
+directory, as explained on this <a
+href="https://latex.org/forum/viewtopic.php?t=21551">forum post</a></p>
+<p>See also the setup directory where I saved a bind file.</p>
+</div>
+<div id="encoding" class="section level2">
+<h2>Encoding</h2>
 <p>Lyx wiki <a href="https://wiki.lyx.org/LyX/Unicode">unicode</a></p>
 <blockquote>
 <p>Since version 1.5, LyX uses Unicode internally; the LyX file is
@@ -527,17 +762,17 @@ the UserGuide in Attachment A.6 “The Document Menu”: The encoding
 specifies how the document content is exported to LaTeX</p>
 </blockquote>
 </div>
-<div id="conversion-from-lyx-to-markdown" class="section level1">
-<h1>Conversion from lyx to Markdown</h1>
+<div id="conversion-from-lyx-to-markdown" class="section level2">
+<h2>Conversion from lyx to Markdown</h2>
 <p>I use the encoding option mentionned above to convert to latex,
 exported from lyx using the pdflatex format option. Then used pandoc to
 convert from latex to markdown. It keeps the citation references which
 is the most important thing I wanted to keep.</p>
 </div>
-<div id="install-dependencies" class="section level1">
-<h1>Install dependencies</h1>
-<div id="tex-packages" class="section level2">
-<h2>Tex packages</h2>
+<div id="install-dependencies" class="section level2">
+<h2>Install dependencies</h2>
+<div id="tex-packages" class="section level3">
+<h3>Tex packages</h3>
 <p>Tex packages are located at CTAN. Most of the time it’s sufficient to
 install them from the Debian repository. Some times the debian
 repository version is outdated. In that case you can try to install the
@@ -550,8 +785,8 @@ sudo apt update
 sudo apt-get -t stretch-backports install texlive-bibtex-extra</code></pre>
 </div>
 </div>
-<div id="spell-checker" class="section level1">
-<h1>Spell checker</h1>
+<div id="spell-checker" class="section level2">
+<h2>Spell checker</h2>
 <p>A spell checker can be activated under Tools / preferences / language
 settings / spellchecker. On my system the only spell check engine
 available is Enchant, “a wrapper that provides automatic access to many
@@ -562,12 +797,12 @@ check continuously. Language of document</p>
 document language, which will have an impact on the language used for
 spell checking. In my system compiling a document in French returned an
 error:</p>
-<p>“Package babel Error: Unknown option `french’.”</p>
+<pre><code>&quot;Package babel Error: Unknown option `french&#39;.&quot;</code></pre>
 <p>This stackexchange post suggest installing the texlive-lang-french
 Debian package. This fixed the error. Math mode</p>
 </div>
-<div id="encoding-1" class="section level1">
-<h1>Encoding</h1>
+<div id="encoding-1" class="section level2">
+<h2>Encoding</h2>
 <p>This question on “how do I prevent Lyx from loading inputenc?”
 explains where this part of the Latex preamble is defined.</p>
 <p>In Document &gt; Settings…, under Language &gt; Encoding, choose
@@ -577,8 +812,8 @@ the moment.</p>
 <p>Instead I replaced Latin1 by utf8 as input encoding. This works for
 the moment.</p>
 </div>
-<div id="math" class="section level1">
-<h1>Math</h1>
+<div id="math-1" class="section level2">
+<h2>Math</h2>
 <p>Press CTRL+M at the cursor or on highlighted text to enter math mode.
 Latex syntax “”, “x_t” can be used to enter equations and is displayed
 directly as math symbols. Change input encoding</p>
@@ -587,10 +822,10 @@ href="https://tex.stackexchange.com/questions/153615/help-me-input-a-column-vect
 to enter a column vector</a> Has recommendations on how to enter matrix
 operations with sub-variables.</p>
 </div>
-<div id="fonts" class="section level1">
-<h1>Fonts</h1>
-<div id="icons" class="section level2">
-<h2>Icons</h2>
+<div id="fonts" class="section level2">
+<h2>Fonts</h2>
+<div id="icons" class="section level3">
+<h3>Icons</h3>
 <p>Font-awesome is available in the Debian Package
 “texlive-fonts-extra”. It can be used in Lyx by insterting
 <code>\usepackage{fontawesome}</code> in the Latex preamble. Then insert
@@ -600,16 +835,16 @@ an icon with:</p>
 </div>
 </div>
 <div id="encoding-issues-and-greek-symbols-used-outside-math-mode"
-class="section level1">
-<h1>Encoding issues and Greek symbols used outside math mode</h1>
+class="section level2">
+<h2>Encoding issues and Greek symbols used outside math mode</h2>
 <p>“Encoding file ‘lgrenc.def’ not found” was fixed by installing the
 debian package texlive-lang-greek (as explained here on stackoverflow).
 Other errors appeared related to the use of beta signs outside math
 mode. As one user explained on stackoverflow, placing signs in math mode
 usually fixes the issue. Hyperlinks in PDF</p>
 </div>
-<div id="how-to-change-hyperlink-colors-in-lyx" class="section level1">
-<h1>How to change hyperlink colors in Lyx</h1>
+<div id="how-to-change-hyperlink-colors-in-lyx" class="section level2">
+<h2>How to change hyperlink colors in Lyx</h2>
 <pre><code>Document &amp;gt; Settings &amp;gt; PDF Properties under the Additional options field. For example, a custom set of instructions may be the following: linkcolor=black, urlcolor=blue, citecolor=green, pdfstartview={FitH}, hyperfootnotes=false, unicode=true  </code></pre>
 <p>I changed marineblue to blue, as my system complained that marineblue
 was not available.</p>
@@ -645,8 +880,8 @@ has to be placed inside the table float.</p>
 
 } </code></pre>
 </div>
-<div id="elsevier-article-template" class="section level1">
-<h1>Elsevier article template</h1>
+<div id="elsevier-article-template" class="section level2">
+<h2>Elsevier article template</h2>
 <p>Elsevier provides a latex template for articles called elsarticle
 which is usable in Lyx. However compiling with this template doesn’t
 seem to work when using the hyperref package with the general option
@@ -657,15 +892,15 @@ possible to activate author year reference according to this stack
 exchange answer. Tips</p>
 <pre><code>CTRL+D uses yap, a faster (on windows) previewer than the default PDF one. There is no noticeable difference on Linux.</code></pre>
 </div>
-<div id="other-templates" class="section level1">
-<h1>Other templates</h1>
+<div id="other-templates" class="section level2">
+<h2>Other templates</h2>
 <p>To produce a meeting report with a wider template than the default
 article.</p>
 <pre><code>I would have liked to find an overview of the templates with screenshots of PDF results. But I couldn&#39;t find such overview online. LyX wiki has a list of examples and a list of layouts. 
 In fact all that was needed was to edit the Document \ Settings \ Page margins, I set the inner and out margins to 2 cm and was happy with the result.</code></pre>
 </div>
-<div id="knitr-and-lyx" class="section level1">
-<h1>knitr and Lyx</h1>
+<div id="knitr-and-lyx" class="section level2">
+<h2>knitr and Lyx</h2>
 <pre><code>Yihui Xie: Using knitr and Lyx
  Krishna Devulapalli: Creation of research papers with embedded R results using LyX</code></pre>
 <p>My Lyx file uses many packages and formatting options. Export to RTF
@@ -684,6 +919,7 @@ Latexdiff as such:</p>
 <p>Avoid complex tables or figures in the diff, as they can cause
 issues. I had to create a fake old documents with final figures and
 table for latexdiff to return a usable output.</p>
+</div>
 </div>
 
 

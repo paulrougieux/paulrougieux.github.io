@@ -6,38 +6,27 @@ output:
     toc_float: true
 ---
 
+# Introduction
 
-The Lyx "What You See is What You Mean" editor is available at Lyx and from your package manager.
-Citations
-
-Lyx nicely integrates with a bibtex bibliography. You can create a shortcut such as CTRL+SHIFT+C to insert a reference. A small menu will pop-up to choose from the references.
-
-
-Unfortunately  "BibTeX does not support files encoded in UTF-8". To get characters such as "é" encoded correctly latin1 has to be used.This can be set as the database property in Jabref.
-
-# Shortcuts
-
-Under Tools / preferences / Editing / Shortcuts /  Stackoverflow question on how to find the command name for a shortcut. I mapped:
-
-    citation-insert to Ctrl+Alt+C 
-    href-insert to Ctrl+K
-    label-insert to Ctrl+Alt+L
-    statistics to Ctrl+Alt+T
-
-See also the Lyx wiki page on shortcuts.
-
-Lyx shortcuts are storred in bind files.
-The default bind file is called cua.
-To restore default bind file, one can simply delete
-the user directory, as explained on this 
-[forum post](https://latex.org/forum/viewtopic.php?t=21551)
-
-See also the setup directory where I saved a bind file.
+This page describes how to use Latex and Lyx to edit scientific publications.
 
 
 # Bibliography
 
-## Bibliography encoding
+[How to add a page number to a bibliographic
+entry.](https://tex.stackexchange.com/questions/373754/how-to-add-page-numbers-to-book-related-bibliographic-entries/373777)
+
+> "Try using @inbook instead of @book. The .bst file of this journal has
+> several definitions for citing books. When using @book in your .bib file you
+> are implying that you are citing the whole book, and therefore there is no
+> need for page numbergs. When using @inbook you mean to say that you are
+> citing a certain part of the book. If you use @inbook the bibliography will
+> show both pages and chapter of the book you are citing."
+
+In the bst file, you can also check for chapter entries.
+
+
+## Bibtex special character
 
 bib file have an old encoding format. It's possible to use utf8 in bibtex, but for compatibility reason I stick with the old format. 
 
@@ -54,7 +43,53 @@ bib file have an old encoding format. It's possible to use utf8 in bibtex, but f
     {\'u}
     {\v r} {\ss}
 
-## Merge and filter bibliographies 
+
+## Sample bib file content
+
+An article citation can usually be copied from the journal website or from
+a search engine
+
+    @article{,
+    title = {},
+    journal = {},
+    volume = {},
+    pages = {},
+    year = {},
+    issn = {},
+    doi = {},
+    url = {},
+    author = {},
+    keywords = {},
+    }
+
+A website entry
+
+    @www{,
+    title = {},
+    author = {},
+    journal = {},
+    year = {},
+    url = {},
+    }
+
+
+## Compilation errors
+
+[Error: LaTeX Error: Something's wrong--perhaps a missing \item](https://tex.stackexchange.com/a/561933/44254)
+
+> "In case the error keeps presenting even you already added a
+> `\cite{something}` in your paper, then you have to clear the auxiliary files.
+> In details, delete any files ended with .log .aux .bbl .blg."
+
+Error message:
+
+    ! Argument of \UTFviii@two@octets has an extra }.
+
+Tex.stackexchange [answer](https://tex.stackexchange.com/a/372332/44254)
+Change ü to {\"u} in Düsseldorf in the bibliography.
+
+
+## Merge and filter bibliographies
 
 Answers to a question on merging 2 bibtex file recommend using Jabref file / import into current database.
 
@@ -78,7 +113,219 @@ I have written an article in Lyx which cites 2 bibliographies and a colleague as
 I have done it 3 times already. Could I create a script that does all this automatically?
 
 
-# Encoding
+# Latex
+
+- [Latex cheat sheet](http://www.utc.fr/~jlaforet/Suppl/latex-cheatsheet.pdf)
+
+
+## Diff
+
+Install Latex diff on Debian: 
+
+    sudo apt install latexdiff
+
+
+### Latexdiff and git
+
+
+#### Latexdiff-git 
+
+Latexdiff can handle files in version control systems. I didn't know this and
+checked out the old file by hand before performing the comparison. First I
+describe the way I should have done it as explained in man latexdiff-vc
+
+    latexdiff-git -r rev1 -r rev2 eutr_impact.tex
+    mv eutr_impact-diff*.tex eutr_impact.tex
+    latexmk -pdf -bibtex -f template.tex
+
+You can also use `--flatten`:
+
+> "The generic usage of this function is : "latexdiff-vc --flatten -r rev1 [-r
+> rev2] master.tex" where master.tex is the project file containing the highest
+> level of includes etc." 
+
+       latexdiff-git --flatten -r 5445bfd -r b47fefa template.tex
+       latexmk -pdf -bibtex -f template-diff5445bfd-b47fefa.tex
+
+But that document didn't compile for some reason. So I used the solution above
+with the diff made on the sub-document subsequently moved to another document.
+
+
+[You may need to add some definiotniosn in the Latex preamble of the main
+document](https://tex.stackexchange.com/questions/15121/error-when-trying-to-generate-a-pdf-from-a-latexdiff-document)
+
+
+    %DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
+    %DIF UNDERLINE PREAMBLE %DIF PREAMBLE
+    \RequirePackage[normalem]{ulem} %DIF PREAMBLE
+    \RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
+    \providecommand{\DIFadd}[1]{{\protect\color{blue}\uwave{#1}}} %DIF PREAMBLE
+    \providecommand{\DIFdel}[1]{{\protect\color{red}\sout{#1}}}                      %DIF PREAMBLE
+    %DIF SAFE PREAMBLE %DIF PREAMBLE
+    \providecommand{\DIFaddbegin}{} %DIF PREAMBLE
+    \providecommand{\DIFaddend}{} %DIF PREAMBLE
+    \providecommand{\DIFdelbegin}{} %DIF PREAMBLE
+    \providecommand{\DIFdelend}{} %DIF PREAMBLE
+    %DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
+    \providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
+    \providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
+    \providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
+    \providecommand{\DIFaddendFL}{} %DIF PREAMBLE
+    \providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
+    \providecommand{\DIFdelendFL}{} %DIF PREAMBLE
+    %DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
+
+
+
+
+#### Without latexdiff-git
+
+Old way of doing things without using the latexdiff-vc helper. Generate diff
+version of latex files. In the instructions below, the manuscript was made of 2
+documents `template.tex ` which called `\input{content.tex}`.
+
+Checkout contents from commit 9ce6b9 on 2020 December 1st and prepare the diff in the /tmp dir:
+
+    # Delete and re-create a temp dir and copy everything in it
+    rm -rf /tmp/article_diff/
+    cp -r ~/repos/article_pub /tmp/article_diff
+    # Copy the old and new versions of the manuscript to the tmp folder
+    cd ~/repos/article_pub/latex_template
+    git show 9ce6b9:./content.tex > /tmp/article_diff/latex_template/content_before_review.tex
+    git show 9ce6b9:./template.tex > /tmp/article_diff/latex_template/template_before_review.tex
+    cp content.tex /tmp/article_diff/latex_template/content_now.tex
+    cp template.tex /tmp/article_diff/latex_template/template_now.tex
+
+Generate the diff
+
+    cd /tmp/article_diff/latex_template
+    latexdiff template_before_review.tex template_now.tex > template.tex
+    latexdiff content_before_review.tex content_now.tex > content.tex
+
+Compile the diff document, enter quiet mode with “Q” if there are error messages
+
+     latexmk -pdf -bibtex -use-make template.tex
+
+
+## Fancy Headers
+
+[Fancy header on cusom page
+widths](https://tex.stackexchange.com/a/598241/44254) 
+
+> "`\fancyhfoffset{0pt}` makes fancyhdr recalculate \headwidth for each
+> page, based on the then current \textwidth."
+
+     \fancyhfoffset{0pt}
+
+
+## Makefile
+
+Make can be use to automate the compilation of the latex file, place the
+supporting figures and documents in a zip archive and subsequently remove the
+intermediate files.
+
+    # Usage:
+    # make        # Generate the pdf and zip files for the submission. 
+    # make render # Render the pdf, keep all automatically generated files for Latex diagnostics.
+    # make clean  # Keep a copy of the pdf one level above and remove automatically generated files.
+    # make zip    # Generate the zip archive of the article and figures for the submission process.
+    #
+    all: render clean zip
+
+    render:
+         latexmk -pdf -bibtex -use-make forests-1032372-proofreading.tex
+
+    clean:
+         cp forests-1032372-proofreading.pdf ../manuscript.pdf || echo "forests-1032372-proofreading.tex not there."
+         git clean -xf
+
+    zip: # Remove the zip archive otherwise deleted files will remain in the archive and it will be simply updated
+         rm ../manuscript.zip ../figures.zip || echo "No existing zip archive to delete."
+         zip ../manuscript.zip -r *
+         zip ../figures.zip -r figures/*
+         echo "Verify that the pdf and zip archives have been updated by checking their update time."
+         ls -lh ../*.zip
+	     ls -lh ../*.pdf
+
+
+## Math
+
+### Equation numbering
+
+Equations written in the format below are numbered automatically. It's possible
+to set the counter to 8 so that equation numbering starts at 9.
+
+    \setcounter{equation}{8}
+    \begin{equation}
+    \sumᵢ\ cₒₙᵢfₑᵣₒᵤₛ{Fᵢ︐dᵗ} + \sumᵢ\ bᵣₒₐdₗₑₐᵥₑₛ Fᵢ︐dᵗ = 1
+    \end{equation}
+
+
+### Spacing
+
+Overleaf [spacing in math mode](https://www.overleaf.com/learn/latex/Spacing_in_math_mode)
+> Description of spacing commands
+
+    LaTeX code 	Description
+    \quad 	space equal to the current font size (= 18 mu)
+    \, 	3/18 of \quad (= 3 mu)
+    \: 	4/18 of \quad (= 4 mu)
+    \; 	5/18 of \quad (= 5 mu)
+    \! 	-3/18 of \quad (= -3 mu)
+    \ (space after backslash!) 	equivalent of space in normal text
+    \qquad 	twice of \quad (= 36 mu) 
+
+## Multicol
+
+[Documentation of the Latex multicol
+package](https://ftp.gwdg.de/pub/ctan/macros/latex/required/tools/multicol.pdf)
+
+    \begin{multicols}{⟨number ⟩}
+    ⟨multicolumn text⟩
+    \end{multicols}
+
+> "It is often convenient to spread some text over all columns, just before
+> the multicolumn output, without any page break in be- tween. To achieve this
+> the multi- cols environment has an optional second argument which can be used
+> for this purpose. For exam- ple, the text you are now reading was started
+> with"
+
+    \begin{multicols}{3}
+    [\section{The User
+    Interface}] ...
+
+
+# Lyx 
+
+The Lyx "What You See is What You Mean" editor is available at Lyx and from your package manager.
+Citations
+
+Lyx nicely integrates with a bibtex bibliography. You can create a shortcut such as CTRL+SHIFT+C to insert a reference. A small menu will pop-up to choose from the references.
+
+
+Unfortunately  "BibTeX does not support files encoded in UTF-8". To get characters such as "é" encoded correctly latin1 has to be used.This can be set as the database property in Jabref.
+
+## Shortcuts
+
+Under Tools / preferences / Editing / Shortcuts /  Stackoverflow question on how to find the command name for a shortcut. I mapped:
+
+    citation-insert to Ctrl+Alt+C 
+    href-insert to Ctrl+K
+    label-insert to Ctrl+Alt+L
+    statistics to Ctrl+Alt+T
+
+See also the Lyx wiki page on shortcuts.
+
+Lyx shortcuts are storred in bind files.
+The default bind file is called cua.
+To restore default bind file, one can simply delete
+the user directory, as explained on this 
+[forum post](https://latex.org/forum/viewtopic.php?t=21551)
+
+See also the setup directory where I saved a bind file.
+
+
+## Encoding
 
 Lyx wiki [unicode](https://wiki.lyx.org/LyX/Unicode)
 
@@ -89,15 +336,15 @@ Lyx wiki [unicode](https://wiki.lyx.org/LyX/Unicode)
 > Attachment A.6 "The Document Menu": The encoding specifies how the document
 > content is exported to LaTeX 
 
-# Conversion from lyx to Markdown
+## Conversion from lyx to Markdown
 
 I use the encoding option mentionned above to convert to latex, exported from lyx using the pdflatex format option.
 Then used pandoc to convert from latex to markdown. 
 It keeps the citation references which is the most important thing I wanted to keep.
 
-# Install dependencies
+## Install dependencies
 
-## Tex packages
+### Tex packages
 
 Tex packages are located at CTAN. 
 Most of the time it's sufficient to install them from the Debian repository. 
@@ -113,7 +360,7 @@ In that case you can try to install the packages from the backports:
 
 
 
-# Spell checker
+## Spell checker
 
 A spell checker can be activated under Tools / preferences / language settings / spellchecker. On my system the only spell check engine available is Enchant, "a wrapper that provides automatic access to many spell checking libraries (ispell, aspell, hspell, hunspell, etc.)".
 
@@ -123,12 +370,14 @@ Language of document
 
 Under Document / Settings / Language, it's possible to change the document language, which will have an impact on the language used for spell checking. In my system compiling a document in French returned an error:
 
-"Package babel Error: Unknown option `french'."
+    "Package babel Error: Unknown option `french'."
 
 This stackexchange post suggest installing the texlive-lang-french Debian package. This fixed the error.
 Math mode
 
-# Encoding
+
+## Encoding
+
 This question on "how do I prevent  Lyx from loading inputenc?" explains where this part of the Latex preamble is defined.
 
 In Document &gt; Settings..., under Language &gt; Encoding, choose "Other" and select "Language Default (no inputenc)".
@@ -140,7 +389,8 @@ Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
 
 Instead I replaced Latin1 by utf8 as input encoding. This works for the moment.
 
-# Math
+
+## Math
 
 Press CTRL+M at the cursor or on highlighted text to enter math mode. Latex syntax "\beta", "x_t" can be used to enter equations and is displayed directly as math symbols.
 Change input encoding
@@ -151,8 +401,10 @@ Has recommendations on how to enter matrix operations with sub-variables.
 
 
 
-# Fonts
-## Icons
+## Fonts
+
+### Icons
+
 Font-awesome is available in the Debian Package "texlive-fonts-extra".
 It can be used in Lyx by insterting `\usepackage{fontawesome}` in the Latex preamble.
 Then insert an icon with:
@@ -160,13 +412,14 @@ Then insert an icon with:
     \faComments
     \faWrench
 
-# Encoding issues and Greek symbols used outside math mode
+
+## Encoding issues and Greek symbols used outside math mode
 
 "Encoding file 'lgrenc.def' not found"  was fixed by installing the debian package texlive-lang-greek (as explained here on stackoverflow). Other errors appeared related to the use of beta signs outside math mode. As one user explained on stackoverflow, placing \beta signs in math mode usually fixes the issue.
 Hyperlinks in PDF
 
 
-# How to change hyperlink colors in Lyx
+## How to change hyperlink colors in Lyx
 
     Document &gt; Settings &gt; PDF Properties under the Additional options field. For example, a custom set of instructions may be the following: linkcolor=black, urlcolor=blue, citecolor=green, pdfstartview={FitH}, hyperfootnotes=false, unicode=true  
 
@@ -207,7 +460,7 @@ Tables too wide for a slide can be resized by placing the table between the foll
     } 
 
 
-# Elsevier article template
+## Elsevier article template
 
 Elsevier provides a latex template for articles called elsarticle which is usable in Lyx. However compiling with this template doesn't seem to work when using the hyperref package with the general option "automatically fill header". After deactivating this option, compilation works again.
 
@@ -217,13 +470,14 @@ The elsarticle template uses numerical references by default. it is possible to 
 
     CTRL+D uses yap, a faster (on windows) previewer than the default PDF one. There is no noticeable difference on Linux.
 
-# Other templates
+## Other templates
+
 To produce a meeting report with a wider template than the default article.
 
     I would have liked to find an overview of the templates with screenshots of PDF results. But I couldn't find such overview online. LyX wiki has a list of examples and a list of layouts. 
     In fact all that was needed was to edit the Document \ Settings \ Page margins, I set the inner and out margins to 2 cm and was happy with the result.
 
-# knitr and Lyx
+## knitr and Lyx
 
     Yihui Xie: Using knitr and Lyx
      Krishna Devulapalli: Creation of research papers with embedded R results using LyX
