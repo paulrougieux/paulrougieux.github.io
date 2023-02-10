@@ -450,12 +450,15 @@ div.tocify {
 <pre class="r"><code>knitr::opts_chunk$set(eval=FALSE)</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This page contains a reference to markdown syntax rules.</p>
-<p><a href="https://commonmark.org/"
-class="uri">https://commonmark.org/</a> is an attempt at standardizing
-markdown syntax. The common mark <a
+<p>This page describes how to use markdown to edit text such as reading
+notes, meeting notes, technical documentation or even scientific
+publications.</p>
+<p><a href="https://commonmark.org/">Common Mark</a> is an attempt at
+standardizing markdown syntax. The common mark <a
 href="https://commonmark.org/help/">help page</a> explains the
 syntax.</p>
+<p>See also the <a href="publish.html">publish</a> page which mentions
+Latex tips and other editing ideas.</p>
 </div>
 <div id="images" class="section level1">
 <h1>Images</h1>
@@ -525,6 +528,15 @@ href="https://superuser.com/questions/356032/markdown-to-latex-conversion-with-a
 to latex conversion with a custom preamble</a></p>
 <p>See also the makefile for pandoc in the programming with bash /
 makefile section below.</p>
+</div>
+<div id="pandoc-for-research-papers" class="section level2">
+<h2>Pandoc for research papers</h2>
+<ul>
+<li><a
+href="https://opensource.com/article/18/9/pandoc-research-paper">How to
+use Pandoc to produce a research paper</a> using the latex template of a
+journal to specify authorship in the way requested by the journal.</li>
+</ul>
 </div>
 </div>
 <div id="yaml-front-matter-for-styles" class="section level1">
@@ -630,6 +642,57 @@ classoption:
 - twocolumn
 - openany
 ---</code></pre>
+</div>
+</div>
+<div id="flavours-of-markdown" class="section level1">
+<h1>Flavours of markdown</h1>
+<div id="github-flavoured-markdown" class="section level2">
+<h2>Github flavoured markdown</h2>
+<ul>
+<li><p><a
+href="https://gist.github.com/pierrejoubert73/902cc94d79424356a8d20be2b382e1ab">How
+to add a collapsible section</a></p>
+<details>
+<summary>
+<p>Click me</p>
+</summary>
+<pre class="r"><code>  plot(iris)</code></pre>
+</details></li>
+</ul>
+<blockquote>
+<p>Rules: Have an empty line after the <code>&lt;/summary&gt;</code> tag
+or markdown/code blocks will not render. Have an empty line after each
+<code>&lt;/details&gt;</code> tag if you have multiple collapsible
+sections.</p>
+</blockquote>
+</div>
+<div id="gitlab-flavoured-markdown" class="section level2">
+<h2>Gitlab flavoured markdown</h2>
+<p><a href="https://docs.gitlab.com/ee/user/markdown.html#task-lists"
+class="uri">https://docs.gitlab.com/ee/user/markdown.html#task-lists</a></p>
+<blockquote>
+<p>“To create a task list, follow the format of an ordered or unordered
+list”</p>
+</blockquote>
+<pre><code>- [x] Completed task
+- [~] Inapplicable task
+- [ ] Incomplete task
+  - [x] Sub-task 1
+  - [~] Sub-task 2
+  - [ ] Sub-task 3
+
+1. [x] Completed task
+1. [~] Inapplicable task
+1. [ ] Incomplete task
+   1. [x] Sub-task 1
+   1. [~] Sub-task 2
+   1. [ ] Sub-task 3</code></pre>
+</div>
+<div id="stack-overflow-flavoured-markdown" class="section level2">
+<h2>Stack Overflow flavoured markdown</h2>
+<p>Stack Overflow <a
+href="https://stackoverflow.com/editing-help">markdown editing
+help</a>.</p>
 </div>
 </div>
 

@@ -22,6 +22,7 @@ output:
       based on `CBM-CFS3` and was also developed by the Forest Carbon
       Accounting team of the Canadian Forest Service.
 
+
 - The forest carbon model
   [eu_cbm_hat](https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat) is a python
   package that simulates an allocation of harvest for EU countries. Projections

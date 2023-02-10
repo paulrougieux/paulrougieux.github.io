@@ -13,10 +13,15 @@ knitr::opts_chunk$set(eval=FALSE)
 
 # Introduction
 
-This page contains a reference to markdown syntax rules.
+This page describes how to use markdown to edit text such as reading notes,
+meeting notes, technical documentation or even scientific publications.
 
-https://commonmark.org/ is an attempt at standardizing markdown syntax. The
-common mark [help page](https://commonmark.org/help/) explains the syntax.
+[Common Mark](https://commonmark.org/) is an attempt at standardizing markdown
+syntax. The common mark [help page](https://commonmark.org/help/) explains the
+syntax.
+
+See also the [publish](publish.html) page which mentions Latex tips and other
+editing ideas.
 
 
 # Images
@@ -101,6 +106,14 @@ You can also create template files as explained in super user [markdown to latex
 
 See also the makefile for pandoc in the programming with bash / makefile
 section below.
+
+## Pandoc for research papers
+
+- [How to use Pandoc to produce a research
+  paper](https://opensource.com/article/18/9/pandoc-research-paper)
+  using the latex template of a journal to specify authorship in the way
+  requested by the journal.
+
 
 # Yaml front matter for styles
 
@@ -220,5 +233,51 @@ page only and inserts a blank page.
     - openany
     ---
 
+
+
+# Flavours of markdown
+
+## Github flavoured markdown
+
+- [How to add a collapsible
+  section](https://gist.github.com/pierrejoubert73/902cc94d79424356a8d20be2b382e1ab)
+
+    <details>
+    <summary>Click me</summary>
+
+    ```R
+    plot(iris)
+    ```
+    </details>
+
+> Rules: Have an empty line after the `</summary>` tag or markdown/code blocks
+> will not render. Have an empty line after each `</details>` tag if you have
+> multiple collapsible sections.
+
+
+## Gitlab flavoured markdown
+
+https://docs.gitlab.com/ee/user/markdown.html#task-lists
+
+> "To create a task list, follow the format of an ordered or unordered list"
+
+    - [x] Completed task
+    - [~] Inapplicable task
+    - [ ] Incomplete task
+      - [x] Sub-task 1
+      - [~] Sub-task 2
+      - [ ] Sub-task 3
+
+    1. [x] Completed task
+    1. [~] Inapplicable task
+    1. [ ] Incomplete task
+       1. [x] Sub-task 1
+       1. [~] Sub-task 2
+       1. [ ] Sub-task 3
+
+
+## Stack Overflow flavoured markdown
+
+Stack Overflow [markdown editing help](https://stackoverflow.com/editing-help).
 
 
