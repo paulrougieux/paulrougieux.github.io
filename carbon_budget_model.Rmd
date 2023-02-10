@@ -15,21 +15,25 @@ output:
 - The [Carbon Budget
   Model](https://www.nrcan.gc.ca/climate-change/climate-change-impacts-forests/carbon-accounting/carbon-budget-model/13107)
   was developed by the forest carbon accounting team of the Canadian Forest
-  Service. 
+  Service. The reference implementation is called `CBM-CFS3`.
 
-    - [libcbm model](https://github.com/cat-cfs/libcbm_py) is an updated
-      version that can run as a python package. It was also developed by Forest
-      Carbon Accounting team of the Canadian Forest Service.
+    - The [libcbm model](https://github.com/cat-cfs/libcbm_py) is a
+      re-implementation in python and C++ that runs as a python package. It is
+      based on `CBM-CFS3` and was also developed by the Forest Carbon
+      Accounting team of the Canadian Forest Service.
 
 - The forest carbon model
   [eu_cbm_hat](https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat) is a python
-  package that enables the assessment of forest CO2 emissions and removals
-  under scenarios of forest management, natural disturbances, forest-related
-  land use changes. 
+  package that simulates an allocation of harvest for EU countries. Projections
+  of industrial roundwood and fuel wood demand are given as an input and the
+  available stock at each time step is used to allocate harvest, the output is
+  given in the form of disturbance tables. The resulting anthropogenic
+  disturbances are then run inside the `libcbm` model besides other natural
+  disturbances. Scenarios can be defined to change input parameters and allow
+  for example a change in allocation rules or changes in future natural
+  disturbances and resulting salvage logging.
 
-    - `eu_cbm_hat` depends on the [libcbm
-      model](https://github.com/cat-cfs/libcbm_py) developed by Forest Carbon
-      Accounting team of the Canadian Forest Service.
+    - `eu_cbm_hat` depends on the `libcbm` model.
 
     - It uses [pandas data frames](https://pandas.pydata.org/) to transform and
       load data.

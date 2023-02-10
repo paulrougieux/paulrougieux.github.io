@@ -453,23 +453,28 @@ div.tocify {
 <li><p>The <a
 href="https://www.nrcan.gc.ca/climate-change/climate-change-impacts-forests/carbon-accounting/carbon-budget-model/13107">Carbon
 Budget Model</a> was developed by the forest carbon accounting team of
-the Canadian Forest Service.</p>
+the Canadian Forest Service. The reference implementation is called
+<code>CBM-CFS3</code>.</p>
 <ul>
-<li><a href="https://github.com/cat-cfs/libcbm_py">libcbm model</a> is
-an updated version that can run as a python package. It was also
-developed by Forest Carbon Accounting team of the Canadian Forest
-Service.</li>
+<li>The <a href="https://github.com/cat-cfs/libcbm_py">libcbm model</a>
+is a re-implementation in python and C++ that runs as a python package.
+It is based on <code>CBM-CFS3</code> and was also developed by the
+Forest Carbon Accounting team of the Canadian Forest Service.</li>
 </ul></li>
 <li><p>The forest carbon model <a
 href="https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat">eu_cbm_hat</a> is
-a python package that enables the assessment of forest CO2 emissions and
-removals under scenarios of forest management, natural disturbances,
-forest-related land use changes.</p>
+a python package that simulates an allocation of harvest for EU
+countries. Projections of industrial roundwood and fuel wood demand are
+given as an input and the available stock at each time step is used to
+allocate harvest, the output is given in the form of disturbance tables.
+The resulting anthropogenic disturbances are then run inside the
+<code>libcbm</code> model besides other natural disturbances. Scenarios
+can be defined to change input parameters and allow for example a change
+in allocation rules or changes in future natural disturbances and
+resulting salvage logging.</p>
 <ul>
-<li><p><code>eu_cbm_hat</code> depends on the <a
-href="https://github.com/cat-cfs/libcbm_py">libcbm model</a> developed
-by Forest Carbon Accounting team of the Canadian Forest
-Service.</p></li>
+<li><p><code>eu_cbm_hat</code> depends on the <code>libcbm</code>
+model.</p></li>
 <li><p>It uses <a href="https://pandas.pydata.org/">pandas data
 frames</a> to transform and load data.</p></li>
 </ul></li>
