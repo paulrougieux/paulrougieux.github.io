@@ -4,7 +4,11 @@ author: "Paul Rougieux"
 format: revealjs
 ---
 
-<!-- This quarto presentation can be rendered with:
+<!-- This document is a quarto presentation.
+
+Render it to an html presentation with:
+
+Render to a powerpoint presentation with:
 
 
 - What is a quarto presentation? https://quarto.org/docs/presentations/
@@ -13,35 +17,47 @@ format: revealjs
   https://levelup.gitconnected.com/the-difference-between-git-merge-and-git-rebase-8f7d1b159931)
 -->
 
-## Common work
+# 
 
-- pull
-- make changes to the files
-- add the files you want to commit
-- commit your changes with a commit message
+- If you have used a synchronisation software, git is going to feel strangely
+  demanding at the beginning.
+
+- In order to properly keep track of file modifications through time, git
+  requires you to decompose the synchronisation in several sub steps.
+
+
+## Everyday workflow
+
+- Pull latest changes from the remote repository
+- Make changes to some files
+- Add the files you want to commit
+- Commit your changes with a commit message
+- Push changes to the remote repository
 
 
 ## What if there is updated work on the remote branch and you forgot to pull?
 
-In case of work updated on the remote main branch but you have already
-committed some changes on your local main branch, you will get an error
+In case of work updated on the remote `main` branch but you have already
+committed some changes on your local `main` branch, you will get an error
 message. 
 
 There are 2 options to deal with this:
 
-- merge your yellow changes into a new commit called the "merge commit"
+- **Merge** your yellow changes into a new commit called the "merge commit". This
+  is the default settings and what new users will be using, but it leads to
+  twists and turns in the repository's history.
 
-- rebase your yellow changes on top of the existing commits illustrated in red
+- **Rebase** your yellow changes on top of the existing commits illustrated in red
   on the right. Rebase requires a little bit of discipline because you have to
-  have a clear repository before you pull. 
+  have a clear repository before you pull. This leads to a linear history.
 
 
 ## Will I loose my data if I pull?
 
 Just to reassure you about not loosing your data, you can always pull before
-committing (in fact it is a good idea to do so, to avoid the merge or rebase
-above). Git will stop and emit a warning in case the remote changes would
-overwrite files that you modified on your side. And most importantly, git will
-keep your changed files as is.
+committing (in fact it is a good idea to do so, to avoid the `merge` or
+`rebase` above). Git will stop and emit a warning in case the remote changes
+would overwrite files that you modified on your side. And most importantly, git
+will not touch your changed files, they will be kept as they are. 
 
 
