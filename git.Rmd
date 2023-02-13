@@ -335,6 +335,14 @@ Edit the global configuration file
 Alternativelly, it's better to use ssh keys to connect to git repositories.
 
 
+# Debug git with trace
+
+To see more output when a git command is not working as you would expect you
+can prefix it with `GIT_TRACE=1`:
+
+    GIT_TRACE=1 git commit
+
+
 # Display changes
 
 To view modified files that have not been committed and to view commit history you can use: 
@@ -1109,6 +1117,98 @@ Use git grep to replace strings in many files in the directory :
 
 See also the refactor function in the [bash](bash.html) page.
 
+
+# Signing commits and tags with PGP keys and GPG
+
+The Git book chapter on [signing your
+work](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)
+
+    > "Everyone Must Sign"
+    >
+    > "Signing tags and commits is great, but if you decide to
+    > use this in your normal workflow, you’ll have to make sure that everyone on
+    > your team understands how to do so. If you don’t, you’ll end up spending a
+    > lot of time helping people figure out how to rewrite their commits with
+    > signed versions. Make sure you understand GPG and the benefits of signing
+    > things before adopting this as part of your standard workflow. "
+
+Manual page `man git-config`:
+
+- commit.gpgSign
+
+    > "A boolean to specify whether all commits should be GPG signed. Use of this
+    > option when doing operations such as rebase can result in a large number of
+    > commits being signed. It may be convenient to use an agent to avoid typing
+    > your GPG passphrase several times."
+
+Generate a pgp key
+
+    gpg --gen-key
+
+More information on gpg key publishing in the [bash page](bash.html).
+Display what keys are available
+
+    gpg --list-keys
+
+
+## Automatically sign tags and commits
+
+Stackoverflow [Is there a way to autosign commits in git with a GPG key?](https://stackoverflow.com/questions/10161198/is-there-a-way-to-autosign-commits-in-git-with-a-gpg-key)
+
+Configure git to use the key
+
+     git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0
+
+Configure git to always sign commits and tags
+
+    git config --global commit.gpgSign true
+    git config --global tag.gpgSign true
+
+Configure git to always sign push or only when possible
+
+    git config --global push.gpgSign true
+    git config --global push.gpgSign "if-asked" 
+
+If you get an error
+
+    error: gpg failed to sign the data
+
+Try first to test if gpg signing is working with that key
+
+    echo "test" | gpg --clearsign -bsau CC44A3EC868FDAE69F0E57148A77836103E2ADB0
+    # gpg: skipped "CC44A3EC868FDAE69F0E57148A77836103E2ADB0": No secret key
+    # gpg: [stdin]: clear-sign failed: No secret key
+
+If you get an error 
+
+    fatal: the receiving end does not support --signed push
+
+You might make the push sign optional with:
+
+    git config --global push.gpgSign "if-asked" 
+
+
+
+## Display a commit signature
+
+Run git show on a commit to view the signature.
+
+Show signatures in the log:
+
+    git log --show-signature
+
+
+## Trusted signatures on Gitlab
+
+- Gitlab [sign commits with
+  GPG](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html)
+
+- Once GPG is configured in git, you need to [add a GPG key to your
+  account](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html#add-a-gpg-key-to-your-account)
+  so that it appears as verified.
+
+
+
 # Statistics
 
 Count the number of lines of code for each language in a remote git repository
@@ -1172,20 +1272,6 @@ Optionally you can checkout and create a new branch to commit your changes with:
 
     git checkout tags/o.1 -b newbranchname
 
-Git tools [signing your work](https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work)Signed tags
-Generate a pgp key
-
-    gpg --gen-key
-
-More information on gpg key publishing in the [bash page](bash.html).
-Display what keys are available
-
-    gpg --list-keys
-
-Configure git to use the key
-
-     git config --global user.signingkey 0A46826A
-     git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0
 
 
 ## Push tags
