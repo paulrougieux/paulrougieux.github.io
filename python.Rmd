@@ -4325,6 +4325,19 @@ If `p` is a pathlib object you can list file names as such:
     [x.name for x in p.glob('**/*.csv')]
 
 
+## Python Path
+
+Temporarily add to the python path  ([SO question](https://stackoverflow.com/questions/3402168/permanently-add-a-directory-to-pythonpath)) in order to import scripts
+
+    import sys
+    sys.path.append('/path/to/dir')
+
+To permanently add a package under development to the python path, add the
+following to your `.bashrc` or `.bash_profile`:
+
+    export PYTHONPATH="$HOME/repos/project_name/":$PYTHONPATH
+
+
 ## Temporary directories and files
 
 Docs.python.org [tempfile
@@ -5386,6 +5399,19 @@ In vim, you can run black on the current file with:
 
     :!black %
 
+- [Ignore a revision in git blame after moving to
+  black](https://black.readthedocs.io/en/stable/guides/introducing_black_to_your_project.html)
+
+    > "A long-standing argument against moving to automated code formatters like
+    > Black is that the migration will clutter up the output of git blame. This was
+    > a valid argument, but since Git version 2.23, Git natively supports ignoring
+    > revisions in blame with the --ignore-rev option."
+
+    > "You can even configure git to automatically ignore revisions listed in a
+    > file on every call to git blame."
+
+        git config blame.ignoreRevsFile .git-blame-ignore-revs
+
 
 ## Flake 8
 
@@ -5752,6 +5778,12 @@ Test pandas data frame with
 
     assert_frame_equal
     assert_series_equal # tricky to use
+
+### Run unittest with pytest
+
+[How to use unittest-based tests with pytest](https://docs.pytest.org/en/7.1.x/how-to/unittest.html)
+
+    pytest file_test.py
 
 
 ### Expected exceptions
