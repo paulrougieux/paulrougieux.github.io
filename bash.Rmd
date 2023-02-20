@@ -13,37 +13,23 @@ knitr::opts_chunk$set(eval=FALSE)
 
 # Introduction
 
+This page describes tools available at the bash command line, starting with the
+GNU core utilities. It also contains many commands from external tools that are
+not part of the GNU project.
+
+
+## Reference documents
+
+Linux is the kernel of the operating system on top of which other programs
+operate. List of reference documents describing tools used at the bash command
+line:
+
+- A detailed list of GNU core utilities is available under the command `info
+  coreutils`, also visible on the web at [GNU Core Utilities
+  manual](https://www.gnu.org/software/coreutils/manual/html_node/index.html).
+
 This page is the continuation of [my blog post on GNU-Linux bash shell
 commands](https://paulremote.blogspot.de/2014/01/linux-shell-commands.html).
-
-Linux is the kernel of the operating system on top of which other programs are
-built. A detailed list of GNU core utilities is available under the command :
-
-    info coreutils 
-
-The page below also contains many commands from external tools 
-that are not part of the GNU project.
-
-
-## Environment variables
-
-Environment variables are the way the tell processes where resources are located.
-For example 
-
-    export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
-
-Tells python where the biotrade package is located.
-
-PostGreSQL utilities `createuser` and  `createdb` can be told which port to use
-by specifying the following environment variable beforehand: 
-
-    export PGPORT=5433
-
-The following variables can be used to specify a user and password
-inside a postgresql docker container
-
-    POSTGRES_USER=user_name
-    POSTGRES_PASS=password
 
 
 # Command history
@@ -692,6 +678,27 @@ To do lists
 To add a small unit of work in the Kitchen project:
 
     task add project:Kitchen Select floor tiles
+
+
+# Environment variables
+
+Environment variables are the way the tell processes where resources are located.
+For example 
+
+    export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
+
+Tells python where the biotrade package is located.
+
+PostGreSQL utilities `createuser` and  `createdb` can be told which port to use
+by specifying the following environment variable beforehand: 
+
+    export PGPORT=5433
+
+The following variables can be used to specify a user and password
+inside a postgresql docker container
+
+    POSTGRES_USER=user_name
+    POSTGRES_PASS=password
 
 
 # Find
@@ -1622,9 +1629,25 @@ PGP's cryptography is really old and it is probably not the best encryption
 tool nowadays. Part of the issue is also related to the fact that email is a
 fundamentally unsecure communication tool.
 
+Links:
+
+- 2022 Reddit post [is GPG getting too
+  old?](https://www.reddit.com/r/GnuPG/comments/wtd1ht/is_gpg_getting_too_old/)
+
+
+### Generate a PGP signing key
+
 Generate a PGP key
 
     gpg --gen-key
+
+List the keys
+
+    gpg --list-keys
+
+Export the key to a file
+
+    gpg -a --export keyid > file.txt
 
 
 ### Public key servers
@@ -1682,6 +1705,16 @@ file](https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-privat
 Verify the signature of a file
 
     gpg --verify filename.ext.gpg
+
+
+### Test a signature
+
+Test if GPG signing is working with a particular key that you own
+
+    echo "test" | gpg --clearsign -bsau CC44A3EC868FDAE69F0E57148A77836103E2ADB0
+
+    # gpg: skipped "CC44A3EC868FDAE69F0E57148A77836103E2ADB0": No secret key
+    # gpg: [stdin]: clear-sign failed: No secret key
 
 
 ### Trust other public keys
@@ -1793,6 +1826,7 @@ Delete a key from the private keyring
 
     gpg --delete-secret-keys name
  
+
 ### SKS pool
 
 keys.openpgp.org [FAQ](https://keys.openpgp.org/about/faq)
