@@ -4624,6 +4624,40 @@ Rotate index labels
     plt.show()
 
 
+### Color palette
+
+See various examples in the plots in the seaborn section.
+The palette can be defined from pre existing palettes
+
+    palette = seaborn.color_palette("rocket_r")
+
+Without argument this function displays the default palette
+
+    seaborn.color_palette()
+
+It can translate a list of colour codes into a palette
+
+    seaborn.color_palette(["r","g","b"])
+    seaborn.color_palette(["red","green","blue", "orange"])
+
+This function is used internally by the palette argument of plotting
+functions:
+
+    p1 = sns.relplot(x="Growth", y="Value", hue="Risk", col="Mcap", data=mx, s=200, palette=['r', 'g', 'y'])
+
+Seaborn tutorial on choosing colour palettes https://seaborn.pydata.org/tutorial/color_palettes.html
+
+According to https://stackoverflow.com/a/46174007/2641825 you can also use a
+dictionary to associate hue values to a palette element.
+
+    selected_products = ["wood_fuel", 
+                         "sawlogs_and_veneer_logs",
+                         "pulpwood_round_and_split_all_species_production",
+                         "other_industrial_roundwood"]
+    palette = dict(zip(selected_products, ["red", "brown", "blue", "grey"]))
+
+
+
 ### Facet grid plots
 
 Use Figure-level interface for drawing plots onto a FacetGrid:
@@ -4847,6 +4881,10 @@ entirety.
     g.fig.set_figwidth(10)
     g.fig.set_figheight(10) 
 
+Try also 
+
+    g.fig.set_size_inches(15,15)
+
 Mentioned as a comment under [this answer](https://stackoverflow.com/a/56970556/2641825)
 
 To change the height and aspect ration of individual grid cells, you can use
@@ -4875,12 +4913,14 @@ histogram with a log scale
 
 Create a line plot with a title and axis labels.
 
-    import numpy as np
-    df = pandas.DataFrame({'value':np.random.random(100), 
-                           'year':range(1901,2001)})
-    p = seaborn.lineplot(x="year", y="value", data=df)
-    p.set(ylabel = "Random variation", title = "Title here")
-    plt.show()
+```
+import numpy as np
+df = pandas.DataFrame({'value':np.random.random(100), 
+                       'year':range(1901,2001)})
+p = seaborn.lineplot(x="year", y="value", data=df)
+p.set(ylabel = "Random variation", title = "Title here")
+plt.show()
+```
     
 
 ### Pair plot
