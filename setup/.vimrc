@@ -230,6 +230,9 @@ let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 au BufRead,BufNewFile *.md map <C-P> vipJgqk
 au BufRead,BufNewFile *.Rmd map <C-P> vipJgqk
 
+" Remove trailing white spaces in markdown files
+autocmd BufWritePre *.md %s/\s\+$//e
+
 " Wrap markdown text to 88 characters like psf/black
 au BufRead,BufNewFile *.md setlocal textwidth=88
 " Do not use double spaces after points
