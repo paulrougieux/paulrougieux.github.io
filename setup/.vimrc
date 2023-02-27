@@ -20,6 +20,7 @@ Plugin 'nanotech/jellybeans.vim'
 Plugin 'yegappan/taglist'
 " Git interface 
 Plugin 'tpope/vim-fugitive'
+Plugin 'tpope/vim-dispatch'
 " Latex editing
 Plugin 'lervag/vimtex'
 " Line up text in tables
@@ -297,6 +298,9 @@ let g:ale_pattern_options = {
 \   '.*\.md$': {'ale_enabled': 0},
 \   '.*\.Rmd$': {'ale_enabled': 0},
 \}
+
+" Vim Dispatch setup for the quickfix list
+autocmd FileType python let b:dispatch = 'pylint -f parseable %'
 
 """""""""""""""""""""
 " # R configuration "
