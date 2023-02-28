@@ -188,7 +188,20 @@ The bibliography uses the [Pandoc citation style
 guide](https://pandoc.org/MANUAL.html#extension-citations).
 
 
-# Motivation
+# Working habits
+
+## Sprints
+
+- Atlassian page on [scrum
+  sprints](https://www.atlassian.com/agile/scrum/sprints). Applies to software
+  project but can also be applied to research projects. Some insights in the
+  dos and don't section from that page.
+
+    > "A sprint is a short, time-boxed period when a scrum team works to
+    > complete a set amount of work." 
+
+
+## Motivation
 
 [Blog post on how to put machine learning models into
 production](http://veekaybee.github.io/2020/06/09/ml-in-prod/#the-mystery-of-deploying-ml)
