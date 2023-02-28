@@ -6,14 +6,13 @@ output:
     toc_float: true
 ---
 
+
 # Introduction
-This page is the continuation of 
-[my blog post on git commands](https://paulremote.blogspot.de/2013/10/git-commands.html).
 
 My typical git use consists in archiving file modifications for personal
-projects. Sometimes I share these projects with a colleague. We are then 2
-persons working concurrently on the same project, pushing and pulling changes
-several times per day. 
+projects. Sometimes I share these projects with a few colleagues. We are then
+2, 3 or a handful of persons working concurrently on the same project, pushing
+and pulling changes several times per week or even per day.
 
 
 ## Simple workflow for one user
@@ -39,15 +38,15 @@ Or add all files:
 
     git add --all
 
-Note: you might use a graphical git client with check boxes to add the files to
-be committed. Commit and describe changes
+Commit and describe changes
 
     git commit -m "describe changes made to those files"
     
-Now you can continue working and changing files. Repeat the `git add --all` and
-`git commit -m "describe changes"` each time your reach a consistant change
-status. Before you leave your computer, push the content to the remote
-repository with:
+Now you can continue working and changing files. Repeat the `git add --all` or
+`git add filename` followed by `git commit -m "describe changes"` each time
+your reach a point where you think it's a good idea to archive your work (when
+a fix is implemented, or at the end of the morning). Before you leave your
+computer, push the content to the remote repository with:
 
     git push
 
@@ -68,6 +67,9 @@ master branch on a remote repository.
 Sometimes the vi editor starts. To exit the vi editor:
 
     ESC:q!
+
+Note: you might use a graphical git client with check boxes to add the files to
+be committed.
 
 
 ## Workflow with branches
@@ -752,6 +754,38 @@ reverting a merge)
 > to do it by reverting the revert."
 
 
+## Dangling blobs and trees
+
+Show dangling blobs and trees with the git file system check command:
+
+    git fsck
+
+- Stackoverflow [What is a dangling
+  blob?](https://stackoverflow.com/questions/18514659/what-is-a-dangling-commit-and-a-blob-in-a-git-repository-and-where-do-they-come)
+
+    > "Dangling blob = A change that made it to the staging area/index, but never
+    > got committed. One thing that is amazing with Git is that once it gets added
+    > to the staging area, you can always get it back because these blobs behave
+    > like commits in that they have a hash too!!"
+
+ `git fsck` shows dangling blobs
+and dangling trees. Running `git cat-file -p blob_sha > /path/to/the/file`
+followed by `git diff` shows me a lot of line deletions. I have to explore
+around to find which blob is adding content back.
+
+To retrieve a single file from a dangling blob
+
+    git cat-file -p blob_sha > /path/to/the/file
+
+To retrieve many files from a dangling tree SO [recover dangling blobs in
+git](https://stackoverflow.com/questions/9560184/recover-dangling-blobs-in-git)
+
+    git checkout  commit_sha -- .
+
+
+
+
+
 # Going forward in time
 
 
@@ -1207,6 +1241,7 @@ Show signatures in the log:
   account](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html#add-a-gpg-key-to-your-account)
   so that it appears as verified.
 
+- In the same way GPG keys can be added to github.
 
 
 # Statistics
@@ -1416,6 +1451,9 @@ show differences
     svn diff
 
 # References
+
+This git page is the continuation of 
+[my blog post on git commands](https://paulremote.blogspot.de/2013/10/git-commands.html).
 
 Presentations:
 
