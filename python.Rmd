@@ -2391,12 +2391,18 @@ Convert 2 columns to a dictionary
     df.set_index('b').to_dict()['c']
 
 
-### Convert a column to numeric or string
+### Convert a column to numeric or string and check
 
 Convert a string to a numeric type using the argument `errors="coerce"`:
 
     s = pandas.Series(["1", "2", "a"])
     pandas.to_numeric(s, errors="coerce")
+
+[Check if a column is of numeric or string
+type](https://stackoverflow.com/a/45568283/2641825)
+
+    pandas.api.types.is_numeric_dtype(s)
+    pandas.api.types.is_string_dtype(s)
 
 The following would return an error
 
