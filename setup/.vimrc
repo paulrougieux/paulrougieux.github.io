@@ -302,7 +302,7 @@ let g:ale_pattern_options = {
 autocmd FileType python let b:dispatch = 'pylint -f parseable %'
 
 " Title inside a script
-autocmd FileType python command! Title normal A #<esc>yyppv$r#kkv$r#
+autocmd FileType python command! Title normal! A #<esc>yyppVr#kkVr#
 
 """""""""""""""""""""
 " # R configuration "
