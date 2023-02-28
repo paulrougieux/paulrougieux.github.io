@@ -110,10 +110,10 @@ iabbrev azer - {1}
 " Pomodoro entry
 nmap <LocalLeader>m $4b
 
-" Convert selected text to snake case
-" Replace any non alphanumeric characters by underscores
-" TODO: Convert to lower case
-command! -range=% Snake s/[^a-zA-Z0-9]\+/_/g
+" Convert the current line to snake case
+" 1. Replace any non alphanumeric characters by underscores
+" 2. Convert to lower case
+command! -range=% Snake s/[^a-zA-Z0-9]\+/_/g | normal Vu
 
 """"""""""""""""""""
 " # AZERTY keyboard "
@@ -261,10 +261,6 @@ command! TOc Toc
 au BufRead,BufNewFile *.md inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 au BufRead,BufNewFile *.Rmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
-" Replace spaces by underscore in paper title to include it as a file name in the literature
-" folder
-" nmap <LocalLeader>t command! '<,'>s/ /_/g
-
 command! -range=% Hyphen <line1>,<line2>s/\(\i\)- /\1/g
 
 """"""""""""""""""""""""""
@@ -304,6 +300,9 @@ let g:ale_pattern_options = {
 
 " Vim Dispatch setup for the quickfix list
 autocmd FileType python let b:dispatch = 'pylint -f parseable %'
+
+" Title inside a script
+autocmd FileType python command! Title normal A #<esc>yyppv$r#kkv$r#
 
 """""""""""""""""""""
 " # R configuration "
