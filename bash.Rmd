@@ -41,10 +41,12 @@ Press `CTRL+Q` to regain control.
 See also [Ctrl-s hang terminal emulator?](https://unix.stackexchange.com/questions/72086/ctrl-s-hang-terminal-emulator)
 which provides a workaround: entering `stty -ixon` in .bashrc. 
 
+
 # Convert
 
 This section is about converting from one document format into another. For
 example converting a text file into a pdf file and vice-versa.
+
 
 ## Audio
 

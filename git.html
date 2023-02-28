@@ -452,13 +452,11 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This page is the continuation of <a
-href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog
-post on git commands</a>.</p>
 <p>My typical git use consists in archiving file modifications for
-personal projects. Sometimes I share these projects with a colleague. We
-are then 2 persons working concurrently on the same project, pushing and
-pulling changes several times per day.</p>
+personal projects. Sometimes I share these projects with a few
+colleagues. We are then 2, 3 or a handful of persons working
+concurrently on the same project, pushing and pulling changes several
+times per week or even per day.</p>
 <div id="simple-workflow-for-one-user" class="section level2">
 <h2>Simple workflow for one user</h2>
 <p>We suppose someone has helped you initialise a git repository. Before
@@ -476,14 +474,14 @@ control:</p>
 <pre><code>git add filename</code></pre>
 <p>Or add all files:</p>
 <pre><code>git add --all</code></pre>
-<p>Note: you might use a graphical git client with check boxes to add
-the files to be committed. Commit and describe changes</p>
+<p>Commit and describe changes</p>
 <pre><code>git commit -m &quot;describe changes made to those files&quot;</code></pre>
 <p>Now you can continue working and changing files. Repeat the
-<code>git add --all</code> and
+<code>git add --all</code> or <code>git add filename</code> followed by
 <code>git commit -m "describe changes"</code> each time your reach a
-consistant change status. Before you leave your computer, push the
-content to the remote repository with:</p>
+point where you think it’s a good idea to archive your work (when a fix
+is implemented, or at the end of the morning). Before you leave your
+computer, push the content to the remote repository with:</p>
 <pre><code>git push</code></pre>
 <p>In case you work with other people on this remote repository, Before
 you push, you might want to integrate work done by others in your
@@ -496,6 +494,8 @@ repository, git will ask you to first do:</p>
 pushing to- a master branch on a remote repository.</p>
 <p>Sometimes the vi editor starts. To exit the vi editor:</p>
 <pre><code>ESC:q!</code></pre>
+<p>Note: you might use a graphical git client with check boxes to add
+the files to be committed.</p>
 </div>
 <div id="workflow-with-branches" class="section level2">
 <h2>Workflow with branches</h2>
@@ -707,6 +707,12 @@ to save user name and password in git</a></p>
 <p>Alternativelly, it’s better to use ssh keys to connect to git
 repositories.</p>
 </div>
+</div>
+<div id="debug-git-with-trace" class="section level1">
+<h1>Debug git with trace</h1>
+<p>To see more output when a git command is not working as you would
+expect you can prefix it with <code>GIT_TRACE=1</code>:</p>
+<pre><code>GIT_TRACE=1 git commit</code></pre>
 </div>
 <div id="display-changes" class="section level1">
 <h1>Display changes</h1>
@@ -1050,6 +1056,33 @@ the merge”). So then you really should revert the merge, but when you
 want to re-do the merge, you now need to do it by reverting the
 revert.”</p>
 </blockquote>
+</div>
+<div id="dangling-blobs-and-trees" class="section level2">
+<h2>Dangling blobs and trees</h2>
+<p>Show dangling blobs and trees with the git file system check
+command:</p>
+<pre><code>git fsck</code></pre>
+<ul>
+<li><p>Stackoverflow <a
+href="https://stackoverflow.com/questions/18514659/what-is-a-dangling-commit-and-a-blob-in-a-git-repository-and-where-do-they-come">What
+is a dangling blob?</a></p>
+<blockquote>
+<p>“Dangling blob = A change that made it to the staging area/index, but
+never got committed. One thing that is amazing with Git is that once it
+gets added to the staging area, you can always get it back because these
+blobs behave like commits in that they have a hash too!!”</p>
+</blockquote></li>
+</ul>
+<p><code>git fsck</code> shows dangling blobs and dangling trees.
+Running <code>git cat-file -p blob_sha &gt; /path/to/the/file</code>
+followed by <code>git diff</code> shows me a lot of line deletions. I
+have to explore around to find which blob is adding content back.</p>
+<p>To retrieve a single file from a dangling blob</p>
+<pre><code>git cat-file -p blob_sha &gt; /path/to/the/file</code></pre>
+<p>To retrieve many files from a dangling tree SO <a
+href="https://stackoverflow.com/questions/9560184/recover-dangling-blobs-in-git">recover
+dangling blobs in git</a></p>
+<pre><code>git checkout  commit_sha -- .</code></pre>
 </div>
 </div>
 <div id="going-forward-in-time" class="section level1">
@@ -1404,6 +1437,78 @@ href="https://stackoverflow.com/questions/56203430/how-to-use-git-grep-not">SO</
 page.</p>
 </div>
 </div>
+<div id="signing-commits-and-tags-with-pgp-keys-and-gpg"
+class="section level1">
+<h1>Signing commits and tags with PGP keys and GPG</h1>
+<p>The Git book chapter on <a
+href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">signing
+your work</a></p>
+<pre><code>&gt; &quot;Everyone Must Sign&quot;
+&gt;
+&gt; &quot;Signing tags and commits is great, but if you decide to
+&gt; use this in your normal workflow, you’ll have to make sure that everyone on
+&gt; your team understands how to do so. If you don’t, you’ll end up spending a
+&gt; lot of time helping people figure out how to rewrite their commits with
+&gt; signed versions. Make sure you understand GPG and the benefits of signing
+&gt; things before adopting this as part of your standard workflow. &quot;</code></pre>
+<p>Manual page <code>man git-config</code>:</p>
+<ul>
+<li><p>commit.gpgSign</p>
+<blockquote>
+<p>“A boolean to specify whether all commits should be GPG signed. Use
+of this option when doing operations such as rebase can result in a
+large number of commits being signed. It may be convenient to use an
+agent to avoid typing your GPG passphrase several times.”</p>
+</blockquote></li>
+</ul>
+<p>Generate a pgp key</p>
+<pre><code>gpg --gen-key</code></pre>
+<p>More information on gpg key publishing in the <a
+href="bash.html">bash page</a>. Display what keys are available</p>
+<pre><code>gpg --list-keys</code></pre>
+<div id="automatically-sign-tags-and-commits" class="section level2">
+<h2>Automatically sign tags and commits</h2>
+<p>Stackoverflow <a
+href="https://stackoverflow.com/questions/10161198/is-there-a-way-to-autosign-commits-in-git-with-a-gpg-key">Is
+there a way to autosign commits in git with a GPG key?</a></p>
+<p>Configure git to use the key</p>
+<pre><code> git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0</code></pre>
+<p>Configure git to always sign commits and tags</p>
+<pre><code>git config --global commit.gpgSign true
+git config --global tag.gpgSign true</code></pre>
+<p>Configure git to always sign push or only when possible</p>
+<pre><code>git config --global push.gpgSign true
+git config --global push.gpgSign &quot;if-asked&quot; </code></pre>
+<p>If you get an error</p>
+<pre><code>error: gpg failed to sign the data</code></pre>
+<p>Try first to test if gpg signing is working with that key</p>
+<pre><code>echo &quot;test&quot; | gpg --clearsign -bsau CC44A3EC868FDAE69F0E57148A77836103E2ADB0
+# gpg: skipped &quot;CC44A3EC868FDAE69F0E57148A77836103E2ADB0&quot;: No secret key
+# gpg: [stdin]: clear-sign failed: No secret key</code></pre>
+<p>If you get an error</p>
+<pre><code>fatal: the receiving end does not support --signed push</code></pre>
+<p>You might make the push sign optional with:</p>
+<pre><code>git config --global push.gpgSign &quot;if-asked&quot; </code></pre>
+</div>
+<div id="display-a-commit-signature" class="section level2">
+<h2>Display a commit signature</h2>
+<p>Run git show on a commit to view the signature.</p>
+<p>Show signatures in the log:</p>
+<pre><code>git log --show-signature</code></pre>
+</div>
+<div id="trusted-signatures-on-gitlab" class="section level2">
+<h2>Trusted signatures on Gitlab</h2>
+<ul>
+<li><p>Gitlab <a
+href="https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html">sign
+commits with GPG</a></p></li>
+<li><p>Once GPG is configured in git, you need to <a
+href="https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html#add-a-gpg-key-to-your-account">add
+a GPG key to your account</a> so that it appears as verified.</p></li>
+<li><p>In the same way GPG keys can be added to github.</p></li>
+</ul>
+</div>
+</div>
 <div id="statistics" class="section level1">
 <h1>Statistics</h1>
 <p>Count the number of lines of code for each language in a remote git
@@ -1453,16 +1558,6 @@ git tag -a v1.2 -m &#39;version 1.2&#39; 9fceb02</code></pre>
 <p>Optionally you can checkout and create a new branch to commit your
 changes with:</p>
 <pre><code>git checkout tags/o.1 -b newbranchname</code></pre>
-<p>Git tools <a
-href="https://git-scm.com/book/en/v2/Git-Tools-Signing-Your-Work">signing
-your work</a>Signed tags Generate a pgp key</p>
-<pre><code>gpg --gen-key</code></pre>
-<p>More information on gpg key publishing in the <a
-href="bash.html">bash page</a>. Display what keys are available</p>
-<pre><code>gpg --list-keys</code></pre>
-<p>Configure git to use the key</p>
-<pre><code> git config --global user.signingkey 0A46826A
- git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0</code></pre>
 <div id="push-tags" class="section level2">
 <h2>Push tags</h2>
 <p>A regular push command won’t push a tag (bitbucket), to push all your
@@ -1573,6 +1668,9 @@ tutorial</a>.</p>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>
+<p>This git page is the continuation of <a
+href="https://paulremote.blogspot.de/2013/10/git-commands.html">my blog
+post on git commands</a>.</p>
 <p>Presentations:</p>
 <pre><code>Power Your Workflow With Git (towards 43 minutes, an animation of branches and merging) A recommendation if you work in a team, don&#39;t use pull, but use fetch + merge.
 Getting Started with GitHub + Git</code></pre>

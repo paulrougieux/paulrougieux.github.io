@@ -453,29 +453,23 @@ div.tocify {
 <pre class="r"><code>knitr::opts_chunk$set(eval=FALSE)</code></pre>
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
+<p>This page describes tools available at the bash command line,
+starting with the GNU core utilities. It also contains many commands
+from external tools that are not part of the GNU project.</p>
+<div id="reference-documents" class="section level2">
+<h2>Reference documents</h2>
+<p>Linux is the kernel of the operating system on top of which other
+programs operate. List of reference documents describing tools used at
+the bash command line:</p>
+<ul>
+<li>A detailed list of GNU core utilities is available under the command
+<code>info   coreutils</code>, also visible on the web at <a
+href="https://www.gnu.org/software/coreutils/manual/html_node/index.html">GNU
+Core Utilities manual</a>.</li>
+</ul>
 <p>This page is the continuation of <a
 href="https://paulremote.blogspot.de/2014/01/linux-shell-commands.html">my
 blog post on GNU-Linux bash shell commands</a>.</p>
-<p>Linux is the kernel of the operating system on top of which other
-programs are built. A detailed list of GNU core utilities is available
-under the command :</p>
-<pre><code>info coreutils </code></pre>
-<p>The page below also contains many commands from external tools that
-are not part of the GNU project.</p>
-<div id="environment-variables" class="section level2">
-<h2>Environment variables</h2>
-<p>Environment variables are the way the tell processes where resources
-are located. For example</p>
-<pre><code>export PYTHONPATH=&quot;$HOME/repos/biotrade/&quot;:$PYTHONPATH</code></pre>
-<p>Tells python where the biotrade package is located.</p>
-<p>PostGreSQL utilities <code>createuser</code> and
-<code>createdb</code> can be told which port to use by specifying the
-following environment variable beforehand:</p>
-<pre><code>export PGPORT=5433</code></pre>
-<p>The following variables can be used to specify a user and password
-inside a postgresql docker container</p>
-<pre><code>POSTGRES_USER=user_name
-POSTGRES_PASS=password</code></pre>
 </div>
 </div>
 <div id="command-history" class="section level1">
@@ -1010,6 +1004,21 @@ href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
 <p>To add a small unit of work in the Kitchen project:</p>
 <pre><code>task add project:Kitchen Select floor tiles</code></pre>
 </div>
+</div>
+<div id="environment-variables" class="section level1">
+<h1>Environment variables</h1>
+<p>Environment variables are the way the tell processes where resources
+are located. For example</p>
+<pre><code>export PYTHONPATH=&quot;$HOME/repos/biotrade/&quot;:$PYTHONPATH</code></pre>
+<p>Tells python where the biotrade package is located.</p>
+<p>PostGreSQL utilities <code>createuser</code> and
+<code>createdb</code> can be told which port to use by specifying the
+following environment variable beforehand:</p>
+<pre><code>export PGPORT=5433</code></pre>
+<p>The following variables can be used to specify a user and password
+inside a postgresql docker container</p>
+<pre><code>POSTGRES_USER=user_name
+POSTGRES_PASS=password</code></pre>
 </div>
 <div id="find" class="section level1">
 <h1>Find</h1>
@@ -1852,8 +1861,21 @@ According to several authors PGP’s cryptography is really old and it is
 probably not the best encryption tool nowadays. Part of the issue is
 also related to the fact that email is a fundamentally unsecure
 communication tool.</p>
+<p>Links:</p>
+<ul>
+<li>2022 Reddit post <a
+href="https://www.reddit.com/r/GnuPG/comments/wtd1ht/is_gpg_getting_too_old/">is
+GPG getting too old?</a></li>
+</ul>
+<div id="generate-a-pgp-signing-key" class="section level3">
+<h3>Generate a PGP signing key</h3>
 <p>Generate a PGP key</p>
 <pre><code>gpg --gen-key</code></pre>
+<p>List the keys</p>
+<pre><code>gpg --list-keys</code></pre>
+<p>Export the key to a file</p>
+<pre><code>gpg -a --export keyid &gt; file.txt</code></pre>
+</div>
 <div id="public-key-servers" class="section level3">
 <h3>Public key servers</h3>
 <p>To submit your key to a server, export the key</p>
@@ -1891,6 +1913,14 @@ href="https://unix.stackexchange.com/questions/481939/how-to-export-a-gpg-privat
 GPG private and public key to a file</a></p>
 <p>Verify the signature of a file</p>
 <pre><code>gpg --verify filename.ext.gpg</code></pre>
+</div>
+<div id="test-a-signature" class="section level3">
+<h3>Test a signature</h3>
+<p>Test if GPG signing is working with a particular key that you own</p>
+<pre><code>echo &quot;test&quot; | gpg --clearsign -bsau CC44A3EC868FDAE69F0E57148A77836103E2ADB0
+
+# gpg: skipped &quot;CC44A3EC868FDAE69F0E57148A77836103E2ADB0&quot;: No secret key
+# gpg: [stdin]: clear-sign failed: No secret key</code></pre>
 </div>
 <div id="trust-other-public-keys" class="section level3">
 <h3>Trust other public keys</h3>

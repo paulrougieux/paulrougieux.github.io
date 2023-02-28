@@ -2644,12 +2644,17 @@ df[&quot;mot&quot;] = df[&quot;lettre&quot;].map(mapping)</code></pre>
                        &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
                        &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
 df.set_index(&#39;b&#39;).to_dict()[&#39;c&#39;]</code></pre>
-<div id="convert-a-column-to-numeric-or-string" class="section level3">
-<h3>Convert a column to numeric or string</h3>
+<div id="convert-a-column-to-numeric-or-string-and-check"
+class="section level3">
+<h3>Convert a column to numeric or string and check</h3>
 <p>Convert a string to a numeric type using the argument
 <code>errors="coerce"</code>:</p>
 <pre><code>s = pandas.Series([&quot;1&quot;, &quot;2&quot;, &quot;a&quot;])
 pandas.to_numeric(s, errors=&quot;coerce&quot;)</code></pre>
+<p><a href="https://stackoverflow.com/a/45568283/2641825">Check if a
+column is of numeric or string type</a></p>
+<pre><code>pandas.api.types.is_numeric_dtype(s)
+pandas.api.types.is_string_dtype(s)</code></pre>
 <p>The following would return an error</p>
 <pre><code>s.astype(float)
 s.astype(int)</code></pre>
@@ -4365,6 +4370,18 @@ such:</p>
 <pre><code>[x.name for x in p.glob(&#39;**/*.csv&#39;)]</code></pre>
 </div>
 </div>
+<div id="python-path" class="section level2">
+<h2>Python Path</h2>
+<p>Temporarily add to the python path (<a
+href="https://stackoverflow.com/questions/3402168/permanently-add-a-directory-to-pythonpath">SO
+question</a>) in order to import scripts</p>
+<pre><code>import sys
+sys.path.append(&#39;/path/to/dir&#39;)</code></pre>
+<p>To permanently add a package under development to the python path,
+add the following to your <code>.bashrc</code> or
+<code>.bash_profile</code>:</p>
+<pre><code>export PYTHONPATH=&quot;$HOME/repos/project_name/&quot;:$PYTHONPATH</code></pre>
+</div>
 <div id="temporary-directories-and-files" class="section level2">
 <h2>Temporary directories and files</h2>
 <p>Docs.python.org <a
@@ -4611,6 +4628,31 @@ seaborn.barplot(data=iris_agg_long, x=&quot;variable&quot;, y=&quot;value&quot;,
 plt.tight_layout()
 plt.show()</code></pre>
 </div>
+<div id="color-palette" class="section level3">
+<h3>Color palette</h3>
+<p>See various examples in the plots in the seaborn section. The palette
+can be defined from pre existing palettes</p>
+<pre><code>palette = seaborn.color_palette(&quot;rocket_r&quot;)</code></pre>
+<p>Without argument this function displays the default palette</p>
+<pre><code>seaborn.color_palette()</code></pre>
+<p>It can translate a list of colour codes into a palette</p>
+<pre><code>seaborn.color_palette([&quot;r&quot;,&quot;g&quot;,&quot;b&quot;])
+seaborn.color_palette([&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;, &quot;orange&quot;])</code></pre>
+<p>This function is used internally by the palette argument of plotting
+functions:</p>
+<pre><code>p1 = sns.relplot(x=&quot;Growth&quot;, y=&quot;Value&quot;, hue=&quot;Risk&quot;, col=&quot;Mcap&quot;, data=mx, s=200, palette=[&#39;r&#39;, &#39;g&#39;, &#39;y&#39;])</code></pre>
+<p>Seaborn tutorial on choosing colour palettes <a
+href="https://seaborn.pydata.org/tutorial/color_palettes.html"
+class="uri">https://seaborn.pydata.org/tutorial/color_palettes.html</a></p>
+<p>According to <a href="https://stackoverflow.com/a/46174007/2641825"
+class="uri">https://stackoverflow.com/a/46174007/2641825</a> you can
+also use a dictionary to associate hue values to a palette element.</p>
+<pre><code>selected_products = [&quot;wood_fuel&quot;, 
+                     &quot;sawlogs_and_veneer_logs&quot;,
+                     &quot;pulpwood_round_and_split_all_species_production&quot;,
+                     &quot;other_industrial_roundwood&quot;]
+palette = dict(zip(selected_products, [&quot;red&quot;, &quot;brown&quot;, &quot;blue&quot;, &quot;grey&quot;]))</code></pre>
+</div>
 <div id="facet-grid-plots" class="section level3">
 <h3>Facet grid plots</h3>
 <p>Use Figure-level interface for drawing plots onto a FacetGrid:</p>
@@ -4816,6 +4858,8 @@ resize a grid object in its entirety.</p>
 g = g.map(plt.hist, &quot;total_bill&quot;)
 g.fig.set_figwidth(10)
 g.fig.set_figheight(10) </code></pre>
+<p>Try also</p>
+<pre><code>g.fig.set_size_inches(15,15)</code></pre>
 <p>Mentioned as a comment under <a
 href="https://stackoverflow.com/a/56970556/2641825">this answer</a></p>
 <p>To change the height and aspect ration of individual grid cells, you
@@ -5499,6 +5543,23 @@ uncompromising Python code formater”</p>
 <code>pre-commit</code> as explained below.</p>
 <p>In vim, you can run black on the current file with:</p>
 <pre><code>:!black %</code></pre>
+<ul>
+<li><p><a
+href="https://black.readthedocs.io/en/stable/guides/introducing_black_to_your_project.html">Ignore
+a revision in git blame after moving to black</a></p>
+<blockquote>
+<p>“A long-standing argument against moving to automated code formatters
+like Black is that the migration will clutter up the output of git
+blame. This was a valid argument, but since Git version 2.23, Git
+natively supports ignoring revisions in blame with the –ignore-rev
+option.”</p>
+</blockquote>
+<blockquote>
+<p>“You can even configure git to automatically ignore revisions listed
+in a file on every call to git blame.”</p>
+</blockquote>
+<pre><code>  git config blame.ignoreRevsFile .git-blame-ignore-revs</code></pre></li>
+</ul>
 </div>
 <div id="flake-8" class="section level2">
 <h2>Flake 8</h2>
@@ -5832,6 +5893,12 @@ py.test</code></pre>
 <p>Test pandas data frame with</p>
 <pre><code>assert_frame_equal
 assert_series_equal # tricky to use</code></pre>
+<div id="run-unittest-with-pytest" class="section level3">
+<h3>Run unittest with pytest</h3>
+<p><a href="https://docs.pytest.org/en/7.1.x/how-to/unittest.html">How
+to use unittest-based tests with pytest</a></p>
+<pre><code>pytest file_test.py</code></pre>
+</div>
 <div id="expected-exceptions" class="section level3">
 <h3>Expected exceptions</h3>
 <p>pytest <a
