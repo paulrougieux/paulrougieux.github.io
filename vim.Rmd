@@ -2290,12 +2290,20 @@ Tmux is not the default, to use it you will have to add this line to your .vimrc
 
     let g:slime_target = "tmux"
 
-Then add this to configure the sending of commands to a 
-[Read Eval Print Loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop):
-in the general use case of
-vim in a split tmux window with a REPL in the other pane:
+Then add this to configure the sending of commands to a [Read Eval Print
+Loop](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop): in
+the general use case of vim in a split tmux window with a REPL in the other
+pane:
 
     let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
+
+Send command to a tmux pane running bash, python or R with:
+
+    Ctrl C
+
+I created a Shortcut `;l` to emulate NvimR's shortcut which send the current line to Slime
+
+    autocmd FileType python nmap <LocalLeader>l <Plug>SlimeParagraphSend
 
 Excessive indentation issues can arrise when slime sends indented lines to the
 ipython console. For example  after a function definition, such as `def

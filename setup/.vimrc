@@ -374,4 +374,8 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " https://github.com/jpalardy/vim-slime/issues/131
 let g:slime_python_ipython = 1
 
+" Shortcut to emulate NvimR's shortcut send line with Slime
+autocmd FileType python nmap <LocalLeader>l <Plug>SlimeParagraphSend
+autocmd Filetype markdown nmap <LocalLeader>l <Plug>SlimeParagraphSend
+
 " To reload this file :source ~/.vimrc
