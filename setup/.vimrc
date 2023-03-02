@@ -301,8 +301,8 @@ let g:ale_pattern_options = {
 " Vim Dispatch setup for the quickfix list
 autocmd FileType python let b:dispatch = 'pylint -f parseable %'
 
-" Title inside a script
-autocmd FileType python command! Title normal! A #<esc>yyppVr#kkVr#
+" Title inside a script https://vi.stackexchange.com/q/40376/6671
+autocmd FileType python command! Title normal! A #<esc>yyppv$r#kkv$r#
 
 """""""""""""""""""""
 " # R configuration "
