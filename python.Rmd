@@ -2381,7 +2381,9 @@ Set value for all items matching the list of labels
     df["mot"] = df["lettre"].map(mapping)
 
 
-## Convert data frames
+## Convert data frames to other objects or types
+
+See also the IO section to convert data frames to other files.
 
 Convert 2 columns to a dictionary
 
@@ -3063,6 +3065,17 @@ documentation](https://nrel.github.io/gdx-pandas/overview.html#direct-conversion
     dataframes = gdxpds.to_dataframes(gdx_file)
     for symbol_name, df in dataframes.items():
         print("Doing work with {}.".format(symbol_name))
+
+
+### Markdown
+
+Print a data frame to markdown, without the scientific notation
+https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas
+
+    import pandas
+    df = pandas.DataFrame({"x" : [1,1e7], "y":[1e-5,100]})
+    print(df.to_markdown())
+    print(df.to_markdown(floatfmt='.0f', index=False))
 
 
 ### Parquet
