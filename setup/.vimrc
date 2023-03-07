@@ -374,11 +374,18 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 " https://github.com/jpalardy/vim-slime/issues/131
 let g:slime_python_ipython = 1
 
-" Shortcut to emulate NvimR's shortcut send line with Slime
+" Similar to NvimR's shortcut send line, but with Slime
 autocmd FileType python nmap <LocalLeader>l <Plug>SlimeLineSend
 autocmd Filetype markdown nmap <LocalLeader>l <Plug>SlimeLineSend
 " Shortcut to send the current paragraph with Slime
 autocmd FileType python nmap <LocalLeader>p <Plug>SlimeParagraphSend
 autocmd Filetype markdown nmap <LocalLeader>p <Plug>SlimeParagraphSend
+" Similar NvimR's send selection, but with with slime
+" doesn't work
+" autocmd FileType python nmap <LocalLeader>s <Plug>SlimeRegionSend
+" autocmd Filetype markdown nmap <LocalLeader>s <Plug>SlimeRegionSend
+
+
+
 
 " To reload this file :source ~/.vimrc
