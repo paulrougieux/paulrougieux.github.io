@@ -375,15 +375,17 @@ let g:slime_default_config = {"socket_name": "default", "target_pane": "{last}"}
 let g:slime_python_ipython = 1
 
 " Similar to NvimR's shortcut send line, but with Slime
-autocmd FileType python nmap <LocalLeader>l <Plug>SlimeLineSend
-autocmd Filetype markdown nmap <LocalLeader>l <Plug>SlimeLineSend
+autocmd FileType python nmap <buffer> <LocalLeader>l <Plug>SlimeLineSend
+autocmd Filetype markdown nmap <buffer> <LocalLeader>l <Plug>SlimeLineSend
 " Shortcut to send the current paragraph with Slime
-autocmd FileType python nmap <LocalLeader>p <Plug>SlimeParagraphSend
-autocmd Filetype markdown nmap <LocalLeader>p <Plug>SlimeParagraphSend
+autocmd FileType python nmap <buffer> <LocalLeader>p <Plug>SlimeParagraphSend
+autocmd Filetype markdown nmap <buffer> <LocalLeader>p <Plug>SlimeParagraphSend
 " Similar NvimR's send selection, but with with slime
-" doesn't work
-" autocmd FileType python nmap <LocalLeader>s <Plug>SlimeRegionSend
-" autocmd Filetype markdown nmap <LocalLeader>s <Plug>SlimeRegionSend
+autocmd FileType python xmap <buffer> <LocalLeader>m <Plug>SlimeRegionSend
+autocmd FileType markdown xmap <buffer> <LocalLeader>m <Plug>SlimeRegionSend
+" Send the current word under the cursor to the last active tmux buffer with slime
+autocmd FileType python nmap <buffer> <LocalLeader>w viw<Plug>SlimeRegionSend
+autocmd Filetype markdown nmap <buffer> <LocalLeader>w viw<Plug>SlimeRegionSend
 
 
 
