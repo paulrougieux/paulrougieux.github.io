@@ -672,9 +672,12 @@ bibliographies and citations</a>.</p>
 <h1>Edit a text file</h1>
 <div id="navigation_edit" class="section level2">
 <h2>Switch between navigation and editing mode</h2>
-<p>Enter editing mode with i, a, o. Use escape to switch to navigation
-mode. Note: I remapped the caps lock key to escape at a system
-level.</p>
+<p>Enter editing mode with <code>i</code>, <code>a</code>,
+<code>o</code>. Use escape to switch to navigation mode.</p>
+<p>Note: I remapped the caps lock key to escape at a system level. See
+the <a href="debian.Rmd">Debian page</a>. Some persons remap
+<code>jk</code> and <code>kj</code> to escape (<a
+href="https://www.reddit.com/r/vim/comments/11fj3x0/comment/jandf3s/?context=3">reddit</a>).</p>
 <pre><code>i - Insert text before the cursor.
 I - Insert text before the first non-blank in the line.
 gi - Insert text in the same position as where insert mode
@@ -721,6 +724,17 @@ to add text at the end of each line in Vim?</a></p>
 mode <code>CTRL V</code>, append to all lines <code>$A</code> a comma ,,
 then press Esc to confirm.”</p>
 </blockquote>
+<div id="delete-all-lines-that-contain-a-pattern"
+class="section level3">
+<h3>Delete all lines that contain a pattern</h3>
+<ul>
+<li><a
+href="https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern"
+class="uri">https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern</a></li>
+</ul>
+<p>Delete all line that contain “pattern”:</p>
+<pre><code>:g/pattern/d</code></pre>
+</div>
 <div id="increment-numbers-in-a-list" class="section level3">
 <h3>Increment numbers in a list</h3>
 <p>Use the <code>range</code> command as explained in the <a
@@ -766,6 +780,12 @@ my_array[3] = 0;
 my_array[4] = 0;
 my_array[5] = 0;
 my_array[6] = 0;</code></pre>
+</div>
+<div id="filter-lines-in-a-csv-files" class="section level3">
+<h3>Filter lines in a csv files</h3>
+<p>Filter a file in place (seen in a blog post called <a
+href="https://blog.sanctum.geek.nz/vim-koans/">Vim Kōans</a>)</p>
+<pre><code>:%!awk &quot;/paper/{print $4}&quot;</code></pre>
 </div>
 <div id="sort-lines-alphabetically" class="section level3">
 <h3>Sort lines alphabetically</h3>
@@ -1033,8 +1053,16 @@ digit.</p>
 <div id="replace-list-items" class="section level3">
 <h3>Replace list items</h3>
 <p>Replace simple list items with a curly braces counter (to count the
-number of times I want to read a publication or a paper)</p>
+number of times I want to read a publication or a paper). I have created
+a shortcut for this substitution.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\n- /\r- {1} /g</code></pre>
+<div id="replace-file-names-with-markdown-links" class="section level4">
+<h4>Replace file names with markdown links</h4>
+<p>List files in the present working directory and replace them with a
+markdown link:</p>
+<pre><code>:.!ls
+:&#39;&lt;,&#39;&gt;s/.*/[&amp;](&amp;)/g</code></pre>
+</div>
 </div>
 <div id="replace-spaces-and-new-lines" class="section level3">
 <h3>Replace spaces and new lines</h3>
@@ -1183,6 +1211,20 @@ Plde</code></pre>
 <p>Note this works only for one replacement because the yank register is
 then replaced with the deleted word.</p>
 </div>
+<div id="a-single-character" class="section level3">
+<h3>A single character</h3>
+<p>Copy a single character at the cursor position</p>
+<pre><code>vy
+xu</code></pre>
+<p>Copy a character before the cursor position</p>
+<pre><code>Xu</code></pre>
+<p>Cut a single character, then paste it later</p>
+<pre><code>x
+p</code></pre>
+<p>From a <a
+href="https://vi.stackexchange.com/questions/5806/how-can-i-yank-copy-the-single-character-on-which-the-cursor-rests/5825#5825">Stack
+Exchange question on how to copy a single character in vim</a></p>
+</div>
 </div>
 <div id="indentation" class="section level2">
 <h2>Indentation</h2>
@@ -1210,15 +1252,16 @@ commands, Vim scripts and debugging</a></p>
 <p>Save the current file</p>
 <pre><code>:w</code></pre>
 <p>Save under a new name (save as) and edit that file</p>
-<pre><code>:sav</code></pre>
+<pre><code>:sav
+:saveas</code></pre>
 <p>SO <a
 href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim">save
 as a new file and continue editing the original one</a></p>
 <p>To move or rename a file within the vim file explorer:</p>
 <pre><code>R</code></pre>
 </div>
-<div id="wrap-lines" class="section level2">
-<h2>Wrap lines</h2>
+<div id="wrap-lines-auto-line-break" class="section level2">
+<h2>Wrap lines, auto line break</h2>
 <p>Thoughtbot.com <a
 href="https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim">Wrap
 existing block of text to 80 characters</a>:</p>
@@ -1230,6 +1273,8 @@ press</p>
 <pre><code>gq</code></pre>
 <p>To disable auto wrapping, call</p>
 <pre><code>:set formatoptions=cq</code></pre>
+<p><a href="https://stackoverflow.com/a/23032068/2641825">SO answer on
+how to disable auto wrapping</a>.</p>
 </div>
 </div>
 <div id="select-and-visual-mode" class="section level1">
@@ -2396,6 +2441,12 @@ href="https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop">Read
 Eval Print Loop</a>: in the general use case of vim in a split tmux
 window with a REPL in the other pane:</p>
 <pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
+<p>Send command to a tmux pane running bash, python or R with:</p>
+<pre><code>Ctrl C</code></pre>
+<p>I created a Shortcut <code>;l</code> to emulate NvimR’s shortcut
+which send the current line to Slime</p>
+<pre><code>autocmd FileType python nmap &lt;LocalLeader&gt;l &lt;Plug&gt;SlimeLineSend
+autocmd FileType python nmap &lt;LocalLeader&gt;p &lt;Plug&gt;SlimeParagraphSend</code></pre>
 <p>Excessive indentation issues can arrise when slime sends indented
 lines to the ipython console. For example after a function definition,
 such as <code>def function_name():</code> ipython places the cursor at

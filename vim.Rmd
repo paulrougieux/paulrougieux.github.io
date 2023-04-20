@@ -269,12 +269,16 @@ ctrl+space in my case) after `@`. For more see:
 Bibliography also works with R markdown documents, see
 rmarkdown documentation [authoring bibliographies and citations](https://rmarkdown.rstudio.com/authoring_bibliographies_and_citations.html).
 
+
 # Edit a text file
 
 ## Switch between navigation and editing mode {#navigation_edit}
 
-Enter editing mode with i, a, o. Use escape to switch to navigation mode.
-Note: I remapped the caps lock key to escape at a system level.
+Enter editing mode with `i`, `a`, `o`. Use escape to switch to navigation mode. 
+
+Note: I remapped the caps lock key to escape at a system level. See the [Debian
+page](debian.Rmd). Some persons remap `jk` and `kj` to escape
+([reddit](https://www.reddit.com/r/vim/comments/11fj3x0/comment/jandf3s/?context=3)).
 
     i - Insert text before the cursor.
     I - Insert text before the first non-blank in the line.
@@ -322,6 +326,15 @@ Similarly to enter text at the end of multiple lines ([vim.wikia](http://vim.wik
 
 > "Visual select a paragraph `vip`, switch to Visual block mode `CTRL V`, append to
 > all lines `$A` a comma ,, then press Esc to confirm."
+
+
+### Delete all lines that contain a pattern
+
+- https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern
+
+Delete all line that contain "pattern":
+
+    :g/pattern/d
 
 
 ### Increment numbers in a list
@@ -376,6 +389,14 @@ Then select the lines from the second line onwards and use `g CTRL-A` to get:
     my_array[4] = 0;
     my_array[5] = 0;
     my_array[6] = 0;
+
+
+### Filter lines in a csv files
+
+Filter a file in place (seen in a blog post called [Vim
+Kōans](https://blog.sanctum.geek.nz/vim-koans/))
+
+    :%!awk "/paper/{print $4}"
 
 
 ### Sort lines alphabetically
@@ -709,9 +730,19 @@ Remove all numbers in a list of authors
 ### Replace list items
 
 Replace simple list items with a curly braces counter (to count the number of times I
-want to read a publication or a paper)
+want to read a publication or a paper). I have created a shortcut for this
+substitution.
 
     :'<,'>s/\n- /\r- {1} /g
+
+
+#### Replace file names with markdown links
+
+List files in the present working directory and replace them with a markdown
+link:
+
+    :.!ls
+    :'<,'>s/.*/[&](&)/g
 
 
 ### Replace spaces and new lines
@@ -893,6 +924,27 @@ Or select the current word, then paste and delete the word to replace
 Note this works only for one replacement because the yank register is then
 replaced with the deleted word.
 
+
+### A single character
+
+Copy a single character at the cursor position
+
+    vy
+    xu
+
+Copy a character before the cursor position
+
+    Xu
+
+Cut a single character, then paste it later
+
+    x
+    p
+
+From a [Stack Exchange question on how to copy a single character in
+vim](https://vi.stackexchange.com/questions/5806/how-can-i-yank-copy-the-single-character-on-which-the-cursor-rests/5825#5825)
+
+
 ## Indentation
 
 Indentation replaced by spaces, add this to the ~/.vimrc file
@@ -925,6 +977,7 @@ Save the current file
 Save under a new name (save as) and edit that file
 
     :sav
+    :saveas
 
 SO [save as a new file and continue editing the original one](https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-keep-working-on-the-original-one-in-vim)
 
@@ -932,7 +985,8 @@ To move or rename a file within the vim file explorer:
 
     R
 
-## Wrap lines
+
+## Wrap lines, auto line break
 
 Thoughtbot.com [Wrap existing block of text to 80 characters](https://thoughtbot.com/blog/wrap-existing-text-at-80-characters-in-vim):
 
@@ -949,6 +1003,9 @@ To format the text, select it with v and up or down movements, and press
 To disable auto wrapping, call
 
     :set formatoptions=cq
+
+[SO answer on how to disable auto
+wrapping](https://stackoverflow.com/a/23032068/2641825).
 
 
 # Select and visual mode
@@ -986,6 +1043,7 @@ Select the current line
     V
 
 These selection methods can also be used to delete `diw` and yank `yiw`.
+
 
 # Enter commands, save and quit
 
