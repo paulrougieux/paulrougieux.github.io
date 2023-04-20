@@ -660,6 +660,18 @@ checking out. For example if you are in the <code>main</code> branch</p>
 you are currently in a feature branch
 <code>git checkout --ours &lt;filename&gt;</code> will get the file as
 it is in the feature branch.</p>
+<div id="unmerged-paths" class="section level3">
+<h3>Unmerged paths</h3>
+<p>When a file in a status <code>Unmerged paths</code></p>
+<pre><code>Unmerged paths:
+  (use &quot;git restore --staged &lt;file&gt;...&quot; to unstage)
+  (use &quot;git add &lt;file&gt;...&quot; to mark resolution)
+        both modified:  file_name.ext </code></pre>
+<p>Either edit the file, looking for <code>=====</code> to find the
+zones of conflict. Or revert to the latest tracked version of that file
+with</p>
+<pre><code>git restore --stage file_name.ext</code></pre>
+</div>
 </div>
 <div id="checkout-a-remote-branch" class="section level2">
 <h2>Checkout a remote branch</h2>
@@ -672,6 +684,19 @@ remote branches can be viewed with:</p>
 <p>To create a local branch that tracks the remote branch. You’ll be
 able to make changes to that local branch and push them to the remote
 branch later.</p>
+</div>
+<div id="branch-naming-convention" class="section level2">
+<h2>Branch naming convention</h2>
+<ul>
+<li><p><a
+href="https://medium.com/@nitanshu1991/git-branching-conventions-102041e9bb71"
+class="uri">https://medium.com/@nitanshu1991/git-branching-conventions-102041e9bb71</a></p>
+<blockquote>
+<p>“If your branch name is more than one words you should use underscore
+<code>_</code> rather than hyphen <code>-</code> because <code>-</code>
+here separates the two different branch.”</p>
+</blockquote></li>
+</ul>
 </div>
 </div>
 <div id="configuring-git" class="section level1">
@@ -1136,8 +1161,24 @@ this style, so squashing them into one command saves a lot of time.
 <h1>Hosting services</h1>
 <div id="gitlab" class="section level2">
 <h2>Gitlab</h2>
-<div id="issue-triage" class="section level3">
-<h3>Issue triage</h3>
+<div id="issues" class="section level3">
+<h3>Issues</h3>
+<div id="cross-linking-issues" class="section level4">
+<h4>Cross linking issues</h4>
+<p><a
+href="https://docs.gitlab.com/ee/user/project/issues/crosslinking_issues.html"
+class="uri">https://docs.gitlab.com/ee/user/project/issues/crosslinking_issues.html</a></p>
+<p>To link between issues in different repositories in the same project,
+prefix the <code>#issue number</code> with the project name:</p>
+<pre><code>project_name#1</code></pre>
+<blockquote>
+<p>If they are not in the same group, you can add the full URL to the
+issue (<a href="https://gitlab.com/"
+class="uri">https://gitlab.com/</a><username>/<projectname>/-/issues/<xxx>).</p>
+</blockquote>
+</div>
+<div id="issue-priority-triage" class="section level4">
+<h4>Issue priority triage</h4>
 <p>On the Gitlab labels page:</p>
 <blockquote>
 <p>“Labels can be applied to issues and merge requests. Star a label to
@@ -1187,6 +1228,7 @@ items.</td>
 </tbody>
 </table>
 </div>
+</div>
 <div id="ci-continuous-integration" class="section level3">
 <h3>CI Continuous Integration</h3>
 <p>By default, job artifacts are not kept on failure. To enable this add
@@ -1195,6 +1237,11 @@ a <code>when</code> clause to <code>.gitlab-ci.yaml</code></p>
     when: always
     paths:
     - notebooks</code></pre>
+<div id="usage-quotas" class="section level4">
+<h4>Usage quotas</h4>
+<p>View the usage quota through time and by repository at the top
+project level under settings / usage quotas.</p>
+</div>
 </div>
 <div id="gitlab-pages" class="section level3">
 <h3>gitlab pages</h3>
@@ -1215,7 +1262,7 @@ way.</p>
 href="git%20clone%20https://username:token@gitlab.com/user/repo.git">SO
 answer</a></p>
 <pre><code>git clone https://username:token@gitlab.com/user/repo.git</code></pre>
-<div id="usage-quotas" class="section level4">
+<div id="usage-quotas-1" class="section level4">
 <h4>Usage quotas</h4>
 <p>Check usage quotas for a group at (replace group_name by the actual
 group name):</p>
