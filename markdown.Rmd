@@ -111,6 +111,40 @@ section below.
   requested by the journal.
 
 
+# Quarto
+
+## Tables
+
+[Quarto tables](https://quarto.org/docs/authoring/tables.html)
+
+> " The most commonly used markdown table is known as a pipe table. Pipe tables
+> support specifying per column alignment as well as captions. For example:
+
+    | Default | Left | Right | Center |
+    |---------|:-----|------:|:------:|
+    | 12      | 12   |    12 |   12   |
+    | 123     | 123  |   123 |  123   |
+    | 1       | 1    |     1 |   1    |
+
+
+> "For tables produced by executable code cells, include a label with a `tbl-`
+> prefix to make them cross-referenceable."
+
+
+> "For markdown tables, add a caption below the table, then include a #tbl-
+> label in braces at the end of the caption. For example:"
+
+    | Col1 | Col2 | Col3 |
+    |------|------|------|
+    | A    | B    | C    |
+    | E    | F    | G    |
+    | A    | G    | G    |
+
+    : My Caption {#tbl-letters}
+
+    See @tbl-letters.
+
+
 # Yaml front matter for styles
 
 ## Bibliography
@@ -214,6 +248,7 @@ However calling the --toc argument does create a table of content in the html fi
 
     pandoc -s --toc notes.md -o notes.html
 
+
 ## Two column layout and class options
 
 The `openany` option for the book document class, allows opening a chapter on any
@@ -230,8 +265,25 @@ page only and inserts a blank page.
     ---
 
 
-
 # Flavours of markdown
+
+## Common Mark
+
+Stack Overflow 
+
+- The Stack Exchange network used to have a custom flavoured markdown, but they switched to common mark in 2020 [We're switching
+  to
+  CommonMark](https://meta.stackexchange.com/questions/348746/were-switching-to-commonmark)
+
+    > "Another reason is that this reduces some of the maintenance burdens of our
+    > development teams. Instead of maintaining two distinct Markdown renderers, we
+    > can now pick something off the shelf and use that instead. With markdig and
+    > markdown-it we’ve found two reputable libraries that are beating our own
+    > implementations when it comes to performance and functionality. Both are
+    > great pieces of software that we're more than happy to use in our product."
+
+- Stack Overflow [markdown editing help](https://stackoverflow.com/editing-help).
+
 
 ## Github flavoured markdown
 
@@ -270,10 +322,5 @@ https://docs.gitlab.com/ee/user/markdown.html#task-lists
        1. [x] Sub-task 1
        1. [~] Sub-task 2
        1. [ ] Sub-task 3
-
-
-## Stack Overflow flavoured markdown
-
-Stack Overflow [markdown editing help](https://stackoverflow.com/editing-help).
 
 

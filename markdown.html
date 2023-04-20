@@ -541,6 +541,41 @@ journal to specify authorship in the way requested by the journal.</li>
 </ul>
 </div>
 </div>
+<div id="quarto" class="section level1">
+<h1>Quarto</h1>
+<div id="tables" class="section level2">
+<h2>Tables</h2>
+<p><a href="https://quarto.org/docs/authoring/tables.html">Quarto
+tables</a></p>
+<blockquote>
+<p>” The most commonly used markdown table is known as a pipe table.
+Pipe tables support specifying per column alignment as well as captions.
+For example:</p>
+</blockquote>
+<pre><code>| Default | Left | Right | Center |
+|---------|:-----|------:|:------:|
+| 12      | 12   |    12 |   12   |
+| 123     | 123  |   123 |  123   |
+| 1       | 1    |     1 |   1    |</code></pre>
+<blockquote>
+<p>“For tables produced by executable code cells, include a label with a
+<code>tbl-</code> prefix to make them cross-referenceable.”</p>
+</blockquote>
+<blockquote>
+<p>“For markdown tables, add a caption below the table, then include a
+#tbl- label in braces at the end of the caption. For example:”</p>
+</blockquote>
+<pre><code>| Col1 | Col2 | Col3 |
+|------|------|------|
+| A    | B    | C    |
+| E    | F    | G    |
+| A    | G    | G    |
+
+: My Caption {#tbl-letters}
+
+See @tbl-letters.</code></pre>
+</div>
+</div>
 <div id="yaml-front-matter-for-styles" class="section level1">
 <h1>Yaml front matter for styles</h1>
 <div id="bibliography" class="section level2">
@@ -648,6 +683,28 @@ classoption:
 </div>
 <div id="flavours-of-markdown" class="section level1">
 <h1>Flavours of markdown</h1>
+<div id="common-mark" class="section level2">
+<h2>Common Mark</h2>
+<p>Stack Overflow</p>
+<ul>
+<li><p>The Stack Exchange network used to have a custom flavoured
+markdown, but they switched to common mark in 2020 <a
+href="https://meta.stackexchange.com/questions/348746/were-switching-to-commonmark">We’re
+switching to CommonMark</a></p>
+<blockquote>
+<p>“Another reason is that this reduces some of the maintenance burdens
+of our development teams. Instead of maintaining two distinct Markdown
+renderers, we can now pick something off the shelf and use that instead.
+With markdig and markdown-it we’ve found two reputable libraries that
+are beating our own implementations when it comes to performance and
+functionality. Both are great pieces of software that we’re more than
+happy to use in our product.”</p>
+</blockquote></li>
+<li><p>Stack Overflow <a
+href="https://stackoverflow.com/editing-help">markdown editing
+help</a>.</p></li>
+</ul>
+</div>
 <div id="github-flavoured-markdown" class="section level2">
 <h2>Github flavoured markdown</h2>
 <ul>
@@ -689,12 +746,6 @@ list”</p>
    1. [x] Sub-task 1
    1. [~] Sub-task 2
    1. [ ] Sub-task 3</code></pre>
-</div>
-<div id="stack-overflow-flavoured-markdown" class="section level2">
-<h2>Stack Overflow flavoured markdown</h2>
-<p>Stack Overflow <a
-href="https://stackoverflow.com/editing-help">markdown editing
-help</a>.</p>
 </div>
 </div>
 
