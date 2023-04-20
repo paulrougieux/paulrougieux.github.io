@@ -55,6 +55,23 @@ gist](https://gist.github.com/championofblocks/3982727)
 
     for i in *.WAV; do test -f "${i%.WAV}.mp3" || lame -b 320 -h "${i}" "${i%.WAV}.mp3"; done
 
+- [Convert audio from ogg to
+  mp3](https://askubuntu.com/questions/442997/how-can-i-convert-audio-from-ogg-to-mp3)
+
+    ffmpeg -i "file name with spaces".{ogg,mp3}
+    # Convert all files from ogg to mp3
+    for i in *.ogg; do ffmpeg -i "${i%.ogg}".{ogg,mp3}; done
+    for i in *.ogg; do echo "${i%.ogg}"; done
+
+
+Cut an audio file at the given start time in seconds
+
+    ffmpeg -ss 132 -i input.mp3 output.mp3
+    ffmpeg -ss 621 -i 'Sharon Shannon Band-Tnbqwx3KRXU.ogg' 'Sharon Shannon Band.ogg'
+
+`ffmpeg` also has a `-to` argument to "Stop writing the output or reading the input
+at position."
+
 
 ## Clipboard
 
@@ -429,7 +446,7 @@ This is how I extracted all links from an html file:
 
 ## Edit Image files
 
-### Resize
+### Resize or reduce image size
 
 Resize a picture to 2000 px wide using ImageMagick:
 
@@ -798,9 +815,6 @@ Count occurrences of a word in a file
 
     grep -roh word filename.txt  | wc -w
 
-[Awk tutorial](http://www.grymoire.com/Unix/Awk.html#uh-11), for example  filter a large file for lines that have a third field (product code) starting with 44, keep the header line:
-
-    awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
 
 Regexp match beginning of and end of line with ^ and \$.
 
@@ -811,6 +825,24 @@ Follow the end of a log file as it is written
 See tab and end of line characters in a text file
 
     cat -te filename |less 
+
+
+### Search and filter tables
+
+[Awk tutorial](http://www.grymoire.com/Unix/Awk.html#uh-11), for example
+filter a large file for lines that have a third field (product code) starting
+with 44, keep the header line:
+
+    awk -F, '$3 ~ /^44/||NR==1' nc201501.dat|less
+
+Search the lines that contain "paper" in the forth column of a file 
+
+    awk "/paper/{print $4}" /tmp/file_name.csv
+
+Can be used in vim to filter the file in place (seen in a blog post called [Vim
+Kōans](https://blog.sanctum.geek.nz/vim-koans/))
+
+    :%!awk "/paper/{print $4}"
 
 
 ## Search in pdf files
@@ -907,6 +939,19 @@ Show the state of network interfaces
 Check open ports on a system
 
     nmap -Pn <hostname or IP address>
+
+
+## MAC Address
+
+Show the MAC address of each connection
+
+    ip link
+
+Show the address of a particular interface, in this case `wlo1`:
+
+    ip link show wlo1
+
+[MAC address spoofing](https://wiki.archlinux.org/title/MAC_address_spoofing).
 
 
 ## Show domain name and host name
@@ -1155,6 +1200,13 @@ For example to rename all upper-case .JPG extension into lower-case .jpg extensi
 
 
 # Program with bash
+
+## Loop over file names
+
+Display all `.ogg` files in a loop
+
+    for i in *.ogg; do echo "${i%.ogg}"; done
+
 
 ## Makefile
 

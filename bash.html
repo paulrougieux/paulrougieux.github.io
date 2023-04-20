@@ -494,6 +494,20 @@ vice-versa.</p>
 href="https://gist.github.com/championofblocks/3982727">seen in this
 gist</a></p>
 <pre><code>for i in *.WAV; do test -f &quot;${i%.WAV}.mp3&quot; || lame -b 320 -h &quot;${i}&quot; &quot;${i%.WAV}.mp3&quot;; done</code></pre>
+<ul>
+<li><p><a
+href="https://askubuntu.com/questions/442997/how-can-i-convert-audio-from-ogg-to-mp3">Convert
+audio from ogg to mp3</a></p>
+<p>ffmpeg -i “file name with spaces”.{ogg,mp3} # Convert all files from
+ogg to mp3 for i in *.ogg; do ffmpeg -i “<span
+class="math inline">\({i%.ogg}&quot;.{ogg,mp3}; done  for i in *.ogg; do
+echo &quot;\)</span>{i%.ogg}”; done</p></li>
+</ul>
+<p>Cut an audio file at the given start time in seconds</p>
+<pre><code>ffmpeg -ss 132 -i input.mp3 output.mp3
+ffmpeg -ss 621 -i &#39;Sharon Shannon Band-Tnbqwx3KRXU.ogg&#39; &#39;Sharon Shannon Band.ogg&#39;</code></pre>
+<p><code>ffmpeg</code> also has a <code>-to</code> argument to “Stop
+writing the output or reading the input at position.”</p>
 </div>
 <div id="clipboard" class="section level2">
 <h2>Clipboard</h2>
@@ -791,8 +805,8 @@ page</p>
 <h1>Edit</h1>
 <div id="edit-image-files" class="section level2">
 <h2>Edit Image files</h2>
-<div id="resize" class="section level3">
-<h3>Resize</h3>
+<div id="resize-or-reduce-image-size" class="section level3">
+<h3>Resize or reduce image size</h3>
 <p>Resize a picture to 2000 px wide using ImageMagick:</p>
 <pre><code>convert picture1.jpg -resize 2000 picture2.jpg </code></pre>
 <p>Resize a picture to 2000 px wide and also convert it to gray
@@ -1091,15 +1105,25 @@ where the string occurs:</p>
 <pre><code>grep -Eon &quot;[[:alnum:]]+.csv&quot; file.txt</code></pre>
 <p>Count occurrences of a word in a file</p>
 <pre><code>grep -roh word filename.txt  | wc -w</code></pre>
-<p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk
-tutorial</a>, for example filter a large file for lines that have a
-third field (product code) starting with 44, keep the header line:</p>
-<pre><code>awk -F, &#39;$3 ~ /^44/||NR==1&#39; nc201501.dat|less</code></pre>
 <p>Regexp match beginning of and end of line with ^ and $.</p>
 <p>Follow the end of a log file as it is written</p>
 <pre><code>tail -f</code></pre>
 <p>See tab and end of line characters in a text file</p>
 <pre><code>cat -te filename |less </code></pre>
+<div id="search-and-filter-tables" class="section level3">
+<h3>Search and filter tables</h3>
+<p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk
+tutorial</a>, for example filter a large file for lines that have a
+third field (product code) starting with 44, keep the header line:</p>
+<pre><code>awk -F, &#39;$3 ~ /^44/||NR==1&#39; nc201501.dat|less</code></pre>
+<p>Search the lines that contain “paper” in the forth column of a
+file</p>
+<pre><code>awk &quot;/paper/{print $4}&quot; /tmp/file_name.csv</code></pre>
+<p>Can be used in vim to filter the file in place (seen in a blog post
+called <a href="https://blog.sanctum.geek.nz/vim-koans/">Vim
+Kōans</a>)</p>
+<pre><code>:%!awk &quot;/paper/{print $4}&quot;</code></pre>
+</div>
 </div>
 <div id="search-in-pdf-files" class="section level2">
 <h2>Search in pdf files</h2>
@@ -1169,6 +1193,16 @@ the <code>-P</code> option</p>
 <h2>Check ports</h2>
 <p>Check open ports on a system</p>
 <pre><code>nmap -Pn &lt;hostname or IP address&gt;</code></pre>
+</div>
+<div id="mac-address" class="section level2">
+<h2>MAC Address</h2>
+<p>Show the MAC address of each connection</p>
+<pre><code>ip link</code></pre>
+<p>Show the address of a particular interface, in this case
+<code>wlo1</code>:</p>
+<pre><code>ip link show wlo1</code></pre>
+<p><a href="https://wiki.archlinux.org/title/MAC_address_spoofing">MAC
+address spoofing</a>.</p>
 </div>
 <div id="show-domain-name-and-host-name" class="section level2">
 <h2>Show domain name and host name</h2>
@@ -1360,6 +1394,11 @@ section on a flatten a file hierarchy for a description.</p>
 </div>
 <div id="program-with-bash" class="section level1">
 <h1>Program with bash</h1>
+<div id="loop-over-file-names" class="section level2">
+<h2>Loop over file names</h2>
+<p>Display all <code>.ogg</code> files in a loop</p>
+<pre><code>for i in *.ogg; do echo &quot;${i%.ogg}&quot;; done</code></pre>
+</div>
 <div id="makefile" class="section level2">
 <h2>Makefile</h2>
 <p>I use GNU make and the following simple make file to generate all
