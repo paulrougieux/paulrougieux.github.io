@@ -214,13 +214,52 @@ Note the use of the wildcard * when defining the patch version number. Defining 
 
 ## Create a package
 
-### Upload a package to pypi
+### Publish to pypi
 
 To upload a package to pypi, you need a pypi account. The [instructions on
 uploading distribution archives explain how to upload the package to pypi](
 https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives):
     
-      python3 -m twine upload --repository testpypi dist/*
+    python3 -m twine upload --repository testpypi dist/*
+
+I updated the following package before running this
+
+    pip install --upgrade build
+    pip install --upgrade twine
+
+I built the package with
+
+    cd forobs/biotrade
+    python3 -m build
+
+`twine` uses kde wallet to store the password, press cancel if you can't use kde
+wallet, it will then ask for the password at the command line. There is a [twine
+issue related to the use of keyring](https://github.com/pypa/twine/issues/338).
+
+In bash, create a virtual environment to test installation and 
+remove the python path otherwise my local version is seen
+
+    mkdir /tmp/biotrade_env/
+    cd /tmp/biotrade_env/
+    python3 -m venv /tmp/biotrade_env/
+    source /tmp/biotrade_env/bin/activate
+    PYTHONPATH=""
+    python3
+
+In python check that the package is not there
+
+    import biotrade
+    import pandas
+
+Back to the shell test the installation from test.pypi
+
+
+
+
+### Publish to Conda Forge
+
+- Blog post [publish your package on conda
+  forge](https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf)
 
 
 ### Authorship
@@ -334,7 +373,7 @@ Start an ipython prompt to test the package version
     packagename.__version__
 
 
-## Location 
+## Location or path
 
 ### Of a package
 
@@ -359,6 +398,18 @@ path can be deduced from
 
 
 ## Virtual environments
+
+- [venv](https://docs.python.org/3/library/venv.html) is available by default
+  in Python 3.3+
+
+    - Installation
+
+        sudo apt install python3-venv
+
+    - Usage
+
+        python3 -m venv <DIR>
+        source <DIR>/bin/activate
 
 - [Pipenv](https://pipenv.pypa.io/en/latest/) makes pip and virtual
   environments work together. 
@@ -762,10 +813,18 @@ I have set the following shortcuts to be similar to RStudio:
 * F1 inspect current object (i.e. display function and classes documentation)
 * F2 go to function definition
 
+- Spyder has a data frame explorer https://docs.spyder-ide.org/current/panes/variableexplorer.html#dataframes
+
+    > "DataFrames, like Numpy arrays, display in a viewer where you can show or
+    > hide "heatmap" colors, change the format and resize the rows and columns
+    > either manually or automatically"
+
 
 ## Vim 
 
-See my page on [vim.html](vim.html).
+I use Vim to edit python code and vim-slime to send the code to an ipython
+interpreter that runs inside a tmux pane. For more information, see my page on
+[vim.html](vim.html).
 
 
 # Neural Networks
@@ -790,7 +849,7 @@ Print the size of the output layer
 # Objects
 
 
-## Object types
+## AA object types
 
 `type()` displays the type of an object.
 
@@ -996,6 +1055,32 @@ For example
 - Issue with https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e
 
     pandas.DataFrame and spark.sql.DataFrame
+
+
+## Meta programming
+
+### Class decorators
+
+See also function decorators in another section below.
+
+
+### Meta class
+
+- https://stackoverflow.com/questions/2005878/what-are-python-metaclasses-useful-for
+
+    > according to this Metaclass programming in Python you might not need them ( yet )
+
+    > > Metaclasses are deeper magic than 99% of users should ever worry about. If
+    > > you wonder whether you need them, you don't (the people who actually need
+    > > them know with certainty that they need them, and don't need an explanation
+    > > about why).
+
+    > >    -- Python Guru Tim Peters
+
+
+- https://developer.ibm.com/tutorials/ba-metaprogramming-python/ provides an
+  example with a class that has camel case and another class that has snake
+  case attributes. 
 
 
 ## Programming objects
@@ -1210,6 +1295,22 @@ of the code as explained in [setp by step debuging with
 ipython](https://stackoverflow.com/questions/16867347/step-by-step-debugging-with-ipython).
 
     continue
+
+
+## Profiling in ipython
+
+See also the main section profiling and measuring time.
+
+[Magic prun](https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-prun):
+
+    %prun statement
+    # Store the profiler output to a file
+    %prun -T /tmp/profiler.txt 
+
+Run a script with profiling enabled from the ipython console
+
+    %run -i -p script.py
+
 
 ## Running from ipython
 
@@ -1571,6 +1672,24 @@ Display variables in the error message:
     raise ValueError(msg % (1, 2))
 
 
+### Default Exception
+
+https://docs.python.org/3/library/exceptions.html
+
+- `KeyError` is returned when a value is missing. For example if an environment
+  variable is undefined.
+
+    import os
+    os.environ["avarthatdoesntexist"]
+
+    - `EnvironmentError` is the parent error to IO errors related to the operating
+      system. It is only kept for compatibility purposes and should not be used for
+      errors related to environment variables according to an answer in
+      https://stackoverflow.com/questions/50869968/is-it-appropriate-to-raise-an-environmenterror-for-os-environ 
+
+- `ValueError` can be used to raise exceptions about data issues.
+
+
 ## Warnings
 
 Send a warning to the user
@@ -1886,20 +2005,37 @@ https://www.sympy.org/en/index.html
 > written entirely in Python."
 
 
-# Modelling
+# Modelling and statistics
 
 
-## Pyomo
+## Optimization with Pyomo
 
-[Pyomo
+- Wikipedia [pyomo](https://en.wikipedia.org/wiki/Pyomo)
+
+- [Pyomo documentation](https://pyomo.readthedocs.io/en/stable/)
+
+- [Pyomo
 Cookbook](https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-with-Pyomo.html)
 
-> "Pyomo is well suited to modeling simple and complex systems that can be
-> described by linear or nonlinear algebraic, differential, and partial
-> differential equations and constraints."
+    > "Pyomo is well suited to modeling simple and complex systems that can be
+    > described by linear or nonlinear algebraic, differential, and partial
+    > differential equations and constraints."
 
 
-## Panel data regressions
+## Econometrics
+
+- https://pypi.org/project/wooldridge/
+
+    > "A Python package which contains 111 data sets from one of the most
+    > famous econometrics textbooks for undergraduates. [...] It is extensively
+    > used in [Learning Introductory Econometrics with
+    > Python](https://py4etrics-github-io.translate.goog/?_x_tr_sl=auto&_x_tr_tl=en&_x_tr_hl=de)
+    > (Japanese, translated). It is also used in [Using Python for Introductory
+    > Econometrics](http://www.upfie.net/), which is a sister book of 'Using R
+    > for Introductory Econometrics'."
+
+
+### Panel data regressions
 
 - The package
   [linearmodels](https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.html#linearmodels.panel.model.PanelOLS)
@@ -1907,6 +2043,8 @@ Cookbook](https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-wit
 
 - blog [Panel data with
   python](https://towardsdatascience.com/a-guide-to-panel-data-regression-theoretics-and-implementation-with-python-4c84c5055cf8)
+
+
 
 
 # Numpy vectors and matrices (arrays)
@@ -2458,6 +2596,9 @@ Pure equality example from
     different_data_type = pandas.DataFrame({1: [10.0], 2: [20.0]})
     df.equals(different_data_type)
 
+
+### Numpy assert all close
+
 Testing closeness (for example with floating point results computed in another
 software)
 
@@ -2525,7 +2666,20 @@ Select only certain columns in a list
 
 ### NA values in columns
 
-#### Diagnostic NA values
+#### Select rows where at least one column is NA
+
+- https://datatofish.com/rows-with-nan-pandas-dataframe/
+
+    import pandas
+    import numpy as np
+    df = pandas.DataFrame({'i' : ['a', 'b', 'c', 'd', 'e'],
+                           'y' : [np.nan, '2','2', '4', '1'],
+                           'z' : ['2','2', '4', '1', np.nan],
+                          })
+    df[df.isna().any(axis=1)]
+
+
+#### Number and proportion of NA values
 
 A function that prints the number and proportion of NA values:
 
@@ -2543,7 +2697,7 @@ A function that prints the number and proportion of NA values:
 
 #### Remove empty columns
 
-Remove empty columns
+Remove empty columns where values are all NA
 
     import pandas
     import numpy as np
@@ -2572,6 +2726,29 @@ Remove parenthesis and dots in column names
 
     df.rename(columns=lambda x: re.sub(r"[()\.]", "", x), inplace=True)
 
+Replace the content of the columns, see below:
+
+    iris["species"].replace("setosa","x")
+
+
+#### Rename and select at the same time
+
+
+You can use a selector data frame to select and rename at the same time.
+
+- https://stackoverflow.com/questions/57417520/selecting-and-renaming-columns-at-the-same-time
+
+    df.rename(columns=selector_d)[selector_d.values()]
+
+
+
+#### Rename a series
+
+You can also rename a series with
+
+    iris["species"].rename("bla")
+
+
 ### Reorder columns
 
 Place the last column first
@@ -2590,6 +2767,9 @@ See also string operations in pandas.
 
 Replace Comtrade product code by the FAOSTAT product codes
 
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    iris["species"].replace("setosa","x")
     # Create a dictionary from 2 columns of a data frame
     product_dict = product_mapping.set_index('comtrade_code').to_dict()['faostat_code']
     df_comtrade["product_code"] = df_comtrade["product_code"].replace(product_dict)
@@ -2774,6 +2954,12 @@ December.
     flights.query("month=='January'")
     flights.query("month=='December'")
 
+Compute a lag 
+
+    iris['cumsum_lag'] = iris.groupby('species')['cumsum'].transform('shift', fill_value=0)
+    iris[['cumsum', 'cumsum_lag']].plot()
+    pyplot.show()
+
 
 ### Min or max in group
 
@@ -2934,10 +3120,13 @@ interpolate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.inter
 
     import pandas
     import numpy as np
-    s = pandas.Series([0, 2, np.nan, 8])
+    s = pandas.Series([0, 2, np.nan, 8, np.nan, np.nan])
     s.interpolate(method='polynomial', order=2)
     s.interpolate(method='linear')
 
+Limit interpolation to the inner NAN values
+
+    s.interpolate(limit_area="inside")
 
 [Interpolate within a
 groupby](https://stackoverflow.com/questions/37057187/pandas-interpolate-within-a-groupby)
@@ -3298,15 +3487,21 @@ files?](https://stackoverflow.com/a/59535659/2641825)
   pickle](https://towardsdatascience.com/the-best-format-to-save-pandas-data-414dca023e0d)
 
 
-## Reshape
+## Pivot, reshape and transpose
 
-### From wide to long
+### from wide to long
 
 [The Pandas user guide on reshaping](https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt) 
 gives several example using `melt` (easier to rename the  “variable” and “value” columns) 
 or `stack` (designed to work together with MultiIndex objects).
 
 Reshape using `melt`
+
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    iris.melt(id_vars="species", var_name="measurement")
+
+Another example with two index columns
 
     cheese = pandas.DataFrame(
           {
@@ -3374,6 +3569,14 @@ Rename the (sometimes confusing) axis names
     # lev1
     # 1     0.0  1.0  2.0  NaN
     # 2     4.0  3.0  NaN  5.0
+
+
+### Transpose index and columns
+
+- https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.transpose.html
+
+    df1 = pandas.DataFrame({'col1': [1, 2], 'col2': [3, 4]})
+    df1.transpose()
 
 
 ## Replace
@@ -3525,6 +3728,13 @@ Or assign the selector to reuse it:
     selector = df.index.isin(['cobra','viper'])
     df.loc[selector]
     df.loc[~selector]
+
+
+#### index conditions
+
+With an index corresponding to years, select all years below or equal to 2050
+
+    df.loc[df.index <= 2050]
 
 
 #### Multiple conditions
@@ -4484,6 +4694,23 @@ Better to use X**2 + Y**2 directly as above.
 
 ### Pandas plots are matplotlib AxesSubplot objects
 
+#### Arguments of the df.plot() function
+
+Example values for the df.plot() function:
+
+- `figsize=(3,3)` change the figure size. [SO
+  answer](https://stackoverflow.com/a/51174822/2641825) links to the
+  documentation that explains that
+
+      > "plt.figure(figsize=(10,5)) doesn't work because df.plot() creates its
+      > own matplotlib.axes.Axes object, the size of which cannot be changed
+      > after the object has been created. "
+
+- `title='bla bla'` add a plot title
+
+- `colormap` change colours
+
+
 #### Show pandas plots in ipython
 
 Create some data and change the xticks labels
@@ -4494,11 +4721,34 @@ Create some data and change the xticks labels
     df.set_index('x', inplace=True)
     plot = df.plot(title='Two ranges')
     type(plot)
-    #help(plot)
+    # help(plot)
     plot.set_xticks(range(0,31,10), minor=False)
     plt.show()
 
-#### Save to a pdf file
+#### Colour palette in pandas plots
+
+Reusing the data frame from the previous section
+
+Using a list of colours with matplotlib
+[ListedColormap](https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.ListedColormap.html)
+(see also example in that documentation page):
+
+    from matplotlib.colors import ListedColormap
+    df["z"] = 39 
+    df["a"] = 10
+    df.plot(colormap=ListedColormap(["red","green","orange"]), figsize=(3,3))
+    plt.show()
+    plt.savefig("/tmp/plotpalette.png")
+
+Using a seaborn palette with the `as_cmap=True` argument:
+
+    palette = seaborn.color_palette("rocket_r", as_cmap=True)
+    df.plot(colormap=palette, figsize=(3,3))
+    # plt.show()
+    plt.savefig("/tmp/plotpalette2.png")
+
+
+#### Save to a pdf or png file
 
 With a plot object
 
@@ -4508,6 +4758,9 @@ With the pyplot object, only works immediately after building the plot.
 This also works with seaborn plots.
 
     plt.savefig("/tmp/bli.pdf")
+    plt.savefig("/tmp/bli.png")
+
+Change figure size 
 
 
 #### Pandas plots side by side
@@ -5045,6 +5298,17 @@ For example
 
 # Profiling and measuring time
 
+## Profiling
+
+Run a scrip with the profiler, from within ipython
+
+    %run -i -p run_zz.py
+
+Memory profiling https://stackoverflow.com/a/15682871/2641825
+
+
+## Time it
+
 [How can I time a code segment for testing performance with Pythons timeit?](https://stackoverflow.com/questions/2866380/how-can-i-time-a-code-segment-for-testing-performance-with-pythons-timeit)
 
 Time a function:
@@ -5201,7 +5465,7 @@ The mapping of tidyverse to pandas is:
 | pivot_longer              | [melt] or [wide_to_long]                         |                                      |
 | pivot_wider               | [pivot]                                          |                                      |
 | rename                    | df.rename(columns={'a':'new'})                   |                                      |
-| separate                  | df['b','c'] = df.a.str.split(',',1,expand=True)  | [pandas separate] str section        |
+| separate                  | df[['b','c']] = df.a.str.split(',',1,expand=True)| [pandas separate] str section        |
 | summarize                 | agg                                              |                                      |
 | unite                     | df["z"] = df.y + df.y                            | [pandas unite]                       |
 | unnest                    | [explode]                                        | [unnest in pandas][so_unnest]        |
@@ -5541,6 +5805,13 @@ version](https://pre-commit.com/#using-the-latest-version-for-a-repository)
 Install git hooks in your .git/ directory.
 
     pre-commit install
+
+
+### Temporarily deactivate a pre commit hook
+
+To deactivate a pre commit hook temporarily https://stackoverflow.com/questions/7230820/skip-git-commit-hooks
+
+    git commit --no-verify -m "commit message"
 
 
 ### Usage in Continuous integration

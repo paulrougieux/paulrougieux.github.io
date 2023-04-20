@@ -634,13 +634,44 @@ fixes whilst still maintaining consistency of software environment.</p>
 </div>
 <div id="create-a-package" class="section level2">
 <h2>Create a package</h2>
-<div id="upload-a-package-to-pypi" class="section level3">
-<h3>Upload a package to pypi</h3>
+<div id="publish-to-pypi" class="section level3">
+<h3>Publish to pypi</h3>
 <p>To upload a package to pypi, you need a pypi account. The <a
 href="https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives">instructions
 on uploading distribution archives explain how to upload the package to
 pypi</a>:</p>
-<pre><code>  python3 -m twine upload --repository testpypi dist/*</code></pre>
+<pre><code>python3 -m twine upload --repository testpypi dist/*</code></pre>
+<p>I updated the following package before running this</p>
+<pre><code>pip install --upgrade build
+pip install --upgrade twine</code></pre>
+<p>I built the package with</p>
+<pre><code>cd forobs/biotrade
+python3 -m build</code></pre>
+<p><code>twine</code> uses kde wallet to store the password, press
+cancel if you can’t use kde wallet, it will then ask for the password at
+the command line. There is a <a
+href="https://github.com/pypa/twine/issues/338">twine issue related to
+the use of keyring</a>.</p>
+<p>In bash, create a virtual environment to test installation and remove
+the python path otherwise my local version is seen</p>
+<pre><code>mkdir /tmp/biotrade_env/
+cd /tmp/biotrade_env/
+python3 -m venv /tmp/biotrade_env/
+source /tmp/biotrade_env/bin/activate
+PYTHONPATH=&quot;&quot;
+python3</code></pre>
+<p>In python check that the package is not there</p>
+<pre><code>import biotrade
+import pandas</code></pre>
+<p>Back to the shell test the installation from test.pypi</p>
+</div>
+<div id="publish-to-conda-forge" class="section level3">
+<h3>Publish to Conda Forge</h3>
+<ul>
+<li>Blog post <a
+href="https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf">publish
+your package on conda forge</a></li>
+</ul>
 </div>
 <div id="authorship" class="section level3">
 <h3>Authorship</h3>
@@ -748,8 +779,8 @@ packagename.__version__</code></pre>
 </div>
 </div>
 </div>
-<div id="location" class="section level2">
-<h2>Location</h2>
+<div id="location-or-path" class="section level2">
+<h2>Location or path</h2>
 <div id="of-a-package" class="section level3">
 <h3>Of a package</h3>
 <p>The location of a package can be obtained from
@@ -771,6 +802,18 @@ case, the path can be deduced from</p>
 <div id="virtual-environments" class="section level2">
 <h2>Virtual environments</h2>
 <ul>
+<li><p><a href="https://docs.python.org/3/library/venv.html">venv</a> is
+available by default in Python 3.3+</p>
+<ul>
+<li><p>Installation</p>
+<p>sudo apt install python3-venv</p></li>
+<li><p>Usage</p>
+<p>python3 -m venv</p>
+<DIR>
+<p>source</p>
+<DIR>
+<p>/bin/activate</p></li>
+</ul></li>
 <li><p><a href="https://pipenv.pypa.io/en/latest/">Pipenv</a> makes pip
 and virtual environments work together.</p>
 <blockquote>
@@ -1150,17 +1193,27 @@ e = create_engine(&#39;sqlite:////path/to/database.db&#39;)</code></pre>
 <h2>Spyder</h2>
 <p>I have set the following shortcuts to be similar to RStudio:</p>
 <ul>
-<li>Ctrl+H find and replace dialog</li>
-<li>Ctrl+R run selection or current line</li>
-<li>Ctrl+Shift+C comment/uncomment code block</li>
-<li>F1 inspect current object (i.e. display function and classes
-documentation)</li>
-<li>F2 go to function definition</li>
+<li><p>Ctrl+H find and replace dialog</p></li>
+<li><p>Ctrl+R run selection or current line</p></li>
+<li><p>Ctrl+Shift+C comment/uncomment code block</p></li>
+<li><p>F1 inspect current object (i.e. display function and classes
+documentation)</p></li>
+<li><p>F2 go to function definition</p></li>
+<li><p>Spyder has a data frame explorer <a
+href="https://docs.spyder-ide.org/current/panes/variableexplorer.html#dataframes"
+class="uri">https://docs.spyder-ide.org/current/panes/variableexplorer.html#dataframes</a></p>
+<blockquote>
+<p>“DataFrames, like Numpy arrays, display in a viewer where you can
+show or hide”heatmap” colors, change the format and resize the rows and
+columns either manually or automatically”</p>
+</blockquote></li>
 </ul>
 </div>
 <div id="vim" class="section level2">
 <h2>Vim</h2>
-<p>See my page on <a href="vim.html">vim.html</a>.</p>
+<p>I use Vim to edit python code and vim-slime to send the code to an
+ipython interpreter that runs inside a tmux pane. For more information,
+see my page on <a href="vim.html">vim.html</a>.</p>
 </div>
 </div>
 <div id="neural-networks" class="section level1">
@@ -1182,8 +1235,8 @@ print(model(x).shape)</code></pre>
 </div>
 <div id="objects" class="section level1">
 <h1>Objects</h1>
-<div id="object-types" class="section level2">
-<h2>Object types</h2>
+<div id="aa-object-types" class="section level2">
+<h2>AA object types</h2>
 <p><code>type()</code> displays the type of an object.</p>
 <pre><code>i = 1
 print(type(i))
@@ -1348,6 +1401,43 @@ def csv_to_df(path: [str, Path]) -&gt; pandas.DataFrame:
 href="https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e"
 class="uri">https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e</a></p>
 <p>pandas.DataFrame and spark.sql.DataFrame</p></li>
+</ul>
+</div>
+</div>
+<div id="meta-programming" class="section level2">
+<h2>Meta programming</h2>
+<div id="class-decorators" class="section level3">
+<h3>Class decorators</h3>
+<p>See also function decorators in another section below.</p>
+</div>
+<div id="meta-class" class="section level3">
+<h3>Meta class</h3>
+<ul>
+<li><p><a
+href="https://stackoverflow.com/questions/2005878/what-are-python-metaclasses-useful-for"
+class="uri">https://stackoverflow.com/questions/2005878/what-are-python-metaclasses-useful-for</a></p>
+<blockquote>
+<p>according to this Metaclass programming in Python you might not need
+them ( yet )</p>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>Metaclasses are deeper magic than 99% of users should ever worry
+about. If you wonder whether you need them, you don’t (the people who
+actually need them know with certainty that they need them, and don’t
+need an explanation about why).</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>– Python Guru Tim Peters</p>
+</blockquote>
+</blockquote></li>
+<li><p><a
+href="https://developer.ibm.com/tutorials/ba-metaprogramming-python/"
+class="uri">https://developer.ibm.com/tutorials/ba-metaprogramming-python/</a>
+provides an example with a class that has camel case and another class
+that has snake case attributes.</p></li>
 </ul>
 </div>
 </div>
@@ -1557,6 +1647,18 @@ function in any part of the code as explained in <a
 href="https://stackoverflow.com/questions/16867347/step-by-step-debugging-with-ipython">setp
 by step debuging with ipython</a>.</p>
 <pre><code>continue</code></pre>
+</div>
+<div id="profiling-in-ipython" class="section level2">
+<h2>Profiling in ipython</h2>
+<p>See also the main section profiling and measuring time.</p>
+<p><a
+href="https://ipython.readthedocs.io/en/stable/interactive/magics.html#magic-prun">Magic
+prun</a>:</p>
+<pre><code>%prun statement
+# Store the profiler output to a file
+%prun -T /tmp/profiler.txt </code></pre>
+<p>Run a script with profiling enabled from the ipython console</p>
+<pre><code>%run -i -p script.py</code></pre>
 </div>
 <div id="running-from-ipython" class="section level2">
 <h2>Running from ipython</h2>
@@ -1874,6 +1976,26 @@ raise NameError(&quot;Wrong name: %s&quot; % &quot;quack quack quack&quot;)</cod
 <pre><code>raise ValueError(&quot;This is wrong: %s&quot; % &quot;wrong_value&quot;)
 msg = &quot;Value %s and value %s have problems.&quot;
 raise ValueError(msg % (1, 2))</code></pre>
+<div id="default-exception" class="section level3">
+<h3>Default Exception</h3>
+<p><a href="https://docs.python.org/3/library/exceptions.html"
+class="uri">https://docs.python.org/3/library/exceptions.html</a></p>
+<ul>
+<li><p><code>KeyError</code> is returned when a value is missing. For
+example if an environment variable is undefined.</p>
+<p>import os os.environ[“avarthatdoesntexist”]</p>
+<ul>
+<li><code>EnvironmentError</code> is the parent error to IO errors
+related to the operating system. It is only kept for compatibility
+purposes and should not be used for errors related to environment
+variables according to an answer in <a
+href="https://stackoverflow.com/questions/50869968/is-it-appropriate-to-raise-an-environmenterror-for-os-environ"
+class="uri">https://stackoverflow.com/questions/50869968/is-it-appropriate-to-raise-an-environmenterror-for-os-environ</a></li>
+</ul></li>
+<li><p><code>ValueError</code> can be used to raise exceptions about
+data issues.</p></li>
+</ul>
+</div>
 </div>
 <div id="warnings" class="section level2">
 <h2>Warnings</h2>
@@ -2194,21 +2316,43 @@ extensible. SymPy is written entirely in Python.”</p>
 </blockquote>
 </div>
 </div>
-<div id="modelling" class="section level1">
-<h1>Modelling</h1>
-<div id="pyomo" class="section level2">
-<h2>Pyomo</h2>
-<p><a
+<div id="modelling-and-statistics" class="section level1">
+<h1>Modelling and statistics</h1>
+<div id="optimization-with-pyomo" class="section level2">
+<h2>Optimization with Pyomo</h2>
+<ul>
+<li><p>Wikipedia <a
+href="https://en.wikipedia.org/wiki/Pyomo">pyomo</a></p></li>
+<li><p><a href="https://pyomo.readthedocs.io/en/stable/">Pyomo
+documentation</a></p></li>
+<li><p><a
 href="https://jckantor.github.io/ND-Pyomo-Cookbook/01.00-Getting-Started-with-Pyomo.html">Pyomo
 Cookbook</a></p>
 <blockquote>
 <p>“Pyomo is well suited to modeling simple and complex systems that can
 be described by linear or nonlinear algebraic, differential, and partial
 differential equations and constraints.”</p>
-</blockquote>
+</blockquote></li>
+</ul>
 </div>
-<div id="panel-data-regressions" class="section level2">
-<h2>Panel data regressions</h2>
+<div id="econometrics" class="section level2">
+<h2>Econometrics</h2>
+<ul>
+<li><p><a href="https://pypi.org/project/wooldridge/"
+class="uri">https://pypi.org/project/wooldridge/</a></p>
+<blockquote>
+<p>“A Python package which contains 111 data sets from one of the most
+famous econometrics textbooks for undergraduates. […] It is extensively
+used in <a
+href="https://py4etrics-github-io.translate.goog/?_x_tr_sl=auto&amp;_x_tr_tl=en&amp;_x_tr_hl=de">Learning
+Introductory Econometrics with Python</a> (Japanese, translated). It is
+also used in <a href="http://www.upfie.net/">Using Python for
+Introductory Econometrics</a>, which is a sister book of ‘Using R for
+Introductory Econometrics’.”</p>
+</blockquote></li>
+</ul>
+<div id="panel-data-regressions" class="section level3">
+<h3>Panel data regressions</h3>
 <ul>
 <li><p>The package <a
 href="https://bashtage.github.io/linearmodels/panel/panel/linearmodels.panel.model.PanelOLS.html#linearmodels.panel.model.PanelOLS">linearmodels</a>
@@ -2217,6 +2361,7 @@ provides fixed effects estimator for panel data.</p></li>
 href="https://towardsdatascience.com/a-guide-to-panel-data-regression-theoretics-and-implementation-with-python-4c84c5055cf8">Panel
 data with python</a></p></li>
 </ul>
+</div>
 </div>
 </div>
 <div id="numpy-vectors-and-matrices-arrays" class="section level1">
@@ -2637,8 +2782,10 @@ mapping = {&#39;p&#39;:&#39;pour&#39;,&#39;q&#39;:&#39;quoi&#39;,&#39;r&#39;:&#3
 df[&quot;mot&quot;] = df[&quot;lettre&quot;].map(mapping)</code></pre>
 </div>
 </div>
-<div id="convert-data-frames" class="section level2">
-<h2>Convert data frames</h2>
+<div id="convert-data-frames-to-other-objects-or-types"
+class="section level2">
+<h2>Convert data frames to other objects or types</h2>
+<p>See also the IO section to convert data frames to other files.</p>
 <p>Convert 2 columns to a dictionary</p>
 <pre><code>df = pandas.DataFrame({&#39;a&#39;:range(0,3), 
                        &#39;b&#39;:[&#39;p&#39;,&#39;q&#39;,&#39;r&#39;], 
@@ -2704,12 +2851,15 @@ different_column_type = pandas.DataFrame({1.0: [10], 2.0: [20]})
 df.equals(different_column_type)
 different_data_type = pandas.DataFrame({1: [10.0], 2: [20.0]})
 df.equals(different_data_type)</code></pre>
+<div id="numpy-assert-all-close" class="section level3">
+<h3>Numpy assert all close</h3>
 <p>Testing closeness (for example with floating point results computed
 in another software)</p>
 <pre><code>import numpy as np
 df.equals(df+1e-6)
 np.testing.assert_allclose(df,df+1e-7)
 np.testing.assert_allclose(df,df+1e-3)</code></pre>
+</div>
 </div>
 <div id="concatenate-and-merge" class="section level2">
 <h2>Concatenate and merge</h2>
@@ -2764,8 +2914,19 @@ cols = df.columns.tolist()
 </div>
 <div id="na-values-in-columns" class="section level3">
 <h3>NA values in columns</h3>
-<div id="diagnostic-na-values" class="section level4">
-<h4>Diagnostic NA values</h4>
+<div id="select-rows-where-at-least-one-column-is-na"
+class="section level4">
+<h4>Select rows where at least one column is NA</h4>
+<ul>
+<li><p><a href="https://datatofish.com/rows-with-nan-pandas-dataframe/"
+class="uri">https://datatofish.com/rows-with-nan-pandas-dataframe/</a></p>
+<p>import pandas import numpy as np df = pandas.DataFrame({‘i’ : [‘a’,
+‘b’, ‘c’, ‘d’, ‘e’], ‘y’ : [np.nan, ‘2’,‘2’, ‘4’, ‘1’], ‘z’ : [‘2’,‘2’,
+‘4’, ‘1’, np.nan], }) df[df.isna().any(axis=1)]</p></li>
+</ul>
+</div>
+<div id="number-and-proportion-of-na-values" class="section level4">
+<h4>Number and proportion of NA values</h4>
 <p>A function that prints the number and proportion of NA values:</p>
 <pre><code>def nrows_available(df, var):
     &quot;&quot;&quot;Number of rows where this variables is not NA&quot;&quot;&quot;
@@ -2780,7 +2941,7 @@ nrows_available(placette, &quot;tpespar2&quot;)</code></pre>
 </div>
 <div id="remove-empty-columns" class="section level4">
 <h4>Remove empty columns</h4>
-<p>Remove empty columns</p>
+<p>Remove empty columns where values are all NA</p>
 <pre><code>import pandas
 import numpy as np
 df = pandas.DataFrame({&#39;A&#39; : [&#39;bli&#39;, &#39;bla&#39;, &#39;bla&#39;, &#39;bla&#39;, &#39;bla&#39;],
@@ -2802,6 +2963,24 @@ df.rename(columns=lambda x: re.sub(r&quot; &quot;, &quot;_&quot;, str(x)).lower(
 df.rename(columns=lambda x: re.sub(r&quot;\W+&quot;, &quot;_&quot;, str(x)).lower(), inplace=True)</code></pre>
 <p>Remove parenthesis and dots in column names</p>
 <pre><code>df.rename(columns=lambda x: re.sub(r&quot;[()\.]&quot;, &quot;&quot;, x), inplace=True)</code></pre>
+<p>Replace the content of the columns, see below:</p>
+<pre><code>iris[&quot;species&quot;].replace(&quot;setosa&quot;,&quot;x&quot;)</code></pre>
+<div id="rename-and-select-at-the-same-time" class="section level4">
+<h4>Rename and select at the same time</h4>
+<p>You can use a selector data frame to select and rename at the same
+time.</p>
+<ul>
+<li><p><a
+href="https://stackoverflow.com/questions/57417520/selecting-and-renaming-columns-at-the-same-time"
+class="uri">https://stackoverflow.com/questions/57417520/selecting-and-renaming-columns-at-the-same-time</a></p>
+<p>df.rename(columns=selector_d)[selector_d.values()]</p></li>
+</ul>
+</div>
+<div id="rename-a-series" class="section level4">
+<h4>Rename a series</h4>
+<p>You can also rename a series with</p>
+<pre><code>iris[&quot;species&quot;].rename(&quot;bla&quot;)</code></pre>
+</div>
 </div>
 <div id="reorder-columns" class="section level3">
 <h3>Reorder columns</h3>
@@ -2816,7 +2995,10 @@ Answer</a> provide 6 different ways to reorder columns.</p>
 <h3>Replace the content of columns</h3>
 <p>See also string operations in pandas.</p>
 <p>Replace Comtrade product code by the FAOSTAT product codes</p>
-<pre><code># Create a dictionary from 2 columns of a data frame
+<pre><code>import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+iris[&quot;species&quot;].replace(&quot;setosa&quot;,&quot;x&quot;)
+# Create a dictionary from 2 columns of a data frame
 product_dict = product_mapping.set_index(&#39;comtrade_code&#39;).to_dict()[&#39;faostat_code&#39;]
 df_comtrade[&quot;product_code&quot;] = df_comtrade[&quot;product_code&quot;].replace(product_dict)</code></pre>
 </div>
@@ -2961,6 +3143,10 @@ flights = seaborn.load_dataset(&quot;flights&quot;)
 flights[&#39;pass_year_minus_one&#39;] = flights.groupby([&#39;month&#39;]).passengers.shift()
 flights.query(&quot;month==&#39;January&#39;&quot;)
 flights.query(&quot;month==&#39;December&#39;&quot;)</code></pre>
+<p>Compute a lag</p>
+<pre><code>iris[&#39;cumsum_lag&#39;] = iris.groupby(&#39;species&#39;)[&#39;cumsum&#39;].transform(&#39;shift&#39;, fill_value=0)
+iris[[&#39;cumsum&#39;, &#39;cumsum_lag&#39;]].plot()
+pyplot.show()</code></pre>
 </div>
 <div id="min-or-max-in-group" class="section level3">
 <h3>Min or max in group</h3>
@@ -3106,9 +3292,11 @@ href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.interpolate.
 interpolate</a></p>
 <pre><code>import pandas
 import numpy as np
-s = pandas.Series([0, 2, np.nan, 8])
+s = pandas.Series([0, 2, np.nan, 8, np.nan, np.nan])
 s.interpolate(method=&#39;polynomial&#39;, order=2)
 s.interpolate(method=&#39;linear&#39;)</code></pre>
+<p>Limit interpolation to the inner NAN values</p>
+<pre><code>s.interpolate(limit_area=&quot;inside&quot;)</code></pre>
 <p><a
 href="https://stackoverflow.com/questions/37057187/pandas-interpolate-within-a-groupby">Interpolate
 within a groupby</a></p>
@@ -3225,6 +3413,16 @@ gdx_file = &#39;C:\path_to_my_gdx\data.gdx&#39;
 dataframes = gdxpds.to_dataframes(gdx_file)
 for symbol_name, df in dataframes.items():
     print(&quot;Doing work with {}.&quot;.format(symbol_name))</code></pre>
+</div>
+<div id="markdown" class="section level3">
+<h3>Markdown</h3>
+<p>Print a data frame to markdown, without the scientific notation <a
+href="https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas"
+class="uri">https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas</a></p>
+<pre><code>import pandas
+df = pandas.DataFrame({&quot;x&quot; : [1,1e7], &quot;y&quot;:[1e-5,100]})
+print(df.to_markdown())
+print(df.to_markdown(floatfmt=&#39;.0f&#39;, index=False))</code></pre>
 </div>
 <div id="parquet" class="section level3">
 <h3>Parquet</h3>
@@ -3445,10 +3643,10 @@ of feather, hdf, msgpack, parquet and pickle</a></p></li>
 </div>
 </div>
 </div>
-<div id="reshape" class="section level2">
-<h2>Reshape</h2>
+<div id="pivot-reshape-and-transpose" class="section level2">
+<h2>Pivot, reshape and transpose</h2>
 <div id="from-wide-to-long" class="section level3">
-<h3>From wide to long</h3>
+<h3>from wide to long</h3>
 <p><a
 href="https://pandas.pydata.org/pandas-docs/stable/user_guide/reshaping.html#reshaping-by-melt">The
 Pandas user guide on reshaping</a> gives several example using
@@ -3456,6 +3654,10 @@ Pandas user guide on reshaping</a> gives several example using
 or <code>stack</code> (designed to work together with MultiIndex
 objects).</p>
 <p>Reshape using <code>melt</code></p>
+<pre><code>import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+iris.melt(id_vars=&quot;species&quot;, var_name=&quot;measurement&quot;)</code></pre>
+<p>Another example with two index columns</p>
 <pre><code>cheese = pandas.DataFrame(
       {
           &quot;first&quot;: [&quot;John&quot;, &quot;Mary&quot;],
@@ -3514,6 +3716,16 @@ df_wide
 # lev1
 # 1     0.0  1.0  2.0  NaN
 # 2     4.0  3.0  NaN  5.0</code></pre>
+</div>
+<div id="transpose-index-and-columns" class="section level3">
+<h3>Transpose index and columns</h3>
+<ul>
+<li><p><a
+href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.transpose.html"
+class="uri">https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.transpose.html</a></p>
+<p>df1 = pandas.DataFrame({‘col1’: [1, 2], ‘col2’: [3, 4]})
+df1.transpose()</p></li>
+</ul>
 </div>
 </div>
 <div id="replace" class="section level2">
@@ -3652,6 +3864,12 @@ sidewinder          7       8</code></pre>
 <pre><code>selector = df.index.isin([&#39;cobra&#39;,&#39;viper&#39;])
 df.loc[selector]
 df.loc[~selector]</code></pre>
+</div>
+<div id="index-conditions" class="section level4">
+<h4>index conditions</h4>
+<p>With an index corresponding to years, select all years below or equal
+to 2050</p>
+<pre><code>df.loc[df.index &lt;= 2050]</code></pre>
 </div>
 <div id="multiple-conditions" class="section level4">
 <h4>Multiple conditions</h4>
@@ -4493,6 +4711,20 @@ ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
 <div id="pandas-plots-are-matplotlib-axessubplot-objects"
 class="section level3">
 <h3>Pandas plots are matplotlib AxesSubplot objects</h3>
+<div id="arguments-of-the-df.plot-function" class="section level4">
+<h4>Arguments of the df.plot() function</h4>
+<p>Example values for the df.plot() function:</p>
+<ul>
+<li><p><code>figsize=(3,3)</code> change the figure size. <a
+href="https://stackoverflow.com/a/51174822/2641825">SO answer</a> links
+to the documentation that explains that</p>
+<pre><code>&gt; &quot;plt.figure(figsize=(10,5)) doesn&#39;t work because df.plot() creates its
+&gt; own matplotlib.axes.Axes object, the size of which cannot be changed
+&gt; after the object has been created. &quot;</code></pre></li>
+<li><p><code>title='bla bla'</code> add a plot title</p></li>
+<li><p><code>colormap</code> change colours</p></li>
+</ul>
+</div>
 <div id="show-pandas-plots-in-ipython" class="section level4">
 <h4>Show pandas plots in ipython</h4>
 <p>Create some data and change the xticks labels</p>
@@ -4502,17 +4734,38 @@ df = pandas.DataFrame({&#39;x&#39;:range(0,30), &#39;y&#39;:range(10,40)})
 df.set_index(&#39;x&#39;, inplace=True)
 plot = df.plot(title=&#39;Two ranges&#39;)
 type(plot)
-#help(plot)
+# help(plot)
 plot.set_xticks(range(0,31,10), minor=False)
 plt.show()</code></pre>
 </div>
-<div id="save-to-a-pdf-file" class="section level4">
-<h4>Save to a pdf file</h4>
+<div id="colour-palette-in-pandas-plots" class="section level4">
+<h4>Colour palette in pandas plots</h4>
+<p>Reusing the data frame from the previous section</p>
+<p>Using a list of colours with matplotlib <a
+href="https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.ListedColormap.html">ListedColormap</a>
+(see also example in that documentation page):</p>
+<pre><code>from matplotlib.colors import ListedColormap
+df[&quot;z&quot;] = 39 
+df[&quot;a&quot;] = 10
+df.plot(colormap=ListedColormap([&quot;red&quot;,&quot;green&quot;,&quot;orange&quot;]), figsize=(3,3))
+plt.show()
+plt.savefig(&quot;/tmp/plotpalette.png&quot;)</code></pre>
+<p>Using a seaborn palette with the <code>as_cmap=True</code>
+argument:</p>
+<pre><code>palette = seaborn.color_palette(&quot;rocket_r&quot;, as_cmap=True)
+df.plot(colormap=palette, figsize=(3,3))
+# plt.show()
+plt.savefig(&quot;/tmp/plotpalette2.png&quot;)</code></pre>
+</div>
+<div id="save-to-a-pdf-or-png-file" class="section level4">
+<h4>Save to a pdf or png file</h4>
 <p>With a plot object</p>
 <pre><code>plot.get_figure().savefig(&#39;/tmp/output.pdf&#39;, format=&#39;pdf&#39;)</code></pre>
 <p>With the pyplot object, only works immediately after building the
 plot. This also works with seaborn plots.</p>
-<pre><code>plt.savefig(&quot;/tmp/bli.pdf&quot;)</code></pre>
+<pre><code>plt.savefig(&quot;/tmp/bli.pdf&quot;)
+plt.savefig(&quot;/tmp/bli.png&quot;)</code></pre>
+<p>Change figure size</p>
 </div>
 <div id="pandas-plots-side-by-side" class="section level4">
 <h4>Pandas plots side by side</h4>
@@ -4987,6 +5240,16 @@ end the color/style change with ‘1b[0m’.”</p>
 </div>
 <div id="profiling-and-measuring-time" class="section level1">
 <h1>Profiling and measuring time</h1>
+<div id="profiling" class="section level2">
+<h2>Profiling</h2>
+<p>Run a scrip with the profiler, from within ipython</p>
+<pre><code>%run -i -p run_zz.py</code></pre>
+<p>Memory profiling <a
+href="https://stackoverflow.com/a/15682871/2641825"
+class="uri">https://stackoverflow.com/a/15682871/2641825</a></p>
+</div>
+<div id="time-it" class="section level2">
+<h2>Time it</h2>
 <p><a
 href="https://stackoverflow.com/questions/2866380/how-can-i-time-a-code-segment-for-testing-performance-with-pythons-timeit">How
 can I time a code segment for testing performance with Pythons
@@ -5009,6 +5272,7 @@ block</a>:</p>
 start_time = timeit.default_timer()
 # code you want to evaluate
 elapsed = timeit.default_timer() - start_time</code></pre>
+</div>
 </div>
 <div id="r-and-python" class="section level1">
 <h1>R and python</h1>
@@ -5273,7 +5537,7 @@ href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFram
 </tr>
 <tr class="even">
 <td>separate</td>
-<td>df[‘b’,‘c’] = df.a.str.split(‘,’,1,expand=True)</td>
+<td>df[[‘b’,‘c’]] = df.a.str.split(‘,’,1,expand=True)</td>
 <td><a href="https://stackoverflow.com/a/57823566">pandas separate</a>
 str section</td>
 </tr>
@@ -5624,6 +5888,14 @@ repositories to the latest version</a></p>
 <pre><code>pre-commit autoupdate</code></pre>
 <p>Install git hooks in your .git/ directory.</p>
 <pre><code>pre-commit install</code></pre>
+</div>
+<div id="temporarily-deactivate-a-pre-commit-hook"
+class="section level3">
+<h3>Temporarily deactivate a pre commit hook</h3>
+<p>To deactivate a pre commit hook temporarily <a
+href="https://stackoverflow.com/questions/7230820/skip-git-commit-hooks"
+class="uri">https://stackoverflow.com/questions/7230820/skip-git-commit-hooks</a></p>
+<pre><code>git commit --no-verify -m &quot;commit message&quot;</code></pre>
 </div>
 <div id="usage-in-continuous-integration" class="section level3">
 <h3>Usage in Continuous integration</h3>
