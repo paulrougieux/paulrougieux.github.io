@@ -176,11 +176,44 @@ as_factor to see the difference.
 message("Using the following letters: ", paste(letters, collapse=","), ".")
 ```
 
+- [stringsAsFactors: An unauthorized
+  biography](https://simplystatistics.org/posts/2015-07-24-stringsasfactors-an-unauthorized-biography/)
+
+    > "The argument ‘stringsAsFactors’ is an argument to the ‘data.frame()’
+    > function in R. It is a logical that indicates whether strings in a data frame
+    > should be treated as factor variables or as just plain strings. [...] By
+    > default, ‘stringsAsFactors’ is set to TRUE." "Most people I talk to today who
+    > use R are completely befuddled by the fact that ‘stringsAsFactors’ is set to
+    > TRUE by default. [...]" "In the old days, when R was primarily being used by
+    > statisticians and statistical types, this setting strings to be factors made
+    > total sense. In most tabular data, if there were a column of the table that
+    > was non-numeric, it almost certainly encoded a categorical variable. Think
+    > sex (male/female), country (U.S./other), region (east/west), etc. In R,
+    > categorical variables are represented by ‘factor’ vectors and so character
+    > columns got converted factor. [...] Why do we need factor variables to begin
+    > with? Because of modeling functions like ‘lm()’ and ‘glm()’. Modeling
+    > functions need to treat expand categorical variables into individual dummy
+    > variables, so that a categorical variable with 5 levels will be expanded into
+    > 4 different columns in your modeling matrix." [...] 
+
+    > "Around June of 2007, R introduced hashing of CHARSXP elements in the
+    > underlying C code thanks to Seth Falcon. What this meant was that
+    > effectively, character strings were hashed to an integer representation and
+    > stored in a global table in R. Anytime a given string was needed in R, it
+    > could be referenced by its underlying integer. This effectively put in place,
+    > globally, the factor encoding behavior of strings from before. Once this was
+    > implemented, there was little to be gained from an efficiency standpoint by
+    > encoding character variables as factor. Of course, you still needed to use
+    > ‘factors’ for the modeling functions."
+
+
 #### Levenshtein distance between words
 
-Cf. https://en.wikipedia.org/wiki/Levenshtein_distance
+Cf. https://en.wikipedia.org/wiki/Levenshtein_distance and `help(adist)`.
 
-    adist("kitten", "sitting")
+```{r}
+adist("kitten", "sitting")
+```
 
 
 #### Capitalise first letter
