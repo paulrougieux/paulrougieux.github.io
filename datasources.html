@@ -387,6 +387,48 @@ flows</a></p></li>
 <li><p>United Nations Trade Statistics <a
 href="https://comtrade.un.org/data">Comtrade</a></p></li>
 </ul>
+<div id="eurostat" class="section level1">
+<h1>Eurostat</h1>
+<p>Load population data from the Eurostat bulk download API</p>
+<p>A table of content is available on the <a
+href="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing">BulkDownloadListing</a>.</p>
+<pre><code>
+import pandas
+def read_eurostat_bulk(bulk_file_name):
+    &quot;&quot;&quot;Download a file from the Eurostat bulk facility and read it into python
+    &quot;&quot;&quot;
+    url_base = &quot;https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?file=data/&quot;
+    url = url_base + bulk_file_name
+    df = pandas.read_csv(url, delimiter=&#39;\t&#39;, compression=&#39;gzip&#39;, header=0, encoding=&#39;utf-8&#39;, skiprows=[1, 2])
+    col_to_fix = &quot;indic_de,geo\\time&quot;
+    if col_to_fix in df.columns:
+        print(f&quot;Separating &#39;{col_to_fix}&#39; in two columns placed first.&quot;)
+        df[[&quot;indic_de&quot;,&quot;geo&quot;]] = df[col_to_fix].str.split(&quot;,&quot;,1,expand=True)
+        cols = df.columns.to_list()
+        df = df[cols[-2:] + cols[1:-2]]
+    return df
+
+# For example load population data by country as seen in 
+# https://ec.europa.eu/eurostat/databrowser/view/tps00001/default/table?lang=en
+pop = read_eurostat_bulk(&quot;tps00001.tsv.gz&quot;)
+</code></pre>
+<p>Notes:</p>
+<ul>
+<li><p>There is a mix of month and country code in the first column.
+Those fields are separated by a comma while the rest of the fields were
+separated by a tab in the input <code>.tsv</code> file. These can be
+separated in two columns with str.split() as illustrated in the function
+above.</p></li>
+<li><p>There are additional letters besides some values, these need to
+be fixed.</p></li>
+</ul>
+<p>The python package Eurostat can also be used to load Eurostat data.
+It loads from a different source based on SDMX files. The first column
+is separated in two and the accompanying letters besides certain lines
+have disappeared.</p>
+<pre><code>import eurostat
+pop2 = eurostat.get_data_df(&quot;tps00001&quot;)</code></pre>
+</div>
 
 
 
