@@ -487,6 +487,8 @@ Install
 
 ### Teams
 
+See also the Teams section in the [communication page](communication.html).
+
 [Donwload teams from
 microsoft](https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/download-app#desktopAppDownloadregion)
 
