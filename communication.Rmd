@@ -173,9 +173,20 @@ old hardware. In fact companies that rely on Microsoft OS have a different world
 since the heavy requirements of Windows, leads to planed obsolescence.
 
 
+### Technical issues
+
+See also the Teams section in the [debian page](debian.html).
+
+Issue when loging in teams in Firefox. Adding the following to your browser
+security settings
+- Adding https://learn.microsoft.com/en-us/microsoftteams/troubleshoot/teams-sign-in/sign-in-loop#resolution
+
+
 ## Telegram
 
 Another chat application. 
+
+See the security section at https://en.wikipedia.org/wiki/Telegram_(software)#Security
 
 ## Whatsapp
 
