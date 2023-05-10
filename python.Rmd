@@ -283,6 +283,7 @@ directly with `pip install pandas`.
 Register an account on pypi (it's a different server than test.pypi). Create a token under account settings. Then upload to pypi itself
 
     cd repository
+    python3 -m build
     twine upload dist/*
 
 To use the API token:

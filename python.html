@@ -689,6 +689,7 @@ them from the pypi directly with <code>pip install pandas</code>.</p>
 <p>Register an account on pypi (it’s a different server than test.pypi).
 Create a token under account settings. Then upload to pypi itself</p>
 <pre><code>cd repository
+python3 -m build
 twine upload dist/*</code></pre>
 <p>To use the API token:</p>
 <pre><code>Set your username to __token__
