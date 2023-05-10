@@ -2447,14 +2447,18 @@ window with a REPL in the other pane:</p>
 which send the current line to Slime</p>
 <pre><code>autocmd FileType python nmap &lt;LocalLeader&gt;l &lt;Plug&gt;SlimeLineSend
 autocmd FileType python nmap &lt;LocalLeader&gt;p &lt;Plug&gt;SlimeParagraphSend</code></pre>
+<div id="indentationerror-unexpected-indent" class="section level3">
+<h3>IndentationError: unexpected indent</h3>
 <p>Excessive indentation issues can arrise when slime sends indented
 lines to the ipython console. For example after a function definition,
 such as <code>def function_name():</code> ipython places the cursor at
 the indented place (4 spaces) and slime sends an additional 4 (or more
-spaces) to indent the line further. This shouldn’t be done when slime is
-sending intput. Ipython’s auto indentation behaviour can be turned off
-by sending the following command to ipython:</p>
+spaces) to indent the line further. This creates an “IndentationError:
+unexpected indent”. This shouldn’t be done when slime is sending intput.
+Ipython’s auto indentation behaviour can be turned off by sending the
+following command to ipython:</p>
 <pre><code>%autoindent off</code></pre>
+</div>
 </div>
 <div id="syntax-highlight" class="section level2">
 <h2>Syntax highlight</h2>

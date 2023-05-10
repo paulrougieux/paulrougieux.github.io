@@ -2364,14 +2364,19 @@ I created a Shortcut `;l` to emulate NvimR's shortcut which send the current lin
     autocmd FileType python nmap <LocalLeader>l <Plug>SlimeLineSend
     autocmd FileType python nmap <LocalLeader>p <Plug>SlimeParagraphSend
 
+
+###  IndentationError: unexpected indent
+
 Excessive indentation issues can arrise when slime sends indented lines to the
 ipython console. For example  after a function definition, such as `def
 function_name():` ipython places the cursor at the indented place (4 spaces)
 and slime sends an additional 4 (or more spaces) to indent the line further.
-This shouldn't be done when slime is sending intput. Ipython's auto indentation
-behaviour can be turned off by sending the following command to ipython: 
+This creates an "IndentationError: unexpected indent". This shouldn't be done
+when slime is sending intput. Ipython's auto indentation behaviour can be
+turned off by sending the following command to ipython: 
 
     %autoindent off
+
 
 
 ## Syntax highlight
