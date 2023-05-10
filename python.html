@@ -475,6 +475,22 @@ package hierarchy.”</p>
 <p><a
 href="https://stackoverflow.com/questions/1471994/what-is-setup-py">What
 is setup.py?</a></p>
+<div id="check-the-version-number-of-a-package" class="section level3">
+<h3>Check the version number of a package</h3>
+<p>In Python check the version of a package with the
+<code>__version__</code> attribute, however it’s not always
+available.</p>
+<pre><code>&gt;&gt;&gt; import pandas
+&gt;&gt;&gt; print(pandas.__version__)</code></pre>
+<p>You can also use <code>importlib</code></p>
+<pre><code>&gt;&gt;&gt; from importlib.metadata import version
+&gt;&gt;&gt; version(&#39;pandas&#39;)</code></pre>
+<p><a
+href="https://stackoverflow.com/questions/20180543/how-do-i-check-the-versions-of-python-modules">SO
+answer</a> suggestion a command line way to display the same
+information</p>
+<pre><code>pip freeze | grep pandas</code></pre>
+</div>
 <div id="install-an-old-version" class="section level3">
 <h3>Install an old version</h3>
 <p>For example to install pandas 0.24.2</p>
@@ -639,7 +655,7 @@ fixes whilst still maintaining consistency of software environment.</p>
 <p>To upload a package to pypi, you need a pypi account. The <a
 href="https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives">instructions
 on uploading distribution archives explain how to upload the package to
-pypi</a>:</p>
+test.pypi</a>:</p>
 <pre><code>python3 -m twine upload --repository testpypi dist/*</code></pre>
 <p>I updated the following package before running this</p>
 <pre><code>pip install --upgrade build
@@ -661,9 +677,22 @@ source /tmp/biotrade_env/bin/activate
 PYTHONPATH=&quot;&quot;
 python3</code></pre>
 <p>In python check that the package is not there</p>
-<pre><code>import biotrade
-import pandas</code></pre>
+<pre><code>&gt;&gt;&gt; import biotrade
+&gt;&gt;&gt; import pandas</code></pre>
 <p>Back to the shell test the installation from test.pypi</p>
+<pre><code>pip install -i https://test.pypi.org/simple/ biotrade
+# ERROR: Could not find a version that satisfies the requirement pandas (from biotrade)
+# ERROR: No matching distribution found for pandas</code></pre>
+<p>Installing biotrade’s dependencies directly generates an error
+because pandas is not available in the test repository. You can install
+them from the pypi directly with <code>pip install pandas</code>.</p>
+<p>Register an account on pypi (it’s a different server than test.pypi).
+Create a token under account settings. Then upload to pypi itself</p>
+<pre><code>cd repository
+twine upload dist/*</code></pre>
+<p>To use the API token:</p>
+<pre><code>Set your username to __token__
+Set your password to the token value, including the pypi- prefix</code></pre>
 </div>
 <div id="publish-to-conda-forge" class="section level3">
 <h3>Publish to Conda Forge</h3>
@@ -1522,6 +1551,42 @@ inserts it for you behind the scenes.</p>
 </div>
 </div>
 </div>
+<div id="git" class="section level1">
+<h1>Git</h1>
+<p>Get the active branch name in a git repository with <a
+href="https://pypi.org/project/GitPython/">GitPython</a>:</p>
+<pre><code>import git
+hat = git.Repo(path=&quot;~/repos/eu_cbm/eu_cbm_hat&quot;)
+hat.active_branch.name</code></pre>
+<p>Find the location of git repositories for libcbm_py and eu_cbm_hat,
+then create git repository objects with them:</p>
+<pre><code>import sys
+import git
+def find_sys_path(path_contains):
+    &quot;&quot;&quot;Find path that contains the given characters.
+    Raise an error if there&#39;s not exactly one matching path&quot;&quot;&quot;
+    matching_paths = [path for path in sys.path if path_contains in path]
+    if len(matching_paths) != 1:
+        msg = f&quot;Expected one path containing {path_contains}, &quot;
+        msg += f&quot;found {len(matching_paths)}\n&quot;
+        msg += f&quot;{matching_paths}&quot;
+        raise ValueError(msg)
+    return matching_paths[0]
+repo_eu_cbm_hat = git.Repo(find_sys_path(&quot;eu_cbm_hat&quot;))</code></pre>
+<p>Checkout a branch if the repository is clean (no changes)</p>
+<pre><code>def checkout_branch(git_repo:git.repo.base.Repo, branch_name:str):
+    &quot;&quot;&quot;Check if a repository has any changes and checkout the given branch
+    &quot;&quot;&quot;
+    if git_repo.is_dirty(untracked_files=True):
+        msg = f&quot;There are changes in {git_repo}.\n&quot;
+        msg += f&quot;Not checking out the &#39;{branch_name}&#39; branch.&quot;
+        raise RuntimeError(msg)
+    git_repo.git.checkout(branch_name)
+    print(f&quot;Checked out branch: {branch_name} of {git_repo}.&quot;)
+
+#Usage
+checkout_branch(repo_libcbm_py, &quot;2.x&quot;)</code></pre>
+</div>
 <div id="http" class="section level1">
 <h1>HTTP</h1>
 <div id="file-download" class="section level2">
@@ -1948,13 +2013,35 @@ Exceptions</a>.</p>
         break
     except ValueError:
         print(&quot;Oops!  That was no valid number.  Try again...&quot;)</code></pre>
-<p><a href="https://stackoverflow.com/a/4690655/2641825">Exception
-message capturing</a></p>
+<p>Re-raise the exception using <code>from</code> to track the original
+exception</p>
+<pre><code>for i in [1,0]:
+    try:
+        print(1/i)
+    except Exception as e:
+        msg = f&quot;failed to compute: 1/{i} {str(e)}&quot;
+        raise ValueError(msg) from e</code></pre>
+<p>The error message will contain:</p>
+<pre><code>&quot;The above exception was the direct cause of the following exception&quot;</code></pre>
+<p>Same example Without “from”</p>
+<pre><code>for i in [1,0]:
+    try:
+        print(1/i)
+    except Exception as e:
+        msg = f&quot;failed to compute: {str(e)}&quot;
+        raise ValueError(msg)</code></pre>
+<p>The error message will contain:</p>
+<pre><code>&quot;During handling of the above exception, another exception occurred&quot;</code></pre>
+<p>Simple <a
+href="https://stackoverflow.com/a/4690655/2641825">Exception message
+capturing</a> with a print statement</p>
 <pre><code>for i in [1,0]:
     try:
         print(1/i)
     except Exception as e:
         print(&quot;Failed to compute:&quot;, str(e))</code></pre>
+<div id="data-exceptions" class="section level3">
+<h3>Data exceptions</h3>
 <p>Handle empty data in pandas</p>
 <pre><code>import pandas
 try:
@@ -1963,6 +2050,19 @@ try:
 except pandas.errors.EmptyDataError:
     print(f&quot;no data in file {s}&quot;)
     columns = []</code></pre>
+<p>Capture the first few lines of an exception and re-raising it using
+“from”:</p>
+<pre><code>try:
+    assert_allclose(
+        ds[var].loc[COUNTRIES, t],
+        ds_ref[var].loc[COUNTRIES, t],
+        rtol=rtol,
+    )
+except AssertionError as e:
+    first_line_of_error = &quot;, &quot;.join(str(e).split(&#39;\n&#39;)[:3])
+    msg = f&quot;{ds.product}, {var}: {first_line_of_error}&quot;
+    raise AssertionError(msg) from e</code></pre>
+</div>
 </div>
 <div id="raising-exceptions" class="section level2">
 <h2>Raising Exceptions</h2>
@@ -1978,8 +2078,8 @@ msg = &quot;Value %s and value %s have problems.&quot;
 raise ValueError(msg % (1, 2))</code></pre>
 <div id="default-exception" class="section level3">
 <h3>Default Exception</h3>
-<p><a href="https://docs.python.org/3/library/exceptions.html"
-class="uri">https://docs.python.org/3/library/exceptions.html</a></p>
+<p><a href="https://docs.python.org/3/library/exceptions.html">Built-in
+Exceptions</a></p>
 <ul>
 <li><p><code>KeyError</code> is returned when a value is missing. For
 example if an environment variable is undefined.</p>
@@ -4102,6 +4202,18 @@ Out: False</code></pre>
 <pre><code>In : &#39;a&#39; in s.unique()
 Out: True</code></pre>
 </div>
+<div id="check-if-df-is-empty" class="section level3">
+<h3>Check if df is empty</h3>
+<p><a
+href="https://stackoverflow.com/questions/19828822/how-to-check-whether-a-pandas-dataframe-is-empty">SO
+question</a> recomends using the boolean value <code>df.empty</code> to
+test whether a data frame is empty.</p>
+<pre><code>import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+selector = iris[&quot;species&quot;] == &quot;non_existant&quot;
+df = iris[selector]
+df.empty</code></pre>
+</div>
 </div>
 <div id="sort-or-arrange-values" class="section level2">
 <h2>Sort or arrange values</h2>
@@ -5147,6 +5259,59 @@ df = pandas.DataFrame({&#39;value&#39;:np.random.random(100),
 p = seaborn.lineplot(x=&quot;year&quot;, y=&quot;value&quot;, data=df)
 p.set(ylabel = &quot;Random variation&quot;, title = &quot;Title here&quot;)
 plt.show()</code></pre>
+<div id="line-styles" class="section level4">
+<h4>Line styles</h4>
+<p>Example generated by <a
+href="https://arxiv.org/abs/2303.08774">GPT4</a> with a series of prompt
+related to a time series plot I was refining.</p>
+<pre><code>import numpy as np
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.lines import Line2D
+
+# Set a random seed for reproducibility
+np.random.seed(42)
+
+# Create a synthetic dataset with a random walk
+years = np.arange(2000, 2031)
+categories = [&#39;x&#39;, &#39;y&#39;]
+data = []
+
+for category in categories:
+    random_walk = np.random.randn(len(years)).cumsum()
+    data.extend(zip(years, [category] * len(years), random_walk))
+
+df = pd.DataFrame(data, columns=[&#39;year&#39;, &#39;category&#39;, &#39;value&#39;])
+
+# Create a custom linestyle and color dictionary for each category (x, y)
+style_dict = {&#39;x&#39;: (&#39;-&#39;, &#39;black&#39;), &#39;y&#39;: (&#39;--&#39;, &#39;black&#39;)}
+
+# Plot the lineplot
+ax = sns.lineplot(
+    x=&quot;year&quot;,
+    y=&quot;value&quot;,
+    hue=&quot;category&quot;,
+    style=&quot;category&quot;,
+    data=df
+)
+
+# Apply custom linestyle and color for each category (x, y)
+for line, category in zip(ax.lines, df[&quot;category&quot;].unique()):
+    linestyle, color = style_dict[category]
+    line.set_linestyle(linestyle)
+    line.set_color(color)
+
+# Set the ylabel and title
+ax.set(ylabel=&quot;Value&quot;, title=&quot;Random Walk by Category&quot;)
+
+# Modify the legend colors to black
+legend = ax.legend()
+for handle in legend.legendHandles:
+    handle.set_color(&#39;black&#39;)
+
+plt.show()</code></pre>
+</div>
 </div>
 <div id="pair-plot" class="section level3">
 <h3>Pair plot</h3>
@@ -5753,6 +5918,13 @@ re.search(&quot;(value)_(\d+)&quot;, &quot;value_2022&quot;).group(2)</code></pr
 <pre><code>l = [&quot;value123&quot;, &quot;a&quot;, &quot;b&quot;]
 [x for x in l if not re.search(&quot;value&quot;, x)]</code></pre>
 </div>
+<div id="join" class="section level2">
+<h2>Join</h2>
+<p>Join strings from a list to print them nicely</p>
+<pre><code>l = [&quot;cons&quot;, &quot;imp&quot;, &quot;exp&quot;, &quot;prod&quot;]
+print(l)
+print(&quot;, &quot;.join(l))</code></pre>
+</div>
 <div id="split" class="section level2">
 <h2>Split</h2>
 <p><a href="https://stackoverflow.com/a/172454/2641825">Split lines in a
@@ -5797,8 +5969,34 @@ scaling with scikit learn</a></p>
 </ul>
 </div>
 </div>
-<div id="style-guide-and-linter" class="section level1">
-<h1>Style guide and linter</h1>
+<div id="style-and-linter" class="section level1">
+<h1>Style and linter</h1>
+<div id="aa-code-style" class="section level2">
+<h2>AA Code style</h2>
+<ul>
+<li><p><a href="https://docs.python.org/3/glossary.html#term-EAFP">EAFP
+Easier to ask for forgiveness than permission</a></p>
+<blockquote>
+<p>“This common Python coding style assumes the existence of valid keys
+or attributes and catches exceptions if the assumption proves false.
+This clean and fast style is characterized by the presence of many try
+and except statements. The technique contrasts with the LBYL style
+common to many other languages such as C.</p>
+</blockquote></li>
+<li><p><a href="https://docs.python.org/3/glossary.html#term-LBYL">LBYL
+Look before you leap</a></p>
+<blockquote>
+<p>“This coding style explicitly tests for pre-conditions before making
+calls or lookups. This style contrasts with the EAFP approach and is
+characterized by the presence of many if statements. In a multi-threaded
+environment, the LBYL approach can risk introducing a race condition
+between “the looking” and “the leaping”. For example, the code, if key
+in mapping: return mapping[key] can fail if another thread removes key
+from mapping after the test, but before the lookup. This issue can be
+solved with locks or by using the EAFP approach.</p>
+</blockquote></li>
+</ul>
+</div>
 <div id="black" class="section level2">
 <h2>Black</h2>
 <p><a href="https://github.com/psf/black">Black</a> is “the

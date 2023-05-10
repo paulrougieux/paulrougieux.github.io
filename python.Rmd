@@ -31,6 +31,25 @@ package](https://stackoverflow.com/questions/7948494/whats-the-difference-betwee
 setup.py?](https://stackoverflow.com/questions/1471994/what-is-setup-py)
 
 
+### Check the version number of a package
+
+In Python check the version of a package with the `__version__` attribute,
+however it's not always available.
+
+    >>> import pandas
+    >>> print(pandas.__version__)
+
+You can also use `importlib`
+
+    >>> from importlib.metadata import version
+    >>> version('pandas')
+
+[SO
+answer](https://stackoverflow.com/questions/20180543/how-do-i-check-the-versions-of-python-modules) suggestion a command line way to display the same information
+
+    pip freeze | grep pandas
+
+
 ### Install an old version
 
 For example to install pandas 0.24.2
@@ -217,7 +236,7 @@ Note the use of the wildcard * when defining the patch version number. Defining 
 ### Publish to pypi
 
 To upload a package to pypi, you need a pypi account. The [instructions on
-uploading distribution archives explain how to upload the package to pypi](
+uploading distribution archives explain how to upload the package to test.pypi](
 https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives):
     
     python3 -m twine upload --repository testpypi dist/*
@@ -248,10 +267,28 @@ remove the python path otherwise my local version is seen
 
 In python check that the package is not there
 
-    import biotrade
-    import pandas
+    >>> import biotrade
+    >>> import pandas
 
 Back to the shell test the installation from test.pypi
+
+    pip install -i https://test.pypi.org/simple/ biotrade
+    # ERROR: Could not find a version that satisfies the requirement pandas (from biotrade)
+    # ERROR: No matching distribution found for pandas
+
+Installing biotrade's dependencies directly generates an error because pandas
+is not available in the test repository. You can install them from the pypi
+directly with `pip install pandas`.
+
+Register an account on pypi (it's a different server than test.pypi). Create a token under account settings. Then upload to pypi itself
+
+    cd repository
+    twine upload dist/*
+
+To use the API token:
+
+    Set your username to __token__
+    Set your password to the token value, including the pypi- prefix
 
 
 
@@ -1163,6 +1200,48 @@ object?](https://stackoverflow.com/questions/4015417/why-do-python-classes-inher
 > you behind the scenes. 
 
 
+# Git
+
+Get the active branch name in a git repository with
+[GitPython](https://pypi.org/project/GitPython/):
+
+    import git
+    hat = git.Repo(path="~/repos/eu_cbm/eu_cbm_hat")
+    hat.active_branch.name
+
+Find the location of git repositories for libcbm_py and eu_cbm_hat, then create
+git repository objects with them:
+
+    import sys
+    import git
+    def find_sys_path(path_contains):
+        """Find path that contains the given characters.
+        Raise an error if there's not exactly one matching path"""
+        matching_paths = [path for path in sys.path if path_contains in path]
+        if len(matching_paths) != 1:
+            msg = f"Expected one path containing {path_contains}, "
+            msg += f"found {len(matching_paths)}\n"
+            msg += f"{matching_paths}"
+            raise ValueError(msg)
+        return matching_paths[0]
+    repo_eu_cbm_hat = git.Repo(find_sys_path("eu_cbm_hat"))
+
+Checkout a branch if the repository is clean (no changes)
+
+    def checkout_branch(git_repo:git.repo.base.Repo, branch_name:str):
+        """Check if a repository has any changes and checkout the given branch
+        """
+        if git_repo.is_dirty(untracked_files=True):
+            msg = f"There are changes in {git_repo}.\n"
+            msg += f"Not checking out the '{branch_name}' branch."
+            raise RuntimeError(msg)
+        git_repo.git.checkout(branch_name)
+        print(f"Checked out branch: {branch_name} of {git_repo}.")
+
+    #Usage
+    checkout_branch(repo_libcbm_py, "2.x")
+
+
 # HTTP
 
 ## File download
@@ -1636,13 +1715,43 @@ Exceptions](https://docs.python.org/3/tutorial/errors.html#handling-exceptions).
         except ValueError:
             print("Oops!  That was no valid number.  Try again...")
 
-[Exception message capturing](https://stackoverflow.com/a/4690655/2641825)
+Re-raise the exception using `from` to track the original exception
+
+    for i in [1,0]:
+        try:
+            print(1/i)
+        except Exception as e:
+            msg = f"failed to compute: 1/{i} {str(e)}"
+            raise ValueError(msg) from e
+
+The error message will contain:
+
+    "The above exception was the direct cause of the following exception"
+
+Same example Without "from" 
+
+    for i in [1,0]:
+        try:
+            print(1/i)
+        except Exception as e:
+            msg = f"failed to compute: {str(e)}"
+            raise ValueError(msg)
+
+The error message will contain:
+
+    "During handling of the above exception, another exception occurred"
+
+Simple [Exception message capturing](https://stackoverflow.com/a/4690655/2641825)
+with a print statement
 
     for i in [1,0]:
         try:
             print(1/i)
         except Exception as e:
             print("Failed to compute:", str(e))
+
+
+### Data exceptions
 
 Handle empty data in pandas
 
@@ -1654,6 +1763,18 @@ Handle empty data in pandas
         print(f"no data in file {s}")
         columns = []
 
+Capture the first few lines of an exception and re-raising it using "from":
+
+    try:
+        assert_allclose(
+            ds[var].loc[COUNTRIES, t],
+            ds_ref[var].loc[COUNTRIES, t],
+            rtol=rtol,
+        )
+    except AssertionError as e:
+        first_line_of_error = ", ".join(str(e).split('\n')[:3])
+        msg = f"{ds.product}, {var}: {first_line_of_error}"
+        raise AssertionError(msg) from e
 
 
 ## Raising Exceptions
@@ -1674,7 +1795,7 @@ Display variables in the error message:
 
 ### Default Exception
 
-https://docs.python.org/3/library/exceptions.html
+[Built-in Exceptions](https://docs.python.org/3/library/exceptions.html)
 
 - `KeyError` is returned when a value is missing. For example if an environment
   variable is undefined.
@@ -4016,6 +4137,18 @@ varlue](https://stackoverflow.com/questions/21319929/how-to-determine-whether-a-
     Out: True
 
 
+### Check if df is empty
+
+[SO
+question](https://stackoverflow.com/questions/19828822/how-to-check-whether-a-pandas-dataframe-is-empty) recomends using the boolean value `df.empty` to test whether a data frame is empty.
+
+    import seaborn
+    iris = seaborn.load_dataset("iris")
+    selector = iris["species"] == "non_existant"
+    df = iris[selector]
+    df.empty
+
+
 ## Sort or arrange values
 
 Sort iris by descending order of species and ascending order of petal width
@@ -5195,6 +5328,61 @@ plt.show()
 ```
     
 
+#### Line styles
+
+Example generated by [GPT4](https://arxiv.org/abs/2303.08774)
+with a series of prompt related to a time series plot I was refining.
+
+    import numpy as np
+    import pandas as pd
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    from matplotlib.lines import Line2D
+
+    # Set a random seed for reproducibility
+    np.random.seed(42)
+
+    # Create a synthetic dataset with a random walk
+    years = np.arange(2000, 2031)
+    categories = ['x', 'y']
+    data = []
+
+    for category in categories:
+        random_walk = np.random.randn(len(years)).cumsum()
+        data.extend(zip(years, [category] * len(years), random_walk))
+
+    df = pd.DataFrame(data, columns=['year', 'category', 'value'])
+
+    # Create a custom linestyle and color dictionary for each category (x, y)
+    style_dict = {'x': ('-', 'black'), 'y': ('--', 'black')}
+
+    # Plot the lineplot
+    ax = sns.lineplot(
+        x="year",
+        y="value",
+        hue="category",
+        style="category",
+        data=df
+    )
+
+    # Apply custom linestyle and color for each category (x, y)
+    for line, category in zip(ax.lines, df["category"].unique()):
+        linestyle, color = style_dict[category]
+        line.set_linestyle(linestyle)
+        line.set_color(color)
+
+    # Set the ylabel and title
+    ax.set(ylabel="Value", title="Random Walk by Category")
+
+    # Modify the legend colors to black
+    legend = ax.legend()
+    for handle in legend.legendHandles:
+        handle.set_color('black')
+
+    plt.show()
+
+
+
 ### Pair plot
 
 [seaborn.pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html#)
@@ -5668,6 +5856,15 @@ Search charcters that are not value
     [x for x in l if not re.search("value", x)]
 
 
+## Join
+
+Join strings from a list to print them nicely
+
+    l = ["cons", "imp", "exp", "prod"]
+    print(l)
+    print(", ".join(l))
+
+
 ## Split
 
 [Split lines in a string](https://stackoverflow.com/a/172454/2641825)
@@ -5709,7 +5906,30 @@ Finding](https://docs.scipy.org/doc/scipy/reference/optimize.html)
  * Normalizer
 
 
-# Style guide and linter
+# Style and linter
+
+## AA Code style
+
+- [EAFP Easier to ask for forgiveness than
+  permission](https://docs.python.org/3/glossary.html#term-EAFP)
+
+    > "This common Python coding style assumes the existence of valid keys or
+    > attributes and catches exceptions if the assumption proves false. This
+    > clean and fast style is characterized by the presence of many try and
+    > except statements. The technique contrasts with the LBYL style common to
+    > many other languages such as C.
+
+- [LBYL Look before you leap](https://docs.python.org/3/glossary.html#term-LBYL)
+
+    > "This coding style explicitly tests for pre-conditions before making
+    > calls or lookups. This style contrasts with the EAFP approach and is
+    > characterized by the presence of many if statements. In a multi-threaded
+    > environment, the LBYL approach can risk introducing a race condition
+    > between “the looking” and “the leaping”. For example, the code, if key in
+    > mapping: return mapping[key] can fail if another thread removes key from
+    > mapping after the test, but before the lookup. This issue can be solved
+    > with locks or by using the EAFP approach.
+
 
 ## Black
 
