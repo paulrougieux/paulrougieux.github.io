@@ -702,6 +702,16 @@ Set your password to the token value, including the pypi- prefix</code></pre>
 href="https://levelup.gitconnected.com/publishing-your-python-package-on-conda-and-conda-forge-309a405740cf">publish
 your package on conda forge</a></li>
 </ul>
+<p>On <a href="https://conda-forge.org/docs/maintainer/adding_pkgs.html"
+class="uri">https://conda-forge.org/docs/maintainer/adding_pkgs.html</a>
+conda recommends <a href="https://github.com/conda-incubator/grayskull"
+class="uri">https://github.com/conda-incubator/grayskull</a> to create
+the recipe</p>
+<blockquote>
+<p>“Presently Grayskull can generate recipes for Python packages
+available on PyPI and also those not published on PyPI but available as
+GitHub repositories.”</p>
+</blockquote>
 </div>
 <div id="authorship" class="section level3">
 <h3>Authorship</h3>
@@ -808,6 +818,28 @@ import packagename
 packagename.__version__</code></pre>
 </div>
 </div>
+<div id="documentation" class="section level3">
+<h3>Documentation</h3>
+<div id="pdoc" class="section level4">
+<h4>Pdoc</h4>
+<p>Generate the documentation of a package with <a
+href="https://pdoc.dev/docs/pdoc.html">pdoc</a>:</p>
+<pre><code>pdoc -o public ./biotrade</code></pre>
+<p>This can be added to a <code>.gitlab-ci.yml</code> file in order to
+generate the documentation on a Continuous Integration system:</p>
+<pre><code>pages:
+  stage: document
+  script:
+  # GitLab Pages will only publish files in the public directory
+  - pdoc -o public ./biotrade
+  artifacts:
+    paths:
+    - public
+  only:
+  - main
+  interruptible: true</code></pre>
+</div>
+</div>
 </div>
 <div id="location-or-path" class="section level2">
 <h2>Location or path</h2>
@@ -843,6 +875,9 @@ available by default in Python 3.3+</p>
 <p>source</p>
 <DIR>
 <p>/bin/activate</p></li>
+<li><p>for example</p>
+<p>mkdir /tmp/testenv cd /tmp/testenv python3 -m venv /tmp/testenv
+source bin/activate</p></li>
 </ul></li>
 <li><p><a href="https://pipenv.pypa.io/en/latest/">Pipenv</a> makes pip
 and virtual environments work together.</p>
@@ -1246,6 +1281,17 @@ ipython interpreter that runs inside a tmux pane. For more information,
 see my page on <a href="vim.html">vim.html</a>.</p>
 </div>
 </div>
+<div id="input-output" class="section level1">
+<h1>Input Output</h1>
+<div id="open-a-text-file" class="section level2">
+<h2>Open a text file</h2>
+<p>Open a text file and print lines containing “error”</p>
+<pre><code>with open(&#39;filename.txt&#39;, &#39;r&#39;) as file:
+    for line in file:
+        if &quot;error&quot; in line.lower():
+            print(line)</code></pre>
+</div>
+</div>
 <div id="neural-networks" class="section level1">
 <h1>Neural Networks</h1>
 <div id="pytorch" class="section level2">
@@ -1360,8 +1406,8 @@ flat_list
 [1, 2, 4, 0, 9]</code></pre>
 </div>
 </div>
-<div id="set" class="section level3">
-<h3>Set</h3>
+<div id="set-operations" class="section level3">
+<h3>Set operations</h3>
 <p>Instances of <a
 href="https://docs.python.org/3/library/stdtypes.html#set">set</a>
 provide the following operations:</p>
@@ -2436,6 +2482,44 @@ differential equations and constraints.”</p>
 </blockquote></li>
 </ul>
 </div>
+<div id="openai-chat-completion" class="section level2">
+<h2>OpenAI chat completion</h2>
+<ul>
+<li><p><a href="https://pypi.org/project/openai/"
+class="uri">https://pypi.org/project/openai/</a></p>
+<blockquote>
+<p>“The library needs to be configured with your account’s secret key
+which is available on the <a
+href="https://platform.openai.com/account/api-keys">website</a>. […] Set
+it as the OPENAI_API_KEY environment variable”</p>
+</blockquote></li>
+<li><p><a href="https://help.openai.com/en/"
+class="uri">https://help.openai.com/en/</a></p></li>
+</ul>
+<p>Ask Chat GPT to complete a message</p>
+<pre><code>import openai
+response = openai.ChatCompletion.create(
+    model=&quot;gpt-3.5-turbo&quot;,
+    messages=[{&quot;role&quot;: &quot;user&quot;, &quot;content&quot;: &quot;What are the trade-offs around deadwood in forests?&quot;}]
+)
+print(response)</code></pre>
+<p>Print available models</p>
+<pre><code>models = openai.Model.list()
+print([m[&quot;id&quot;] for m in models.data])</code></pre>
+<ul>
+<li><p>Note ChatGPT plus and the API have separate pricing: <a
+href="https://help.openai.com/en/articles/7039783-how-can-i-access-the-chatgpt-api"
+class="uri">https://help.openai.com/en/articles/7039783-how-can-i-access-the-chatgpt-api</a></p>
+<blockquote>
+<p>“Please note that the ChatGPT API is not included in the ChatGPT Plus
+subscription and are billed separately. The API has its own pricing,
+which can be found at <a href="https://openai.com/pricing"
+class="uri">https://openai.com/pricing</a>. The ChatGPT Plus
+subscription covers usage on chat.openai.com only and costs
+$20/month.”</p>
+</blockquote></li>
+</ul>
+</div>
 <div id="econometrics" class="section level2">
 <h2>Econometrics</h2>
 <ul>
@@ -3077,6 +3161,16 @@ class="uri">https://stackoverflow.com/questions/57417520/selecting-and-renaming-
 <p>df.rename(columns=selector_d)[selector_d.values()]</p></li>
 </ul>
 </div>
+<div id="multiple-column-headers" class="section level4">
+<h4>Multiple column headers</h4>
+<p>Load a csv file which has headers on 2 lines, merge the headers,
+convert to lower case, remove the “unnamed_1_” part of the column
+name:</p>
+<pre><code>csv_file_name = self.data_dir /  &quot;names.csv&quot;
+df = pandas.read_csv(csv_file_name, header=[0, 1])
+df.columns = [str(&#39;_&#39;.join(col)).lower() for col in df.columns]
+df.rename(columns=lambda x: re.sub(r&quot;unnamed_\d+_&quot;, &quot;&quot;, str(x)).lower(), inplace=True)</code></pre>
+</div>
 <div id="rename-a-series" class="section level4">
 <h4>Rename a series</h4>
 <p>You can also rename a series with</p>
@@ -3091,6 +3185,10 @@ class="uri">https://stackoverflow.com/questions/57417520/selecting-and-renaming-
   df = df[cols]</code></pre>
 <p>This <a href="https://stackoverflow.com/a/58776941/2641825">SO
 Answer</a> provide 6 different ways to reorder columns.</p>
+<p>Place the last 3 columns first</p>
+<pre><code>  cols = list(df.columns)
+  cols = cols[-3:] + cols[:-3]
+  df = df[cols]</code></pre>
 </div>
 <div id="replace-the-content-of-columns" class="section level3">
 <h3>Replace the content of columns</h3>
@@ -3190,6 +3288,21 @@ print(s.dt.year)</code></pre>
 <p>Convert integer years to a time series</p>
 <pre><code>s = pandas.Series([2020, 2021, 2022])
 pandas.to_datetime(s, format=&quot;%Y&quot;)</code></pre>
+<div id="convert-to-date-time" class="section level3">
+<h3>Convert to date time</h3>
+<p>Convert UN Comtrade dates in the format 202201 to a datetime type</p>
+<pre><code>df = pandas.DataFrame({&#39;period&#39;:[202201, 202202]})
+df[&quot;period2&quot;] = pandas.to_datetime(df[&#39;period&#39;], format=&#39;%Y%m&#39;)
+df.info()</code></pre>
+</div>
+<div id="rolling-sum-and-mean" class="section level3">
+<h3>Rolling sum and mean</h3>
+<p>Example “rolling sum with a window length of 2 observations.”</p>
+<pre><code>df = pandas.DataFrame({&#39;B&#39;: [0, 1, 2, np.nan, 4, 5, 6, 7]})
+df.rolling(2).sum()</code></pre>
+<p>Yearly rolling of a monthly time series:</p>
+<pre><code>.transform(lambda x: x.rolling(13, min_periods=1).mean()))</code></pre>
+</div>
 </div>
 <div id="group-by-operations" class="section level2">
 <h2>Group by operations</h2>
@@ -3218,6 +3331,20 @@ pyplot.show()</code></pre>
 <pre><code>iris[&#39;cumsum_lag&#39;] = iris.groupby(&#39;species&#39;)[&#39;cumsum&#39;].transform(&#39;shift&#39;, fill_value=0)
 iris[[&#39;cumsum&#39;, &#39;cumsum_lag&#39;]].plot()
 pyplot.show()</code></pre>
+<div id="aggregate-by-decades" class="section level3">
+<h3>Aggregate by decades</h3>
+<p>Aggregate a trade data frame by decades</p>
+<pre><code>bins = range(2000, 2031, 10)
+tf_agg[&quot;decade&quot;] = pandas.cut(
+    tf_agg[&quot;year&quot;], bins=bins, include_lowest=True, labels=range(2000, 2021, 10)
+)
+index = [&quot;reporter&quot;, &quot;partner&quot;, &quot;flow&quot;, &quot;product_code_4d&quot;, &quot;decade&quot;]
+tf_decade = (
+    tf_agg.groupby(index)[[&quot;net_weight&quot;, &quot;trade_value&quot;]]
+    .agg(sum)
+    .reset_index()
+)</code></pre>
+</div>
 <div id="compute-with-a-lambda-function" class="section level3">
 <h3>Compute with a lambda function</h3>
 <p>Beyond standard function such as <code>sum</code> and
@@ -3232,6 +3359,15 @@ as follows</p>
       mean1 = (&quot;petal_width&quot;, np.mean))
  .assign(mean2 = lambda x: x.pw_sum / x.n)
 )</code></pre>
+</div>
+<div id="proportion-within-groups" class="section level3">
+<h3>Proportion within groups</h3>
+<p>Compute proportion within groups:</p>
+<pre><code>df = pandas.DataFrame({
+    &#39;category&#39;: [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;c&#39;, &#39;c&#39;, &#39;c&#39;],
+    &#39;value&#39;: [10, 20, 30, 40, 50, 60, 70]
+})
+df[&#39;proportion&#39;] = df.groupby(&#39;category&#39;)[&#39;value&#39;].transform(lambda x: x / x.sum())</code></pre>
 </div>
 <div id="lag-or-shift-a-grouped-variable" class="section level3">
 <h3>Lag or shift a grouped variable</h3>
@@ -3255,6 +3391,15 @@ pyplot.show()</code></pre>
 <pre><code>df.loc[df.groupby(&#39;A&#39;)[&#39;B val&#39;].idxmin()]</code></pre>
 <p>Sort by max in each group</p>
 <pre><code>  df.groupby(&#39;reporter&#39;)[&quot;value&quot;].max().sort_values(ascending=False)</code></pre>
+</div>
+<div id="number-of-unique-combinations" class="section level3">
+<h3>Number of unique combinations</h3>
+<p>Number of unique combinations of one or 2 columns</p>
+<pre><code>df = pandas.DataFrame({&#39;A&#39; : [&#39;bla&#39;, &#39;bla&#39;, &#39;bli&#39;, &#39;bli&#39;, &#39;bli&#39;],
+                       &#39;B&#39; : [&#39;1&#39;, &#39;2&#39;, &#39;2&#39;, &#39;4&#39;, &#39;2&#39;]})
+df.groupby([&quot;A&quot;]).nunique()
+df.groupby([&quot;B&quot;]).nunique()
+df.groupby([&quot;A&quot;, &quot;B&quot;]).nunique()</code></pre>
 </div>
 <div id="slice-get-the-first-elements-of-each-group"
 class="section level3">
@@ -4361,276 +4506,6 @@ df2 = pandas.DataFrame({&#39;x&#39;:[10, 11, 12],
 df1.mask(df1.isna(), df2)
 df1.where(df1.isna(), df2)</code></pre>
 </div>
-<div id="xarray" class="section level2">
-<h2>Xarray</h2>
-<p>Create a data array and plot it, example from the <a
-href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html#attributes">xarray
-quick overview</a>:</p>
-<pre><code>import numpy as np
-import xarray as xr
-import matplotlib.pyplot as plt
-da2 = xr.DataArray(np.random.randn(2, 3), dims=(&quot;x&quot;, &quot;y&quot;), coords={&quot;x&quot;: [10, 20]})
-da2.attrs[&quot;long_name&quot;] = &quot;random velocity&quot;
-da2.attrs[&quot;units&quot;] = &quot;metres/sec&quot;
-da2.attrs[&quot;description&quot;] = &quot;A random variable created as an example.&quot;
-da2.attrs[&quot;random_attribute&quot;] = 123
-da2.attrs
-da2.plot()
-plt.show()</code></pre>
-<p>Create another data array with one dimension only and multiply it
-with the two dimensional array</p>
-<pre><code>da1 = xr.DataArray([1,2], coords={&quot;x&quot;:[10,20]})
-da2 * da1</code></pre>
-<div id="textual-definition-of-data-array-and-dataset"
-class="section level3">
-<h3>Textual definition of data array and dataset</h3>
-<p><a
-href="https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray">DataArray</a></p>
-<pre><code>&gt; &quot;xarray.DataArray is xarray’s implementation of a labeled, multi-dimensional
-&gt; array. It has several key properties:
-&gt; 
-&gt; - values: a numpy.ndarray holding the array’s values
-&gt; 
-&gt; - dims: dimension names for each axis (e.g., (&#39;x&#39;, &#39;y&#39;, &#39;z&#39;))
-&gt; 
-&gt; - coords: a dict-like container of arrays (coordinates) that label each point
-&gt;   (e.g., 1-dimensional arrays of numbers, datetime objects or strings)
-&gt; 
-&gt; - attrs: dict to hold arbitrary metadata (attributes)
-&gt; 
-&gt; Xarray uses dims and coords to enable its core metadata aware operations.
-&gt; Dimensions provide names that xarray uses instead of the axis argument found in
-&gt; many numpy functions. Coordinates enable fast label based indexing and
-&gt; alignment, building on the functionality of the index found on a pandas
-&gt; DataFrame or Series.&quot;</code></pre>
-<p><a
-href="https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataset">Dataset</a></p>
-<pre><code>&gt; &quot;xarray.Dataset is xarray’s multi-dimensional equivalent of a DataFrame. It is a
-&gt; dict-like container of labeled arrays (DataArray objects) with aligned
-&gt; dimensions. It is designed as an in-memory representation of the data model
-&gt; from the netCDF file format.
-&gt; 
-&gt; In addition to the dict-like interface of the dataset itself, which can be used
-&gt; to access any variable in a dataset, datasets have four key properties:
-&gt; 
-&gt; dims: a dictionary mapping from dimension names to the fixed length of each
-&gt; dimension (e.g., {&#39;x&#39;: 6, &#39;y&#39;: 6, &#39;time&#39;: 8})
-&gt; 
-&gt; data_vars: a dict-like container of DataArrays corresponding to variables
-&gt; 
-&gt; coords: another dict-like container of DataArrays intended to label points
-&gt; used in data_vars (e.g., arrays of numbers, datetime objects or strings)
-&gt; attrs: dict to hold arbitrary metadata
-&gt; 
-&gt; The distinction between whether a variable falls in data or coordinates
-&gt; (borrowed from CF conventions) is mostly semantic, and you can probably get
-&gt; away with ignoring it if you like: dictionary like access on a dataset will
-&gt; supply variables found in either category. However, xarray does make use of the
-&gt; distinction for indexing and computations. Coordinates indicate
-&gt; constant/fixed/independent quantities, unlike the varying/measured/dependent
-&gt; quantities that belong in data.&quot;</code></pre>
-<p><a
-href="https://docs.xarray.dev/en/stable/user-guide/reshaping.html#converting-between-datasets-and-arrays">converting
-between datasets and arrays</a></p>
-<pre><code>&gt; &quot;This method broadcasts all data variables in the dataset against each other,
-&gt; then concatenates them along a new dimension into a new array while
-&gt; preserving coordinates.&quot;</code></pre>
-</div>
-<div id="copy-shallow-and-deep" class="section level3">
-<h3>Copy shallow and deep</h3>
-<p>The documentation of the <a
-href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.copy.html">DataArray.copy</a>
-and <a
-href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.copy.html">Dataset.copy</a>
-methods show they both have a <code>deep</code> argument. If this
-argument is set to <code>False</code> (the default) it will only return
-a new view on the dataset. Illustration below, a dataset is passed to a
-function that removes values above a threshold. When
-<code>deep=False</code> the input data is changed as well even though we
-used the <code>copy()</code> method. We really have to use
-<code>copy(deep=True)</code> to make sure that the input data remains un
-modified.</p>
-<pre><code>import xarray
-import numpy as np
-ds = xarray.Dataset(
-    {&quot;a&quot;: ((&quot;x&quot;, &quot;y&quot;), np.random.randn(2, 3))},
-    coords={&quot;x&quot;: [10, 20], &quot;y&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]},
-)
-ds
-def remove_x_larger_than(ds_in, threshold, deep):
-    &quot;&quot;&quot;Remove values of x larger than the threshold&quot;&quot;&quot;
-    ds_out = ds_in.copy(deep=deep)
-    ds_out.loc[dict(x=ds_out.coords[&quot;x&quot;]&gt;threshold)] = np.nan
-    return ds_out
-remove_x_larger_than(ds, threshold=10, deep=True)
-print(ds)
-remove_x_larger_than(ds, threshold=10, deep=False)
-print(ds)</code></pre>
-</div>
-<div id="create-a-dataset" class="section level3">
-<h3>Create a dataset</h3>
-<p>Round trip from pandas to xarray and back from the <a
-href="https://docs.xarray.dev/en/stable/user-guide/pandas.html">xarray
-user guide page on pandas</a>.</p>
-<pre><code>import xarray
-import numpy as np
-ds = xarray.Dataset(
-    {&quot;foo&quot;: ((&quot;x&quot;, &quot;y&quot;), np.random.randn(2, 3))},
-    coords={
-        &quot;x&quot;: [10, 20],
-        &quot;y&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;],
-        &quot;along_x&quot;: (&quot;x&quot;, np.random.randn(2)),
-        &quot;scalar&quot;: 123,
-    },
-)
-ds</code></pre>
-<div id="dimensions" class="section level4">
-<h4>Dimensions</h4>
-<p>x and y are dimensions.</p>
-</div>
-<div id="attributes" class="section level4">
-<h4>Attributes</h4>
-<p>We can add attributes to qualify metadata.</p>
-<pre><code>ds.attrs[&quot;product&quot;] = &quot;sponge&quot;</code></pre>
-</div>
-<div id="convert-xarray-to-pandas-and-back" class="section level4">
-<h4>Convert xarray to pandas and back</h4>
-<p>Convert the xarray dataset to a pandas data frame</p>
-<pre><code>df = ds.to_dataframe()
-df</code></pre>
-<p>Convert the data frame back to a dataset</p>
-<pre><code>xarray.Dataset.from_dataframe(df)</code></pre>
-<blockquote>
-<p>“Notice that that dimensions of variables in the Dataset have now
-expanded after the round-trip conversion to a DataFrame. This is because
-every object in a DataFrame must have the same indices, so we need to
-broadcast the data of each array to the full size of the new MultiIndex.
-Likewise, all the coordinates (other than indexes) ended up as
-variables, because pandas does not distinguish non-index
-coordinates.”</p>
-</blockquote>
-<p>You can also use</p>
-<pre><code>xarray.DataArray(df)</code></pre>
-</div>
-</div>
-<div id="data-variables" class="section level3">
-<h3>Data variables</h3>
-<p>The equivalent to <code>df.columns</code> in pandas would be
-<code>list(sawn.data_vars)</code> for an xarray dataset.
-<code>ds.data_vars</code> displays the data variables with the beginning
-of their content. If you loop on it it will just display a string</p>
-<pre><code>for x in ds.data_vars:
-    print(x, type(x))</code></pre>
-<p>A list of variables</p>
-<pre><code>list(sawn.data_vars)</code></pre>
-</div>
-<div id="indexing" class="section level3">
-<h3>Indexing</h3>
-<div id="assigning-values-with-indexing" class="section level4">
-<h4>Assigning values with indexing</h4>
-<p><a
-href="https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with-indexing"
-class="uri">https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with-indexing</a></p>
-<blockquote>
-<p>To select and assign values to a portion of a DataArray() you can use
-indexing with <code>.loc</code> or <code>.where</code>.</p>
-</blockquote>
-<pre><code>import xarray
-import matplotlib.pyplot as plt
-ds = xarray.tutorial.open_dataset(&quot;air_temperature&quot;)
-ds[&quot;empty&quot;] = xarray.full_like(ds.air.mean(&quot;time&quot;), fill_value=0)
-ds[&quot;empty&quot;].loc[dict(lon=260, lat=30)] = 100
-lc = ds.coords[&quot;lon&quot;]
-la = ds.coords[&quot;lat&quot;]
-ds[&quot;empty&quot;].loc[ 
-dict(lon=lc[(lc &gt; 220) &amp; (lc &lt; 260)], lat=la[(la &gt; 20) &amp; (la &lt; 60)]) 
-] = 100
-# Plot
-ds.empty.plot()
-plt.show()
-# Write to a csv file
-ds.empty.to_dataframe().to_csv(&quot;/tmp/empty.csv&quot;)</code></pre>
-<blockquote>
-<p>“Warning Do not try to assign values when using any of the indexing
-methods <code>.isel</code> or <code>.sel</code>:”</p>
-</blockquote>
-<pre><code>da = xarray.DataArray([0, 1, 2, 3], dims=[&quot;x&quot;])
-# This will return an error 
-da.isel(x=[0, 1, 2]) = -1
-# SyntaxError: cannot assign to function call
-# Do not do this
-da.isel(x=[0, 1, 2])[1] = -1
-# Use a dictionnary instead
-da[dict(x=[1])] =  -1
-# Also works with broadcasting
-da[dict(x=[0, 1, 2])] =  -1</code></pre>
-</div>
-<div id="querying-index-variables" class="section level4">
-<h4>Querying index variables</h4>
-<p>Keep only data that is below the base year into the dataset.</p>
-<pre><code>base_year = 2018
-ds.sel(year = ds.year &lt;= base_year)
-ds.query(year = &quot;year &lt;= 2018&quot;)
-ds.query(year = &quot;year &lt;= @base_year&quot;)
-# Returns an error
-# SyntaxError: The &#39;@&#39; prefix is not allowed in top-level eval calls.
-# please refer to your variables by name without the &#39;@&#39; prefix.</code></pre>
-</div>
-</div>
-<div id="panel-data" class="section level3">
-<h3>Panel data</h3>
-<p><a
-href="https://docs.xarray.dev/en/stable/user-guide/pandas.html#transitioning-from-pandas-panel-to-xarray">transitioning
-from pandas panel to xarray</a></p>
-<pre><code>&gt; &quot;As discussed elsewhere in the docs, there are two primary data structures
-&gt; in xarray: DataArray and Dataset. You can imagine a DataArray as a
-&gt; n-dimensional pandas Series (i.e. a single typed array), and a Dataset as the
-&gt; DataFrame equivalent (i.e. a dict of aligned DataArray objects).
-&gt; So you can represent a Panel, in two ways:
-&gt; 
-&gt;    As a 3-dimensional DataArray,
-&gt; 
-&gt;    Or as a Dataset containing a number of 2-dimensional DataArray objects.
-
-
-&gt; &quot;Variables in Dataset objects can use a subset of its dimensions. For
-&gt; example, you can have one dataset with Person x Score x Time, and another
-&gt; with Person x Score.&quot;</code></pre>
-</div>
-<div id="plots" class="section level3">
-<h3>Plots</h3>
-<ul>
-<li><p><a
-href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#introduction">Xarray
-plotting introduction</a></p></li>
-<li><p><a
-href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#scatter">Scatter
-plots</a></p>
-<blockquote>
-<p>“For more advanced scatter plots, we recommend converting the
-relevant data variables to a pandas DataFrame and using the extensive
-plotting capabilities of seaborn.”</p>
-</blockquote></li>
-<li><p><a
-href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#faceting">Facetting</a></p>
-<blockquote>
-<p>“The easiest way to create faceted plots is to pass in row or col
-arguments to the xarray plotting methods/functions. This returns a
-xarray.plot.FacetGrid object.”</p>
-</blockquote>
-<p>spda.loc[dict(country=[‘Ukraine’,
-‘Uzbekistan’])].plot(col=“country”)</p></li>
-</ul>
-</div>
-<div id="io" class="section level3">
-<h3>IO</h3>
-<ul>
-<li><a
-href="https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python">How
-to read netcdf files in chunks with Xarray and Dask</a></li>
-</ul>
-</div>
-</div>
 </div>
 <div id="paths" class="section level1">
 <h1>Paths</h1>
@@ -4821,11 +4696,12 @@ to use X<strong>2 + Y</strong>2 directly as above.</p>
 fig = plt.figure()
 ax = plt.axes(projection=&#39;3d&#39;)
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
+</div>
 <div id="pandas-plots-are-matplotlib-axessubplot-objects"
-class="section level3">
-<h3>Pandas plots are matplotlib AxesSubplot objects</h3>
-<div id="arguments-of-the-df.plot-function" class="section level4">
-<h4>Arguments of the df.plot() function</h4>
+class="section level2">
+<h2>Pandas plots are matplotlib AxesSubplot objects</h2>
+<div id="arguments-of-the-df.plot-function" class="section level3">
+<h3>Arguments of the df.plot() function</h3>
 <p>Example values for the df.plot() function:</p>
 <ul>
 <li><p><code>figsize=(3,3)</code> change the figure size. <a
@@ -4838,8 +4714,8 @@ to the documentation that explains that</p>
 <li><p><code>colormap</code> change colours</p></li>
 </ul>
 </div>
-<div id="show-pandas-plots-in-ipython" class="section level4">
-<h4>Show pandas plots in ipython</h4>
+<div id="show-pandas-plots-in-ipython" class="section level3">
+<h3>Show pandas plots in ipython</h3>
 <p>Create some data and change the xticks labels</p>
 <pre><code>import pandas
 import matplotlib.pyplot as plt
@@ -4851,8 +4727,8 @@ type(plot)
 plot.set_xticks(range(0,31,10), minor=False)
 plt.show()</code></pre>
 </div>
-<div id="colour-palette-in-pandas-plots" class="section level4">
-<h4>Colour palette in pandas plots</h4>
+<div id="colour-palette-in-pandas-plots" class="section level3">
+<h3>Colour palette in pandas plots</h3>
 <p>Reusing the data frame from the previous section</p>
 <p>Using a list of colours with matplotlib <a
 href="https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.ListedColormap.html">ListedColormap</a>
@@ -4870,8 +4746,24 @@ df.plot(colormap=palette, figsize=(3,3))
 # plt.show()
 plt.savefig(&quot;/tmp/plotpalette2.png&quot;)</code></pre>
 </div>
-<div id="save-to-a-pdf-or-png-file" class="section level4">
-<h4>Save to a pdf or png file</h4>
+<div id="histogram" class="section level3">
+<h3>Histogram</h3>
+<p>Histogram</p>
+<pre><code>iris[&quot;petal_width&quot;].hist(bins=20)</code></pre>
+<p>Options for title, labels, colours</p>
+<pre><code>import pandas
+import matplotlib.pyplot as plt
+series = pandas.Series([1, 2, 2, 3, 3, 3, 4, 4, 4, 4])
+series.hist(grid=False, bins=20, rwidth=0.9, color=&#39;#607c8e&#39;)
+plt.title(&#39;Title&#39;)
+plt.xlabel(&#39;Counts&#39;)
+plt.ylabel(&#39;Frequency&#39;)
+plt.grid(axis=&#39;y&#39;, alpha=0.75)
+plt.show()</code></pre>
+<p>Histogram with a log scale</p>
+</div>
+<div id="save-to-a-pdf-or-png-file" class="section level3">
+<h3>Save to a pdf or png file</h3>
 <p>With a plot object</p>
 <pre><code>plot.get_figure().savefig(&#39;/tmp/output.pdf&#39;, format=&#39;pdf&#39;)</code></pre>
 <p>With the pyplot object, only works immediately after building the
@@ -4880,15 +4772,14 @@ plot. This also works with seaborn plots.</p>
 plt.savefig(&quot;/tmp/bli.png&quot;)</code></pre>
 <p>Change figure size</p>
 </div>
-<div id="pandas-plots-side-by-side" class="section level4">
-<h4>Pandas plots side by side</h4>
+<div id="pandas-plots-side-by-side" class="section level3">
+<h3>Pandas plots side by side</h3>
 <p>Using the same df as above show 2 plost side by side based on this <a
 href="https://stackoverflow.com/a/68008119/2641825">SO answer</a></p>
 <pre><code>fig, (ax1, ax2) = plt.subplots(1,2, figsize=(15,6))
 df.plot(title=&#39;Two ranges&#39;, ax=ax1)
 df.plot(title=&#39;Two ranges&#39;, ax=ax2)
 plt.show()</code></pre>
-</div>
 </div>
 </div>
 <div id="plotly" class="section level2">
@@ -4978,6 +4869,12 @@ ylim in seaborn facet grid</a></p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
 g = g.map(plt.hist, &quot;total_bill&quot;)
 g.set(ylim=(0, None)) </code></pre>
+</div>
+<div id="year-to-date-time-objects" class="section level4">
+<h4>Year to date time objects</h4>
+<p>Years are sometimes displayed with commas, convert them to date time
+objects to avoid this:</p>
+<pre><code>pandas.to_datetime(comp[&quot;year&quot;], format=&quot;%Y&quot;)</code></pre>
 </div>
 </div>
 <div id="bar-plot" class="section level3">
@@ -5232,24 +5129,20 @@ href="https://stackoverflow.com/a/56970556/2641825">this answer</a></p>
 can use the <code>height</code> and <code>aspect</code> arguments of the
 FacetGrid call as such:</p>
 <pre><code>import seaborn 
-from matplotlib import pyplot
+import matplotlib.pyplot as plt
 seaborn.set()
 iris = seaborn.load_dataset(&quot;iris&quot;)
 # Change height and aspect ratio
 g = seaborn.FacetGrid(iris, col=&quot;species&quot;, height=8, aspect=0.3)
 iris[&#39;species&#39;] = iris[&#39;species&#39;].astype(&#39;category&#39;)
 g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)
-pyplot.show()</code></pre>
+plt.show()</code></pre>
 <p><code>help(seaborn.FacetGrid)</code></p>
 <blockquote>
 <p><code>aspect * height</code> gives the width of each facet in
 inches.</p>
 </blockquote>
 </div>
-</div>
-<div id="histogram" class="section level3">
-<h3>Histogram</h3>
-<p>histogram with a log scale</p>
 </div>
 <div id="line-plot" class="section level3">
 <h3>Line plot</h3>
@@ -5650,25 +5543,30 @@ in pandas</a></p>
 </tr>
 <tr class="odd">
 <td>select(a)</td>
-<td>df.filter(items=[‘x’])</td>
+<td>df.loc[:,“x”] # Strict, var has to be present</td>
 <td></td>
 </tr>
 <tr class="even">
+<td></td>
+<td>df.filter(items=[‘x’]) # Not strict</td>
+<td></td>
+</tr>
+<tr class="odd">
 <td>select(contains(“a”))</td>
 <td>df.filter(regex=‘x’)</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>filter</td>
 <td>df.query(“y==‘b’”)</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>group_by</td>
 <td>groupby</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>lag</td>
 <td><a
 href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.shift.html">shift</a></td>
@@ -5676,13 +5574,13 @@ href="https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.shift.html">
 href="https://stackoverflow.com/questions/23664877/pandas-equivalent-of-oracle-lead-lag-function">pandas
 lag function</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>mutate</td>
 <td>df.assign(e = lambda x: x[“a”] * 3)</td>
 <td><a
 href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.assign.html">assign</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>pivot_longer</td>
 <td><a
 href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.melt.html">melt</a>
@@ -5690,36 +5588,36 @@ or <a
 href="https://pandas.pydata.org/docs/reference/api/pandas.wide_to_long.html">wide_to_long</a></td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>pivot_wider</td>
 <td><a
 href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.pivot.html">pivot</a></td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>rename</td>
 <td>df.rename(columns={‘a’:‘new’})</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>separate</td>
 <td>df[[‘b’,‘c’]] = df.a.str.split(‘,’,1,expand=True)</td>
 <td><a href="https://stackoverflow.com/a/57823566">pandas separate</a>
 str section</td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>summarize</td>
 <td>agg</td>
 <td></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>unite</td>
 <td>df[“z”] = df.y + df.y</td>
 <td><a
 href="https://stackoverflow.com/questions/19377969/combine-two-columns-of-text-in-pandas-dataframe">pandas
 unite</a></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>unnest</td>
 <td><a
 href="https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html">explode</a></td>
@@ -6364,11 +6262,23 @@ py.test</code></pre>
 <p>Test pandas data frame with</p>
 <pre><code>assert_frame_equal
 assert_series_equal # tricky to use</code></pre>
-<div id="run-unittest-with-pytest" class="section level3">
-<h3>Run unittest with pytest</h3>
-<p><a href="https://docs.pytest.org/en/7.1.x/how-to/unittest.html">How
-to use unittest-based tests with pytest</a></p>
-<pre><code>pytest file_test.py</code></pre>
+<div id="aa-run" class="section level3">
+<h3>AA run</h3>
+<ul>
+<li><p>Run and enter debug mode <a
+href="https://stackoverflow.com/a/48739098/2641825"
+class="uri">https://stackoverflow.com/a/48739098/2641825</a> suggests
+starting an ipython shell within the package directory and then running
+<code>!pytest --pdb</code> to enter inside the function that is causing
+a test to fail. Objects in that function can then be inspected at the <a
+href="https://docs.python.org/3/library/pdb.html">python debugger</a>
+prompt.</p>
+<p>!pytest –pdb</p></li>
+<li><p>Run unittest with pytest <a
+href="https://docs.pytest.org/en/7.1.x/how-to/unittest.html">How to use
+unittest-based tests with pytest</a></p>
+<p>pytest file_test.py</p></li>
+</ul>
 </div>
 <div id="expected-exceptions" class="section level3">
 <h3>Expected exceptions</h3>
@@ -6399,6 +6309,67 @@ use:”</p>
 actual exception raised. The main attributes of interest are .type,
 .value and .traceback.”</p>
 </blockquote>
+</div>
+<div id="fixtures" class="section level3">
+<h3>Fixtures</h3>
+<pre><code>import pytest
+import xarray
+from cobwood.gfpmx_equations import (
+    consumption,
+    consumption_pulp,
+    consumption_indround,
+)
+
+@pytest.fixture
+def secondary_product_dataset():
+    &quot;&quot;&quot;Create a sample dataset for testing&quot;&quot;&quot;
+    ds = xarray.Dataset({
+        &quot;cons_constant&quot;: xarray.DataArray([2, 3, 4], dims=[&quot;c&quot;]),
+        &quot;price&quot;: xarray.DataArray([[1, 2], [3, 4], [5, 6]], dims=[&quot;c&quot;, &quot;t&quot;]),
+        &quot;gdp&quot;: xarray.DataArray([[100, 200], [300, 400], [500, 600]], dims=[&quot;c&quot;, &quot;t&quot;]),
+        &quot;prod&quot;: xarray.DataArray([[100, 200], [300, 400], [500, 600]], dims=[&quot;c&quot;, &quot;t&quot;]),
+        &quot;cons_price_elasticity&quot;: xarray.DataArray([0.5, 0.6, 0.7], dims=[&quot;c&quot;]),
+        &quot;cons_gdp_elasticity&quot;: xarray.DataArray([0.8, 0.9, 1.0], dims=[&quot;c&quot;]),
+    })
+    return ds
+
+def test_consumption(secondary_product_dataset):
+    &quot;&quot;&quot;Test the consumption function&quot;&quot;&quot;
+    ds = secondary_product_dataset
+    t = 1
+    expected_result = xarray.DataArray([138.62896863, 1274.23051055, 7404.40635264], dims=[&quot;c&quot;])
+    result = consumption(ds, t)
+    xarray.testing.assert_allclose(result, expected_result)</code></pre>
+</div>
+<div id="parametrize" class="section level3">
+<h3>Parametrize</h3>
+<p><a href="https://docs.pytest.org/en/6.2.x/parametrize.html"
+class="uri">https://docs.pytest.org/en/6.2.x/parametrize.html</a></p>
+<blockquote>
+<p>“The builtin pytest.mark.parametrize decorator enables
+parametrization of arguments for a test function. Here is a typical
+example of a test function that implements checking that a certain input
+leads to an expected output:</p>
+</blockquote>
+<pre><code># content of test_expectation.py
+import pytest
+@pytest.mark.parametrize(&quot;test_input,expected&quot;, [(&quot;3+5&quot;, 8), (&quot;2+4&quot;, 6), (&quot;6*9&quot;, 42)])
+def test_eval(test_input, expected):
+    assert eval(test_input) == expected</code></pre>
+</div>
+<div id="pylint-and-pytest" class="section level3">
+<h3>Pylint and pytest</h3>
+<ul>
+<li><p><a href="https://github.com/pylint-dev/pylint/issues/6531"
+class="uri">https://github.com/pylint-dev/pylint/issues/6531</a></p>
+<ul>
+<li>mentioned in <a
+href="https://stackoverflow.com/questions/46089480/pytest-fixtures-redefining-name-from-outer-scope-pylint"
+class="uri">https://stackoverflow.com/questions/46089480/pytest-fixtures-redefining-name-from-outer-scope-pylint</a></li>
+</ul></li>
+</ul>
+<p>Add this at the beginning of pytest files</p>
+<pre><code># pylint: disable=redefined-outer-name</code></pre>
 </div>
 </div>
 <div id="test-use-in-projects" class="section level2">
@@ -6438,8 +6409,299 @@ This last link contains a nice, simple example of how asyncio works with
 a simulated delay to fetch a web page.</p>
 </div>
 </div>
-<div id="media-and-organizations" class="section level1">
-<h1>Media and organizations</h1>
+<div id="xarray" class="section level1">
+<h1>Xarray</h1>
+<p>Create a data array and plot it, example from the <a
+href="https://docs.xarray.dev/en/stable/getting-started-guide/quick-overview.html#attributes">xarray
+quick overview</a>:</p>
+<pre><code>import numpy as np
+import xarray as xr
+import matplotlib.pyplot as plt
+da2 = xr.DataArray(np.random.randn(2, 3), dims=(&quot;x&quot;, &quot;y&quot;), coords={&quot;x&quot;: [10, 20]})
+da2.attrs[&quot;long_name&quot;] = &quot;random velocity&quot;
+da2.attrs[&quot;units&quot;] = &quot;metres/sec&quot;
+da2.attrs[&quot;description&quot;] = &quot;A random variable created as an example.&quot;
+da2.attrs[&quot;random_attribute&quot;] = 123
+da2.attrs
+da2.plot()
+plt.show()</code></pre>
+<p>Create another data array with one dimension only and multiply it
+with the two dimensional array</p>
+<pre><code>da1 = xr.DataArray([1,2], coords={&quot;x&quot;:[10,20]})
+da2 * da1</code></pre>
+<div id="textual-definition-of-data-array-and-dataset"
+class="section level2">
+<h2>Textual definition of data array and dataset</h2>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataarray">DataArray</a></p>
+<pre><code>&gt; &quot;xarray.DataArray is xarray’s implementation of a labeled, multi-dimensional
+&gt; array. It has several key properties:
+&gt; 
+&gt; - values: a numpy.ndarray holding the array’s values
+&gt; 
+&gt; - dims: dimension names for each axis (e.g., (&#39;x&#39;, &#39;y&#39;, &#39;z&#39;))
+&gt; 
+&gt; - coords: a dict-like container of arrays (coordinates) that label each point
+&gt;   (e.g., 1-dimensional arrays of numbers, datetime objects or strings)
+&gt; 
+&gt; - attrs: dict to hold arbitrary metadata (attributes)
+&gt; 
+&gt; Xarray uses dims and coords to enable its core metadata aware operations.
+&gt; Dimensions provide names that xarray uses instead of the axis argument found in
+&gt; many numpy functions. Coordinates enable fast label based indexing and
+&gt; alignment, building on the functionality of the index found on a pandas
+&gt; DataFrame or Series.&quot;</code></pre>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/data-structures.html#dataset">Dataset</a></p>
+<pre><code>&gt; &quot;xarray.Dataset is xarray’s multi-dimensional equivalent of a DataFrame. It is a
+&gt; dict-like container of labeled arrays (DataArray objects) with aligned
+&gt; dimensions. It is designed as an in-memory representation of the data model
+&gt; from the netCDF file format.
+&gt; 
+&gt; In addition to the dict-like interface of the dataset itself, which can be used
+&gt; to access any variable in a dataset, datasets have four key properties:
+&gt; 
+&gt; dims: a dictionary mapping from dimension names to the fixed length of each
+&gt; dimension (e.g., {&#39;x&#39;: 6, &#39;y&#39;: 6, &#39;time&#39;: 8})
+&gt; 
+&gt; data_vars: a dict-like container of DataArrays corresponding to variables
+&gt; 
+&gt; coords: another dict-like container of DataArrays intended to label points
+&gt; used in data_vars (e.g., arrays of numbers, datetime objects or strings)
+&gt; attrs: dict to hold arbitrary metadata
+&gt; 
+&gt; The distinction between whether a variable falls in data or coordinates
+&gt; (borrowed from CF conventions) is mostly semantic, and you can probably get
+&gt; away with ignoring it if you like: dictionary like access on a dataset will
+&gt; supply variables found in either category. However, xarray does make use of the
+&gt; distinction for indexing and computations. Coordinates indicate
+&gt; constant/fixed/independent quantities, unlike the varying/measured/dependent
+&gt; quantities that belong in data.&quot;</code></pre>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/reshaping.html#converting-between-datasets-and-arrays">converting
+between datasets and arrays</a></p>
+<pre><code>&gt; &quot;This method broadcasts all data variables in the dataset against each other,
+&gt; then concatenates them along a new dimension into a new array while
+&gt; preserving coordinates.&quot;</code></pre>
+</div>
+<div id="copy-shallow-and-deep" class="section level2">
+<h2>Copy shallow and deep</h2>
+<p>The documentation of the <a
+href="https://docs.xarray.dev/en/stable/generated/xarray.DataArray.copy.html">DataArray.copy</a>
+and <a
+href="https://docs.xarray.dev/en/stable/generated/xarray.Dataset.copy.html">Dataset.copy</a>
+methods show they both have a <code>deep</code> argument. If this
+argument is set to <code>False</code> (the default) it will only return
+a new view on the dataset. Illustration below, a dataset is passed to a
+function that removes values above a threshold. When
+<code>deep=False</code> the input data is changed as well even though we
+used the <code>copy()</code> method. We really have to use
+<code>copy(deep=True)</code> to make sure that the input data remains un
+modified.</p>
+<pre><code>import xarray
+import numpy as np
+ds = xarray.Dataset(
+    {&quot;a&quot;: ((&quot;x&quot;, &quot;y&quot;), np.random.randn(2, 3))},
+    coords={&quot;x&quot;: [10, 20], &quot;y&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]},
+)
+ds
+def remove_x_larger_than(ds_in, threshold, deep):
+    &quot;&quot;&quot;Remove values of x larger than the threshold&quot;&quot;&quot;
+    ds_out = ds_in.copy(deep=deep)
+    ds_out.loc[dict(x=ds_out.coords[&quot;x&quot;]&gt;threshold)] = np.nan
+    return ds_out
+remove_x_larger_than(ds, threshold=10, deep=True)
+print(ds)
+remove_x_larger_than(ds, threshold=10, deep=False)
+print(ds)</code></pre>
+</div>
+<div id="create-a-dataset" class="section level2">
+<h2>Create a dataset</h2>
+<p>Round trip from pandas to xarray and back from the <a
+href="https://docs.xarray.dev/en/stable/user-guide/pandas.html">xarray
+user guide page on pandas</a>.</p>
+<pre><code>import xarray
+import numpy as np
+ds = xarray.Dataset(
+    {&quot;foo&quot;: ((&quot;x&quot;, &quot;y&quot;), np.random.randn(2, 3))},
+    coords={
+        &quot;x&quot;: [10, 20],
+        &quot;y&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;],
+        &quot;along_x&quot;: (&quot;x&quot;, np.random.randn(2)),
+        &quot;scalar&quot;: 123,
+    },
+)
+ds</code></pre>
+<div id="dimensions" class="section level3">
+<h3>Dimensions</h3>
+<p>x and y are dimensions.</p>
+</div>
+<div id="attributes" class="section level3">
+<h3>Attributes</h3>
+<p>We can add attributes to qualify metadata.</p>
+<pre><code>ds.attrs[&quot;product&quot;] = &quot;sponge&quot;</code></pre>
+</div>
+<div id="convert-xarray-to-pandas-and-back" class="section level3">
+<h3>Convert xarray to pandas and back</h3>
+<p>Convert the xarray dataset to a pandas data frame</p>
+<pre><code>df = ds.to_dataframe()
+df</code></pre>
+<p>Convert the data frame back to a dataset</p>
+<pre><code>xarray.Dataset.from_dataframe(df)</code></pre>
+<blockquote>
+<p>“Notice that that dimensions of variables in the Dataset have now
+expanded after the round-trip conversion to a DataFrame. This is because
+every object in a DataFrame must have the same indices, so we need to
+broadcast the data of each array to the full size of the new MultiIndex.
+Likewise, all the coordinates (other than indexes) ended up as
+variables, because pandas does not distinguish non-index
+coordinates.”</p>
+</blockquote>
+<p>You can also use</p>
+<pre><code>xarray.DataArray(df)</code></pre>
+</div>
+</div>
+<div id="data-variables" class="section level2">
+<h2>Data variables</h2>
+<p>The equivalent to <code>df.columns</code> in pandas would be
+<code>list(sawn.data_vars)</code> for an xarray dataset.
+<code>ds.data_vars</code> displays the data variables with the beginning
+of their content. If you loop on it it will just display a string</p>
+<pre><code>for x in ds.data_vars:
+    print(x, type(x))</code></pre>
+<p>A list of variables</p>
+<pre><code>list(sawn.data_vars)</code></pre>
+</div>
+<div id="groupby-operations" class="section level2">
+<h2>Groupby operations</h2>
+<p>Group the given variable by region, using a dataArray called “region”
+which is stored inside the dataset</p>
+<pre><code>region_data = gfpmx_data.country_groups.set_index(&#39;country&#39;)[&#39;region&#39;]
+region_dataarray = xarray.DataArray.from_series(region_data)
+aggregated_data = ds[var].loc[COUNTRIES, t].groupby(ds[&quot;region&quot;]).sum()
+ds[var].loc[&quot;WORLD&quot;, t] = ds[var].loc[COUNTRIES, t].sum()
+ds[var].loc[regions,t] = ds[var].loc[COUNTRIES,t].groupby(ds[&quot;region&quot;].loc[COUNTRIES]).sum()</code></pre>
+</div>
+<div id="indexing" class="section level2">
+<h2>Indexing</h2>
+<div id="assigning-values-with-indexing" class="section level3">
+<h3>Assigning values with indexing</h3>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with-indexing"
+class="uri">https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with-indexing</a></p>
+<blockquote>
+<p>To select and assign values to a portion of a DataArray() you can use
+indexing with <code>.loc</code> or <code>.where</code>.</p>
+</blockquote>
+<pre><code>import xarray
+import matplotlib.pyplot as plt
+ds = xarray.tutorial.open_dataset(&quot;air_temperature&quot;)
+ds[&quot;empty&quot;] = xarray.full_like(ds.air.mean(&quot;time&quot;), fill_value=0)
+ds[&quot;empty&quot;].loc[dict(lon=260, lat=30)] = 100
+lc = ds.coords[&quot;lon&quot;]
+la = ds.coords[&quot;lat&quot;]
+ds[&quot;empty&quot;].loc[ 
+dict(lon=lc[(lc &gt; 220) &amp; (lc &lt; 260)], lat=la[(la &gt; 20) &amp; (la &lt; 60)]) 
+] = 100
+# Plot
+ds.empty.plot()
+plt.show()
+# Write to a csv file
+ds.empty.to_dataframe().to_csv(&quot;/tmp/empty.csv&quot;)</code></pre>
+<blockquote>
+<p>“Warning Do not try to assign values when using any of the indexing
+methods <code>.isel</code> or <code>.sel</code>:”</p>
+</blockquote>
+<pre><code>da = xarray.DataArray([0, 1, 2, 3], dims=[&quot;x&quot;])
+# This will return an error 
+da.isel(x=[0, 1, 2]) = -1
+# SyntaxError: cannot assign to function call
+# Do not do this
+da.isel(x=[0, 1, 2])[1] = -1
+# Use a dictionnary instead
+da[dict(x=[1])] =  -1
+# Also works with broadcasting
+da[dict(x=[0, 1, 2])] =  -1</code></pre>
+</div>
+<div id="querying-index-variables" class="section level3">
+<h3>Querying index variables</h3>
+<p>Keep only data that is below the base year into the dataset.</p>
+<pre><code>base_year = 2018
+ds.sel(year = ds.year &lt;= base_year)
+ds.query(year = &quot;year &lt;= 2018&quot;)
+ds.query(year = &quot;year &lt;= @base_year&quot;)
+# Returns an error
+# SyntaxError: The &#39;@&#39; prefix is not allowed in top-level eval calls.
+# please refer to your variables by name without the &#39;@&#39; prefix.</code></pre>
+</div>
+<div id="reindex" class="section level3">
+<h3>Reindex</h3>
+<p>Reindex an array to get the same coordinates as another one, with
+empty values where values are missing.</p>
+</div>
+</div>
+<div id="missing-data" class="section level2">
+<h2>Missing data</h2>
+<p>There is no isna() method in xarray. Check for missing data with the
+isnull() method</p>
+</div>
+<div id="panel-data" class="section level2">
+<h2>Panel data</h2>
+<p><a
+href="https://docs.xarray.dev/en/stable/user-guide/pandas.html#transitioning-from-pandas-panel-to-xarray">transitioning
+from pandas panel to xarray</a></p>
+<pre><code>&gt; &quot;As discussed elsewhere in the docs, there are two primary data structures
+&gt; in xarray: DataArray and Dataset. You can imagine a DataArray as a
+&gt; n-dimensional pandas Series (i.e. a single typed array), and a Dataset as the
+&gt; DataFrame equivalent (i.e. a dict of aligned DataArray objects).
+&gt; So you can represent a Panel, in two ways:
+&gt; 
+&gt;    As a 3-dimensional DataArray,
+&gt; 
+&gt;    Or as a Dataset containing a number of 2-dimensional DataArray objects.
+
+
+&gt; &quot;Variables in Dataset objects can use a subset of its dimensions. For
+&gt; example, you can have one dataset with Person x Score x Time, and another
+&gt; with Person x Score.&quot;</code></pre>
+</div>
+<div id="plots" class="section level2">
+<h2>Plots</h2>
+<ul>
+<li><p><a
+href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#introduction">Xarray
+plotting introduction</a></p></li>
+<li><p><a
+href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#scatter">Scatter
+plots</a></p>
+<blockquote>
+<p>“For more advanced scatter plots, we recommend converting the
+relevant data variables to a pandas DataFrame and using the extensive
+plotting capabilities of seaborn.”</p>
+</blockquote></li>
+<li><p><a
+href="https://docs.xarray.dev/en/stable/user-guide/plotting.html#faceting">Facetting</a></p>
+<blockquote>
+<p>“The easiest way to create faceted plots is to pass in row or col
+arguments to the xarray plotting methods/functions. This returns a
+xarray.plot.FacetGrid object.”</p>
+</blockquote>
+<p>spda.loc[dict(country=[‘Ukraine’, ‘Uzbekistan’])].plot(col=“country”)
+# Plot by continents
+gfpmxb2020.indround[“prod”].loc[~gfpmxb2020.indround.c].plot(col=“country”)</p></li>
+</ul>
+</div>
+<div id="io" class="section level2">
+<h2>IO</h2>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python">How
+to read netcdf files in chunks with Xarray and Dask</a></li>
+</ul>
+</div>
+</div>
+<div id="zz-media-and-organizations" class="section level1">
+<h1>ZZ Media and organizations</h1>
 <div id="blogs" class="section level2">
 <h2>Blogs</h2>
 <ul>
