@@ -1,0 +1,267 @@
+
+
+# Introduction
+
+This page is about 
+
+
+# Comparison
+
+## GPT4 vs Bard
+
+### Drop unique values or reset index?
+
+A July 2023 example where GPT4 provides a better answer than Bard. Dropping
+unique values (suggested by Bard) reduces the data by a log it is a misleading
+answer. Resetting the index is the correct answer suggested by GPT4.
+
+Same code and error fed to both GPT 4 and BARd
+
+```
+g = seaborn.relplot(data=harvest_demand, x='year', y='harvest_requested',
+
+                    col='iso2_code', hue='scenario', kind='line', col_wrap=4, 
+
+                    facet_kws={'sharey': False, 'sharex': False})
+
+g.set_titles(row_template="{row_name}", col_template="{col_name}")
+
+g.fig.set_size_inches(20,15)
+
+g.fig.subplots_adjust(hspace=0.3)
+
+/home/paul/.local/lib/python3.9/site-packages/seaborn/_core.py:1057: FutureWarning: reindexing with a non-unique Index is deprecated and will raise in a future version.
+  comp_col.loc[orig.index] = pd.to_numeric(axis.convert_units(orig))
+
+---------------------------------------------------------------------------
+ValueError                                Traceback (most recent call last)
+/tmp/ipykernel_58796/3787323421.py in <cell line: 1>()
+----> 1 g = seaborn.relplot(data=harvest_demand, x='year', y='harvest_requested',
+      2                     col='iso2_code', hue='scenario', kind='line', col_wrap=4,
+      3                     facet_kws={'sharey': False, 'sharex': False})
+      4 g.set_titles(row_template="{row_name}", col_template="{col_name}")
+      5 g.fig.set_size_inches(20,15)
+
+~/.local/lib/python3.9/site-packages/seaborn/_decorators.py in inner_f(*args, **kwargs)
+     44             )
+     45         kwargs.update({k: arg for k, arg in zip(sig.parameters, args)})
+---> 46         return f(**kwargs)
+     47     return inner_f
+     48 
+
+~/.local/lib/python3.9/site-packages/seaborn/relational.py in relplot(x, y, hue, size, style, data, row, col, col_wrap, row_order, col_order, palette, hue_order, hue_norm, sizes, size_order, size_norm, markers, dashes, style_order, legend, kind, height, aspect, facet_kws, units, **kwargs)
+   1034 
+   1035     # Draw the plot
+-> 1036     g.map_dataframe(func, **plot_kws)
+   1037 
+   1038     # Label the axes
+
+~/.local/lib/python3.9/site-packages/seaborn/axisgrid.py in map_dataframe(self, func, *args, **kwargs)
+    775 
+    776             # Draw the plot
+--> 777             self._facet_plot(func, ax, args, kwargs)
+    778 
+    779         # For axis labels, prefer to use positional args for backcompat
+
+~/.local/lib/python3.9/site-packages/seaborn/axisgrid.py in _facet_plot(self, func, ax, plot_args, plot_kwargs)
+    804             plot_args = []
+    805             plot_kwargs["ax"] = ax
+--> 806         func(*plot_args, **plot_kwargs)
+    807 
+    808         # Sort out the supporting information
+
+~/.local/lib/python3.9/site-packages/seaborn/_decorators.py in inner_f(*args, **kwargs)
+     44             )
+     45         kwargs.update({k: arg for k, arg in zip(sig.parameters, args)})
+---> 46         return f(**kwargs)
+     47     return inner_f
+     48 
+
+~/.local/lib/python3.9/site-packages/seaborn/relational.py in lineplot(x, y, hue, size, style, data, palette, hue_order, hue_norm, sizes, size_order, size_norm, dashes, markers, style_order, units, estimator, ci, n_boot, seed, sort, err_style, err_kws, legend, ax, **kwargs)
+    708     p._attach(ax)
+    709 
+--> 710     p.plot(ax, kwargs)
+    711     return ax
+    712 
+
+~/.local/lib/python3.9/site-packages/seaborn/relational.py in plot(self, ax, kws)
+    469         # Loop over the semantic subsets and add to the plot
+    470         grouping_vars = "hue", "size", "style"
+--> 471         for sub_vars, sub_data in self.iter_data(grouping_vars, from_comp_data=True):
+    472 
+    473             if self.sort:
+
+~/.local/lib/python3.9/site-packages/seaborn/_core.py in iter_data(self, grouping_vars, reverse, from_comp_data)
+    981 
+    982         if from_comp_data:
+--> 983             data = self.comp_data
+    984         else:
+    985             data = self.plot_data
+
+~/.local/lib/python3.9/site-packages/seaborn/_core.py in comp_data(self)
+   1055                     orig = self.plot_data[var].dropna()
+   1056                 comp_col = pd.Series(index=orig.index, dtype=float, name=var)
+-> 1057                 comp_col.loc[orig.index] = pd.to_numeric(axis.convert_units(orig))
+   1058 
+   1059                 if axis.get_scale() == "log":
+
+~/.local/lib/python3.9/site-packages/pandas/core/indexing.py in __setitem__(self, key, value)
+    714 
+    715         iloc = self if self.name == "iloc" else self.obj.iloc
+--> 716         iloc._setitem_with_indexer(indexer, value, self.name)
+    717 
+    718     def _validate_key(self, key, axis: int):
+
+~/.local/lib/python3.9/site-packages/pandas/core/indexing.py in _setitem_with_indexer(self, indexer, value, name)
+   1688             self._setitem_with_indexer_split_path(indexer, value, name)
+   1689         else:
+-> 1690             self._setitem_single_block(indexer, value, name)
+   1691 
+   1692     def _setitem_with_indexer_split_path(self, indexer, value, name: str):
+
+~/.local/lib/python3.9/site-packages/pandas/core/indexing.py in _setitem_single_block(self, indexer, value, name)
+   1927             # setting for extensionarrays that store dicts. Need to decide
+   1928             # if it's worth supporting that.
+-> 1929             value = self._align_series(indexer, Series(value))
+   1930 
+   1931         elif isinstance(value, ABCDataFrame) and name != "iloc":
+
+~/.local/lib/python3.9/site-packages/pandas/core/indexing.py in _align_series(self, indexer, ser, multiindex_indexer)
+   2089                 if obj.ndim == 2 and is_empty_indexer(indexer[0], ser._values):
+   2090                     return ser._values.copy()
+-> 2091                 ser = ser.reindex(obj.axes[0][indexer[0]], copy=True)._values
+   2092 
+   2093                 # single indexer
+
+~/.local/lib/python3.9/site-packages/pandas/core/series.py in reindex(self, *args, **kwargs)
+   4670                 )
+   4671             kwargs.update({"index": index})
+-> 4672         return super().reindex(**kwargs)
+   4673 
+   4674     @deprecate_nonkeyword_arguments(version=None, allowed_args=["self", "labels"])
+
+~/.local/lib/python3.9/site-packages/pandas/core/generic.py in reindex(self, *args, **kwargs)
+   4964 
+   4965         # perform the reindex on the axes
+-> 4966         return self._reindex_axes(
+   4967             axes, level, limit, tolerance, method, fill_value, copy
+   4968         ).__finalize__(self, method="reindex")
+
+~/.local/lib/python3.9/site-packages/pandas/core/generic.py in _reindex_axes(self, axes, level, limit, tolerance, method, fill_value, copy)
+   4984 
+   4985             axis = self._get_axis_number(a)
+-> 4986             obj = obj._reindex_with_indexers(
+   4987                 {axis: [new_index, indexer]},
+   4988                 fill_value=fill_value,
+
+~/.local/lib/python3.9/site-packages/pandas/core/generic.py in _reindex_with_indexers(self, reindexers, fill_value, copy, allow_dups)
+   5030 
+   5031             # TODO: speed up on homogeneous DataFrame objects (see _reindex_multi)
+-> 5032             new_data = new_data.reindex_indexer(
+   5033                 index,
+   5034                 indexer,
+
+~/.local/lib/python3.9/site-packages/pandas/core/internals/managers.py in reindex_indexer(self, new_axis, indexer, axis, fill_value, allow_dups, copy, consolidate, only_slice, use_na_proxy)
+    677         # some axes don't allow reindexing with dups
+    678         if not allow_dups:
+--> 679             self.axes[axis]._validate_can_reindex(indexer)
+    680 
+    681         if axis >= self.ndim:
+
+~/.local/lib/python3.9/site-packages/pandas/core/indexes/base.py in _validate_can_reindex(self, indexer)
+   4105         # trying to reindex on an axis with duplicates
+   4106         if not self._index_as_unique and len(indexer):
+-> 4107             raise ValueError("cannot reindex on an axis with duplicate labels")
+   4108 
+   4109     def reindex(
+
+ValueError: cannot reindex on an axis with duplicate labels
+
+
+
+```
+
+
+
+Bard Reply:
+
+> The error message you are getting is saying that you cannot reindex a column
+> with duplicate labels. This is because Seaborn is trying to create a new
+> Series for each unique value in the iso2_code column, but there are duplicate
+> values in this column.
+
+> To fix this error, you need to remove the duplicate values from the iso2_code
+> column. You can do this using the drop_duplicates() method. For example:
+> Python
+
+harvest_demand = harvest_demand.drop_duplicates(subset="iso2_code")
+
+Use code with caution. Learn more
+
+> Once you have removed the duplicate values, you should be able to run the
+> relplot() function without any errors.
+
+> Here is the full code with the drop_duplicates() method added: Python
+
+    import seaborn as sns
+
+    harvest_demand = sns.load_dataset("harvest_demand")
+
+    harvest_demand = harvest_demand.drop_duplicates(subset="iso2_code")
+
+    g = sns.relplot(
+        data=harvest_demand,
+        x="year",
+        y="harvest_requested",
+        col="iso2_code",
+        hue="scenario",
+        kind="line",
+        col_wrap=4,
+        facet_kws={"sharey": False, "sharex": False},
+    )
+
+    g.set_titles(row_template="{row_name}", col_template="{col_name}")
+
+    g.fig.set_size_inches(20, 15)
+
+    g.fig.subplots_adjust(hspace=0.3)
+
+Use code with caution. Learn more
+
+This code should now run without any errors.
+
+
+GPT4 reply:
+
+
+### 1:1 line in comparison plot
+
+When x and y are supposed to be the same value but are not necessarily equal.
+Compare the x and y values on a scatter plot to a 1:1 line.
+
+    def comp_plot(df, x_var, y_var, title):
+        """Plot comparison for the given data frame"""
+        # Scatter plot
+        plt.scatter(df[x_var], df[y_var])
+        # 1:1 line
+        line = np.linspace(df[x_var].min(), df[x_var].max(), 100)
+        plt.plot(line, line, 'r--')
+        plt.xlabel(f'{x_var} additional text')
+        plt.ylabel(f'{y_var} additional text')
+        plt.title(title)
+        return plt
+
+Note on suggestions compared between Bard and Chat GPT-4 
+
+        # 1:1 line suggested by Bard
+        line_x = np.linspace(x.min(), x.max(), 100)
+        line_y = line_x
+        plt.plot(line_x, line_y, 'r--')
+
+        # 1:1 line suggested by GPT4 
+        # Wrong because max(x) is not necessarilty equal to max(y)
+        # same for min(x) and min(y).
+        plt.plot([min(x), max(x)], [min(y), max(y)], 'r')
+
+
+
