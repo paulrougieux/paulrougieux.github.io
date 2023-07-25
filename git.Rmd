@@ -611,6 +611,13 @@ extra spaces at the beginning and in the middle of some lines):
     git log --pretty=format:'%h,%an,%ad,"%s",' --shortstat --date=iso | paste - - - #> /tmp/gitlog.csv
 
 
+### Find last commit where a file was still present in the repository
+
+Show commits where a particular file was modified
+
+    git log --follow -- notebooks/wood/belarus_ukraine_russia/wood_bur_comtrade_monthly.Rmd
+
+
 ### Tig
 
 The tig utility is a repository browser for git log and git diff.
@@ -661,9 +668,36 @@ you want to achieve, press "escape", ":wq" and peform the git command on the sel
 
 See also :
 
- * Answers to a StackOverflow question  
-[How to modify a specified commit?](https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit).
- * [10 things I hate about git](https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/) Translation of the man page which he considers hard to understand: "git-rebase – Sequentially regenerate a series of commits so they can be applied directly to the head node"
+- Answers to a StackOverflow question  [How to modify a specified
+  commit?](https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit).
+
+- [10 things I hate about
+  git](https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/)
+  Translation of the man page which he considers hard to understand:
+  "git-rebase – Sequentially regenerate a series of commits so they can be
+  applied directly to the head node"
+
+
+### Rebase when a remote branch has diverged and there is a merge conflict
+
+You can either go through with the rebase and resolve the conflict. 
+In case you just want to get to the status of the remote branch
+
+Abort the Rebase:
+
+    git rebase --abort
+
+Reset the local branch 
+
+    git fetch origin
+    git reset --hard origin/main
+
+
+#### Merge conflict
+
+To keep only the version of their changes
+
+    git checkout --theirs .
 
 
 ### Git history when changing a licence
@@ -681,6 +715,10 @@ Remove all files also those not tracked by git because they are in .gitignore.
 For example output pdf files and auxiliary files generated from latex or from pandoc.
 
     git clean -xf
+
+Remove all files including directories
+
+    git clean -f -d
 
 Remove local (untracked) files from my current Git branch
 
@@ -877,6 +915,13 @@ the `#issue number` with the project name:
 
 > If they are not in the same group, you can add the full URL to the issue
 > (https://gitlab.com/<username>/<projectname>/-/issues/<xxx>).
+
+
+#### Duplicates
+
+To mark an issue as duplicate:
+
+    /duplicate #issue_number
 
 
 #### Issue priority triage

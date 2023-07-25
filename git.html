@@ -13,7 +13,7 @@
 
 <title>Git Commands</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -184,8 +184,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -193,16 +193,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -919,6 +912,14 @@ issue with extra spaces at the beginning and in the middle of some
 lines):</p>
 <pre><code>git log --pretty=format:&#39;%h,%an,%ad,&quot;%s&quot;,&#39; --shortstat --date=iso | paste - - - #&gt; /tmp/gitlog.csv</code></pre>
 </div>
+<div
+id="find-last-commit-where-a-file-was-still-present-in-the-repository"
+class="section level3">
+<h3>Find last commit where a file was still present in the
+repository</h3>
+<p>Show commits where a particular file was modified</p>
+<pre><code>git log --follow -- notebooks/wood/belarus_ukraine_russia/wood_bur_comtrade_monthly.Rmd</code></pre>
+</div>
 <div id="tig" class="section level3">
 <h3>Tig</h3>
 <p>The tig utility is a repository browser for git log and git diff.</p>
@@ -969,16 +970,34 @@ command you want to achieve, press “escape”, “:wq” and peform the git
 command on the selected commit.</p>
 <p>See also :</p>
 <ul>
-<li>Answers to a StackOverflow question<br />
-<a
+<li><p>Answers to a StackOverflow question <a
 href="https://stackoverflow.com/questions/1186535/how-to-modify-a-specified-commit">How
-to modify a specified commit?</a>.</li>
-<li><a
+to modify a specified commit?</a>.</p></li>
+<li><p><a
 href="https://stevebennett.me/2012/02/24/10-things-i-hate-about-git/">10
 things I hate about git</a> Translation of the man page which he
 considers hard to understand: “git-rebase – Sequentially regenerate a
-series of commits so they can be applied directly to the head node”</li>
+series of commits so they can be applied directly to the head
+node”</p></li>
 </ul>
+</div>
+<div
+id="rebase-when-a-remote-branch-has-diverged-and-there-is-a-merge-conflict"
+class="section level3">
+<h3>Rebase when a remote branch has diverged and there is a merge
+conflict</h3>
+<p>You can either go through with the rebase and resolve the conflict.
+In case you just want to get to the status of the remote branch</p>
+<p>Abort the Rebase:</p>
+<pre><code>git rebase --abort</code></pre>
+<p>Reset the local branch</p>
+<pre><code>git fetch origin
+git reset --hard origin/main</code></pre>
+<div id="merge-conflict" class="section level4">
+<h4>Merge conflict</h4>
+<p>To keep only the version of their changes</p>
+<pre><code>git checkout --theirs .</code></pre>
+</div>
 </div>
 <div id="git-history-when-changing-a-licence" class="section level3">
 <h3>Git history when changing a licence</h3>
@@ -997,6 +1016,8 @@ yet.</p>
 .gitignore. For example output pdf files and auxiliary files generated
 from latex or from pandoc.</p>
 <pre><code>git clean -xf</code></pre>
+<p>Remove all files including directories</p>
+<pre><code>git clean -f -d</code></pre>
 <p>Remove local (untracked) files from my current Git branch</p>
 <p>Show what will be deleted with the -n option:</p>
 <pre><code>git clean -f -n</code></pre>
@@ -1176,6 +1197,11 @@ prefix the <code>#issue number</code> with the project name:</p>
 issue (<a href="https://gitlab.com/"
 class="uri">https://gitlab.com/</a><username>/<projectname>/-/issues/<xxx>).</p>
 </blockquote>
+</div>
+<div id="duplicates" class="section level4">
+<h4>Duplicates</h4>
+<p>To mark an issue as duplicate:</p>
+<pre><code>/duplicate #issue_number</code></pre>
 </div>
 <div id="issue-priority-triage" class="section level4">
 <h4>Issue priority triage</h4>
