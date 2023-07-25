@@ -5,6 +5,7 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
 
+
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
@@ -37,6 +38,8 @@ Plugin 'dense-analysis/ale'
 " R programming
 Plugin 'jalvesaq/Nvim-R'
 Plugin 'jalvesaq/R-Vim-runtime'
+" Tests
+Plugin 'vim-test/vim-test'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -65,6 +68,9 @@ filetype plugin indent on    " required
 " Determine the type of the current file
 filetype on
 syntax enable
+
+" Set autocompletion to longest common string
+set wildmode=list:longest
 
 " change leader key from \ (the default) to ,
 let mapleader = ","
@@ -284,10 +290,17 @@ let g:jedi#popup_on_dot = 0
 " Disable call signatures
 let g:jedi#show_call_signatures = "0" 
 
-" Pytest
-nmap <silent><Leader>f <Esc>:Pytest file<CR>
-nmap <silent><Leader>c <Esc>:Pytest class<CR>
-nmap <silent><Leader>m <Esc>:Pytest method<CR>
+" Vim Test
+let g:test#python#pytest#executable = 'python3 -m pytest'
+let test#strategy = "make"
+" let test#strategy = "dispatch"
+nmap <silent> <leader>T :TestFile<CR>
+nmap <silent> <leader>a :TestSuite<CR>
+
+" Pytest TODO: delete if not used
+autocmd FileType python nmap <silent><Leader>f <Esc>:Pytest file<CR>
+autocmd FileType python nmap <silent><Leader>m <Esc>:Pytest method<CR>
+
 " Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
 " Specify which ALE linter is complaining
