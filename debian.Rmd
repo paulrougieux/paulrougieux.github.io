@@ -607,6 +607,8 @@ Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Li
     rm ~/downloads/pubkey
     wget https://zoom.us/linux/download/pubkey
     cat pubkey | gpg --import-options show-only --import
+    # Add the public key to the keyring
+    gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 59C86188E22ABB19BD5540477B04A1B8DD79B481
     gpg --verify zoom_amd64.deb
 
     # Install
@@ -681,20 +683,33 @@ session.
 
     - Based on this, I changed `dom.events.testing.asyncClipboard` to true in an
       attempt to enable pasting into a remote desktop session in Firefox. --> This
-      didn't work, reverted to false.
+      didn't work on its own.
 
 - Based on the Stackoverflow pages I also changed
 
     - `dom.events.asyncClipboard.readText` to true. --> This didn't work,
       reverted to false.
 
-    - `dom.events.asyncClipboard.clipboardItem` set to true --> This didn't work.
+    - `dom.events.asyncClipboard.clipboardItem` set to true
+
+Restarted the browser. After that it worked. It appears both
+`dom.events.testing.asyncClipboard` and
+`dom.events.asyncClipboard.clipboardItem` are needed for the copy paste to work
+from Firefox.
 
 Related pages:
 
-- https://stackoverflow.com/questions/71710391/firefox-paste-text-from-clipboard-into-input
+- Related bug on Mozilla.org https://bugzilla.mozilla.org/show_bug.cgi?id=1619947 that introduces the 
 
-- https://stackoverflow.com/questions/67440036/navigator-clipboard-readtext-is-not-working-in-firefox
+- W3C 2022 specification of a clipboard API that accesses data on the system
+  clipboard https://w3c.github.io/clipboard-apis/
+
+    > "Firefox now supports ClipboardItem behind the pref
+    > dom.events.asyncClipboard.clipboardItem"
+
+- SO Question https://stackoverflow.com/questions/71710391/firefox-paste-text-from-clipboard-into-input
+
+- SO Question https://stackoverflow.com/questions/67440036/navigator-clipboard-readtext-is-not-working-in-firefox
 
 
 # Gnome
