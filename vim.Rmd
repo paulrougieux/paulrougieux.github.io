@@ -623,6 +623,15 @@ markdown table):
     :'<,'>s/[^\|]/-/g
 
 
+### Confirm replacement
+
+Find and replace with confirmation
+
+    :%s/old/new/gc 
+
+Press `y` or `n` to confirm each replacement individually.
+
+
 ### Convert to lower-case
 
 [Switching case of characters](https://vim.fandom.com/wiki/Switching_case_of_characters):
@@ -1158,6 +1167,7 @@ Open the quickfix window with:
 
 The result of some search operation seach as grep can be displayed in the quick
 fix window.
+
 
 ## Tabs should be called workspaces
 
@@ -2203,7 +2213,7 @@ The output of these command may appear in a vim buffer, or it may appear in a
 terminal, depending on whether or not fugitive has a special way to handle the
 output of git.
 
-### Summary buffer
+### :G Summary buffer similar to git status
 
 You can also call the command alone to open a fugitive summary
 buffer:
@@ -2248,7 +2258,7 @@ changes (--ours) in the "Staged" section.
 
     X
 
-### X discard changes
+#### X discard changes
 
 The powerful X command led me to loose a bunch of changes.
 A help hint in the message bar says to use the following to recover one file
@@ -2259,9 +2269,19 @@ I managed to recover that test files.
 How do I find out about the other files deleted previously?
 
 
+#### cc commit
+
+When committing markdown file I like to get a summary of the modified titles as
+the long part of the commit message. Search pattern to look for modified titles
+of level 2 and more in the diff part of the fugitive git summary buffer
+accessible after pressing `i` on a file name:
+
+    :g/+##
+
+
 ### Git commands within vim
 
-Blame the current file
+Blame the current file in a left side split
 
     :G blame
 
@@ -2277,24 +2297,28 @@ It's defined in .vimrc as:
 
     command! Gwdiff vert term git diff --word-diff
 
+
 ## Navigate code with tags 
 
-Install [universal ctags](https://github.com/universal-ctags/ctags), the updated version
+### Universal Ctags
+
+Install [universal ctags](https://github.com/universal-ctags/ctags). This is an
+updated version exuberant ctags (not updated since 2009):
 
     sudo apt install universal-ctags
 
-This is an updated version exuberant ctags (not updated since 2009).
+Define tags in a python repository
 
-I have defined shortcuts for the French AZERTY keyboard. I use `ctrl %` to jump to a
-tag, because it's besides the letter M, accessible with the little finger.
+    ctags -R
+
+- I have defined shortcuts for the French AZERTY keyboard. I use `ctrl %` to
+  jump to a tag, because it's besides the letter M, accessible with the little
+  finger.
+
+- Help page on tags for NvimR `:help RBuildTags`
 
 - Reddit [comparison of taglist and
   tagbar](https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/)
-
-Help page for NvimR
-```
-:help RBuildTags
-```
 
 
 ### Taglist 
@@ -2303,16 +2327,17 @@ Install the taglist plugin with vundle
 
     Plugin 'yegappan/taglist'
 
-[taglist manual](http://vim-taglist.sourceforge.net/manual.html#taglist-internet)
+- [taglist manual](http://vim-taglist.sourceforge.net/manual.html#taglist-internet)
 
-> "You can open the taglist window using the ":TlistOpen" or the ":TlistToggle"
-> commands. The ":TlistOpen" command opens the taglist window and jumps to it.
-> The ":TlistToggle" command opens or closes (toggle) the taglist window and the
-> cursor remains in the current window."
+    > "You can open the taglist window using the ":TlistOpen" or the ":TlistToggle"
+    > commands. The ":TlistOpen" command opens the taglist window and jumps to it.
+    > The ":TlistToggle" command opens or closes (toggle) the taglist window and the
+    > cursor remains in the current window."
 
 Help:
 
     :help taglist-intro
+
 
 ### Tagbar 
 
@@ -2338,6 +2363,7 @@ Here are the settings I used when I tried tagbar:
     let g:tagbar_left = 1
     " Place lines closer together
     let g:tagbar_compact = 1
+
 
 ## Slime to send code to a target terminal
 
@@ -2417,6 +2443,33 @@ Test results appear in the quick fix window.
 
 [pytest vim](https://github.com/alfredodeza/pytest.vim)
 Run pytest from within vim. 
+
+
+### Pytest vim (not used)
+
+I put the following options in the .vimrc
+
+    " Pytest
+    nmap <silent><Leader>f <Esc>:Pytest file<CR>
+    nmap <silent><Leader>c <Esc>:Pytest class<CR>
+    nmap <silent><Leader>m <Esc>:Pytest method<CR>
+
+
+### Vim test
+
+Keyboard mapping defined in `.vimrc`:
+
+    nmap <silent> <leader>T :TestFile<CR>
+    nmap <silent> <leader>a :TestSuite<CR>
+
+Define strategies to send the test output
+
+    let test#strategy = "make"
+    " let test#strategy = "dispatch"
+
+Use `:copen` to display a quickfix window.
+
+
 
 
 # Terminal interaction

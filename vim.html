@@ -13,7 +13,7 @@
 
 <title>Vim Commands</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -184,8 +184,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -193,16 +193,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -967,6 +960,13 @@ characters enclosed in brackets.”</p>
 <p>For example to replace all characters but the pipe (to create a
 separation in a markdown table):</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/[^\|]/-/g</code></pre>
+</div>
+<div id="confirm-replacement" class="section level3">
+<h3>Confirm replacement</h3>
+<p>Find and replace with confirmation</p>
+<pre><code>:%s/old/new/gc </code></pre>
+<p>Press <code>y</code> or <code>n</code> to confirm each replacement
+individually.</p>
 </div>
 <div id="convert-to-lower-case" class="section level3">
 <h3>Convert to lower-case</h3>
@@ -2319,8 +2319,8 @@ be used run any git command, such as:</p>
 <p>The output of these command may appear in a vim buffer, or it may
 appear in a terminal, depending on whether or not fugitive has a special
 way to handle the output of git.</p>
-<div id="summary-buffer" class="section level3">
-<h3>Summary buffer</h3>
+<div id="g-summary-buffer-similar-to-git-status" class="section level3">
+<h3>:G Summary buffer similar to git status</h3>
 <p>You can also call the command alone to open a fugitive summary
 buffer:</p>
 <pre><code>:G</code></pre>
@@ -2347,9 +2347,8 @@ can use this during a merge conflict do discard “our” changes (–theirs)
 in the “Unstaged” section or discard “their” changes (–ours) in the
 “Staged” section.</p>
 <pre><code>X</code></pre>
-</div>
-<div id="x-discard-changes" class="section level3">
-<h3>X discard changes</h3>
+<div id="x-discard-changes" class="section level4">
+<h4>X discard changes</h4>
 <p>The powerful X command led me to loose a bunch of changes. A help
 hint in the message bar says to use the following to recover one
 file</p>
@@ -2357,9 +2356,19 @@ file</p>
 <p>I managed to recover that test files. How do I find out about the
 other files deleted previously?</p>
 </div>
+<div id="cc-commit" class="section level4">
+<h4>cc commit</h4>
+<p>When committing markdown file I like to get a summary of the modified
+titles as the long part of the commit message. Search pattern to look
+for modified titles of level 2 and more in the diff part of the fugitive
+git summary buffer accessible after pressing <code>i</code> on a file
+name:</p>
+<pre><code>:g/+##</code></pre>
+</div>
+</div>
 <div id="git-commands-within-vim" class="section level3">
 <h3>Git commands within vim</h3>
-<p>Blame the current file</p>
+<p>Blame the current file in a left side split</p>
 <pre><code>:G blame</code></pre>
 <p>Git log of the current file only</p>
 <pre><code>:G log %</code></pre>
@@ -2372,26 +2381,31 @@ an alias to display a word diff</p>
 </div>
 <div id="navigate-code-with-tags" class="section level2">
 <h2>Navigate code with tags</h2>
+<div id="universal-ctags" class="section level3">
+<h3>Universal Ctags</h3>
 <p>Install <a href="https://github.com/universal-ctags/ctags">universal
-ctags</a>, the updated version</p>
+ctags</a>. This is an updated version exuberant ctags (not updated since
+2009):</p>
 <pre><code>sudo apt install universal-ctags</code></pre>
-<p>This is an updated version exuberant ctags (not updated since
-2009).</p>
-<p>I have defined shortcuts for the French AZERTY keyboard. I use
-<code>ctrl %</code> to jump to a tag, because it’s besides the letter M,
-accessible with the little finger.</p>
+<p>Define tags in a python repository</p>
+<pre><code>ctags -R</code></pre>
 <ul>
-<li>Reddit <a
+<li><p>I have defined shortcuts for the French AZERTY keyboard. I use
+<code>ctrl %</code> to jump to a tag, because it’s besides the letter M,
+accessible with the little finger.</p></li>
+<li><p>Help page on tags for NvimR
+<code>:help RBuildTags</code></p></li>
+<li><p>Reddit <a
 href="https://www.reddit.com/r/vim/comments/s0j8v/what_plugin_is_used_on_the_topright_of_this/">comparison
-of taglist and tagbar</a></li>
+of taglist and tagbar</a></p></li>
 </ul>
-<p>Help page for NvimR</p>
-<pre><code>:help RBuildTags</code></pre>
+</div>
 <div id="taglist" class="section level3">
 <h3>Taglist</h3>
 <p>Install the taglist plugin with vundle</p>
 <pre><code>Plugin &#39;yegappan/taglist&#39;</code></pre>
-<p><a
+<ul>
+<li><p><a
 href="http://vim-taglist.sourceforge.net/manual.html#taglist-internet">taglist
 manual</a></p>
 <blockquote>
@@ -2400,7 +2414,8 @@ manual</a></p>
 window and jumps to it. The “:TlistToggle” command opens or closes
 (toggle) the taglist window and the cursor remains in the current
 window.”</p>
-</blockquote>
+</blockquote></li>
+</ul>
 <p>Help:</p>
 <pre><code>:help taglist-intro</code></pre>
 </div>
@@ -2493,6 +2508,24 @@ with pytest and other testing suites for many languages. Test results
 appear in the quick fix window.</p>
 <p><a href="https://github.com/alfredodeza/pytest.vim">pytest vim</a>
 Run pytest from within vim.</p>
+<div id="pytest-vim-not-used" class="section level3">
+<h3>Pytest vim (not used)</h3>
+<p>I put the following options in the .vimrc</p>
+<pre><code>&quot; Pytest
+nmap &lt;silent&gt;&lt;Leader&gt;f &lt;Esc&gt;:Pytest file&lt;CR&gt;
+nmap &lt;silent&gt;&lt;Leader&gt;c &lt;Esc&gt;:Pytest class&lt;CR&gt;
+nmap &lt;silent&gt;&lt;Leader&gt;m &lt;Esc&gt;:Pytest method&lt;CR&gt;</code></pre>
+</div>
+<div id="vim-test" class="section level3">
+<h3>Vim test</h3>
+<p>Keyboard mapping defined in <code>.vimrc</code>:</p>
+<pre><code>nmap &lt;silent&gt; &lt;leader&gt;T :TestFile&lt;CR&gt;
+nmap &lt;silent&gt; &lt;leader&gt;a :TestSuite&lt;CR&gt;</code></pre>
+<p>Define strategies to send the test output</p>
+<pre><code>let test#strategy = &quot;make&quot;
+&quot; let test#strategy = &quot;dispatch&quot;</code></pre>
+<p>Use <code>:copen</code> to display a quickfix window.</p>
+</div>
 </div>
 </div>
 <div id="terminal-interaction" class="section level1">
