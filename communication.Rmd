@@ -79,7 +79,26 @@ Why has development stopped? According to wikipedia, the original developer
 [Damien Sandras](https://en.wikipedia.org/wiki/Damien_Sandras) is now working
 for be.ip on open source voip software. 
 
-## Element matrix
+
+## Matrix
+
+- https://matrix.org/about/
+
+> "Matrix is an open protocol for decentralised, secure communications."
+
+> - People should have full control over their own communication.
+
+> - People should not be locked into centralised communication silos, but
+>   instead be free to pick who they choose to host their communication without
+>   limiting who they can reach.
+
+> - The ability to converse securely and privately is a basic human right.
+
+> - Communication should be available to everyone as a free and open,
+>   unencumbered, standard and global network.
+
+
+### Element
 
 [Element](https://element.io/get-started), previously called Riot-web is a chat
 application based on the matrix decentralised communication protocol. Matrix is
@@ -91,6 +110,10 @@ Based on the Double Ratchet Cryptographic library called
 doubleratchet](https://whispersystems.org/docs/specifications/doubleratchet/)
 which now redirects to
 [signal.org doubleratchet](https://signal.org/docs/specifications/doubleratchet/).
+
+### Gitter
+
+- https://gitter.im/
 
 
 ## Jami
