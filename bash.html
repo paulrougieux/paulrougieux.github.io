@@ -13,7 +13,7 @@
 
 <title>Bash Commands</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -29,14 +29,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -184,8 +184,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -193,16 +193,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -704,19 +697,33 @@ class="uri">https://github.com/statox/dotfiles/blob/master/bash_aliases</a></p>
 <p>Reload bash aliases:</p>
 <pre><code>source ~/.bashrc</code></pre>
 </div>
-<div id="profile-.bash_profile-and-.bashrc" class="section level2">
-<h2>Profile .bash_profile and .bashrc</h2>
-<p>These are places where a user can turn of the system BEEP :</p>
-<pre><code>setterm -blength 0</code></pre>
+<div id="bash_profile-.bashrc-and-.bash_aliases" class="section level2">
+<h2>.bash_profile, .bashrc and .bash_aliases</h2>
+<ul>
+<li><p>I have chosen to define all aliases and environment variables in
+<code>.bash_aliases</code></p></li>
+<li><p>I keep <code>.bashrc</code> for other stuff</p></li>
+</ul>
 <p>.bash_profile is executed on login shell, when you login in another
 tty or when you access a system through ssh. .bashrc is executed on
 non-login shells when you open a terminal window in Gnome.</p>
+<p>My <code>.bash_profile</code> loads <code>.bash_aliases</code> as
+follows:</p>
+<pre><code>if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi</code></pre>
 <p>Debian Dotfiles</p>
 <pre><code>&quot;Now, since bash is being invoked as a login shell (with name &quot;-bash&quot;, a special ancient hack), it reads /etc/profile first. Then it looks in your home directory for .bash_profile, and if it finds it, it reads that.&quot;
 
 [...] &quot;You may have noted that .bashrc is not being read in this situation. You should therefore always have command source ~/.bashrc at the end of your .bash_profile in order to force it to be read by a login shell.  &quot;</code></pre>
 <p>In .bashrc a user can set environment variables, define alias (see
 above).</p>
+</div>
+<div id="turn-off-system-beep" class="section level2">
+<h2>Turn off system beep</h2>
+<p>Enter the following in .bash_profile or .bashrc to turn of the system
+BEEP :</p>
+<pre><code>setterm -blength 0</code></pre>
 </div>
 </div>
 <div id="download" class="section level1">
@@ -818,7 +825,9 @@ in a new folder</p>
 mogrify -resize 2000 -path ./small *.jpg
 mogrify -resize 2000 -path ./small *.jpeg
 mogrify -resize 2000 -path ./small/ *.JPG
-mogrify -resize 2000 -type Grayscale -path ./small *.jpg</code></pre>
+mogrify -resize 2000 -type Grayscale -path ./small *.jpg
+# Convert iphone HEIC pictures to jpg in smaller format
+mogrify -resize 2000 -path ./small -format jpg *.HEIC</code></pre>
 </div>
 <div id="convert-1" class="section level3">
 <h3>Convert</h3>
@@ -911,6 +920,31 @@ pdf</a></p>
 Linux and Unix answer</a>:</p>
 <pre><code>pdftk input.pdf cat 1-endwest output output.pdf
 pdftk input.pdf cat 1-endwest output output.pdf</code></pre>
+</div>
+<div id="reduce-pdf-size-lower-image-resolution" class="section level3">
+<h3>Reduce pdf size (lower image resolution)</h3>
+<p>Resize all images in input.pdf for screen viewing <code>screen</code>
+(low resolution), <code>ebook</code> (slightly higher resolution) or
+printing <code>printer</code> (higher resolution):</p>
+<pre><code>gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+# Preferred setting ebook:
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf</code></pre>
+<p>Example size reduction on a pdf with 4 figures. The input pdf file
+had an unusually large size (12Mb). File size of the output files with
+comments:</p>
+<ul>
+<li><p>289K output_screen.pdf One of the images, a map, is really
+pixelised. Bar charts look fine.</p></li>
+<li><p>401K output_ebook.pdf the map looks better on screen at this
+resolution.</p></li>
+<li><p>625K output_printer.pdf it is hard to notice the difference
+between the map at this resolution and the map from the ebook format.
+Probably because the original map in the paper was pixelized
+anyway.</p></li>
+</ul>
+<p>Based on this quick assessment, <code>ebook</code> seems to be a good
+compromise in terms of file size and image resolution.</p>
 </div>
 <div id="split-pdf" class="section level3">
 <h3>Split PDF</h3>
@@ -1022,7 +1056,8 @@ href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
 <div id="environment-variables" class="section level1">
 <h1>Environment variables</h1>
 <p>Environment variables are the way the tell processes where resources
-are located. For example</p>
+are located.</p>
+<p>For example</p>
 <pre><code>export PYTHONPATH=&quot;$HOME/repos/biotrade/&quot;:$PYTHONPATH</code></pre>
 <p>Tells python where the biotrade package is located.</p>
 <p>PostGreSQL utilities <code>createuser</code> and
@@ -1033,6 +1068,11 @@ following environment variable beforehand:</p>
 inside a postgresql docker container</p>
 <pre><code>POSTGRES_USER=user_name
 POSTGRES_PASS=password</code></pre>
+<p>To display an environment variable in bash</p>
+<pre><code>echo $VAR_NAME</code></pre>
+<p>To remove an environment variable (without the <code>$</code> sign)
+in bash</p>
+<pre><code>unset VAR_NAME</code></pre>
 </div>
 <div id="find" class="section level1">
 <h1>Find</h1>
@@ -1251,11 +1291,12 @@ ls *.pdf |xargs -L 1 open</code></pre>
 <div id="rsync" class="section level2">
 <h2>Rsync</h2>
 <p>Copy a folder and all it’s content to a remote server:</p>
-<pre><code>rsync -zav ~/repos/forobs/tradetools/ edartrade:repos/tradetools/</code></pre>
+<pre><code>rsync -zav ~/repos/forobs/tradetools/ edartrade:repos/tradetools/
+rsync -zav ~/repos/forobs/tradetools edartrade:repos</code></pre>
 <p>Note the slash at the end of the first repo is very important, other
 wise it crease a sub repos with the same name inside
-<code>edartrade</code> on the remote machine. More explanations on the
-section slashes.</p>
+<code>edartrade</code> on the remote machine. More explanations for the
+second command on the section “slash or no slash”.</p>
 <p>Rsync man page:</p>
 <blockquote>
 <p>Rsync is a fast and extraordinarily versatile file copying tool. It
@@ -2288,6 +2329,13 @@ size</p>
 the command: sudo parted /dev/mmcblk0 # then: print</p>
 <p>This will print the type (primary or logical) of the partition.</p>
 </div>
+</div>
+<div id="processors" class="section level2">
+<h2>Processors</h2>
+<p>Print the number of processors available</p>
+<pre><code>nproc</code></pre>
+<p>Print CPU architecture</p>
+<pre><code>lscpu</code></pre>
 </div>
 <div id="user-activity" class="section level2">
 <h2>User activity</h2>

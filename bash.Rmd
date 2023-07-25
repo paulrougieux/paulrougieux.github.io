@@ -322,13 +322,19 @@ Reload bash aliases:
     source ~/.bashrc
 
 
-## Profile .bash_profile and .bashrc
+## .bash_profile, .bashrc and .bash_aliases
 
-These are places where a user can turn of the system BEEP :
+- I have chosen to define all aliases and environment variables in `.bash_aliases`
 
-    setterm -blength 0
+- I keep `.bashrc` for other stuff
 
 .bash_profile is executed on login shell, when you login in another tty or when you access a system through ssh. .bashrc is executed on non-login shells when you open a terminal window in Gnome.
+
+My `.bash_profile` loads `.bash_aliases` as follows:
+
+    if [ -f ~/.bash_aliases ]; then
+        . ~/.bash_aliases
+    fi
 
 Debian Dotfiles
 
@@ -338,6 +344,12 @@ Debian Dotfiles
 
 In .bashrc a user can set environment variables, define alias (see above).
 
+
+## Turn off system beep
+
+Enter the following in .bash_profile or .bashrc to turn of the system BEEP :
+
+    setterm -blength 0
 
 
 # Download 
@@ -463,6 +475,8 @@ Batch processing, resize all jpg images and place the resized images in a new fo
     mogrify -resize 2000 -path ./small *.jpeg
     mogrify -resize 2000 -path ./small/ *.JPG
     mogrify -resize 2000 -type Grayscale -path ./small *.jpg
+    # Convert iphone HEIC pictures to jpg in smaller format
+    mogrify -resize 2000 -path ./small -format jpg *.HEIC
 
 
 ### Convert
@@ -581,6 +595,32 @@ answer](https://unix.stackexchange.com/a/394068):
 
     pdftk input.pdf cat 1-endwest output output.pdf
     pdftk input.pdf cat 1-endwest output output.pdf
+
+
+### Reduce pdf size (lower image resolution)
+
+Resize all images in input.pdf for screen viewing `screen` (low resolution),
+`ebook` (slightly higher resolution) or printing `printer` (higher resolution):
+
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/screen -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+    # Preferred setting ebook:
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/printer -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+
+Example size reduction on a pdf with 4 figures. The input pdf file had an
+unusually large size (12Mb). File size of the output files with comments:
+
+- 289K output_screen.pdf One of the images, a map, is really pixelised. Bar
+  charts look fine.
+
+- 401K output_ebook.pdf the map looks better on screen at this resolution.
+
+- 625K output_printer.pdf it is hard to notice the difference between the map
+  at this resolution and the map from the ebook format. Probably because the
+  original map in the paper was pixelized anyway.
+
+Based on this quick assessment, `ebook` seems to be a good compromise in terms
+of file size and image resolution.
 
 
 ### Split PDF
@@ -702,6 +742,7 @@ To add a small unit of work in the Kitchen project:
 # Environment variables
 
 Environment variables are the way the tell processes where resources are located.
+
 For example 
 
     export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
@@ -718,6 +759,14 @@ inside a postgresql docker container
 
     POSTGRES_USER=user_name
     POSTGRES_PASS=password
+
+To display an environment variable in bash
+
+    echo $VAR_NAME
+
+To remove an environment variable (without the `$` sign) in bash
+
+    unset VAR_NAME
 
 
 # Find
@@ -1020,10 +1069,11 @@ To copy a file from /tmp/file.md to /tmp/file2.md
 Copy a folder and all it's content to a remote server:
 
     rsync -zav ~/repos/forobs/tradetools/ edartrade:repos/tradetools/
+    rsync -zav ~/repos/forobs/tradetools edartrade:repos
 
 Note the slash at the end of the first repo is very important, other wise it
 crease a sub repos with the same name inside `edartrade` on the remote machine.
-More explanations on the section slashes.
+More explanations for the second command on the section "slash or no slash".
 
 Rsync man page:
 
@@ -2151,6 +2201,18 @@ To see if a partition is primary, use the command:
     print
 
 This will print the type (primary or logical) of the partition.
+
+
+## Processors
+
+Print the number of processors available
+
+    nproc
+
+Print CPU architecture
+
+    lscpu
+
 
 ## User activity
 
