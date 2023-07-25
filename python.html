@@ -15,7 +15,7 @@
 
 <title>Python Commands</title>
 
-<script src="site_libs/header-attrs-2.16/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -31,14 +31,14 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
-<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
 <link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
 <script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -186,8 +186,8 @@ $(document).ready(function () {
   border-radius: 4px;
 }
 
-.tabset-dropdown > .nav-tabs > li.active:before {
-  content: "";
+.tabset-dropdown > .nav-tabs > li.active:before, .tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "\e259";
   font-family: 'Glyphicons Halflings';
   display: inline-block;
   padding: 10px;
@@ -195,16 +195,9 @@ $(document).ready(function () {
 }
 
 .tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
-  content: "&#xe258;";
-  border: none;
-}
-
-.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
-  content: "";
+  content: "\e258";
   font-family: 'Glyphicons Halflings';
-  display: inline-block;
-  padding: 10px;
-  border-right: 1px solid #ddd;
+  border: none;
 }
 
 .tabset-dropdown > .nav-tabs > li.active {
@@ -454,8 +447,8 @@ div.tocify {
 </div>
 
 
-<div id="packages" class="section level1">
-<h1>Packages</h1>
+<div id="aa-packages" class="section level1">
+<h1>AA Packages</h1>
 <div id="install-with-pip" class="section level2">
 <h2>Install with Pip</h2>
 <p>pypi.org <a href="https://pypi.org/project/pip/">pip</a>:</p>
@@ -531,6 +524,11 @@ error message:</p>
 href="https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html">authentication
 token</a></p>
 <pre><code>pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev</code></pre>
+<p>Install that doesn’t require git:</p>
+<pre><code>pip install --force-reinstall https://github.com/ytdl-org/youtube-dl/archive/refs/heads/master.tar.gz</code></pre>
+<p><a
+href="https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-from-pypi">Installing
+from Pypi</a></p>
 </div>
 </div>
 <div id="install-with-anaconda" class="section level2">
@@ -629,6 +627,18 @@ packages</a></p>
 </blockquote>
 <pre><code>conda update conda</code></pre>
 </div>
+<div id="remove" class="section level3">
+<h3>Remove</h3>
+<ul>
+<li><a
+href="https://docs.conda.io/projects/conda/en/latest/commands/remove.html"
+class="uri">https://docs.conda.io/projects/conda/en/latest/commands/remove.html</a></li>
+</ul>
+<p>Remove the package ‘scipy’ from the currently-active environment:</p>
+<pre><code>conda remove scipy</code></pre>
+<p>Remove a list of packages from an environemnt ‘myenv’:</p>
+<pre><code>conda remove -n myenv scipy curl wheel</code></pre>
+</div>
 <div id="environment-file" class="section level3">
 <h3>Environment file</h3>
 <p>Creating an environment file manually</p>
@@ -668,6 +678,17 @@ cancel if you can’t use kde wallet, it will then ask for the password at
 the command line. There is a <a
 href="https://github.com/pypa/twine/issues/338">twine issue related to
 the use of keyring</a>.</p>
+<p>Register an account on pypi (it’s a different server than test.pypi).
+Create a token under account settings. Then upload to pypi itself</p>
+<pre><code>cd repository
+python3 -m build
+twine upload dist/*</code></pre>
+<p>To use the API token:</p>
+<pre><code>Set your username to __token__
+Set your password to the token value, including the pypi- prefix</code></pre>
+</div>
+<div id="test-install-in-a-virtual-environment" class="section level3">
+<h3>Test install in a virtual environment</h3>
 <p>In bash, create a virtual environment to test installation and remove
 the python path otherwise my local version is seen</p>
 <pre><code>mkdir /tmp/biotrade_env/
@@ -686,14 +707,11 @@ python3</code></pre>
 <p>Installing biotrade’s dependencies directly generates an error
 because pandas is not available in the test repository. You can install
 them from the pypi directly with <code>pip install pandas</code>.</p>
-<p>Register an account on pypi (it’s a different server than test.pypi).
-Create a token under account settings. Then upload to pypi itself</p>
-<pre><code>cd repository
-python3 -m build
-twine upload dist/*</code></pre>
-<p>To use the API token:</p>
-<pre><code>Set your username to __token__
-Set your password to the token value, including the pypi- prefix</code></pre>
+<p>Install from a wheel</p>
+<pre><code>cd ~/repos/forobs/biotrade/dist
+pip install biotrade-0.2.2-py3-none-any.whl
+# Or 
+pip install biotrade-0.2.2.tar.gz</code></pre>
 </div>
 <div id="publish-to-conda-forge" class="section level3">
 <h3>Publish to Conda Forge</h3>
@@ -840,6 +858,18 @@ generate the documentation on a Continuous Integration system:</p>
   interruptible: true</code></pre>
 </div>
 </div>
+<div id="packaging-tools" class="section level3">
+<h3>Packaging tools</h3>
+<ul>
+<li><p><a href="https://flit.pypa.io/en/latest/rationale.html"
+class="uri">https://flit.pypa.io/en/latest/rationale.html</a></p>
+<blockquote>
+<p>” The existence of Flit spurred the development of new standards,
+like PEP 518 and PEP 517, which are now used by other packaging tools
+such as Poetry and Enscons.”</p>
+</blockquote></li>
+</ul>
+</div>
 </div>
 <div id="location-or-path" class="section level2">
 <h2>Location or path</h2>
@@ -870,12 +900,6 @@ available by default in Python 3.3+</p>
 <li><p>Installation</p>
 <p>sudo apt install python3-venv</p></li>
 <li><p>Usage</p>
-<p>python3 -m venv</p>
-<DIR>
-<p>source</p>
-<DIR>
-<p>/bin/activate</p></li>
-<li><p>for example</p>
 <p>mkdir /tmp/testenv cd /tmp/testenv python3 -m venv /tmp/testenv
 source bin/activate</p></li>
 </ul></li>
@@ -915,6 +939,42 @@ environment you can also install different packages with pip.</p></li>
 <li><p>Illustration of the complementarity between pyenv and
 pipenv.</p></li>
 </ul>
+<div id="remove-environment-variables" class="section level3">
+<h3>Remove environment variables</h3>
+<p>To test a fresh install of a package or test it in conditions where
+some environmental variables are not defined.</p>
+<p>For example remove environment variables with <code>unset</code>.</p>
+<pre><code>unset BIOTRADE_DATABASE_URL</code></pre>
+</div>
+</div>
+</div>
+<div id="applications" class="section level1">
+<h1>Applications</h1>
+<ul>
+<li>towardsdatascience.com <a
+href="https://towardsdatascience.com/plotly-dash-vs-streamlit-which-is-the-best-library-for-building-data-dashboard-web-apps-97d7c98b938c">Plotly
+Dash versus Streamlit</a></li>
+</ul>
+<div id="streamlit" class="section level2">
+<h2>Streamlit</h2>
+<p>Example application with select boxes and a slider. Use the
+<code>index</code> argument to select a default value.</p>
+<pre><code>import streamlit
+reporter = streamlit.sidebar.selectbox(
+    &quot;Select a reporter Country&quot;, options=df[&quot;reporter&quot;].unique()
+)
+products = streamlit.sidebar.multiselect(
+    &quot;Select some products&quot;, options=df[&quot;product_name&quot;].unique()
+)
+element = streamlit.sidebar.selectbox(
+    &quot;Select a variable for the Y Axis&quot;, options=[&quot;net_weight&quot;, &quot;price&quot;, &quot;trade_value&quot;]
+)
+flow = streamlit.sidebar.selectbox(
+    &quot;Select a flow direction&quot;, options=[&quot;import&quot;, &quot;export&quot;]
+)
+n_partners = streamlit.sidebar.slider(
+    &quot;Select N First Partners&quot;, min_value=1, max_value=10, value=5
+)</code></pre>
 </div>
 </div>
 <div id="compilers" class="section level1">
@@ -1006,6 +1066,20 @@ $ python3 prog.py 4 -v 3
 explains that when using <strong>ipython</strong>, you need to separate
 ipython arguments from your script arguments using <code>--</code>.</p>
 </div>
+<div id="other-command-line-tools" class="section level2">
+<h2>Other command line tools</h2>
+<ul>
+<li><p><a href="https://www.pyinvoke.org/"
+class="uri">https://www.pyinvoke.org/</a></p></li>
+<li><p><a href="https://click.palletsprojects.com/en/8.1.x/"
+class="uri">https://click.palletsprojects.com/en/8.1.x/</a></p></li>
+<li><p><a href="http://docopt.org/"
+class="uri">http://docopt.org/</a></p></li>
+</ul>
+<p>Click looks like a rising star <a
+href="https://star-history.com/#docopt/docopt&amp;pallets/click&amp;pyinvoke/invoke&amp;Date"
+class="uri">https://star-history.com/#docopt/docopt&amp;pallets/click&amp;pyinvoke/invoke&amp;Date</a></p>
+</div>
 </div>
 <div id="databases" class="section level1">
 <h1>Databases</h1>
@@ -1071,6 +1145,48 @@ inspector.has_table(&#39;user&#39;)</code></pre>
 <p>You can also use the <code>user_table</code> metadata element
 <code>name</code> to check if it exists as such:</p>
 <pre><code>inspector.has_table(user_table.name)</code></pre>
+</div>
+<div id="connection" class="section level3">
+<h3>Connection</h3>
+<p>Create a connection and execute a select statement, it’s a read only
+operation</p>
+<p>Create a connection and execute a create statement followed by a
+commit:</p>
+<pre><code>with engine.connect() as conn:
+    if not engine.dialect.has_schema(conn, schema):
+        conn.execute(CreateSchema(schema))
+        conn.commit()</code></pre>
+</div>
+<div id="migration-to-version-2" class="section level3">
+<h3>Migration to version 2</h3>
+<ul>
+<li><p><a
+href="https://docs.sqlalchemy.org/en/14/changelog/migration_20.html"
+class="uri">https://docs.sqlalchemy.org/en/14/changelog/migration_20.html</a></p>
+<blockquote>
+<p>“As a means of both proving the 2.0 architecture as well as allowing
+a fully iterative transition environment, the entire scope of 2.0’s new
+APIs and features are present and available within the 1.4 series;”</p>
+</blockquote></li>
+<li><p><a
+href="https://docs.sqlalchemy.org/en/14/changelog/migration_20.html#migration-20-implicit-execution"
+class="uri">https://docs.sqlalchemy.org/en/14/changelog/migration_20.html#migration-20-implicit-execution</a></p>
+<blockquote>
+<p>“For schema level patterns, explicit use of an Engine or Connection
+is required.”</p>
+</blockquote>
+<p>with engine.connect() as connection: # create tables, requires
+explicit begin and/or commit: with connection.begin():
+metadata_obj.create_all(connection)</p>
+<pre><code>  # reflect all tables
+  metadata_obj.reflect(connection)
+
+  # reflect individual table
+  t = Table(&quot;t&quot;, metadata_obj, autoload_with=connection)
+
+  # execute SQL statements
+  result = conn.execute(t.select())</code></pre></li>
+</ul>
 </div>
 <div id="orm-querying-guide" class="section level3">
 <h3>ORM querying guide</h3>
@@ -1377,15 +1493,21 @@ type(iter)
 </div>
 <div id="list" class="section level3">
 <h3>List</h3>
+<p>Create a list</p>
+<pre><code>l1 = [1, 2, 3]
+l2 = [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;]</code></pre>
+<p>Create a list of strings using split (seen in <a
+href="https://stackoverflow.com/a/52110266/2641825">this answer</a>)</p>
+<pre><code>&quot;slope, intercept, r_value, p_value, std_err&quot;.split(&quot;, &quot;)</code></pre>
+<div id="remove-an-item-from-a-list" class="section level4">
+<h4>Remove an item from a list</h4>
 <p><a href="https://stackoverflow.com/a/31077838/2641825">Remove an
 element from a list of strings</a></p>
 <pre><code>myList = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
 myList.remove(&#39;c&#39;)
 myList
 [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;]</code></pre>
-<p>Create a list of strings using split (seen in <a
-href="https://stackoverflow.com/a/52110266/2641825">this answer</a>)</p>
-<pre><code>&quot;slope, intercept, r_value, p_value, std_err&quot;.split(&quot;, &quot;)</code></pre>
+</div>
 <div id="list-of-tuples" class="section level4">
 <h4>List of tuples</h4>
 <p><a
@@ -1408,15 +1530,47 @@ flat_list
 </div>
 <div id="set-operations" class="section level3">
 <h3>Set operations</h3>
+<div id="difference-between-sets" class="section level4">
+<h4>Difference between sets</h4>
+<p>Difference between two sets:</p>
+<pre><code>set1 = {1,2,3}
+set2 = {2,3,4}
+set1 - set2
+# {1}
+set2 - set1
+# {4}</code></pre>
+</div>
+<div id="intersection-and-common-set-elements" class="section level4">
+<h4>Intersection and common set elements</h4>
+<p>Return a new set with elements common to the set and all others.</p>
+<pre><code>intersection(*others)
+set &amp; other &amp; ...
+
+bli = {1,2,3}
+bli.intersection({1,2})
+# {1, 2}
+bli.intersection({1,2}, {1})
+
+difference(*others)
+set - other - ...
+
+    Return a new set with elements in the set that are not in the others.
+
+symmetric_difference(other)
+set ^ other
+
+    Return a new set with elements in either the set or other but not both.</code></pre>
+</div>
+<div id="subset-and-superset" class="section level4">
+<h4>Subset and superset</h4>
 <p>Instances of <a
 href="https://docs.python.org/3/library/stdtypes.html#set">set</a>
 provide the following operations:</p>
 <pre><code>issubset(other)
-set &lt;= other
-
-    Test whether every element in the set is in other.</code></pre>
-<p>For example <a href="https://stackoverflow.com/a/3931655/2641825">SO
-answer using issubset</a></p>
+set &lt;= other</code></pre>
+<p>Test whether every element in the set is in other. For example <a
+href="https://stackoverflow.com/a/3931655/2641825">SO answer using
+issubset</a></p>
 <pre><code>l = [1,2,3]
 m = [1,2]
 set(m).issubset(l)
@@ -1437,33 +1591,21 @@ set &gt;= other
 
 set &gt; other
 
-    Test whether the set is a proper superset of other, that is, set &gt;= other and set != other.
-
-union(*others)
-set | other | ...
-
-    Return a new set with elements from the set and all others.</code></pre>
+    Test whether the set is a proper superset of other, that is, set &gt;= other and set != other.</code></pre>
+</div>
+<div id="union-of-sets" class="section level4">
+<h4>Union of sets</h4>
+<p>Return a new set with elements from the set and all others.</p>
+<pre><code>union(*others)
+set | other | ...</code></pre>
+<p>Example</p>
+<pre><code>{1,2}.union({3,4}, {10})</code></pre>
 <p>Note the following perform a union:</p>
 <pre><code>set(range(3,10)).union(set(range(5)))
 set(range(3,10)) | set(range(5))</code></pre>
 <p>But this is not a union:</p>
 <pre><code>set(range(3,10)) or set(range(5))</code></pre>
-<p>Return a new set with elements common to the set and all others.</p>
-<pre><code>intersection(*others)
-set &amp; other &amp; ...
-
-bli.intersection({1,2})
-# {1, 2}
-
-difference(*others)
-set - other - ...
-
-    Return a new set with elements in the set that are not in the others.
-
-symmetric_difference(other)
-set ^ other
-
-    Return a new set with elements in either the set or other but not both.</code></pre>
+</div>
 </div>
 <div id="type-hints" class="section level3">
 <h3>Type hints</h3>
@@ -1899,8 +2041,12 @@ def plot_iris(species):
 <p><a
 href="https://pandas.pydata.org/docs/user_guide/options.html#frequently-used-options"
 class="uri">https://pandas.pydata.org/docs/user_guide/options.html#frequently-used-options</a></p>
-<p>Precision</p>
+<p>Round all numbers</p>
+<pre><code>pandas.set_option(&#39;display.precision&#39;, 0)</code></pre>
+<p>Precision with 2 digit</p>
 <pre><code>pandas.set_option(&#39;display.precision&#39;, 2)</code></pre>
+<p>Scientific notation with 2 significant digits after the dot</p>
+<pre><code>pandas.set_option(&#39;display.float_format&#39;, &#39;{:.2e}&#39;.format)</code></pre>
 <div id="display-all-rows-and-columns-of-a-data-frame"
 class="section level3">
 <h3>Display all rows and columns of a data frame</h3>
@@ -2037,12 +2183,23 @@ jupytext --set-formats ipynb,md --sync ~/repos/example_repos/notebooks/test.ipyn
 # Python sync
 jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipynb</code></pre>
 </div>
-<div id="remove-jupyter-notebook-output-when-using-git"
-class="section level3">
-<h3>Remove jupyter notebook output when using git</h3>
-<p>Alternative to the above, this post explains <a
+<div id="clear-cell-output-before-git-commit" class="section level3">
+<h3>Clear cell output before git commit</h3>
+<p>As an alternative to Jupytext, you can also clear the output of all
+cells before committing the notebook. That way the notebooks only
+contain code and not the output of tables and plots (which can sometimes
+take several megabytes of data).</p>
+<ul>
+<li><p><a
 href="https://janakiev.com/blog/jupyter-git-remove-output/">how to
-remove Jupyter notebook output from terminal and when using git</a>.</p>
+remove Jupyter notebook output from terminal and when using
+git</a>.</p></li>
+<li><p>Clearing Jupyter output <a
+href="https://zhauniarovich.com/post/2020/2020-10-clearing-jupyter-output-p3/"
+class="uri">https://zhauniarovich.com/post/2020/2020-10-clearing-jupyter-output-p3/</a>
+previous approaches were using a pre-commit hook, current approach uses
+git attributes.</p></li>
+</ul>
 </div>
 </div>
 </div>
@@ -3048,11 +3205,49 @@ np.testing.assert_allclose(df,df+1e-3)</code></pre>
 </div>
 <div id="concatenate-and-merge" class="section level2">
 <h2>Concatenate and merge</h2>
-<div id="concatenate-2-data-frames" class="section level3">
-<h3>Concatenate 2 data frames</h3>
+<ul>
+<li><p><a
+href="https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html"
+class="uri">https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html</a></p>
+<blockquote>
+<p>“pandas provides various facilities for easily combining together
+Series or DataFrame with various kinds of set logic for the indexes and
+relational algebra functionality in the case of join / merge-type
+operations.”</p>
+</blockquote></li>
+</ul>
+<div id="concatenate-data-frames" class="section level3">
+<h3>Concatenate data frames</h3>
+<p>Example based on <a
+href="https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html#concatenating-objects"
+class="uri">https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html#concatenating-objects</a>
+modified</p>
+<pre><code>df1 = pandas.DataFrame(
+    {
+        &quot;A&quot;: range(3),
+        &quot;B&quot;: range(3,6)
+    }
+)
+
+df2 = pandas.DataFrame(
+    {
+        &quot;A&quot;: range(4),
+        &quot;B&quot;: range(4,8),
+        &quot;C&quot;: [&quot;w&quot;, &quot;x&quot;, &quot;y&quot;, &quot;z&quot;]
+    }
+)
+
+df3 = pandas.DataFrame(
+    {
+        &quot;A&quot;: range(10,13),
+        &quot;B&quot;: range(13,16)
+    }
+)
+
+result = pandas.concat([df1, df2, df3]).reset_index(drop=True)</code></pre>
 </div>
-<div id="concatenate-2-series" class="section level3">
-<h3>Concatenate 2 series</h3>
+<div id="concatenate-series" class="section level3">
+<h3>Concatenate series</h3>
 <p>Concatenate two series <a
 href="https://stackoverflow.com/questions/18062135/combining-two-series-into-a-dataframe-in-pandas">SO</a>
 Notice the difference between the default <code>axis=0</code>
@@ -3304,8 +3499,8 @@ df.rolling(2).sum()</code></pre>
 <pre><code>.transform(lambda x: x.rolling(13, min_periods=1).mean()))</code></pre>
 </div>
 </div>
-<div id="group-by-operations" class="section level2">
-<h2>Group by operations</h2>
+<div id="groupby-operations" class="section level2">
+<h2>Groupby operations</h2>
 <p>Compute the sum of sepal length grouped by species</p>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;)
@@ -3359,6 +3554,50 @@ as follows</p>
       mean1 = (&quot;petal_width&quot;, np.mean))
  .assign(mean2 = lambda x: x.pw_sum / x.n)
 )</code></pre>
+</div>
+<div id="different-aggregation-functions" class="section level3">
+<h3>Different aggregation functions</h3>
+<p>Example aggregating some variables with a sum and taking the unique
+value (first) for other variables (input coefficients). The code below
+passes a dictionary of variables and aggregation functions to the
+<code>df.groupby().agg()</code> method.</p>
+<pre><code>    # Aggregate product codes from the 6 to the 4 digit level
+    index = [
+        &quot;year&quot;,
+        &quot;period&quot;,
+        &quot;reporter_code&quot;,
+        &quot;reporter&quot;,
+        &quot;reporter_iso&quot;,
+        &quot;partner_code&quot;,
+        &quot;partner&quot;,
+        &quot;partner_iso&quot;,
+        &quot;product_code_4d&quot;,
+        &quot;unit_code&quot;,
+        &quot;unit&quot;,
+    ]
+    agg_dict = {&#39;quantity&#39;: &#39;sum&#39;,
+                &#39;net_weight&#39;: &#39;sum&#39;,
+                &#39;trade_value&#39;: &#39;sum&#39;,
+                &#39;vol_eqrwd_ub&#39;: &#39;sum&#39;,
+                &#39;vol_eqrwd_ob&#39;: &#39;sum&#39;,
+                &#39;la_fo&#39;: &#39;sum&#39;,
+                &#39;conversion_factor_m3_mt&#39;:&#39;first&#39;,
+                &#39;bark_factor&#39;: &#39;first&#39;,
+                &#39;nai&#39;: &#39;first&#39;}
+    ft4d = (
+        ft
+        .groupby(index)
+        .agg(agg_dict)
+        .reset_index()
+    )</code></pre>
+</div>
+<div id="unique-values-1" class="section level3">
+<h3>Unique values</h3>
+<pre><code>unique = lambda x: x.unique()[0] if x.nunique() == 1 else np.nan
+agg =  {&#39;primary_eq&#39;:unique,
+        &#39;import_quantity&#39;:unique,
+        &#39;primary_eq_imp_1&#39;:sum}
+df_agg = df.groupby(index)[selected_columns].agg(agg).reset_index()</code></pre>
 </div>
 <div id="proportion-within-groups" class="section level3">
 <h3>Proportion within groups</h3>
@@ -4136,8 +4375,16 @@ df = pandas.DataFrame(
      &quot;year&quot;: np.repeat(np.array([2020,2021]), 5),
      &quot;value&quot;:  np.random.randint(0,1e3,10)
      })
-df = df.set_index([&quot;year&quot;, &quot;country&quot;])
-      </code></pre>
+df = df.set_index([&quot;year&quot;, &quot;country&quot;])</code></pre>
+<p>Use the multi index to select data for 2020 only</p>
+<pre><code>idx = pandas.IndexSlice
+df.loc[idx[2020, :]]</code></pre>
+<p>Use the multi index to select data for Algeria only, in all years</p>
+<pre><code>df.loc[idx[:, &quot;Algeria&quot;], :]</code></pre>
+<p>Note: it’s better to write <code>df.loc[idx[2020, :], :]</code> than
+<code>df.loc[(2020,)]</code>. The later is in fact just equivalent to
+<code>df.loc[(2020,)]</code>. Note that df.loc[(,“Algeria”)] would
+return a syntax error</p>
 <p>See also the course material <a
 href="https://python.quantecon.org/pandas_panel.html">Pandas for panel
 data</a>.</p>
@@ -4571,9 +4818,15 @@ Path.home()</code></pre>
 </div>
 <div id="list-all-files-in-a-directory" class="section level3">
 <h3>List all files in a directory</h3>
-<p>If <code>p</code> is a pathlib object you can list file names as
-such:</p>
+<p>If <code>p</code> is a pathlib object you can list file names
+corresponding to a file pattern as such:</p>
 <pre><code>[x.name for x in p.glob(&#39;**/*.csv&#39;)]</code></pre>
+<p>You can also use the simpler <code>iterdir()</code> method to list
+all files in the directory</p>
+<pre><code>from pathlib import Path
+dir_path = Path(&#39;/tmp&#39;)
+for file_path in dir_path.iterdir():
+    print(file_path)</code></pre>
 </div>
 </div>
 <div id="python-path" class="section level2">
@@ -4696,6 +4949,30 @@ to use X<strong>2 + Y</strong>2 directly as above.</p>
 fig = plt.figure()
 ax = plt.axes(projection=&#39;3d&#39;)
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
+<div id="xy-comparison-scatter-plot" class="section level3">
+<h3>XY comparison scatter plot</h3>
+<p>When x and y are supposed to be the same value but are not
+necessarily equal. Compare the x and y values on a scatter plot to a 1:1
+line.</p>
+<pre><code>def comp_plot(df, x_var, y_var, title):
+    &quot;&quot;&quot;Plot comparison for the given data frame&quot;&quot;&quot;
+    # Scatter plot
+    plt.scatter(df[x_var], df[y_var])
+    # 1:1 line
+    line = np.linspace(df[x_var].min(), df[x_var].max(), 100)
+    plt.plot(line, line, &#39;r--&#39;)
+    plt.xlabel(f&#39;{x_var} additional text&#39;)
+    plt.ylabel(f&#39;{y_var} additional text&#39;)
+    plt.title(title)
+    return plt</code></pre>
+<p>Note on suggestions compared between Bard and Chat GPT-4</p>
+<pre><code>    # Create the 1:1 line suggested by bard
+    line_x = np.linspace(x.min(), x.max(), 100)
+    line_y = line_x
+    plt.plot(line_x, line_y, &#39;r--&#39;)
+    # 1:1 line suggested by GPT4 (wrong in some way)
+    plt.plot([min(x), max(x)], [min(y), max(y)], &#39;r&#39;)</code></pre>
+</div>
 </div>
 <div id="pandas-plots-are-matplotlib-axessubplot-objects"
 class="section level2">
@@ -4794,6 +5071,83 @@ notebook</a> on machine learning used to enhance the localisation of
 weather forecasts. Seen on this blog post <a
 href="https://medium.com/bytehub-ai/what-does-machine-learning-have-to-do-with-weather-94f3ac625ad3">What
 does machine learning have to do with weather</a>.</p>
+<div id="bubble-chart" class="section level3">
+<h3>Bubble chart</h3>
+<ul>
+<li><p><a href="https://plotly.com/python/bubble-charts/"
+class="uri">https://plotly.com/python/bubble-charts/</a> example:</p>
+<p>import plotly.express as px df = px.data.gapminder() fig =
+px.scatter(df.query(“year==2007”), x=“gdpPercap”, y=“lifeExp”,
+size=“pop”, color=“continent”, hover_name=“country”, log_x=True,
+size_max=60) fig.show()</p></li>
+</ul>
+</div>
+<div id="facet-chart" class="section level3">
+<h3>Facet chart</h3>
+<p>Facet chart where the y facet label where removed and replaced with a
+common annotation. (There was an issue with the annotation dissapearing
+when going full screen in a streamlit app).</p>
+<pre><code>y_var = f&quot;{flow} {element}&quot;
+fig = plotly.express.line(
+    # shorten the plot facet titles
+    df.rename(columns={&quot;product_name&quot;: &quot;p&quot;,
+                       flow: y_var}),
+    x=&quot;period&quot;,
+    y=y_var,
+    color=&quot;partner&quot;,
+    facet_row=&quot;p&quot;,
+    line_group=&quot;partner&quot;,
+)
+# Remove y facet labels
+for axis in fig.layout:
+    if type(fig.layout[axis]) == plotly.graph_objects.layout.YAxis:
+        fig.layout[axis].title.text = &#39;&#39;
+# Update y label, by adding to the existing annotation
+fig.layout.annotations += (
+    dict(
+        x=0,
+        y=0.5,
+        showarrow=False,
+        text=f&quot;{flow} {element}&quot;,
+        textangle=-90,
+        # xanchor=&#39;left&#39;,
+        # yanchor=&quot;middle&quot;,
+        xref=&quot;paper&quot;,
+        yref=&quot;paper&quot;
+    ), # Keep this comma, this needs to be a tuple
+)</code></pre>
+</div>
+<div id="xy-comparison-scatter-plot-1" class="section level3">
+<h3>XY comparison scatter plot</h3>
+<p>When x and y are supposed to be the same value but are not
+necessarily equal. Compare the x and y values on a scatter plot to a 1:1
+line.</p>
+<pre><code>import plotly
+
+def comp_plotly(df, x_var, y_var, title):
+    &quot;&quot;&quot;Plot comparison for the given data frame&quot;&quot;&quot;
+    fig = plotly.graph_objects.Figure()
+    fig.add_trace(go.Scatter(x=df[x_var], y=df[y_var], mode=&#39;markers&#39;, name=&#39;Data&#39;))
+    fig.add_trace(go.Scatter(x=[min(x), max(x)], y=[min(x), max(x)], mode=&#39;lines&#39;, name=&#39;1:1 Line&#39;))
+    fig.update_layout(
+        title=&#39;Scatter plot with 1:1 Line&#39;,
+        xaxis_title=x_var,
+        yaxis_title=y_var
+    )
+    # Add the reporter, partner, and year to the tooltip
+    fig.update_traces(
+        hoverinfo=&#39;text&#39;,
+        hovertext=list(zip(df[&#39;reporter&#39;], df[&#39;partner&#39;], df[&#39;year&#39;]))
+    )
+    return fig
+
+this_primary_product = &quot;rape_or_colza_seed&quot;
+selector = comp_2[&quot;primary_product&quot;] == this_primary_product
+comp_plotly(comp_2.loc[selector],
+            x_var = &#39;primary_crop_eq_re_allocated_2nd_level_imported&#39;,
+            y_var = &#39;primary_eq_imp_alloc_1&#39;,
+            title = f&quot;Step 2 primary crop import {this_primary_product}&quot;)</code></pre>
+</div>
 </div>
 <div id="plotnine" class="section level2">
 <h2>Plotnine</h2>
@@ -4942,6 +5296,7 @@ g = seaborn.displot(
 )
 g.fig.subplots_adjust(top=.9, bottom=0.1, right=0.9)
 g.set_titles(row_template=&quot;{row_name}&quot;, col_template=&quot;{col_name}&quot;, size=30)</code></pre>
+<p>See also the figure size section.</p>
 </div>
 <div id="grid-bar-plot" class="section level4">
 <h4>Grid Bar plot</h4>
@@ -4970,6 +5325,8 @@ seaborn.displot(
 </div>
 <div id="grid-line-plot" class="section level4">
 <h4>Grid line plot</h4>
+<div id="relplot" class="section level5">
+<h5>relplot</h5>
 <p>help(searborn.relplot)</p>
 <pre><code>&gt; &quot;This function provides access to several different axes-level functions
 &gt; that show the relationship between two variables with semantic mappings
@@ -4997,7 +5354,8 @@ g = seaborn.relplot(
     facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False}
 )
 g.fig.supylabel(&quot;Adaptive Engagement of Cognitive Control&quot;)
-g.fig.subplots_adjust(left=0.28)
+g.fig.subplots_adjust(left=0.28, top=0.9)
+g.fig.suptitle(&quot;Example&quot;)
 g.set(ylim=(0, None))
 plt.show()
 </code></pre>
@@ -5024,6 +5382,7 @@ g.fig.suptitle(&quot;Dots example&quot;)
 # Add a title and adjust the position so the title doesn&#39;t overwrite facets
 g.set_ylabels(&quot;Y label&quot;)
 plt.subplots_adjust(top=0.9)</code></pre>
+</div>
 </div>
 <div id="grid-scatter-plot" class="section level4">
 <h4>Grid scatter plot</h4>
@@ -5063,6 +5422,9 @@ most cases, it will be better to use a figure-level function
 (e.g. :func:<code>relplot</code> or :func:<code>catplot</code>) than to
 use :class:<code>FacetGrid</code> directly.”</p>
 </blockquote>
+<div id="grid-scatter-plot-with-trend-line" class="section level5">
+<h5>Grid scatter plot with trend line</h5>
+</div>
 </div>
 <div id="grid-text" class="section level4">
 <h4>Grid Text</h4>
@@ -5106,6 +5468,27 @@ object:</p>
     axes.ticklabel_format(axis=&#39;both&#39;, style=&#39;scientific&#39;, scilimits=(0, 0))</code></pre>
 <p>Do not use scientific notation on the axes</p>
 <pre><code>plt.ticklabel_format(style=&#39;plain&#39;, axis=&#39;y&#39;)</code></pre>
+<p>Use the scientific notation on the y axis labels, at every tick.
+Without putting a <code>1e7</code> at the top that might be overwritten
+by a facet label.</p>
+<pre><code>
+g = seaborn.relplot(
+    data=rp_global.reset_index(), x=&quot;step&quot;, y=&quot;primary_eq&quot;, col=&quot;primary_product&quot;,
+    hue=&quot;year&quot;, kind=&quot;line&quot;,
+    col_wrap=3, height=3,
+    facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False}
+)
+
+def y_fmt(x, pos):
+    &quot;&quot;&quot;function to format the y axis&quot;&quot;&quot;
+    return f&quot;{x:.0e}&quot;
+
+
+from matplotlib.ticker import FuncFormatter
+#g.set(yticklabels=[])
+for ax in g.axes.flat:
+    ax.yaxis.set_major_formatter(FuncFormatter(y_fmt))
+</code></pre>
 </div>
 </div>
 <div id="figure-size-1" class="section level3">
@@ -5776,12 +6159,18 @@ similarly not impacted.”</p>
 <p><a
 href="https://stackoverflow.com/questions/25675943/how-can-i-concatenate-str-and-int-objects">SO
 answer</a> providing various ways to concatenate python strings.</p>
-<div id="number-formatting-in-strings" class="section level2">
-<h2>Number formatting in strings</h2>
+<div id="f-string" class="section level2">
+<h2>F string</h2>
+<div id="number-formatting-in-f-strings" class="section level3">
+<h3>Number formatting in f strings</h3>
 <p><a href="https://stackoverflow.com/a/10742904/2641825">How to print
 number with commas as thousands separators?</a></p>
-<pre><code>f&#39;{1e6:,}&#39; </code></pre>
+<p>Thousand mark</p>
+<pre><code>f&quot;{1e6:,}&quot;</code></pre>
+<p>Round to 2 decimal places</p>
+<pre><code>f&quot;{0.129456789:.2f}&quot;</code></pre>
 <p>See also string operations in pandas with df[“x”].str methods.</p>
+</div>
 </div>
 <div id="regex-substitution" class="section level2">
 <h2>Regex substitution</h2>
@@ -6129,11 +6518,24 @@ os.name</code></pre>
 <pre><code>os.uname()</code></pre>
 <div id="environment-variables" class="section level2">
 <h2>Environment variables</h2>
+<div id="get-or-set" class="section level3">
+<h3>Get or set</h3>
 <p>Get an environment variable</p>
 <pre><code>import os
 os.environ[&quot;XYZ&quot;]</code></pre>
 <p>Set an environment variable</p>
 <pre><code>os.environ[&quot;XYZ&quot;]  = &quot;/tmp&quot;</code></pre>
+</div>
+<div id="python-path-1" class="section level3">
+<h3>Python path</h3>
+<p>For example in bash, the python path can be updated as follows:</p>
+<pre><code>export PYTHONPATH=&quot;$HOME/repos/biotrade/&quot;:$PYTHONPATH</code></pre>
+<p>This tells python where the biotrade package is located.</p>
+<p>From python, use <code>sys.path</code> to prepend to the python
+path.</p>
+<pre><code>import sys
+sys.path.insert(0, &quot;/home/rougipa/eu_cbm/eu_cbm_hat&quot;)</code></pre>
+</div>
 </div>
 <div id="memory" class="section level2">
 <h2>Memory</h2>
@@ -6259,9 +6661,24 @@ def test_rectified_linear_unit():
 <p>Execute the test suite from bash with py.test as follows:</p>
 <pre><code>cd ~/rp/course_machine_learning/projects/project_2_3_mnist/part2-nn
 py.test</code></pre>
-<p>Test pandas data frame with</p>
-<pre><code>assert_frame_equal
-assert_series_equal # tricky to use</code></pre>
+<div id="test-pandas-data-frame" class="section level3">
+<h3>Test pandas data frame</h3>
+<p>Methods to test data frame and series equality</p>
+<pre><code>from pandas.testing import assert_frame_equal
+from pandas.testing import assert_series_equal
+import seaborn 
+iris = seaborn.load_dataset(&quot;iris&quot;)
+assert_frame_equal(iris, iris)
+iris[&quot;species2&quot;] = iris[&quot;species&quot;]
+assert_series_equal(iris[&quot;species&quot;], iris[&quot;species2&quot;])
+# Ignore names
+assert_series_equal(iris[&quot;species&quot;], iris[&quot;species2&quot;], check_names=False)</code></pre>
+<p>Sometimes you want tolerance</p>
+<pre><code>df = pandas.DataFrame({&quot;a&quot;:[1.0,2,3],
+                       &quot;b&quot;:[1.0001,2,3]})
+assert_series_equal(df[&quot;a&quot;], df[&quot;b&quot;], check_names=False)
+assert_series_equal(df[&quot;a&quot;], df[&quot;b&quot;], rtol=1e-2, check_names=False)</code></pre>
+</div>
 <div id="aa-run" class="section level3">
 <h3>AA run</h3>
 <ul>
@@ -6572,7 +6989,7 @@ of their content. If you loop on it it will just display a string</p>
 <p>A list of variables</p>
 <pre><code>list(sawn.data_vars)</code></pre>
 </div>
-<div id="groupby-operations" class="section level2">
+<div id="groupby-operations-1" class="section level2">
 <h2>Groupby operations</h2>
 <p>Group the given variable by region, using a dataArray called “region”
 which is stored inside the dataset</p>

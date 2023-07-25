@@ -8,7 +8,7 @@ output:
 ---
 
 
-# Packages
+# AA Packages
 
 ## Install with Pip
 
@@ -110,6 +110,14 @@ token](https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html)
     pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev
 
 
+Install that doesn't require git:
+
+    pip install --force-reinstall https://github.com/ytdl-org/youtube-dl/archive/refs/heads/master.tar.gz
+
+[Installing from
+Pypi](https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-from-pypi)
+
+
 ## Install with Anaconda
 
 Use conda update command to check to see if a new update is available. If conda
@@ -197,6 +205,20 @@ packages](https://conda.io/projects/conda/en/latest/user-guide/tasks/manage-pkgs
     conda update conda
 
 
+### Remove
+
+- https://docs.conda.io/projects/conda/en/latest/commands/remove.html
+
+Remove the package 'scipy' from the currently-active environment:
+
+    conda remove scipy
+
+Remove a list of packages from an environemnt 'myenv':
+
+    conda remove -n myenv scipy curl wheel
+
+
+
 ### Environment file
 
 Creating an environment file manually
@@ -255,6 +277,20 @@ I built the package with
 wallet, it will then ask for the password at the command line. There is a [twine
 issue related to the use of keyring](https://github.com/pypa/twine/issues/338).
 
+Register an account on pypi (it's a different server than test.pypi). Create a token under account settings. Then upload to pypi itself
+
+    cd repository
+    python3 -m build
+    twine upload dist/*
+
+To use the API token:
+
+    Set your username to __token__
+    Set your password to the token value, including the pypi- prefix
+
+
+### Test install in a virtual environment
+
 In bash, create a virtual environment to test installation and 
 remove the python path otherwise my local version is seen
 
@@ -280,16 +316,12 @@ Installing biotrade's dependencies directly generates an error because pandas
 is not available in the test repository. You can install them from the pypi
 directly with `pip install pandas`.
 
-Register an account on pypi (it's a different server than test.pypi). Create a token under account settings. Then upload to pypi itself
+Install from a wheel
 
-    cd repository
-    python3 -m build
-    twine upload dist/*
-
-To use the API token:
-
-    Set your username to __token__
-    Set your password to the token value, including the pypi- prefix
+    cd ~/repos/forobs/biotrade/dist
+    pip install biotrade-0.2.2-py3-none-any.whl
+    # Or 
+    pip install biotrade-0.2.2.tar.gz
 
 
 ### Publish to Conda Forge
@@ -440,6 +472,15 @@ documentation on a Continuous Integration system:
       interruptible: true
 
 
+### Packaging tools
+
+- https://flit.pypa.io/en/latest/rationale.html
+
+    > " The existence of Flit spurred the development of new standards, like PEP
+    > 518 and PEP 517, which are now used by other packaging tools such as Poetry
+    > and Enscons."
+
+
 ## Location or path
 
 ### Of a package
@@ -474,11 +515,6 @@ path can be deduced from
         sudo apt install python3-venv
 
     - Usage
-
-        python3 -m venv <DIR>
-        source <DIR>/bin/activate
-
-    - for example
 
       mkdir /tmp/testenv
       cd /tmp/testenv
@@ -517,6 +553,47 @@ path can be deduced from
   different packages with pip.
 
 - Illustration of the complementarity between pyenv and pipenv.
+
+
+### Remove environment variables
+
+To test a fresh install of a package or test it in conditions where some
+environmental variables are not defined.
+
+For example remove environment variables with `unset`.
+
+    unset BIOTRADE_DATABASE_URL
+
+
+
+
+# Applications
+
+- towardsdatascience.com [Plotly Dash versus
+  Streamlit](https://towardsdatascience.com/plotly-dash-vs-streamlit-which-is-the-best-library-for-building-data-dashboard-web-apps-97d7c98b938c)
+
+
+## Streamlit
+
+Example application with select boxes and a slider. Use the `index` argument to
+select a default value.
+
+    import streamlit
+    reporter = streamlit.sidebar.selectbox(
+        "Select a reporter Country", options=df["reporter"].unique()
+    )
+    products = streamlit.sidebar.multiselect(
+        "Select some products", options=df["product_name"].unique()
+    )
+    element = streamlit.sidebar.selectbox(
+        "Select a variable for the Y Axis", options=["net_weight", "price", "trade_value"]
+    )
+    flow = streamlit.sidebar.selectbox(
+        "Select a flow direction", options=["import", "export"]
+    )
+    n_partners = streamlit.sidebar.slider(
+        "Select N First Partners", min_value=1, max_value=10, value=5
+    )
 
 
 # Compilers
@@ -612,6 +689,18 @@ using **ipython**, you need to separate ipython arguments from your script
 arguments using `--`.
 
 
+## Other command line tools
+
+- https://www.pyinvoke.org/
+
+- https://click.palletsprojects.com/en/8.1.x/
+
+- http://docopt.org/
+
+Click looks like a rising star
+https://star-history.com/#docopt/docopt&pallets/click&pyinvoke/invoke&Date
+
+
 # Databases
 
 ## SQL Alchemy
@@ -677,6 +766,52 @@ with the addition of an SQLite engine to make it reproducible:
 You can also use the `user_table` metadata element `name` to check if it exists as such:
 
     inspector.has_table(user_table.name)
+
+
+### Connection
+
+Create a connection and execute a select statement, it's a read only operation
+
+
+
+Create a connection and execute a create statement followed by a commit:
+
+    with engine.connect() as conn:
+        if not engine.dialect.has_schema(conn, schema):
+            conn.execute(CreateSchema(schema))
+            conn.commit()
+
+
+
+### Migration to version 2
+
+- https://docs.sqlalchemy.org/en/14/changelog/migration_20.html
+ 
+    > "As a means of both proving the 2.0 architecture as well as allowing a fully
+    > iterative transition environment, the entire scope of 2.0’s new APIs and
+    > features are present and available within the 1.4 series;"
+
+- https://docs.sqlalchemy.org/en/14/changelog/migration_20.html#migration-20-implicit-execution
+
+    > "For schema level patterns, explicit use of an Engine or Connection is
+    > required."
+
+
+    with engine.connect() as connection:
+        # create tables, requires explicit begin and/or commit:
+        with connection.begin():
+            metadata_obj.create_all(connection)
+
+        # reflect all tables
+        metadata_obj.reflect(connection)
+
+        # reflect individual table
+        t = Table("t", metadata_obj, autoload_with=connection)
+
+        # execute SQL statements
+        result = conn.execute(t.select())
+
+
 
 
 ### ORM querying guide
@@ -1025,17 +1160,25 @@ The `map` function makes an iterator object of type `map`
 
 ### List
 
+Create a list
+
+    l1 = [1, 2, 3]
+    l2 = ["a", "b", "c"]
+
+Create a list of strings using split (seen in [this
+answer](https://stackoverflow.com/a/52110266/2641825))
+
+    "slope, intercept, r_value, p_value, std_err".split(", ")
+
+
+#### Remove an item from a list
+
 [Remove an element from a list of strings ](https://stackoverflow.com/a/31077838/2641825)
 
     myList = ['a', 'b', 'c', 'd']
     myList.remove('c')
     myList
     ['a', 'b', 'd']
-
-Create a list of strings using split (seen in [this
-answer](https://stackoverflow.com/a/52110266/2641825))
-
-    "slope, intercept, r_value, p_value, std_err".split(", ")
 
 
 #### List of tuples
@@ -1065,13 +1208,51 @@ Using `extend`:
 
 ### Set operations
 
+
+#### Difference between sets
+
+Difference between two sets:
+
+    set1 = {1,2,3}
+    set2 = {2,3,4}
+    set1 - set2
+    # {1}
+    set2 - set1
+    # {4}
+
+
+#### Intersection and common set elements
+
+Return a new set with elements common to the set and all others.
+
+	intersection(*others)
+	set & other & ...
+
+    bli = {1,2,3}
+    bli.intersection({1,2})
+    # {1, 2}
+    bli.intersection({1,2}, {1})
+
+	difference(*others)
+	set - other - ...
+
+	    Return a new set with elements in the set that are not in the others.
+
+	symmetric_difference(other)
+	set ^ other
+
+	    Return a new set with elements in either the set or other but not both.
+    
+
+#### Subset and superset
+
 Instances of [set](https://docs.python.org/3/library/stdtypes.html#set)
 provide the following operations:
 
 	issubset(other)
 	set <= other
 
-	    Test whether every element in the set is in other.
+Test whether every element in the set is in other.
 For example  [SO answer using
 issubset](https://stackoverflow.com/a/3931655/2641825)
 
@@ -1097,10 +1278,17 @@ issubset](https://stackoverflow.com/a/3931655/2641825)
 
 	    Test whether the set is a proper superset of other, that is, set >= other and set != other.
 
+
+#### Union of sets
+
+Return a new set with elements from the set and all others.
+
 	union(*others)
 	set | other | ...
 
-	    Return a new set with elements from the set and all others.
+Example
+
+    {1,2}.union({3,4}, {10})
 
 Note the following perform a union:
 
@@ -1111,24 +1299,6 @@ But this is not a union:
 
     set(range(3,10)) or set(range(5))
 
-Return a new set with elements common to the set and all others.
-
-	intersection(*others)
-	set & other & ...
-
-    bli.intersection({1,2})
-    # {1, 2}
-
-	difference(*others)
-	set - other - ...
-
-	    Return a new set with elements in the set that are not in the others.
-
-	symmetric_difference(other)
-	set ^ other
-
-	    Return a new set with elements in either the set or other but not both.
-    
 
 ### Type hints
 
@@ -1578,9 +1748,17 @@ Use the `@interact` decorator
 
 https://pandas.pydata.org/docs/user_guide/options.html#frequently-used-options
 
-Precision
+Round all numbers
+
+    pandas.set_option('display.precision', 0)
+
+Precision with 2 digit
 
     pandas.set_option('display.precision', 2)
+
+Scientific notation with 2 significant digits after the dot
+
+    pandas.set_option('display.float_format', '{:.2e}'.format)
 
 
 ### Display all rows and columns of a data frame
@@ -1745,10 +1923,21 @@ Add syncing to a given notebook:
     # Python sync
     jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipynb
 
-### Remove jupyter notebook output when using git
 
-Alternative to the above, this post explains [how to remove  Jupyter notebook
-output from terminal and when using git](https://janakiev.com/blog/jupyter-git-remove-output/).
+### Clear cell output before git commit
+
+As an alternative to Jupytext, you can also clear the output of all cells
+before committing the notebook. That way the notebooks only contain code and
+not the output of tables and plots (which can sometimes take several megabytes
+of data).
+
+- [how to remove  Jupyter notebook output from terminal and
+  when using git](https://janakiev.com/blog/jupyter-git-remove-output/).
+
+- Clearing Jupyter output
+  https://zhauniarovich.com/post/2020/2020-10-clearing-jupyter-output-p3/
+  previous approaches were using a pre-commit hook, current approach uses git
+  attributes.
 
 
 # Errors, exceptions and logging
@@ -2815,9 +3004,45 @@ software)
 
 ## Concatenate and merge
 
-### Concatenate  2 data frames
+- https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html
 
-### Concatenate 2 series
+    > "pandas provides various facilities for easily combining together Series or
+    > DataFrame with various kinds of set logic for the indexes and relational
+    > algebra functionality in the case of join / merge-type operations."
+
+
+### Concatenate data frames
+
+Example based on
+https://pandas.pydata.org/pandas-docs/stable/user_guide/merging.html#concatenating-objects
+modified
+
+    df1 = pandas.DataFrame(
+        {
+            "A": range(3),
+            "B": range(3,6)
+        }
+    )
+
+    df2 = pandas.DataFrame(
+        {
+            "A": range(4),
+            "B": range(4,8),
+            "C": ["w", "x", "y", "z"]
+        }
+    )
+
+    df3 = pandas.DataFrame(
+        {
+            "A": range(10,13),
+            "B": range(13,16)
+        }
+    )
+
+    result = pandas.concat([df1, df2, df3]).reset_index(drop=True)
+
+
+### Concatenate series
 
 Concatenate two series
 [SO](https://stackoverflow.com/questions/18062135/combining-two-series-into-a-dataframe-in-pandas)
@@ -3130,7 +3355,7 @@ Yearly rolling of a monthly time series:
     .transform(lambda x: x.rolling(13, min_periods=1).mean()))
 
 
-## Group by operations
+## Groupby operations
 
 Compute the sum of sepal length grouped by species
 
@@ -3197,6 +3422,53 @@ defined lambda function as follows
           mean1 = ("petal_width", np.mean))
      .assign(mean2 = lambda x: x.pw_sum / x.n)
     )
+
+
+### Different aggregation functions
+
+Example aggregating some variables with a sum and taking the unique value
+(first) for other variables (input coefficients). The code below passes a
+dictionary of variables and aggregation functions to the `df.groupby().agg()`
+method.
+
+        # Aggregate product codes from the 6 to the 4 digit level
+        index = [
+            "year",
+            "period",
+            "reporter_code",
+            "reporter",
+            "reporter_iso",
+            "partner_code",
+            "partner",
+            "partner_iso",
+            "product_code_4d",
+            "unit_code",
+            "unit",
+        ]
+        agg_dict = {'quantity': 'sum',
+                    'net_weight': 'sum',
+                    'trade_value': 'sum',
+                    'vol_eqrwd_ub': 'sum',
+                    'vol_eqrwd_ob': 'sum',
+                    'la_fo': 'sum',
+                    'conversion_factor_m3_mt':'first',
+                    'bark_factor': 'first',
+                    'nai': 'first'}
+        ft4d = (
+            ft
+            .groupby(index)
+            .agg(agg_dict)
+            .reset_index()
+        )
+
+### Unique values 
+
+
+    unique = lambda x: x.unique()[0] if x.nunique() == 1 else np.nan
+    agg =  {'primary_eq':unique,
+            'import_quantity':unique,
+            'primary_eq_imp_1':sum}
+    df_agg = df.groupby(index)[selected_columns].agg(agg).reset_index()
 
 
 ### Proportion within groups
@@ -4039,6 +4311,19 @@ Create a panel data set with a multi index in years and countries
          "value":  np.random.randint(0,1e3,10)
          })
     df = df.set_index(["year", "country"])
+
+Use the multi index to select data for 2020 only
+
+    idx = pandas.IndexSlice
+    df.loc[idx[2020, :]]
+
+Use the multi index to select data for Algeria only, in all years
+
+    df.loc[idx[:, "Algeria"], :]
+
+Note: it's better to write `df.loc[idx[2020, :], :]` than `df.loc[(2020,)]`.
+The later is in fact just equivalent to `df.loc[(2020,)]`. Note that
+df.loc[(,"Algeria")] would return a syntax error
           
 See also the course material [Pandas for panel
 data](https://python.quantecon.org/pandas_panel.html).
@@ -4561,9 +4846,18 @@ Cross platform way to refer to the home directory
 
 ### List all files in a directory
 
-If `p` is a pathlib object you can list file names as such: 
+If `p` is a pathlib object you can list file names corresponding to a file
+pattern as such: 
 
     [x.name for x in p.glob('**/*.csv')]
+
+You can also use the simpler `iterdir()` method to list all files in the
+directory
+
+    from pathlib import Path
+    dir_path = Path('/tmp')
+    for file_path in dir_path.iterdir():
+        print(file_path)
 
 
 ## Python Path
@@ -4704,6 +4998,34 @@ Better to use X**2 + Y**2 directly as above.
     ax.contour3D(X, Y, Z, 50, cmap='binary')
 
 
+### XY comparison scatter plot
+
+When x and y are supposed to be the same value but are not necessarily equal.
+Compare the x and y values on a scatter plot to a 1:1 line.
+
+
+    def comp_plot(df, x_var, y_var, title):
+        """Plot comparison for the given data frame"""
+        # Scatter plot
+        plt.scatter(df[x_var], df[y_var])
+        # 1:1 line
+        line = np.linspace(df[x_var].min(), df[x_var].max(), 100)
+        plt.plot(line, line, 'r--')
+        plt.xlabel(f'{x_var} additional text')
+        plt.ylabel(f'{y_var} additional text')
+        plt.title(title)
+        return plt
+
+Note on suggestions compared between Bard and Chat GPT-4 
+
+        # Create the 1:1 line suggested by bard
+        line_x = np.linspace(x.min(), x.max(), 100)
+        line_y = line_x
+        plt.plot(line_x, line_y, 'r--')
+        # 1:1 line suggested by GPT4 (wrong in some way)
+        plt.plot([min(x), max(x)], [min(y), max(y)], 'r')
+
+
 ## Pandas plots are matplotlib AxesSubplot objects
 
 ### Arguments of the df.plot() function
@@ -4818,6 +5140,87 @@ notebook](https://colab.research.google.com/github/bytehub-ai/blog-examples/blob
 on machine learning used to enhance the localisation of weather forecasts. Seen
 on this blog post [What does machine learning have to do with
 weather](https://medium.com/bytehub-ai/what-does-machine-learning-have-to-do-with-weather-94f3ac625ad3).
+
+
+### Bubble chart
+
+- https://plotly.com/python/bubble-charts/ example:
+
+    import plotly.express as px
+    df = px.data.gapminder()
+    fig = px.scatter(df.query("year==2007"), x="gdpPercap", y="lifeExp",
+                 size="pop", color="continent",
+                     hover_name="country", log_x=True, size_max=60)
+    fig.show()
+
+
+### Facet chart
+
+Facet chart where the y facet label where removed and replaced with a common
+annotation. (There was an issue with the annotation dissapearing when going
+full screen in a streamlit app).
+
+    y_var = f"{flow} {element}"
+    fig = plotly.express.line(
+        # shorten the plot facet titles
+        df.rename(columns={"product_name": "p",
+                           flow: y_var}),
+        x="period",
+        y=y_var,
+        color="partner",
+        facet_row="p",
+        line_group="partner",
+    )
+    # Remove y facet labels
+    for axis in fig.layout:
+        if type(fig.layout[axis]) == plotly.graph_objects.layout.YAxis:
+            fig.layout[axis].title.text = ''
+    # Update y label, by adding to the existing annotation
+    fig.layout.annotations += (
+        dict(
+            x=0,
+            y=0.5,
+            showarrow=False,
+            text=f"{flow} {element}",
+            textangle=-90,
+            # xanchor='left',
+            # yanchor="middle",
+            xref="paper",
+            yref="paper"
+        ), # Keep this comma, this needs to be a tuple
+    )
+
+
+### XY comparison scatter plot
+
+When x and y are supposed to be the same value but are not necessarily equal.
+Compare the x and y values on a scatter plot to a 1:1 line.
+
+    import plotly
+
+    def comp_plotly(df, x_var, y_var, title):
+        """Plot comparison for the given data frame"""
+        fig = plotly.graph_objects.Figure()
+        fig.add_trace(go.Scatter(x=df[x_var], y=df[y_var], mode='markers', name='Data'))
+        fig.add_trace(go.Scatter(x=[min(x), max(x)], y=[min(x), max(x)], mode='lines', name='1:1 Line'))
+        fig.update_layout(
+            title='Scatter plot with 1:1 Line',
+            xaxis_title=x_var,
+            yaxis_title=y_var
+        )
+        # Add the reporter, partner, and year to the tooltip
+        fig.update_traces(
+            hoverinfo='text',
+            hovertext=list(zip(df['reporter'], df['partner'], df['year']))
+        )
+        return fig
+
+    this_primary_product = "rape_or_colza_seed"
+    selector = comp_2["primary_product"] == this_primary_product
+    comp_plotly(comp_2.loc[selector],
+                x_var = 'primary_crop_eq_re_allocated_2nd_level_imported',
+                y_var = 'primary_eq_imp_alloc_1',
+                title = f"Step 2 primary crop import {this_primary_product}")
 
 
 ## Plotnine
@@ -5002,6 +5405,8 @@ change the size to 30.
     g.fig.subplots_adjust(top=.9, bottom=0.1, right=0.9)
     g.set_titles(row_template="{row_name}", col_template="{col_name}", size=30)
 
+See also the figure size section.
+
 
 #### Grid Bar plot 
 
@@ -5029,7 +5434,10 @@ https://seaborn.pydata.org/examples/faceted_histogram.html
         binwidth=3, height=3, facet_kws=dict(margin_titles=True),
     )
 
+
 #### Grid line plot
+
+##### relplot
 
 help(searborn.relplot)
 
@@ -5059,11 +5467,14 @@ g = seaborn.relplot(
     facet_kws={'sharey': False, 'sharex': False}
 )
 g.fig.supylabel("Adaptive Engagement of Cognitive Control")
-g.fig.subplots_adjust(left=0.28)
+g.fig.subplots_adjust(left=0.28, top=0.9)
+g.fig.suptitle("Example")
 g.set(ylim=(0, None))
 plt.show()
 
 ```
+
+
 
 Older example from
 https://seaborn.pydata.org/examples/faceted_lineplot.html
@@ -5131,6 +5542,11 @@ request](https://github.com/mwaskom/seaborn/pull/2030/commits/88a45dddeb6ac4c88a
 > :func:`catplot`) than to use :class:`FacetGrid` directly."
 
 
+##### Grid scatter plot with trend line
+
+
+
+
 #### Grid Text
 
 From [SO answer][https://stackoverflow.com/a/59775753/2641825)
@@ -5176,6 +5592,30 @@ Do not use scientific notation on the axes
 
 
     plt.ticklabel_format(style='plain', axis='y')
+
+Use the scientific notation on the y axis labels, at every tick. Without
+putting a `1e7` at the top that might be overwritten by a facet label.
+
+```
+
+g = seaborn.relplot(
+    data=rp_global.reset_index(), x="step", y="primary_eq", col="primary_product",
+    hue="year", kind="line",
+    col_wrap=3, height=3,
+    facet_kws={'sharey': False, 'sharex': False}
+)
+
+def y_fmt(x, pos):
+    """function to format the y axis"""
+    return f"{x:.0e}"
+
+
+from matplotlib.ticker import FuncFormatter
+#g.set(yticklabels=[])
+for ax in g.axes.flat:
+    ax.yaxis.set_major_formatter(FuncFormatter(y_fmt))
+
+```
 
 ### Figure size
 
@@ -5707,11 +6147,19 @@ See also string operations in pandas character vectors.
 providing various ways to concatenate python strings.
 
 
-## Number formatting in strings
+## F string 
+
+### Number formatting in f strings
 
 [How to print number with commas as thousands separators?](https://stackoverflow.com/a/10742904/2641825)
 
-    f'{1e6:,}' 
+Thousand mark
+
+    f"{1e6:,}"
+
+Round to 2 decimal places
+
+    f"{0.129456789:.2f}"
 
 See also string operations in pandas with df["x"].str methods.
 
@@ -6088,6 +6536,8 @@ More details are given by
 
 ## Environment variables
 
+### Get or set
+
 Get an environment variable
 
     import os
@@ -6096,6 +6546,20 @@ Get an environment variable
 Set an environment variable
 
     os.environ["XYZ"]  = "/tmp"
+
+
+### Python path
+
+For example  in bash, the python path can be updated as follows:
+
+    export PYTHONPATH="$HOME/repos/biotrade/":$PYTHONPATH
+
+This tells python where the biotrade package is located.
+
+From python, use `sys.path` to prepend to the python path.
+
+    import sys
+    sys.path.insert(0, "/home/rougipa/eu_cbm/eu_cbm_hat")
 
 
 ## Memory
@@ -6230,10 +6694,28 @@ Execute the test suite from bash with py.test as follows:
     cd ~/rp/course_machine_learning/projects/project_2_3_mnist/part2-nn
     py.test
 
-Test pandas data frame with
 
-    assert_frame_equal
-    assert_series_equal # tricky to use
+### Test pandas data frame 
+
+Methods to test data frame and series equality
+
+    from pandas.testing import assert_frame_equal
+    from pandas.testing import assert_series_equal
+    import seaborn 
+    iris = seaborn.load_dataset("iris")
+    assert_frame_equal(iris, iris)
+    iris["species2"] = iris["species"]
+    assert_series_equal(iris["species"], iris["species2"])
+    # Ignore names
+    assert_series_equal(iris["species"], iris["species2"], check_names=False)
+
+Sometimes you want tolerance
+
+    df = pandas.DataFrame({"a":[1.0,2,3],
+                           "b":[1.0001,2,3]})
+    assert_series_equal(df["a"], df["b"], check_names=False)
+    assert_series_equal(df["a"], df["b"], rtol=1e-2, check_names=False)
+
 
 
 ### AA run
