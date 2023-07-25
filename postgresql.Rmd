@@ -250,6 +250,15 @@ Drop a table
     drop table raw_comtrade.yearly;
 
 
+# Rename 
+
+Rename a table to another name with `_backup` at the end
+
+    ALTER TABLE raw_comtrade.yearly RENAME TO yearly_backup;
+    ALTER TABLE raw_comtrade.monthly RENAME TO monthly_backup;
+    ALTER TABLE raw_comtrade.product RENAME TO product_backup;
+
+
 # Dump
 
 Examples copied from `man pg_dump`. To dump a database called mydb into a SQL-script file:
