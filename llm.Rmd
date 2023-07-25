@@ -12,7 +12,7 @@ This page is about
 ### Drop unique values or reset index?
 
 A July 2023 example where GPT4 provides a better answer than Bard. Dropping
-unique values (suggested by Bard) reduces the data by a log it is a misleading
+unique values (suggested by Bard) reduces the data by a lot it is a misleading
 answer. Resetting the index is the correct answer suggested by GPT4.
 
 Same code and error fed to both GPT 4 and BARd
