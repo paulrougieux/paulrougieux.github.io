@@ -2106,6 +2106,21 @@ my .vimrc</p>
 <pre><code>:let mapleader = &quot;,&quot;</code></pre>
 <p>See above section on navigation, you can use <code>Ctrl-O</code> to
 jump back and <code>Ctrl-I</code>to jump forward.</p>
+<div id="refactor-with-jedirename" class="section level4">
+<h4>Refactor with <code>jedi#rename()</code></h4>
+<p>To refactor all occurrences of a variable in a file, move to the
+object you want to rename, then</p>
+<pre><code>:call jedi#rename()</code></pre>
+<p>There is a default shortcut <code>&lt;leader&gt;r</code> for this but
+it is deactivated on my machine for some reason. Not a big problem since
+I don’t use refactor often. Also I prefer not to call this shortcut by
+mistake.</p>
+<p>The advangate of <code>jedi#rename()</code> over a simple
+<code>:%s/old/new/g</code> is that it will only replace python objects,
+if you have them mentioned in comments, it will not replace those.</p>
+<p>See also my refactor with <code>git grep</code> and <code>perl</code>
+in the bash page.</p>
+</div>
 </div>
 <div id="open-files-from-traceback-error-messages"
 class="section level3">

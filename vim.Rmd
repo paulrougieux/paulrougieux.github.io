@@ -1991,6 +1991,24 @@ See above section on navigation, you can use `Ctrl-O` to jump back and
 `Ctrl-I`to jump forward.
 
 
+#### Refactor with `jedi#rename()`
+
+To refactor all occurrences of a variable in a file, move to the object you
+want to rename, then 
+
+    :call jedi#rename()
+
+There is a default shortcut `<leader>r` for this but it is deactivated on my
+machine for some reason. Not a big problem since I don't use refactor often.
+Also I prefer not to call this shortcut by mistake.
+
+The advangate of `jedi#rename()` over a simple `:%s/old/new/g` is that it will
+only replace python objects, if you have them mentioned in comments, it will
+not replace those.
+
+See also my refactor with `git grep` and `perl` in the bash page.
+
+
 ### Open files from traceback error messages
 
 The goal is to open files at the line number specified in a python error trace
