@@ -266,17 +266,20 @@ To merge `branch1` changes to the `main` branch:
 
     git merge branch1
 
-In case of conflict, you can edit the corresponding file(s) manually in a text
-editor, or you can decide to keep one of the 2 versions by checking out. For
-example if you are in the `main` branch
+
+### Checkout `--ours` or `--theirs`
+
+In case of a merge conflict, you can edit the corresponding file(s) manually in
+a text editor, or you can decide to keep one of the 2 versions by checking out.
+For example if you are in the `main` branch
 
     git checkout --ours <filename>
 
-will get the file as it is in the main branch, while
+will get the file as it is in the `main` branch, while
 
     git checkout --theirs <filename>
 
-will get the file as it is in `branch1`. And vice-versa if you are currently in
+will get the file as it is in `branch1`. And vice-versa, if you are currently in
 a feature branch `git checkout --ours <filename>` will get the file as it is in
 the feature branch.
 

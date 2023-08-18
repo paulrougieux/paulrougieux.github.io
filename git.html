@@ -643,16 +643,20 @@ branch:</p>
 <pre><code>git checkout main
 
 git merge branch1</code></pre>
-<p>In case of conflict, you can edit the corresponding file(s) manually
-in a text editor, or you can decide to keep one of the 2 versions by
-checking out. For example if you are in the <code>main</code> branch</p>
+<div id="checkout---ours-or---theirs" class="section level3">
+<h3>Checkout <code>--ours</code> or <code>--theirs</code></h3>
+<p>In case of a merge conflict, you can edit the corresponding file(s)
+manually in a text editor, or you can decide to keep one of the 2
+versions by checking out. For example if you are in the
+<code>main</code> branch</p>
 <pre><code>git checkout --ours &lt;filename&gt;</code></pre>
-<p>will get the file as it is in the main branch, while</p>
+<p>will get the file as it is in the <code>main</code> branch, while</p>
 <pre><code>git checkout --theirs &lt;filename&gt;</code></pre>
-<p>will get the file as it is in <code>branch1</code>. And vice-versa if
-you are currently in a feature branch
+<p>will get the file as it is in <code>branch1</code>. And vice-versa,
+if you are currently in a feature branch
 <code>git checkout --ours &lt;filename&gt;</code> will get the file as
 it is in the feature branch.</p>
+</div>
 <div id="unmerged-paths" class="section level3">
 <h3>Unmerged paths</h3>
 <p>When a file in a status <code>Unmerged paths</code></p>
