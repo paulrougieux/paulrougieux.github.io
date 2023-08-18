@@ -105,10 +105,20 @@ section below.
 
 ## Pandoc for research papers
 
+
 - [How to use Pandoc to produce a research
   paper](https://opensource.com/article/18/9/pandoc-research-paper)
   using the latex template of a journal to specify authorship in the way
-  requested by the journal.
+  requested by the journal. Then the body of the article is written in
+  Markdown.
+
+- Pandoc needs to be called with the `--citeproc` argument to generate a list
+  of references from the citations. The bibliography file can be specified in
+  the `--bibliography` argument.
+
+      pandoc article.md -o article.pdf --bibliography=article.bib --citeproc
+
+    - See also the YAML front matter section on bibliography.
 
 
 # Quarto
@@ -170,15 +180,16 @@ with citations. See also the vim.Rmd document on pandoc bibliographies.
     \bibliographystyle{apalike}
 
 This is probably not the way to do it, the bibliography should be included in the pandoc call? 
-Note this requires citeproc
+
+Pandoc requires citeproc to process the bibliography, install it with
 
     sudo apt install pandoc-citeproc
 
-Then this should work :
+Explicitly call the `--citeproc` argument to generate a list of references
+from the citations
 
-    pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib
+    pandoc article.md -o article.pdf --citeproc
 
-There is still an issue with the encoding of the bibliography.
 
 ## Paper size and margins
 

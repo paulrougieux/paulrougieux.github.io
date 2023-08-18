@@ -527,10 +527,19 @@ makefile section below.</p>
 <div id="pandoc-for-research-papers" class="section level2">
 <h2>Pandoc for research papers</h2>
 <ul>
-<li><a
+<li><p><a
 href="https://opensource.com/article/18/9/pandoc-research-paper">How to
 use Pandoc to produce a research paper</a> using the latex template of a
-journal to specify authorship in the way requested by the journal.</li>
+journal to specify authorship in the way requested by the journal. Then
+the body of the article is written in Markdown.</p></li>
+<li><p>Pandoc needs to be called with the <code>--citeproc</code>
+argument to generate a list of references from the citations. The
+bibliography file can be specified in the <code>--bibliography</code>
+argument.</p>
+<pre><code>pandoc article.md -o article.pdf --bibliography=article.bib --citeproc</code></pre>
+<ul>
+<li>See also the YAML front matter section on bibliography.</li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -593,11 +602,13 @@ header-includes: |
 \bibliography{../bibliography/jrc_ispra}
 \bibliographystyle{apalike}</code></pre>
 <p>This is probably not the way to do it, the bibliography should be
-included in the pandoc call? Note this requires citeproc</p>
+included in the pandoc call?</p>
+<p>Pandoc requires citeproc to process the bibliography, install it
+with</p>
 <pre><code>sudo apt install pandoc-citeproc</code></pre>
-<p>Then this should work :</p>
-<pre><code>pandoc readings_jrc.md -o readings_jrc.pdf --pdf-engine=xelatex --bibliography=jrc_ispra.bib</code></pre>
-<p>There is still an issue with the encoding of the bibliography.</p>
+<p>Explicitly call the <code>--citeproc</code> argument to generate a
+list of references from the citations</p>
+<pre><code>pandoc article.md -o article.pdf --citeproc</code></pre>
 </div>
 <div id="paper-size-and-margins" class="section level2">
 <h2>Paper size and margins</h2>
