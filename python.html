@@ -657,6 +657,14 @@ version numbers while allowing the patch version number to vary allows
 us to use our environment file to update our environment to get any bug
 fixes whilst still maintaining consistency of software environment.</p>
 </div>
+<div id="mamba" class="section level3">
+<h3>Mamba</h3>
+<p>The mamba solver can speed up the dependency resolution process. It
+doesn’t require a special mamba installation You can switch the default
+solver in a normal conda installation:</p>
+<pre><code>conda install -n base -c defaults conda-libmamba-solver
+conda config --set solver libmamba</code></pre>
+</div>
 </div>
 <div id="create-a-package" class="section level2">
 <h2>Create a package</h2>
@@ -1917,7 +1925,7 @@ prun</a>:</p>
 <div id="running-from-ipython" class="section level2">
 <h2>Running from ipython</h2>
 <p>Run a file from the ipython console</p>
-<pre><code>%run -i test.py.</code></pre>
+<pre><code>%run -i test.py</code></pre>
 <p><a href="https://github.com/ipython/ipython/issues/1001"
 class="uri">https://github.com/ipython/ipython/issues/1001</a></p>
 </div>
@@ -4835,7 +4843,9 @@ for file_path in dir_path.iterdir():
 href="https://stackoverflow.com/questions/3402168/permanently-add-a-directory-to-pythonpath">SO
 question</a>) in order to import scripts</p>
 <pre><code>import sys
-sys.path.append(&#39;/path/to/dir&#39;)</code></pre>
+sys.path.append(&#39;/path/to/dir&#39;)
+# You might want to prepend if you want to overwrite a system package
+sys.path.insert(0, &quot;/home/rougipa/eu_cbm/eu_cbm_hat&quot;)</code></pre>
 <p>To permanently add a package under development to the python path,
 add the following to your <code>.bashrc</code> or
 <code>.bash_profile</code>:</p>
@@ -5356,6 +5366,7 @@ g = seaborn.relplot(
 g.fig.supylabel(&quot;Adaptive Engagement of Cognitive Control&quot;)
 g.fig.subplots_adjust(left=0.28, top=0.9)
 g.fig.suptitle(&quot;Example&quot;)
+g.set_ylabels(&quot;Y label&quot;)
 g.set(ylim=(0, None))
 plt.show()
 </code></pre>
@@ -6535,6 +6546,7 @@ os.environ[&quot;XYZ&quot;]</code></pre>
 path.</p>
 <pre><code>import sys
 sys.path.insert(0, &quot;/home/rougipa/eu_cbm/eu_cbm_hat&quot;)</code></pre>
+<p>See also the section on python path.</p>
 </div>
 </div>
 <div id="memory" class="section level2">
@@ -6567,6 +6579,14 @@ can I find the reason that python script is killed?</a>, <a
 href="https://stackoverflow.com/questions/1811173/why-does-my-python-script-randomly-get-killed">Why
 does python script randomly gets killed?</a>.</p>
 </div>
+</div>
+<div id="python-version" class="section level2">
+<h2>Python version</h2>
+<p>See also the status of python versions:</p>
+<ul>
+<li><a href="https://devguide.python.org/versions/"
+class="uri">https://devguide.python.org/versions/</a></li>
+</ul>
 </div>
 <div id="where-are-python-module-stored" class="section level2">
 <h2>Where are python module stored</h2>

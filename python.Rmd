@@ -251,6 +251,14 @@ Note
 Note the use of the wildcard * when defining the patch version number. Defining the version number by fixing the major and minor version numbers while allowing the patch version number to vary allows us to use our environment file to update our environment to get any bug fixes whilst still maintaining consistency of software environment.
 
 
+### Mamba
+
+The mamba solver can speed up the dependency resolution process. It doesn't
+require a special mamba installation You can switch the default solver in a
+normal conda installation:
+
+    conda install -n base -c defaults conda-libmamba-solver
+    conda config --set solver libmamba
 
 
 ## Create a package
@@ -636,9 +644,9 @@ Sample code with a function and if conditions:
 	function('lalala')
 
 
-## For 
+## For loop
 
-A for loop with a continue statement
+A for loop with a `continue` statement
 
     print("I print all numbers in the range except 2.")
     for i in range(5):
@@ -1615,7 +1623,7 @@ Run a script with profiling enabled from the ipython console
 
 Run a file from the ipython console
 
-    %run -i test.py.
+    %run -i test.py
 
 https://github.com/ipython/ipython/issues/1001
 
@@ -4866,6 +4874,8 @@ Temporarily add to the python path  ([SO question](https://stackoverflow.com/que
 
     import sys
     sys.path.append('/path/to/dir')
+    # You might want to prepend if you want to overwrite a system package
+    sys.path.insert(0, "/home/rougipa/eu_cbm/eu_cbm_hat")
 
 To permanently add a package under development to the python path, add the
 following to your `.bashrc` or `.bash_profile`:
@@ -5469,6 +5479,7 @@ g = seaborn.relplot(
 g.fig.supylabel("Adaptive Engagement of Cognitive Control")
 g.fig.subplots_adjust(left=0.28, top=0.9)
 g.fig.suptitle("Example")
+g.set_ylabels("Y label")
 g.set(ylim=(0, None))
 plt.show()
 
@@ -6561,6 +6572,8 @@ From python, use `sys.path` to prepend to the python path.
     import sys
     sys.path.insert(0, "/home/rougipa/eu_cbm/eu_cbm_hat")
 
+See also the section on python path.
+
 
 ## Memory
 
@@ -6597,6 +6610,13 @@ mean](https://stackoverflow.com/questions/19189522/what-does-killed-mean-when-a-
 killed?](https://stackoverflow.com/questions/47408608/how-can-i-find-the-reason-that-python-script-is-killed),
 [Why does python script randomly gets
 killed?](https://stackoverflow.com/questions/1811173/why-does-my-python-script-randomly-get-killed).
+
+
+## Python version 
+
+See also the status of python versions:
+
+- https://devguide.python.org/versions/
 
 
 ## Where are python module stored
