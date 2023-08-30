@@ -370,9 +370,18 @@ Installing from the backports (see above section on how to add the backports in 
     sudo apt-get -t stretch-backports install remmina 
 
 
-## Riot
+## Element Matrix
 
-[Desktop Riot installation](https://riot.im/download/desktop/)
+- https://element.io/download#linux
+
+    sudo apt install -y wget apt-transport-https
+    sudo wget -O /usr/share/keyrings/element-io-archive-keyring.gpg https://packages.element.io/debian/element-io-archive-keyring.gpg
+    echo "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main" | sudo tee /etc/apt/sources.list.d/element-io.list
+    sudo apt update
+    sudo apt install element-desktop
+
+- Riot (former version) [Desktop Riot
+  installation](https://riot.im/download/desktop/)
 
     sudo apt install -y lsb-release wget apt-transport-https
     sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
@@ -381,22 +390,21 @@ Installing from the backports (see above section on how to add the backports in 
     sudo apt update
     sudo apt install riot-web
 
-In an earlier version riot the source.list was mentionned directly in /etc/apt/sources.list.
-I needed to remove it as explained [here](https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818):
+    - In an earlier version riot the source.list was mentioned directly in
+      /etc/apt/sources.list. I needed to remove it as explained
+      [here](https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818):
 
-> "You have riot.im/packages in your apt sources list somewhere, which is the old repository location. You need to remove that"
-
+        > "You have riot.im/packages in your apt sources list somewhere, which
+        > is the old repository location. You need to remove that"
 
 
 ## Sane
 
+- The Flatbed scanner Canoscan lide 400 is supported on Linux according to the
+  [sane backends](http://www.sane-project.org/sane-backends.html) page.
 
-The Flatbed scanner
-  Canoscan lide 400 is supported on Linux according to the [sane 
-  backends](http://www.sane-project.org/sane-backends.html) page.
-
-When the scanner is plugged in, I can see it's USB id `0x04a9/0x1912`
-(mentioned in the sane backends web page) in the output of
+- When the scanner is plugged in, I can see it's USB id `0x04a9/0x1912`
+  (mentioned in the sane backends web page) in the output of
 
     lsusb | grep -i canon
     #Bus 002 Device 115: ID 04a9:1912 Canon, Inc.
@@ -420,7 +428,6 @@ Clone and build the latest version of sane
     make -j9
 
 I tried the other instructions related to the pixma linking 
-
 
     ll /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.*
     sudo rm /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1 /usr/lib/x86_64-linux-gnu/sane/libsane-pixma.so.1.0.27
@@ -1066,7 +1073,7 @@ https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#
 First update the current version of your system 
 
     sudo apt update
-    sudo apt update 
+    sudo apt upgrade
 
 Added the following lines to /etc/apt/sources.list and commented all the other
 lines
@@ -1089,6 +1096,57 @@ Then ran
 
     sudo apt update
     sudo apt full-upgrade
+
+
+## From bullseye 11 to bookworm 12
+
+- Update instructions at
+  https://www.debian.org/releases/stable/i386/release-notes/ch-upgrading.html
+
+- Remove forgotten packages
+
+        apt autoremove
+
+- Remove obsolete packages
+    
+        apt list '~o'
+        sudo apt purge '~o'
+
+- List transitional dummy packages
+
+      deborphan  --guess-dummy
+
+- Edit APT sources with the following lines that should replace bullseye
+  sources
+
+        sudo vim /etc/apt/sources.list
+        # Note that non-free-firmware is needed now for firmware
+        deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+        deb-src  https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+        deb https://deb.debian.org/debian bookworm-security main contrib non-free non-free-firmware
+
+- Also change the R package source in that file as explained in https://cran.r-project.org/bin/linux/debian/
+
+        deb http://cloud.r-project.org/bin/linux/debian bookworm-cran40/
+
+- Recording the session with
+
+        script -t 2>~/upgrade-bookwormstep.time -a ~/upgrade-bookwormstep.script
+
+- Update
+
+        sudo apt update
+
+-  Minimal system upgrade 
+
+        sudo apt upgrade --without-new-pkgs
+
+        # W: Possible missing firmware /lib/firmware/i915/cnl_dmc_ver1_07.bin for module i915
+
+
+- Upgrading the system
+
+        sudo apt full-upgrade
 
 
 # Blogs

@@ -742,34 +742,56 @@ rstudio</a></p>
 backports in sources.list)</p>
 <pre><code>sudo apt-get -t stretch-backports install remmina </code></pre>
 </div>
-<div id="riot" class="section level2">
-<h2>Riot</h2>
-<p><a href="https://riot.im/download/desktop/">Desktop Riot
+<div id="element-matrix" class="section level2">
+<h2>Element Matrix</h2>
+<ul>
+<li><p><a href="https://element.io/download#linux"
+class="uri">https://element.io/download#linux</a></p>
+<p>sudo apt install -y wget apt-transport-https sudo wget -O
+/usr/share/keyrings/element-io-archive-keyring.gpg <a
+href="https://packages.element.io/debian/element-io-archive-keyring.gpg"
+class="uri">https://packages.element.io/debian/element-io-archive-keyring.gpg</a>
+echo “deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg]
+<a href="https://packages.element.io/debian/"
+class="uri">https://packages.element.io/debian/</a> default main” | sudo
+tee /etc/apt/sources.list.d/element-io.list sudo apt update sudo apt
+install element-desktop</p></li>
+<li><p>Riot (former version) <a
+href="https://riot.im/download/desktop/">Desktop Riot
 installation</a></p>
-<pre><code>sudo apt install -y lsb-release wget apt-transport-https
-sudo wget -O /usr/share/keyrings/riot-im-archive-keyring.gpg https://packages.riot.im/debian/riot-im-archive-keyring.gpg
-echo &quot;deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] https://packages.riot.im/debian/ $(lsb_release -cs) main&quot; |
-    sudo tee /etc/apt/sources.list.d/riot-im.list
-sudo apt update
-sudo apt install riot-web</code></pre>
-<p>In an earlier version riot the source.list was mentionned directly in
-/etc/apt/sources.list. I needed to remove it as explained <a
+<p>sudo apt install -y lsb-release wget apt-transport-https sudo wget -O
+/usr/share/keyrings/riot-im-archive-keyring.gpg <a
+href="https://packages.riot.im/debian/riot-im-archive-keyring.gpg"
+class="uri">https://packages.riot.im/debian/riot-im-archive-keyring.gpg</a>
+echo “deb [signed-by=/usr/share/keyrings/riot-im-archive-keyring.gpg] <a
+href="https://packages.riot.im/debian/"
+class="uri">https://packages.riot.im/debian/</a> $(lsb_release -cs)
+main” | sudo tee /etc/apt/sources.list.d/riot-im.list sudo apt update
+sudo apt install riot-web</p>
+<ul>
+<li><p>In an earlier version riot the source.list was mentioned directly
+in /etc/apt/sources.list. I needed to remove it as explained <a
 href="https://github.com/vector-im/riot-web/issues/10278#issuecomment-509365818">here</a>:</p>
 <blockquote>
 <p>“You have riot.im/packages in your apt sources list somewhere, which
 is the old repository location. You need to remove that”</p>
-</blockquote>
+</blockquote></li>
+</ul></li>
+</ul>
 </div>
 <div id="sane" class="section level2">
 <h2>Sane</h2>
-<p>The Flatbed scanner Canoscan lide 400 is supported on Linux according
-to the <a href="http://www.sane-project.org/sane-backends.html">sane
-backends</a> page.</p>
-<p>When the scanner is plugged in, I can see it’s USB id
+<ul>
+<li><p>The Flatbed scanner Canoscan lide 400 is supported on Linux
+according to the <a
+href="http://www.sane-project.org/sane-backends.html">sane backends</a>
+page.</p></li>
+<li><p>When the scanner is plugged in, I can see it’s USB id
 <code>0x04a9/0x1912</code> (mentioned in the sane backends web page) in
 the output of</p>
-<pre><code>lsusb | grep -i canon
-#Bus 002 Device 115: ID 04a9:1912 Canon, Inc.</code></pre>
+<p>lsusb | grep -i canon #Bus 002 Device 115: ID 04a9:1912 Canon,
+Inc.</p></li>
+</ul>
 <p>Install sane from source following these instructions <a
 href="http://forums.debian.net/viewtopic.php?f=16&amp;t=141668"
 class="uri">http://forums.debian.net/viewtopic.php?f=16&amp;t=141668</a></p>
@@ -1352,7 +1374,7 @@ href="https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en
 class="uri">https://www.debian.org/releases/stable/amd64/release-notes/ch-upgrading.en.html#backup</a></p>
 <p>First update the current version of your system</p>
 <pre><code>sudo apt update
-sudo apt update </code></pre>
+sudo apt upgrade</code></pre>
 <p>Added the following lines to /etc/apt/sources.list and commented all
 the other lines</p>
 <pre><code>deb http://deb.debian.org/debian bullseye main contrib non-free
@@ -1368,6 +1390,40 @@ deb http://cloud.r-project.org/bin/linux/debian bullseye-cran40/</code></pre>
 <p>Then ran</p>
 <pre><code>sudo apt update
 sudo apt full-upgrade</code></pre>
+</div>
+<div id="from-bullseye-11-to-bookworm-12" class="section level2">
+<h2>From bullseye 11 to bookworm 12</h2>
+<ul>
+<li><p>Update instructions at <a
+href="https://www.debian.org/releases/stable/i386/release-notes/ch-upgrading.html"
+class="uri">https://www.debian.org/releases/stable/i386/release-notes/ch-upgrading.html</a></p></li>
+<li><p>Remove forgotten packages</p>
+<pre><code>  apt autoremove</code></pre></li>
+<li><p>Remove obsolete packages</p>
+<pre><code>  apt list &#39;~o&#39;
+  sudo apt purge &#39;~o&#39;</code></pre></li>
+<li><p>List transitional dummy packages</p>
+<pre><code>deborphan  --guess-dummy</code></pre></li>
+<li><p>Edit APT sources with the following lines that should replace
+bullseye sources</p>
+<pre><code>  sudo vim /etc/apt/sources.list
+  # Note that non-free-firmware is needed now for firmware
+  deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+  deb-src  https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+  deb https://deb.debian.org/debian bookworm-security main contrib non-free non-free-firmware</code></pre></li>
+<li><p>Also change the R package source in that file as explained in <a
+href="https://cran.r-project.org/bin/linux/debian/"
+class="uri">https://cran.r-project.org/bin/linux/debian/</a></p>
+<pre><code>  deb http://cloud.r-project.org/bin/linux/debian bookworm-cran40/</code></pre></li>
+<li><p>Recording the session with</p>
+<pre><code>  script -t 2&gt;~/upgrade-bookwormstep.time -a ~/upgrade-bookwormstep.script</code></pre></li>
+<li><p>Update</p>
+<pre><code>  sudo apt update</code></pre></li>
+<li><p>Minimal system upgrade</p>
+<pre><code> sudo apt upgrade --without-new-pkgs</code></pre></li>
+<li><p>Upgrading the system</p>
+<pre><code>  sudo apt full-upgrade</code></pre></li>
+</ul>
 </div>
 </div>
 <div id="blogs" class="section level1">
