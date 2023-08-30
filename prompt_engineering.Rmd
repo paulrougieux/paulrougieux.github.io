@@ -1,0 +1,28 @@
+
+
+
+# Refactor
+
+## Functional programming
+
+
+Prompt:
+
+> Please refactor this code according to the latest python principles of
+> functional programming.  <...code...>
+
+GPT4 Answer starts with
+
+> "Certainly! I will refactor the code to make it more aligned with the
+> principles of functional programming. This means I'll attempt to:
+
+> - Minimize or eliminate side effects.
+> - Use higher-order functions.
+> - Make use of functional constructs like mapping and filtering.
+> - Prefer immutability where applicable.
+> - Break down the code into smaller functions to make it more modular.
+
+> Here's the refactored code: ....
+
+
+
