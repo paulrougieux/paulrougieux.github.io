@@ -50,6 +50,14 @@ answer](https://stackoverflow.com/questions/20180543/how-do-i-check-the-versions
     pip freeze | grep pandas
 
 
+#### Location of a package
+
+Check the location of a package
+
+    import eu_cbm_hat
+    eu_cbm_hat.__file__
+
+
 ### Install an old version
 
 For example to install pandas 0.24.2
@@ -2426,6 +2434,18 @@ Print available models
 
 ## Econometrics
 
+- https://www.statsmodels.org/stable/index.html
+
+    > "statsmodels is a Python module that provides classes and functions for
+    > the estimation of many different statistical models, as well as for
+    > conducting statistical tests, and statistical data exploration."
+
+- 2020 paper https://conference.scipy.org/proceedings/scipy2010/pdfs/seabold.pdf
+
+    > "The current main developers of statsmodels are trained as economists
+    > with a background in **econometrics.** As such, much of the development
+    > over the last year has focused on econometric applications."
+
 - https://pypi.org/project/wooldridge/
 
     > "A Python package which contains 111 data sets from one of the most
@@ -3005,6 +3025,11 @@ Testing closeness (for example with floating point results computed in another
 software)
 
     import numpy as np
+    np.testing.assert_allclose([1,2,3], [1.001,2,3],rtol=1e-2)
+    np.testing.assert_allclose([1,2,3], [1.001,2,3],rtol=1e-6)
+
+Other examples 
+
     df.equals(df+1e-6)
     np.testing.assert_allclose(df,df+1e-7)
     np.testing.assert_allclose(df,df+1e-3)
@@ -3767,6 +3792,19 @@ answer](https://stackoverflow.com/a/56786517/2641825).
     zf = zipfile.ZipFile("archive_name.zip")
     print("Files in the archive:", zf.namelist())
     df = pandas.read_csv(zf.open("file_name.csv"))
+
+
+#### pyarrow.csv
+
+
+
+
+
+- https://en.wikipedia.org/wiki/CPU_time
+
+    > "If a program uses parallel processing, total CPU time for that program would
+    > be more than its elapsed real time."
+
 
 
 #### From an API
@@ -4791,6 +4829,32 @@ Copy a file
 Move a file
 
     shutil.move("/tmp/bli.md", "/tmp/bla.md")
+
+
+## Delete files or directories
+
+Create a file and a path object for example purposes
+
+    import pathlib
+    with open("/tmp/bli.md", "w") as f:
+        f.write('Hola!')
+    bli_path = pathlib.Path("/tmp/bli.md")
+
+Delete a file if it exists
+
+    if bli_path.exists():
+        bli_path.unlink()
+
+Create a directory and path object for example purposes
+
+    import pathblib
+
+Delete a directory if it exists
+    
+
+See also:
+
+- https://stackoverflow.com/questions/6996603/how-can-i-delete-a-file-or-folder-in-python
 
 
 ## Pathlib
@@ -6573,6 +6637,30 @@ From python, use `sys.path` to prepend to the python path.
     sys.path.insert(0, "/home/rougipa/eu_cbm/eu_cbm_hat")
 
 See also the section on python path.
+
+
+## GIL Global Interpreter Lock
+
+- https://docs.python.org/3/glossary.html#term-global-interpreter-lock
+
+    > "The mechanism used by the CPython interpreter to assure that only one thread
+    > executes Python bytecode at a time. This simplifies the CPython
+    > implementation by making the object model (including critical built-in types
+    > such as dict) implicitly safe against concurrent access. Locking the entire
+    > interpreter makes it easier for the interpreter to be multi-threaded, at the
+    > expense of much of the parallelism afforded by multi-processor machines.
+
+    > However, some extension modules, either standard or third-party, are designed
+    > so as to release the GIL when doing computationally intensive tasks such as
+    > compression or hashing. Also, the GIL is always released when doing I/O."
+
+- https://numba.pydata.org/numba-doc/latest/user/jit.html#nogil
+
+    > "Whenever Numba optimizes Python code to native code that only works on
+    > native types and variables (rather than Python objects), it is not
+    > necessary anymore to hold Python’s global interpreter lock (GIL). Numba
+    > will release the GIL when entering such a compiled function if you passed
+    > nogil=True."
 
 
 ## Memory

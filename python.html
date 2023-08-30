@@ -483,6 +483,12 @@ href="https://stackoverflow.com/questions/20180543/how-do-i-check-the-versions-o
 answer</a> suggestion a command line way to display the same
 information</p>
 <pre><code>pip freeze | grep pandas</code></pre>
+<div id="location-of-a-package" class="section level4">
+<h4>Location of a package</h4>
+<p>Check the location of a package</p>
+<pre><code>import eu_cbm_hat
+eu_cbm_hat.__file__</code></pre>
+</div>
 </div>
 <div id="install-an-old-version" class="section level3">
 <h3>Install an old version</h3>
@@ -1027,9 +1033,9 @@ function(False)
 function(&#39;&#39;)
 function(&#39;lalala&#39;)</code></pre>
 </div>
-<div id="for" class="section level2">
-<h2>For</h2>
-<p>A for loop with a continue statement</p>
+<div id="for-loop" class="section level2">
+<h2>For loop</h2>
+<p>A for loop with a <code>continue</code> statement</p>
 <pre><code>print(&quot;I print all numbers in the range except 2.&quot;)
 for i in range(5):
     if i==2:
@@ -2688,6 +2694,22 @@ $20/month.”</p>
 <div id="econometrics" class="section level2">
 <h2>Econometrics</h2>
 <ul>
+<li><p><a href="https://www.statsmodels.org/stable/index.html"
+class="uri">https://www.statsmodels.org/stable/index.html</a></p>
+<blockquote>
+<p>“statsmodels is a Python module that provides classes and functions
+for the estimation of many different statistical models, as well as for
+conducting statistical tests, and statistical data exploration.”</p>
+</blockquote></li>
+<li><p>2020 paper <a
+href="https://conference.scipy.org/proceedings/scipy2010/pdfs/seabold.pdf"
+class="uri">https://conference.scipy.org/proceedings/scipy2010/pdfs/seabold.pdf</a></p>
+<blockquote>
+<p>“The current main developers of statsmodels are trained as economists
+with a background in <strong>econometrics.</strong> As such, much of the
+development over the last year has focused on econometric
+applications.”</p>
+</blockquote></li>
 <li><p><a href="https://pypi.org/project/wooldridge/"
 class="uri">https://pypi.org/project/wooldridge/</a></p>
 <blockquote>
@@ -3206,7 +3228,10 @@ df.equals(different_data_type)</code></pre>
 <p>Testing closeness (for example with floating point results computed
 in another software)</p>
 <pre><code>import numpy as np
-df.equals(df+1e-6)
+np.testing.assert_allclose([1,2,3], [1.001,2,3],rtol=1e-2)
+np.testing.assert_allclose([1,2,3], [1.001,2,3],rtol=1e-6)</code></pre>
+<p>Other examples</p>
+<pre><code>df.equals(df+1e-6)
 np.testing.assert_allclose(df,df+1e-7)
 np.testing.assert_allclose(df,df+1e-3)</code></pre>
 </div>
@@ -3866,6 +3891,17 @@ zf = zipfile.ZipFile(&quot;archive_name.zip&quot;)
 print(&quot;Files in the archive:&quot;, zf.namelist())
 df = pandas.read_csv(zf.open(&quot;file_name.csv&quot;))</code></pre>
 </div>
+</div>
+<div id="pyarrow.csv" class="section level4">
+<h4>pyarrow.csv</h4>
+<ul>
+<li><p><a href="https://en.wikipedia.org/wiki/CPU_time"
+class="uri">https://en.wikipedia.org/wiki/CPU_time</a></p>
+<blockquote>
+<p>“If a program uses parallel processing, total CPU time for that
+program would be more than its elapsed real time.”</p>
+</blockquote></li>
+</ul>
 </div>
 <div id="from-an-api" class="section level4">
 <h4>From an API</h4>
@@ -4776,6 +4812,26 @@ manager</a>, then copy the file somewhere else.</p>
 shutil.copy(&quot;/tmp/bli.md&quot;, &quot;/tmp/bla.md&quot;)</code></pre>
 <p>Move a file</p>
 <pre><code>shutil.move(&quot;/tmp/bli.md&quot;, &quot;/tmp/bla.md&quot;)</code></pre>
+</div>
+<div id="delete-files-or-directories" class="section level2">
+<h2>Delete files or directories</h2>
+<p>Create a file and a path object for example purposes</p>
+<pre><code>import pathlib
+with open(&quot;/tmp/bli.md&quot;, &quot;w&quot;) as f:
+    f.write(&#39;Hola!&#39;)
+bli_path = pathlib.Path(&quot;/tmp/bli.md&quot;)</code></pre>
+<p>Delete a file if it exists</p>
+<pre><code>if bli_path.exists():
+    bli_path.unlink()</code></pre>
+<p>Create a directory and path object for example purposes</p>
+<pre><code>import pathblib</code></pre>
+<p>Delete a directory if it exists</p>
+<p>See also:</p>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/6996603/how-can-i-delete-a-file-or-folder-in-python"
+class="uri">https://stackoverflow.com/questions/6996603/how-can-i-delete-a-file-or-folder-in-python</a></li>
+</ul>
 </div>
 <div id="pathlib" class="section level2">
 <h2>Pathlib</h2>
@@ -6548,6 +6604,39 @@ path.</p>
 sys.path.insert(0, &quot;/home/rougipa/eu_cbm/eu_cbm_hat&quot;)</code></pre>
 <p>See also the section on python path.</p>
 </div>
+</div>
+<div id="gil-global-interpreter-lock" class="section level2">
+<h2>GIL Global Interpreter Lock</h2>
+<ul>
+<li><p><a
+href="https://docs.python.org/3/glossary.html#term-global-interpreter-lock"
+class="uri">https://docs.python.org/3/glossary.html#term-global-interpreter-lock</a></p>
+<blockquote>
+<p>“The mechanism used by the CPython interpreter to assure that only
+one thread executes Python bytecode at a time. This simplifies the
+CPython implementation by making the object model (including critical
+built-in types such as dict) implicitly safe against concurrent access.
+Locking the entire interpreter makes it easier for the interpreter to be
+multi-threaded, at the expense of much of the parallelism afforded by
+multi-processor machines.</p>
+</blockquote>
+<blockquote>
+<p>However, some extension modules, either standard or third-party, are
+designed so as to release the GIL when doing computationally intensive
+tasks such as compression or hashing. Also, the GIL is always released
+when doing I/O.”</p>
+</blockquote></li>
+<li><p><a
+href="https://numba.pydata.org/numba-doc/latest/user/jit.html#nogil"
+class="uri">https://numba.pydata.org/numba-doc/latest/user/jit.html#nogil</a></p>
+<blockquote>
+<p>“Whenever Numba optimizes Python code to native code that only works
+on native types and variables (rather than Python objects), it is not
+necessary anymore to hold Python’s global interpreter lock (GIL). Numba
+will release the GIL when entering such a compiled function if you
+passed nogil=True.”</p>
+</blockquote></li>
+</ul>
 </div>
 <div id="memory" class="section level2">
 <h2>Memory</h2>
