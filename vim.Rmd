@@ -330,11 +330,20 @@ Similarly to enter text at the end of multiple lines ([vim.wikia](http://vim.wik
 
 ### Delete all lines that contain a pattern
 
-- https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern
-
-Delete all line that contain "pattern":
+Delete all lines that contain "pattern":
 
     :g/pattern/d
+
+Delete all lines  that do not contain a pattern:
+
+    :g!/pattern/d
+    :v/pattern/d
+
+See also:
+
+- https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern
+
+- https://superuser.com/questions/265085/how-to-delete-all-lines-that-do-not-contain-a-certain-word-in-vim
 
 
 ### Increment numbers in a list
@@ -574,6 +583,16 @@ For example to [remove the last 2 characters of each line in a selection](https:
 
     :'<,'>s/..$//
 
+In case you have slashes in the pattern, you can use another separator such as
+`#`
+
+    :%s#/path/to/file#/new/path#g
+
+
+See also:
+
+- https://stackoverflow.com/questions/11823616/how-to-include-forward-slash-in-vi-search-replace
+
 
 ### Abbreviations and boilerplate code
 
@@ -586,26 +605,6 @@ Add a read counter item to a list of papers to read
     iabbrev teh the
 
 - [SO question on boilerplate code](https://stackoverflow.com/questions/55469524/how-to-write-vim-function-to-paste-a-template-text-into-current-file)
-
-
-### Character classes
-
-See also patterns below.
-
-See `:help character-classes` for a list of classes accepted in Vim with their
-equivalent regex pattern, for example `\w` is equivalent to `[0-9A-Za-z_]`.
-Replace all word characters by a dash (to create a markdown table division see
-also collection below)
-
-    :'<,'>s/\w/-/g
-
-Note that this only works with ASCII characters and doesn't work with accentuated characters.
-For example `smöl` gets replaced by `--ö-`.
-To replace all identifier characters, use
-
-    :'<,'>s/\i/-/g
-
-And then `smöl` gets replaced by `----`.
 
 
 ### Collection 
@@ -718,6 +717,26 @@ Remove bracketed references from text copied from Wikipedia.
     :'<,'>s/\[[0-9]\+\]//g
 
 
+#### Character classes
+
+See also patterns below.
+
+See `:help character-classes` for a list of classes accepted in Vim with their
+equivalent regex pattern, for example `\w` is equivalent to `[0-9A-Za-z_]`.
+Replace all word characters by a dash (to create a markdown table division see
+also collection below)
+
+    :'<,'>s/\w/-/g
+
+Note that this only works with ASCII characters and doesn't work with accentuated characters.
+For example `smöl` gets replaced by `--ö-`.
+To replace all identifier characters, use
+
+    :'<,'>s/\i/-/g
+
+And then `smöl` gets replaced by `----`.
+
+
 #### Numbers
 
 Insert Markdown title marker `#` before a number at the beginning of a line
@@ -734,6 +753,13 @@ Remove bracketed references from text copied from Wikipedia.
 Remove all numbers in a list of authors
 
     :'<,'>s/\d//g
+
+
+#### Or
+
+Replace this or that with a dot
+
+    :%s/this\|that/./g
 
 
 ### Replace list items
@@ -2690,6 +2716,38 @@ This page is the continuation of [my 2014 blog post on Vim commands](https://pau
   productivity](https://www.maketecheasier.com/useful-emacs-packages/): Org
   mode, magit, evil mode, focus mode, darkroom
 
+- VS Code Vim 
+
+    - VS Code NeoVim https://github.com/vscode-neovim/vscode-neovim
+
+        > "VSCode's native functionality is used for insert mode and editor
+        > commands, making the best use of both editors."
+
+    - VS Code Vim https://marketplace.visualstudio.com/items?itemName=vscodevim.vim
+
+    - https://www.reddit.com/r/vscode/comments/l7r1g8/in_your_opinion_is_it_better_to_use_vscode_vim_or/
+
+        > "I used Emacs, Vim and now VSCode for many years - I remain not convinced
+        > that I'm faster at Vim for most edits - but I admit that using Vim
+        > keybindings for some edits feels very cool, fast and smart. In the end I
+        > can do most stuff on VSCode very fast, without modality, by abusing
+        > multiple cursors and some extensions. Other than that, the Open in Vim
+        > command (another extension) is a quick life saver when I need a macro. And
+        > I'm betting on VSCode to continue improving faster than Vim."
+
+    - https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim
+
+        > "The true magic of Vim is composition. As you go building up this
+        > vocabulary of operators and motions you’ll find that you can combine
+        > them to your heart’s content. So that, once you know all the c, cl,
+        > caw, ciw, ct. from the previous paragraph and you learn how dl works,
+        > you’ll not only be able to use dl, you’ll know that you can also
+        > combine it with all the motions you already have at your disposal and
+        > daw, diw, dt, etc."
+
+const salute = 'I salute you oh Mighty Warrior'
+You type ci'Hi!<ESC> and it becomes:
+const salute = 'Hi!'
 
 ## Demonstrations of vim use
 

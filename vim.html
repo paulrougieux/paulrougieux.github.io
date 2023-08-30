@@ -720,13 +720,20 @@ then press Esc to confirm.”</p>
 <div id="delete-all-lines-that-contain-a-pattern"
 class="section level3">
 <h3>Delete all lines that contain a pattern</h3>
-<ul>
-<li><a
-href="https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern"
-class="uri">https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern</a></li>
-</ul>
-<p>Delete all line that contain “pattern”:</p>
+<p>Delete all lines that contain “pattern”:</p>
 <pre><code>:g/pattern/d</code></pre>
+<p>Delete all lines that do not contain a pattern:</p>
+<pre><code>:g!/pattern/d
+:v/pattern/d</code></pre>
+<p>See also:</p>
+<ul>
+<li><p><a
+href="https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern"
+class="uri">https://vim.fandom.com/wiki/Delete_all_lines_containing_a_pattern</a></p></li>
+<li><p><a
+href="https://superuser.com/questions/265085/how-to-delete-all-lines-that-do-not-contain-a-certain-word-in-vim"
+class="uri">https://superuser.com/questions/265085/how-to-delete-all-lines-that-do-not-contain-a-certain-word-in-vim</a></p></li>
+</ul>
 </div>
 <div id="increment-numbers-in-a-list" class="section level3">
 <h3>Increment numbers in a list</h3>
@@ -921,6 +928,15 @@ selection:</p>
 href="https://stackoverflow.com/a/36264759/2641825">remove the last 2
 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
+<p>In case you have slashes in the pattern, you can use another
+separator such as <code>#</code></p>
+<pre><code>:%s#/path/to/file#/new/path#g</code></pre>
+<p>See also:</p>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/11823616/how-to-include-forward-slash-in-vi-search-replace"
+class="uri">https://stackoverflow.com/questions/11823616/how-to-include-forward-slash-in-vi-search-replace</a></li>
+</ul>
 <div id="abbreviations-and-boilerplate-code" class="section level3">
 <h3>Abbreviations and boilerplate code</h3>
 <p>Add a read counter item to a list of papers to read</p>
@@ -933,21 +949,6 @@ href="https://vim.fandom.com/wiki/Use_abbreviations_for_frequently-used_words">a
 href="https://stackoverflow.com/questions/55469524/how-to-write-vim-function-to-paste-a-template-text-into-current-file">SO
 question on boilerplate code</a></p></li>
 </ul>
-</div>
-<div id="character-classes" class="section level3">
-<h3>Character classes</h3>
-<p>See also patterns below.</p>
-<p>See <code>:help character-classes</code> for a list of classes
-accepted in Vim with their equivalent regex pattern, for example
-<code>\w</code> is equivalent to <code>[0-9A-Za-z_]</code>. Replace all
-word characters by a dash (to create a markdown table division see also
-collection below)</p>
-<pre><code>:&#39;&lt;,&#39;&gt;s/\w/-/g</code></pre>
-<p>Note that this only works with ASCII characters and doesn’t work with
-accentuated characters. For example <code>smöl</code> gets replaced by
-<code>--ö-</code>. To replace all identifier characters, use</p>
-<pre><code>:&#39;&lt;,&#39;&gt;s/\i/-/g</code></pre>
-<p>And then <code>smöl</code> gets replaced by <code>----</code>.</p>
 </div>
 <div id="collection" class="section level3">
 <h3>Collection</h3>
@@ -1036,6 +1037,21 @@ two quotes.</p>
 </blockquote>
 <p>Remove bracketed references from text copied from Wikipedia.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
+<div id="character-classes" class="section level4">
+<h4>Character classes</h4>
+<p>See also patterns below.</p>
+<p>See <code>:help character-classes</code> for a list of classes
+accepted in Vim with their equivalent regex pattern, for example
+<code>\w</code> is equivalent to <code>[0-9A-Za-z_]</code>. Replace all
+word characters by a dash (to create a markdown table division see also
+collection below)</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\w/-/g</code></pre>
+<p>Note that this only works with ASCII characters and doesn’t work with
+accentuated characters. For example <code>smöl</code> gets replaced by
+<code>--ö-</code>. To replace all identifier characters, use</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/\i/-/g</code></pre>
+<p>And then <code>smöl</code> gets replaced by <code>----</code>.</p>
+</div>
 <div id="numbers" class="section level4">
 <h4>Numbers</h4>
 <p>Insert Markdown title marker <code>#</code> before a number at the
@@ -1048,6 +1064,11 @@ digit.</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\[[0-9]\+\]//g</code></pre>
 <p>Remove all numbers in a list of authors</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\d//g</code></pre>
+</div>
+<div id="or" class="section level4">
+<h4>Or</h4>
+<p>Replace this or that with a dot</p>
+<pre><code>:%s/this\|that/./g</code></pre>
 </div>
 </div>
 <div id="replace-list-items" class="section level3">
@@ -2714,7 +2735,47 @@ vim</a></p></li>
 <li><p><a href="https://www.maketecheasier.com/useful-emacs-packages/">5
 emacs packages for better productivity</a>: Org mode, magit, evil mode,
 focus mode, darkroom</p></li>
+<li><p>VS Code Vim</p>
+<ul>
+<li><p>VS Code NeoVim <a
+href="https://github.com/vscode-neovim/vscode-neovim"
+class="uri">https://github.com/vscode-neovim/vscode-neovim</a></p>
+<blockquote>
+<p>“VSCode’s native functionality is used for insert mode and editor
+commands, making the best use of both editors.”</p>
+</blockquote></li>
+<li><p>VS Code Vim <a
+href="https://marketplace.visualstudio.com/items?itemName=vscodevim.vim"
+class="uri">https://marketplace.visualstudio.com/items?itemName=vscodevim.vim</a></p></li>
+<li><p><a
+href="https://www.reddit.com/r/vscode/comments/l7r1g8/in_your_opinion_is_it_better_to_use_vscode_vim_or/"
+class="uri">https://www.reddit.com/r/vscode/comments/l7r1g8/in_your_opinion_is_it_better_to_use_vscode_vim_or/</a></p>
+<blockquote>
+<p>“I used Emacs, Vim and now VSCode for many years - I remain not
+convinced that I’m faster at Vim for most edits - but I admit that using
+Vim keybindings for some edits feels very cool, fast and smart. In the
+end I can do most stuff on VSCode very fast, without modality, by
+abusing multiple cursors and some extensions. Other than that, the Open
+in Vim command (another extension) is a quick life saver when I need a
+macro. And I’m betting on VSCode to continue improving faster than
+Vim.”</p>
+</blockquote></li>
+<li><p><a
+href="https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim"
+class="uri">https://www.barbarianmeetscoding.com/blog/boost-your-coding-fu-with-vscode-and-vim</a></p>
+<blockquote>
+<p>“The true magic of Vim is composition. As you go building up this
+vocabulary of operators and motions you’ll find that you can combine
+them to your heart’s content. So that, once you know all the c, cl, caw,
+ciw, ct. from the previous paragraph and you learn how dl works, you’ll
+not only be able to use dl, you’ll know that you can also combine it
+with all the motions you already have at your disposal and daw, diw, dt,
+etc.”</p>
+</blockquote></li>
+</ul></li>
 </ul>
+<p>const salute = ‘I salute you oh Mighty Warrior’ You type ci’Hi!<ESC>
+and it becomes: const salute = ‘Hi!’</p>
 </div>
 <div id="demonstrations-of-vim-use" class="section level2">
 <h2>Demonstrations of vim use</h2>
