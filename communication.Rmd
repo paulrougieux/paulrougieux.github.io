@@ -360,6 +360,14 @@ media, you subject yourself to experimentation and behaviour modification.
 - [2021 Facebook leak](https://en.wikipedia.org/wiki/2021_Facebook_leak)
 
 
+## Twitter now X
+
+- In 2023, it's not possible to view twitter without an account any more.
+  Twitter has become a closed silo like Facebook.
+
+    - https://www.reddit.com/r/Twitter/comments/14mskki/can_anyone_still_view_twitter_without_having_an/
+
+
 # Web browser
 
 ## Firefox 
