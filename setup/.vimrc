@@ -310,6 +310,8 @@ let g:ale_pattern_options = {
 \   '.*\.md$': {'ale_enabled': 0},
 \   '.*\.Rmd$': {'ale_enabled': 0},
 \}
+" Disable Ale virtual text
+let g:ale_virtualtext_cursor = 0
 
 " Vim Dispatch setup for the quickfix list
 autocmd FileType python let b:dispatch = 'pylint -f parseable %'
