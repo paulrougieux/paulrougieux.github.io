@@ -201,8 +201,14 @@ command! Gwdiff vert term git diff --word-diff
 " Settings for the vimtex plugin
 " Only citation keys for completion
 let g:vimtex_complete_bib = { 'simple': 1 }
+
 " Use zathura as a PDF viewer
 let g:vimtex_view_method = 'zathura'
+let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
+" use xdotool in a hook function
+" https://github.com/lervag/vimtex/issues/1719
+function! ZathuraHook() dict abort
+  if self.xwin_id <= 0 | return | endif
 
 " Settings only implemented for .tex files
 " Key combination to insert citation and references using the vimtex plugin or
@@ -210,23 +216,16 @@ let g:vimtex_view_method = 'zathura'
 au BufRead,BufNewFile *.tex inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 au BufRead,BufNewFile *.Rnw inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
-" Use zathura as a PDF viewer
-let g:vimtex_view_method = 'zathura'
 
 " Map key to view the pdf
 nmap <silent><Leader>lv <Esc>:VimtexView<CR>
 nmap <silent><Leader>ll <Esc>:VimtexCompile<CR>
 
-" use xdotool in a hook function
-" https://github.com/lervag/vimtex/issues/1719
-function! ZathuraHook() dict abort
-  if self.xwin_id <= 0 | return | endif
 
   silent call system('xdotool windowactivate ' . self.xwin_id . ' --sync')
   silent call system('xdotool windowraise ' . self.xwin_id)
 endfunction
 
-let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 
 """"""""""""""""""""""""""""
 " # Markdown configuration "
@@ -283,9 +282,9 @@ filetype indent on
 " https://github.com/davidhalter/jedi-vim/issues/841
 " let g:jedi#loader_py_version = 2
 "
-" Jedi go to definition
-noremap <F2> <leader>-d
-" Jedi  do not start completion when I type a dot
+" Jedi go to definition, alternative to <leader>-d to avoid
+" au BufRead,BufNewFile *.py noremap <leader>f :ALEGoToDefinition<CR>
+" Jedi do not start completion when I type a dot
 let g:jedi#popup_on_dot = 0
 " Disable call signatures
 let g:jedi#show_call_signatures = "0" 
