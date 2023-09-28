@@ -6,7 +6,6 @@ output:
     toc_float: true
 ---
 
-
 # Introduction
 
 Vim is a modal text editor, to learn how to switch modes, start by the section
@@ -28,6 +27,7 @@ Reload the configuration after editing it:
 Text colour. Add syntax highlight to your .vimrc
 
     syntax enable
+
 
 
 ## File specific .vimrc options
@@ -203,6 +203,15 @@ Or another minimal vimrc to investigate an issue with the nvim-R plugin.
     augroup END
 
 The solution was to use 2 file types for Rmd files: `set ft=rmd.markdown`.
+
+
+## Show settings such as file type
+
+Show existing values of settings with a question mark at the end
+
+    :set updatetime?
+    :set signcolumn?
+    :set filetype?
 
 
 # Convert 
@@ -664,6 +673,29 @@ http://vimregex.com/ Grouping and Backreferences
 > - count opening `"\("` from the left. "
 
 
+#### Keep only quoted strings
+
+
+A simpler version in the case of character strings only
+
+    :'<,'>s/.*\(".*"\).*/\1/g
+    # Paste ready version
+    s/.*\(".*"\).*/\1/g
+
+Suggestion and explanation by Chat GPT
+
+    :'<,'>s/.*\("\([^"]\+\)"\).*/\1/g
+
+Explanation:
+
+- `.*` Matches any character zero or more times.
+- `\("([^"]\+)"\)` This is the capturing group for the quoted string. It 
+  captures anything between quotes and stores it in \1.
+- `.*` Matches any character zero or more times.
+- `\1` This replaces the entire line with just the first capturing group, which 
+  is your quoted string.
+
+
 ### HTML markup
 
 [Remove html tags, not the
@@ -1003,11 +1035,14 @@ explains how to display indentation setting for the current file type:
 [Repeating commands, Vim scripts and debugging](http://vimhelp.appspot.com/repeat.txt.html)
 
 
-## Save and rename a file
+## Save files
 
 Save the current file
 
     :w
+
+
+### Rename a file, save as
 
 Save under a new name (save as) and edit that file
 
@@ -1019,6 +1054,47 @@ SO [save as a new file and continue editing the original one](https://stackoverf
 To move or rename a file within the vim file explorer:
 
     R
+
+### Autosave
+
+- https://vi.stackexchange.com/questions/74/is-it-possible-to-make-vim-auto-save-files/79#79
+  suggests 
+
+    > One possible way to implement this is to use the CursorHold autocommand 
+    > event. This event is triggered when the user hasn't pressed a key for 
+    > 'updatetime' milliseconds.
+
+        autocmd CursorHold * update
+
+
+    > The :update command only saves the buffer if it is modified. If you also 
+    > wanted this to happen while insert mode is active, CursorHoldI could be 
+    > added to the event list.
+
+        autocmd CursorHold,CursorHoldI * update
+
+    - Show the value of the update time
+
+      :set updatetime?
+
+- https://stackoverflow.com/a/34814520/2641825 says that 
+  
+    > "`:update` is better suited than `:write`, because it only actually saves 
+    > when there are unpersisted updates."
+
+- https://stackoverflow.com/questions/6991638/how-to-auto-save-a-file-every-1-second-in-vim
+  suggests
+
+        autocmd TextChanged,TextChangedI <buffer> silent write
+
+- https://stackoverflow.com/questions/17365324/auto-save-in-vim-as-you-type/55761306#55761306 
+  (duplicate of the previous one)
+
+- https://www.reddit.com/r/vim/comments/ywzeu3/autosave_file/?rdt=63220&onetap_auto=true 
+  suggests
+
+        autocmd CursorHoldI,CursorHold * silent! update
+
 
 
 ## Wrap lines, auto line break
@@ -1080,6 +1156,8 @@ Select the current line
 These selection methods can also be used to delete `diw` and yank `yiw`.
 
 
+
+
 # Enter commands, save and quit
 
 To enter edit mode:
@@ -1122,7 +1200,7 @@ explaining how to set it up with vim.
     :help - vim help
     :help commandname - help on a particular command
     :h commandname - help on a particular command
-    CTRL+] - jump to a highlighted topic
+    CTRL+] - jump to a highlighted topic. I remapped it to `ctrl %`.
     CTRL+T - jump backwards
 
 [HTML version of the Vim help pages](http://vimhelp.appspot.com/)
@@ -1778,7 +1856,20 @@ Install slime with Vim's built-in package support (since Vim 7.4.1528):
 
 ## Install plugins with Vundle
 
+Install all plugins configured in your `.vimrc`.
+
+    :PluginInstall
+
+Update the configured plugins. Press 'u' after updates to see the change log.
+
+    :PluginInstall!   " NOTE: bang(!)
+    # or
+    :PluginUpdate
+
 Since there is a built-in plugin support, maybe I don't need Vundle after all? 
+
+
+### Tell Vundle to manage plugins in your .vimrc
 
 Edit your .vimrc and add the following at the beginning
 
@@ -1815,9 +1906,6 @@ Edit your .vimrc and add the following at the beginning
     " Put your non-Plugin stuff after this line
 
 
-Install all plugins configured in your `.vimrc`.
-
-    :PluginInstall
 
 
 # Programming
@@ -1976,6 +2064,10 @@ Pylint complains about [variable names that are too short](https://github.com/Py
 See the [python page](python.html) for the configuration details of the
 linters.
 
+Turn off virtual text (added to .vimrc)
+
+    let g:ale_virtualtext_cursor = 0
+
 
 ### Jedi vim
 
@@ -2014,7 +2106,7 @@ I remapped the `<leader>` key to `,` in my .vimrc
     :let mapleader = ","
 
 See above section on navigation, you can use `Ctrl-O` to jump back and
-`Ctrl-I`to jump forward.
+`Ctrl-I` to jump forward.
 
 
 #### Refactor with `jedi#rename()`
