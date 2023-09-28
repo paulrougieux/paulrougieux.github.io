@@ -65,6 +65,9 @@ filetype plugin indent on    " required
 """""""""""""""""""""""""""
 " # General configuration "
 """""""""""""""""""""""""""
+" Auto save
+autocmd TextChanged,TextChangedI <buffer> silent write
+
 " Determine the type of the current file
 filetype on
 syntax enable
@@ -204,7 +207,6 @@ let g:vimtex_complete_bib = { 'simple': 1 }
 
 " Use zathura as a PDF viewer
 let g:vimtex_view_method = 'zathura'
-let g:vimtex_view_zathura_hook_view = 'ZathuraHook'
 " use xdotool in a hook function
 " https://github.com/lervag/vimtex/issues/1719
 function! ZathuraHook() dict abort
@@ -247,13 +249,14 @@ let g:pandoc#modules#disabled = ["folding"]
 let g:pandoc#formatting#mode = "ha"
 
 " Voom plugin 
-let voom_ft_modes = {'markdown': 'pandoc', 'pandoc': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex', 'rnoweb' : 'latex'}
+let voom_ft_modes = {'markdown': 'pandoc', 'pandoc': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex', 'rnoweb' : 'latex', 'quarto' : 'pandoc'}
 
 " Create a Toc command
 augroup Toc
     autocmd!
     autocmd Filetype markdown command! -buffer Toc Voom
     autocmd Filetype rmd command! -buffer Toc Voom
+    autocmd Filetype quarto command! -buffer Toc Voom
     " rnoweb are the Rnw notebooks mixing latex and R code
     autocmd Filetype rnoweb command! -buffer Toc Voom
     autocmd Filetype tex command! -buffer Toc VimtexTocOpen
