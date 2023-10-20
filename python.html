@@ -530,8 +530,11 @@ error message:</p>
 href="https://docs.gitlab.com/ee/user/project/deploy_tokens/index.html">authentication
 token</a></p>
 <pre><code>pip install git+https://gitlab+deploy-token-833444:ByW1T2bJZRtYhWuGrauY@gitlab.com/bioeconomy/forobs/biotrade.git@dev</code></pre>
-<p>Install that doesn’t require git:</p>
-<pre><code>pip install --force-reinstall https://github.com/ytdl-org/youtube-dl/archive/refs/heads/master.tar.gz</code></pre>
+<p>Install from the compressed <code>tar.gz</code> version of a
+repository that doesn’t require git to be installed on your laptop:</p>
+<pre><code>pip install --force-reinstall https://github.com/ytdl-org/youtube-dl/archive/refs/heads/master.tar.gz
+
+pip install --force-reinstall https://github.com/mwaskom/seaborn/archive/refs/heads/master.tar.gz</code></pre>
 <p><a
 href="https://packaging.python.org/en/latest/tutorials/installing-packages/#installing-from-pypi">Installing
 from Pypi</a></p>
@@ -671,6 +674,42 @@ solver in a normal conda installation:</p>
 <pre><code>conda install -n base -c defaults conda-libmamba-solver
 conda config --set solver libmamba</code></pre>
 </div>
+</div>
+<div id="install-with-the-oss-package-manager" class="section level2">
+<h2>Install with the OS’s package manager</h2>
+<p>Some packages can be installed with the OS’s package manager. Such as
+for example on Debian:</p>
+<pre><code>sudo apt install python3-pip</code></pre>
+</div>
+<div id="discussion-pip-conda-apt" class="section level2">
+<h2>Discussion pip, conda, apt</h2>
+<ul>
+<li><p>Venv or Anaconda? <a
+href="https://www.reddit.com/r/Python/comments/xhbhbh/venv_or_anaconda/"
+class="uri">https://www.reddit.com/r/Python/comments/xhbhbh/venv_or_anaconda/</a></p></li>
+<li><p>What are the downsides of using Anaconda versus <a
+href="https://www.reddit.com/r/Python/comments/6vq2m4/what_are_the_downsides_of_using_anaconda_vs/?rdt=43570&amp;onetap_auto=true"
+class="uri">https://www.reddit.com/r/Python/comments/6vq2m4/what_are_the_downsides_of_using_anaconda_vs/?rdt=43570&amp;onetap_auto=true</a></p></li>
+<li><p>Conda in production? <a
+href="https://www.reddit.com/r/Python/comments/58n9ox/conda_in_production/"
+class="uri">https://www.reddit.com/r/Python/comments/58n9ox/conda_in_production/</a></p>
+<ul>
+<li><p>User 1</p>
+<blockquote>
+<p>“At my company we use conda to manage our entire python stack across
+multiple platforms (OSX, Windows and Linux) and we haven’t had any
+issues. Typically we have a metapackage that defines the specific
+requirements of a project.”</p>
+</blockquote></li>
+<li><p>Another user</p>
+<blockquote>
+<p>“We distribute a Python 3 GUI application on Mac, Windows, and Linux
+that uses PyQt4, gdal, matplotlib, pyopengl, etc. We use conda for all
+of our developers and beta testers and use pyinstaller to create an
+installer for each OS that we support.”</p>
+</blockquote></li>
+</ul></li>
+</ul>
 </div>
 <div id="create-a-package" class="section level2">
 <h2>Create a package</h2>
@@ -884,6 +923,40 @@ such as Poetry and Enscons.”</p>
 </blockquote></li>
 </ul>
 </div>
+<div id="setup.py-legacy" class="section level3">
+<h3>Setup.py (legacy)</h3>
+<ul>
+<li><p><a
+href="https://pip.pypa.io/en/stable/reference/build-system/setup-py/"
+class="uri">https://pip.pypa.io/en/stable/reference/build-system/setup-py/</a></p>
+<blockquote>
+<p>“Prior to the introduction of pyproject.toml-based builds (in PEP 517
+and PEP 518), pip had only supported installing packages using setup.py
+files that were built using setuptools.”</p>
+</blockquote>
+<blockquote>
+<p>“The interface documented here is retained currently solely for
+legacy purposes, until the migration to pyproject.toml-based builds can
+be completed.”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="pyproject-toml" class="section level3">
+<h3>Pyproject-toml</h3>
+<ul>
+<li><p><a
+href="https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/"
+class="uri">https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/</a></p></li>
+<li><p><a href="https://peps.python.org/pep-0518/"
+class="uri">https://peps.python.org/pep-0518/</a> (from 2016 already) is
+worth looking at. It discusses why they didn’t choose other
+configuration file formats JSON, YAML or python literals such as dict.
+They chose TOML in the end (its used for RUST package metadata). Details
+of each format in <a
+href="https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f"
+class="uri">https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f</a></p></li>
+</ul>
+</div>
 </div>
 <div id="location-or-path" class="section level2">
 <h2>Location or path</h2>
@@ -914,8 +987,10 @@ available by default in Python 3.3+</p>
 <li><p>Installation</p>
 <p>sudo apt install python3-venv</p></li>
 <li><p>Usage</p>
-<p>mkdir /tmp/testenv cd /tmp/testenv python3 -m venv /tmp/testenv
-source bin/activate</p></li>
+<pre><code>mkdir /tmp/testenv
+cd /tmp/testenv
+python3 -m venv /tmp/testenv
+source bin/activate</code></pre></li>
 </ul></li>
 <li><p><a href="https://pipenv.pypa.io/en/latest/">Pipenv</a> makes pip
 and virtual environments work together.</p>
@@ -1413,6 +1488,136 @@ see my page on <a href="vim.html">vim.html</a>.</p>
 </div>
 <div id="input-output" class="section level1">
 <h1>Input Output</h1>
+<div id="comparison-of-io-files-formats" class="section level2">
+<h2>Comparison of IO files formats</h2>
+<ul>
+<li><p>CSV minimal common denominator works every where. Great for small
+datasets to be shared across many languages and platforms.</p></li>
+<li><p>NetCDF Supports rich metadata, complex data types, and is
+especially good at handling large datasets efficiently. Also supports
+various types of compression.</p></li>
+<li><p>Parquet Columnar storage, efficient compression, and encoding
+schemes. Optimized for query performance.</p></li>
+</ul>
+</div>
+<div id="csv" class="section level2">
+<h2>CSV</h2>
+<p>Read and write csv</p>
+<div id="compressed-csv" class="section level3">
+<h3>Compressed csv</h3>
+<p>Write a compressed csv file as a gzip archive</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;x&#39;:range(0,3), &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
+df.to_csv(&quot;/tmp/df.csv.gz&quot;, index=False, compression=&quot;gzip&quot;)</code></pre>
+<p>Write a compressed csv file as a zip archive, using a dict with the
+option “archive_name” (works only for the zip format)</p>
+<pre><code>compression_opts = dict(method=&#39;zip&#39;, archive_name=&#39;out.csv&#39;)
+df.to_csv(&#39;/tmp/df.csv.zip&#39;, index=False, compression=compression_opts)</code></pre>
+<p>Read compressed csv files</p>
+<pre><code>df1 = pandas.read_csv(&quot;/tmp/df.csv.gz&quot;)
+df.equals(df1)
+df2 = pandas.read_csv(&quot;/tmp/df.csv.zip&quot;)
+df.equals(df2)</code></pre>
+<div id="many-files-in-one-zip-archive" class="section level4">
+<h4>Many files in one zip archive</h4>
+<p><code>pandas.read_csv</code> can only read zip archive that contain
+one file only. If there are more than one file in the archive, you can
+use a <code>ZipFile</code> object to provide access to the correct file
+inside the archive, see <a
+href="https://stackoverflow.com/a/56786517/2641825">SO answer</a>.</p>
+<pre><code>import zipfile
+import pandas
+zf = zipfile.ZipFile(&quot;archive_name.zip&quot;)
+print(&quot;Files in the archive:&quot;, zf.namelist())
+df = pandas.read_csv(zf.open(&quot;file_name.csv&quot;))</code></pre>
+</div>
+</div>
+<div id="pyarrow.csv" class="section level3">
+<h3>pyarrow.csv</h3>
+<ul>
+<li><p><a href="https://en.wikipedia.org/wiki/CPU_time"
+class="uri">https://en.wikipedia.org/wiki/CPU_time</a></p>
+<blockquote>
+<p>“If a program uses parallel processing, total CPU time for that
+program would be more than its elapsed real time.”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="from-an-api" class="section level3">
+<h3>From an API</h3>
+<p>Pandas data frames can be used to read CSV files from the <a
+href="https://comtrade.un.org/Data/">Comtrade data API</a>. For example,
+using the default API URL for all countries:</p>
+<pre><code>import pandas
+df1 = pandas.read_csv(&#39;http://comtrade.un.org/api/get?max=500&amp;type=C&amp;freq=A&amp;px=HS&amp;ps=2020&amp;r=all&amp;p=0&amp;rg=all&amp;cc=TOTAL&amp;fmt=csv&#39;)
+
+df2 = pandas.read_csv(&#39;http://comtrade.un.org/api/get?max=500&amp;type=C&amp;freq=A&amp;px=HS&amp;ps=2020&amp;r=all&amp;p=0&amp;rg=all&amp;cc=01&amp;fmt=csv&#39;,
+                       # Force the id column to remain a character column,
+                       # otherwise str &quot;01&quot; becomes an int 1.
+                       dtype={&#39;Commodity Code&#39;: str, &#39;bli&#39;: str})</code></pre>
+<p>Then use df.to_csv to write the data frame to a csv file</p>
+<pre><code> df1.to_csv(&quot;/tmp/comtrade.csv&quot;)</code></pre>
+</div>
+</div>
+<div id="data-sources" class="section level2">
+<h2>Data sources</h2>
+<div id="eurostat" class="section level3">
+<h3>Eurostat</h3>
+<p>Load Eurostat population projection data Eurostat tab separated
+values have a peculiar way to be a mix of tab separated and command
+separated values. This is annoying when loading data into pandas.</p>
+<p>Here is how to load the population projection dataset available at <a
+href="https://ec.europa.eu/eurostat/databrowser/view/PROJ_23NP/"
+class="uri">https://ec.europa.eu/eurostat/databrowser/view/PROJ_23NP/</a>
+into pandas</p>
+</div>
+</div>
+<div id="feather" class="section level2">
+<h2>Feather</h2>
+<p>Load a sample data frame and save it to a feather file</p>
+<pre><code>import pandas
+import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+iris.to_feather(&quot;/tmp/iris.feather&quot;)</code></pre>
+<p>Load the data from the feather file</p>
+<pre><code>iris2 = pandas.read_feather(&quot;/tmp/iris.feather&quot;)
+iris2.equals(iris)</code></pre>
+</div>
+<div id="gamms-gdx" class="section level2">
+<h2>Gamms GDX</h2>
+<p>GDX files store data for the GAMMS modelling platform. They can be
+loaded into pandas data frames with the gdxpds package as explained in
+the <a
+href="https://nrel.github.io/gdx-pandas/overview.html#direct-conversion">gdpxpds
+documentation</a>:</p>
+<pre><code>import gdxpds
+gdx_file = &#39;C:\path_to_my_gdx\data.gdx&#39;
+dataframes = gdxpds.to_dataframes(gdx_file)
+for symbol_name, df in dataframes.items():
+    print(&quot;Doing work with {}.&quot;.format(symbol_name))</code></pre>
+</div>
+<div id="markdown" class="section level2">
+<h2>Markdown</h2>
+<p>Print a data frame to markdown, without the scientific notation <a
+href="https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas"
+class="uri">https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas</a></p>
+<pre><code>import pandas
+df = pandas.DataFrame({&quot;x&quot; : [1,1e7], &quot;y&quot;:[1e-5,100]})
+print(df.to_markdown())
+print(df.to_markdown(floatfmt=&#39;.0f&#39;, index=False))</code></pre>
+</div>
+<div id="netcdf" class="section level2">
+<h2>Netcdf</h2>
+<p>You can use the command line tool ncdump to view the content of
+netcdf files</p>
+<pre><code>sudo apt install netcdf-bin
+ncdump fuel.nc</code></pre>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python">How
+to read netcdf files in chunks with Xarray and Dask</a></li>
+</ul>
+</div>
 <div id="open-a-text-file" class="section level2">
 <h2>Open a text file</h2>
 <p>Open a text file and print lines containing “error”</p>
@@ -1420,6 +1625,236 @@ see my page on <a href="vim.html">vim.html</a>.</p>
     for line in file:
         if &quot;error&quot; in line.lower():
             print(line)</code></pre>
+</div>
+<div id="parquet" class="section level2">
+<h2>Parquet</h2>
+<p>Write to one file defaults to [snappy compression](<a
+href="https://en.wikipedia.org/wiki/Snappy_(compression)"
+class="uri">https://en.wikipedia.org/wiki/Snappy_(compression)</a></p>
+<pre><code>import pandas
+import seaborn
+iris = seaborn.load_dataset(&quot;iris&quot;)
+iris.to_parquet(&quot;/tmp/iris.parquet&quot;)</code></pre>
+<p>Read back the file</p>
+<pre><code>iris3 = pandas.read_parquet(&quot;/tmp/iris.parquet&quot;)
+iris3.equals(iris)</code></pre>
+<p>You can also use gzip compression for a smaller file size (but slower
+read and write times)</p>
+<pre><code>iris.to_parquet(&quot;/tmp/iris.parquet.gzip&quot;, compression=&#39;gzip&#39;) </code></pre>
+<div id="partition-column" class="section level3">
+<h3>Partition column</h3>
+<p>Write to multiple files along a column used as partition variable</p>
+<pre><code>iris.to_parquet(&quot;/tmp/iris&quot;,partition_cols=&quot;species&quot;) </code></pre>
+<p>The partitioned dataset is saved under a sub directory for each
+unique value of the partition variable. For example there is a sub
+directory for each species in the <code>/tmp/iris</code> directory</p>
+<pre><code>iris
+├── species=setosa
+│   └── 1609afe5535d4e2b94e65f1892210269.parquet
+├── species=versicolor
+│   └── 18dd7ae6d0794fd48dad37bf8950d813.parquet
+└── species=virginica
+    └── e0a9786251f54eed9f16380c8f5c3db3.parquet</code></pre>
+<p>On can read a single file in memory</p>
+<pre><code>virginica = pandas.read_parquet(&quot;/tmp/iris/species=virginica&quot;)</code></pre>
+<p>Note it has lost the species column</p>
+<p>Read all files in memory</p>
+<pre><code>iris4 = pandas.read_parquet(&quot;/tmp/iris&quot;)</code></pre>
+<p>Note the data frame is slightly different. Values are the same but
+the species columns has become a categorical variable.</p>
+<pre><code>iris4.equals(iris)
+# False
+iris4.species
+# ...
+# Name: species, Length: 150, dtype: category
+# Categories (3, object): [&#39;setosa&#39;, &#39;versicolor&#39;, &#39;virginica&#39;]</code></pre>
+<p>Changing it back to a strings makes the 2 data frames equals
+again.</p>
+<pre><code>iris4[&quot;species&quot;] = iris4[&quot;species&quot;].astype(&quot;str&quot;)
+iris4.equals(iris)
+# True</code></pre>
+</div>
+<div id="filters" class="section level3">
+<h3>Filters</h3>
+<p>Read only part of the content from parquet files with a filter. See
+<code>help(pyarrow.parquet.read_pandas)</code> for arguments concerning
+the pyarrow engine. Reusing example files from the previous section:</p>
+<pre><code>selection = [(&quot;species&quot;, &quot;in&quot;, [&quot;versicolor&quot;,&quot;virginica&quot;])]
+iris5 = pandas.read_parquet(&quot;/tmp/iris&quot;, filters=selection)</code></pre>
+<p>In fact, the filter variable doesn’t have to be a partition
+variable.</p>
+<pre><code>selection = [(&quot;species&quot;, &quot;in&quot;, [&quot;versicolor&quot;,&quot;virginica&quot;]), 
+             (&quot;petal_width&quot;, &quot;&gt;&quot;, 2.4)]
+iris6 = pandas.read_parquet(&quot;/tmp/iris&quot;, filters=selection)</code></pre>
+<p>This works as well on the single file version</p>
+<pre><code>iris7 = pandas.read_parquet(&quot;/tmp/iris.parquet&quot;, filters=selection)
+# Change column type for the comparison
+iris6[&quot;species&quot;] = iris6[&quot;species&quot;].astype(&quot;str&quot;)
+iris7.equals(iris6)</code></pre>
+<p>Depending on whether or not the query is on the partition variable,
+read time can be increased by a lot. See experiment in the next
+section.</p>
+</div>
+<div
+id="experiment-with-the-parquet-format-using-filters-and-partition-columns."
+class="section level3">
+<h3>Experiment with the parquet format using filters and partition
+columns.</h3>
+<p>Note the detaset to perform these comparisons is not made available
+here. I keep these for information purposes.</p>
+<p>Compare a read of 2 countries with the read of the whole dataset</p>
+<pre><code># start_time = timeit.default_timer()
+# selection = [(&quot;reporter&quot;, &quot;in&quot;, [&quot;France&quot;,&quot;Germany&quot;])]
+# ft_frde = pandas.read_parquet(la_fo_data_dir / &quot;comtrade_forest_footprint.parquet&quot;,
+#                                             filters=selection)
+# print(&quot;Reading 2 countries took:&quot;,timeit.default_timer() - start_time)
+#
+# start_time = timeit.default_timer()
+# ft2 = pandas.read_parquet(la_fo_data_dir / &quot;comtrade_forest_footprint.parquet&quot;)
+# print(&quot;Reading the whole dataset took:&quot;,timeit.default_timer() - start_time)
+#</code></pre>
+<p>Time comparison when the reporter is used as a partition column It’s
+about 10 times faster!</p>
+<pre><code># ft.to_parquet(&quot;/tmp/ft&quot;, partition_cols=&quot;reporter&quot;)
+# start_time = timeit.default_timer()
+# selection = [(&quot;reporter&quot;, &quot;in&quot;, [&quot;France&quot;,&quot;Germany&quot;])]
+# ft_frde2 = pandas.read_parquet(&quot;/tmp/ft&quot;, filters=selection)
+# print(&quot;Reading 2 countries took:&quot;,timeit.default_timer() - start_time)
+#
+# # Save to a compressed csv file in biotrade_data
+# # file_path = la_fo_data_dir / &quot;comtrade_forest_footprint.csv.gz&quot;
+# # ft.to_csv(file_path, index=False, compression=&quot;gzip&quot;)</code></pre>
+<p>Also try the feather format.</p>
+<pre><code># # Save to a feather file
+# ft.to_feather(la_fo_data_dir / &quot;comtrade_forest_footprint.feather&quot;)
+#
+# # Read time of a feather file
+# start_time = timeit.default_timer()
+# ft_frde2 = pandas.read_feather(la_fo_data_dir / &quot;comtrade_forest_footprint.feather&quot;)
+# print(&quot;Reading a feather file took:&quot;,timeit.default_timer() - start_time)</code></pre>
+</div>
+<div id="what-is-the-difference-between-apache-arrow-and-apache-parquet"
+class="section level3">
+<h3>What is the difference between Apache Arrow and Apache Parquet?</h3>
+<p><a
+href="https://arrow.apache.org/faq/#what-about-the-feather-file-format">Apache
+Arrow FAQ</a></p>
+<blockquote>
+<p>Parquet is a storage format designed for maximum space efficiency,
+using advanced compression and encoding techniques. It is ideal when
+wanting to minimize disk usage while storing gigabytes of data, or
+perhaps more. This efficiency comes at the cost of relatively expensive
+reading into memory, as Parquet data cannot be directly operated on but
+must be decoded in large chunks.</p>
+</blockquote>
+<blockquote>
+<p>Conversely, Arrow is an in-memory format meant for direct and
+efficient use for computational purposes. Arrow data is not compressed
+(or only lightly so, when using dictionary encoding) but laid out in
+natural format for the CPU, so that data can be accessed at arbitrary
+places at full speed.</p>
+</blockquote>
+<blockquote>
+<p>Therefore, Arrow and Parquet complement each other and are commonly
+used together in applications. Storing your data on disk using Parquet
+and reading it into memory in the Arrow format will allow you to make
+the most of your computing hardware.”</p>
+</blockquote>
+<blockquote>
+<p>What about “Arrow files” then?</p>
+</blockquote>
+<blockquote>
+<p>Apache Arrow defines an inter-process communication (IPC) mechanism
+to transfer a collection of Arrow columnar arrays (called a “record
+batch”). It can be used synchronously between processes using the Arrow
+“stream format”, or asynchronously by first persisting data on storage
+using the Arrow “file format”.</p>
+</blockquote>
+<blockquote>
+<p>The Arrow IPC mechanism is based on the Arrow in-memory format, such
+that there is no translation necessary between the on-disk
+representation and the in-memory representation. Therefore, performing
+analytics on an Arrow IPC file can use memory-mapping, avoiding any
+deserialization cost and extra copies.</p>
+</blockquote>
+<blockquote>
+<p>Some things to keep in mind when comparing the Arrow IPC file format
+and the Parquet format:</p>
+</blockquote>
+<blockquote>
+<pre><code>Parquet is designed for long-term storage and archival purposes, meaning
+if you write a file today, you can expect that any system that says they
+can “read Parquet” will be able to read the file in 5 years or 10 years.
+While the Arrow on-disk format is stable and will be readable by future
+versions of the libraries, it does not prioritize the requirements of
+long-term archival storage.</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>Reading Parquet files generally requires efficient yet relatively complex
+decoding, while reading Arrow IPC files does not involve any decoding
+because the on-disk representation is the same as the in-memory
+representation.</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>Parquet files are often much smaller than Arrow IPC files because of the
+columnar data compression strategies that Parquet uses. If your disk
+storage or network is slow, Parquet may be a better choice even for
+short-term storage or caching.</code></pre>
+</blockquote>
+</div>
+<div id="one-large-parquet-file-or-many-smaller-files"
+class="section level3">
+<h3>One large parquet file or many smaller files?</h3>
+<p><a href="https://stackoverflow.com/a/59535659/2641825">Is it better
+to have one large parquet file or lots of smaller parquet files?</a></p>
+<blockquote>
+<p>“Notice that Parquet files are internally split into row groups <a
+href="https://parquet.apache.org/documentation/latest/"
+class="uri">https://parquet.apache.org/documentation/latest/</a> So by
+making parquet files larger, row groups can still be the same if your
+baseline parquet files were not small/tiny. There is no huge direct
+penalty on processing, but opposite, there are more opportunities for
+readers to take advantage of perhaps larger/ more optimal row groups if
+your parquet files were smaller/tiny for example as row groups can’t
+span multiple parquet files.”</p>
+</blockquote>
+<blockquote>
+<p>“Also larger parquet files don’t limit parallelism of readers, as
+each parquet file can be broken up logically into multiple splits
+(consisting of one or more row groups).”</p>
+</blockquote>
+<blockquote>
+<p>“The only downside of larger parquet files is it takes more memory to
+create them. So you can watch out if you need to bump up Spark
+executors’ memory.”</p>
+</blockquote>
+</div>
+<div id="see-also" class="section level3">
+<h3>See also</h3>
+<ul>
+<li><p>It’s not possible to <a
+href="https://stackoverflow.com/questions/50456673/storing-multiple-dataframes-of-different-widths-with-parquet">store
+multiple data frames of different widths with parquet</a></p></li>
+<li><p><a
+href="https://stackoverflow.com/questions/59972588/control-row-groups-with-pandas-dataframe-to-parquet">Control
+row groups size with pandas df.to_parquet</a></p></li>
+<li><p><a
+href="https://towardsdatascience.com/the-best-format-to-save-pandas-data-414dca023e0d">Benchmark
+of feather, hdf, msgpack, parquet and pickle</a></p></li>
+</ul>
+</div>
+</div>
+<div id="pickle" class="section level2">
+<h2>Pickle</h2>
+<p>Store a dictionary to a pickle file</p>
+<pre><code>import pickle
+d = {&quot;lkj&quot;:1}
+with open(&#39;/tmp/d.pickle&#39;, &#39;wb&#39;) as file:
+    pickle.dump(d, file)</code></pre>
+<p>Read from a pickle file</p>
+<pre><code>with open(&quot;/tmp/d.pickle&quot;, &quot;rb&quot;) as file:
+    e = pickle.load(file)
+d == e</code></pre>
 </div>
 </div>
 <div id="neural-networks" class="section level1">
@@ -2320,6 +2755,16 @@ data issues.</p></li>
 <p>Send a warning to the user</p>
 <pre><code>import warnings
 warnings.warn(&quot;there is no data&quot;)</code></pre>
+<div id="ignore-warnings" class="section level3">
+<h3>Ignore warnings</h3>
+<p>Do not display the following warnings:</p>
+<pre><code>import warnings
+warnings.filterwarnings(&quot;ignore&quot;, message=&quot;option is deprecated&quot;)
+warnings.filterwarnings(&quot;ignore&quot;, &quot;.*layout has changed to tight.*&quot;, category=UserWarning)
+# related to https://github.com/mwaskom/seaborn/issues/3462
+warnings.filterwarnings(&quot;ignore&quot;, &quot;is_categorical_dtype&quot;) 
+warnings.filterwarnings(&quot;ignore&quot;, &quot;use_inf_as_na&quot;)</code></pre>
+</div>
 </div>
 <div id="logging" class="section level2">
 <h2>Logging</h2>
@@ -3525,6 +3970,11 @@ df.info()</code></pre>
 </div>
 <div id="rolling-sum-and-mean" class="section level3">
 <h3>Rolling sum and mean</h3>
+<p>Rolling mean over a 5 year window for the whole data frame (provided
+that year is the index variable)</p>
+<pre><code>df.rolling(window=5).mean()</code></pre>
+<p>Plot the difference to a 5 years rolling mean</p>
+<pre><code>(df - df.rolling(window=5).mean()).plot.bar()</code></pre>
 <p>Example “rolling sum with a window length of 2 observations.”</p>
 <pre><code>df = pandas.DataFrame({&#39;B&#39;: [0, 1, 2, np.nan, 4, 5, 6, 7]})
 df.rolling(2).sum()</code></pre>
@@ -3858,319 +4308,10 @@ class="uri">https://docs.dask.org/en/latest/dataframe.html</a></p>
 class="uri">https://github.com/vaexio/vaex</a></p>
 </div>
 </div>
-<div id="io-input-output" class="section level2">
-<h2>IO Input Output</h2>
-<div id="csv" class="section level3">
-<h3>CSV</h3>
-<p>Read and write csv</p>
-<div id="compressed-csv" class="section level4">
-<h4>Compressed csv</h4>
-<p>Write a compressed csv file as a gzip archive</p>
-<pre><code>import pandas
-df = pandas.DataFrame({&#39;x&#39;:range(0,3), &#39;y&#39;:[&#39;a&#39;,&#39;b&#39;,&#39;c&#39;]})
-df.to_csv(&quot;/tmp/df.csv.gz&quot;, index=False, compression=&quot;gzip&quot;)</code></pre>
-<p>Write a compressed csv file as a zip archive, using a dict with the
-option “archive_name” (works only for the zip format)</p>
-<pre><code>compression_opts = dict(method=&#39;zip&#39;, archive_name=&#39;out.csv&#39;)
-df.to_csv(&#39;/tmp/df.csv.zip&#39;, index=False, compression=compression_opts)</code></pre>
-<p>Read compressed csv files</p>
-<pre><code>df1 = pandas.read_csv(&quot;/tmp/df.csv.gz&quot;)
-df.equals(df1)
-df2 = pandas.read_csv(&quot;/tmp/df.csv.zip&quot;)
-df.equals(df2)</code></pre>
-<div id="many-files-in-one-zip-archive" class="section level5">
-<h5>Many files in one zip archive</h5>
-<p><code>pandas.read_csv</code> can only read zip archive that contain
-one file only. If there are more than one file in the archive, you can
-use a <code>ZipFile</code> object to provide access to the correct file
-inside the archive, see <a
-href="https://stackoverflow.com/a/56786517/2641825">SO answer</a>.</p>
-<pre><code>import zipfile
-import pandas
-zf = zipfile.ZipFile(&quot;archive_name.zip&quot;)
-print(&quot;Files in the archive:&quot;, zf.namelist())
-df = pandas.read_csv(zf.open(&quot;file_name.csv&quot;))</code></pre>
-</div>
-</div>
-<div id="pyarrow.csv" class="section level4">
-<h4>pyarrow.csv</h4>
-<ul>
-<li><p><a href="https://en.wikipedia.org/wiki/CPU_time"
-class="uri">https://en.wikipedia.org/wiki/CPU_time</a></p>
-<blockquote>
-<p>“If a program uses parallel processing, total CPU time for that
-program would be more than its elapsed real time.”</p>
-</blockquote></li>
-</ul>
-</div>
-<div id="from-an-api" class="section level4">
-<h4>From an API</h4>
-<p>Pandas data frames can be used to read CSV files from the <a
-href="https://comtrade.un.org/Data/">Comtrade data API</a>. For example,
-using the default API URL for all countries:</p>
-<pre><code>import pandas
-df1 = pandas.read_csv(&#39;http://comtrade.un.org/api/get?max=500&amp;type=C&amp;freq=A&amp;px=HS&amp;ps=2020&amp;r=all&amp;p=0&amp;rg=all&amp;cc=TOTAL&amp;fmt=csv&#39;)
-
-df2 = pandas.read_csv(&#39;http://comtrade.un.org/api/get?max=500&amp;type=C&amp;freq=A&amp;px=HS&amp;ps=2020&amp;r=all&amp;p=0&amp;rg=all&amp;cc=01&amp;fmt=csv&#39;,
-                       # Force the id column to remain a character column,
-                       # otherwise str &quot;01&quot; becomes an int 1.
-                       dtype={&#39;Commodity Code&#39;: str, &#39;bli&#39;: str})</code></pre>
-<p>Then use df.to_csv to write the data frame to a csv file</p>
-<pre><code> df1.to_csv(&quot;/tmp/comtrade.csv&quot;)</code></pre>
-</div>
-</div>
-<div id="feather" class="section level3">
-<h3>Feather</h3>
-<p>Load a sample data frame and save it to a feather file</p>
-<pre><code>import pandas
-import seaborn
-iris = seaborn.load_dataset(&quot;iris&quot;)
-iris.to_feather(&quot;/tmp/iris.feather&quot;)</code></pre>
-<p>Load the data from the feather file</p>
-<pre><code>iris2 = pandas.read_feather(&quot;/tmp/iris.feather&quot;)
-iris2.equals(iris)</code></pre>
-</div>
-<div id="gamms-gdx" class="section level3">
-<h3>Gamms GDX</h3>
-<p>GDX files store data for the GAMMS modelling platform. They can be
-loaded into pandas data frames with the gdxpds package as explained in
-the <a
-href="https://nrel.github.io/gdx-pandas/overview.html#direct-conversion">gdpxpds
-documentation</a>:</p>
-<pre><code>import gdxpds
-gdx_file = &#39;C:\path_to_my_gdx\data.gdx&#39;
-dataframes = gdxpds.to_dataframes(gdx_file)
-for symbol_name, df in dataframes.items():
-    print(&quot;Doing work with {}.&quot;.format(symbol_name))</code></pre>
-</div>
-<div id="markdown" class="section level3">
-<h3>Markdown</h3>
-<p>Print a data frame to markdown, without the scientific notation <a
-href="https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas"
-class="uri">https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas</a></p>
-<pre><code>import pandas
-df = pandas.DataFrame({&quot;x&quot; : [1,1e7], &quot;y&quot;:[1e-5,100]})
-print(df.to_markdown())
-print(df.to_markdown(floatfmt=&#39;.0f&#39;, index=False))</code></pre>
-</div>
-<div id="parquet" class="section level3">
-<h3>Parquet</h3>
-<p>Write to one file defaults to [snappy compression](<a
-href="https://en.wikipedia.org/wiki/Snappy_(compression)"
-class="uri">https://en.wikipedia.org/wiki/Snappy_(compression)</a></p>
-<pre><code>import pandas
-import seaborn
-iris = seaborn.load_dataset(&quot;iris&quot;)
-iris.to_parquet(&quot;/tmp/iris.parquet&quot;)</code></pre>
-<p>Read back the file</p>
-<pre><code>iris3 = pandas.read_parquet(&quot;/tmp/iris.parquet&quot;)
-iris3.equals(iris)</code></pre>
-<p>You can also use gzip compression for a smaller file size (but slower
-read and write times)</p>
-<pre><code>iris.to_parquet(&quot;/tmp/iris.parquet.gzip&quot;, compression=&#39;gzip&#39;) </code></pre>
-<div id="partition-column" class="section level4">
-<h4>Partition column</h4>
-<p>Write to multiple files along a column used as partition variable</p>
-<pre><code>iris.to_parquet(&quot;/tmp/iris&quot;,partition_cols=&quot;species&quot;) </code></pre>
-<p>The partitioned dataset is saved under a sub directory for each
-unique value of the partition variable. For example there is a sub
-directory for each species in the <code>/tmp/iris</code> directory</p>
-<pre><code>iris
-├── species=setosa
-│   └── 1609afe5535d4e2b94e65f1892210269.parquet
-├── species=versicolor
-│   └── 18dd7ae6d0794fd48dad37bf8950d813.parquet
-└── species=virginica
-    └── e0a9786251f54eed9f16380c8f5c3db3.parquet</code></pre>
-<p>On can read a single file in memory</p>
-<pre><code>virginica = pandas.read_parquet(&quot;/tmp/iris/species=virginica&quot;)</code></pre>
-<p>Note it has lost the species column</p>
-<p>Read all files in memory</p>
-<pre><code>iris4 = pandas.read_parquet(&quot;/tmp/iris&quot;)</code></pre>
-<p>Note the data frame is slightly different. Values are the same but
-the species columns has become a categorical variable.</p>
-<pre><code>iris4.equals(iris)
-# False
-iris4.species
-# ...
-# Name: species, Length: 150, dtype: category
-# Categories (3, object): [&#39;setosa&#39;, &#39;versicolor&#39;, &#39;virginica&#39;]</code></pre>
-<p>Changing it back to a strings makes the 2 data frames equals
-again.</p>
-<pre><code>iris4[&quot;species&quot;] = iris4[&quot;species&quot;].astype(&quot;str&quot;)
-iris4.equals(iris)
-# True</code></pre>
-</div>
-<div id="filters" class="section level4">
-<h4>Filters</h4>
-<p>Read only part of the content from parquet files with a filter. See
-<code>help(pyarrow.parquet.read_pandas)</code> for arguments concerning
-the pyarrow engine. Reusing example files from the previous section:</p>
-<pre><code>selection = [(&quot;species&quot;, &quot;in&quot;, [&quot;versicolor&quot;,&quot;virginica&quot;])]
-iris5 = pandas.read_parquet(&quot;/tmp/iris&quot;, filters=selection)</code></pre>
-<p>In fact, the filter variable doesn’t have to be a partition
-variable.</p>
-<pre><code>selection = [(&quot;species&quot;, &quot;in&quot;, [&quot;versicolor&quot;,&quot;virginica&quot;]), 
-             (&quot;petal_width&quot;, &quot;&gt;&quot;, 2.4)]
-iris6 = pandas.read_parquet(&quot;/tmp/iris&quot;, filters=selection)</code></pre>
-<p>This works as well on the single file version</p>
-<pre><code>iris7 = pandas.read_parquet(&quot;/tmp/iris.parquet&quot;, filters=selection)
-# Change column type for the comparison
-iris6[&quot;species&quot;] = iris6[&quot;species&quot;].astype(&quot;str&quot;)
-iris7.equals(iris6)</code></pre>
-<p>Depending on whether or not the query is on the partition variable,
-read time can be increased by a lot. See experiment in the next
-section.</p>
-</div>
-<div
-id="experiment-with-the-parquet-format-using-filters-and-partition-columns."
-class="section level4">
-<h4>Experiment with the parquet format using filters and partition
-columns.</h4>
-<p>Note the detaset to perform these comparisons is not made available
-here. I keep these for information purposes.</p>
-<p>Compare a read of 2 countries with the read of the whole dataset</p>
-<pre><code># start_time = timeit.default_timer()
-# selection = [(&quot;reporter&quot;, &quot;in&quot;, [&quot;France&quot;,&quot;Germany&quot;])]
-# ft_frde = pandas.read_parquet(la_fo_data_dir / &quot;comtrade_forest_footprint.parquet&quot;,
-#                                             filters=selection)
-# print(&quot;Reading 2 countries took:&quot;,timeit.default_timer() - start_time)
-#
-# start_time = timeit.default_timer()
-# ft2 = pandas.read_parquet(la_fo_data_dir / &quot;comtrade_forest_footprint.parquet&quot;)
-# print(&quot;Reading the whole dataset took:&quot;,timeit.default_timer() - start_time)
-#</code></pre>
-<p>Time comparison when the reporter is used as a partition column It’s
-about 10 times faster!</p>
-<pre><code># ft.to_parquet(&quot;/tmp/ft&quot;, partition_cols=&quot;reporter&quot;)
-# start_time = timeit.default_timer()
-# selection = [(&quot;reporter&quot;, &quot;in&quot;, [&quot;France&quot;,&quot;Germany&quot;])]
-# ft_frde2 = pandas.read_parquet(&quot;/tmp/ft&quot;, filters=selection)
-# print(&quot;Reading 2 countries took:&quot;,timeit.default_timer() - start_time)
-#
-# # Save to a compressed csv file in biotrade_data
-# # file_path = la_fo_data_dir / &quot;comtrade_forest_footprint.csv.gz&quot;
-# # ft.to_csv(file_path, index=False, compression=&quot;gzip&quot;)</code></pre>
-<p>Also try the feather format.</p>
-<pre><code># # Save to a feather file
-# ft.to_feather(la_fo_data_dir / &quot;comtrade_forest_footprint.feather&quot;)
-#
-# # Read time of a feather file
-# start_time = timeit.default_timer()
-# ft_frde2 = pandas.read_feather(la_fo_data_dir / &quot;comtrade_forest_footprint.feather&quot;)
-# print(&quot;Reading a feather file took:&quot;,timeit.default_timer() - start_time)</code></pre>
-</div>
-<div id="what-is-the-difference-between-apache-arrow-and-apache-parquet"
-class="section level4">
-<h4>What is the difference between Apache Arrow and Apache Parquet?</h4>
-<p><a
-href="https://arrow.apache.org/faq/#what-about-the-feather-file-format">Apache
-Arrow FAQ</a></p>
-<blockquote>
-<p>Parquet is a storage format designed for maximum space efficiency,
-using advanced compression and encoding techniques. It is ideal when
-wanting to minimize disk usage while storing gigabytes of data, or
-perhaps more. This efficiency comes at the cost of relatively expensive
-reading into memory, as Parquet data cannot be directly operated on but
-must be decoded in large chunks.</p>
-</blockquote>
-<blockquote>
-<p>Conversely, Arrow is an in-memory format meant for direct and
-efficient use for computational purposes. Arrow data is not compressed
-(or only lightly so, when using dictionary encoding) but laid out in
-natural format for the CPU, so that data can be accessed at arbitrary
-places at full speed.</p>
-</blockquote>
-<blockquote>
-<p>Therefore, Arrow and Parquet complement each other and are commonly
-used together in applications. Storing your data on disk using Parquet
-and reading it into memory in the Arrow format will allow you to make
-the most of your computing hardware.”</p>
-</blockquote>
-<blockquote>
-<p>What about “Arrow files” then?</p>
-</blockquote>
-<blockquote>
-<p>Apache Arrow defines an inter-process communication (IPC) mechanism
-to transfer a collection of Arrow columnar arrays (called a “record
-batch”). It can be used synchronously between processes using the Arrow
-“stream format”, or asynchronously by first persisting data on storage
-using the Arrow “file format”.</p>
-</blockquote>
-<blockquote>
-<p>The Arrow IPC mechanism is based on the Arrow in-memory format, such
-that there is no translation necessary between the on-disk
-representation and the in-memory representation. Therefore, performing
-analytics on an Arrow IPC file can use memory-mapping, avoiding any
-deserialization cost and extra copies.</p>
-</blockquote>
-<blockquote>
-<p>Some things to keep in mind when comparing the Arrow IPC file format
-and the Parquet format:</p>
-</blockquote>
-<blockquote>
-<pre><code>Parquet is designed for long-term storage and archival purposes, meaning
-if you write a file today, you can expect that any system that says they
-can “read Parquet” will be able to read the file in 5 years or 10 years.
-While the Arrow on-disk format is stable and will be readable by future
-versions of the libraries, it does not prioritize the requirements of
-long-term archival storage.</code></pre>
-</blockquote>
-<blockquote>
-<pre><code>Reading Parquet files generally requires efficient yet relatively complex
-decoding, while reading Arrow IPC files does not involve any decoding
-because the on-disk representation is the same as the in-memory
-representation.</code></pre>
-</blockquote>
-<blockquote>
-<pre><code>Parquet files are often much smaller than Arrow IPC files because of the
-columnar data compression strategies that Parquet uses. If your disk
-storage or network is slow, Parquet may be a better choice even for
-short-term storage or caching.</code></pre>
-</blockquote>
-</div>
-<div id="one-large-parquet-file-or-many-smaller-files"
-class="section level4">
-<h4>One large parquet file or many smaller files?</h4>
-<p><a href="https://stackoverflow.com/a/59535659/2641825">Is it better
-to have one large parquet file or lots of smaller parquet files?</a></p>
-<blockquote>
-<p>“Notice that Parquet files are internally split into row groups <a
-href="https://parquet.apache.org/documentation/latest/"
-class="uri">https://parquet.apache.org/documentation/latest/</a> So by
-making parquet files larger, row groups can still be the same if your
-baseline parquet files were not small/tiny. There is no huge direct
-penalty on processing, but opposite, there are more opportunities for
-readers to take advantage of perhaps larger/ more optimal row groups if
-your parquet files were smaller/tiny for example as row groups can’t
-span multiple parquet files.”</p>
-</blockquote>
-<blockquote>
-<p>“Also larger parquet files don’t limit parallelism of readers, as
-each parquet file can be broken up logically into multiple splits
-(consisting of one or more row groups).”</p>
-</blockquote>
-<blockquote>
-<p>“The only downside of larger parquet files is it takes more memory to
-create them. So you can watch out if you need to bump up Spark
-executors’ memory.”</p>
-</blockquote>
-</div>
-<div id="see-also" class="section level4">
-<h4>See also</h4>
-<ul>
-<li><p>It’s not possible to <a
-href="https://stackoverflow.com/questions/50456673/storing-multiple-dataframes-of-different-widths-with-parquet">store
-multiple data frames of different widths with parquet</a></p></li>
-<li><p><a
-href="https://stackoverflow.com/questions/59972588/control-row-groups-with-pandas-dataframe-to-parquet">Control
-row groups size with pandas df.to_parquet</a></p></li>
-<li><p><a
-href="https://towardsdatascience.com/the-best-format-to-save-pandas-data-414dca023e0d">Benchmark
-of feather, hdf, msgpack, parquet and pickle</a></p></li>
-</ul>
-</div>
-</div>
+<div id="pandas-io-input-output" class="section level2">
+<h2>Pandas IO Input Output</h2>
+<p>See the general section on IO input output, many of the subsections
+there refer to pandas IO.</p>
 </div>
 <div id="pivot-reshape-and-transpose" class="section level2">
 <h2>Pivot, reshape and transpose</h2>
@@ -4458,10 +4599,16 @@ returns a Series.</p>
 <pre><code>df.loc[(&#39;cobra&#39;, &#39;mark i&#39;):(&#39;viper&#39;, &#39;mark ii&#39;)]</code></pre>
 <p>Invert a selection on the second index</p>
 <pre><code>df.loc[~df.index.isin([&quot;mark i&quot;], level=1)]</code></pre>
+<div id="df.index.get_level_values" class="section level5">
+<h5>df.index.get_level_values</h5>
+<p>Get index level values to use conditional checks on those values. For
+example select years smaller than 2021:</p>
+<pre><code>selector = df.index.get_level_values(&quot;year&quot;) &lt; 2021
+df.loc[selector]</code></pre>
 </div>
 <div id="multi-index-slicers-to-select-the-second-index-element"
-class="section level4">
-<h4>Multi-index slicers to select the second index element</h4>
+class="section level5">
+<h5>Multi-index slicers to select the second index element</h5>
 <p><a
 href="https://pandas.pydata.org/pandas-docs/stable/user_guide/advanced.html#using-slicers">Using
 slicers</a></p>
@@ -4495,6 +4642,7 @@ data frame as the previous section.</p>
 <pre><code>idx = pandas.IndexSlice
 df.loc[idx[:, &quot;mark i&quot;],:]
 df.xs(&quot;mark i&quot;, level=1)</code></pre>
+</div>
 </div>
 </div>
 <div id="iloc" class="section level3">
@@ -4901,7 +5049,9 @@ question</a>) in order to import scripts</p>
 <pre><code>import sys
 sys.path.append(&#39;/path/to/dir&#39;)
 # You might want to prepend if you want to overwrite a system package
-sys.path.insert(0, &quot;/home/rougipa/eu_cbm/eu_cbm_hat&quot;)</code></pre>
+sys.path.insert(0, &quot;/home/rougipa/eu_cbm/eu_cbm_hat&quot;)
+# If it&#39;s a pathlib object, you want to convert it to string first
+sys.path.insert(0, str(path_lib_object))</code></pre>
 <p>To permanently add a package under development to the python path,
 add the following to your <code>.bashrc</code> or
 <code>.bash_profile</code>:</p>
@@ -5072,10 +5222,15 @@ plt.show()</code></pre>
 </div>
 <div id="colour-palette-in-pandas-plots" class="section level3">
 <h3>Colour palette in pandas plots</h3>
-<p>Reusing the data frame from the previous section</p>
+<p>Simple palette as a dictionary</p>
+<pre><code>palette = {&#39;ssp2&#39;: &#39;orange&#39;,
+           &#39;fair&#39;: &#39;green&#39;, 
+           &#39;historical_period&#39;: &#39;black&#39;}
+df.plot(title = &quot;Harvest Scenarios&quot;, ylabel=&quot;Million m3&quot;, color=palette)</code></pre>
 <p>Using a list of colours with matplotlib <a
 href="https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.ListedColormap.html">ListedColormap</a>
-(see also example in that documentation page):</p>
+(see also example in that documentation page): Reusing the data frame
+from the previous section</p>
 <pre><code>from matplotlib.colors import ListedColormap
 df[&quot;z&quot;] = 39 
 df[&quot;a&quot;] = 10
@@ -5311,8 +5466,10 @@ seaborn.barplot(data=iris_agg_long, x=&quot;variable&quot;, y=&quot;value&quot;,
 plt.tight_layout()
 plt.show()</code></pre>
 </div>
-<div id="color-palette" class="section level3">
-<h3>Color palette</h3>
+<div id="palettes-and-styles" class="section level3">
+<h3>Palettes and styles</h3>
+<div id="color-palette" class="section level4">
+<h4>Color palette</h4>
 <p>See various examples in the plots in the seaborn section. The palette
 can be defined from pre existing palettes</p>
 <pre><code>palette = seaborn.color_palette(&quot;rocket_r&quot;)</code></pre>
@@ -5336,6 +5493,20 @@ also use a dictionary to associate hue values to a palette element.</p>
                      &quot;other_industrial_roundwood&quot;]
 palette = dict(zip(selected_products, [&quot;red&quot;, &quot;brown&quot;, &quot;blue&quot;, &quot;grey&quot;]))</code></pre>
 </div>
+<div id="linestyle-dict-doesnt-work" class="section level4">
+<h4>Linestyle dict (doesn’t work)</h4>
+<p>Example of specifying line styles doesn’t work</p>
+<pre><code>linestyle_dict = {&#39;Industrial roundwood&#39;: &#39;solid&#39;, &#39;Fuelwood&#39;: &#39;dotted&#39;}
+g = sns.relplot(data=df.loc[selector], x=&#39;year&#39;, y=&#39;demand&#39;, col=&#39;country&#39;,
+                hue=&#39;combo_name&#39;, style=&quot;faostat_name&quot;, kind=&#39;line&#39;,
+                col_wrap=col_wrap, palette=palette_combo,
+                facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False},
+                dashes=linestyle_dict)</code></pre>
+<p>See also <a
+href="https://stackoverflow.com/questions/65549047/how-to-apply-a-linestyle-to-a-specific-line-in-seaborn-lineplot"
+class="uri">https://stackoverflow.com/questions/65549047/how-to-apply-a-linestyle-to-a-specific-line-in-seaborn-lineplot</a></p>
+</div>
+</div>
 <div id="facet-grid-plots" class="section level3">
 <h3>Facet grid plots</h3>
 <p>Use Figure-level interface for drawing plots onto a FacetGrid:</p>
@@ -5349,6 +5520,8 @@ palette = dict(zip(selected_products, [&quot;red&quot;, &quot;brown&quot;, &quot
 </ul>
 <p>The figure level interfaces return FacetGrid objects which can be
 reused to add subsequent layers.</p>
+<p>Seaborn version 0.12.1 introduced an object interfacet which can also
+be used to make facet plots.</p>
 <div id="facet-title-and-size" class="section level4">
 <h4>Facet title and size</h4>
 <p>Change row and column labels to display only the content (not
@@ -5404,28 +5577,20 @@ seaborn.displot(
 &gt; refer to the documentation for each to see kind-specific options.&quot;</code></pre>
 <p>Example:</p>
 <ul>
-<li>plot signal through time and facet along the region</li>
-<li>use different axes size. This requires passing a dictionary to
-FacetGrid.</li>
-<li>Add a y label</li>
-<li>adjust the left margin so that the y label doesn’t overwrite the
-axis</li>
-<li>Set the Y limit to zero</li>
+<li><p>plot signal through time and facet along the region</p></li>
+<li><p>use different axes size. This requires passing a dictionary to
+FacetGrid.</p></li>
+<li><p>Add a y label</p></li>
+<li><p>adjust the left margin so that the y label doesn’t overwrite the
+axis</p></li>
+<li><p>Set the Y limit to zero</p>
+<p>g = seaborn.relplot( data=fmri, x=“timepoint”, y=“signal”,
+col=“region”, hue=“event”, style=“event”, kind=“line”, col_wrap=1,
+height=3, facet_kws={‘sharey’: False, ‘sharex’: False} )
+g.fig.supylabel(“Adaptive Engagement of Cognitive Control”)
+g.fig.subplots_adjust(left=0.28, top=0.9) g.fig.suptitle(“Example”)
+g.set_ylabels(“Y label”) g.set(ylim=(0, None)) plt.show()</p></li>
 </ul>
-<pre><code>
-g = seaborn.relplot(
-    data=fmri, x=&quot;timepoint&quot;, y=&quot;signal&quot;, col=&quot;region&quot;,
-    hue=&quot;event&quot;, style=&quot;event&quot;, kind=&quot;line&quot;,
-    col_wrap=1, height=3,
-    facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False}
-)
-g.fig.supylabel(&quot;Adaptive Engagement of Cognitive Control&quot;)
-g.fig.subplots_adjust(left=0.28, top=0.9)
-g.fig.suptitle(&quot;Example&quot;)
-g.set_ylabels(&quot;Y label&quot;)
-g.set(ylim=(0, None))
-plt.show()
-</code></pre>
 <p>Older example from <a
 href="https://seaborn.pydata.org/examples/faceted_lineplot.html"
 class="uri">https://seaborn.pydata.org/examples/faceted_lineplot.html</a></p>
@@ -5449,6 +5614,27 @@ g.fig.suptitle(&quot;Dots example&quot;)
 # Add a title and adjust the position so the title doesn&#39;t overwrite facets
 g.set_ylabels(&quot;Y label&quot;)
 plt.subplots_adjust(top=0.9)</code></pre>
+</div>
+<div id="object-interface" class="section level5">
+<h5>Object interface</h5>
+<p>Facet line plot example</p>
+<pre><code>import seaborn
+import seaborn.objects as so
+healthexp = seaborn.load_dataset(&quot;healthexp&quot;)
+(
+    so.Plot(healthexp, x=&quot;Year&quot;, y=&quot;Life_Expectancy&quot;)
+    .facet(&quot;Country&quot;, wrap=3)
+    .add(so.Line(alpha=.3), group=&quot;Country&quot;, col=None)
+    .add(so.Line(linewidth=3))
+)</code></pre>
+<p>Example from my data</p>
+<pre><code>import seaborn.objects as so
+(
+    so.Plot(df, x=&quot;age&quot;, y=&quot;volume&quot;)
+    .facet(&quot;forest_type&quot;, wrap=6)
+    .add(so.Line(alpha=.3), group=&quot;forest_type&quot;, col=None)
+    .add(so.Line(linewidth=3))
+)</code></pre>
 </div>
 </div>
 <div id="grid-scatter-plot" class="section level4">
@@ -6056,18 +6242,23 @@ href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFram
 str section</td>
 </tr>
 <tr class="even">
+<td>separate</td>
+<td>df[[‘b’,‘c’]] = df.a.str.split(‘,’,expand=True)</td>
+<td></td>
+</tr>
+<tr class="odd">
 <td>summarize</td>
 <td>agg</td>
 <td></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>unite</td>
 <td>df[“z”] = df.y + df.y</td>
 <td><a
 href="https://stackoverflow.com/questions/19377969/combine-two-columns-of-text-in-pandas-dataframe">pandas
 unite</a></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>unnest</td>
 <td><a
 href="https://pandas.pydata.org/pandas-docs/version/0.25/reference/api/pandas.DataFrame.explode.html">explode</a></td>
@@ -6251,8 +6442,8 @@ href="https://stackoverflow.com/a/2763772/2641825">SO anwser</a></p>
 <pre><code>import re
 re.sub(r&#39;(?:_a)?(\.[^\.]*)$&#39; , r&#39;_suff\1&#39;,&quot;long.file.name.jpg&quot;)</code></pre>
 </div>
-<div id="regex-search" class="section level2">
-<h2>Regex search</h2>
+<div id="regex-search-regular-expressions" class="section level2">
+<h2>Regex search Regular Expressions</h2>
 <p>Search for patterns</p>
 <pre><code>import re
 re.findall(r&#39;\bf[a-z]*&#39;, &#39;which foot or hand fell fastest&#39;)
@@ -6356,8 +6547,9 @@ solved with locks or by using the EAFP approach.</p>
 <h2>Black</h2>
 <p><a href="https://github.com/psf/black">Black</a> is “the
 uncompromising Python code formater”</p>
-<p>Run <code>black</code> as a pre commit hook with
-<code>pre-commit</code> as explained below.</p>
+<p>See the pre commit section below to install and run
+<code>black</code> as a pre commit hook with
+<code>pre-commit</code>.</p>
 <p>In vim, you can run black on the current file with:</p>
 <pre><code>:!black %</code></pre>
 <ul>
@@ -6472,6 +6664,8 @@ Continuous integration</a> has a gitlab example:</p>
 <h2>Pylint</h2>
 <p>Edit the configuration file</p>
 <pre><code>vim ~/.pylintrc</code></pre>
+<p>You can also make a project specific configuration file at the root
+of a git repository.</p>
 <p>List of good names that shouldn’t give a “short name” warning</p>
 <pre><code>[pylint]
 good-names=df</code></pre>
@@ -6484,6 +6678,15 @@ href="https://www.reddit.com/r/Python/comments/82hgzm/any_advantages_of_flake8_o
 advantages of Flake8 over PyLint</a> some answers suggest keeping
 both.</li>
 </ul>
+<div id="class-with-dynamic-attributes" class="section level3">
+<h3>Class with dynamic attributes</h3>
+<p>E1101: ‘Instance of .. has no .. member’ for class with dynamic
+attributes</p>
+<p>To ignore this error, I entered this in a .pylintrc file at the root
+of the project’s git repository</p>
+<pre><code>[TYPECHECK]
+generated-members=other,indround,fuel,sawn,panel,pulp,paper</code></pre>
+</div>
 <div id="ignore-unused-import-warning" class="section level3">
 <h3>Ignore unused import warning</h3>
 <p>Use case:</p>
@@ -6602,7 +6805,8 @@ os.environ[&quot;XYZ&quot;]</code></pre>
 path.</p>
 <pre><code>import sys
 sys.path.insert(0, &quot;/home/rougipa/eu_cbm/eu_cbm_hat&quot;)</code></pre>
-<p>See also the section on python path.</p>
+<p>See also the section on Path/python path to change the python path
+and import a script from Jupyter notebook.</p>
 </div>
 </div>
 <div id="gil-global-interpreter-lock" class="section level2">
@@ -6935,6 +7139,23 @@ This last link contains a nice, simple example of how asyncio works with
 a simulated delay to fetch a web page.</p>
 </div>
 </div>
+<div id="workflows-and-pipelines" class="section level1">
+<h1>Workflows and pipelines</h1>
+<ul>
+<li><p>Star history comparison of ploomber and snakemake <a
+href="https://star-history.com/#snakemake/snakemake&amp;ploomber/ploomber&amp;Date"
+class="uri">https://star-history.com/#snakemake/snakemake&amp;ploomber/ploomber&amp;Date</a></p></li>
+<li><p>Ploomber <a href="https://github.com/ploomber/ploomber"
+class="uri">https://github.com/ploomber/ploomber</a></p>
+<ul>
+<li>Comparison of open-source workflow management tools <a
+href="https://ploomber.io/blog/survey/"
+class="uri">https://ploomber.io/blog/survey/</a></li>
+</ul></li>
+<li><p>Snake make <a href="https://github.com/snakemake/snakemake"
+class="uri">https://github.com/snakemake/snakemake</a></p></li>
+</ul>
+</div>
 <div id="xarray" class="section level1">
 <h1>Xarray</h1>
 <p>Create a data array and plot it, example from the <a
@@ -7009,6 +7230,14 @@ between datasets and arrays</a></p>
 <pre><code>&gt; &quot;This method broadcasts all data variables in the dataset against each other,
 &gt; then concatenates them along a new dimension into a new array while
 &gt; preserving coordinates.&quot;</code></pre>
+</div>
+<div id="convert-to-from-other-formats" class="section level2">
+<h2>Convert to-from other formats</h2>
+<div id="to-a-list" class="section level3">
+<h3>To a list</h3>
+<p>Convert a 1 dimensional data array to a list</p>
+<pre><code>ds.country.values.tolist()</code></pre>
+</div>
 </div>
 <div id="copy-shallow-and-deep" class="section level2">
 <h2>Copy shallow and deep</h2>
@@ -7086,6 +7315,14 @@ coordinates.”</p>
 <p>You can also use</p>
 <pre><code>xarray.DataArray(df)</code></pre>
 </div>
+<div id="create-an-empty-dataset-similar-to-existing-one"
+class="section level3">
+<h3>Create an empty dataset similar to existing one</h3>
+<p>Fill an array with zero values, similar to an existing data array. Or
+fill it with NA values.</p>
+<pre><code>xarray.zeros_like(da)
+xarray.full_like(da, fill_value=xarray.nan)</code></pre>
+</div>
 </div>
 <div id="data-variables" class="section level2">
 <h2>Data variables</h2>
@@ -7110,6 +7347,11 @@ ds[var].loc[regions,t] = ds[var].loc[COUNTRIES,t].groupby(ds[&quot;region&quot;]
 </div>
 <div id="indexing" class="section level2">
 <h2>Indexing</h2>
+<div id="loc-1" class="section level3">
+<h3>.loc</h3>
+<p>Example use with the GFPMx dataset</p>
+<pre><code>ds[&quot;exp&quot;].loc[&quot;Czechia&quot;, ds.coords[&quot;year&quot;]&gt;2015]</code></pre>
+</div>
 <div id="assigning-values-with-indexing" class="section level3">
 <h3>Assigning values with indexing</h3>
 <p><a
@@ -7216,13 +7458,24 @@ xarray.plot.FacetGrid object.”</p>
 # Plot by continents
 gfpmxb2020.indround[“prod”].loc[~gfpmxb2020.indround.c].plot(col=“country”)</p></li>
 </ul>
+<div id="pandas-plots-from-xarray-datasets" class="section level3">
+<h3>Pandas plots from xarray datasets</h3>
+<p>Example using the GFPMx data structure to plot industrial roundwood
+consumption, production and trade in Czechia:</p>
+<pre><code>variables = [&quot;imp&quot;, &quot;cons&quot;, &quot;exp&quot;, &quot;prod&quot;]
+# Select inside the dataset
+gfpmx[&quot;indround&quot;].loc[{&quot;country&quot;:&quot;Czechia&quot;}][variables].to_dataframe()[variables].plot()
+# Convert to data frame first then plot
+gfpmx[&quot;indround&quot;].to_dataframe().loc[&quot;Czechia&quot;][variables].plot()</code></pre>
 </div>
-<div id="io" class="section level2">
-<h2>IO</h2>
+</div>
+<div id="xarray-io" class="section level2">
+<h2>Xarray IO</h2>
 <ul>
-<li><a
-href="https://stackoverflow.com/questions/35422862/speeding-up-reading-of-very-large-netcdf-file-in-python">How
-to read netcdf files in chunks with Xarray and Dask</a></li>
+<li><p>See the general section on IO and file formats. The subsection on
+netcdf files refers to xarray.</p></li>
+<li><p>See also the conversion section for conversion to other in memory
+formats such as lists or pandas data frames.</p></li>
 </ul>
 </div>
 </div>
