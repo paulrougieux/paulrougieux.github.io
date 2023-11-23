@@ -32,6 +32,12 @@ stty -ixon
 # Paths for git run
 export PATH=~/.npm-global/bin:$PATH
 
+# Python
+# Activate the default environment
+alias penv="source ~/rp/penv/bin/activate"
+alias p="source ~/rp/penv/bin/activate&&ipython"
+alias jlab="source ~/rp/penv/bin/activate &&jupyter lab"
+
 # Paths for python modules
 export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
 export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost:5433/biotrade"
@@ -51,7 +57,6 @@ export PYTHONPATH="$HOME/repos/cobwood/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/eu_cbm/libcbm_py/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/eu_cbm/eu_cbm_hat/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/plumbing/":$PYTHONPATH
-
 
 # Create tag files for an R project, from within an R project's R folder
 rtags() {
