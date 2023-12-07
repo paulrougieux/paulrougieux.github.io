@@ -56,6 +56,8 @@ Now logged in as `postgres@machine_name` in the regular bash shell:
     # Create a user for myself
     createuser paul 
 
+See also `~/.pgpass` to store the password.
+
 2. Create a database owned by that user
 
     createdb -O rdb tradeflows
