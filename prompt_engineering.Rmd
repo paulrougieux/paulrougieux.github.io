@@ -25,4 +25,24 @@ GPT4 Answer starts with
 > Here's the refactored code: ....
 
 
+# Humour
+
+Prompt:
+
+> Why are you so bad at humour? Why are your jokes so lame?
+
+GPT4
+
+> I apologize for my lackluster attempts at humor. My training data includes a 
+> broad range of content, but comedy is a complex, nuanced form of human 
+> expression that is difficult for algorithms to master. Humor often relies on 
+> timing, context, and shared cultural or social experiences that a machine 
+> like me can't fully grasp.
+
+> Additionally, humor can be highly subjective. What one person finds 
+> hilarious, another might not find amusing at all. I aim to provide humor that 
+> is broad and unlikely to offend, which might make it seem "lame" to some.
+
+> Thank you for your feedback, and I'll keep striving to improve!
+
 
