@@ -831,7 +831,7 @@ More file information
 
     stat <filename>
 
-## Search and filter text files
+## Grep search and filter text files
 
 Search with Grep
 
@@ -840,6 +840,11 @@ Search with Grep
 Recursive search (-r) in all files in the directory for a given pattern, case insensitive (-i)
 
     grep -ri "pattern" .
+
+Recursive search only for a given file extension 
+https://stackoverflow.com/questions/12516937/how-can-i-grep-recursively-but-only-in-files-with-certain-extensions
+
+    grep -r -i --include=\*.txt 'searchterm' ./
 
 Give 1 line of context before and 2 lines of context after:
 
@@ -866,14 +871,6 @@ Count occurrences of a word in a file
 
 
 Regexp match beginning of and end of line with ^ and \$.
-
-Follow the end of a log file as it is written 
-
-    tail -f
-
-See tab and end of line characters in a text file
-
-    cat -te filename |less 
 
 
 ### Search and filter tables
@@ -919,6 +916,20 @@ Go to a specific line using vim
 To display line numbers in vim
 
     :set nu
+
+
+## Tail
+
+Follow the end of a log file as it is written 
+
+    tail -f
+
+
+## See tabs and end of line characters
+
+See tab and end of line characters in a text file
+
+    cat -te filename |less 
 
 
 # List files
@@ -1249,7 +1260,7 @@ For example to rename all upper-case .JPG extension into lower-case .jpg extensi
     rename 's/\.JPG$/\.jpg/' *.JPG
 
 
-# Program with bash
+# Program bash scripts
 
 ## Loop over file names
 
@@ -2046,6 +2057,8 @@ Find out which program is listening to which port
 
 ### Start, stop, move to background
 
+A command followed by an & will run a job in the background.
+
 List
 
     jobs
@@ -2053,8 +2066,6 @@ List
 Bring a job to the foreground
 
     fg job_number
-
-Run a job in the background. A command followed by an & will run in the background.
 
 Stop a job
 
@@ -2545,6 +2556,10 @@ A VPN was useful when:
 * SMS interface didn't work on orange.fr. I could access it through a VPN server based in Paris.
 * FTP download site based in Canada didn't work from Italy. A colleague could access it through a VPN server based in Canada.
 * SSH access to remote servers didn't work on company wifi. I could access the machines through the VPN.
+
+The VPN didn't manage to connect:
+
+- At Malpensa Airport
 
 VPN access also removes localisation of site searches on google and google maps. 
 

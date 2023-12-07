@@ -1120,13 +1120,17 @@ ls -l &lt;filename&gt;</code></pre>
 <p>More file information</p>
 <pre><code>stat &lt;filename&gt;</code></pre>
 </div>
-<div id="search-and-filter-text-files" class="section level2">
-<h2>Search and filter text files</h2>
+<div id="grep-search-and-filter-text-files" class="section level2">
+<h2>Grep search and filter text files</h2>
 <p>Search with Grep</p>
 <pre><code>grep &quot;text&quot; file.txt</code></pre>
 <p>Recursive search (-r) in all files in the directory for a given
 pattern, case insensitive (-i)</p>
 <pre><code>grep -ri &quot;pattern&quot; .</code></pre>
+<p>Recursive search only for a given file extension <a
+href="https://stackoverflow.com/questions/12516937/how-can-i-grep-recursively-but-only-in-files-with-certain-extensions"
+class="uri">https://stackoverflow.com/questions/12516937/how-can-i-grep-recursively-but-only-in-files-with-certain-extensions</a></p>
+<pre><code>grep -r -i --include=\*.txt &#39;searchterm&#39; ./</code></pre>
 <p>Give 1 line of context before and 2 lines of context after:</p>
 <pre><code>grep -B 1 -A 2 pattern README.md</code></pre>
 <p>Search for lines containing “Done” or “encountered” only in specific
@@ -1146,10 +1150,6 @@ where the string occurs:</p>
 <p>Count occurrences of a word in a file</p>
 <pre><code>grep -roh word filename.txt  | wc -w</code></pre>
 <p>Regexp match beginning of and end of line with ^ and $.</p>
-<p>Follow the end of a log file as it is written</p>
-<pre><code>tail -f</code></pre>
-<p>See tab and end of line characters in a text file</p>
-<pre><code>cat -te filename |less </code></pre>
 <div id="search-and-filter-tables" class="section level3">
 <h3>Search and filter tables</h3>
 <p><a href="http://www.grymoire.com/Unix/Awk.html#uh-11">Awk
@@ -1181,6 +1181,16 @@ specific line using less</p>
 <pre><code>:&lt;line number&gt;</code></pre>
 <p>To display line numbers in vim</p>
 <pre><code>:set nu</code></pre>
+</div>
+<div id="tail" class="section level2">
+<h2>Tail</h2>
+<p>Follow the end of a log file as it is written</p>
+<pre><code>tail -f</code></pre>
+</div>
+<div id="see-tabs-and-end-of-line-characters" class="section level2">
+<h2>See tabs and end of line characters</h2>
+<p>See tab and end of line characters in a text file</p>
+<pre><code>cat -te filename |less </code></pre>
 </div>
 </div>
 <div id="list-files" class="section level1">
@@ -1433,8 +1443,8 @@ section on a flatten a file hierarchy for a description.</p>
 <pre><code>rename &#39;s/\.JPG$/\.jpg/&#39; *.JPG</code></pre>
 </div>
 </div>
-<div id="program-with-bash" class="section level1">
-<h1>Program with bash</h1>
+<div id="program-bash-scripts" class="section level1">
+<h1>Program bash scripts</h1>
 <div id="loop-over-file-names" class="section level2">
 <h2>Loop over file names</h2>
 <p>Display all <code>.ogg</code> files in a loop</p>
@@ -2215,12 +2225,11 @@ files are being written to it:</p>
 </div>
 <div id="start-stop-move-to-background" class="section level3">
 <h3>Start, stop, move to background</h3>
+<p>A command followed by an &amp; will run a job in the background.</p>
 <p>List</p>
 <pre><code>jobs</code></pre>
 <p>Bring a job to the foreground</p>
 <pre><code>fg job_number</code></pre>
-<p>Run a job in the background. A command followed by an &amp; will run
-in the background.</p>
 <p>Stop a job</p>
 <pre><code>CTRL ^ Z</code></pre>
 <p>Move a stopped job to the background</p>
@@ -2590,6 +2599,10 @@ VPN server based in Paris.</li>
 colleague could access it through a VPN server based in Canada.</li>
 <li>SSH access to remote servers didn’t work on company wifi. I could
 access the machines through the VPN.</li>
+</ul>
+<p>The VPN didn’t manage to connect:</p>
+<ul>
+<li>At Malpensa Airport</li>
 </ul>
 <p>VPN access also removes localisation of site searches on google and
 google maps.</p>
