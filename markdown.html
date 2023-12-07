@@ -538,13 +538,115 @@ bibliography file can be specified in the <code>--bibliography</code>
 argument.</p>
 <pre><code>pandoc article.md -o article.pdf --bibliography=article.bib --citeproc</code></pre>
 <ul>
-<li>See also the YAML front matter section on bibliography.</li>
+<li>See also the YAML front matter section on bibliography. Even if the
+yaml front matter specifies a bibliography file, the
+<code>--citeproc</code> still needs to be called explicitly in order to
+process citations and generate a list of references.</li>
 </ul></li>
 </ul>
 </div>
 </div>
 <div id="quarto" class="section level1">
 <h1>Quarto</h1>
+<p>Goals:</p>
+<blockquote>
+<p>The overarching goal of Quarto is to make the process of creating and
+collaborating on scientific and technical documents dramatically better.
+We hope to do this in several dimensions:</p>
+</blockquote>
+<blockquote>
+<p>Create a writing and publishing environment with great integrated
+tools for technical content. We want to make authoring with embedded
+code, equations, figures, complex diagrams, interactive widgets,
+citations, cross references, and the myriad other special requirements
+of scientific discourse straightforward and productive for everyone.</p>
+</blockquote>
+<blockquote>
+<p>Help authors take full advantage of the web as a connected,
+interactive platform for communications, while still providing the
+ability to create excellent printed output from the same document
+source. Researchers shouldn’t need to choose between LaTeX, MS Word, and
+HTML but rather be able to author documents that target all of them at
+the same time.</p>
+</blockquote>
+<blockquote>
+<p>Make reproducible research and publications the norm rather than the
+exception. Reproducibility requires that the code and data required to
+create a manuscript are an integrated part of it. However, this isn’t
+often straightforward in practice—Quarto aims to make it easier to adopt
+a reproducible workflow than not.</p>
+</blockquote>
+<div id="books-that-use-quarto" class="section level2">
+<h2>Books that use quarto</h2>
+<ul>
+<li><p>Seen at <a href="https://quarto.org/docs/books/"
+class="uri">https://quarto.org/docs/books/</a></p>
+<ul>
+<li><p><a href="https://r4ds.hadley.nz/"
+class="uri">https://r4ds.hadley.nz/</a></p></li>
+<li><p><a href="https://wesmckinney.com/book/"
+class="uri">https://wesmckinney.com/book/</a></p></li>
+<li><p><a href="https://jjallaire.github.io/visualization-curriculum"
+class="uri">https://jjallaire.github.io/visualization-curriculum</a></p></li>
+</ul></li>
+</ul>
+</div>
+<div id="code-chunks" class="section level2">
+<h2>Code chunks</h2>
+<div id="python-and-jupyter" class="section level3">
+<h3>Python and Jupyter</h3>
+<ul>
+<li><p>Need to set the extension as <code>.qmd</code> to enable
+execution of code chunks</p></li>
+<li><p>Virtual environments <a
+href="https://quarto.org/docs/projects/virtual-environments.html"
+class="uri">https://quarto.org/docs/projects/virtual-environments.html</a></p></li>
+<li><p>Debugging information</p>
+<ul>
+<li><p>verbose mode <a
+href="https://quarto.org/docs/troubleshooting/#verbose-mode"
+class="uri">https://quarto.org/docs/troubleshooting/#verbose-mode</a></p></li>
+<li><p>Log files <a
+href="https://quarto.org/docs/troubleshooting/#log-files"
+class="uri">https://quarto.org/docs/troubleshooting/#log-files</a></p>
+<ul>
+<li><p>Add this to the yaml block</p>
+<p>execute: debug: true</p></li>
+<li><p>See log file in
+<code>$HOME/.local/share/quarto/logs</code></p></li>
+</ul></li>
+<li><p>Using warnings to debug (it’s not ideal, but at least they get
+printed in the quarto output)</p>
+<p>import warnings warnings.warn(f”scenario_dir: {scenario_dir}:
+{scenario_dir.exists()}“)</p></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="figures" class="section level2">
+<h2>Figures</h2>
+<p>Quarto documentation on figures <a
+href="https://quarto.org/docs/authoring/figures.html"
+class="uri">https://quarto.org/docs/authoring/figures.html</a></p>
+<p>Here is how to add a figure with caption and cross reference in
+quarto:</p>
+<pre><code>![An Elephant](elephant.png){#fig-elephant}</code></pre>
+<p>Example of a figure with caption and label, generated from python
+code:</p>
+<pre><code> &gt;   
+ &gt;   ```python
+ &gt;   import matplotlib.pyplot as plt
+ &gt;   plt.plot([0,1,1,2,3,3,4], [0,1,3,2,1,3,4], &quot;*c&quot;)
+ &gt;   plt.show()
+ &gt;   ```
+ &gt;   
+ &gt;   &lt;div class=&quot;figure&quot;&gt;
+ &gt;   &lt;img src=&quot;markdown_files/figure-html/fig-plot-1.png&quot; alt=&quot;Plot 0, 1, 2, 3, 4&quot; width=&quot;672&quot; /&gt;
+ &gt;   &lt;p class=&quot;caption&quot;&gt;Plot 0, 1, 2, 3, 4&lt;/p&gt;
+ &gt;   &lt;/div&gt;</code></pre>
+<p>Refer to the figures with an <code>@</code> label:</p>
+<pre><code>see @fig-plot and @fig-elephant</code></pre>
+</div>
 <div id="tables" class="section level2">
 <h2>Tables</h2>
 <p><a href="https://quarto.org/docs/authoring/tables.html">Quarto
@@ -576,6 +678,27 @@ For example:</p>
 : My Caption {#tbl-letters}
 
 See @tbl-letters.</code></pre>
+</div>
+<div id="yaml-in-quarto" class="section level2">
+<h2>Yaml in quarto</h2>
+<ul>
+<li>Execution options <a
+href="https://quarto.org/docs/computations/execution-options.html"
+class="uri">https://quarto.org/docs/computations/execution-options.html</a></li>
+</ul>
+<p>Option to not show code output</p>
+<pre><code>execute:
+  echo: false</code></pre>
+</div>
+</div>
+<div id="text-formating" class="section level1">
+<h1>Text formating</h1>
+<div id="extra-spaces" class="section level2">
+<h2>Extra spaces</h2>
+<p>Add extra spaces</p>
+<pre><code>$~$</code></pre>
+<p>Seen at <a href="https://stackoverflow.com/a/60876153"
+class="uri">https://stackoverflow.com/a/60876153</a></p>
 </div>
 </div>
 <div id="yaml-front-matter-for-styles" class="section level1">

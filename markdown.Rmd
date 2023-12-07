@@ -118,10 +118,101 @@ section below.
 
       pandoc article.md -o article.pdf --bibliography=article.bib --citeproc
 
-    - See also the YAML front matter section on bibliography.
+    - See also the YAML front matter section on bibliography. Even if the yaml 
+      front matter specifies a bibliography file, the `--citeproc` still needs 
+      to be called explicitly in order to process citations and generate a list 
+      of references.
 
 
 # Quarto
+
+Goals:
+
+> The overarching goal of Quarto is to make the process of creating and 
+> collaborating on scientific and technical documents dramatically better. We 
+> hope to do this in several dimensions:
+
+> Create a writing and publishing environment with great integrated tools 
+> for technical content. We want to make authoring with embedded code, 
+> equations, figures, complex diagrams, interactive widgets, citations, 
+> cross references, and the myriad other special requirements of scientific 
+> discourse straightforward and productive for everyone.
+
+> Help authors take full advantage of the web as a connected, interactive 
+> platform for communications, while still providing the ability to create 
+> excellent printed output from the same document source. Researchers 
+> shouldn’t need to choose between LaTeX, MS Word, and HTML but rather be 
+> able to author documents that target all of them at the same time.
+
+> Make reproducible research and publications the norm rather than the 
+> exception. Reproducibility requires that the code and data required to 
+> create a manuscript are an integrated part of it. However, this isn’t 
+> often straightforward in practice—Quarto aims to make it easier to adopt 
+> a reproducible workflow than not.
+
+
+## Books that use quarto
+
+- Seen at https://quarto.org/docs/books/
+
+    - https://r4ds.hadley.nz/
+
+    - https://wesmckinney.com/book/
+
+    - https://jjallaire.github.io/visualization-curriculum
+
+
+## Code chunks
+
+### Python and Jupyter
+
+- Need to set the extension as `.qmd` to enable execution of code chunks
+
+- Virtual environments 
+  https://quarto.org/docs/projects/virtual-environments.html
+
+- Debugging information 
+
+    - verbose mode https://quarto.org/docs/troubleshooting/#verbose-mode
+
+    - Log files https://quarto.org/docs/troubleshooting/#log-files
+
+        - Add this to the yaml block
+
+          execute:
+              debug: true
+
+        - See log file in `$HOME/.local/share/quarto/logs`
+
+    - Using warnings to debug (it's not ideal, but at least they get printed in 
+      the quarto output)
+
+      import warnings
+      warnings.warn(f"scenario_dir: {scenario_dir}\nexists: {scenario_dir.exists()}")
+
+
+## Figures
+
+Quarto documentation on figures https://quarto.org/docs/authoring/figures.html
+
+Here is how to add a figure with caption and cross reference in quarto:
+
+    ![An Elephant](elephant.png){#fig-elephant}
+
+Example of a figure with caption and label, generated from python code:
+
+     >   ```{python}
+     >   #| label: fig-plot
+     >   #| fig-cap: "Plot 0, 1, 2, 3, 4"
+     >   import matplotlib.pyplot as plt
+     >   plt.plot([0,1,1,2,3,3,4], [0,1,3,2,1,3,4], "*c")
+     >   plt.show()
+     >   ```
+
+Refer to the figures with an `@` label:
+
+    see @fig-plot and @fig-elephant
+
 
 ## Tables
 
@@ -153,6 +244,26 @@ section below.
     : My Caption {#tbl-letters}
 
     See @tbl-letters.
+
+
+## Yaml in quarto
+
+- Execution options https://quarto.org/docs/computations/execution-options.html
+
+Option to not show code output
+
+    execute:
+      echo: false
+
+# Text formating
+
+## Extra spaces
+
+Add extra spaces
+
+    $~$
+
+Seen at https://stackoverflow.com/a/60876153
 
 
 # Yaml front matter for styles
