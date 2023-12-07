@@ -494,10 +494,6 @@ press:
 
     :'<,'>Tab /&
 
-Similarly to align a markdown table, select a few lines, then call: 
-
-    :'<,'>Tab /|
-
 Align tab separated text in the current buffer (to view tsv files generated
 from data frames by NVim-R for example): 
 
@@ -508,6 +504,13 @@ Or enter CTRL + V and press the TAB key for a literal tab.
 To have numbers right aligned
 
     :Tab /\t/r0
+
+### Markdown table
+
+Similarly to align a markdown table, select a few lines, then call: 
+
+    :'<,'>Tab /|
+
 
 For more, see `help tabular`.
 
@@ -726,7 +729,7 @@ I put this into a command in my \ `.vimrc`
 TODO: "the 30- year average" should not be replace but only by a space.
 
 
-### Patterns
+### Regex patterns
 
 To place quotes around variables that contain a dollar sign (otherwise
 interpreted as a formula start in markdown):
@@ -792,6 +795,10 @@ Remove all numbers in a list of authors
 Replace this or that with a dot
 
     :%s/this\|that/./g
+
+Replace opening or closing curly braces by two curly braces
+
+    :'<,'>s/{/{{/g | s/}/}}/g
 
 
 ### Replace list items
@@ -1110,6 +1117,9 @@ Apply automatically to markdown files, by adding this to .vimrc
 To format the text, select it with v and up or down movements, and press 
 
     gq
+
+
+### Disable auto wrap
 
 To disable auto wrapping, call
 
@@ -2069,6 +2079,14 @@ Turn off virtual text (added to .vimrc)
     let g:ale_virtualtext_cursor = 0
 
 
+#### Flake 8 
+
+Example exception file `.flake8` at the root of the git repository
+
+    [flake8]
+    ignore = F841, E501, W503, E203
+
+
 ### Jedi vim
 
 * [Jedi](https://github.com/davidhalter/jedi) autocompletion, also used by
@@ -2120,7 +2138,7 @@ There is a default shortcut `<leader>r` for this but it is deactivated on my
 machine for some reason. Not a big problem since I don't use refactor often.
 Also I prefer not to call this shortcut by mistake.
 
-The advangate of `jedi#rename()` over a simple `:%s/old/new/g` is that it will
+The advantage of `jedi#rename()` over a simple `:%s/old/new/g` is that it will
 only replace python objects, if you have them mentioned in comments, it will
 not replace those.
 

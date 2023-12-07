@@ -610,6 +610,13 @@ augroup END</code></pre>
 <p>The solution was to use 2 file types for Rmd files:
 <code>set ft=rmd.markdown</code>.</p>
 </div>
+<div id="show-settings-such-as-file-type" class="section level2">
+<h2>Show settings such as file type</h2>
+<p>Show existing values of settings with a question mark at the end</p>
+<pre><code>:set updatetime?
+:set signcolumn?
+:set filetype?</code></pre>
+</div>
 </div>
 <div id="convert" class="section level1">
 <h1>Convert</h1>
@@ -999,6 +1006,25 @@ first two words of the line:</p>
 between and \3 - the second word. How to decide what number holds what
 pair of () ? - count opening <code>"\("</code> from the left. ”</p>
 </blockquote>
+<div id="keep-only-quoted-strings" class="section level4">
+<h4>Keep only quoted strings</h4>
+<p>A simpler version in the case of character strings only</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/.*\(&quot;.*&quot;\).*/\1/g
+# Paste ready version
+s/.*\(&quot;.*&quot;\).*/\1/g</code></pre>
+<p>Suggestion and explanation by Chat GPT</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/.*\(&quot;\([^&quot;]\+\)&quot;\).*/\1/g</code></pre>
+<p>Explanation:</p>
+<ul>
+<li><code>.*</code> Matches any character zero or more times.</li>
+<li><code>\("([^"]\+)"\)</code> This is the capturing group for the
+quoted string. It captures anything between quotes and stores it in
+\1.</li>
+<li><code>.*</code> Matches any character zero or more times.</li>
+<li><code>\1</code> This replaces the entire line with just the first
+capturing group, which is your quoted string.</li>
+</ul>
+</div>
 </div>
 <div id="html-markup" class="section level3">
 <h3>HTML markup</h3>
@@ -1020,8 +1046,8 @@ interpreted as a formula start in markdown):</p>
 <p>TODO: “the 30- year average” should not be replace but only by a
 space.</p>
 </div>
-<div id="patterns" class="section level3">
-<h3>Patterns</h3>
+<div id="regex-patterns" class="section level3">
+<h3>Regex patterns</h3>
 <p>To place quotes around variables that contain a dollar sign
 (otherwise interpreted as a formula start in markdown):</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\(\w*\$\)/`\1`/g</code></pre>
@@ -1069,6 +1095,8 @@ digit.</p>
 <h4>Or</h4>
 <p>Replace this or that with a dot</p>
 <pre><code>:%s/this\|that/./g</code></pre>
+<p>Replace opening or closing curly braces by two curly braces</p>
+<pre><code>:&#39;&lt;,&#39;&gt;s/{/{{/g | s/}/}}/g</code></pre>
 </div>
 </div>
 <div id="replace-list-items" class="section level3">
@@ -1268,10 +1296,12 @@ for the current file type:</p>
 <p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating
 commands, Vim scripts and debugging</a></p>
 </div>
-<div id="save-and-rename-a-file" class="section level2">
-<h2>Save and rename a file</h2>
+<div id="save-files" class="section level2">
+<h2>Save files</h2>
 <p>Save the current file</p>
 <pre><code>:w</code></pre>
+<div id="rename-a-file-save-as" class="section level3">
+<h3>Rename a file, save as</h3>
 <p>Save under a new name (save as) and edit that file</p>
 <pre><code>:sav
 :saveas</code></pre>
@@ -1280,6 +1310,53 @@ href="https://stackoverflow.com/questions/4980168/how-to-save-as-a-new-file-and-
 as a new file and continue editing the original one</a></p>
 <p>To move or rename a file within the vim file explorer:</p>
 <pre><code>R</code></pre>
+</div>
+<div id="autosave" class="section level3">
+<h3>Autosave</h3>
+<ul>
+<li><p><a
+href="https://vi.stackexchange.com/questions/74/is-it-possible-to-make-vim-auto-save-files/79#79"
+class="uri">https://vi.stackexchange.com/questions/74/is-it-possible-to-make-vim-auto-save-files/79#79</a>
+suggests</p>
+<blockquote>
+<p>One possible way to implement this is to use the CursorHold
+autocommand event. This event is triggered when the user hasn’t pressed
+a key for ‘updatetime’ milliseconds.</p>
+</blockquote>
+<pre><code>  autocmd CursorHold * update</code></pre>
+<blockquote>
+<p>The :update command only saves the buffer if it is modified. If you
+also wanted this to happen while insert mode is active, CursorHoldI
+could be added to the event list.</p>
+</blockquote>
+<pre><code>  autocmd CursorHold,CursorHoldI * update</code></pre>
+<ul>
+<li><p>Show the value of the update time</p>
+<p>:set updatetime?</p></li>
+</ul></li>
+<li><p><a href="https://stackoverflow.com/a/34814520/2641825"
+class="uri">https://stackoverflow.com/a/34814520/2641825</a> says
+that</p>
+<blockquote>
+<p>“<code>:update</code> is better suited than <code>:write</code>,
+because it only actually saves when there are unpersisted updates.”</p>
+</blockquote></li>
+<li><p><a
+href="https://stackoverflow.com/questions/6991638/how-to-auto-save-a-file-every-1-second-in-vim"
+class="uri">https://stackoverflow.com/questions/6991638/how-to-auto-save-a-file-every-1-second-in-vim</a>
+suggests</p>
+<pre><code>  autocmd TextChanged,TextChangedI &lt;buffer&gt; silent write</code></pre></li>
+<li><p><a
+href="https://stackoverflow.com/questions/17365324/auto-save-in-vim-as-you-type/55761306#55761306"
+class="uri">https://stackoverflow.com/questions/17365324/auto-save-in-vim-as-you-type/55761306#55761306</a>
+(duplicate of the previous one)</p></li>
+<li><p><a
+href="https://www.reddit.com/r/vim/comments/ywzeu3/autosave_file/?rdt=63220&amp;onetap_auto=true"
+class="uri">https://www.reddit.com/r/vim/comments/ywzeu3/autosave_file/?rdt=63220&amp;onetap_auto=true</a>
+suggests</p>
+<pre><code>  autocmd CursorHoldI,CursorHold * silent! update</code></pre></li>
+</ul>
+</div>
 </div>
 <div id="wrap-lines-auto-line-break" class="section level2">
 <h2>Wrap lines, auto line break</h2>
@@ -1292,10 +1369,13 @@ existing block of text to 80 characters</a>:</p>
 <p>To format the text, select it with v and up or down movements, and
 press</p>
 <pre><code>gq</code></pre>
+<div id="disable-auto-wrap" class="section level3">
+<h3>Disable auto wrap</h3>
 <p>To disable auto wrapping, call</p>
 <pre><code>:set formatoptions=cq</code></pre>
 <p><a href="https://stackoverflow.com/a/23032068/2641825">SO answer on
 how to disable auto wrapping</a>.</p>
+</div>
 </div>
 </div>
 <div id="select-and-visual-mode" class="section level1">
@@ -1353,7 +1433,7 @@ on Mutt</a> has a section explaining how to set it up with vim.</p>
 <pre><code>:help - vim help
 :help commandname - help on a particular command
 :h commandname - help on a particular command
-CTRL+] - jump to a highlighted topic
+CTRL+] - jump to a highlighted topic. I remapped it to `ctrl %`.
 CTRL+T - jump backwards</code></pre>
 <p><a href="http://vimhelp.appspot.com/">HTML version of the Vim help
 pages</a> kept up-to-date automatically from the <a
@@ -1914,8 +1994,18 @@ class="section level2">
 </div>
 <div id="install-plugins-with-vundle" class="section level2">
 <h2>Install plugins with Vundle</h2>
+<p>Install all plugins configured in your <code>.vimrc</code>.</p>
+<pre><code>:PluginInstall</code></pre>
+<p>Update the configured plugins. Press ‘u’ after updates to see the
+change log.</p>
+<pre><code>:PluginInstall!   &quot; NOTE: bang(!)
+# or
+:PluginUpdate</code></pre>
 <p>Since there is a built-in plugin support, maybe I don’t need Vundle
 after all?</p>
+<div id="tell-vundle-to-manage-plugins-in-your-.vimrc"
+class="section level3">
+<h3>Tell Vundle to manage plugins in your .vimrc</h3>
 <p>Edit your .vimrc and add the following at the beginning</p>
 <pre><code>set nocompatible              &quot; be iMproved, required
 filetype off                  &quot; required
@@ -1948,8 +2038,7 @@ filetype plugin indent on    &quot; required
 &quot;
 &quot; see :h vundle for more details or wiki for FAQ
 &quot; Put your non-Plugin stuff after this line</code></pre>
-<p>Install all plugins configured in your <code>.vimrc</code>.</p>
-<pre><code>:PluginInstall</code></pre>
+</div>
 </div>
 </div>
 <div id="programming" class="section level1">
@@ -2097,6 +2186,8 @@ href="https://github.com/PyCQA/pylint/issues/2018">variable names that
 are too short</a></p>
 <p>See the <a href="python.html">python page</a> for the configuration
 details of the linters.</p>
+<p>Turn off virtual text (added to .vimrc)</p>
+<pre><code>let g:ale_virtualtext_cursor = 0</code></pre>
 </div>
 <div id="jedi-vim" class="section level3">
 <h3>Jedi vim</h3>
@@ -2126,7 +2217,7 @@ among the objects and functions in that module.</p>
 my .vimrc</p>
 <pre><code>:let mapleader = &quot;,&quot;</code></pre>
 <p>See above section on navigation, you can use <code>Ctrl-O</code> to
-jump back and <code>Ctrl-I</code>to jump forward.</p>
+jump back and <code>Ctrl-I</code> to jump forward.</p>
 <div id="refactor-with-jedirename" class="section level4">
 <h4>Refactor with <code>jedi#rename()</code></h4>
 <p>To refactor all occurrences of a variable in a file, move to the
@@ -2136,7 +2227,7 @@ object you want to rename, then</p>
 it is deactivated on my machine for some reason. Not a big problem since
 I don’t use refactor often. Also I prefer not to call this shortcut by
 mistake.</p>
-<p>The advangate of <code>jedi#rename()</code> over a simple
+<p>The advantage of <code>jedi#rename()</code> over a simple
 <code>:%s/old/new/g</code> is that it will only replace python objects,
 if you have them mentioned in comments, it will not replace those.</p>
 <p>See also my refactor with <code>git grep</code> and <code>perl</code>
