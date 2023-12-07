@@ -250,6 +250,7 @@ I might need to delete a branch at some point:
 Delete a remote branch
 
     git push --delete origin branch_name
+    git push --d origin branch_name
 
 Check if a branch has been merged before deleting it
 
@@ -452,6 +453,17 @@ Show only word changes
     git show --word-diff <commit-hash>
 
 
+## Show all commits by a person
+
+Show all commits by a person
+
+    git log --author="Author Name"
+
+With a regular expression
+
+    git log --author="^John"
+
+
 ## Blame
 
 To see the commit number and author of each line in a file use
@@ -574,7 +586,8 @@ Display a compact log for one file or one directory only
 
 Edit `~/.gitconfig` to define an alias that shows the last 10 log entries in a compact way:
 
-    lkj    = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit -10
+    [alias]
+    lkj = log --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)<%an>%Creset' --abbrev-commit -10
 
 This alias also works with the log of one file only
 
@@ -614,11 +627,18 @@ extra spaces at the beginning and in the middle of some lines):
     git log --pretty=format:'%h,%an,%ad,"%s",' --shortstat --date=iso | paste - - - #> /tmp/gitlog.csv
 
 
-### Find last commit where a file was still present in the repository
+### File history through rename and deletion
 
-Show commits where a particular file was modified
+Find the last commit where a file was still present in the repository.
+
+Show commits where a particular file was modified, it continues history even if 
+the file was renamed.
 
     git log --follow -- notebooks/wood/belarus_ukraine_russia/wood_bur_comtrade_monthly.Rmd
+
+Show all commits where a file was modified
+
+    git log --full-history -- biomass_mandate_s2p/biomass_mandate_s2p_report.Rmd
 
 
 ### Tig
@@ -1538,6 +1558,7 @@ show the status
 show differences
 
     svn diff
+
 
 # References
 

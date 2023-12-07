@@ -631,7 +631,8 @@ a main branch.</p>
 <p>I might need to delete a branch at some point:</p>
 <pre><code>git branch -d branch_name </code></pre>
 <p>Delete a remote branch</p>
-<pre><code>git push --delete origin branch_name</code></pre>
+<pre><code>git push --delete origin branch_name
+git push --d origin branch_name</code></pre>
 <p>Check if a branch has been merged before deleting it</p>
 <p>git merge-base main compare</p>
 <p>Will return the latest common commit between the 2 branches.</p>
@@ -789,6 +790,13 @@ git diff --color-words=&quot;[^[:space:],]+&quot; x.csv y.csv</code></pre>
 <p>Show only word changes</p>
 <pre><code>git show --word-diff &lt;commit-hash&gt;</code></pre>
 </div>
+<div id="show-all-commits-by-a-person" class="section level2">
+<h2>Show all commits by a person</h2>
+<p>Show all commits by a person</p>
+<pre><code>git log --author=&quot;Author Name&quot;</code></pre>
+<p>With a regular expression</p>
+<pre><code>git log --author=&quot;^John&quot;</code></pre>
+</div>
 <div id="blame" class="section level2">
 <h2>Blame</h2>
 <p>To see the commit number and author of each line in a file use</p>
@@ -885,7 +893,8 @@ example)</p>
 <pre><code>git log --abbrev-commit --pretty=oneline path_to_file</code></pre>
 <p>Edit <code>~/.gitconfig</code> to define an alias that shows the last
 10 log entries in a compact way:</p>
-<pre><code>lkj    = log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)&lt;%an&gt;%Creset&#39; --abbrev-commit -10</code></pre>
+<pre><code>[alias]
+lkj = log --graph --pretty=format:&#39;%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(cyan)&lt;%an&gt;%Creset&#39; --abbrev-commit -10</code></pre>
 <p>This alias also works with the log of one file only</p>
 <pre><code>git lkj path/filename</code></pre>
 <div id="commit-statistics" class="section level3">
@@ -916,13 +925,16 @@ issue with extra spaces at the beginning and in the middle of some
 lines):</p>
 <pre><code>git log --pretty=format:&#39;%h,%an,%ad,&quot;%s&quot;,&#39; --shortstat --date=iso | paste - - - #&gt; /tmp/gitlog.csv</code></pre>
 </div>
-<div
-id="find-last-commit-where-a-file-was-still-present-in-the-repository"
+<div id="file-history-through-rename-and-deletion"
 class="section level3">
-<h3>Find last commit where a file was still present in the
-repository</h3>
-<p>Show commits where a particular file was modified</p>
+<h3>File history through rename and deletion</h3>
+<p>Find the last commit where a file was still present in the
+repository.</p>
+<p>Show commits where a particular file was modified, it continues
+history even if the file was renamed.</p>
 <pre><code>git log --follow -- notebooks/wood/belarus_ukraine_russia/wood_bur_comtrade_monthly.Rmd</code></pre>
+<p>Show all commits where a file was modified</p>
+<pre><code>git log --full-history -- biomass_mandate_s2p/biomass_mandate_s2p_report.Rmd</code></pre>
 </div>
 <div id="tig" class="section level3">
 <h3>Tig</h3>
