@@ -988,9 +988,8 @@ available by default in Python 3.3+</p>
 <p>sudo apt install python3-venv</p></li>
 <li><p>Usage</p>
 <pre><code>mkdir /tmp/testenv
-cd /tmp/testenv
 python3 -m venv /tmp/testenv
-source bin/activate</code></pre></li>
+source /tmp/testenv/bin/activate</code></pre></li>
 </ul></li>
 <li><p><a href="https://pipenv.pypa.io/en/latest/">Pipenv</a> makes pip
 and virtual environments work together.</p>
@@ -2331,6 +2330,12 @@ the difference between UTF-8 and UTF-8 without BOM?</a></p></li>
 automatically while you are coding</p>
 <pre><code>%load_ext autoreload   
 %autoreload 2         </code></pre>
+<div id="autoindent" class="section level2">
+<h2>Autoindent</h2>
+<p>When pasting from another place, turn off auto indentation in
+ipython</p>
+<pre><code>%autoindent off</code></pre>
+</div>
 <div id="debugging-in-ipython" class="section level2">
 <h2>Debugging in ipython</h2>
 <p>Once an error occurs at the ipython command line. Press
@@ -2609,6 +2614,11 @@ install both using”</p>
 </div>
 <div id="jupyter-and-git-version-control" class="section level2">
 <h2>Jupyter and git version control</h2>
+<ul>
+<li>Star history comparison between nbstripout and jupytext <a
+href="https://star-history.com/#mwouts/jupytext&amp;kynan/nbstripout&amp;Date"
+class="uri">https://star-history.com/#mwouts/jupytext&amp;kynan/nbstripout&amp;Date</a></li>
+</ul>
 <div id="jupytext-with-markdown-and-git" class="section level3">
 <h3>Jupytext with markdown and git</h3>
 <p>Convert notebooks to markdown so they are easier to track in git.</p>
@@ -2649,6 +2659,37 @@ class="uri">https://zhauniarovich.com/post/2020/2020-10-clearing-jupyter-output-
 previous approaches were using a pre-commit hook, current approach uses
 git attributes.</p></li>
 </ul>
+<div id="nbstripout" class="section level4">
+<h4>nbstripout</h4>
+<ul>
+<li><p>nbstripout <a href="https://github.com/kynan/nbstripout"
+class="uri">https://github.com/kynan/nbstripout</a></p>
+<blockquote>
+<p>“This does mostly the same thing as the Clear All Output command in
+the notebook UI.”</p>
+</blockquote>
+<ul>
+<li><p>In pre-commit mode</p>
+<blockquote>
+<p>“nbstripout is used as a git hook to strip any .ipynb files before
+committing. This also modifies your working copy!”</p>
+</blockquote></li>
+<li><p>In regular mode</p>
+<blockquote>
+<p>“In its regular mode, nbstripout acts as a filter and only modifies
+what git gets to see for committing or diffing. The working copy stays
+intact.”</p>
+</blockquote></li>
+<li><p>It’s probably better to use the regular filter mode.</p></li>
+</ul></li>
+<li><p>nbstripout-fast <a
+href="https://pypi.org/project/nbstripout-fast/"
+class="uri">https://pypi.org/project/nbstripout-fast/</a> 200x faster
+implementation in rust avoids python startup times. They advertise 40s
+for git status with large repos, while their tool would speed it up to
+1s.</p></li>
+</ul>
+</div>
 </div>
 </div>
 </div>
@@ -2898,6 +2939,23 @@ instance. Similar to property(), with the addition of caching. Useful
 for expensive computed properties of instances that are otherwise
 effectively immutable.”</p>
 </blockquote>
+<p>Example (by <a
+href="https://www.perplexity.ai/search/5cc7a6e1-ef72-418d-b7ae-d9049815b6f8?s=c#5cc7a6e1-ef72-418d-b7ae-d9049815b6f8"
+class="uri">https://www.perplexity.ai/search/5cc7a6e1-ef72-418d-b7ae-d9049815b6f8?s=c#5cc7a6e1-ef72-418d-b7ae-d9049815b6f8</a>):</p>
+<pre><code>from functools import cached_property
+
+class MyClass:
+    def __init__(self):
+        self._data = [1, 2, 3, 4, 5]
+
+    @cached_property
+    def sum(self):
+        print(&quot;Computing sum...&quot;)
+        return sum(self._data)</code></pre>
+<p>Usage:</p>
+<pre><code>obj = MyClass()
+print(obj.sum)  # prints &quot;Computing sum... 15&quot;
+print(obj.sum)  # prints &quot;15&quot;</code></pre>
 <p>There is also a <code>@cache</code> decorator <a
 href="https://docs.python.org/dev/library/functools.html#functools.cache">functools.cache</a>
 that creates:</p>
@@ -3469,7 +3527,8 @@ df = pandas.DataFrame({&#39;x&#39;:np.random.random(100)})</code></pre>
                        &#39;c&#39;:[&#39;m&#39;,&#39;n&#39;,&#39;o&#39;]})
 df[&quot;d&quot;] = df[&quot;a&quot;] * 2</code></pre>
 <p>Use the <code>assign</code> method</p>
-<pre><code>df.assign(e = lambda x: x[&quot;a&quot;] * 3)</code></pre>
+<pre><code>df.assign(e = lambda x: x[&quot;a&quot;] * 3)
+df.assign(e = lambda x: x[&quot;a&quot;] / 1e3)</code></pre>
 <div id="sum-columns-together-and-compute-a-share"
 class="section level4">
 <h4>Sum columns together and compute a share</h4>
@@ -3598,6 +3657,28 @@ df = pandas.DataFrame([[1, 2], [4, 5], [7, 8]],
 mapping = {&#39;p&#39;:&#39;pour&#39;,&#39;q&#39;:&#39;quoi&#39;,&#39;r&#39;:&#39;roi&#39;}
 df[&quot;mot&quot;] = df[&quot;lettre&quot;].map(mapping)</code></pre>
 </div>
+</div>
+<div id="categorical-data-types" class="section level2">
+<h2>Categorical data types</h2>
+<ul>
+<li>Beware of the memory explosion issue when using groupby operations
+on categorical data types <a
+href="https://github.com/pandas-dev/pandas/issues/30552"
+class="uri">https://github.com/pandas-dev/pandas/issues/30552</a></li>
+</ul>
+<p>Set categorical data type</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;id&#39;:[&quot;a&quot;, &quot;b&quot;, &quot;c&quot;], &#39;x&#39;:range(3)})
+list_of_ids = [&quot;b&quot;, &quot;c&quot;, &quot;a&quot;]
+df[&#39;id&#39;] = pandas.Categorical(df[&#39;id&#39;], categories=list_of_ids, ordered=True)
+df.sort_values(&#39;id&#39;, inplace=True)
+df[&quot;id&quot;]
+# Out:
+# 0    a
+# 1    b
+# 2    c
+# Name: id, dtype: category
+# Categories (3, object): [&#39;b&#39; &lt; &#39;c&#39; &lt; &#39;a&#39;]</code></pre>
 </div>
 <div id="convert-data-frames-to-other-objects-or-types"
 class="section level2">
@@ -5165,10 +5246,135 @@ to use X<strong>2 + Y</strong>2 directly as above.</p>
 fig = plt.figure()
 ax = plt.axes(projection=&#39;3d&#39;)
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
+<div id="axes-object" class="section level3">
+<h3>Axes object</h3>
+<p>Create an axes object</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;x&#39;:range(0,30), &#39;y&#39;:range(110,140)})
+plot = df.plot(x=&quot;x&quot;, y=&quot;y&quot;, kind=&quot;scatter&quot;)
+help(plot)</code></pre>
+<p>Create another axes object for a faceted plot</p>
+<p>It has the following methods</p>
+<pre><code>print([m for m in dir(plot) if not m.startswith(&quot;_&quot;)])
+
+[&#39;ArtistList&#39;, &#39;acorr&#39;, &#39;add_artist&#39;, &#39;add_callback&#39;, &#39;add_child_axes&#39;, 
+&#39;add_collection&#39;, &#39;add_container&#39;, &#39;add_image&#39;, &#39;add_line&#39;, &#39;add_patch&#39;, 
+&#39;add_table&#39;, &#39;angle_spectrum&#39;, &#39;annotate&#39;, &#39;apply_aspect&#39;, &#39;arrow&#39;, 
+&#39;artists&#39;, &#39;autoscale&#39;, &#39;autoscale_view&#39;, &#39;axes&#39;, &#39;axhline&#39;, &#39;axhspan&#39;, 
+&#39;axis&#39;, &#39;axison&#39;, &#39;axline&#39;, &#39;axvline&#39;, &#39;axvspan&#39;, &#39;bar&#39;, &#39;bar_label&#39;, 
+&#39;barbs&#39;, &#39;barh&#39;, &#39;bbox&#39;, &#39;boxplot&#39;, &#39;broken_barh&#39;, &#39;bxp&#39;, &#39;callbacks&#39;, 
+&#39;can_pan&#39;, &#39;can_zoom&#39;, &#39;child_axes&#39;, &#39;cla&#39;, &#39;clabel&#39;, &#39;clear&#39;, &#39;clipbox&#39;, 
+&#39;cohere&#39;, &#39;collections&#39;, &#39;containers&#39;, &#39;contains&#39;, &#39;contains_point&#39;, 
+&#39;contour&#39;, &#39;contourf&#39;, &#39;convert_xunits&#39;, &#39;convert_yunits&#39;, &#39;csd&#39;, 
+&#39;dataLim&#39;, &#39;drag_pan&#39;, &#39;draw&#39;, &#39;draw_artist&#39;, &#39;end_pan&#39;, &#39;errorbar&#39;, 
+&#39;eventplot&#39;, &#39;figure&#39;, &#39;fill&#39;, &#39;fill_between&#39;, &#39;fill_betweenx&#39;, &#39;findobj&#39;, 
+&#39;fmt_xdata&#39;, &#39;fmt_ydata&#39;, &#39;format_coord&#39;, &#39;format_cursor_data&#39;, 
+&#39;format_xdata&#39;, &#39;format_ydata&#39;, &#39;get_adjustable&#39;, &#39;get_agg_filter&#39;, 
+&#39;get_alpha&#39;, &#39;get_anchor&#39;, &#39;get_animated&#39;, &#39;get_aspect&#39;, 
+&#39;get_autoscale_on&#39;, &#39;get_autoscalex_on&#39;, &#39;get_autoscaley_on&#39;, 
+&#39;get_axes_locator&#39;, &#39;get_axisbelow&#39;, &#39;get_box_aspect&#39;, &#39;get_children&#39;, 
+&#39;get_clip_box&#39;, &#39;get_clip_on&#39;, &#39;get_clip_path&#39;, &#39;get_cursor_data&#39;, 
+&#39;get_data_ratio&#39;, &#39;get_default_bbox_extra_artists&#39;, &#39;get_facecolor&#39;, 
+&#39;get_fc&#39;, &#39;get_figure&#39;, &#39;get_frame_on&#39;, &#39;get_gid&#39;, &#39;get_gridspec&#39;, 
+&#39;get_images&#39;, &#39;get_in_layout&#39;, &#39;get_label&#39;, &#39;get_legend&#39;, 
+&#39;get_legend_handles_labels&#39;, &#39;get_lines&#39;, &#39;get_mouseover&#39;, &#39;get_navigate&#39;, 
+&#39;get_navigate_mode&#39;, &#39;get_path_effects&#39;, &#39;get_picker&#39;, &#39;get_position&#39;, 
+&#39;get_rasterization_zorder&#39;, &#39;get_rasterized&#39;, &#39;get_renderer_cache&#39;, 
+&#39;get_shared_x_axes&#39;, &#39;get_shared_y_axes&#39;, &#39;get_sketch_params&#39;, &#39;get_snap&#39;, 
+&#39;get_subplotspec&#39;, &#39;get_tightbbox&#39;, &#39;get_title&#39;, &#39;get_transform&#39;, 
+&#39;get_transformed_clip_path_and_affine&#39;, &#39;get_url&#39;, &#39;get_visible&#39;, 
+&#39;get_window_extent&#39;, &#39;get_xaxis&#39;, &#39;get_xaxis_text1_transform&#39;, 
+&#39;get_xaxis_text2_transform&#39;, &#39;get_xaxis_transform&#39;, &#39;get_xbound&#39;, 
+&#39;get_xgridlines&#39;, &#39;get_xlabel&#39;, &#39;get_xlim&#39;, &#39;get_xmajorticklabels&#39;, 
+&#39;get_xminorticklabels&#39;, &#39;get_xscale&#39;, &#39;get_xticklabels&#39;, &#39;get_xticklines&#39;, 
+&#39;get_xticks&#39;, &#39;get_yaxis&#39;, &#39;get_yaxis_text1_transform&#39;, 
+&#39;get_yaxis_text2_transform&#39;, &#39;get_yaxis_transform&#39;, &#39;get_ybound&#39;, 
+&#39;get_ygridlines&#39;, &#39;get_ylabel&#39;, &#39;get_ylim&#39;, &#39;get_ymajorticklabels&#39;, 
+&#39;get_yminorticklabels&#39;, &#39;get_yscale&#39;, &#39;get_yticklabels&#39;, &#39;get_yticklines&#39;, 
+&#39;get_yticks&#39;, &#39;get_zorder&#39;, &#39;grid&#39;, &#39;has_data&#39;, &#39;have_units&#39;, &#39;hexbin&#39;, 
+&#39;hist&#39;, &#39;hist2d&#39;, &#39;hlines&#39;, &#39;ignore_existing_data_limits&#39;, &#39;images&#39;, 
+&#39;imshow&#39;, &#39;in_axes&#39;, &#39;indicate_inset&#39;, &#39;indicate_inset_zoom&#39;, &#39;inset_axes&#39;, 
+&#39;invert_xaxis&#39;, &#39;invert_yaxis&#39;, &#39;is_transform_set&#39;, &#39;label_outer&#39;, 
+&#39;legend&#39;, &#39;legend_&#39;, &#39;lines&#39;, &#39;locator_params&#39;, &#39;loglog&#39;, 
+&#39;magnitude_spectrum&#39;, &#39;margins&#39;, &#39;matshow&#39;, &#39;minorticks_off&#39;, 
+&#39;minorticks_on&#39;, &#39;mouseover&#39;, &#39;name&#39;, &#39;patch&#39;, &#39;patches&#39;, &#39;pchanged&#39;, 
+&#39;pcolor&#39;, &#39;pcolorfast&#39;, &#39;pcolormesh&#39;, &#39;phase_spectrum&#39;, &#39;pick&#39;, &#39;pickable&#39;, 
+&#39;pie&#39;, &#39;plot&#39;, &#39;plot_date&#39;, &#39;properties&#39;, &#39;psd&#39;, &#39;quiver&#39;, &#39;quiverkey&#39;, 
+&#39;redraw_in_frame&#39;, &#39;relim&#39;, &#39;remove&#39;, &#39;remove_callback&#39;, &#39;reset_position&#39;, 
+&#39;scatter&#39;, &#39;secondary_xaxis&#39;, &#39;secondary_yaxis&#39;, &#39;semilogx&#39;, &#39;semilogy&#39;, 
+&#39;set&#39;, &#39;set_adjustable&#39;, &#39;set_agg_filter&#39;, &#39;set_alpha&#39;, &#39;set_anchor&#39;, 
+&#39;set_animated&#39;, &#39;set_aspect&#39;, &#39;set_autoscale_on&#39;, &#39;set_autoscalex_on&#39;, 
+&#39;set_autoscaley_on&#39;, &#39;set_axes_locator&#39;, &#39;set_axis_off&#39;, &#39;set_axis_on&#39;, 
+&#39;set_axisbelow&#39;, &#39;set_box_aspect&#39;, &#39;set_clip_box&#39;, &#39;set_clip_on&#39;, 
+&#39;set_clip_path&#39;, &#39;set_facecolor&#39;, &#39;set_fc&#39;, &#39;set_figure&#39;, &#39;set_frame_on&#39;, 
+&#39;set_gid&#39;, &#39;set_in_layout&#39;, &#39;set_label&#39;, &#39;set_mouseover&#39;, &#39;set_navigate&#39;, 
+&#39;set_navigate_mode&#39;, &#39;set_path_effects&#39;, &#39;set_picker&#39;, &#39;set_position&#39;, 
+&#39;set_prop_cycle&#39;, &#39;set_rasterization_zorder&#39;, &#39;set_rasterized&#39;, 
+&#39;set_sketch_params&#39;, &#39;set_snap&#39;, &#39;set_subplotspec&#39;, &#39;set_title&#39;, 
+&#39;set_transform&#39;, &#39;set_url&#39;, &#39;set_visible&#39;, &#39;set_xbound&#39;, &#39;set_xlabel&#39;, 
+&#39;set_xlim&#39;, &#39;set_xmargin&#39;, &#39;set_xscale&#39;, &#39;set_xticklabels&#39;, &#39;set_xticks&#39;, 
+&#39;set_ybound&#39;, &#39;set_ylabel&#39;, &#39;set_ylim&#39;, &#39;set_ymargin&#39;, &#39;set_yscale&#39;, 
+&#39;set_yticklabels&#39;, &#39;set_yticks&#39;, &#39;set_zorder&#39;, &#39;sharex&#39;, &#39;sharey&#39;, 
+&#39;specgram&#39;, &#39;spines&#39;, &#39;spy&#39;, &#39;stackplot&#39;, &#39;stairs&#39;, &#39;stale&#39;, 
+&#39;stale_callback&#39;, &#39;start_pan&#39;, &#39;stem&#39;, &#39;step&#39;, &#39;sticky_edges&#39;, 
+&#39;streamplot&#39;, &#39;table&#39;, &#39;tables&#39;, &#39;text&#39;, &#39;texts&#39;, &#39;tick_params&#39;, 
+&#39;ticklabel_format&#39;, &#39;title&#39;, &#39;titleOffsetTrans&#39;, &#39;transAxes&#39;, &#39;transData&#39;, 
+&#39;transLimits&#39;, &#39;transScale&#39;, &#39;tricontour&#39;, &#39;tricontourf&#39;, &#39;tripcolor&#39;, 
+&#39;triplot&#39;, &#39;twinx&#39;, &#39;twiny&#39;, &#39;update&#39;, &#39;update_datalim&#39;, &#39;update_from&#39;, 
+&#39;use_sticky_edges&#39;, &#39;viewLim&#39;, &#39;violin&#39;, &#39;violinplot&#39;, &#39;vlines&#39;, &#39;xaxis&#39;, 
+&#39;xaxis_date&#39;, &#39;xaxis_inverted&#39;, &#39;xcorr&#39;, &#39;yaxis&#39;, &#39;yaxis_date&#39;, 
+&#39;yaxis_inverted&#39;, &#39;zorder&#39;]</code></pre>
+</div>
+<div id="figure-object" class="section level3">
+<h3>Figure object</h3>
+<p>Create a figure object</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;x&#39;:range(0,30), &#39;y&#39;:range(110,140)})
+plot = df.plot(x=&quot;x&quot;, y=&quot;y&quot;, kind=&quot;scatter&quot;)
+fig = plot.get_figure()
+help(fig)</code></pre>
+<p>A figure object is the “The top level container for all the plot
+elements.” It has the following methods:</p>
+<pre><code>print([m for m in dir(fig) if not m.startswith(&quot;_&quot;)])
+
+[&#39;add_artist&#39;, &#39;add_axes&#39;, &#39;add_axobserver&#39;, &#39;add_callback&#39;, 
+&#39;add_gridspec&#39;, &#39;add_subfigure&#39;, &#39;add_subplot&#39;, &#39;align_labels&#39;, 
+&#39;align_xlabels&#39;, &#39;align_ylabels&#39;, &#39;artists&#39;, &#39;autofmt_xdate&#39;, &#39;axes&#39;, 
+&#39;bbox&#39;, &#39;bbox_inches&#39;, &#39;callbacks&#39;, &#39;canvas&#39;, &#39;clear&#39;, &#39;clf&#39;, &#39;clipbox&#39;, 
+&#39;colorbar&#39;, &#39;contains&#39;, &#39;convert_xunits&#39;, &#39;convert_yunits&#39;, &#39;delaxes&#39;, 
+&#39;dpi&#39;, &#39;dpi_scale_trans&#39;, &#39;draw&#39;, &#39;draw_artist&#39;, &#39;draw_without_rendering&#39;, 
+&#39;execute_constrained_layout&#39;, &#39;figbbox&#39;, &#39;figimage&#39;, &#39;figure&#39;, &#39;findobj&#39;, 
+&#39;format_cursor_data&#39;, &#39;frameon&#39;, &#39;gca&#39;, &#39;get_agg_filter&#39;, &#39;get_alpha&#39;, 
+&#39;get_animated&#39;, &#39;get_axes&#39;, &#39;get_children&#39;, &#39;get_clip_box&#39;, &#39;get_clip_on&#39;, 
+&#39;get_clip_path&#39;, &#39;get_constrained_layout&#39;, &#39;get_constrained_layout_pads&#39;, 
+&#39;get_cursor_data&#39;, &#39;get_default_bbox_extra_artists&#39;, &#39;get_dpi&#39;, 
+&#39;get_edgecolor&#39;, &#39;get_facecolor&#39;, &#39;get_figheight&#39;, &#39;get_figure&#39;, 
+&#39;get_figwidth&#39;, &#39;get_frameon&#39;, &#39;get_gid&#39;, &#39;get_in_layout&#39;, &#39;get_label&#39;, 
+&#39;get_layout_engine&#39;, &#39;get_linewidth&#39;, &#39;get_mouseover&#39;, &#39;get_path_effects&#39;, 
+&#39;get_picker&#39;, &#39;get_rasterized&#39;, &#39;get_size_inches&#39;, &#39;get_sketch_params&#39;, 
+&#39;get_snap&#39;, &#39;get_tight_layout&#39;, &#39;get_tightbbox&#39;, &#39;get_transform&#39;, 
+&#39;get_transformed_clip_path_and_affine&#39;, &#39;get_url&#39;, &#39;get_visible&#39;, 
+&#39;get_window_extent&#39;, &#39;get_zorder&#39;, &#39;ginput&#39;, &#39;have_units&#39;, &#39;images&#39;, 
+&#39;is_transform_set&#39;, &#39;legend&#39;, &#39;legends&#39;, &#39;lines&#39;, &#39;mouseover&#39;, &#39;number&#39;, 
+&#39;patch&#39;, &#39;patches&#39;, &#39;pchanged&#39;, &#39;pick&#39;, &#39;pickable&#39;, &#39;properties&#39;, &#39;remove&#39;, 
+&#39;remove_callback&#39;, &#39;savefig&#39;, &#39;sca&#39;, &#39;set&#39;, &#39;set_agg_filter&#39;, &#39;set_alpha&#39;, 
+&#39;set_animated&#39;, &#39;set_canvas&#39;, &#39;set_clip_box&#39;, &#39;set_clip_on&#39;, 
+&#39;set_clip_path&#39;, &#39;set_constrained_layout&#39;, &#39;set_constrained_layout_pads&#39;, 
+&#39;set_dpi&#39;, &#39;set_edgecolor&#39;, &#39;set_facecolor&#39;, &#39;set_figheight&#39;, &#39;set_figure&#39;, 
+&#39;set_figwidth&#39;, &#39;set_frameon&#39;, &#39;set_gid&#39;, &#39;set_in_layout&#39;, &#39;set_label&#39;, 
+&#39;set_layout_engine&#39;, &#39;set_linewidth&#39;, &#39;set_mouseover&#39;, &#39;set_path_effects&#39;, 
+&#39;set_picker&#39;, &#39;set_rasterized&#39;, &#39;set_size_inches&#39;, &#39;set_sketch_params&#39;, 
+&#39;set_snap&#39;, &#39;set_tight_layout&#39;, &#39;set_transform&#39;, &#39;set_url&#39;, &#39;set_visible&#39;, 
+&#39;set_zorder&#39;, &#39;show&#39;, &#39;stale&#39;, &#39;stale_callback&#39;, &#39;sticky_edges&#39;, &#39;subfigs&#39;, 
+&#39;subfigures&#39;, &#39;subplot_mosaic&#39;, &#39;subplotpars&#39;, &#39;subplots&#39;, 
+&#39;subplots_adjust&#39;, &#39;suppressComposite&#39;, &#39;suptitle&#39;, &#39;supxlabel&#39;, 
+&#39;supylabel&#39;, &#39;text&#39;, &#39;texts&#39;, &#39;tight_layout&#39;, &#39;transFigure&#39;, 
+&#39;transSubfigure&#39;, &#39;update&#39;, &#39;update_from&#39;, &#39;waitforbuttonpress&#39;, &#39;zorder&#39;]</code></pre>
+</div>
 <div id="xy-comparison-scatter-plot" class="section level3">
 <h3>XY comparison scatter plot</h3>
 <p>When x and y are supposed to be the same value but are not
-necessarily equal. Compare the x and y values on a scatter plot to a 1:1
+necessarily equal. Compare the x and y values on a scatter plot to a y=x
 line.</p>
 <pre><code>def comp_plot(df, x_var, y_var, title):
     &quot;&quot;&quot;Plot comparison for the given data frame&quot;&quot;&quot;
@@ -5188,6 +5394,29 @@ line.</p>
     plt.plot(line_x, line_y, &#39;r--&#39;)
     # 1:1 line suggested by GPT4 (wrong in some way)
     plt.plot([min(x), max(x)], [min(y), max(y)], &#39;r&#39;)</code></pre>
+</div>
+<div id="save-figures-to-pdf-png-or-svg-files" class="section level3">
+<h3>Save figures to pdf, png or svg files</h3>
+<p>This works with pandas plots and seaborn plots as well.</p>
+<p>With the pyplot object, only works immediately after building the
+plot.</p>
+<pre><code>plt.savefig(&quot;/tmp/bli.pdf&quot;)
+plt.savefig(&quot;/tmp/bli.png&quot;)
+plt.savefig(&quot;file_name.svg&quot;, bbox_inches=&#39;tight&#39;)</code></pre>
+<p>Save a plot object to a pdf file</p>
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;x&#39;:range(0,30), &#39;y&#39;:range(110,140)})
+plot = df.plot(x=&quot;x&quot;, y=&quot;y&quot;, kind=&quot;scatter&quot;)
+fig = plot.get_figure()
+fig.savefig(&#39;/tmp/output.pdf&#39;, format=&#39;pdf&#39;)</code></pre>
+<p>Save a grid plot object to a pdf file</p>
+<pre><code>fmri = seaborn.load_dataset(&quot;fmri&quot;)
+g = seaborn.relplot(
+    data=fmri, x=&quot;timepoint&quot;, y=&quot;signal&quot;, col=&quot;region&quot;,
+    hue=&quot;event&quot;, style=&quot;event&quot;, kind=&quot;line&quot;,
+    facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False}
+)
+g.savefig(&quot;/tmp/fmri.pdf&quot;)</code></pre>
 </div>
 </div>
 <div id="pandas-plots-are-matplotlib-axessubplot-objects"
@@ -5227,6 +5456,7 @@ plt.show()</code></pre>
            &#39;fair&#39;: &#39;green&#39;, 
            &#39;historical_period&#39;: &#39;black&#39;}
 df.plot(title = &quot;Harvest Scenarios&quot;, ylabel=&quot;Million m3&quot;, color=palette)</code></pre>
+<p>Note: the argument for seaborn would be palette=palette.</p>
 <p>Using a list of colours with matplotlib <a
 href="https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.ListedColormap.html">ListedColormap</a>
 (see also example in that documentation page): Reusing the data frame
@@ -5259,16 +5489,6 @@ plt.ylabel(&#39;Frequency&#39;)
 plt.grid(axis=&#39;y&#39;, alpha=0.75)
 plt.show()</code></pre>
 <p>Histogram with a log scale</p>
-</div>
-<div id="save-to-a-pdf-or-png-file" class="section level3">
-<h3>Save to a pdf or png file</h3>
-<p>With a plot object</p>
-<pre><code>plot.get_figure().savefig(&#39;/tmp/output.pdf&#39;, format=&#39;pdf&#39;)</code></pre>
-<p>With the pyplot object, only works immediately after building the
-plot. This also works with seaborn plots.</p>
-<pre><code>plt.savefig(&quot;/tmp/bli.pdf&quot;)
-plt.savefig(&quot;/tmp/bli.png&quot;)</code></pre>
-<p>Change figure size</p>
 </div>
 <div id="pandas-plots-side-by-side" class="section level3">
 <h3>Pandas plots side by side</h3>
@@ -5405,6 +5625,16 @@ gallery</a></li>
 </ul>
 <div id="axes" class="section level3">
 <h3>Axes</h3>
+<div id="invert-axis" class="section level4">
+<h4>Invert axis</h4>
+<p>Of a single figure</p>
+<pre><code>ax.invert_yaxis()</code></pre>
+<p>Of a grid figure</p>
+<pre><code>g = seaborn.relplot(x=&#39;crop&#39;, y=&#39;ranking&#39;, col=&#39;intensity&#39;,
+                      hue=&#39;conservation_target&#39;, data=df)
+for ax in g.axes[0]:
+    ax.invert_yaxis()</code></pre>
+</div>
 <div id="labels-and-titles" class="section level4">
 <h4>labels and titles</h4>
 <p>Use p.set() to set a y label and a title</p>
@@ -5468,8 +5698,8 @@ plt.show()</code></pre>
 </div>
 <div id="palettes-and-styles" class="section level3">
 <h3>Palettes and styles</h3>
-<div id="color-palette" class="section level4">
-<h4>Color palette</h4>
+<div id="colour-palette" class="section level4">
+<h4>Colour palette</h4>
 <p>See various examples in the plots in the seaborn section. The palette
 can be defined from pre existing palettes</p>
 <pre><code>palette = seaborn.color_palette(&quot;rocket_r&quot;)</code></pre>
@@ -5481,6 +5711,9 @@ seaborn.color_palette([&quot;red&quot;,&quot;green&quot;,&quot;blue&quot;, &quot
 <p>This function is used internally by the palette argument of plotting
 functions:</p>
 <pre><code>p1 = sns.relplot(x=&quot;Growth&quot;, y=&quot;Value&quot;, hue=&quot;Risk&quot;, col=&quot;Mcap&quot;, data=mx, s=200, palette=[&#39;r&#39;, &#39;g&#39;, &#39;y&#39;])</code></pre>
+<p>Another example using a dictionary for the palette</p>
+<pre><code>palette = {&quot;fair&quot;:&quot;green&quot;, &quot;ssp2&quot;:&quot;orange&quot;, &quot;historical&quot;:&quot;black&quot;}
+p = seaborn.lineplot(x=&quot;year&quot;, y=&quot;gdp_t&quot;, hue=&quot;scenario&quot;, data=df_gdp_eu, palette=palette)</code></pre>
 <p>Seaborn tutorial on choosing colour palettes <a
 href="https://seaborn.pydata.org/tutorial/color_palettes.html"
 class="uri">https://seaborn.pydata.org/tutorial/color_palettes.html</a></p>
@@ -5492,6 +5725,40 @@ also use a dictionary to associate hue values to a palette element.</p>
                      &quot;pulpwood_round_and_split_all_species_production&quot;,
                      &quot;other_industrial_roundwood&quot;]
 palette = dict(zip(selected_products, [&quot;red&quot;, &quot;brown&quot;, &quot;blue&quot;, &quot;grey&quot;]))</code></pre>
+<p>Generate darker and lighter green and orange colours</p>
+<pre><code>lighter_green = seaborn.dark_palette(&#39;green&#39;, n_colors=5)[0]
+darker_green = seaborn.dark_palette(&#39;green&#39;, n_colors=5, reverse=True)[0]
+lighter_orange = seaborn.dark_palette(&#39;orange&#39;, n_colors=5)[0]
+darker_orange = seaborn.dark_palette(&#39;orange&#39;, n_colors=5, reverse=True)[0]</code></pre>
+<div id="colour-names" class="section level5">
+<h5>Colour names</h5>
+<ul>
+<li><p><a href="https://seaborn.pydata.org/tutorial/color_palettes.html"
+class="uri">https://seaborn.pydata.org/tutorial/color_palettes.html</a></p>
+<blockquote>
+<p>“. It’s also possible to pass a list of colors specified any way that
+matplotlib accepts (an RGB tuple, a hex code, or a name in the X11
+table).</p>
+</blockquote>
+<ul>
+<li>Named colors in Matplotlib as in the X11 table <a
+href="https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib"
+class="uri">https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib</a></li>
+</ul></li>
+</ul>
+<pre class="python"><code>import matplotlib.pyplot as plt
+from matplotlib import colors as mcolors
+colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)</code></pre>
+<pre><code>    SO answer has a plot of this dict of colors with names.</code></pre>
+</div>
+<div id="colour-blindness" class="section level5">
+<h5>Colour blindness</h5>
+<ul>
+<li>Simulate colour blindness <a
+href="https://www.color-blindness.com/coblis-color-blindness-simulator/"
+class="uri">https://www.color-blindness.com/coblis-color-blindness-simulator/</a></li>
+</ul>
+</div>
 </div>
 <div id="linestyle-dict-doesnt-work" class="section level4">
 <h4>Linestyle dict (doesn’t work)</h4>
@@ -5675,8 +5942,20 @@ most cases, it will be better to use a figure-level function
 (e.g. :func:<code>relplot</code> or :func:<code>catplot</code>) than to
 use :class:<code>FacetGrid</code> directly.”</p>
 </blockquote>
-<div id="grid-scatter-plot-with-trend-line" class="section level5">
-<h5>Grid scatter plot with trend line</h5>
+<div id="grid-scatter-plot-with-xy-line" class="section level5">
+<h5>Grid scatter plot with x=y line</h5>
+<p>A grid scatter plot with an x=y line for comparison purposes</p>
+<pre><code>g = seaborn.relplot(data=df,
+                x=&quot;x_var&quot;,
+                y=&quot;y=var&quot;,
+                col=&quot;year&quot;,
+                hue=&quot;partner&quot;,
+                kind=&quot;scatter&quot;,
+               )
+g.fig.subplots_adjust(top=0.9)
+# Add x=y line
+for ax in g.axes.flat:
+    ax.plot(ax.get_xlim(), ax.get_ylim(), ls=&quot;--&quot;, c=&quot;.3&quot;, scalex=False, scaley=False)</code></pre>
 </div>
 </div>
 <div id="grid-text" class="section level4">
@@ -5724,8 +6003,7 @@ object:</p>
 <p>Use the scientific notation on the y axis labels, at every tick.
 Without putting a <code>1e7</code> at the top that might be overwritten
 by a facet label.</p>
-<pre><code>
-g = seaborn.relplot(
+<pre class="python"><code>g = seaborn.relplot(
     data=rp_global.reset_index(), x=&quot;step&quot;, y=&quot;primary_eq&quot;, col=&quot;primary_product&quot;,
     hue=&quot;year&quot;, kind=&quot;line&quot;,
     col_wrap=3, height=3,
@@ -5740,8 +6018,7 @@ def y_fmt(x, pos):
 from matplotlib.ticker import FuncFormatter
 #g.set(yticklabels=[])
 for ax in g.axes.flat:
-    ax.yaxis.set_major_formatter(FuncFormatter(y_fmt))
-</code></pre>
+    ax.yaxis.set_major_formatter(FuncFormatter(y_fmt))</code></pre>
 </div>
 </div>
 <div id="figure-size-1" class="section level3">
@@ -5780,10 +6057,18 @@ inches.</p>
 </blockquote>
 </div>
 </div>
+<div id="legend" class="section level3">
+<h3>Legend</h3>
+<p>Move a legend below a grid plot</p>
+<pre><code>g.fig.subplots_adjust(left=0.28, top=0.9) # resize the plot
+g.legend.set_bbox_to_anchor((0.5, 0.15))</code></pre>
+<p>Another way to move the legend and make it flat</p>
+<pre><code>seaborn.move_legend(g, &quot;upper center&quot;, bbox_to_anchor=(0.5, 0.1), ncol=4)</code></pre>
+</div>
 <div id="line-plot" class="section level3">
 <h3>Line plot</h3>
 <p>Create a line plot with a title and axis labels.</p>
-<pre><code>import numpy as np
+<pre class="python"><code>import numpy as np
 df = pandas.DataFrame({&#39;value&#39;:np.random.random(100), 
                        &#39;year&#39;:range(1901,2001)})
 p = seaborn.lineplot(x=&quot;year&quot;, y=&quot;value&quot;, data=df)
@@ -5843,6 +6128,13 @@ for handle in legend.legendHandles:
 plt.show()</code></pre>
 </div>
 </div>
+<div id="marker-and-text" class="section level3">
+<h3>Marker and text</h3>
+<p>Add a market and text to a plot, works both with simple plots and
+faceted plots.</p>
+<pre><code>plt.plot(2030, -420, marker=&#39;*&#39;, markersize=10, color=&#39;red&#39;)
+plt.text(2030+1, -420, &quot;Target -420&quot;, fontsize=10)</code></pre>
+</div>
 <div id="pair-plot" class="section level3">
 <h3>Pair plot</h3>
 <p><a
@@ -5850,10 +6142,6 @@ href="https://seaborn.pydata.org/generated/seaborn.pairplot.html#">seaborn.pairp
 <blockquote>
 <p>“Plot pairwise relationships in a dataset.”</p>
 </blockquote>
-</div>
-<div id="save-figures-to-image-or-pdf-files" class="section level3">
-<h3>Save figures to image or pdf files</h3>
-<pre><code>plt.savefig(&quot;file_name.svg&quot;, bbox_inches=&#39;tight&#39;)</code></pre>
 </div>
 <div id="scatter-plot" class="section level3">
 <h3>Scatter Plot</h3>
@@ -5894,17 +6182,23 @@ squarify.plot(sizes=df[&#39;nb_people&#39;], label=df[&#39;group&#39;], alpha=.8
 plt.axis(&#39;off&#39;)
 plt.show()</code></pre>
 </div>
-<div id="vega" class="section level2">
-<h2>Vega</h2>
-<p>The tool tip feature is nice in an interactive notebook.</p>
+<div id="vega-altair" class="section level2">
+<h2>Vega Altair</h2>
 <ul>
-<li>Ipython vega for Jupyter notebooks <a
-href="https://github.com/vega/ipyvega"
-class="uri">https://github.com/vega/ipyvega</a></li>
-<li>Vega gallery <a href="https://vega.github.io/vega/examples/"
-class="uri">https://vega.github.io/vega/examples/</a></li>
-</ul>
-<p>Vega Lite</p>
+<li><p>Altair <a href="https://altair-viz.github.io/"
+class="uri">https://altair-viz.github.io/</a></p>
+<blockquote>
+<p>“Vega-Altair is a declarative visualization library for Python. Its
+simple, friendly and consistent API, built on top of the powerful
+Vega-Lite grammar, empowers you to spend less time writing code and more
+time exploring your data.”</p>
+</blockquote>
+<ul>
+<li>Seen in the <a
+href="https://jjallaire.github.io/visualization-curriculum/"
+class="uri">https://jjallaire.github.io/visualization-curriculum/</a></li>
+</ul></li>
+<li><p>Vega Lite</p>
 <ul>
 <li><p>Vega lite gallery <a
 href="https://vega.github.io/vega-lite-v1/examples/"
@@ -5916,6 +6210,15 @@ pandas.read_json(‘cars.json’) VegaLite({ “data”: {“url”:
 “data/cars.json”}, “mark”: {“type”: “point”, “tooltip”: true},
 “encoding”: { “x”: {“field”: “Horsepower”,“type”: “quantitative”}, “y”:
 {“field”: “Miles_per_Gallon”,“type”: “quantitative”} } }, df)</p></li>
+</ul></li>
+<li><p>The tool tip feature is nice in an interactive notebook.</p>
+<ul>
+<li><p>Ipython vega for Jupyter notebooks <a
+href="https://github.com/vega/ipyvega"
+class="uri">https://github.com/vega/ipyvega</a></p></li>
+<li><p>Vega gallery <a href="https://vega.github.io/vega/examples/"
+class="uri">https://vega.github.io/vega/examples/</a></p></li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -6434,6 +6737,9 @@ number with commas as thousands separators?</a></p>
 <h2>Regex substitution</h2>
 <p><a href="https://docs.python.org/3/library/re.html">Documentation of
 the re package</a>.</p>
+<p>Replace one or another character by a space</p>
+<pre><code>import re
+re.sub(&quot;l|k&quot;, &quot; &quot;, &quot;mlkj&quot;)</code></pre>
 <p>Replace one or more consecutive non alphanumeric characters by an
 underscore.</p>
 <pre><code>re.sub(r&#39;\W+&#39;, &#39;_&#39;, &#39;bla: bla**(bla)&#39;)</code></pre>
@@ -6647,7 +6953,7 @@ class="uri">https://stackoverflow.com/questions/7230820/skip-git-commit-hooks</a
 <p><a
 href="https://pre-commit.com/#usage-in-continuous-integration">Usage in
 Continuous integration</a> has a gitlab example:</p>
-<pre><code>    my_job:
+<pre class="python"><code>    my_job:
       variables:
         PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
       cache:

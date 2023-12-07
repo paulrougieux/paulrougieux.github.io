@@ -596,9 +596,8 @@ path can be deduced from
     - Usage
 
           mkdir /tmp/testenv
-          cd /tmp/testenv
           python3 -m venv /tmp/testenv
-          source bin/activate
+          source /tmp/testenv/bin/activate
 
 - [Pipenv](https://pipenv.pypa.io/en/latest/) makes pip and virtual
   environments work together. 
@@ -2032,6 +2031,13 @@ Add these options at the ipyhton command line to reload objects automatically wh
     %autoreload 2         
 
 
+## Autoindent
+
+When pasting from another place, turn off auto indentation in ipython
+
+    %autoindent off
+
+
 ## Debugging in ipython
 
 
@@ -2356,6 +2362,10 @@ specifies that
 
 ## Jupyter and git version control 
 
+- Star history comparison between nbstripout and jupytext 
+  https://star-history.com/#mwouts/jupytext&kynan/nbstripout&Date
+
+
 ### Jupytext with markdown and git
 
 Convert notebooks to markdown so they are easier to track in git. 
@@ -2404,6 +2414,32 @@ of data).
   https://zhauniarovich.com/post/2020/2020-10-clearing-jupyter-output-p3/
   previous approaches were using a pre-commit hook, current approach uses git
   attributes.
+
+
+#### nbstripout
+
+- nbstripout https://github.com/kynan/nbstripout
+
+    > "This does mostly the same thing as the Clear All Output command in the 
+    > notebook UI."
+
+    - In pre-commit mode
+
+        > "nbstripout is used as a git hook to strip any .ipynb files before 
+        > committing. This also modifies your working copy!"
+
+    - In regular mode
+
+        > "In its regular mode, nbstripout acts as a filter and only modifies 
+        > what git gets to see for committing or diffing. The working copy 
+        > stays intact."
+
+    - It's probably better to use the regular filter mode.
+
+- nbstripout-fast https://pypi.org/project/nbstripout-fast/
+  200x faster implementation in rust avoids python startup times. They 
+  advertise 40s for git status with large repos, while their tool would speed 
+  it up to 1s.
 
 
 # Errors, exceptions and logging
@@ -2658,6 +2694,27 @@ Since python 3.8 there is also a `@cached_property` decorator
 > and then cached as a normal attribute for the life of the instance. Similar
 > to property(), with the addition of caching. Useful for expensive computed
 > properties of instances that are otherwise effectively immutable."
+
+Example (by 
+https://www.perplexity.ai/search/5cc7a6e1-ef72-418d-b7ae-d9049815b6f8?s=c#5cc7a6e1-ef72-418d-b7ae-d9049815b6f8):
+
+    from functools import cached_property
+
+    class MyClass:
+        def __init__(self):
+            self._data = [1, 2, 3, 4, 5]
+
+        @cached_property
+        def sum(self):
+            print("Computing sum...")
+            return sum(self._data)
+
+Usage:
+
+    obj = MyClass()
+    print(obj.sum)  # prints "Computing sum... 15"
+    print(obj.sum)  # prints "15"
+
 
 There is also a `@cache` decorator
 [functools.cache](https://docs.python.org/dev/library/functools.html#functools.cache)
@@ -3267,6 +3324,7 @@ Create a new column based on another one
 Use the `assign` method
 
     df.assign(e = lambda x: x["a"] * 3)
+    df.assign(e = lambda x: x["a"] / 1e3)
 
 
 #### Sum columns together and compute a share
@@ -3401,6 +3459,27 @@ Set value for all items matching the list of labels
     df = pandas.DataFrame({'lettre':['p','q','r','r','s','v','p']})
     mapping = {'p':'pour','q':'quoi','r':'roi'}
     df["mot"] = df["lettre"].map(mapping)
+
+
+## Categorical data types
+
+- Beware of the memory explosion issue when using groupby operations on 
+  categorical data types https://github.com/pandas-dev/pandas/issues/30552
+
+Set categorical data type 
+
+    import pandas
+    df = pandas.DataFrame({'id':["a", "b", "c"], 'x':range(3)})
+    list_of_ids = ["b", "c", "a"]
+    df['id'] = pandas.Categorical(df['id'], categories=list_of_ids, ordered=True)
+    df.sort_values('id', inplace=True)
+    df["id"]
+    # Out:
+    # 0    a
+    # 1    b
+    # 2    c
+    # Name: id, dtype: category
+    # Categories (3, object): ['b' < 'c' < 'a']
 
 
 ## Convert data frames to other objects or types
@@ -5227,10 +5306,144 @@ Better to use X**2 + Y**2 directly as above.
     ax.contour3D(X, Y, Z, 50, cmap='binary')
 
 
+### Axes object
+
+Create an axes object
+
+    import pandas
+    df = pandas.DataFrame({'x':range(0,30), 'y':range(110,140)})
+    plot = df.plot(x="x", y="y", kind="scatter")
+    help(plot)
+
+Create another axes object for a faceted plot
+
+It has the following methods
+
+    print([m for m in dir(plot) if not m.startswith("_")])
+
+    ['ArtistList', 'acorr', 'add_artist', 'add_callback', 'add_child_axes', 
+    'add_collection', 'add_container', 'add_image', 'add_line', 'add_patch', 
+    'add_table', 'angle_spectrum', 'annotate', 'apply_aspect', 'arrow', 
+    'artists', 'autoscale', 'autoscale_view', 'axes', 'axhline', 'axhspan', 
+    'axis', 'axison', 'axline', 'axvline', 'axvspan', 'bar', 'bar_label', 
+    'barbs', 'barh', 'bbox', 'boxplot', 'broken_barh', 'bxp', 'callbacks', 
+    'can_pan', 'can_zoom', 'child_axes', 'cla', 'clabel', 'clear', 'clipbox', 
+    'cohere', 'collections', 'containers', 'contains', 'contains_point', 
+    'contour', 'contourf', 'convert_xunits', 'convert_yunits', 'csd', 
+    'dataLim', 'drag_pan', 'draw', 'draw_artist', 'end_pan', 'errorbar', 
+    'eventplot', 'figure', 'fill', 'fill_between', 'fill_betweenx', 'findobj', 
+    'fmt_xdata', 'fmt_ydata', 'format_coord', 'format_cursor_data', 
+    'format_xdata', 'format_ydata', 'get_adjustable', 'get_agg_filter', 
+    'get_alpha', 'get_anchor', 'get_animated', 'get_aspect', 
+    'get_autoscale_on', 'get_autoscalex_on', 'get_autoscaley_on', 
+    'get_axes_locator', 'get_axisbelow', 'get_box_aspect', 'get_children', 
+    'get_clip_box', 'get_clip_on', 'get_clip_path', 'get_cursor_data', 
+    'get_data_ratio', 'get_default_bbox_extra_artists', 'get_facecolor', 
+    'get_fc', 'get_figure', 'get_frame_on', 'get_gid', 'get_gridspec', 
+    'get_images', 'get_in_layout', 'get_label', 'get_legend', 
+    'get_legend_handles_labels', 'get_lines', 'get_mouseover', 'get_navigate', 
+    'get_navigate_mode', 'get_path_effects', 'get_picker', 'get_position', 
+    'get_rasterization_zorder', 'get_rasterized', 'get_renderer_cache', 
+    'get_shared_x_axes', 'get_shared_y_axes', 'get_sketch_params', 'get_snap', 
+    'get_subplotspec', 'get_tightbbox', 'get_title', 'get_transform', 
+    'get_transformed_clip_path_and_affine', 'get_url', 'get_visible', 
+    'get_window_extent', 'get_xaxis', 'get_xaxis_text1_transform', 
+    'get_xaxis_text2_transform', 'get_xaxis_transform', 'get_xbound', 
+    'get_xgridlines', 'get_xlabel', 'get_xlim', 'get_xmajorticklabels', 
+    'get_xminorticklabels', 'get_xscale', 'get_xticklabels', 'get_xticklines', 
+    'get_xticks', 'get_yaxis', 'get_yaxis_text1_transform', 
+    'get_yaxis_text2_transform', 'get_yaxis_transform', 'get_ybound', 
+    'get_ygridlines', 'get_ylabel', 'get_ylim', 'get_ymajorticklabels', 
+    'get_yminorticklabels', 'get_yscale', 'get_yticklabels', 'get_yticklines', 
+    'get_yticks', 'get_zorder', 'grid', 'has_data', 'have_units', 'hexbin', 
+    'hist', 'hist2d', 'hlines', 'ignore_existing_data_limits', 'images', 
+    'imshow', 'in_axes', 'indicate_inset', 'indicate_inset_zoom', 'inset_axes', 
+    'invert_xaxis', 'invert_yaxis', 'is_transform_set', 'label_outer', 
+    'legend', 'legend_', 'lines', 'locator_params', 'loglog', 
+    'magnitude_spectrum', 'margins', 'matshow', 'minorticks_off', 
+    'minorticks_on', 'mouseover', 'name', 'patch', 'patches', 'pchanged', 
+    'pcolor', 'pcolorfast', 'pcolormesh', 'phase_spectrum', 'pick', 'pickable', 
+    'pie', 'plot', 'plot_date', 'properties', 'psd', 'quiver', 'quiverkey', 
+    'redraw_in_frame', 'relim', 'remove', 'remove_callback', 'reset_position', 
+    'scatter', 'secondary_xaxis', 'secondary_yaxis', 'semilogx', 'semilogy', 
+    'set', 'set_adjustable', 'set_agg_filter', 'set_alpha', 'set_anchor', 
+    'set_animated', 'set_aspect', 'set_autoscale_on', 'set_autoscalex_on', 
+    'set_autoscaley_on', 'set_axes_locator', 'set_axis_off', 'set_axis_on', 
+    'set_axisbelow', 'set_box_aspect', 'set_clip_box', 'set_clip_on', 
+    'set_clip_path', 'set_facecolor', 'set_fc', 'set_figure', 'set_frame_on', 
+    'set_gid', 'set_in_layout', 'set_label', 'set_mouseover', 'set_navigate', 
+    'set_navigate_mode', 'set_path_effects', 'set_picker', 'set_position', 
+    'set_prop_cycle', 'set_rasterization_zorder', 'set_rasterized', 
+    'set_sketch_params', 'set_snap', 'set_subplotspec', 'set_title', 
+    'set_transform', 'set_url', 'set_visible', 'set_xbound', 'set_xlabel', 
+    'set_xlim', 'set_xmargin', 'set_xscale', 'set_xticklabels', 'set_xticks', 
+    'set_ybound', 'set_ylabel', 'set_ylim', 'set_ymargin', 'set_yscale', 
+    'set_yticklabels', 'set_yticks', 'set_zorder', 'sharex', 'sharey', 
+    'specgram', 'spines', 'spy', 'stackplot', 'stairs', 'stale', 
+    'stale_callback', 'start_pan', 'stem', 'step', 'sticky_edges', 
+    'streamplot', 'table', 'tables', 'text', 'texts', 'tick_params', 
+    'ticklabel_format', 'title', 'titleOffsetTrans', 'transAxes', 'transData', 
+    'transLimits', 'transScale', 'tricontour', 'tricontourf', 'tripcolor', 
+    'triplot', 'twinx', 'twiny', 'update', 'update_datalim', 'update_from', 
+    'use_sticky_edges', 'viewLim', 'violin', 'violinplot', 'vlines', 'xaxis', 
+    'xaxis_date', 'xaxis_inverted', 'xcorr', 'yaxis', 'yaxis_date', 
+    'yaxis_inverted', 'zorder']
+
+
+### Figure object
+
+Create a figure object
+
+    import pandas
+    df = pandas.DataFrame({'x':range(0,30), 'y':range(110,140)})
+    plot = df.plot(x="x", y="y", kind="scatter")
+    fig = plot.get_figure()
+    help(fig)
+
+A figure object is the "The top level container for all the plot elements." It 
+has the following methods:
+
+    print([m for m in dir(fig) if not m.startswith("_")])
+
+    ['add_artist', 'add_axes', 'add_axobserver', 'add_callback', 
+    'add_gridspec', 'add_subfigure', 'add_subplot', 'align_labels', 
+    'align_xlabels', 'align_ylabels', 'artists', 'autofmt_xdate', 'axes', 
+    'bbox', 'bbox_inches', 'callbacks', 'canvas', 'clear', 'clf', 'clipbox', 
+    'colorbar', 'contains', 'convert_xunits', 'convert_yunits', 'delaxes', 
+    'dpi', 'dpi_scale_trans', 'draw', 'draw_artist', 'draw_without_rendering', 
+    'execute_constrained_layout', 'figbbox', 'figimage', 'figure', 'findobj', 
+    'format_cursor_data', 'frameon', 'gca', 'get_agg_filter', 'get_alpha', 
+    'get_animated', 'get_axes', 'get_children', 'get_clip_box', 'get_clip_on', 
+    'get_clip_path', 'get_constrained_layout', 'get_constrained_layout_pads', 
+    'get_cursor_data', 'get_default_bbox_extra_artists', 'get_dpi', 
+    'get_edgecolor', 'get_facecolor', 'get_figheight', 'get_figure', 
+    'get_figwidth', 'get_frameon', 'get_gid', 'get_in_layout', 'get_label', 
+    'get_layout_engine', 'get_linewidth', 'get_mouseover', 'get_path_effects', 
+    'get_picker', 'get_rasterized', 'get_size_inches', 'get_sketch_params', 
+    'get_snap', 'get_tight_layout', 'get_tightbbox', 'get_transform', 
+    'get_transformed_clip_path_and_affine', 'get_url', 'get_visible', 
+    'get_window_extent', 'get_zorder', 'ginput', 'have_units', 'images', 
+    'is_transform_set', 'legend', 'legends', 'lines', 'mouseover', 'number', 
+    'patch', 'patches', 'pchanged', 'pick', 'pickable', 'properties', 'remove', 
+    'remove_callback', 'savefig', 'sca', 'set', 'set_agg_filter', 'set_alpha', 
+    'set_animated', 'set_canvas', 'set_clip_box', 'set_clip_on', 
+    'set_clip_path', 'set_constrained_layout', 'set_constrained_layout_pads', 
+    'set_dpi', 'set_edgecolor', 'set_facecolor', 'set_figheight', 'set_figure', 
+    'set_figwidth', 'set_frameon', 'set_gid', 'set_in_layout', 'set_label', 
+    'set_layout_engine', 'set_linewidth', 'set_mouseover', 'set_path_effects', 
+    'set_picker', 'set_rasterized', 'set_size_inches', 'set_sketch_params', 
+    'set_snap', 'set_tight_layout', 'set_transform', 'set_url', 'set_visible', 
+    'set_zorder', 'show', 'stale', 'stale_callback', 'sticky_edges', 'subfigs', 
+    'subfigures', 'subplot_mosaic', 'subplotpars', 'subplots', 
+    'subplots_adjust', 'suppressComposite', 'suptitle', 'supxlabel', 
+    'supylabel', 'text', 'texts', 'tight_layout', 'transFigure', 
+    'transSubfigure', 'update', 'update_from', 'waitforbuttonpress', 'zorder']
+
+
 ### XY comparison scatter plot
 
 When x and y are supposed to be the same value but are not necessarily equal.
-Compare the x and y values on a scatter plot to a 1:1 line.
+Compare the x and y values on a scatter plot to a y=x line.
 
 
     def comp_plot(df, x_var, y_var, title):
@@ -5253,6 +5466,35 @@ Note on suggestions compared between Bard and Chat GPT-4
         plt.plot(line_x, line_y, 'r--')
         # 1:1 line suggested by GPT4 (wrong in some way)
         plt.plot([min(x), max(x)], [min(y), max(y)], 'r')
+
+
+### Save figures to pdf, png or svg files
+
+This works with pandas plots and seaborn plots as well.
+
+With the pyplot object, only works immediately after building the plot.
+
+    plt.savefig("/tmp/bli.pdf")
+    plt.savefig("/tmp/bli.png")
+    plt.savefig("file_name.svg", bbox_inches='tight')
+
+Save a plot object to a pdf file
+
+    import pandas
+    df = pandas.DataFrame({'x':range(0,30), 'y':range(110,140)})
+    plot = df.plot(x="x", y="y", kind="scatter")
+    fig = plot.get_figure()
+    fig.savefig('/tmp/output.pdf', format='pdf')
+
+Save a grid plot object to a pdf file
+
+    fmri = seaborn.load_dataset("fmri")
+    g = seaborn.relplot(
+        data=fmri, x="timepoint", y="signal", col="region",
+        hue="event", style="event", kind="line",
+        facet_kws={'sharey': False, 'sharex': False}
+    )
+    g.savefig("/tmp/fmri.pdf")
 
 
 ## Pandas plots are matplotlib AxesSubplot objects
@@ -5298,6 +5540,8 @@ Simple palette as a dictionary
                'historical_period': 'black'}
     df.plot(title = "Harvest Scenarios", ylabel="Million m3", color=palette)
 
+Note: the argument for seaborn would be palette=palette.
+
 Using a list of colours with matplotlib 
 [ListedColormap](https://matplotlib.org/stable/api/_as_gen/matplotlib.colors.ListedColormap.html) 
 (see also example in that documentation page): Reusing the data frame from the 
@@ -5337,21 +5581,6 @@ Options for title, labels, colours
     plt.show()
 
 Histogram with a log scale
-
-
-### Save to a pdf or png file
-
-With a plot object
-
-    plot.get_figure().savefig('/tmp/output.pdf', format='pdf')
-
-With the pyplot object, only works immediately after building the plot.
-This also works with seaborn plots.
-
-    plt.savefig("/tmp/bli.pdf")
-    plt.savefig("/tmp/bli.png")
-
-Change figure size 
 
 
 ### Pandas plots side by side
@@ -5498,6 +5727,19 @@ Resources
 
 ### Axes
 
+#### Invert axis
+
+Of a single figure
+
+    ax.invert_yaxis()
+
+Of a grid figure
+
+    g = seaborn.relplot(x='crop', y='ranking', col='intensity',
+                          hue='conservation_target', data=df)
+    for ax in g.axes[0]:
+        ax.invert_yaxis()
+
 #### labels and titles
 
 Use p.set() to set a y label and a title
@@ -5578,7 +5820,7 @@ Rotate index labels
 
 ### Palettes and styles
 
-#### Color palette
+#### Colour palette
 
 See various examples in the plots in the seaborn section.
 The palette can be defined from pre existing palettes
@@ -5599,6 +5841,11 @@ functions:
 
     p1 = sns.relplot(x="Growth", y="Value", hue="Risk", col="Mcap", data=mx, s=200, palette=['r', 'g', 'y'])
 
+Another example using a dictionary for the palette
+
+    palette = {"fair":"green", "ssp2":"orange", "historical":"black"}
+    p = seaborn.lineplot(x="year", y="gdp_t", hue="scenario", data=df_gdp_eu, palette=palette)
+
 Seaborn tutorial on choosing colour palettes https://seaborn.pydata.org/tutorial/color_palettes.html
 
 According to https://stackoverflow.com/a/46174007/2641825 you can also use a
@@ -5609,6 +5856,39 @@ dictionary to associate hue values to a palette element.
                          "pulpwood_round_and_split_all_species_production",
                          "other_industrial_roundwood"]
     palette = dict(zip(selected_products, ["red", "brown", "blue", "grey"]))
+
+Generate darker and lighter green and orange colours
+
+    lighter_green = seaborn.dark_palette('green', n_colors=5)[0]
+    darker_green = seaborn.dark_palette('green', n_colors=5, reverse=True)[0]
+    lighter_orange = seaborn.dark_palette('orange', n_colors=5)[0]
+    darker_orange = seaborn.dark_palette('orange', n_colors=5, reverse=True)[0]
+
+
+##### Colour names
+
+- https://seaborn.pydata.org/tutorial/color_palettes.html
+
+    > ". It’s also possible to pass a list of colors specified any way that 
+    > matplotlib accepts (an RGB tuple, a hex code, or a name in the X11 
+    > table).
+    
+    - Named colors in Matplotlib  as in the X11 table
+      https://stackoverflow.com/questions/22408237/named-colors-in-matplotlib
+
+```{python, eval=FALSE}
+import matplotlib.pyplot as plt
+from matplotlib import colors as mcolors
+colors = dict(mcolors.BASE_COLORS, **mcolors.CSS4_COLORS)
+```
+        SO answer has a plot of this dict of colors with names.
+
+
+##### Colour blindness
+
+- Simulate colour blindness 
+  https://www.color-blindness.com/coblis-color-blindness-simulator/
+
 
 
 #### Linestyle dict (doesn't work)
@@ -5821,9 +6101,21 @@ request](https://github.com/mwaskom/seaborn/pull/2030/commits/88a45dddeb6ac4c88a
 > :func:`catplot`) than to use :class:`FacetGrid` directly."
 
 
-##### Grid scatter plot with trend line
+##### Grid scatter plot with x=y line
 
+A grid scatter plot with an x=y line for comparison purposes
 
+    g = seaborn.relplot(data=df,
+                    x="x_var",
+                    y="y=var",
+                    col="year",
+                    hue="partner",
+                    kind="scatter",
+                   )
+    g.fig.subplots_adjust(top=0.9)
+    # Add x=y line
+    for ax in g.axes.flat:
+        ax.plot(ax.get_xlim(), ax.get_ylim(), ls="--", c=".3", scalex=False, scaley=False)
 
 
 #### Grid Text
@@ -5875,7 +6167,7 @@ Do not use scientific notation on the axes
 Use the scientific notation on the y axis labels, at every tick. Without
 putting a `1e7` at the top that might be overwritten by a facet label.
 
-```
+```{python, eval=FALSE}
 
 g = seaborn.relplot(
     data=rp_global.reset_index(), x="step", y="primary_eq", col="primary_product",
@@ -5938,11 +6230,23 @@ the `height` and `aspect` arguments of the FacetGrid call as such:
 > ``aspect * height`` gives the width of each facet in inches.
 
 
+### Legend
+
+Move a legend below a grid plot
+
+    g.fig.subplots_adjust(left=0.28, top=0.9) # resize the plot
+    g.legend.set_bbox_to_anchor((0.5, 0.15))
+
+Another way to move the legend and make it flat
+
+    seaborn.move_legend(g, "upper center", bbox_to_anchor=(0.5, 0.1), ncol=4)
+
+
 ### Line plot
 
 Create a line plot with a title and axis labels.
 
-```
+```{python, eval=FALSE}
 import numpy as np
 df = pandas.DataFrame({'value':np.random.random(100), 
                        'year':range(1901,2001)})
@@ -6007,16 +6311,20 @@ with a series of prompt related to a time series plot I was refining.
 
 
 
+### Marker and text
+
+Add a market and text to a plot, works both with simple plots and faceted 
+plots.
+
+    plt.plot(2030, -420, marker='*', markersize=10, color='red')
+    plt.text(2030+1, -420, "Target -420", fontsize=10)
+
+
 ### Pair plot
 
 [seaborn.pairplot](https://seaborn.pydata.org/generated/seaborn.pairplot.html#)
 
 > "Plot pairwise relationships in a dataset."
-
-
-### Save figures to image or pdf files
-
-    plt.savefig("file_name.svg", bbox_inches='tight')
 
 
 ### Scatter Plot
@@ -6066,30 +6374,42 @@ gallery](https://www.python-graph-gallery.com/treemap/)
     plt.show()
 
 
-## Vega
+## Vega Altair
 
-The tool tip feature is nice in an interactive notebook.
+- Altair https://altair-viz.github.io/
 
-- Ipython vega for Jupyter notebooks https://github.com/vega/ipyvega
-- Vega gallery https://vega.github.io/vega/examples/
+    > "Vega-Altair is a declarative visualization library for Python. Its 
+    > simple, friendly and consistent API, built on top of the powerful 
+    > Vega-Lite grammar, empowers you to spend less time writing code and more 
+    > time exploring your data."
 
-Vega Lite
+    - Seen in the https://jjallaire.github.io/visualization-curriculum/
 
-- Vega lite gallery https://vega.github.io/vega-lite-v1/examples/
-- Vega lite documentation on
-  [tooltips](https://vega.github.io/vega-lite/docs/tooltip.html)
+- Vega Lite
 
-    from vega import VegaLite
-    import pandas
-    df = pandas.read_json('cars.json')
-    VegaLite({
-          "data": {"url": "data/cars.json"},
-          "mark": {"type": "point", "tooltip": true},
-          "encoding": {
-            "x": {"field": "Horsepower","type": "quantitative"},
-            "y": {"field": "Miles_per_Gallon","type": "quantitative"}
-          }
-        }, df)
+    - Vega lite gallery https://vega.github.io/vega-lite-v1/examples/
+    - Vega lite documentation on
+      [tooltips](https://vega.github.io/vega-lite/docs/tooltip.html)
+
+        from vega import VegaLite
+        import pandas
+        df = pandas.read_json('cars.json')
+        VegaLite({
+              "data": {"url": "data/cars.json"},
+              "mark": {"type": "point", "tooltip": true},
+              "encoding": {
+                "x": {"field": "Horsepower","type": "quantitative"},
+                "y": {"field": "Miles_per_Gallon","type": "quantitative"}
+              }
+            }, df)
+
+- The tool tip feature is nice in an interactive notebook.
+
+    - Ipython vega for Jupyter notebooks https://github.com/vega/ipyvega
+
+    - Vega gallery https://vega.github.io/vega/examples/
+
+
 
 
 # Print
@@ -6448,6 +6768,11 @@ See also string operations in pandas with df["x"].str methods.
 
 [Documentation of the re package](https://docs.python.org/3/library/re.html).
 
+Replace one or another character by a space
+
+    import re
+    re.sub("l|k", " ", "mlkj")
+
 Replace one or more consecutive non alphanumeric characters by an underscore.
 
     re.sub(r'\W+', '_', 'bla: bla**(bla)')
@@ -6674,7 +6999,7 @@ To deactivate a pre commit hook temporarily https://stackoverflow.com/questions/
 
 [Usage in Continuous integration](https://pre-commit.com/#usage-in-continuous-integration) has a gitlab example:
 
-```
+```{python, eval=FALSE}
     my_job:
       variables:
         PRE_COMMIT_HOME: ${CI_PROJECT_DIR}/.cache/pre-commit
