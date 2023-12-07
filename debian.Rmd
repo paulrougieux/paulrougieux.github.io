@@ -302,6 +302,53 @@ Example of Mutt setup for professional email coming from an Exchange server.
 
 ## Python
 
+### Pip, pipx and virtual enviroments
+
+- In Debian version 12, pip can only be used to install in a virtual 
+  environment
+
+- Create a virtual environment directory, activate it and instal a python 
+  package inside
+
+      mkdir ~/rp/penv/
+      python3 -m venv ~/rp/penv/
+      source ~/rp/penv/bin/activate
+      pip install biotrade
+
+If you need tools that can be started at the command line such as jupyter lab, 
+
+    - Install them in the virtual environment and start them from there 
+
+    - Or use pipx to install them, so that the command becomes available
+
+        pipx install jupyterlab
+
+
+### Virtual environment compulsory in Debian 12
+
+- Trying pip install in the main python environment returns the following
+
+    pip install jupyterlab
+
+    > error: externally-managed-environment
+
+    > This environment is externally managed
+    > To install Python packages system-wide, try apt install
+    > python3-xyz, where xyz is the package you are trying to
+    > install.
+
+    > If you wish to install a non-Debian-packaged Python package,
+    > create a virtual environment using python3 -m venv path/to/venv.
+    > Then use path/to/venv/bin/python and path/to/venv/bin/pip. Make
+    > sure you have python3-full installed.
+
+    > If you wish to install a non-Debian packaged Python application,
+    > it may be easiest to use pipx install xyz, which will manage a
+    > virtual environment for you. Make sure you have pipx installed.
+
+
+### Spyder
+
 Install editor
 
     pip3 install spyder
@@ -494,33 +541,43 @@ Install
 
 ### Teams
 
-See also the Teams section in the [communication page](communication.html).
+visit teams.microsoft.com
 
-[Donwload teams from
-microsoft](https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/download-app#desktopAppDownloadregion)
+- See also the Teams section in the [communication page](communication.html).
 
-Install 
+- This download is not available. Only the website (they call it web app) is 
+  available for Linux at teams.microsoft.com. 
+  
+    - It used to be possible to [Donwload teams from 
+      microsoft](https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/download-app#desktopAppDownloadregion)
 
-    sudo apt install ./teams_1.3.00.25560_amd64.deb
+    - The install instruction was as follows, but it is not possible any 
+      longer, use the teams website instead.
 
-[Microphone stopped working in
-teams](https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html)
-I had a sound issue. I managed to reactivate the sound under Debian settings /
-sound / applications there by reactivating the sound for cmus this somehow also
-affected teams and I could hear the audio again in teams after that. Or maybe I
-also change the settings for Skype? In any case I have sound again in teams
-now. Yes, after looking at another laptop with teams only (no Skype) I'm sure
-that teams appears as "Skype" in that Debian settings / sound / applications
-menu. 
+        sudo apt install ./teams_1.3.00.25560_amd64.deb
 
+- [Microphone stopped working in 
+  teams](https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html) 
+  I had a sound issue. I managed to reactivate the sound under Debian settings 
+  / sound / applications there by reactivating the sound for cmus this somehow 
+  also affected teams and I could hear the audio again in teams after that. Or 
+  maybe I also change the settings for Skype? In any case I have sound again in 
+  teams now. Yes, after looking at another laptop with teams only (no Skype) 
+  I'm sure that teams appears as "Skype" in that Debian settings / sound / 
+  applications menu. 
 
-Questions related to the lack of screen sharing capability on Linux:
+- Questions related to the lack of screen sharing capability on Linux:
 
-- [How to share your screen or at least a pdf presentation with microsoft teams
-  on
-  linux?](https://superuser.com/questions/1674579/how-to-share-your-screen-or-at-least-a-pdf-presentation-with-microsoft-teams-on) Paul asked this question.
+    - [How to share your screen or at least a pdf presentation with microsoft 
+      teams
+      on
+      linux?](https://superuser.com/questions/1674579/how-to-share-your-screen-or-at-least-a-pdf-presentation-with-microsoft-teams-on) Paul asked this question.
 
-- [Screensharing not working in the official MS Teams for Linux](https://docs.microsoft.com/en-us/answers/questions/34407/screensharing-not-working-in-the-official-ms-teams.html)
+    - [Screensharing not working in the official MS Teams for Linux](https://docs.microsoft.com/en-us/answers/questions/34407/screensharing-not-working-in-the-official-ms-teams.html)
+
+    - These screen sharing issues have been solved in the teams website. It's 
+      possible to share your screen on Linux, from the Firefox web browser or 
+      from Chromium.
 
 
 ## Vim 
@@ -677,6 +734,11 @@ For example:
 [SubstitutingCalibriAndCambriaFonts](https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts)
 
 
+## Fonts for coding
+
+- Deja Vu Sans Mono
+
+
 # Firefox
 
 In a remote desktop session of Apache Guacamole inside a tab in Firefox.
@@ -707,6 +769,18 @@ from Firefox.
 Related pages:
 
 - Related bug on Mozilla.org https://bugzilla.mozilla.org/show_bug.cgi?id=1619947 that introduces the 
+
+  - https://bugzilla.mozilla.org/show_bug.cgi?id=1809106 I commented:
+
+    > "asyncClipboard is also required to paste content into remote desktops 
+    > with Apache Guacamole."
+
+    > "Besides settting dom.events.testing.asyncClipboard to true as explained 
+    > here https://sudoedit.com/firefox-async-clipboard/ on my laptop (tested 
+    > also with a colleague) it appears that 
+    > dom.events.asyncClipboard.clipboardItem is also needed"
+
+    > "I'm wondering if/when these settings can be enable by default?"
 
 - W3C 2022 specification of a clipboard API that accesses data on the system
   clipboard https://w3c.github.io/clipboard-apis/
@@ -1140,14 +1214,47 @@ Then ran
 -  Minimal system upgrade 
 
         sudo apt upgrade --without-new-pkgs
-
         # W: Possible missing firmware /lib/firmware/i915/cnl_dmc_ver1_07.bin for module i915
-
 
 - Upgrading the system
 
         sudo apt full-upgrade
 
+    > "This script detected the following installed services which must be
+    > stopped before the upgrade: postgresql"
+
+    - Stop PostgreSQL
+
+        sudo service postgresql stop
+
+    - Configuring PostGreSQL
+
+        > "Obsolete major version 13 The PostgreSQL version 13 is obsolete, but
+        > the server or client packages are still installed. Please install
+        > the latest packages (postgresql-15 and postgresql-client-15) and
+        > upgrade the existing  clusters with pg_upgradecluster (see manpage).
+        > Please be aware that the installation of postgresql-15 will
+        > automatically create a default cluster 15/main. If you want to
+        > upgrade the 13/main cluster, you need to remove the already existing
+        > 15 cluster (pg_dropcluster --stop 15 main, see manpage for
+        > details). The old server and client packages are no longer supported.
+        > After the existing clusters are upgraded, the      postgresql-13 and
+        > postgresql-client-13 packages should be removed. Please see
+        > /usr/share/doc/postgresql-common/README.Debian.gz for details. "
+
+    - Lots of messages about possible missing firmware
+
+        > W: Possible missing firmware /lib/firmware/i915/dg2_dmc_ver2_07.bin for module i915
+
+- Install firmware-linux (is it good?) saw it here https://unix.stackexchange.com/questions/556946/possible-missing-firmware-lib-firmware-i915-for-module-i915
+
+        sudo apt-get install firmware-linux
+
+- Purging removed packages
+
+    apt list '~c'
+    sudo apt purge '~c'
+    
 
 # Blogs
 

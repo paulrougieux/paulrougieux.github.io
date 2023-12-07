@@ -684,8 +684,59 @@ server.</p>
 </div>
 <div id="python" class="section level2">
 <h2>Python</h2>
+<div id="pip-pipx-and-virtual-enviroments" class="section level3">
+<h3>Pip, pipx and virtual enviroments</h3>
+<ul>
+<li><p>In Debian version 12, pip can only be used to install in a
+virtual environment</p></li>
+<li><p>Create a virtual environment directory, activate it and instal a
+python package inside</p>
+<pre><code>mkdir ~/rp/penv/
+python3 -m venv ~/rp/penv/
+source ~/rp/penv/bin/activate
+pip install biotrade</code></pre></li>
+</ul>
+<p>If you need tools that can be started at the command line such as
+jupyter lab,</p>
+<pre><code>- Install them in the virtual environment and start them from there 
+
+- Or use pipx to install them, so that the command becomes available
+
+    pipx install jupyterlab</code></pre>
+</div>
+<div id="virtual-environment-compulsory-in-debian-12"
+class="section level3">
+<h3>Virtual environment compulsory in Debian 12</h3>
+<ul>
+<li><p>Trying pip install in the main python environment returns the
+following</p>
+<p>pip install jupyterlab</p>
+<blockquote>
+<p>error: externally-managed-environment</p>
+</blockquote>
+<blockquote>
+<p>This environment is externally managed To install Python packages
+system-wide, try apt install python3-xyz, where xyz is the package you
+are trying to install.</p>
+</blockquote>
+<blockquote>
+<p>If you wish to install a non-Debian-packaged Python package, create a
+virtual environment using python3 -m venv path/to/venv. Then use
+path/to/venv/bin/python and path/to/venv/bin/pip. Make sure you have
+python3-full installed.</p>
+</blockquote>
+<blockquote>
+<p>If you wish to install a non-Debian packaged Python application, it
+may be easiest to use pipx install xyz, which will manage a virtual
+environment for you. Make sure you have pipx installed.</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="spyder" class="section level3">
+<h3>Spyder</h3>
 <p>Install editor</p>
 <pre><code>pip3 install spyder</code></pre>
+</div>
 </div>
 <div id="r-and-rstudio" class="section level2">
 <h2>R and Rstudio</h2>
@@ -854,14 +905,21 @@ class="uri">https://www.skype.com/en/get-skype/</a></p>
 </div>
 <div id="teams" class="section level3">
 <h3>Teams</h3>
-<p>See also the Teams section in the <a
-href="communication.html">communication page</a>.</p>
-<p><a
+<p>visit teams.microsoft.com</p>
+<ul>
+<li><p>See also the Teams section in the <a
+href="communication.html">communication page</a>.</p></li>
+<li><p>This download is not available. Only the website (they call it
+web app) is available for Linux at teams.microsoft.com.</p>
+<ul>
+<li><p>It used to be possible to <a
 href="https://www.microsoft.com/en-gb/microsoft-365/microsoft-teams/download-app#desktopAppDownloadregion">Donwload
-teams from microsoft</a></p>
-<p>Install</p>
-<pre><code>sudo apt install ./teams_1.3.00.25560_amd64.deb</code></pre>
-<p><a
+teams from microsoft</a></p></li>
+<li><p>The install instruction was as follows, but it is not possible
+any longer, use the teams website instead.</p>
+<p>sudo apt install ./teams_1.3.00.25560_amd64.deb</p></li>
+</ul></li>
+<li><p><a
 href="https://docs.microsoft.com/en-us/answers/questions/99254/microphone-stopped-working-with-teams-130016851-64.html">Microphone
 stopped working in teams</a> I had a sound issue. I managed to
 reactivate the sound under Debian settings / sound / applications there
@@ -870,8 +928,8 @@ I could hear the audio again in teams after that. Or maybe I also change
 the settings for Skype? In any case I have sound again in teams now.
 Yes, after looking at another laptop with teams only (no Skype) I’m sure
 that teams appears as “Skype” in that Debian settings / sound /
-applications menu.</p>
-<p>Questions related to the lack of screen sharing capability on
+applications menu.</p></li>
+<li><p>Questions related to the lack of screen sharing capability on
 Linux:</p>
 <ul>
 <li><p><a
@@ -881,6 +939,10 @@ on linux?</a> Paul asked this question.</p></li>
 <li><p><a
 href="https://docs.microsoft.com/en-us/answers/questions/34407/screensharing-not-working-in-the-official-ms-teams.html">Screensharing
 not working in the official MS Teams for Linux</a></p></li>
+<li><p>These screen sharing issues have been solved in the teams
+website. It’s possible to share your screen on Linux, from the Firefox
+web browser or from Chromium.</p></li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -1025,6 +1087,12 @@ sudo apt install fonts-deva-extra</code></pre>
 <p><a href="https://wiki.debian.org/Fonts/Missing">List of missing
 fonts</a> <a
 href="https://wiki.debian.org/SubstitutingCalibriAndCambriaFonts">SubstitutingCalibriAndCambriaFonts</a></p>
+<div id="fonts-for-coding" class="section level2">
+<h2>Fonts for coding</h2>
+<ul>
+<li>Deja Vu Sans Mono</li>
+</ul>
+</div>
 </div>
 <div id="firefox" class="section level1">
 <h1>Firefox</h1>
@@ -1060,7 +1128,26 @@ copy paste to work from Firefox.</p>
 <li><p>Related bug on Mozilla.org <a
 href="https://bugzilla.mozilla.org/show_bug.cgi?id=1619947"
 class="uri">https://bugzilla.mozilla.org/show_bug.cgi?id=1619947</a>
-that introduces the</p></li>
+that introduces the</p>
+<ul>
+<li><p><a href="https://bugzilla.mozilla.org/show_bug.cgi?id=1809106"
+class="uri">https://bugzilla.mozilla.org/show_bug.cgi?id=1809106</a> I
+commented:</p>
+<blockquote>
+<p>“asyncClipboard is also required to paste content into remote
+desktops with Apache Guacamole.”</p>
+</blockquote>
+<blockquote>
+<p>“Besides settting dom.events.testing.asyncClipboard to true as
+explained here <a href="https://sudoedit.com/firefox-async-clipboard/"
+class="uri">https://sudoedit.com/firefox-async-clipboard/</a> on my
+laptop (tested also with a colleague) it appears that
+dom.events.asyncClipboard.clipboardItem is also needed”</p>
+</blockquote>
+<blockquote>
+<p>“I’m wondering if/when these settings can be enable by default?”</p>
+</blockquote></li>
+</ul></li>
 <li><p>W3C 2022 specification of a clipboard API that accesses data on
 the system clipboard <a href="https://w3c.github.io/clipboard-apis/"
 class="uri">https://w3c.github.io/clipboard-apis/</a></p>
@@ -1420,9 +1507,44 @@ class="uri">https://cran.r-project.org/bin/linux/debian/</a></p>
 <li><p>Update</p>
 <pre><code>  sudo apt update</code></pre></li>
 <li><p>Minimal system upgrade</p>
-<pre><code> sudo apt upgrade --without-new-pkgs</code></pre></li>
+<pre><code> sudo apt upgrade --without-new-pkgs
+ # W: Possible missing firmware /lib/firmware/i915/cnl_dmc_ver1_07.bin for module i915</code></pre></li>
 <li><p>Upgrading the system</p>
-<pre><code>  sudo apt full-upgrade</code></pre></li>
+<pre><code>  sudo apt full-upgrade</code></pre>
+<blockquote>
+<p>“This script detected the following installed services which must be
+stopped before the upgrade: postgresql”</p>
+</blockquote>
+<ul>
+<li><p>Stop PostgreSQL</p>
+<p>sudo service postgresql stop</p></li>
+<li><p>Configuring PostGreSQL</p>
+<blockquote>
+<p>“Obsolete major version 13 The PostgreSQL version 13 is obsolete, but
+the server or client packages are still installed. Please install the
+latest packages (postgresql-15 and postgresql-client-15) and upgrade the
+existing clusters with pg_upgradecluster (see manpage). Please be aware
+that the installation of postgresql-15 will automatically create a
+default cluster 15/main. If you want to upgrade the 13/main cluster, you
+need to remove the already existing 15 cluster (pg_dropcluster –stop 15
+main, see manpage for details). The old server and client packages are
+no longer supported. After the existing clusters are upgraded, the
+postgresql-13 and postgresql-client-13 packages should be removed.
+Please see /usr/share/doc/postgresql-common/README.Debian.gz for
+details.”</p>
+</blockquote></li>
+<li><p>Lots of messages about possible missing firmware</p>
+<blockquote>
+<p>W: Possible missing firmware /lib/firmware/i915/dg2_dmc_ver2_07.bin
+for module i915</p>
+</blockquote></li>
+</ul></li>
+<li><p>Install firmware-linux (is it good?) saw it here <a
+href="https://unix.stackexchange.com/questions/556946/possible-missing-firmware-lib-firmware-i915-for-module-i915"
+class="uri">https://unix.stackexchange.com/questions/556946/possible-missing-firmware-lib-firmware-i915-for-module-i915</a></p>
+<pre><code>  sudo apt-get install firmware-linux</code></pre></li>
+<li><p>Purging removed packages</p>
+<p>apt list ‘~c’ sudo apt purge ‘~c’</p></li>
 </ul>
 </div>
 </div>
