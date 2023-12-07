@@ -858,16 +858,19 @@ the file as such:</p>
 abbreviated to <code>:Tab</code>. To align a latex table with the
 tabular package. Select a few lines, then press:</p>
 <pre><code>:&#39;&lt;,&#39;&gt;Tab /&amp;</code></pre>
-<p>Similarly to align a markdown table, select a few lines, then
-call:</p>
-<pre><code>:&#39;&lt;,&#39;&gt;Tab /|</code></pre>
 <p>Align tab separated text in the current buffer (to view tsv files
 generated from data frames by NVim-R for example):</p>
 <pre><code>:Tab /\t</code></pre>
 <p>Or enter CTRL + V and press the TAB key for a literal tab.</p>
 <p>To have numbers right aligned</p>
 <pre><code>:Tab /\t/r0</code></pre>
+<div id="markdown-table" class="section level3">
+<h3>Markdown table</h3>
+<p>Similarly to align a markdown table, select a few lines, then
+call:</p>
+<pre><code>:&#39;&lt;,&#39;&gt;Tab /|</code></pre>
 <p>For more, see <code>help tabular</code>.</p>
+</div>
 </div>
 <div id="undo-redo" class="section level2">
 <h2>Undo redo</h2>
@@ -2188,6 +2191,13 @@ are too short</a></p>
 details of the linters.</p>
 <p>Turn off virtual text (added to .vimrc)</p>
 <pre><code>let g:ale_virtualtext_cursor = 0</code></pre>
+<div id="flake-8" class="section level4">
+<h4>Flake 8</h4>
+<p>Example exception file <code>.flake8</code> at the root of the git
+repository</p>
+<pre><code>[flake8]
+ignore = F841, E501, W503, E203</code></pre>
+</div>
 </div>
 <div id="jedi-vim" class="section level3">
 <h3>Jedi vim</h3>
