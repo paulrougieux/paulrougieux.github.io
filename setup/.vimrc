@@ -268,6 +268,7 @@ command! TOc Toc
 " file in parallel?
 au BufRead,BufNewFile *.md inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 au BufRead,BufNewFile *.Rmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
+au BufRead,BufNewFile *.qmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
 command! -range=% Hyphen <line1>,<line2>s/\(\i\)- /\1/g
 
