@@ -38,24 +38,27 @@ alias penv="source ~/rp/penv/bin/activate"
 alias p="source ~/rp/penv/bin/activate&&ipython"
 alias jlab="source ~/rp/penv/bin/activate &&jupyter lab"
 
-# Paths for python modules
+# Paths for python data
 export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
 export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost:5433/biotrade"
-export OBS3DF_METHODS="$HOME/repos/forobs/obs3df_methods"
-export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export COBWOOD_DATA="$HOME/repos/cobwood_data/"
-export EU_CBM_DATA="$HOME/repos/eu_cbm/eu_cbm_data/"
 export EU_CBM_AIDB="$HOME/repos/eu_cbm/eu_cbm_aidb/"
+export EU_CBM_DATA="$HOME/repos/eu_cbm/eu_cbm_data/"
+export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
+export OBS3DF_METHODS="$HOME/repos/forobs/obs3df_methods"
+
+# Paths for python modules in development
 export PYTHONPATH="$HOME/repos/autopaths/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/bioeconomy_notes/src/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/forobs/biotrade/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cbmcfs3_runner/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/eu_cbm/cbm_defaults/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/cobwood/":$PYTHONPATH
-export PYTHONPATH="$HOME/repos/eu_cbm/libcbm_py/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/forobs/deforestfoot/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/env_impact_imports/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/eu_cbm/cbm_defaults/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/eu_cbm/eu_cbm_hat/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/eu_cbm/libcbm_py/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
+export PYTHONPATH="$HOME/repos/forobs/biotrade/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/plumbing/":$PYTHONPATH
 
 # Create tag files for an R project, from within an R project's R folder
