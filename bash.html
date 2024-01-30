@@ -525,6 +525,18 @@ convert -density 150 input.pdf -quality 90 output.png</code></pre>
 <pre><code>img2pdf img.jpg -o output.pdf </code></pre>
 <p>Convert a directory of JPG images into a printable A4 pdf:</p>
 <pre><code>img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG</code></pre>
+<p>Place the images in a landscape A5 document for printing 2 pages on
+one page. The <code>^T</code> argument is to flip to landscape:</p>
+<pre><code>img2pdf --output out.pdf --pagesize A5^T --border 0cm:0cm *.jpg</code></pre>
+<p>The man page of img2pdf explain the fit option with the following
+example:</p>
+<blockquote>
+<p>“On each A4 page, fit images into a 10 cm times 15 cm rectangle but
+keep the original image size if the image is smaller than that.”</p>
+</blockquote>
+<pre><code>img2pdf --output out.pdf -S A4 --imgsize 10cmx15cm --fit shrink *.jpg
+# I have tried
+img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm --imgsize 10cmx15cm --fit shrink *.jpg</code></pre>
 <p>The help page <code>man img3pd</code> explains the arguments</p>
 <blockquote>
 <p>Convert a directory of JPEG images into a PDF with printable A4 pages
@@ -751,6 +763,9 @@ cut off.)”</p>
 <h2>Download videos and audio</h2>
 <p>Install youtube-dl using pip:</p>
 <pre><code> sudo pip install --upgrade youtube_dl</code></pre>
+<p>Install from the compressed <code>tar.gz</code> version of a
+repository that doesn’t require git to be installed on your laptop:</p>
+<pre><code>pip install --force-reinstall https://github.com/ytdl-org/youtube-dl/archive/refs/heads/master.tar.gz</code></pre>
 <p>You may also need to install the ffmpeg package:</p>
 <pre><code>sudo apt-get install ffmpeg</code></pre>
 <p>Download a video from youtube :</p>
@@ -1943,6 +1958,29 @@ href="https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-acce
 to set up passwordless SSH access for root user</a></p>
 </div>
 </div>
+<div id="two-factor-authentication" class="section level2">
+<h2>Two factor authentication</h2>
+<p>Note this section is not related to bash. I put it here for now, may
+find another place later.</p>
+<ul>
+<li><a
+href="https://www.balticlsc.eu/gitlab/help/user/profile/account/two_factor_authentication.md#enable-2fa-via-one-time-password-authenticator"
+class="uri">https://www.balticlsc.eu/gitlab/help/user/profile/account/two_factor_authentication.md#enable-2fa-via-one-time-password-authenticator</a></li>
+</ul>
+<blockquote>
+<p>On your device (usually your phone): Install a compatible
+application, like:</p>
+</blockquote>
+<ul>
+<li><p>Authenticator: open source app for iOS devices.</p></li>
+<li><p>andOTP: feature rich open source app for Android which supports
+PGP encrypted backups.</p></li>
+<li><p>FreeOTP: open source app for Android.</p></li>
+<li><p>Google Authenticator: proprietary app for iOS and
+Android.</p></li>
+<li><p>SailOTP: open source app for SailFish OS.</p></li>
+</ul>
+</div>
 <div id="gpg-signing-keys" class="section level2">
 <h2>GPG signing keys</h2>
 <p>See also the <a href="communication.html">communication page</a> on
@@ -2429,8 +2467,12 @@ directly to a pane in tmux?</a>:</p>
 <p>“You can jump directly to a pane by typing pane’s index while it is
 showed by display panes command.”</p>
 </blockquote>
+<div id="swap-and-change-pane-positions" class="section level4">
+<h4>Swap and change pane positions</h4>
 <p>Zoom a pane and de-zoom it:</p>
 <p>z</p>
+<p>Switch layout from horizontal to vertical</p>
+<pre><code>space</code></pre>
 <p>Swap pane up and down or left and right</p>
 <pre><code>{
 }</code></pre>
@@ -2440,6 +2482,7 @@ screen</p>
 <p>Uses an escaped semi colon to separate the two commands <a
 href="https://superuser.com/questions/352117/binding-a-tmux-key-to-multiple-commands">as
 explained on super user</a>.</p>
+</div>
 </div>
 <div id="movements" class="section level3">
 <h3>Movements</h3>

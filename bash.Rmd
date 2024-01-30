@@ -102,6 +102,21 @@ Convert a directory of JPG images into a printable A4 pdf:
 
     img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG
 
+Place the images in a landscape A5 document for printing 2 pages on one page. 
+The `^T` argument is to flip to landscape:
+
+    img2pdf --output out.pdf --pagesize A5^T --border 0cm:0cm *.jpg
+
+The man page of img2pdf explain the fit option with the following example:
+
+> "On  each  A4 page, fit images into a 10 cm times 15 cm rectangle but keep 
+> the original image size if the image is smaller than that."
+
+    img2pdf --output out.pdf -S A4 --imgsize 10cmx15cm --fit shrink *.jpg
+    # I have tried
+    img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm --imgsize 10cmx15cm --fit shrink *.jpg
+
+
 The help page `man img3pd` explains the arguments
 
 > Convert a directory of JPEG images into a PDF with printable A4 pages in
@@ -378,6 +393,11 @@ file name from the URL as explained in the curl man page.
 Install youtube-dl using pip:
 
      sudo pip install --upgrade youtube_dl
+
+Install from the compressed `tar.gz` version of a repository that doesn't 
+require git to be installed on your laptop:
+
+    pip install --force-reinstall https://github.com/ytdl-org/youtube-dl/archive/refs/heads/master.tar.gz
 
 You may also need to install the ffmpeg package:
 
@@ -1736,6 +1756,29 @@ Tunnel to a jupyter notebook on a server
 [How to set up passwordless SSH access for root user](https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-access-for-root-user)
 
 
+## Two factor authentication
+
+
+Note this section is not related to bash. I put it here for now, may find 
+another place later.
+
+
+- https://www.balticlsc.eu/gitlab/help/user/profile/account/two_factor_authentication.md#enable-2fa-via-one-time-password-authenticator
+
+> On your device (usually your phone): Install a compatible application, like:
+
+- Authenticator: open source app for iOS devices.
+
+- andOTP: feature rich open source app for Android which supports PGP encrypted 
+  backups.
+
+- FreeOTP: open source app for Android.
+
+- Google Authenticator: proprietary app for iOS and Android.
+
+- SailOTP: open source app for SailFish OS.
+
+
 ## GPG signing keys
 
 See also the [communication page](communication.html) on security issues
@@ -2333,11 +2376,19 @@ Display pane numbers
 
 [How to switch directly to a pane in tmux?](https://unix.stackexchange.com/a/136643/85530):
 
-> "You can jump directly to a pane by typing pane's index while it is showed by display panes command."
+> "You can jump directly to a pane by typing pane's index while it is showed by 
+> display panes command."
+
+
+#### Swap and change pane positions
 
 Zoom a pane and de-zoom it:
 
    z
+
+Switch layout from horizontal to vertical
+
+    space
 
 Swap pane up and down or left and right
 
