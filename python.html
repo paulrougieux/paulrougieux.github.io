@@ -1956,6 +1956,16 @@ myList.remove(&#39;c&#39;)
 myList
 [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;]</code></pre>
 </div>
+<div id="reverse-a-list" class="section level4">
+<h4>Reverse a list</h4>
+<p>Reverse a list with the reverse iterator</p>
+<pre><code>list(reversed(range(0,15)))</code></pre>
+<p>Reverse a list in place</p>
+<pre><code>bli = list(range(5))
+print(bli)
+bli.reverse()
+print(bli)</code></pre>
+</div>
 <div id="list-of-tuples" class="section level4">
 <h4>List of tuples</h4>
 <p><a
@@ -2347,14 +2357,17 @@ ipython</p>
 <pre><code>`l` </code></pre>
 <p>Show available variable in the current context:</p>
 <pre><code>`a` </code></pre>
-</div>
-<div id="breakpoint" class="section level2">
-<h2>Breakpoint</h2>
+<p>To enter interactive mode and paste more than one line of code at a
+time:</p>
+<pre><code>interact</code></pre>
+<div id="breakpoint" class="section level3">
+<h3>Breakpoint</h3>
 <p>To break at every step in a loop, use the <code>breakpoint()</code>
 function in any part of the code as explained in <a
 href="https://stackoverflow.com/questions/16867347/step-by-step-debugging-with-ipython">setp
 by step debuging with ipython</a>.</p>
 <pre><code>continue</code></pre>
+</div>
 </div>
 <div id="profiling-in-ipython" class="section level2">
 <h2>Profiling in ipython</h2>
@@ -2386,6 +2399,16 @@ class="uri">https://github.com/ipython/ipython/issues/1001</a></p>
 <a
 href="https://stackoverflow.com/questions/45784499/difference-between-and-in-jupyter-notebooks">Difference
 between ! and % in Jupyter Notebooks</a></p>
+</div>
+<div id="cloud-platforms-for-jupyter-notebooks" class="section level2">
+<h2>Cloud platforms for Jupyter notebooks</h2>
+<ul>
+<li><p>Google Colab</p></li>
+<li><p><a href="https://deepnote.com/"
+class="uri">https://deepnote.com/</a></p></li>
+<li><p><a href="https://www.runpod.io/"
+class="uri">https://www.runpod.io/</a></p></li>
+</ul>
 </div>
 <div id="convert-and-execute-notebooks-programmatically"
 class="section level2">
@@ -3965,6 +3988,14 @@ s.astype(float).to_list()</code></pre>
 <p>Note using NA values is not possible with the base integer type, it
 requires a special type Int64 as explained in this <a
 href="https://stackoverflow.com/a/67270477/2641825">SO answer</a></p>
+</div>
+<div id="check-the-type-of-a-column" class="section level3">
+<h3>Check the type of a column</h3>
+<p><a
+href="https://stackoverflow.com/questions/22697773/how-to-check-the-dtype-of-a-column-in-python-pandas/45568211#45568211"
+class="uri">https://stackoverflow.com/questions/22697773/how-to-check-the-dtype-of-a-column-in-python-pandas/45568211#45568211</a></p>
+<pre><code>from pandas.api.types import is_string_dtype
+from pandas.api.types import is_numeric_dtype</code></pre>
 <div id="find-mixed-data-types" class="section level4">
 <h4>Find mixed data types</h4>
 <p>When loading data sometimes more than one type are detected per
@@ -4119,6 +4150,12 @@ as follows</p>
  .assign(mean2 = lambda x: x.pw_sum / x.n)
 )</code></pre>
 </div>
+<div id="describe-mean-std-min-max" class="section level3">
+<h3>Describe mean, std, min, max</h3>
+<p>Display mean, std, min, 25%, 50%, 75%, max across group by
+variables</p>
+<pre><code>df.groupby([&quot;status&quot;])[&quot;diff&quot;].describe()</code></pre>
+</div>
 <div id="different-aggregation-functions" class="section level3">
 <h3>Different aggregation functions</h3>
 <p>Example aggregating some variables with a sum and taking the unique
@@ -4157,10 +4194,19 @@ passes a dictionary of variables and aggregation functions to the
 </div>
 <div id="unique-values-1" class="section level3">
 <h3>Unique values</h3>
-<pre><code>unique = lambda x: x.unique()[0] if x.nunique() == 1 else np.nan
-agg =  {&#39;primary_eq&#39;:unique,
-        &#39;import_quantity&#39;:unique,
-        &#39;primary_eq_imp_1&#39;:sum}
+<p>The fist element of the aggregation dictionary shows how to simply
+compute all the unique values</p>
+<pre><code>agg =  {
+    # All unique values in a list
+    &quot;country_iso2&quot;:lambda x: x.unique(),
+    # Concatenate a list of strings into a string
+    lambda x: &quot;&quot;.join(x.unique()),
+    # The first value if the value is repeated and only present once
+    &#39;primary_eq&#39;:lambda x: x.unique()[0] if x.nunique() == 1 else np.nan,
+    &#39;import_quantity&#39;:lambda x: x.unique()[0] if x.nunique() == 1 else np.nan,
+    # Sum the values
+    &#39;primary_eq_imp_1&#39;:&quot;sum&quot;
+}
 df_agg = df.groupby(index)[selected_columns].agg(agg).reset_index()</code></pre>
 </div>
 <div id="proportion-within-groups" class="section level3">
@@ -4222,6 +4268,20 @@ df.sort_values(‘B’).groupby(‘A’).head(2)</p></li>
 <h3>Transform and apply</h3>
 <p><a href="https://stackoverflow.com/a/47143056/2641825">SO answer
 explaining the difference between transform and apply</a></p>
+<p>Sum by groups</p>
+<pre><code>df = pandas.DataFrame({&#39;i&#39; : [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;],
+                       &#39;x&#39; : range(1,6)})
+df[&quot;y&quot;] = df.groupby(&quot;i&quot;)[&quot;x&quot;].transform(&quot;sum&quot;)</code></pre>
+<p>Yearly rolling of a monthly time series:</p>
+<pre><code>import pandas
+from matplotlib import pyplot as plt
+li = list(range(15))
+df = pandas.DataFrame({&#39;x&#39; : li  + list(reversed(li)) + li})
+df[&quot;y&quot;] = df[&quot;x&quot;].transform(lambda x: x.rolling(13, min_periods=1).mean())
+df.plot()
+plt.show()</code></pre>
+<p>Interpolate</p>
+<pre><code>df.groupby(&quot;a&quot;)[&quot;b&quot;].transform(pandas.Series.interpolate)l</code></pre>
 </div>
 <div id="concatenate-strings-in-the-same-group" class="section level3">
 <h3>Concatenate strings in the same group</h3>
@@ -4343,7 +4403,9 @@ interpolate</a></p>
 import numpy as np
 s = pandas.Series([0, 2, np.nan, 8, np.nan, np.nan])
 s.interpolate(method=&#39;polynomial&#39;, order=2)
-s.interpolate(method=&#39;linear&#39;)</code></pre>
+s.interpolate(method=&#39;linear&#39;)
+# Also fill NA values at the begining and end of the series
+s.interpolate(method=&#39;linear&#39;, limit_direction=&quot;both&quot;)</code></pre>
 <p>Limit interpolation to the inner NAN values</p>
 <pre><code>s.interpolate(limit_area=&quot;inside&quot;)</code></pre>
 <p><a
@@ -4509,6 +4571,7 @@ df.where(df[&quot;c&quot;].isin([&quot;n&quot;,&quot;o&quot;]),&quot;no&quot;)</
 </div>
 <div id="fill-na-values" class="section level3">
 <h3>Fill Na values</h3>
+<p>See also the interpolate section.</p>
 <p>Replace NA values by another value</p>
 <pre><code>import pandas
 import numpy as np
@@ -4910,56 +4973,60 @@ df[df[&#39;a&#39;].str.contains(&#39;a|i&#39;)]</code></pre>
 <p>Keep only numbers</p>
 <pre><code>df[&quot;a&quot;].replace(&#39;[a-zA-Z]&#39;, &#39;&#39;, regex=True)</code></pre>
 </div>
+<div id="strip-spaces" class="section level3">
+<h3>Strip spaces</h3>
+<p>Strip spaces in strings</p>
+<pre><code>df = pandas.DataFrame({&#39;a&#39;:[&#39;bla&#39;,&#39;bli&#39;,&#39; bla &#39;]})
+print(df.a.unique())
+print(df.a.str.strip().unique())</code></pre>
+</div>
 <div id="separate-a-columns-in-two-based-on-a-split-pattern"
 class="section level3">
 <h3>Separate a columns in two based on a split pattern</h3>
 <p>The “too many values to unpack” error can also be returned by the
 <code>str.split</code> method of pandas data frames.</p>
 <p>For example splitting a character vector on the “<code>,</code>”
-pattern:</p>
+pattern. Split by using both <code>n=1</code> and
+<code>expand=True</code>. Then assign to new columns using multiple
+vector assignment. It is equivalent to <a
+href="https://tidyr.tidyverse.org/reference/separate.html">tidyr::separate</a>
+in R.</p>
 <pre><code>import pandas
-df = pandas.DataFrame({&quot;x&quot;: [&quot;a&quot;, &quot;a, b&quot;, &quot;a,b,c&quot;]})
+df = pandas.DataFrame({&quot;x&quot;: [&quot;a&quot;, &quot;a,b&quot;, &quot;a,b,c&quot;]})
+
+df[[&quot;y&quot;, &quot;z&quot;]] = df.x.str.split(&quot;,&quot;, n=1, expand=True)
+df
+
+#        x  y     z
+# 0      a  a  None
+# 1   a, b  a     b
+# 2  a,b,c  a   b,c
+
+# The split data frame returned by the split method
+df.x.str.split(&quot;,&quot;, n=1, expand=True)
+
+#    0     1
+# 0  a  None
+# 1  a     b
+# 2  a   b,c
+
 df.x.str.split(&quot;,&quot;)
 
 # 0          [a]
 # 1      [a,  b]
 # 2    [a, b, c]
 
-df.x.str.split(&quot;,&quot;, n=1)
-
-# 0         [a]
-# 1     [a,  b]
-# 2    [a, b,c]
-
 df.x.str.split(&quot;,&quot;, expand=True)
 
 #    0     1     2
 # 0  a  None  None
 # 1  a     b  None
-# 2  a     b     c
-
-df.x.str.split(&quot;,&quot;, n=1, expand=True)
-
-#    0     1
-# 0  a  None
-# 1  a     b
-# 2  a   b,c</code></pre>
-<p>The following version works only if each row has exactly 2 splits. It
-<strong>fails</strong> with the <strong>error</strong> “too many values
-to unpack (expected 2)” in this example:</p>
+# 2  a     b     c</code></pre>
+<p>The following form of assignment works only if each row has exactly 2
+splits. In this example, it <strong>fails</strong> with the
+<strong>error</strong> “too many values to unpack (expected 2)”, because
+of the first row which has only one value instead of two:</p>
 <pre><code>df[&quot;y&quot;], df[&quot;z&quot;] = df.x.str.split(&quot;,&quot;, n=1)</code></pre>
-<p>The last version with both <code>n=1</code> and
-<code>expand=True</code> is the one to use for multiple vector
-assignment. It is equivalent to <a
-href="https://tidyr.tidyverse.org/reference/separate.html">tidyr::separate</a>
-in R.</p>
-<pre><code>df[[&quot;y&quot;, &quot;z&quot;]] = df.x.str.split(&quot;,&quot;, n=1, expand=True)
-df
-
-#        x  y     z
-# 0      a  a  None
-# 1   a, b  a     b
-# 2  a,b,c  a   b,c</code></pre>
 <p>According to the <a
 href="https://pandas.pydata.org/docs/reference/api/pandas.Series.str.split.html">documentation
 of pandas.Series.str.split</a> If n &gt; 0 and</p>
@@ -7461,6 +7528,63 @@ class="uri">https://ploomber.io/blog/survey/</a></li>
 <li><p>Snake make <a href="https://github.com/snakemake/snakemake"
 class="uri">https://github.com/snakemake/snakemake</a></p></li>
 </ul>
+<div id="apache-airflow" class="section level2">
+<h2>Apache Airflow</h2>
+<ul>
+<li><a
+href="https://airflow.apache.org/docs/apache-airflow/1.10.12/concepts.html"
+class="uri">https://airflow.apache.org/docs/apache-airflow/1.10.12/concepts.html</a></li>
+</ul>
+<blockquote>
+<p>“DAGs In Airflow, a DAG – or a Directed Acyclic Graph – is a
+collection of all the tasks you want to run, organized in a way that
+reflects their relationships and dependencies. A DAG is defined in a
+Python script, which represents the DAGs structure (tasks and their
+dependencies) as code. For example, a simple DAG could consist of three
+tasks: A, B, and C. It could say that A has to run successfully before B
+can run, but C can run anytime. It could say that task A times out after
+5 minutes, and B can be restarted up to 5 times in case it fails. It
+might also say that the workflow will run every night at 10pm, but
+shouldn’t start until a certain date. In this way, a DAG describes how
+you want to carry out your workflow; but notice that we haven’t said
+anything about what we actually want to do! A, B, and C could be
+anything. Maybe A prepares data for B to analyze while C sends an email.
+Or perhaps A monitors your location so B can open your garage door while
+C turns on your house lights. The important thing is that the DAG isn’t
+concerned with what its constituent tasks do; its job is to make sure
+that whatever they do happens at the right time, or in the right order,
+or with the right handling of any unexpected issues. DAGs are defined in
+standard Python files that are placed in Airflow’sDAG_FOLDER. Airflow
+will execute the code in each file to dynamically build the DAG objects.
+You can have as many DAGs as you want, each describing an arbitrary
+number of tasks. In general, each one should correspond to a single
+logical workflow.”</p>
+</blockquote>
+<blockquote>
+<p>” Workflows You’re now familiar with the core building blocks of
+Airflow. Some of the concepts may sound very similar, but the vocabulary
+can be conceptualized like this:</p>
+<ul>
+<li><p>DAG: The work (tasks), and the order in which work should take
+place (dependencies), written in Python.</p></li>
+<li><p>DAG Run: An instance of a DAG for a particular logical date and
+time.</p></li>
+<li><p>Operator: A class that acts as a template for carrying out some
+work.</p></li>
+<li><p>Task: Defines work by implementing an operator, written in
+Python.</p></li>
+<li><p>Task Instance: An instance of a task - that has been assigned to
+a DAG and has a state associated with a specific DAG run (i.e for a
+specific execution_date).</p></li>
+<li><p>execution_date: The logical date and time for a DAG Run and its
+Task Instances.</p></li>
+</ul>
+</blockquote>
+<blockquote>
+<p>By combining DAGs and Operators to create TaskInstances, you can
+build complex workflows.”</p>
+</blockquote>
+</div>
 </div>
 <div id="xarray" class="section level1">
 <h1>Xarray</h1>
@@ -7951,6 +8075,11 @@ your data exchange with pydantic</a></p></li>
 </div>
 <div id="teaching" class="section level2">
 <h2>Teaching</h2>
+<p>Teaching python</p>
+<ul>
+<li><a href="https://datacarpentry.org/python-ecology-lesson/index.html"
+class="uri">https://datacarpentry.org/python-ecology-lesson/index.html</a></li>
+</ul>
 </div>
 </div>
 

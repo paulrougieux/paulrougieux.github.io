@@ -1269,7 +1269,6 @@ You can use the command line tool ncdump to view the content of netcdf files
 
 ## Open a text file
 
-
 Open a text file and print lines containing "error" 
 
     with open('filename.txt', 'r') as file:
@@ -1644,6 +1643,20 @@ answer](https://stackoverflow.com/a/52110266/2641825))
     myList.remove('c')
     myList
     ['a', 'b', 'd']
+
+
+#### Reverse a list
+
+Reverse a list with the reverse iterator
+
+    list(reversed(range(0,15)))
+
+Reverse a list in place
+
+    bli = list(range(5))
+    print(bli)
+    bli.reverse()
+    print(bli)
 
 
 #### List of tuples
@@ -2040,7 +2053,6 @@ When pasting from another place, turn off auto indentation in ipython
 
 ## Debugging in ipython
 
-
 Once an error occurs at the ipython command line. 
 Press `debug` then you can move up the stack trace with:
 
@@ -2058,14 +2070,20 @@ Show available variable in the current context:
 
     `a` 
 
+To enter interactive mode and paste more than one line of code at a time:
 
-## Breakpoint
+    interact
+
+
+### Breakpoint
 
 To break at every step in a loop, use the `breakpoint()` function in any part
 of the code as explained in [setp by step debuging with
 ipython](https://stackoverflow.com/questions/16867347/step-by-step-debugging-with-ipython).
 
     continue
+
+
 
 
 ## Profiling in ipython
@@ -2104,6 +2122,15 @@ Prefix the bash call with an exclamation mark, for example:
 In fact the question mark also works from an ipython shell. 
 See also 
 [Difference between ! and % in Jupyter Notebooks](https://stackoverflow.com/questions/45784499/difference-between-and-in-jupyter-notebooks)
+
+
+## Cloud platforms for Jupyter notebooks
+
+- Google Colab
+
+- https://deepnote.com/
+
+- https://www.runpod.io/
 
 
 ## Convert and execute notebooks programmatically
@@ -3809,6 +3836,14 @@ special type Int64 as explained in this [SO
 answer](https://stackoverflow.com/a/67270477/2641825)
 
 
+### Check the type of a column
+
+https://stackoverflow.com/questions/22697773/how-to-check-the-dtype-of-a-column-in-python-pandas/45568211#45568211
+
+    from pandas.api.types import is_string_dtype
+    from pandas.api.types import is_numeric_dtype
+
+
 #### Find mixed data types
 
 When loading data sometimes more than one type are detected per column with a
@@ -3832,10 +3867,6 @@ Find columns that use more than one type
         unique_types = iris[col].apply(type).unique()
         if len(unique_types) > 1:
             print(col, unique_types)
-
-
-
-
 
 
 ### Memory usage
@@ -4008,6 +4039,13 @@ defined lambda function as follows
     )
 
 
+### Describe mean, std, min, max
+
+Display mean, std, min, 25%, 50%, 75%, max across group by variables
+
+    df.groupby(["status"])["diff"].describe()
+
+
 ### Different aggregation functions
 
 Example aggregating some variables with a sum and taking the unique value
@@ -4047,11 +4085,20 @@ method.
 
 ### Unique values 
 
+The fist element of the aggregation dictionary shows how to simply compute all 
+the unique values
 
-    unique = lambda x: x.unique()[0] if x.nunique() == 1 else np.nan
-    agg =  {'primary_eq':unique,
-            'import_quantity':unique,
-            'primary_eq_imp_1':sum}
+    agg =  {
+        # All unique values in a list
+        "country_iso2":lambda x: x.unique(),
+        # Concatenate a list of strings into a string
+        lambda x: "".join(x.unique()),
+        # The first value if the value is repeated and only present once
+        'primary_eq':lambda x: x.unique()[0] if x.nunique() == 1 else np.nan,
+        'import_quantity':lambda x: x.unique()[0] if x.nunique() == 1 else np.nan,
+        # Sum the values
+        'primary_eq_imp_1':"sum"
+    }
     df_agg = df.groupby(index)[selected_columns].agg(agg).reset_index()
 
 
@@ -4126,6 +4173,26 @@ groupby](https://stackoverflow.com/questions/30486417/pandas-how-do-i-select-fir
 ### Transform and apply
 
 [SO answer explaining the difference between transform and apply](https://stackoverflow.com/a/47143056/2641825)
+
+Sum by groups
+
+    df = pandas.DataFrame({'i' : ['a', 'a', 'b', 'b', 'b'],
+                           'x' : range(1,6)})
+    df["y"] = df.groupby("i")["x"].transform("sum")
+
+Yearly rolling of a monthly time series:
+
+    import pandas
+    from matplotlib import pyplot as plt
+    li = list(range(15))
+    df = pandas.DataFrame({'x' : li  + list(reversed(li)) + li})
+    df["y"] = df["x"].transform(lambda x: x.rolling(13, min_periods=1).mean())
+    df.plot()
+    plt.show()
+
+Interpolate
+
+    df.groupby("a")["b"].transform(pandas.Series.interpolate)l
 
 
 ### Concatenate strings in the same group
@@ -4259,6 +4326,8 @@ interpolate](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.inter
     s = pandas.Series([0, 2, np.nan, 8, np.nan, np.nan])
     s.interpolate(method='polynomial', order=2)
     s.interpolate(method='linear')
+    # Also fill NA values at the begining and end of the series
+    s.interpolate(method='linear', limit_direction="both")
 
 Limit interpolation to the inner NAN values
 
@@ -4431,6 +4500,8 @@ Replace values where the condition is false see `help(df.where)`
 
 
 ### Fill Na values
+
+See also the interpolate section.
 
 Replace NA values by another value
 
@@ -4916,48 +4987,26 @@ Keep only numbers
     df["a"].replace('[a-zA-Z]', '', regex=True)
 
 
+### Strip spaces
+
+Strip spaces in strings
+
+    df = pandas.DataFrame({'a':['bla','bli',' bla ']})
+    print(df.a.unique())
+    print(df.a.str.strip().unique())
+
+
 ### Separate a columns in two based on a split pattern
 
 The "too many values to unpack" error can also be returned by the `str.split` method of pandas data frames.
 
-For example splitting a character vector on the "`,`" pattern:
+For example splitting a character vector on the "`,`" pattern. Split by using 
+both `n=1` and `expand=True`. Then assign to new columns using multiple vector 
+assignment. It is equivalent to 
+[tidyr::separate](https://tidyr.tidyverse.org/reference/separate.html) in R.
 
     import pandas
-    df = pandas.DataFrame({"x": ["a", "a, b", "a,b,c"]})
-    df.x.str.split(",")
-
-    # 0          [a]
-    # 1      [a,  b]
-    # 2    [a, b, c]
-
-    df.x.str.split(",", n=1)
-
-    # 0         [a]
-    # 1     [a,  b]
-    # 2    [a, b,c]
-
-    df.x.str.split(",", expand=True)
-
-    #    0     1     2
-    # 0  a  None  None
-    # 1  a     b  None
-    # 2  a     b     c
-
-    df.x.str.split(",", n=1, expand=True)
-
-    #    0     1
-    # 0  a  None
-    # 1  a     b
-    # 2  a   b,c
-
-The following version works only if each row has exactly 2 splits. It **fails**
-with the **error** “too many values to unpack (expected 2)” in this example:
-
-    df["y"], df["z"] = df.x.str.split(",", n=1)
-
-The last version with both `n=1` and `expand=True` is the one to use for
-multiple vector assignment. It is equivalent to
-[tidyr::separate](https://tidyr.tidyverse.org/reference/separate.html) in R.
+    df = pandas.DataFrame({"x": ["a", "a,b", "a,b,c"]})
 
     df[["y", "z"]] = df.x.str.split(",", n=1, expand=True)
     df
@@ -4966,6 +5015,34 @@ multiple vector assignment. It is equivalent to
     # 0      a  a  None
     # 1   a, b  a     b
     # 2  a,b,c  a   b,c
+
+    # The split data frame returned by the split method
+    df.x.str.split(",", n=1, expand=True)
+
+    #    0     1
+    # 0  a  None
+    # 1  a     b
+    # 2  a   b,c
+
+    df.x.str.split(",")
+
+    # 0          [a]
+    # 1      [a,  b]
+    # 2    [a, b, c]
+
+    df.x.str.split(",", expand=True)
+
+    #    0     1     2
+    # 0  a  None  None
+    # 1  a     b  None
+    # 2  a     b     c
+
+The following form of assignment works only if each row has exactly 2 splits. 
+In this example, it **fails** with the **error** “too many values to unpack 
+(expected 2)”, because of the first row which has only one value instead of 
+two:
+
+    df["y"], df["z"] = df.x.str.split(",", n=1)
 
 According to the [documentation of
 pandas.Series.str.split](https://pandas.pydata.org/docs/reference/api/pandas.Series.str.split.html)
@@ -7520,6 +7597,56 @@ how asyncio works with a simulated delay to fetch a web page.
 
 - Snake make https://github.com/snakemake/snakemake
 
+## Apache Airflow
+
+- https://airflow.apache.org/docs/apache-airflow/1.10.12/concepts.html
+
+> "DAGs In Airflow, a DAG – or a Directed Acyclic Graph – is a collection of 
+> all the tasks you want to run, organized in a way that reflects their 
+> relationships and dependencies. A DAG is defined in a Python script, which 
+> represents the DAGs structure (tasks and their dependencies) as code. For 
+> example, a simple DAG could consist of three tasks: A, B, and 
+> C. It could say that A has to run successfully before B can run, but C 
+> can run anytime. It could say that task A times out after 5 minutes, and 
+> B can be restarted up to 5 times in case it fails. It might also say that 
+> the workflow will run every night at 10pm, but shouldn’t start until a 
+> certain date. In this way, a DAG describes how you want to carry out your 
+> workflow; but notice that we haven’t said anything about what we actually 
+> want to do! A, B, and C could be anything. Maybe A prepares data for B to 
+> analyze while C sends an email. Or perhaps A monitors your location so B 
+> can open your garage door while C turns on your house lights. The 
+> important thing is that the DAG isn’t concerned with what its constituent 
+> tasks do; its job is to make sure that whatever they do happens at the 
+> right time, or in the right order, or with the right handling of any 
+> unexpected issues. DAGs are defined in standard Python files that are 
+> placed in Airflow’sDAG_FOLDER. Airflow will execute the code in each file 
+> to dynamically build the DAG objects. You can have as many DAGs as you 
+> want, each describing an arbitrary number of tasks. In general, each one 
+> should correspond to a single logical workflow."
+
+> " Workflows You’re now familiar with the core building blocks of Airflow. 
+> Some of the concepts may sound very similar, but the vocabulary can be 
+> conceptualized like this:
+>
+> - DAG: The work (tasks), and the order in which work should take place 
+>   (dependencies), written in Python.
+> 
+> - DAG Run: An instance of a DAG for a particular logical date and time.
+> 
+> - Operator: A class that acts as a template for carrying out some work.
+> 
+> - Task: Defines work by implementing an operator, written in Python.
+> 
+> - Task Instance: An instance of a task - that has been assigned to a DAG 
+>   and has a state associated with a specific DAG run (i.e for a specific 
+>   execution_date).
+> 
+> - execution_date: The logical date and time for a DAG Run and its Task 
+>   Instances.
+
+> By combining DAGs and Operators to create TaskInstances, you can build 
+> complex workflows."
+ 
 
 # Xarray
 
@@ -7782,7 +7909,6 @@ https://docs.xarray.dev/en/stable/user-guide/indexing.html#assigning-values-with
 
 ### Querying index variables
 
-
 Keep only data that is below the base year into the dataset.
 
     base_year = 2018
@@ -8006,6 +8132,11 @@ Martelli](https://mappingthejourney.com/single-post/2017/06/21/episode-2-intervi
   exchange with pydantic](https://talkpython.fm/episodes/show/313/automate
   your data exchange with pydantic)
 
+
 ## Teaching
+
+Teaching python
+
+- https://datacarpentry.org/python-ecology-lesson/index.html
 
 
