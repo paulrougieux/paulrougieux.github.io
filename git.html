@@ -972,6 +972,31 @@ allowed people to change them afterwards, the messages are inherently
 not very trustworthy.”</p>
 </blockquote>
 </div>
+<div id="commit-to-the-wrong-branch" class="section level3">
+<h3>Commit to the wrong branch</h3>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/2941517/how-to-fix-committing-to-the-wrong-git-branch"
+class="uri">https://stackoverflow.com/questions/2941517/how-to-fix-committing-to-the-wrong-git-branch</a></li>
+</ul>
+<blockquote>
+<p>“If you haven’t yet pushed your changes, you can also do a soft
+reset:”</p>
+</blockquote>
+<pre><code>git reset --soft HEAD^</code></pre>
+<blockquote>
+<p>“This will revert the commit, but put the committed changes back into
+your index. Assuming the branches are relatively up-to-date with regard
+to each other, git will let you do a checkout into the other branch,
+whereupon you can simply commit:”</p>
+</blockquote>
+<pre><code>git checkout branch
+git commit -c ORIG_HEAD</code></pre>
+<blockquote>
+<p>“The -c ORIG_HEAD part is useful to not type commit message
+again.”</p>
+</blockquote>
+</div>
 <div id="rebase-your-changes-on-top-of-the-remote-head-commit"
 class="section level3">
 <h3>Rebase your changes on top of the remote head commit</h3>
@@ -1451,6 +1476,11 @@ pull before pushing them.”</p>
 </blockquote>
 <p>This can be set as a global configuration with</p>
 <pre><code>git config --global pull.rebase true</code></pre>
+</div>
+<div id="pull-a-new-branch-from-the-repository" class="section level2">
+<h2>Pull a new branch from the repository</h2>
+<p>Pull a newly created branch from the remote repository</p>
+<pre><code>git fetch</code></pre>
 </div>
 </div>
 <div id="rename-and-delete-files" class="section level1">
