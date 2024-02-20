@@ -132,20 +132,36 @@ I used this setting to fix the orientation of an HP Elitebook laptop.
 
 * [Debian Salsa](https://salsa.debian.org/public) code repository.
 
+
+
 ## Documentation
 
 * [wiki.debian.org](https://wiki.debian.org/)
 
+
+## Autopkgtest
+
+Tests ensures the compatibility between a software and its dependencies. The 
+relationships between software are defined here: 
+https://www.debian.org/doc/debian-policy/ch-relationships.html and new versions 
+of dependencies are tested before their integration into the system. For 
+example, the result of autopkgtest on Debian's continuous integration, such as 
+the results of the python-pip package 
+https://ci.debian.net/packages/p/python-pip/"
+
+
 # Installing software
 
-## APT
+## Package management
+
+### APT
 
 For software in the repository, use
 
     sudo apt install packagename
 
 
-### APT behind a proxy
+#### APT behind a proxy
 
 [Hash sum mismatch issue, fix bad proxy](https://askubuntu.com/a/809808/315347)
 
@@ -172,7 +188,7 @@ In the following form (do not forget the semicolon at the end):
     Acquire::http::Proxy "http://user:password@proxy.server:port/";
 
 
-### Search packages
+#### Search packages
 
 Search packages with apt
 
@@ -184,6 +200,73 @@ Search packages with aptitude, the high level interface to the package manager
 
 Search packages on the [Debian
 website](https://www.debian.org/distrib/packages).
+
+
+### NIX
+
+- NIX manual https://nixos.org/manual/nix/stable/
+  
+    > "You can have multiple versions or variants of a package installed at the 
+    > same time. This is especially important when different applications have 
+    > dependencies on different versions of the same package — it prevents the 
+    > “DLL hell”. Because of the hashing scheme, different versions of a 
+    > package end up in different paths in the Nix store, so they don’t 
+    > interfere with each other.
+
+    > "An important consequence is that operations like upgrading or 
+    > uninstalling an application cannot break other applications, since these 
+    > operations never “destructively” update or delete files that are used by 
+    > other packages."
+
+    > "Since Nix on the other hand doesn’t install packages in “global” 
+    > locations like /usr/bin but in package-specific directories, the risk of 
+    > incomplete dependencies is greatly reduced. This is because tools such as 
+    > compilers don’t search in per-packages directories such as 
+    > /nix/store/5lbfaxb722zp…-openssl-0.9.8d/include, so if a package builds 
+    > correctly on your system, this is because you specified the dependency 
+    > explicitly. This takes care of the build-time dependencies."    
+
+    > "Once a package is built, runtime dependencies are found by scanning 
+    > binaries for the hash parts of Nix store paths (such as r8vvq9kq…). This 
+    > sounds risky, but it works extremely well."
+
+- The Nix package manager https://github.com/NixOS/nix
+
+  - Nix packages https://github.com/NixOS/nixpkgs
+
+    > "a collection of over 80,000 software packages that can be installed with 
+    > the Nix package manager. It also implements NixOS, a purely-functional 
+    > Linux distribution."
+
+
+- Nix with docker files 
+
+    - https://mitchellh.com/writing/nix-with-dockerfiles
+
+    - https://thewagner.net/blog/2021/02/25/building-container-images-with-nix/
+
+    - based on the nix image https://hub.docker.com/r/nixos/nix
+
+
+#### Nix on Debian
+
+- Debian Package for NIX https://packages.debian.org/sid/nix-setup-systemd
+
+    > "Purely functional package manager (systemd setup) A powerful package 
+    > manager for Linux and other Unix systems that makes package management 
+    > reliable and reproducible. Nix provides atomic upgrades and rollbacks, 
+    > side-by-side installation of multiple versions of a package, multi-user 
+    > package management and easy setup of build environments. This package 
+    > uses systemd mechanisms to setup the nix package manager."
+
+- Nix Package Manager on Ubuntu or Debian 
+  https://ariya.io/2020/05/nix-package-manager-on-ubuntu-or-debian
+
+
+
+#### Nix on a cluster
+
+https://nixos.wiki/wiki/K3s
 
 
 ## Installing Debian software from backports

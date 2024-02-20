@@ -552,15 +552,29 @@ repository.</li>
 <li><a href="https://wiki.debian.org/">wiki.debian.org</a></li>
 </ul>
 </div>
+<div id="autopkgtest" class="section level2">
+<h2>Autopkgtest</h2>
+<p>Tests ensures the compatibility between a software and its
+dependencies. The relationships between software are defined here: <a
+href="https://www.debian.org/doc/debian-policy/ch-relationships.html"
+class="uri">https://www.debian.org/doc/debian-policy/ch-relationships.html</a>
+and new versions of dependencies are tested before their integration
+into the system. For example, the result of autopkgtest on Debian’s
+continuous integration, such as the results of the python-pip package <a
+href="https://ci.debian.net/packages/p/python-pip/"
+class="uri">https://ci.debian.net/packages/p/python-pip/</a>”</p>
+</div>
 </div>
 <div id="installing-software" class="section level1">
 <h1>Installing software</h1>
-<div id="apt" class="section level2">
-<h2>APT</h2>
+<div id="package-management" class="section level2">
+<h2>Package management</h2>
+<div id="apt" class="section level3">
+<h3>APT</h3>
 <p>For software in the repository, use</p>
 <pre><code>sudo apt install packagename</code></pre>
-<div id="apt-behind-a-proxy" class="section level3">
-<h3>APT behind a proxy</h3>
+<div id="apt-behind-a-proxy" class="section level4">
+<h4>APT behind a proxy</h4>
 <p><a href="https://askubuntu.com/a/809808/315347">Hash sum mismatch
 issue, fix bad proxy</a></p>
 <pre><code>sudo vim /etc/apt/apt.conf.d/99fixbadproxy</code></pre>
@@ -578,8 +592,8 @@ configuration file:</p>
 <p>In the following form (do not forget the semicolon at the end):</p>
 <pre><code>Acquire::http::Proxy &quot;http://user:password@proxy.server:port/&quot;;</code></pre>
 </div>
-<div id="search-packages" class="section level3">
-<h3>Search packages</h3>
+<div id="search-packages" class="section level4">
+<h4>Search packages</h4>
 <p>Search packages with apt</p>
 <pre><code>apt search &lt;name&gt;</code></pre>
 <p>Search packages with aptitude, the high level interface to the
@@ -587,6 +601,88 @@ package manager</p>
 <pre><code>aptitude search &lt;name&gt;</code></pre>
 <p>Search packages on the <a
 href="https://www.debian.org/distrib/packages">Debian website</a>.</p>
+</div>
+</div>
+<div id="nix" class="section level3">
+<h3>NIX</h3>
+<ul>
+<li><p>NIX manual <a href="https://nixos.org/manual/nix/stable/"
+class="uri">https://nixos.org/manual/nix/stable/</a></p>
+<blockquote>
+<p>“You can have multiple versions or variants of a package installed at
+the same time. This is especially important when different applications
+have dependencies on different versions of the same package — it
+prevents the “DLL hell”. Because of the hashing scheme, different
+versions of a package end up in different paths in the Nix store, so
+they don’t interfere with each other.</p>
+</blockquote>
+<blockquote>
+<p>“An important consequence is that operations like upgrading or
+uninstalling an application cannot break other applications, since these
+operations never “destructively” update or delete files that are used by
+other packages.”</p>
+</blockquote>
+<blockquote>
+<p>“Since Nix on the other hand doesn’t install packages in “global”
+locations like /usr/bin but in package-specific directories, the risk of
+incomplete dependencies is greatly reduced. This is because tools such
+as compilers don’t search in per-packages directories such as
+/nix/store/5lbfaxb722zp…-openssl-0.9.8d/include, so if a package builds
+correctly on your system, this is because you specified the dependency
+explicitly. This takes care of the build-time dependencies.”</p>
+</blockquote>
+<blockquote>
+<p>“Once a package is built, runtime dependencies are found by scanning
+binaries for the hash parts of Nix store paths (such as r8vvq9kq…). This
+sounds risky, but it works extremely well.”</p>
+</blockquote></li>
+<li><p>The Nix package manager <a href="https://github.com/NixOS/nix"
+class="uri">https://github.com/NixOS/nix</a></p>
+<ul>
+<li><p>Nix packages <a href="https://github.com/NixOS/nixpkgs"
+class="uri">https://github.com/NixOS/nixpkgs</a></p>
+<blockquote>
+<p>“a collection of over 80,000 software packages that can be installed
+with the Nix package manager. It also implements NixOS, a
+purely-functional Linux distribution.”</p>
+</blockquote></li>
+</ul></li>
+<li><p>Nix with docker files</p>
+<ul>
+<li><p><a href="https://mitchellh.com/writing/nix-with-dockerfiles"
+class="uri">https://mitchellh.com/writing/nix-with-dockerfiles</a></p></li>
+<li><p><a
+href="https://thewagner.net/blog/2021/02/25/building-container-images-with-nix/"
+class="uri">https://thewagner.net/blog/2021/02/25/building-container-images-with-nix/</a></p></li>
+<li><p>based on the nix image <a
+href="https://hub.docker.com/r/nixos/nix"
+class="uri">https://hub.docker.com/r/nixos/nix</a></p></li>
+</ul></li>
+</ul>
+<div id="nix-on-debian" class="section level4">
+<h4>Nix on Debian</h4>
+<ul>
+<li><p>Debian Package for NIX <a
+href="https://packages.debian.org/sid/nix-setup-systemd"
+class="uri">https://packages.debian.org/sid/nix-setup-systemd</a></p>
+<blockquote>
+<p>“Purely functional package manager (systemd setup) A powerful package
+manager for Linux and other Unix systems that makes package management
+reliable and reproducible. Nix provides atomic upgrades and rollbacks,
+side-by-side installation of multiple versions of a package, multi-user
+package management and easy setup of build environments. This package
+uses systemd mechanisms to setup the nix package manager.”</p>
+</blockquote></li>
+<li><p>Nix Package Manager on Ubuntu or Debian <a
+href="https://ariya.io/2020/05/nix-package-manager-on-ubuntu-or-debian"
+class="uri">https://ariya.io/2020/05/nix-package-manager-on-ubuntu-or-debian</a></p></li>
+</ul>
+</div>
+<div id="nix-on-a-cluster" class="section level4">
+<h4>Nix on a cluster</h4>
+<p><a href="https://nixos.wiki/wiki/K3s"
+class="uri">https://nixos.wiki/wiki/K3s</a></p>
+</div>
 </div>
 </div>
 <div id="installing-debian-software-from-backports"
