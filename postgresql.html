@@ -657,16 +657,16 @@ select distinct(product_code) from raw_comtrade.monthly where product_code like 
 DELETE FROM raw_comtrade.monthly WHERE product_code like &#39;15%&#39;;
 DELETE FROM raw_comtrade.monthly WHERE product_code like &#39;44%&#39;;</code></pre>
 </div>
-<div id="drop" class="section level2">
-<h2>Drop</h2>
-<p>Delete a database</p>
+<div id="drop-a-db-schema-or-table" class="section level2">
+<h2>Drop a db, schema or table</h2>
+<p>Drop a database</p>
 <pre><code>postgres=# drop database databasename;</code></pre>
-<p>Delete a schema</p>
+<p>Drop a schema</p>
 <pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext&quot;
 ERROR:  cannot drop schema raw_comext because other objects depend on it
 DETAIL:  table raw_comext.monthly depends on schema raw_comext
 HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
-<p>Delete a schema and all its table with a drop in cascade</p>
+<p>Drop a schema and all its table with a drop in cascade</p>
 <pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext CASCADE&quot;</code></pre>
 <p>Drop a table</p>
 <pre><code>drop table raw_comtrade.yearly;</code></pre>
@@ -674,11 +674,19 @@ HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
 </div>
 <div id="rename" class="section level1">
 <h1>Rename</h1>
+<div id="rename-a-table" class="section level2">
+<h2>Rename a table</h2>
 <p>Rename a table to another name with <code>_backup</code> at the
 end</p>
 <pre><code>ALTER TABLE raw_comtrade.yearly RENAME TO yearly_backup;
 ALTER TABLE raw_comtrade.monthly RENAME TO monthly_backup;
 ALTER TABLE raw_comtrade.product RENAME TO product_backup;</code></pre>
+</div>
+<div id="rename-a-schema" class="section level2">
+<h2>Rename a schema</h2>
+<p>Rename a schema</p>
+<pre><code>ALTER SCHEMA raw_comtrade RENAME TO raw_comtrade_backup;</code></pre>
+</div>
 </div>
 <div id="dump" class="section level1">
 <h1>Dump</h1>
@@ -830,7 +838,19 @@ SELECT ... FROM fdt WHERE EXISTS (SELECT c1 FROM t2 WHERE c2 &gt; fdt.c1)</code>
 <pre><code>select distinct(reporter) from raw_comtrade.yearly_hs2 where commodity_code = &#39;02&#39;;</code></pre>
 <div id="like" class="section level2">
 <h2>Like</h2>
+<p>Select product codes that start with <code>"15"</code></p>
 <pre><code>select distinct(product_code) from raw_comtrade.monthly where product_code like &#39;15%&#39;;</code></pre>
+</div>
+<div id="in" class="section level2">
+<h2>In</h2>
+<p>Select product codes within a list, then group by and count</p>
+<pre><code>biotrade=&gt; SELECT product_code, count(*) FROM raw_comtrade.yearly WHERE 
+product_code IN (&#39;230400&#39;, &#39;150710&#39;, &#39;120190&#39;) group by product_code;
+ product_code | count
+--------------+-------
+ 120190       | 29727
+ 150710       | 33790
+ 230400       | 49398</code></pre>
 </div>
 </div>
 <div id="road-map" class="section level1">

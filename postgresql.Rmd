@@ -230,20 +230,20 @@ Delete oil products from the Comtrade monthly table:
     DELETE FROM raw_comtrade.monthly WHERE product_code like '44%';
 
 
-## Drop
+## Drop a db, schema or table
 
-Delete a database
+Drop a database
 
     postgres=# drop database databasename;
 
-Delete a schema
+Drop a schema
 
     psql -d tradeflows -h localhost -U rdb -c "DROP SCHEMA raw_comext"
     ERROR:  cannot drop schema raw_comext because other objects depend on it
     DETAIL:  table raw_comext.monthly depends on schema raw_comext
     HINT:  Use DROP ... CASCADE to drop the dependent objects too.
 
-Delete a schema and all its table with a drop in cascade
+Drop a schema and all its table with a drop in cascade
 
     psql -d tradeflows -h localhost -U rdb -c "DROP SCHEMA raw_comext CASCADE"
 
@@ -254,11 +254,20 @@ Drop a table
 
 # Rename 
 
+## Rename a table
+
 Rename a table to another name with `_backup` at the end
 
     ALTER TABLE raw_comtrade.yearly RENAME TO yearly_backup;
     ALTER TABLE raw_comtrade.monthly RENAME TO monthly_backup;
     ALTER TABLE raw_comtrade.product RENAME TO product_backup;
+
+
+## Rename a schema
+
+Rename a schema
+
+    ALTER SCHEMA raw_comtrade RENAME TO raw_comtrade_backup;
 
 
 # Dump
@@ -417,8 +426,22 @@ column "02" does not exist` is returned)
 
 ## Like
 
+Select product codes that start with `"15"`
 
     select distinct(product_code) from raw_comtrade.monthly where product_code like '15%';
+
+
+## In
+
+Select product codes within a list, then group by and count
+
+    biotrade=> SELECT product_code, count(*) FROM raw_comtrade.yearly WHERE 
+    product_code IN ('230400', '150710', '120190') group by product_code;
+     product_code | count
+    --------------+-------
+     120190       | 29727
+     150710       | 33790
+     230400       | 49398
 
 
 
