@@ -40,6 +40,7 @@ alias jlab="source ~/rp/penv/bin/activate &&jupyter lab"
 
 # Paths for python data
 export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
+export DEFORESTFOOT_DATA="$HOME/repos/forobs/deforestfoot_data/"
 export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost:5433/biotrade"
 export COBWOOD_DATA="$HOME/repos/cobwood_data/"
 export EU_CBM_AIDB="$HOME/repos/eu_cbm/eu_cbm_aidb/"
