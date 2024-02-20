@@ -864,6 +864,11 @@ doesn't work automatically and you have to use
 
     :'<,'>s/\%Vsearch/replace/g
 
+To replace a visual selection by inserting new text at the keyboard in insert 
+mode, use `c` for change:
+
+    c
+
 
 ## Copy, cut and paste
 
@@ -1741,6 +1746,12 @@ autochdir conflicts with the ctags plugin taglist [as explained
 here](https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set)
 so I deactivated it. 
 
+# NeoVim
+
+- Neo Vim for Vim users https://neovim.io/doc/user/nvim.html#nvim-from-vim 
+  explains how to use the .vimrc from Neovim
+
+
 # Plugins
 
 Plugins are mentioned in diverse section of this document. 
@@ -2539,8 +2550,13 @@ Send command to a tmux pane running bash, python or R with:
 
     Ctrl C
 
-I created a Shortcut `;l` to emulate NvimR's shortcut which send the current line to Slime
+### Python shell mappings
 
+I created the shortcut `;w`, `;l` and `;p` to emulate NvimR's shortcut which 
+send the current word, the current line or the current paragraph to the latest 
+interactive shell (ipython)
+
+    autocmd FileType python nmap <buffer> <LocalLeader>w viw<Plug>SlimeRegionSend
     autocmd FileType python nmap <LocalLeader>l <Plug>SlimeLineSend
     autocmd FileType python nmap <LocalLeader>p <Plug>SlimeParagraphSend
 

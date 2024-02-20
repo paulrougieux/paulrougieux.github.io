@@ -1152,6 +1152,9 @@ press <code>:</code>. The line will automatically begin with
 <p>For <a href="https://stackoverflow.com/a/25276670/2641825">a vertical
 selection</a>, this doesn’t work automatically and you have to use</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/\%Vsearch/replace/g</code></pre>
+<p>To replace a visual selection by inserting new text at the keyboard
+in insert mode, use <code>c</code> for change:</p>
+<pre><code>c</code></pre>
 </div>
 </div>
 <div id="copy-cut-and-paste" class="section level2">
@@ -1868,6 +1871,15 @@ edited</p>
 href="https://vi.stackexchange.com/questions/13960/how-to-browse-tags-when-autochdir-is-set">as
 explained here</a> so I deactivated it.</p>
 </div>
+</div>
+<div id="neovim" class="section level1">
+<h1>NeoVim</h1>
+<ul>
+<li>Neo Vim for Vim users <a
+href="https://neovim.io/doc/user/nvim.html#nvim-from-vim"
+class="uri">https://neovim.io/doc/user/nvim.html#nvim-from-vim</a>
+explains how to use the .vimrc from Neovim</li>
+</ul>
 </div>
 <div id="plugins" class="section level1">
 <h1>Plugins</h1>
@@ -2595,10 +2607,16 @@ window with a REPL in the other pane:</p>
 <pre><code>let g:slime_default_config = {&quot;socket_name&quot;: &quot;default&quot;, &quot;target_pane&quot;: &quot;{last}&quot;}</code></pre>
 <p>Send command to a tmux pane running bash, python or R with:</p>
 <pre><code>Ctrl C</code></pre>
-<p>I created a Shortcut <code>;l</code> to emulate NvimR’s shortcut
-which send the current line to Slime</p>
-<pre><code>autocmd FileType python nmap &lt;LocalLeader&gt;l &lt;Plug&gt;SlimeLineSend
+<div id="python-shell-mappings" class="section level3">
+<h3>Python shell mappings</h3>
+<p>I created the shortcut <code>;w</code>, <code>;l</code> and
+<code>;p</code> to emulate NvimR’s shortcut which send the current word,
+the current line or the current paragraph to the latest interactive
+shell (ipython)</p>
+<pre><code>autocmd FileType python nmap &lt;buffer&gt; &lt;LocalLeader&gt;w viw&lt;Plug&gt;SlimeRegionSend
+autocmd FileType python nmap &lt;LocalLeader&gt;l &lt;Plug&gt;SlimeLineSend
 autocmd FileType python nmap &lt;LocalLeader&gt;p &lt;Plug&gt;SlimeParagraphSend</code></pre>
+</div>
 <div id="indentationerror-unexpected-indent" class="section level3">
 <h3>IndentationError: unexpected indent</h3>
 <p>Excessive indentation issues can arrise when slime sends indented
