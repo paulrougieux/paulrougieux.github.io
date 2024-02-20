@@ -348,6 +348,15 @@ stuff](https://yanhan.github.io/posts/2017-09-27-how-to-use-gpg-to-encrypt-stuff
 > "It’s time for PGP to die."
 
 
+# Search
+
+
+## Google
+
+- Do an image search with the `tbm=isch` argument
+  https://www.google.com/search?q=cobwood+houses&tbm=isch
+
+
 # Social Media
 
 Social media "facilitate controlled experimentation". When you use social
