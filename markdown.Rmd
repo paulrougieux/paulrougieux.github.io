@@ -162,6 +162,23 @@ Goals:
     - https://jjallaire.github.io/visualization-curriculum
 
 
+## Citations
+
+To cite a reference in the format of "author (year)" from the bibliography, 
+use:
+
+    @citationkey
+
+To cite a reference inside brackets in the form of "(author year)", place the 
+citation key inside square brackets:
+
+    [@citationkey]
+
+See also https://quarto.org/docs/visual-editor/technical.html#citations
+
+The bibliography is located at the end of the document by default.
+
+
 ## Code chunks
 
 ### Python and Jupyter
@@ -205,14 +222,14 @@ here so that this code chunk is not interpreted.
 
 ````
 
->   ```{{python}}
->   #| label: fig-plot
->   #| fig-cap: "Plot 0, 1, 2, 3, 4"
->   #| eval: false
->   import matplotlib.pyplot as plt
->   plt.plot([0,1,1,2,3,3,4], [0,1,3,2,1,3,4], "*c")
->   plt.show()
->   ```
+    >   ```{{python}}
+    >   #| label: fig-plot
+    >   #| fig-cap: "Plot 0, 1, 2, 3, 4"
+    >   #| eval: false
+    >   import matplotlib.pyplot as plt
+    >   plt.plot([0,1,1,2,3,3,4], [0,1,3,2,1,3,4], "*c")
+    >   plt.show()
+    >   ```
 
 ````
 
