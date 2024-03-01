@@ -25,18 +25,26 @@ alias mogri2000="mkdir -p small && mogrify -resize 2000 -path ./small/ *.JPG"
 # Tools
 alias ll='ls -lah'
 alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work"'
+# Copy pipe output to the standard clipboard
+alias clip="xclip -selection clipboard"
 # disk usage sorted
 alias dus='du -hd1|sort -hr'
 # Disable Ctrl-S ctrl-Q in terminals
 stty -ixon
 # Paths for git run
 export PATH=~/.npm-global/bin:$PATH
+# VPN
+alias vpn=expressvpn
+alias vpnc="expressvpn connect"
+alias vpnd="expressvpn disconnect"
+alias vpns="expressvpn status"
 
 # Python
 # Activate the default environment
 alias penv="source ~/rp/penv/bin/activate"
 alias p="source ~/rp/penv/bin/activate&&ipython"
 alias jlab="source ~/rp/penv/bin/activate &&jupyter lab"
+alias treep='tree -P "*.py"  -I "__pycache__"'
 
 # Paths for python data
 export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
@@ -78,8 +86,6 @@ rtagsall() {
 # https://vi.stackexchange.com/questions/25311/how-to-activate-bracketed-paste-mode-in-gnome-terminal-for-vim?noredirect=1#comment44475_25311
 # It's actually better to enable this in the gnome shell in fact https://superuser.com/a/870547/419414
 # export TERM=xterm-256color
-alias vpn=expressvpn
-alias treep='tree -P "*.py"  -I "__pycache__"'
 
 
 # add local bin to the path
