@@ -1,0 +1,70 @@
+---
+title: "Workflow"
+author: "Paul Rougieux"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
+output: 
+  html_document: 
+    toc: yes
+---
+
+
+# Apache Airflow
+
+- Production deployment 
+  https://airflow.apache.org/docs/apache-airflow/stable/administration-and-deployment/production-deployment.html
+
+
+# Tasks
+
+- https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/tasks.html
+
+    > "Ideally, a task should flow from none, to scheduled, to queued, to 
+    > running, and finally to success."
+
+    - See more possible states such as upstream_failed or up_for_retry on the 
+      tasks help page.
+
+    > There are two ways of declaring dependencies - using the >> and << (bitshift) 
+    > operators:
+
+        first_task >> second_task >> [third_task, fourth_task]
+
+    > OR THE more explicit set_upstream and set_downstream methods:
+
+        first_task.set_downstream(second_task)
+        third_task.set_upstream(second_task)
+
+    > These both do exactly the same thing, but in general we recommend you use the 
+    > bitshift operators, as they are easier to read in most cases.
+
+    > By default, a Task will run when all of its upstream (parent) tasks have 
+    > succeeded, but there are many ways of modifying this behaviour to add 
+    > branching, to only wait for some upstream tasks, or to change behaviour based 
+    > on where the current run is in history. For more, see Control Flow.
+
+## DAGs
+
+- https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/dags.html#concepts-control-flow
+
+    > "DAGs are nothing without Tasks to run, and those will usually come in 
+    > the form of either Operators, Sensors or TaskFlow."
+
+
+## XComs
+
+Tasks can communication to each other with 
+[XComs](https://airflow.apache.org/docs/apache-airflow/stable/core-concepts/xcoms.html)
+
+    > "An XCom is identified by a key (essentially its name), as well as the 
+    > task_id and dag_id it came from. They can have any (serializable) value, 
+    > but they are only designed for small amounts of data; do not use them to 
+    > pass around large values, like dataframes."
+
+
+# Uses in the wild
+
+https://github.com/apache/airflow/blob/main/INTHEWILD.md
+
+- A user from https://climate.com/ is using Apache Airflow in digital farming.
+
+- Instacart, a digital shoping cart seems to be using at as well.

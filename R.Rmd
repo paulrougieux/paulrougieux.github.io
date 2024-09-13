@@ -1022,9 +1022,11 @@ Bioconductor [docker intro](https://www.bioconductor.org/help/docker/#intro)
 # Rscript
 
 Capture arguments in an Rscript on windows and write them to a file
-```
+
+```{r eval=FALSE}
 "C:\Program Files\R\R-3.5.0\bin\Rscript.exe" --verbose -e "args = commandArgs(trailingOnly=TRUE)" -e "writeLines(args,'C:\\Dev\\args.txt')" "file1.csv" "file2.csv" "file3.csv"
 ```
+
 Arguments can be extracted one by one with args[1]
 commandArgs() returns a **character vector** containing the name of the executable and the user-supplied command line arguments.
 
@@ -1095,6 +1097,7 @@ Other potentially interesting packages:
 
 
 # Packages
+
 You might want to read the CRAN manual on [Writing R Extensions](https://cran.r-project.org/doc/manuals/R-exts.html), and its section on [Package dependencies](https://cran.r-project.org/doc/manuals/R-exts.html#Package-Dependencies).
 See also Hadley's book on R package and its section on [Namespace](http://r-pkgs.had.co.nz/namespace.html)
 
@@ -1106,6 +1109,7 @@ Use git to track code modifications (shell commands):
 
     $ cd package_name
     $ git init
+
 
 ## Documentation
 
@@ -1119,7 +1123,15 @@ For an introcution to roxygen2, call
 Since roxygen2 version 6, markdown formating can be used in the documentation, 
 by specifying the `@md` tag.
 
+
+### R Manual
+
+- https://cran.r-project.org/doc/manuals/R-exts.html#Writing-R-documentation-files
+
+
+
 ### Examples
+
 Examples are crucial to demonstrate the use of a fonction. 
 They can be specified in a roxygen block called `@examples`:
 
@@ -1164,6 +1176,7 @@ R CMD checking data for non-ASCII characters found 179 marked UTF-8 strings
 No solution for this one but I guess it's ok since it concerns country names? 
 
 ## Unit tests
+
 Back in R, add testing infrastructure:
 
     devtools::use_testthat()
@@ -1199,10 +1212,52 @@ thanks Travis CI for greatly enabling CI since 2012.
 
 I copied the make file from the knitr package.
 
+    # prepare the package for release
+    PKGNAME := $(shell sed -n "s/Package: *\([^ ]*\)/\1/p" DESCRIPTION)
+    PKGVERS := $(shell sed -n "s/Version: *\([^ ]*\)/\1/p" DESCRIPTION)
+    PKGSRC  := $(shell basename `pwd`)
+
+    all: docs check clean install
+
+    deps:
+        tlmgr install pgf preview xcolor;\
+        Rscript -e 'if (!require("Rd2roxygen")) install.packages("Rd2roxygen", repos="http://cran.rstudio.com")'
+
+    docs:
+        R -q -e "devtools::document(roclets = c('rd', 'collate', 'namespace', 'vignette'))"
+
+    build:
+        cd ..;\
+        R CMD build $(PKGSRC)
+
+    install: build
+        cd ..;\
+        R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
+
+    check: build
+        cd ..;\
+        R CMD check $(PKGNAME)_$(PKGVERS).tar.gz --as-cran
+
+    clean:
+        cd ..;\
+        $(RM) -r $(PKGNAME).Rcheck/
+
+
 ## Submitting to CRAN
 
-[Submit package to CRAN](https://cran.r-project.org/submit.html)
-The second page will ask to 
+Before submitting to CRAN. 
+
+- Update the date and version number in the DESCRIPTION file
+
+- Build the package with the make file. The make file will also run the same 
+  checks that CRAN will run, so make sure to fix any issues reported there. The 
+  following command runs checks on the package's `.tar.gz` archive. It is one 
+  of the commands inside the makefile:
+
+    R CMD check $(PKGNAME)_$(PKGVERS).tar.gz --as-cran
+
+- [Submit package to CRAN](https://cran.r-project.org/submit.html) The second 
+  page will ask to 
 
 * Step 1 (Upload) the `*.tar.gz` file.
 * Step 2 (Submission) review information from the package's DESCRIPTION file. 
