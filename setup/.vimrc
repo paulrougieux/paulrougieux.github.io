@@ -228,6 +228,8 @@ nmap <silent><Leader>ll <Esc>:VimtexCompile<CR>
   silent call system('xdotool windowraise ' . self.xwin_id)
 endfunction
 
+" List article references in the quickfix window
+command! Article vim /@article/ % | cw
 
 """"""""""""""""""""""""""""
 " # Markdown configuration "
