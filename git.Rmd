@@ -241,6 +241,24 @@ For collaborative projects, we use feature branches or also a dev and a main
 branch.
 
 
+## Create a branch
+
+Create a branch and start working on it
+
+    git branch new-branch-name
+    git checkout new-branch-name
+
+Push the new branch to the remote repo
+
+    git push --set-upstream origin new-branch-name
+    git push -u origin new-branch-name
+
+Move to a commit in history and create a branch at that commit
+
+    git checkout <commit-sha>
+    git switch -c new-branch-name
+
+
 ## Delete a branch
 
 I might need to delete a branch at some point:
@@ -323,6 +341,19 @@ changes to that local branch and push them to the remote branch later.
     > "If your branch name is more than one words you should use underscore `_`
     > rather than hyphen `-` because `-` here separates the two different
     > branch."
+
+
+## Rename a branch
+
+Create and push under a new branch name to the remote repository
+
+    git switch -c new-branch-name
+    git push -u origin new-branch-name
+
+Delete the old branch name locally and in the remote repository
+
+    git branch -d old-branch-name
+    git push --delete origin old-branch-name
 
 
 # Configuring git 
@@ -564,6 +595,25 @@ Show the status and pull from many repos:
 
 # Going back in time 
 
+## Bissect
+
+- https://git-scm.com/docs/git-bisect
+
+    > "This command uses a binary search algorithm to find which commit in your 
+    > project’s history introduced a bug. You use it by first telling it a 
+    > "bad" commit that is known to contain the bug, and a "good" commit that 
+    > is known to be before the bug was introduced. Then git bisect picks a 
+    > commit between those two endpoints and asks you whether the selected 
+    > commit is "good" or "bad". It continues narrowing down the range until it 
+    > finds the exact commit that introduced the change. In fact, git bisect 
+    > can be used to find the commit that changed any property of your project; 
+    > e.g., the commit that fixed a bug, or the commit that caused a 
+    > benchmark’s performance to improve. To support this more general usage, 
+    > the terms "old" and "new" can be used in place of "good" and "bad", or 
+    > you can choose your own terms. See section "Alternate terms" below for 
+    > more information."
+
+
 ## Log
 
 Display the modification log
@@ -737,6 +787,8 @@ Reset the local branch
     git fetch origin
     git reset --hard origin/main
 
+See also the section on checkout `--ours` or `--theirs`.
+
 
 #### Merge conflict
 
@@ -808,7 +860,12 @@ I used [how to remove a too large file in a commit](https://stackoverflow.com/a/
 Then added the large file to .gitignore and committed again. 
 
 
-## Reset only one file
+## Restore only one file
+
+Git `restore` can be used to "restore working tree files". The `git checkout` 
+command can also be used for this and many other things. Git restore was 
+created to simplify and have a dedicated command that only focuses on restoring 
+files.
 
 To go back to this state for only one file, see git checkout
 
@@ -880,6 +937,10 @@ and dangling trees. Running `git cat-file -p blob_sha > /path/to/the/file`
 followed by `git diff` shows me a lot of line deletions. I have to explore
 around to find which blob is adding content back.
 
+To show the content of a blob
+
+    git show blob_sha
+
 To retrieve a single file from a dangling blob
 
     git cat-file -p blob_sha > /path/to/the/file
@@ -942,7 +1003,14 @@ Get help on a command (will start a web browser):
     git init --help
 
 
-# Hosting services
+# Hosting services and online platforms
+
+
+## Github
+
+Press `y` to get a permalink  to the current file on Gitlab. The URL will 
+include the hash number of the latest commit.
+https://docs.github.com/en/repositories/working-with-files/using-files/getting-permanent-links-to-files
 
 
 ## Gitlab
