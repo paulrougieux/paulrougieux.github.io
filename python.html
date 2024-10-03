@@ -11,11 +11,10 @@
 
 <meta name="author" content="Paul Rougieux" />
 
-<meta name="date" content="2017-08-17" />
 
 <title>Python Commands</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -37,8 +36,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -442,7 +441,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Python Commands</h1>
 <h4 class="author">Paul Rougieux</h4>
-<h4 class="date">17 August 2017</h4>
+<h4 class="date">October 2024</h4>
 
 </div>
 
@@ -648,8 +647,10 @@ class="uri">https://docs.conda.io/projects/conda/en/latest/commands/remove.html<
 <p>Remove a list of packages from an environemnt ‘myenv’:</p>
 <pre><code>conda remove -n myenv scipy curl wheel</code></pre>
 </div>
-<div id="environment-file" class="section level3">
-<h3>Environment file</h3>
+<div id="conda-environments" class="section level3">
+<h3>Conda environments</h3>
+<div id="environment-file" class="section level4">
+<h4>Environment file</h4>
 <p>Creating an environment file manually</p>
 <p>You can create an environment file (environment.yml) manually to
 share with others.</p>
@@ -665,6 +666,16 @@ number. Defining the version number by fixing the major and minor
 version numbers while allowing the patch version number to vary allows
 us to use our environment file to update our environment to get any bug
 fixes whilst still maintaining consistency of software environment.</p>
+</div>
+<div id="anaconda-gui" class="section level4">
+<h4>Anaconda GUI</h4>
+<ul>
+<li><p>Documentation using an environment</p>
+<p><a
+href="https://docs.anaconda.com/free/navigator/tutorials/manage-environments/#using-an-environment"
+class="uri">https://docs.anaconda.com/free/navigator/tutorials/manage-environments/#using-an-environment</a></p></li>
+</ul>
+</div>
 </div>
 <div id="mamba" class="section level3">
 <h3>Mamba</h3>
@@ -1106,6 +1117,39 @@ function(True)
 function(False)
 function(&#39;&#39;)
 function(&#39;lalala&#39;)</code></pre>
+<div id="elif" class="section level3">
+<h3>Elif</h3>
+<p>Example from <a href="https://stackoverflow.com/a/16287793/2641825"
+class="uri">https://stackoverflow.com/a/16287793/2641825</a></p>
+<p>Using two if conditions</p>
+<pre><code># According to the UN Convention of the Rights of the Child
+ADULT_AGE = 18
+def analyze_age(age):
+   if age &lt; ADULT_AGE and age &gt; 0:
+       print(&quot;You are a child&quot;)
+   if age &gt;= ADULT_AGE:
+       print(&quot;You are an adult&quot;)
+   else:
+       print(&quot;The age must be a positive integer!&quot;)
+
+analyze_age(16)
+&gt;You are a child
+&gt;The age must be a positive integer!</code></pre>
+<blockquote>
+<p>“The elif fixes this and makes the two if statements ‘stick together’
+as one:”</p>
+</blockquote>
+<pre><code>def analyze_age(age):
+   if age &lt; ADULT_AGE and age &gt; 0:
+       print(&quot;You are a child&quot;)
+   elif age &gt;= ADULT_AGE:
+       print(&quot;You are an adult&quot;)
+   else:
+       print(&quot;The age must be a positive integer!&quot;)
+
+analyze_age(16)
+&gt;You are a child</code></pre>
+</div>
 </div>
 <div id="for-loop" class="section level2">
 <h2>For loop</h2>
@@ -1484,6 +1528,41 @@ columns either manually or automatically”</p>
 ipython interpreter that runs inside a tmux pane. For more information,
 see my page on <a href="vim.html">vim.html</a>.</p>
 </div>
+<div id="reload-a-module" class="section level2">
+<h2>Reload a module</h2>
+<p>Auto reload a module in ipython</p>
+<pre><code>%load_ext autoreload
+%autoreload 2</code></pre>
+<p>The following uses <code>importlib.reload</code> to illustrate the
+functionality and compares it with auto reload. Create a sample function
+and load it</p>
+<pre><code>import sys
+import pathlib
+from importlib import reload
+tmp_dir = pathlib.Path(&quot;/tmp/this_dir&quot;)
+tmp_dir.mkdir(exist_ok=True)
+sys.path.append(str(tmp_dir))
+f =  open(tmp_dir / &quot;script.py&quot;,&#39;w&#39;)
+print(&quot;def compute_sum(i,j):\n    return i+j&quot;, file=f)
+f.close()
+from script import compute_sum
+compute_sum(1,2)</code></pre>
+<p>Change the function and reload it using
+<code>importlib.reload</code></p>
+<pre><code>f =  open(tmp_dir / &quot;script.py&quot;,&#39;w&#39;)
+print(&quot;def compute_sum(i,j):\n    print(&#39;blabla&#39;)\n    return i+j&quot;, file=f)
+f.close()
+reload(sys.modules[&#39;script&#39;])
+from script import compute_sum
+compute_sum(1,2)</code></pre>
+<p>Change the function and reload it using auto reload in ipython</p>
+<pre><code>%load_ext autoreload
+%autoreload 2
+f =  open(tmp_dir / &quot;script.py&quot;,&#39;w&#39;)
+print(&quot;def compute_sum(i,j):\n    print(&#39;blibli&#39;)\n    return i+j&quot;, file=f)
+f.close()
+compute_sum(1,2)</code></pre>
+</div>
 </div>
 <div id="input-output" class="section level1">
 <h1>Input Output</h1>
@@ -1571,6 +1650,20 @@ class="uri">https://ec.europa.eu/eurostat/databrowser/view/PROJ_23NP/</a>
 into pandas</p>
 </div>
 </div>
+<div id="excel" class="section level2">
+<h2>Excel</h2>
+<p>This reads only one sheet:</p>
+<pre><code>pandas.read_excel(&quot;file_name.xlsx&quot;, &quot;sheet_name&quot;)</code></pre>
+<p>Open all sheets in an excel file, and concatenate them to a single
+data frame with an additional column that contains the sheet name.</p>
+<pre><code>import pandas as pd
+sheets_dict = pd.read_excel(&quot;file_name.xlsx&quot;, sheet_name=None)
+all_data = pd.concat(
+    [df.assign(sheet_name=s) for s, df in sheets_dict.items()],
+    ignore_index=True
+)
+print(all_data)</code></pre>
+</div>
 <div id="feather" class="section level2">
 <h2>Feather</h2>
 <p>Load a sample data frame and save it to a feather file</p>
@@ -1601,9 +1694,29 @@ for symbol_name, df in dataframes.items():
 href="https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas"
 class="uri">https://stackoverflow.com/questions/66713432/suppress-scientific-notation-in-to-markdown-in-pandas</a></p>
 <pre><code>import pandas
-df = pandas.DataFrame({&quot;x&quot; : [1,1e7], &quot;y&quot;:[1e-5,100]})
+import numpy as np
+df = pandas.DataFrame({&quot;x&quot; : [1,1e7, 2], &quot;y&quot;:[1e-5,100, np.nan]})
 print(df.to_markdown())
 print(df.to_markdown(floatfmt=&#39;.0f&#39;, index=False))</code></pre>
+<p>Print missing values as a minus sign <a
+href="https://stackoverflow.com/a/71165631/2641825"
+class="uri">https://stackoverflow.com/a/71165631/2641825</a></p>
+<pre><code>import pandas
+import numpy as np
+from tabulate import tabulate
+df = pandas.DataFrame({&quot;x&quot;: [1, 2], &quot;y&quot;: [0, np.nan]})
+print(tabulate(df,floatfmt=&quot;.0f&quot;, missingval=&quot;-&quot;,tablefmt=&quot;grid&quot;))
+
+print(tabulate(df.replace(np.nan, None),floatfmt=&quot;.0f&quot;, missingval=&quot;-&quot;,tablefmt=&quot;grid&quot;))</code></pre>
+<p>In practice I use the data frame <code>.to_markdown()</code> methods
+which call tabulate in the background, as explained on the pandas
+documentation</p>
+<pre><code>print(df.to_markdown(floatfmt=&quot;.0f&quot;, index=False, missingval=&quot;-&quot;))
+print(df.replace(np.nan, None).to_markdown(floatfmt=&quot;.0f&quot;, index=False, missingval=&quot;-&quot;))</code></pre>
+<p>See also</p>
+<ul>
+<li>the jupyter section on markdown</li>
+</ul>
 </div>
 <div id="netcdf" class="section level2">
 <h2>Netcdf</h2>
@@ -1951,9 +2064,9 @@ href="https://stackoverflow.com/a/52110266/2641825">this answer</a>)</p>
 <h4>Remove an item from a list</h4>
 <p><a href="https://stackoverflow.com/a/31077838/2641825">Remove an
 element from a list of strings</a></p>
-<pre><code>myList = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
-myList.remove(&#39;c&#39;)
-myList
+<pre><code>li = [&#39;a&#39;, &#39;b&#39;, &#39;c&#39;, &#39;d&#39;]
+li.remove(&#39;c&#39;)
+li
 [&#39;a&#39;, &#39;b&#39;, &#39;d&#39;]</code></pre>
 </div>
 <div id="reverse-a-list" class="section level4">
@@ -2018,6 +2131,10 @@ symmetric_difference(other)
 set ^ other
 
     Return a new set with elements in either the set or other but not both.</code></pre>
+<p>For example check whether country names are all the same in 2 data
+frames</p>
+<pre><code>country_differences = set(df1[&quot;country&quot;].unique()) ^ set(df2[&quot;country&quot;].unique())
+assert country_differences == set()</code></pre>
 </div>
 <div id="subset-and-superset" class="section level4">
 <h4>Subset and superset</h4>
@@ -2071,13 +2188,38 @@ set(range(3,10)) | set(range(5))</code></pre>
 <pre><code>import panda
 from pathlib import Path
 def csv_to_df(path: [str, Path]) -&gt; pandas.DataFrame:
-    return pd.read_csv(path)</code></pre>
+    return pandas.read_csv(path)</code></pre>
 <ul>
 <li><p>Issue with <a
 href="https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e"
 class="uri">https://medium.com/virtuslab/pandas-stubs-how-we-enhanced-pandas-with-type-annotations-1f69ecf1519e</a></p>
-<p>pandas.DataFrame and spark.sql.DataFrame</p></li>
+<p>pandas.DataFrame and spark.sql.DataFrame</p>
+<ul>
+<li><p>This post is related to that project <a
+href="https://github.com/VirtusLab/pandas-stubs?tab=readme-ov-file"
+class="uri">https://github.com/VirtusLab/pandas-stubs?tab=readme-ov-file</a></p></li>
+<li><p>Which later turned into the pandas-stubs project <a
+href="https://github.com/pandas-dev/pandas-stubs"
+class="uri">https://github.com/pandas-dev/pandas-stubs</a> maintained by
+the core pandas team. See also pandera.</p></li>
+</ul></li>
 </ul>
+<div id="type-hints-of-pandas-data-frames" class="section level4">
+<h4>Type hints of pandas data frames</h4>
+<ul>
+<li><p><a
+href="https://stackoverflow.com/questions/43890844/pythonic-type-hints-with-pandas"
+class="uri">https://stackoverflow.com/questions/43890844/pythonic-type-hints-with-pandas</a>
+Provides an answer that uses pandera <a
+href="https://github.com/unionai-oss/pandera"
+class="uri">https://github.com/unionai-oss/pandera</a> to specify the
+type of each column in the input data frame</p>
+<ul>
+<li>a comment talks about pandera providing more details in terms of
+column types compared to pandas-stubs.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 </div>
 <div id="meta-programming" class="section level2">
@@ -2427,8 +2569,11 @@ with:</p>
 the notebook and execute a few cells using Vim slime to sent them to a
 tmux pane where ipython is running.</p>
 </div>
-<div id="convert-notebooks-to-html" class="section level3">
-<h3>Convert notebooks to html</h3>
+<div id="convert-notebooks-to-python-scripts-or-to-html"
+class="section level3">
+<h3>Convert notebooks to python scripts or to html</h3>
+<p>Convert the long notebooks to a python script with:</p>
+<pre><code>jupyter nbconvert --to script notebook.ipynb</code></pre>
 <p>Notebooks can be converted from the File / Save and Export Notebook
 As / HTML menu. Or <a
 href="https://nbconvert.readthedocs.io/en/latest/usage.html#convert-html">at
@@ -2638,9 +2783,12 @@ install both using”</p>
 <div id="jupyter-and-git-version-control" class="section level2">
 <h2>Jupyter and git version control</h2>
 <ul>
-<li>Star history comparison between nbstripout and jupytext <a
+<li><p>Star history comparison between nbstripout and jupytext <a
 href="https://star-history.com/#mwouts/jupytext&amp;kynan/nbstripout&amp;Date"
-class="uri">https://star-history.com/#mwouts/jupytext&amp;kynan/nbstripout&amp;Date</a></li>
+class="uri">https://star-history.com/#mwouts/jupytext&amp;kynan/nbstripout&amp;Date</a></p></li>
+<li><p>nbdime <a href="https://nbdime.readthedocs.io/en/latest/"
+class="uri">https://nbdime.readthedocs.io/en/latest/</a> nbdime provides
+tools for diffing and merging Jupyter notebooks.</p></li>
 </ul>
 <div id="jupytext-with-markdown-and-git" class="section level3">
 <h3>Jupytext with markdown and git</h3>
@@ -2704,6 +2852,13 @@ what git gets to see for committing or diffing. The working copy stays
 intact.”</p>
 </blockquote></li>
 <li><p>It’s probably better to use the regular filter mode.</p></li>
+<li><p>Install nbstripout</p>
+<p>pip install –upgrade nbstripout</p></li>
+<li><p>Configure a git repository to use nbstripout</p>
+<p>cd git_repos nbstripout –install</p></li>
+<li><p>Uninstall nbstripout from the current repository “(remove the git
+filter and attributes)”</p>
+<p>cd git_repos nbstripout –uninstall</p></li>
 </ul></li>
 <li><p>nbstripout-fast <a
 href="https://pypi.org/project/nbstripout-fast/"
@@ -3060,14 +3215,88 @@ import geopandas</code></pre>
 href="https://geopandas.org/en/stable/gallery/geopandas_rasterio_sample.html">Using
 geopandas with rasterio to sample point data</a></li>
 </ul>
-<div id="map-of-the-world" class="section level3">
-<h3>Map of the World</h3>
+<div id="world-choropleth-map" class="section level3">
+<h3>World Choropleth map</h3>
 <p>Plot a world map of GDP per capita</p>
-<pre><code>world = geopandas.read_file(geopandas.datasets.get_path(&#39;naturalearth_lowres&#39;))
+<pre><code>import geopandas
+from matplotlib import pyplot as plt
+world = geopandas.read_file(geopandas.datasets.get_path(&#39;naturalearth_lowres&#39;))
 world = world[(world.pop_est&gt;0) &amp; (world.name!=&quot;Antarctica&quot;)]
 world[&#39;gdp_per_cap&#39;] = world.gdp_md_est / world.pop_est
 world.plot(column=&#39;gdp_per_cap&#39;)
 plt.show()</code></pre>
+<p>Notes this returns a warning</p>
+<pre><code>/tmp/ipykernel_6060/1718493124.py:1: FutureWarning: The geopandas.dataset 
+module is deprecated and will be removed in GeoPandas 1.0. You can get the 
+original &#39;naturalearth_lowres&#39; data from 
+https://www.naturalearthdata.com/downloads/110m-cultural-vectors/.</code></pre>
+<div id="world-choropleth-with-plotly" class="section level4">
+<h4>World choropleth with plotly</h4>
+<ul>
+<li><a href="https://plotly.com/python/choropleth-maps/"
+class="uri">https://plotly.com/python/choropleth-maps/</a></li>
+</ul>
+<pre class="python"><code>import plotly.graph_objects as go
+import pandas as pd
+
+df = pd.read_csv(&#39;https://raw.githubusercontent.com/plotly/datasets/master/2014_world_gdp_with_codes.csv&#39;)
+
+fig = go.Figure(data=go.Choropleth(
+    locations = df[&#39;CODE&#39;],
+    z = df[&#39;GDP (BILLIONS)&#39;],
+    text = df[&#39;COUNTRY&#39;],
+    colorscale = &#39;Blues&#39;,
+    autocolorscale=False,
+    reversescale=True,
+    marker_line_color=&#39;darkgray&#39;,
+    marker_line_width=0.5,
+    colorbar_tickprefix = &#39;$&#39;,
+    colorbar_title = &#39;GDP&lt;br&gt;Billions US$&#39;,
+))
+
+fig.update_layout(
+    title_text=&#39;2014 Global GDP&#39;,
+    geo=dict(
+        showframe=False,
+        showcoastlines=False,
+        projection_type=&#39;equirectangular&#39;
+    ),
+    annotations = [dict(
+        x=0.55,
+        y=0.1,
+        xref=&#39;paper&#39;,
+        yref=&#39;paper&#39;,
+        text=&#39;Source: &lt;a href=&quot;https://www.cia.gov/library/publications/the-world-factbook/fields/2195.html&quot;&gt;\
+            CIA World Factbook&lt;/a&gt;&#39;,
+        showarrow = False
+    )]
+)
+fig.show()</code></pre>
+<p>Same figure without title and write to a file with a tight layout and
+a smaller colour bar in the legend</p>
+<pre class="python"><code># Smaller color bar
+fig.update_traces(colorbar_len=0.6, colorbar_y=0.5)
+# Remove margins
+fig.update_layout(margin=dict(l=5,r=0,b=0,t=0))
+fig.write_image(&quot;/tmp/map.png&quot;, width=1300, height=600,)</code></pre>
+<ul>
+<li><p>Named colour scales:</p>
+<p>[‘aggrnyl’, ‘agsunset’, ‘algae’, ‘amp’, ‘armyrose’, ‘balance’,
+‘blackbody’, ‘bluered’, ‘blues’, ‘blugrn’, ‘bluyl’, ‘brbg’, ‘brwnyl’,
+‘bugn’, ‘bupu’, ‘burg’, ‘burgyl’, ‘cividis’, ‘curl’, ‘darkmint’, ‘deep’,
+‘delta’, ‘dense’, ‘earth’, ‘edge’, ‘electric’, ‘emrld’, ‘fall’,
+‘geyser’, ‘gnbu’, ‘gray’, ‘greens’, ‘greys’, ‘haline’, ‘hot’, ‘hsv’,
+‘ice’, ‘icefire’, ‘inferno’, ‘jet’, ‘magenta’, ‘magma’, ‘matter’,
+‘mint’, ‘mrybm’, ‘mygbm’, ‘oranges’, ‘orrd’, ‘oryel’, ‘oxy’, ‘peach’,
+‘phase’, ‘picnic’, ‘pinkyl’, ‘piyg’, ‘plasma’, ‘plotly3’, ‘portland’,
+‘prgn’, ‘pubu’, ‘pubugn’, ‘puor’, ‘purd’, ‘purp’, ‘purples’, ‘purpor’,
+‘rainbow’, ‘rdbu’, ‘rdgy’, ‘rdpu’, ‘rdylbu’, ‘rdylgn’, ‘redor’, ‘reds’,
+‘solar’, ‘spectral’, ‘speed’, ‘sunset’, ‘sunsetdark’, ‘teal’, ‘tealgrn’,
+‘tealrose’, ‘tempo’, ‘temps’, ‘thermal’, ‘tropic’, ‘turbid’, ‘turbo’,
+‘twilight’, ‘viridis’, ‘ylgn’, ‘ylgnbu’, ‘ylorbr’, ‘ylorrd’]. Appending
+’_r’ to a named colorscale reverses it.</p></li>
+</ul>
+</div>
 </div>
 <div id="map-of-europe" class="section level3">
 <h3>Map of Europe</h3>
@@ -3075,7 +3304,9 @@ plt.show()</code></pre>
 href="https://ec.europa.eu/eurostat/web/gisco/geodata/reference-data/administrative-units-statistical-units/nuts#nuts21">NUTS
 page</a> (Nomenclature of territorial units for statistics) using the
 EPSG 3035 projection.</p>
-<pre><code>nuts = geopandas.read_file(&quot;~/downloads/NUTS_RG_20M_2021_3035.geojson&quot;)
+<pre><code>import geopandas
+import matplotlib.pyplot as plt
+nuts = geopandas.read_file(&quot;~/downloads/NUTS_RG_20M_2021_3035.geojson&quot;)
 ax = nuts.plot()
 ax.set_xlim(2000000, 8000000)
 ax.set_ylim(1000000, 5500000)
@@ -3132,21 +3363,22 @@ to do maths in python 3 with operators</a></p>
 <p>2 to the power of 3</p>
 <pre><code>2**3
 # 8</code></pre>
-<div id="floor-division" class="section level2">
-<h2>Floor division</h2>
+<div id="floor-division-and-modulo" class="section level2">
+<h2>Floor division and modulo</h2>
 <p>Floor division</p>
 <pre><code>5//3
 # 1
 # Use it to extract the year of a Comtrade period
 202105 // 100</code></pre>
-</div>
-<div id="modulo" class="section level2">
-<h2>Modulo</h2>
+<p>Modulo</p>
 <pre><code>5%3
 # 2
 12
 # Use it to extract the last 2 digits of an integer
 202105 % 100</code></pre>
+<p>Both at the same time</p>
+<pre><code>divmod(5,3)
+# (1, 2)</code></pre>
 </div>
 <div id="sympy" class="section level2">
 <h2>Sympy</h2>
@@ -3532,6 +3764,13 @@ lists</strong> with column names as keys</p>
 #   0  0  3
 #   1  1  4
 #   2  2  5</code></pre>
+<p>By passing data as a list of lists and specifying the name of the
+columns in the columns argument.</p>
+<pre><code>data = [[&#39;APOLLOHOSP&#39;, 8, 6, &#39;High&#39;, &#39;small&#39;],
+        [&#39;COROMANDEL&#39;, 9, 9, &#39;High&#39;, &#39;small&#39;],
+        [&#39;SBIN&#39;, 10, 3, &#39;Medium&#39;, &#39;large&#39;]]
+pandas.DataFrame(data=data, columns=[&quot;code&quot;, &quot;Growth&quot;, &quot;Value&quot;, &quot;Risk&quot;, 
+&quot;Mcap&quot;])</code></pre>
 <p>Or by passing a list of tuples and defining the <code>columns</code>
 argument</p>
 <pre><code>pandas.DataFrame(
@@ -3560,6 +3799,9 @@ class="section level4">
 iris = seaborn.load_dataset(&quot;iris&quot;).set_index(&quot;species&quot;)
 iris.assign(sp_sum = lambda x: x.sum(axis=1),
             sl_share = lambda x: x.sepal_length / x.sp_sum)</code></pre>
+<p>Aggregated sum by group and compute a share</p>
+<pre><code>inv_agg = inventory_all.groupby([&quot;mgmt_strategy&quot;]).agg(area = (&quot;area&quot;,&quot;sum&quot;))
+inv_agg = inv_agg.assign(share = lambda x: x.area / x.area.sum())</code></pre>
 </div>
 </div>
 <div id="recursive-computation-xt-depends-on-xt-1"
@@ -3702,6 +3944,8 @@ df[&quot;id&quot;]
 # 2    c
 # Name: id, dtype: category
 # Categories (3, object): [&#39;b&#39; &lt; &#39;c&#39; &lt; &#39;a&#39;]</code></pre>
+<p>Remove a category</p>
+<pre><code> df[&quot;element&quot;].cat.remove_categories([&quot;nai_merch&quot;])</code></pre>
 </div>
 <div id="convert-data-frames-to-other-objects-or-types"
 class="section level2">
@@ -3862,6 +4106,31 @@ right_index=True</p></li>
 </div>
 <div id="columns" class="section level2">
 <h2>Columns</h2>
+<div id="data-types" class="section level3">
+<h3>Data types</h3>
+<p>Three example data types</p>
+<pre><code>df = pandas.DataFrame({&quot;a&quot;:range(0,3),
+                       &quot;b&quot;: [&quot;a&quot;, &quot;b&quot;, &quot;c&quot;],
+                       &quot;c&quot;: [0.1, 0.2, 0.3]})
+df.info()
+#  #   Column  Non-Null Count  Dtype
+# ---  ------  --------------  -----
+#  0   a       3 non-null      int64
+#  1   b       3 non-null      object
+#  2   c       3 non-null      float64</code></pre>
+<p>Each data type has specific methods attached to it. For example the
+string accessors methods</p>
+<pre><code>df.b.str.contains(&quot;c&quot;)</code></pre>
+<div id="categorical-data" class="section level4">
+<h4>Categorical data</h4>
+<p>Reusing the example from above</p>
+<pre><code>df[&quot;b&quot;] = pandas.Categorical(
+      df[&quot;b&quot;], categories=[&quot;b&quot;, &quot;c&quot;, &quot;a&quot;], ordered=True
+  )
+df.info()
+df.sort_values(&quot;b&quot;)</code></pre>
+</div>
+</div>
 <div id="list-columns" class="section level3">
 <h3>List Columns</h3>
 <p>List columns as an index object</p>
@@ -4030,7 +4299,9 @@ df.info()</code></pre>
 <pre><code>import sys
 print(sys.getsizeof(df))</code></pre>
 <p>Changing a repeated data series to a categorical can help reduce
-memory usage</p>
+memory usage, although this is probably not true any more in pandas.
+Categorical variables come with additional annoyances (such as the
+memory blow-up bug with observed=False in groupby operations).</p>
 <pre><code>import seaborn
 iris = seaborn.load_dataset(&quot;iris&quot;)
 print(iris[&quot;species&quot;].memory_usage(deep=True))
@@ -4092,6 +4363,9 @@ that year is the index variable)</p>
 df.rolling(2).sum()</code></pre>
 <p>Yearly rolling of a monthly time series:</p>
 <pre><code>.transform(lambda x: x.rolling(13, min_periods=1).mean()))</code></pre>
+<p>Note you might actually not need the transform in this case.</p>
+<pre><code>df[&quot;x&quot;].rolling(13, min_periods=1).mean()</code></pre>
+<p>also works.</p>
 </div>
 </div>
 <div id="groupby-operations" class="section level2">
@@ -4264,12 +4538,11 @@ df.sort_values(‘B’).groupby(‘A’).nth(list(range(2)))
 df.sort_values(‘B’).groupby(‘A’).head(2)</p></li>
 </ul>
 </div>
-<div id="transform-and-apply" class="section level3">
-<h3>Transform and apply</h3>
-<p><a href="https://stackoverflow.com/a/47143056/2641825">SO answer
-explaining the difference between transform and apply</a></p>
+<div id="transform" class="section level3">
+<h3>Transform</h3>
 <p>Sum by groups</p>
-<pre><code>df = pandas.DataFrame({&#39;i&#39; : [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;],
+<pre><code>import pandas
+df = pandas.DataFrame({&#39;i&#39; : [&#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;],
                        &#39;x&#39; : range(1,6)})
 df[&quot;y&quot;] = df.groupby(&quot;i&quot;)[&quot;x&quot;].transform(&quot;sum&quot;)</code></pre>
 <p>Yearly rolling of a monthly time series:</p>
@@ -4281,7 +4554,23 @@ df[&quot;y&quot;] = df[&quot;x&quot;].transform(lambda x: x.rolling(13, min_peri
 df.plot()
 plt.show()</code></pre>
 <p>Interpolate</p>
-<pre><code>df.groupby(&quot;a&quot;)[&quot;b&quot;].transform(pandas.Series.interpolate)l</code></pre>
+<pre><code>import pandas
+import numpy as np
+df = pandas.DataFrame({&#39;i&#39; : [&#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;a&#39;, &#39;b&#39;, &#39;b&#39;, &#39;b&#39;],
+                       &#39;x&#39; : [1,np.nan, np.nan, 4, 1, 2, np.nan]})
+df[&quot;y&quot;] = df.groupby(&quot;i&quot;)[&quot;x&quot;].transform(pandas.Series.interpolate)</code></pre>
+<p>See also</p>
+<ul>
+<li><a href="https://stackoverflow.com/a/47143056/2641825">SO answer
+explaining the difference between transform and apply</a></li>
+</ul>
+<div id="compute-a-diff-through-time" class="section level4">
+<h4>Compute a diff through time</h4>
+<p>Compute the area diff</p>
+<pre><code>  df[&quot;area_diff&quot;] = df.groupby(groupby_area_diff)[&quot;area&quot;].transform(
+      lambda x: x.diff()
+  )</code></pre>
+</div>
 </div>
 <div id="concatenate-strings-in-the-same-group" class="section level3">
 <h3>Concatenate strings in the same group</h3>
@@ -4317,6 +4606,18 @@ df = pandas.DataFrame(index=midx, columns=[&#39;big&#39;, &#39;small&#39;],
 df
 df.drop(index=&#39;cow&#39;, columns=&#39;small&#39;)
 df.drop(index=&#39;length&#39;, level=1)</code></pre>
+</div>
+<div id="flatten-multi-index-columns" class="section level3">
+<h3>Flatten multi index columns</h3>
+<p>For example the result of a pivot operation on multiple value columns
+returns a multi index. To flatten that multi index, use
+<code>.to_flat_index()</code> as follows:</p>
+<pre><code>df.columns = [&quot;_&quot;.join(a) for a in df.columns.to_flat_index()]</code></pre>
+<p>Do this column renaming before the reset_index() that you would have
+use after the pivot operation.</p>
+<p>Inspired by <a
+href="https://stackoverflow.com/questions/14507794/how-to-flatten-a-hierarchical-index-in-columns"
+class="uri">https://stackoverflow.com/questions/14507794/how-to-flatten-a-hierarchical-index-in-columns</a></p>
 </div>
 <div id="recursive-computation-on-a-index-in-a-loop"
 class="section level3">
@@ -4513,7 +4814,7 @@ pandas.wide_to_long(dft, stubnames=[&quot;A&quot;, &quot;B&quot;], i=&quot;id&qu
     &quot;lev3&quot;: [1, 2, 1, 2, 1, 2],
     &quot;lev4&quot;: [1, 2, 3, 4, 5, 6],
     &quot;values&quot;: [0, 1, 2, 3, 4, 5]})
-df_wide = df.pivot(index=&quot;lev1&quot;, columns=[&quot;lev2&quot;, &quot;lev3&quot;], values=&quot;values&quot;)
+df_wide = df.pivot(columns=[&quot;lev2&quot;, &quot;lev3&quot;], index=&quot;lev1&quot;, values=&quot;values&quot;)
 df_wide
 
 # lev2    1         2
@@ -4529,6 +4830,12 @@ df_wide
 # lev1
 # 1     0.0  1.0  2.0  NaN
 # 2     4.0  3.0  NaN  5.0</code></pre>
+<p>Add a prefix to a year columns before pivoting</p>
+<pre><code>(df
+    .assign(year = lambda x: &quot;net_trade_&quot; + x[&quot;year&quot;].astype(str))
+    .pivot(columns=&quot;year&quot;, index=[&quot;product&quot;, &quot;scenario&quot;], values=&quot;net_trade&quot;)
+    .reset_index()
+)</code></pre>
 </div>
 <div id="transpose-index-and-columns" class="section level3">
 <h3>Transpose index and columns</h3>
@@ -5035,14 +5342,35 @@ of pandas.Series.str.split</a> If n &gt; 0 and</p>
 for padding up to n if expand=True.”</p>
 </blockquote>
 </div>
-<div id="extract-columns-based-on-a-pattern" class="section level3">
-<h3>Extract columns based on a pattern</h3>
+<div id="extract-column-content-into-new-columns-based-on-a-pattern"
+class="section level3">
+<h3>Extract column content into new columns based on a pattern</h3>
+<p>Extract the first group of character before the first white space
+into a new column named product</p>
+<pre><code>df = pandas.DataFrame({&quot;raw_content&quot;: [&quot;A xyz&quot;, &quot;BB xyz lala&quot;, &quot;CDE o li&quot;]})
+df[[&quot;product&quot;]] = df[&quot;raw_content&quot;].str.extract(r&quot;^(\S+)&quot;)
+df</code></pre>
 <p>Place product patterns in a capture group for extraction</p>
 <pre><code>df = pandas.DataFrame({&quot;x&quot;: [&quot;am&quot;, &quot;an&quot;, &quot;o&quot;, &quot;bm&quot;, &quot;bn&quot;, &quot;cm&quot;]})
 product_pattern = &quot;a|b|c&quot;
 df[[&quot;product&quot;, &quot;element&quot;]] = df.x.str.extract(f&quot;({product_pattern})?(.*)&quot;)
 df</code></pre>
 </div>
+</div>
+<div id="style-format" class="section level2">
+<h2>Style format</h2>
+<ul>
+<li><p>df.style.format?</p>
+<blockquote>
+<p>“Format the text display value of cells.”</p>
+</blockquote>
+<pre><code>  import pandas
+  import numpy as np
+  df = pandas.DataFrame({&quot;x&quot;:[np.nan, 1.0, &quot;A&quot;], &quot;y&quot;:[2.0, np.nan, 3.0]})
+  df[&quot;z&quot;] = df[&quot;y&quot;]
+  df.style.format(&quot;{:.2f}&quot;, na_rep=&quot;&quot;)
+  df.style.format({0: &#39;{:.2f}&#39;, 1: &#39;£ {:.1f}&#39;}, na_rep=&#39;MISS&#39;, precision=1)</code></pre></li>
+</ul>
 </div>
 <div id="difference-between-2-data-frames" class="section level2">
 <h2>Difference between 2 data frames</h2>
@@ -5239,6 +5567,42 @@ print(file_name, file_name.exists())
 analysis</a> is a great gallery of plot examples, each example is
 written in 5 different plotting libraries: pandas, plotnine, plotly,
 altair and R ggplot2. There is also one seaborn example.</p>
+<div id="image-composition" class="section level2">
+<h2>Image composition</h2>
+<p>For some complex plots, I directly pasted images of plots together as
+follows:</p>
+<pre><code>from PIL import Image
+
+# Load the images
+p_hexprov_eu = Image.open(composite_plot_dir / &quot;hexprov_eu.png&quot;)
+p_sink_eu = Image.open(composite_plot_dir / &quot;sink_eu.png&quot;)
+p_harea_eu = Image.open(composite_plot_dir / &quot;harea_eu.png&quot;)
+p_harv_nai_eu = Image.open(composite_plot_dir / &quot;harv_nai_eu.png&quot;)
+# Get the widths and heights of the images
+harea_width, harea_height = p_harea_eu.size
+hexprov_width, hexprov_height = p_hexprov_eu.size
+sink_width, sink_height = p_sink_eu.size
+harv_nai_width, harv_nai_height = p_harv_nai_eu.size
+
+# Create a figure with 2 plot images pasted together
+# Change the letter in the sink plot
+g_sink.savefig(composite_plot_dir / &quot;sink_eu.png&quot;)
+# Load images again
+p_hexprov_eu = Image.open(composite_plot_dir / &quot;hexprov_eu.png&quot;)
+p_sink_eu = Image.open(composite_plot_dir / &quot;sink_eu.png&quot;)
+# Determine the width of the combined image (the maximum width)
+max_width = max(hexprov_width, sink_width)
+# Create a new image with the combined height and maximum width
+combined_height = hexprov_height + sink_height
+# Offset the x axis of the top figure to align both axes
+x_offset = 25
+combined_image = Image.new(&quot;RGB&quot;, (max_width+x_offset, combined_height), color=&quot;white&quot;)
+# Paste the individual images into the combined image
+combined_image.paste(p_hexprov_eu, (x_offset, 0))
+combined_image.paste(p_sink_eu, (0, hexprov_height))
+# Save the combined image
+combined_image.save(composite_plot_dir / &quot;hexprov_sink.png&quot;)</code></pre>
+</div>
 <div id="matplotlib" class="section level2">
 <h2>Matplotlib</h2>
 <p>All matplotlib examples require the following imports:</p>
@@ -5268,6 +5632,8 @@ ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;jet&#39;)</code></pre>
 href="https://matplotlib.org/examples/color/colormaps_reference.html">colour
 map</a></p>
 <pre><code>ax.scatter(X[:,0], X[:,1],c=Y, cmap=&#39;Spectral&#39;)</code></pre>
+<div id="plot-normal-distribution" class="section level3">
+<h3>Plot normal distribution</h3>
 <p>Plot the probability density function of the <a
 href="https://en.wikipedia.org/wiki/Normal_distribution">normal
 distribution</a>.</p>
@@ -5287,7 +5653,10 @@ ax.plot(x, pdensitynormal(x,5,0), label=&quot;$\sigma^2=5, \mu=0$&quot;)
 ax.plot(x, pdensitynormal(x,0.5,-2), label=&quot;$\sigma^2=0.5, \mu=-2$&quot;)
 ax.legend(loc=&quot;upper right&quot;)
 plt.show()</code></pre>
-<p>3D line, contour plot and scatter plot</p>
+</div>
+<div id="d-line-contour-plot-and-scatter-plot" class="section level3">
+<h3>3D line, contour plot and scatter plot</h3>
+<p>Plot a 3D surface</p>
 <pre><code>from mpl_toolkits import mplot3d # Required for 3d plots
 fig = plt.figure()
 ax = plt.axes(projection=&#39;3d&#39;)
@@ -5302,7 +5671,8 @@ X, Y = np.meshgrid(xline, yline)
 Z = X**2 + Y**2
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)
 # Scatter points
-ax.scatter(1,2,3)</code></pre>
+ax.scatter(1,2,3)
+plt.show()</code></pre>
 <p>See how the <code>np.meshgridi</code> objects interact with each
 other. Note this nested loop is not the optimal way to compute. Better
 to use X<strong>2 + Y</strong>2 directly as above.</p>
@@ -5313,6 +5683,7 @@ to use X<strong>2 + Y</strong>2 directly as above.</p>
 fig = plt.figure()
 ax = plt.axes(projection=&#39;3d&#39;)
 ax.contour3D(X, Y, Z, 50, cmap=&#39;binary&#39;)</code></pre>
+</div>
 <div id="axes-object" class="section level3">
 <h3>Axes object</h3>
 <p>Create an axes object</p>
@@ -5489,6 +5860,20 @@ g.savefig(&quot;/tmp/fmri.pdf&quot;)</code></pre>
 <div id="pandas-plots-are-matplotlib-axessubplot-objects"
 class="section level2">
 <h2>Pandas plots are matplotlib AxesSubplot objects</h2>
+<div id="add-another-line-to-a-pandas-plot" class="section level3">
+<h3>Add another line to a pandas plot</h3>
+<p>The function <code>df.plot()</code> returns a matplotlib axes object
+for a plot of the A and B variables. You can add another line for a
+different variable C using the plot() method of that axes object.</p>
+<pre><code>import pandas
+import matplotlib.pyplot as plt
+df = pandas.DataFrame({&quot;A&quot;:range(0,30), &quot;B&quot;:range(10,40)})
+df[&quot;C&quot;] = df[&quot;B&quot;] + 2
+# Using the plot method
+ax = df.plot(x=&quot;A&quot;, y=&quot;B&quot;)
+ax.plot(df[&quot;A&quot;], df[&quot;C&quot;])
+plt.show()</code></pre>
+</div>
 <div id="arguments-of-the-df.plot-function" class="section level3">
 <h3>Arguments of the df.plot() function</h3>
 <p>Example values for the df.plot() function:</p>
@@ -5625,6 +6010,13 @@ fig.layout.annotations += (
     ), # Keep this comma, this needs to be a tuple
 )</code></pre>
 </div>
+<div id="save-a-figure-to-an-image" class="section level3">
+<h3>Save a figure to an image</h3>
+<p>Plotly figures are normally rendered as HTML pages, but you can
+convert a figure to a static image file with the
+<code>write_image</code> method:</p>
+<pre><code>fig.write_image(&quot;/tmp/fig.png&quot;)</code></pre>
+</div>
 <div id="xy-comparison-scatter-plot-1" class="section level3">
 <h3>XY comparison scatter plot</h3>
 <p>When x and y are supposed to be the same value but are not
@@ -5690,8 +6082,123 @@ from matplotlib import pyplot as plt</code></pre>
 <li><a href="https://seaborn.pydata.org/examples/index.html">Seaborn
 gallery</a></li>
 </ul>
-<div id="axes" class="section level3">
-<h3>Axes</h3>
+<div id="aa-seaborn-interfaces" class="section level3">
+<h3>AA seaborn interfaces</h3>
+<div id="facet-grid-plots" class="section level4">
+<h4>Facet grid plots</h4>
+<p>Use Figure-level interface for drawing plots onto a FacetGrid:</p>
+<ul>
+<li><p>catplot for drawing categorical plots</p></li>
+<li><p>relplot for drawing relational plots</p>
+<ul>
+<li>kind=“scatter” (the default) for scatter plots</li>
+<li>kind=“line” for line plots</li>
+</ul></li>
+</ul>
+<p>The figure level interfaces return FacetGrid objects which can be
+reused to add subsequent layers.</p>
+<p>Seaborn version 0.12.1 introduced an object interfacet which can also
+be used to make facet plots.</p>
+<div id="combining-many-plots-together" class="section level5">
+<h5>Combining many plots together</h5>
+<p>This hack uses an image library to combine many plots together:</p>
+<pre><code># Load the images
+p_harea_eu = Image.open(composite_plot_dir / &quot;harea_eu.png&quot;)
+p_hexprov_eu = Image.open(composite_plot_dir / &quot;hexprov_eu.png&quot;)
+p_sink_eu = Image.open(composite_plot_dir / &quot;sink_eu.png&quot;)
+# Get the widths and heights of the images
+harea_width, harea_height = p_harea_eu.size
+hexprov_width, hexprov_height = p_hexprov_eu.size
+sink_width, sink_height = p_sink_eu.size
+# Determine the width of the combined image (the maximum width)
+max_width = max(harea_width, hexprov_width, sink_width)
+# Create a new image with the combined height and maximum width
+combined_height = harea_height + hexprov_height + sink_height
+combined_image = Image.new(&quot;RGB&quot;, (max_width, combined_height), color=&quot;white&quot;)
+# Paste the individual images into the combined image
+combined_image.paste(p_hexprov_eu, (0, 0))
+combined_image.paste(p_harea_eu, (0, hexprov_height))
+combined_image.paste(p_sink_eu, (0, harea_height + hexprov_height))
+# Save the combined image
+combined_image.save(composite_plot_dir / &quot;combined_image.png&quot;)</code></pre>
+</div>
+<div id="facet-title-and-size" class="section level5">
+<h5>Facet title and size</h5>
+<p>Change row and column labels to display only the content (not
+“<code>label=</code>”) and change the size to 30.</p>
+<pre><code>import seaborn
+seaborn.set_theme(style=&quot;darkgrid&quot;)
+df = seaborn.load_dataset(&quot;penguins&quot;)
+g = seaborn.displot(
+    df, x=&quot;flipper_length_mm&quot;, col=&quot;species&quot;, row=&quot;sex&quot;,
+    binwidth=3, height=3, facet_kws=dict(margin_titles=True),
+)
+g.fig.subplots_adjust(top=.9, bottom=0.1, right=0.9)
+g.set_titles(row_template=&quot;{row_name}&quot;, col_template=&quot;{col_name}&quot;, size=30)</code></pre>
+<p>See also the figure size section.</p>
+<div id="iterate-over-facets" class="section level6">
+<h6>Iterate over facets</h6>
+<p>Iterate over facet objects</p>
+<pre><code>for i, ax in enumerate(g.axes.flatten()):
+    print(i, ax.title.get_text())
+
+for ax in g.axes.flatten():
+    this_forest_type = ax.title.get_text()</code></pre>
+</div>
+</div>
+</div>
+<div id="object-interface" class="section level4">
+<h4>Object interface</h4>
+<p>Facet line plot example</p>
+<pre><code>import seaborn
+import seaborn.objects as so
+healthexp = seaborn.load_dataset(&quot;healthexp&quot;)
+p = (
+    so.Plot(healthexp, x=&quot;Year&quot;, y=&quot;Life_Expectancy&quot;)
+    .facet(&quot;Country&quot;, wrap=3)
+    .add(so.Line(alpha=.3), group=&quot;Country&quot;, col=None)
+    .add(so.Line(linewidth=3))
+)
+p.show()</code></pre>
+<p>Example from my data</p>
+<pre><code>import seaborn.objects as so
+(
+    so.Plot(df, x=&quot;age&quot;, y=&quot;volume&quot;)
+    .facet(&quot;forest_type&quot;, wrap=6)
+    .add(so.Line(alpha=.3), group=&quot;forest_type&quot;, col=None)
+    .add(so.Line(linewidth=3))
+)</code></pre>
+<div id="axis-and-other-labels" class="section level5">
+<h5>Axis and other labels</h5>
+<p><a
+href="https://seaborn.pydata.org/generated/seaborn.objects.Plot.label.html"
+class="uri">https://seaborn.pydata.org/generated/seaborn.objects.Plot.label.html</a></p>
+<pre><code>p = (
+    so.Plot(penguins, x=&quot;bill_length_mm&quot;, y=&quot;bill_depth_mm&quot;)
+    .add(so.Dot(), color=&quot;species&quot;)
+)
+p.label(x=&quot;Length&quot;, y=&quot;Depth&quot;, color=&quot;&quot;)</code></pre>
+</div>
+<div id="facets-in-the-object-interface" class="section level5">
+<h5>Facets in the object interface</h5>
+<p><a
+href="https://seaborn.pydata.org/generated/seaborn.objects.Plot.facet.html"
+class="uri">https://seaborn.pydata.org/generated/seaborn.objects.Plot.facet.html</a></p>
+<blockquote>
+<p>“Use Plot.share() to specify whether facets should be scaled the same
+way:</p>
+</blockquote>
+<pre><code>p.facet(&quot;clarity&quot;, wrap=3).share(x=False)</code></pre>
+</div>
+<div id="save-to-a-file" class="section level5">
+<h5>Save to a file</h5>
+<p>Save to a file</p>
+<pre class="python"><code>Plot.save(loc, **kwargs)</code></pre>
+</div>
+</div>
+</div>
+<div id="axes-and-labels" class="section level3">
+<h3>Axes and labels</h3>
 <div id="invert-axis" class="section level4">
 <h4>Invert axis</h4>
 <p>Of a single figure</p>
@@ -5702,28 +6209,60 @@ gallery</a></li>
 for ax in g.axes[0]:
     ax.invert_yaxis()</code></pre>
 </div>
-<div id="labels-and-titles" class="section level4">
-<h4>labels and titles</h4>
+<div id="axes-labels" class="section level4">
+<h4>Axes labels</h4>
 <p>Use p.set() to set a y label and a title</p>
 <pre><code>p = seaborn.scatterplot(&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;,data=iris)
 p.set(xlabel = &quot;Petal Length&quot;, ylabel = &quot;Petal Width&quot;, title = &quot;Flower sizes&quot;)
 plt.show()</code></pre>
-<p>Use <code>set_title</code> to add a title:</p>
-<pre><code>(seaborn
- .scatterplot(x=&quot;total_bill&quot;, y=&quot;tip&quot;, data=tips)
- .set_title(&#39;Progression of tips along the bill amount&#39;)
-)</code></pre>
 </div>
-<div id="labels-on-grid-plots" class="section level4">
-<h4>Labels on grid plots</h4>
+<div id="scientific-notation-on-axes" class="section level4">
+<h4>Scientific notation on axes</h4>
+<p>Use scientific notation on the axes of a <code>g</code> FacetGrid
+object:</p>
+<pre><code>for axes in g.axes.flat:
+    axes.ticklabel_format(axis=&#39;both&#39;, style=&#39;scientific&#39;, scilimits=(0, 0))</code></pre>
+<p>Do not use scientific notation on the axes</p>
+<pre><code>plt.ticklabel_format(style=&#39;plain&#39;, axis=&#39;y&#39;)</code></pre>
+<p>Use the scientific notation on the y axis labels, at every tick.
+Without putting a <code>1e7</code> at the top that might be overwritten
+by a facet label.</p>
+<pre class="python"><code>g = seaborn.relplot(
+    data=rp_global.reset_index(), x=&quot;step&quot;, y=&quot;primary_eq&quot;, col=&quot;primary_product&quot;,
+    hue=&quot;year&quot;, kind=&quot;line&quot;,
+    col_wrap=3, height=3,
+    facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False}
+)
+
+def y_fmt(x, pos):
+    &quot;&quot;&quot;function to format the y axis&quot;&quot;&quot;
+    return f&quot;{x:.0e}&quot;
+
+
+from matplotlib.ticker import FuncFormatter
+#g.set(yticklabels=[])
+for ax in g.axes.flat:
+    ax.yaxis.set_major_formatter(FuncFormatter(y_fmt))</code></pre>
+</div>
+<div id="rotate-axes-labels" class="section level4">
+<h4>Rotate axes labels</h4>
+<p>Rotate index labels</p>
+<pre><code>plt.xticks(rotation=70)
+plt.tight_layout()
+plt.show()</code></pre>
+</div>
+<div id="axes-labels-on-grid-plots" class="section level4">
+<h4>Axes labels on grid plots</h4>
 <p>Set a common title for grid plots</p>
 <pre><code>g = seaborn.FacetGrid(tips, col=&quot;time&quot;, row=&quot;smoker&quot;)
 g = g.map(plt.hist, &quot;total_bill&quot;)
 # Supplementary title
 g.fig.suptitle(&#39;I don&#39;t smoke and I don&#39;t tip.&#39;)</code></pre>
-<p>Add axis labels for grid plots</p>
-<pre><code> g.fig.supxlabel(&quot;time in years&quot;)
- g.fig.supylabel(&quot;weight in kg&quot;)</code></pre>
+<p>Change axis label</p>
+<pre><code>g.set_ylabels(&quot;Y label&quot;)</code></pre>
+<p>Add larger axis labels for grid plots</p>
+<pre><code>g.fig.supxlabel(&quot;time in years&quot;)
+g.fig.supylabel(&quot;weight in kg&quot;)</code></pre>
 <p>In case the title is overwritten on the subplots, you might need to
 use <a
 href="https://stackoverflow.com/a/28650623/2641825">fig.subplot_adjust()</a>
@@ -5748,9 +6287,19 @@ g.set(ylim=(0, None)) </code></pre>
 objects to avoid this:</p>
 <pre><code>pandas.to_datetime(comp[&quot;year&quot;], format=&quot;%Y&quot;)</code></pre>
 </div>
+<div id="plot-title" class="section level4">
+<h4>Plot title</h4>
+<p>Use <code>set_title</code> to add a title:</p>
+<pre><code>(seaborn
+ .scatterplot(x=&quot;total_bill&quot;, y=&quot;tip&quot;, data=tips)
+ .set_title(&#39;Progression of tips along the bill amount&#39;)
+)</code></pre>
 </div>
-<div id="bar-plot" class="section level3">
-<h3>Bar plot</h3>
+</div>
+<div id="bar-plot-and-histogram" class="section level3">
+<h3>Bar plot and histogram</h3>
+<div id="barplot" class="section level4">
+<h4>barplot</h4>
 <p>Bar plot</p>
 <pre><code>import matplotlib.pyplot as plt
 import seaborn
@@ -5762,6 +6311,71 @@ seaborn.barplot(data=iris_agg_long, x=&quot;variable&quot;, y=&quot;value&quot;,
 <pre><code>plt.xticks(rotation=70)
 plt.tight_layout()
 plt.show()</code></pre>
+<p>Other example</p>
+<pre><code>seaborn.barplot(df, x=&quot;scenario&quot;, y=&quot;value&quot;, hue=&quot;variable&quot;)</code></pre>
+<p>For stacked bar, use df.plot(), which uses matplotlib</p>
+<pre><code>p = df.plot.bar(stacked=True)</code></pre>
+</div>
+<div id="grid-bar-plot" class="section level4">
+<h4>Grid Bar plot</h4>
+<p>Draw a facet bar plot <a
+href="https://stackoverflow.com/a/62225095/2641825">from SO</a> for each
+combination of size and smoker/non smoker</p>
+<pre><code>import seaborn as sns
+import matplotlib.pyplot as plt
+sns.set()
+tips=sns.load_dataset(&quot;tips&quot;)
+g = sns.FacetGrid(tips, col = &#39;size&#39;,  row = &#39;smoker&#39;, hue = &#39;day&#39;)
+g = (g.map(sns.barplot, &#39;time&#39;, &#39;total_bill&#39;, errorbar = None).add_legend())
+plt.show()</code></pre>
+<p>Another example <a
+href="https://stackoverflow.com/a/35234137/2641825"
+class="uri">https://stackoverflow.com/a/35234137/2641825</a></p>
+<pre><code>times = df.interval.unique()
+g = sns.FacetGrid(df, row=&quot;variable&quot;, hue=&quot;segment&quot;, palette=&quot;Set3&quot;, size=4, aspect=2)
+g.map(sns.barplot, &#39;interval&#39;, &#39;value&#39;, order=times)</code></pre>
+</div>
+<div id="grid-histogram" class="section level4">
+<h4>Grid histogram</h4>
+<p><a href="https://seaborn.pydata.org/examples/faceted_histogram.html"
+class="uri">https://seaborn.pydata.org/examples/faceted_histogram.html</a></p>
+<pre><code>import seaborn
+seaborn.set_theme(style=&quot;darkgrid&quot;)
+df = seaborn.load_dataset(&quot;penguins&quot;)
+seaborn.displot(
+    df, x=&quot;flipper_length_mm&quot;, col=&quot;species&quot;, row=&quot;sex&quot;,
+    binwidth=3, height=3, facet_kws=dict(margin_titles=True),
+)</code></pre>
+</div>
+<div id="bar-plot-in-the-object-interface" class="section level4">
+<h4>Bar plot in the object interface</h4>
+<p>Bar plot using the object interface</p>
+<pre><code>import seaborn
+import seaborn.objects as so
+titanic = seaborn.load_dataset(&quot;titanic&quot;)
+p = so.Plot(titanic, x=&quot;class&quot;, color=&quot;sex&quot;)
+p = p.add(so.Bar(), so.Count(), so.Stack())
+p.show()</code></pre>
+<p>Bar plot with facets</p>
+<pre><code>p = p.facet(&quot;sex&quot;)
+p.show()</code></pre>
+<p>Other example of a bar plot with facets, using a palette</p>
+<pre class="python"><code>    p = so.Plot(df_long, x=&quot;year&quot;, y=&quot;value&quot;, color=&quot;sink&quot;)
+    p = p.add(so.Bar(),  so.Stack())
+    p = p.facet(&quot;pathway&quot;, &quot;country_group&quot;).share(x=False)
+    p = p.layout(size=(14, 9), engine=&quot;tight&quot;)
+    palette = {&#39;living_biomass_sink&#39;: &#39;forestgreen&#39;,
+               &#39;dom_sink&#39;: &#39;gold&#39;,
+               &#39;soil_sink&#39;: &#39;black&#39;,
+               &#39;hwp_sink_bau&#39;: &#39;chocolate&#39;}
+    p = p.scale(x=so.Continuous().tick(at=selected_years), color=palette)
+    p = p.label(x=&quot;&quot;, y=&quot;Million t CO2 eq&quot;, color=&quot;&quot;)
+    # p = p.scale(color=palette)
+    years_string = &quot;_&quot;.join([str(x) for x in selected_years])
+    index_string = &quot;&quot;.join([x[0] for x in index])
+    print(composite_plot_dir)
+    p.save(composite_plot_dir / f&quot;sink_composition_{index_string}_{years_string}.png&quot;)</code></pre>
+</div>
 </div>
 <div id="palettes-and-styles" class="section level3">
 <h3>Palettes and styles</h3>
@@ -5841,253 +6455,6 @@ href="https://stackoverflow.com/questions/65549047/how-to-apply-a-linestyle-to-a
 class="uri">https://stackoverflow.com/questions/65549047/how-to-apply-a-linestyle-to-a-specific-line-in-seaborn-lineplot</a></p>
 </div>
 </div>
-<div id="facet-grid-plots" class="section level3">
-<h3>Facet grid plots</h3>
-<p>Use Figure-level interface for drawing plots onto a FacetGrid:</p>
-<ul>
-<li><p>catplot for drawing categorical plots</p></li>
-<li><p>relplot for drawing relational plots</p>
-<ul>
-<li>kind=“scatter” (the default) for scatter plots</li>
-<li>kind=“line” for line plots</li>
-</ul></li>
-</ul>
-<p>The figure level interfaces return FacetGrid objects which can be
-reused to add subsequent layers.</p>
-<p>Seaborn version 0.12.1 introduced an object interfacet which can also
-be used to make facet plots.</p>
-<div id="facet-title-and-size" class="section level4">
-<h4>Facet title and size</h4>
-<p>Change row and column labels to display only the content (not
-“<code>label=</code>”) and change the size to 30.</p>
-<pre><code>import seaborn
-seaborn.set_theme(style=&quot;darkgrid&quot;)
-df = seaborn.load_dataset(&quot;penguins&quot;)
-g = seaborn.displot(
-    df, x=&quot;flipper_length_mm&quot;, col=&quot;species&quot;, row=&quot;sex&quot;,
-    binwidth=3, height=3, facet_kws=dict(margin_titles=True),
-)
-g.fig.subplots_adjust(top=.9, bottom=0.1, right=0.9)
-g.set_titles(row_template=&quot;{row_name}&quot;, col_template=&quot;{col_name}&quot;, size=30)</code></pre>
-<p>See also the figure size section.</p>
-</div>
-<div id="grid-bar-plot" class="section level4">
-<h4>Grid Bar plot</h4>
-<p>Draw a facet bar plot <a
-href="https://stackoverflow.com/a/62225095/2641825">from SO</a> for each
-combination of size and smoker/non smoker</p>
-<pre><code>import seaborn as sns
-import matplotlib.pyplot as plt
-sns.set()
-tips=sns.load_dataset(&quot;tips&quot;)
-g = sns.FacetGrid(tips, col = &#39;size&#39;,  row = &#39;smoker&#39;, hue = &#39;day&#39;)
-g = (g.map(sns.barplot, &#39;time&#39;, &#39;total_bill&#39;, ci = None).add_legend())
-plt.show()</code></pre>
-</div>
-<div id="grid-histogram" class="section level4">
-<h4>Grid histogram</h4>
-<p><a href="https://seaborn.pydata.org/examples/faceted_histogram.html"
-class="uri">https://seaborn.pydata.org/examples/faceted_histogram.html</a></p>
-<pre><code>import seaborn
-seaborn.set_theme(style=&quot;darkgrid&quot;)
-df = seaborn.load_dataset(&quot;penguins&quot;)
-seaborn.displot(
-    df, x=&quot;flipper_length_mm&quot;, col=&quot;species&quot;, row=&quot;sex&quot;,
-    binwidth=3, height=3, facet_kws=dict(margin_titles=True),
-)</code></pre>
-</div>
-<div id="grid-line-plot" class="section level4">
-<h4>Grid line plot</h4>
-<div id="relplot" class="section level5">
-<h5>relplot</h5>
-<p>help(searborn.relplot)</p>
-<pre><code>&gt; &quot;This function provides access to several different axes-level functions
-&gt; that show the relationship between two variables with semantic mappings
-&gt; of subsets. The ``kind`` parameter selects the underlying axes-level
-&gt; function to use:
-&gt;     - :func:`scatterplot` with ``kind=&quot;scatter&quot;``; the default
-&gt;     - :func:`lineplot` with ``kind=&quot;line&quot;``
-&gt; Extra keyword arguments are passed to the underlying function, so you should
-&gt; refer to the documentation for each to see kind-specific options.&quot;</code></pre>
-<p>Example:</p>
-<ul>
-<li><p>plot signal through time and facet along the region</p></li>
-<li><p>use different axes size. This requires passing a dictionary to
-FacetGrid.</p></li>
-<li><p>Add a y label</p></li>
-<li><p>adjust the left margin so that the y label doesn’t overwrite the
-axis</p></li>
-<li><p>Set the Y limit to zero</p>
-<p>g = seaborn.relplot( data=fmri, x=“timepoint”, y=“signal”,
-col=“region”, hue=“event”, style=“event”, kind=“line”, col_wrap=1,
-height=3, facet_kws={‘sharey’: False, ‘sharex’: False} )
-g.fig.supylabel(“Adaptive Engagement of Cognitive Control”)
-g.fig.subplots_adjust(left=0.28, top=0.9) g.fig.suptitle(“Example”)
-g.set_ylabels(“Y label”) g.set(ylim=(0, None)) plt.show()</p></li>
-</ul>
-<p>Older example from <a
-href="https://seaborn.pydata.org/examples/faceted_lineplot.html"
-class="uri">https://seaborn.pydata.org/examples/faceted_lineplot.html</a></p>
-<pre><code>import seaborn as sns
-sns.set_theme(style=&quot;ticks&quot;)
-
-dots = sns.load_dataset(&quot;dots&quot;)
-
-# Define the palette as a list to specify exact values
-palette = sns.color_palette(&quot;rocket_r&quot;)
-
-# Plot the lines on two facets
-g = sns.relplot(
-    data=dots,
-    x=&quot;time&quot;, y=&quot;firing_rate&quot;,
-    hue=&quot;coherence&quot;, size=&quot;choice&quot;, col=&quot;align&quot;,
-    kind=&quot;line&quot;, size_order=[&quot;T1&quot;, &quot;T2&quot;], palette=palette,
-    height=5, aspect=.75, facet_kws=dict(sharex=False),
-)
-g.fig.suptitle(&quot;Dots example&quot;)
-# Add a title and adjust the position so the title doesn&#39;t overwrite facets
-g.set_ylabels(&quot;Y label&quot;)
-plt.subplots_adjust(top=0.9)</code></pre>
-</div>
-<div id="object-interface" class="section level5">
-<h5>Object interface</h5>
-<p>Facet line plot example</p>
-<pre><code>import seaborn
-import seaborn.objects as so
-healthexp = seaborn.load_dataset(&quot;healthexp&quot;)
-(
-    so.Plot(healthexp, x=&quot;Year&quot;, y=&quot;Life_Expectancy&quot;)
-    .facet(&quot;Country&quot;, wrap=3)
-    .add(so.Line(alpha=.3), group=&quot;Country&quot;, col=None)
-    .add(so.Line(linewidth=3))
-)</code></pre>
-<p>Example from my data</p>
-<pre><code>import seaborn.objects as so
-(
-    so.Plot(df, x=&quot;age&quot;, y=&quot;volume&quot;)
-    .facet(&quot;forest_type&quot;, wrap=6)
-    .add(so.Line(alpha=.3), group=&quot;forest_type&quot;, col=None)
-    .add(so.Line(linewidth=3))
-)</code></pre>
-</div>
-</div>
-<div id="grid-scatter-plot" class="section level4">
-<h4>Grid scatter plot</h4>
-<p>Draw a scatter plot for each iris species, using the recommended
-<code>relplot()</code> function:</p>
-<pre><code>g = seaborn.relplot(x=&#39;petal_length&#39;, y=&#39;petal_width&#39;, col=&#39;species&#39;, hue=&#39;species&#39;, data=iris)
-plt.show()</code></pre>
-<p>help(seaborn.relplot) explains that it returns a FacetGrid
-object:</p>
-<pre><code>&gt; &quot; After plotting, the :class:`FacetGrid` with the plot is returned and can be
-&gt; used directly to tweak supporting plot details or add other layers.&quot;</code></pre>
-<p>Old way: using FacetGrid directly requires changing the species to a
-categorical variable in order to have a different colour for each
-species.</p>
-<pre><code>g = seaborn.FacetGrid(iris, col=&quot;species&quot;, height=6)
-iris[&#39;species&#39;] = iris[&#39;species&#39;].astype(&#39;category&#39;)
-# Use map_dataframe to name the arguments
-g.map_dataframe(seaborn.scatterplot,x=&#39;petal_length&#39;,y=&#39;petal_width&#39;,hue=&#39;species&#39;)
-plt.show()
-
-# Old way without named argument
-g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)
-plt.show()</code></pre>
-<p>Notice that if you don’t change the color to a categorical variable,
-it will not vary across the species. I reported <a
-href="https://github.com/mwaskom/seaborn/issues/2028">this issue</a>
-which led me to update the searborn documentation in this <a
-href="https://github.com/mwaskom/seaborn/pull/2030/commits/88a45dddeb6ac4c88ab49da195e7a05843ad4aaf">merge
-request</a>.</p>
-<blockquote>
-<p>“When using seaborn functions that infer semantic mappings from a
-dataset, care must be taken to synchronize those mappings across facets.
-In other words some mechanism needs to ensure that the same mapping is
-used in each facet. This can be achieved for example by passing pallete
-dictionnaries or by defining categorical types in your dataframe. In
-most cases, it will be better to use a figure-level function
-(e.g. :func:<code>relplot</code> or :func:<code>catplot</code>) than to
-use :class:<code>FacetGrid</code> directly.”</p>
-</blockquote>
-<div id="grid-scatter-plot-with-xy-line" class="section level5">
-<h5>Grid scatter plot with x=y line</h5>
-<p>A grid scatter plot with an x=y line for comparison purposes</p>
-<pre><code>g = seaborn.relplot(data=df,
-                x=&quot;x_var&quot;,
-                y=&quot;y=var&quot;,
-                col=&quot;year&quot;,
-                hue=&quot;partner&quot;,
-                kind=&quot;scatter&quot;,
-               )
-g.fig.subplots_adjust(top=0.9)
-# Add x=y line
-for ax in g.axes.flat:
-    ax.plot(ax.get_xlim(), ax.get_ylim(), ls=&quot;--&quot;, c=&quot;.3&quot;, scalex=False, scaley=False)</code></pre>
-</div>
-</div>
-<div id="grid-text" class="section level4">
-<h4>Grid Text</h4>
-<p>From [SO answer][<a
-href="https://stackoverflow.com/a/59775753/2641825"
-class="uri">https://stackoverflow.com/a/59775753/2641825</a>)</p>
-<pre><code>import pandas as pd
-import seaborn as sns
-from matplotlib import pyplot as plt
-data = [[&#39;APOLLOHOSP&#39;, 8, 6, &#39;High&#39;, &#39;small&#39;],
-        [&#39;ANUP&#39;, 8, 7, &#39;High&#39;, &#39;small&#39;],
-        [&#39;SIS&#39;, 4, 6, &#39;High&#39;, &#39;mid&#39;],
-        [&#39;HAWKINCOOK&#39;, 5, 2, &#39;Low&#39;, &#39;mid&#39;],
-        [&#39;NEULANDLAB&#39;, 6, 4, &#39;Low&#39;, &#39;large&#39;],
-        [&#39;ORIENTELEC&#39;, 7, 9, &#39;Low&#39;, &#39;mid&#39;],
-        [&#39;AXISBANK&#39;, 2, 3, &#39;Medium&#39;, &#39;mid&#39;],
-        [&#39;DMART&#39;, 4, 1, &#39;Medium&#39;, &#39;large&#39;],
-        [&#39;ARVIND&#39;, 2, 10, &#39;Medium&#39;, &#39;small&#39;],
-        [&#39;TCI&#39;, 1, 7, &#39;High&#39;, &#39;mid&#39;],
-        [&#39;MIDHANI&#39;, 5, 5, &#39;Low&#39;, &#39;large&#39;],
-        [&#39;RITES&#39;, 6, 4, &#39;Medium&#39;, &#39;mid&#39;],
-        [&#39;COROMANDEL&#39;, 9, 9, &#39;High&#39;, &#39;small&#39;],
-        [&#39;SBIN&#39;, 10, 3, &#39;Medium&#39;, &#39;large&#39;]]
-mx = pd.DataFrame(data=data, columns=[&quot;code&quot;, &quot;Growth&quot;, &quot;Value&quot;, &quot;Risk&quot;, &quot;Mcap&quot;])
-plotnum = {&#39;small&#39;: 0, &#39;mid&#39;: 1, &#39;large&#39;: 2}
-p1 = sns.relplot(x=&quot;Growth&quot;, y=&quot;Value&quot;, hue=&quot;Risk&quot;, col=&quot;Mcap&quot;, data=mx, s=200, palette=[&#39;r&#39;, &#39;g&#39;, &#39;y&#39;])
-
-for ax in p1.axes[0]:
-    ax.set_xlim(0.0, max(mx[&quot;Growth&quot;]) + 1.9)
-for row in mx.itertuples():
-    print(row)
-    ax = p1.axes[0, plotnum[row.Mcap]]
-    ax.text(row.Growth + 0.5, row.Value, row.code, horizontalalignment=&#39;left&#39;)
-plt.show()</code></pre>
-</div>
-<div id="grid-axes" class="section level4">
-<h4>Grid axes</h4>
-<p>Use scientific notation on the axes of a <code>g</code> FacetGrid
-object:</p>
-<pre><code>for axes in g.axes.flat:
-    axes.ticklabel_format(axis=&#39;both&#39;, style=&#39;scientific&#39;, scilimits=(0, 0))</code></pre>
-<p>Do not use scientific notation on the axes</p>
-<pre><code>plt.ticklabel_format(style=&#39;plain&#39;, axis=&#39;y&#39;)</code></pre>
-<p>Use the scientific notation on the y axis labels, at every tick.
-Without putting a <code>1e7</code> at the top that might be overwritten
-by a facet label.</p>
-<pre class="python"><code>g = seaborn.relplot(
-    data=rp_global.reset_index(), x=&quot;step&quot;, y=&quot;primary_eq&quot;, col=&quot;primary_product&quot;,
-    hue=&quot;year&quot;, kind=&quot;line&quot;,
-    col_wrap=3, height=3,
-    facet_kws={&#39;sharey&#39;: False, &#39;sharex&#39;: False}
-)
-
-def y_fmt(x, pos):
-    &quot;&quot;&quot;function to format the y axis&quot;&quot;&quot;
-    return f&quot;{x:.0e}&quot;
-
-
-from matplotlib.ticker import FuncFormatter
-#g.set(yticklabels=[])
-for ax in g.axes.flat:
-    ax.yaxis.set_major_formatter(FuncFormatter(y_fmt))</code></pre>
-</div>
-</div>
 <div id="figure-size-1" class="section level3">
 <h3>Figure size</h3>
 <p>Resize a scatter plot</p>
@@ -6131,6 +6498,20 @@ inches.</p>
 g.legend.set_bbox_to_anchor((0.5, 0.15))</code></pre>
 <p>Another way to move the legend and make it flat</p>
 <pre><code>seaborn.move_legend(g, &quot;upper center&quot;, bbox_to_anchor=(0.5, 0.1), ncol=4)</code></pre>
+<ul>
+<li><p><a
+href="https://stackoverflow.com/questions/56575756/how-to-split-seaborn-legend-into-multiple-columns"
+class="uri">https://stackoverflow.com/questions/56575756/how-to-split-seaborn-legend-into-multiple-columns</a></p>
+<p>Placing legend out in a floating box with</p>
+<p>facet_kws={“legend_out”:False},</p></li>
+</ul>
+<p>Move a legend below the plot</p>
+<pre><code>seaborn.move_legend(g, &quot;upper left&quot;, bbox_to_anchor=(.05, .05), frameon=False, ncol=4, title=&quot;&quot;)</code></pre>
+<p>Code snippet to redraw a legend (didn’t use it in the edn)</p>
+<pre><code>h,l = g.axes[0].get_legend_handles_labels()
+g.axes[0].legend_.remove()
+g.fig.legend(h,l, ncol=4)
+g.legend.set_bbox_to_anchor((.05,.05)) #, transform=g.fig.transFigure)</code></pre>
 </div>
 <div id="line-plot" class="section level3">
 <h3>Line plot</h3>
@@ -6194,6 +6575,60 @@ for handle in legend.legendHandles:
 
 plt.show()</code></pre>
 </div>
+<div id="grid-line-plot" class="section level4">
+<h4>Grid line plot</h4>
+</div>
+<div id="relplot" class="section level4">
+<h4>relplot</h4>
+<p>help(searborn.relplot)</p>
+<pre><code>&gt; &quot;This function provides access to several different axes-level functions
+&gt; that show the relationship between two variables with semantic mappings
+&gt; of subsets. The ``kind`` parameter selects the underlying axes-level
+&gt; function to use:
+&gt;     - :func:`scatterplot` with ``kind=&quot;scatter&quot;``; the default
+&gt;     - :func:`lineplot` with ``kind=&quot;line&quot;``
+&gt; Extra keyword arguments are passed to the underlying function, so you should
+&gt; refer to the documentation for each to see kind-specific options.&quot;</code></pre>
+<p>Example:</p>
+<ul>
+<li><p>plot signal through time and facet along the region</p></li>
+<li><p>use different axes size. This requires passing a dictionary to
+FacetGrid.</p></li>
+<li><p>Add a y label</p></li>
+<li><p>adjust the left margin so that the y label doesn’t overwrite the
+axis</p></li>
+<li><p>Set the Y limit to zero</p>
+<p>g = seaborn.relplot( data=fmri, x=“timepoint”, y=“signal”,
+col=“region”, hue=“event”, style=“event”, kind=“line”, col_wrap=1,
+height=3, facet_kws={‘sharey’: False, ‘sharex’: False} )
+g.fig.supylabel(“Adaptive Engagement of Cognitive Control”)
+g.fig.subplots_adjust(left=0.28, top=0.9) g.fig.suptitle(“Example”)
+g.set_ylabels(“Y label”) g.set(ylim=(0, None)) plt.show()</p></li>
+</ul>
+<p>Older example from <a
+href="https://seaborn.pydata.org/examples/faceted_lineplot.html"
+class="uri">https://seaborn.pydata.org/examples/faceted_lineplot.html</a></p>
+<pre><code>import seaborn as sns
+sns.set_theme(style=&quot;ticks&quot;)
+
+dots = sns.load_dataset(&quot;dots&quot;)
+
+# Define the palette as a list to specify exact values
+palette = sns.color_palette(&quot;rocket_r&quot;)
+
+# Plot the lines on two facets
+g = sns.relplot(
+    data=dots,
+    x=&quot;time&quot;, y=&quot;firing_rate&quot;,
+    hue=&quot;coherence&quot;, size=&quot;choice&quot;, col=&quot;align&quot;,
+    kind=&quot;line&quot;, size_order=[&quot;T1&quot;, &quot;T2&quot;], palette=palette,
+    height=5, aspect=.75, facet_kws=dict(sharex=False),
+)
+g.fig.suptitle(&quot;Dots example&quot;)
+# Add a title and adjust the position so the title doesn&#39;t overwrite facets
+g.set_ylabels(&quot;Y label&quot;)
+plt.subplots_adjust(top=0.9)</code></pre>
+</div>
 </div>
 <div id="marker-and-text" class="section level3">
 <h3>Marker and text</h3>
@@ -6201,6 +6636,40 @@ plt.show()</code></pre>
 faceted plots.</p>
 <pre><code>plt.plot(2030, -420, marker=&#39;*&#39;, markersize=10, color=&#39;red&#39;)
 plt.text(2030+1, -420, &quot;Target -420&quot;, fontsize=10)</code></pre>
+<div id="grid-text" class="section level4">
+<h4>Grid Text</h4>
+<p>From [SO answer][<a
+href="https://stackoverflow.com/a/59775753/2641825"
+class="uri">https://stackoverflow.com/a/59775753/2641825</a>)</p>
+<pre><code>import pandas as pd
+import seaborn as sns
+from matplotlib import pyplot as plt
+data = [[&#39;APOLLOHOSP&#39;, 8, 6, &#39;High&#39;, &#39;small&#39;],
+        [&#39;ANUP&#39;, 8, 7, &#39;High&#39;, &#39;small&#39;],
+        [&#39;SIS&#39;, 4, 6, &#39;High&#39;, &#39;mid&#39;],
+        [&#39;HAWKINCOOK&#39;, 5, 2, &#39;Low&#39;, &#39;mid&#39;],
+        [&#39;NEULANDLAB&#39;, 6, 4, &#39;Low&#39;, &#39;large&#39;],
+        [&#39;ORIENTELEC&#39;, 7, 9, &#39;Low&#39;, &#39;mid&#39;],
+        [&#39;AXISBANK&#39;, 2, 3, &#39;Medium&#39;, &#39;mid&#39;],
+        [&#39;DMART&#39;, 4, 1, &#39;Medium&#39;, &#39;large&#39;],
+        [&#39;ARVIND&#39;, 2, 10, &#39;Medium&#39;, &#39;small&#39;],
+        [&#39;TCI&#39;, 1, 7, &#39;High&#39;, &#39;mid&#39;],
+        [&#39;MIDHANI&#39;, 5, 5, &#39;Low&#39;, &#39;large&#39;],
+        [&#39;RITES&#39;, 6, 4, &#39;Medium&#39;, &#39;mid&#39;],
+        [&#39;COROMANDEL&#39;, 9, 9, &#39;High&#39;, &#39;small&#39;],
+        [&#39;SBIN&#39;, 10, 3, &#39;Medium&#39;, &#39;large&#39;]]
+mx = pd.DataFrame(data=data, columns=[&quot;code&quot;, &quot;Growth&quot;, &quot;Value&quot;, &quot;Risk&quot;, &quot;Mcap&quot;])
+plotnum = {&#39;small&#39;: 0, &#39;mid&#39;: 1, &#39;large&#39;: 2}
+p1 = sns.relplot(x=&quot;Growth&quot;, y=&quot;Value&quot;, hue=&quot;Risk&quot;, col=&quot;Mcap&quot;, data=mx, s=200, palette=[&#39;r&#39;, &#39;g&#39;, &#39;y&#39;])
+
+for ax in p1.axes[0]:
+    ax.set_xlim(0.0, max(mx[&quot;Growth&quot;]) + 1.9)
+for row in mx.itertuples():
+    print(row)
+    ax = p1.axes[0, plotnum[row.Mcap]]
+    ax.text(row.Growth + 0.5, row.Value, row.code, horizontalalignment=&#39;left&#39;)
+plt.show()</code></pre>
+</div>
 </div>
 <div id="pair-plot" class="section level3">
 <h3>Pair plot</h3>
@@ -6221,13 +6690,67 @@ plt.show()</code></pre>
 <p>Group by another variable and show the groups with different
 colors:</p>
 <pre><code>seaborn(x=&quot;total_bill&quot;, y=&quot;tip&quot;, hue=&quot;time&quot;, data=tips)</code></pre>
-</div>
-<div id="scatter-plot-1" class="section level3">
-<h3>Scatter plot</h3>
+<div id="scatterplot" class="section level4">
+<h4>scatterplot</h4>
 <p>Create a scatter plot with a title and axis labels</p>
 <pre><code>p = seaborn.scatterplot(&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;,data=iris)
 p.set(xlabel = &quot;Petal Length&quot;, ylabel = &quot;Petal Width&quot;, title = &quot;Flower sizes&quot;)
 plt.show()</code></pre>
+</div>
+<div id="grid-scatter-plot" class="section level4">
+<h4>Grid scatter plot</h4>
+<p>Draw a scatter plot for each iris species, using the recommended
+<code>relplot()</code> function:</p>
+<pre><code>g = seaborn.relplot(x=&#39;petal_length&#39;, y=&#39;petal_width&#39;, col=&#39;species&#39;, hue=&#39;species&#39;, data=iris)
+plt.show()</code></pre>
+<p>help(seaborn.relplot) explains that it returns a FacetGrid
+object:</p>
+<pre><code>&gt; &quot; After plotting, the :class:`FacetGrid` with the plot is returned and can be
+&gt; used directly to tweak supporting plot details or add other layers.&quot;</code></pre>
+<p>Old way: using FacetGrid directly requires changing the species to a
+categorical variable in order to have a different colour for each
+species.</p>
+<pre><code>g = seaborn.FacetGrid(iris, col=&quot;species&quot;, height=6)
+iris[&#39;species&#39;] = iris[&#39;species&#39;].astype(&#39;category&#39;)
+# Use map_dataframe to name the arguments
+g.map_dataframe(seaborn.scatterplot,x=&#39;petal_length&#39;,y=&#39;petal_width&#39;,hue=&#39;species&#39;)
+plt.show()
+
+# Old way without named argument
+g.map(seaborn.scatterplot,&#39;petal_length&#39;,&#39;petal_width&#39;,&#39;species&#39;)
+plt.show()</code></pre>
+<p>Notice that if you don’t change the color to a categorical variable,
+it will not vary across the species. I reported <a
+href="https://github.com/mwaskom/seaborn/issues/2028">this issue</a>
+which led me to update the searborn documentation in this <a
+href="https://github.com/mwaskom/seaborn/pull/2030/commits/88a45dddeb6ac4c88ab49da195e7a05843ad4aaf">merge
+request</a>.</p>
+<blockquote>
+<p>“When using seaborn functions that infer semantic mappings from a
+dataset, care must be taken to synchronize those mappings across facets.
+In other words some mechanism needs to ensure that the same mapping is
+used in each facet. This can be achieved for example by passing pallete
+dictionnaries or by defining categorical types in your dataframe. In
+most cases, it will be better to use a figure-level function
+(e.g. :func:<code>relplot</code> or :func:<code>catplot</code>) than to
+use :class:<code>FacetGrid</code> directly.”</p>
+</blockquote>
+</div>
+<div id="grid-scatter-plot-with-xy-line" class="section level4">
+<h4>Grid scatter plot with x=y line</h4>
+<p>A grid scatter plot with an x=y line for comparison purposes</p>
+<pre><code>g = seaborn.relplot(data=df,
+                x=&quot;x_var&quot;,
+                y=&quot;y=var&quot;,
+                col=&quot;year&quot;,
+                hue=&quot;partner&quot;,
+                kind=&quot;scatter&quot;,
+               )
+g.fig.subplots_adjust(top=0.9)
+# Add x=y line
+for ax in g.axes.flat:
+    ax.plot(ax.get_xlim(), ax.get_ylim(), ls=&quot;--&quot;, c=&quot;.3&quot;, scalex=False, scaley=False)</code></pre>
+</div>
 </div>
 <div id="sample-data" class="section level3">
 <h3>Sample data</h3>
@@ -6607,7 +7130,7 @@ href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFram
 </tr>
 <tr class="odd">
 <td>separate</td>
-<td>df[[‘b’,‘c’]] = df.a.str.split(‘,’,1,expand=True)</td>
+<td>df[[‘b’,‘c’]] = df.a.str.split(‘,’,n=1,expand=True)</td>
 <td><a href="https://stackoverflow.com/a/57823566">pandas separate</a>
 str section</td>
 </tr>
@@ -6800,23 +7323,21 @@ number with commas as thousands separators?</a></p>
 <p>See also string operations in pandas with df[“x”].str methods.</p>
 </div>
 </div>
-<div id="regex-substitution" class="section level2">
-<h2>Regex substitution</h2>
-<p><a href="https://docs.python.org/3/library/re.html">Documentation of
-the re package</a>.</p>
-<p>Replace one or another character by a space</p>
-<pre><code>import re
-re.sub(&quot;l|k&quot;, &quot; &quot;, &quot;mlkj&quot;)</code></pre>
-<p>Replace one or more consecutive non alphanumeric characters by an
-underscore.</p>
-<pre><code>re.sub(r&#39;\W+&#39;, &#39;_&#39;, &#39;bla: bla**(bla)&#39;)</code></pre>
-<p>Insert a suffix in a file name before the extension <a
-href="https://stackoverflow.com/a/2763772/2641825">SO anwser</a></p>
-<pre><code>import re
-re.sub(r&#39;(?:_a)?(\.[^\.]*)$&#39; , r&#39;_suff\1&#39;,&quot;long.file.name.jpg&quot;)</code></pre>
+<div id="search-and-replace-1" class="section level2">
+<h2>Search and replace</h2>
+<p>Simple search with <code>in</code> returns <code>True</code> or
+<code>False</code></p>
+<pre><code>&quot;a&quot; in &quot;bla&quot;
+&quot;z&quot; in &quot;bla&quot;</code></pre>
+<div id="regex-patterns" class="section level3">
+<h3>Regex patterns</h3>
+<ul>
+<li><p><code>\S</code> matches any non white space character</p></li>
+<li><p><code>\W</code> matches any non-word character</p></li>
+</ul>
 </div>
-<div id="regex-search-regular-expressions" class="section level2">
-<h2>Regex search Regular Expressions</h2>
+<div id="regex-search-regular-expressions" class="section level3">
+<h3>Regex search Regular Expressions</h3>
 <p>Search for patterns</p>
 <pre><code>import re
 re.findall(r&#39;\bf[a-z]*&#39;, &#39;which foot or hand fell fastest&#39;)
@@ -6836,6 +7357,22 @@ re.search(&quot;(value)_(\d+)&quot;, &quot;value_2022&quot;).group(2)</code></pr
 <p>Search charcters that are not value</p>
 <pre><code>l = [&quot;value123&quot;, &quot;a&quot;, &quot;b&quot;]
 [x for x in l if not re.search(&quot;value&quot;, x)]</code></pre>
+</div>
+<div id="regex-substitution" class="section level3">
+<h3>Regex substitution</h3>
+<p><a href="https://docs.python.org/3/library/re.html">Documentation of
+the re package</a>.</p>
+<p>Replace one or another character by a space</p>
+<pre><code>import re
+re.sub(&quot;l|k&quot;, &quot; &quot;, &quot;mlkj&quot;)</code></pre>
+<p>Replace one or more consecutive non alphanumeric characters by an
+underscore.</p>
+<pre><code>re.sub(r&#39;\W+&#39;, &#39;_&#39;, &#39;bla: bla**(bla)&#39;)</code></pre>
+<p>Insert a suffix in a file name before the extension <a
+href="https://stackoverflow.com/a/2763772/2641825">SO anwser</a></p>
+<pre><code>import re
+re.sub(r&#39;(?:_a)?(\.[^\.]*)$&#39; , r&#39;_suff\1&#39;,&quot;long.file.name.jpg&quot;)</code></pre>
+</div>
 </div>
 <div id="join" class="section level2">
 <h2>Join</h2>
@@ -6949,6 +7486,14 @@ in a file on every call to git blame.”</p>
 <p><a
 href="https://pypi.org/project/flake8/1.6.1/#warning-error-codes">List
 of FLake8 warnings and error codes</a></p>
+<p><a href="https://flake8.pycqa.org/en/3.0.1/user/ignoring-errors.html"
+class="uri">https://flake8.pycqa.org/en/3.0.1/user/ignoring-errors.html</a></p>
+<ul>
+<li><p>Ignore errors in a .flake8 file at the root of the git
+repository</p></li>
+<li><p>Ignore errors for just one line with a comment # noqa:
+E731</p></li>
+</ul>
 </div>
 <div id="pep-python-enhancement-proposals" class="section level2">
 <h2>PEP Python Enhancement Proposals</h2>
@@ -7035,13 +7580,22 @@ Continuous integration</a> has a gitlab example:</p>
 </div>
 <div id="pylint" class="section level2">
 <h2>Pylint</h2>
-<p>Edit the configuration file</p>
+<div id="configure-pylint" class="section level3">
+<h3>Configure pylint</h3>
+<p>Edit a user’s configuration file</p>
 <pre><code>vim ~/.pylintrc</code></pre>
 <p>You can also make a project specific configuration file at the root
-of a git repository.</p>
-<p>List of good names that shouldn’t give a “short name” warning</p>
+of a git repository. The content of the configuration file is as
+follows:</p>
 <pre><code>[pylint]
-good-names=df</code></pre>
+# List of good names that shouldn&#39;t give a &quot;short name&quot; warning
+good-names=df,ds,t
+# Use Paul&#39;s default virtual environment
+init-hook=&#39;import sys; sys.path.append(&quot;/home/paul/rp/penv/lib/python3.11/site-packages/&quot;)&#39;</code></pre>
+<p>Adding the path to site packages in the virtual environment is
+necessary in order to avoid pylint using the base system version of
+python, which doesn’t have pandas installed. This avoids reporting
+package not installed errors.</p>
 <p>Generate a configuration file</p>
 <pre><code>pylint --generate-rcfile</code></pre>
 <p>Blog</p>
@@ -7051,6 +7605,7 @@ href="https://www.reddit.com/r/Python/comments/82hgzm/any_advantages_of_flake8_o
 advantages of Flake8 over PyLint</a> some answers suggest keeping
 both.</li>
 </ul>
+</div>
 <div id="class-with-dynamic-attributes" class="section level3">
 <h3>Class with dynamic attributes</h3>
 <p>E1101: ‘Instance of .. has no .. member’ for class with dynamic
@@ -7347,24 +7902,6 @@ def test_rectified_linear_unit():
 <p>Execute the test suite from bash with py.test as follows:</p>
 <pre><code>cd ~/rp/course_machine_learning/projects/project_2_3_mnist/part2-nn
 py.test</code></pre>
-<div id="test-pandas-data-frame" class="section level3">
-<h3>Test pandas data frame</h3>
-<p>Methods to test data frame and series equality</p>
-<pre><code>from pandas.testing import assert_frame_equal
-from pandas.testing import assert_series_equal
-import seaborn 
-iris = seaborn.load_dataset(&quot;iris&quot;)
-assert_frame_equal(iris, iris)
-iris[&quot;species2&quot;] = iris[&quot;species&quot;]
-assert_series_equal(iris[&quot;species&quot;], iris[&quot;species2&quot;])
-# Ignore names
-assert_series_equal(iris[&quot;species&quot;], iris[&quot;species2&quot;], check_names=False)</code></pre>
-<p>Sometimes you want tolerance</p>
-<pre><code>df = pandas.DataFrame({&quot;a&quot;:[1.0,2,3],
-                       &quot;b&quot;:[1.0001,2,3]})
-assert_series_equal(df[&quot;a&quot;], df[&quot;b&quot;], check_names=False)
-assert_series_equal(df[&quot;a&quot;], df[&quot;b&quot;], rtol=1e-2, check_names=False)</code></pre>
-</div>
 <div id="aa-run" class="section level3">
 <h3>AA run</h3>
 <ul>
@@ -7382,6 +7919,149 @@ href="https://docs.pytest.org/en/7.1.x/how-to/unittest.html">How to use
 unittest-based tests with pytest</a></p>
 <p>pytest file_test.py</p></li>
 </ul>
+</div>
+<div id="doctest" class="section level3">
+<h3>Doctest</h3>
+<ul>
+<li><p><a href="https://docs.python.org/3/library/doctest.html"
+class="uri">https://docs.python.org/3/library/doctest.html</a></p>
+<blockquote>
+<p>“The doctest module searches for pieces of text that look like
+interactive Python sessions, and then executes those sessions to verify
+that they work exactly as shown.”</p>
+</blockquote></li>
+<li><p>Run doctest in pytest <a
+href="https://docs.pytest.org/en/7.1.x/how-to/doctest.html"
+class="uri">https://docs.pytest.org/en/7.1.x/how-to/doctest.html</a></p>
+<ul>
+<li><p>Test examples in the whole module</p>
+<pre><code>  pytest --doctest-modules</code></pre></li>
+<li><p>Test only one file</p>
+<pre><code>  pytest --doctest-modules post_processor/nai.py</code></pre></li>
+</ul>
+<blockquote>
+<p>“To skip a single check inside a doctest you can use the standard
+doctest.SKIP directive:”</p>
+</blockquote>
+<pre><code>  def test_random(y):
+  &quot;&quot;&quot;
+  &gt;&gt;&gt; random.random()  # doctest: +SKIP
+  0.156231223
+
+  &gt;&gt;&gt; 1 + 1
+  2
+  &quot;&quot;&quot;</code></pre></li>
+</ul>
+<div id="doctest-errors" class="section level4">
+<h4>Doctest errors</h4>
+<ul>
+<li><p>“ValueError: line 32 of the docstring for <object> has
+inconsistent leading whitespace”</p>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/18772991/python-doctest-with-newline-characters-inconsistent-leading-whitespace-error"
+class="uri">https://stackoverflow.com/questions/18772991/python-doctest-with-newline-characters-inconsistent-leading-whitespace-error</a>
+This can be fixed by converting the docstring to a raw string with the
+“r” prefix or by escaping the new line characters with a double
+backslash.</li>
+</ul></li>
+<li><p><a
+href="https://pandas.pydata.org/docs/development/contributing_docstring.html#tips-for-getting-your-examples-pass-the-doctests"
+class="uri">https://pandas.pydata.org/docs/development/contributing_docstring.html#tips-for-getting-your-examples-pass-the-doctests</a></p>
+<blockquote>
+<p>“If you have a code snippet that wraps multiple lines, you need to
+use ‘…’ on the continued lines”.</p>
+</blockquote></li>
+</ul>
+<p>See also:</p>
+<ul>
+<li><p>doctestplus <a
+href="https://github.com/scientific-python/pytest-doctestplus"
+class="uri">https://github.com/scientific-python/pytest-doctestplus</a>
+provides additional functionality to skip tests in certain classes or
+for an entire module.</p>
+<ul>
+<li><p>doctest plus provides additional flags to skip or include tests
+on remote data. This works in conjonction with<br />
+<a href="https://github.com/astropy/pytest-remotedata"
+class="uri">https://github.com/astropy/pytest-remotedata</a></p>
+<blockquote>
+<p>“The pytest-remotedata plugin allows developers to indicate which
+unit tests require access to the internet, and to control when and
+whether such tests should execute as part of any given run of the test
+suite.”</p>
+</blockquote></li>
+</ul></li>
+</ul>
+<p>Paul Rougieux’s SO question on testing pandas data frame with
+doctest</p>
+<p>I have a package with many methods that output pandas data frame. I
+would like to test the examples with pytest and doctest as explained on
+the <a
+href="https://docs.pytest.org/en/4.6.x/doctest.html#output-format">pytest
+doctest integration page</a>.</p>
+<p>Pytest requires the output data frame to contain a certain number of
+columns that might be different than the number of columns provided in
+the example.</p>
+<pre><code>    &gt;&gt;&gt; import pandas
+    &gt;&gt;&gt; df = pandas.DataFrame({&quot;variable&quot;: range(3)})
+    &gt;&gt;&gt; for i in range(7): 
+    ...     df[&quot;variable_&quot;+str(i)] = range(3)
+    &gt;&gt;&gt; df
+    variable  variable_0  variable_1  variable_2  variable_3  variable_4  variable_5  variable_6
+    0         0           0           0           0           0           0           0           0
+    1         1           1           1           1           1           1           1           1
+    2         2           2           2           2           2           2           2           2</code></pre>
+<p><code>pytest --doctest-modules</code> returns the following error
+because it displays 6 columns instead of 7</p>
+<pre><code>Differences (unified diff with -expected +actual):
+    @@ -1,4 +1,6 @@
+    -   variable_1  variable_2  variable_3  variable_4  variable_5  variable_6  variable_7
+    -0           0           0           0           0           0           0           0
+    -1           1           1           1           1           1           1           1
+    -2           2           2           2           2           2           2           2
+    +   variable_1  variable_2  variable_3  ...  variable_5  variable_6  variable_7
+    +0           0           0           0  ...           0           0           0
+    +1           1           1           1  ...           1           1           1
+    +2           2           2           2  ...           2           2           2
+    +&lt;BLANKLINE&gt;
+    +[3 rows x 7 columns]</code></pre>
+<p>Is there a way to fix the number of column? Does doctest always have
+a fixed terminal output?</p>
+<p>Number of columns issues</p>
+<pre><code>    &gt;&gt;&gt; import pandas
+    &gt;&gt;&gt; df = pandas.DataFrame({&quot;variable_1&quot;: range(3)})
+    &gt;&gt;&gt; for i in range(2, 8): df[&quot;variable_&quot;+str(i)] = range(3)
+    &gt;&gt;&gt; df
+       variable_1  variable_2  variable_3  variable_4  variable_5  variable_6  variable_7
+    0           0           0           0           0           0           0           0
+    1           1           1           1           1           1           1           1
+    2           2           2           2           2           2           2           2</code></pre>
+<p>Differences (unified diff with -expected +actual): @@ -1,4 +1,6 @@ -
+variable_1 variable_2 variable_3 variable_4 variable_5 variable_6
+variable_7 -0 0 0 0 0 0 0 0 -1 1 1 1 1 1 1 1 -2 2 2 2 2 2 2 2 +
+variable_1 variable_2 variable_3 … variable_5 variable_6 variable_7 +0 0
+0 0 … 0 0 0 +1 1 1 1 … 1 1 1 +2 2 2 2 … 2 2 2 +<BLANKLINE> +[3 rows x 7
+columns]</p>
+</div>
+</div>
+<div id="test-pandas-data-frame" class="section level3">
+<h3>Test pandas data frame</h3>
+<p>Methods to test data frame and series equality</p>
+<pre><code>from pandas.testing import assert_frame_equal
+from pandas.testing import assert_series_equal
+import seaborn 
+iris = seaborn.load_dataset(&quot;iris&quot;)
+assert_frame_equal(iris, iris)
+iris[&quot;species2&quot;] = iris[&quot;species&quot;]
+assert_series_equal(iris[&quot;species&quot;], iris[&quot;species2&quot;])
+# Ignore names
+assert_series_equal(iris[&quot;species&quot;], iris[&quot;species2&quot;], check_names=False)</code></pre>
+<p>Sometimes you want tolerance</p>
+<pre><code>df = pandas.DataFrame({&quot;a&quot;:[1.0,2,3],
+                       &quot;b&quot;:[1.0001,2,3]})
+assert_series_equal(df[&quot;a&quot;], df[&quot;b&quot;], check_names=False)
+assert_series_equal(df[&quot;a&quot;], df[&quot;b&quot;], rtol=1e-2, check_names=False)</code></pre>
 </div>
 <div id="expected-exceptions" class="section level3">
 <h3>Expected exceptions</h3>

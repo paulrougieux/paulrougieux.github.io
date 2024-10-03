@@ -13,7 +13,7 @@
 
 <title>Debian GNU/Linux Operation System</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -460,7 +460,8 @@ you can get “Live images which you can use to try Debian first and then
 install the contents of the image.”</li>
 </ul>
 <p>Verify the checksum</p>
-<pre><code>shasum debian-10.1.0-amd64-netinst.iso</code></pre>
+<pre><code>shasum debian-10.1.0-amd64-netinst.iso
+shasum -a 256 debian-12.5.0-amd64-DVD-1.iso</code></pre>
 <p>To copy the image to a usb key follow the <a
 href="https://www.debian.org/releases/stable/amd64/ch04s03.html.en">instruction
 on how to copy the iso image to a usb key</a></p>
@@ -567,8 +568,8 @@ class="uri">https://ci.debian.net/packages/p/python-pip/</a>”</p>
 </div>
 <div id="installing-software" class="section level1">
 <h1>Installing software</h1>
-<div id="package-management" class="section level2">
-<h2>Package management</h2>
+<div id="aa-package-management" class="section level2">
+<h2>AA package management</h2>
 <div id="apt" class="section level3">
 <h3>APT</h3>
 <p>For software in the repository, use</p>
@@ -601,6 +602,33 @@ package manager</p>
 <pre><code>aptitude search &lt;name&gt;</code></pre>
 <p>Search packages on the <a
 href="https://www.debian.org/distrib/packages">Debian website</a>.</p>
+</div>
+<div id="installing-from-backports" class="section level4">
+<h4>Installing from backports</h4>
+<p><a href="https://backports.debian.org/">backports.debian.org</a>
+contains a list of backports available for each LTS Debian version.</p>
+<p>Add the main, contrib and non-free backports to /etc/apt/sources.list
+:</p>
+<pre><code>deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free</code></pre>
+<p>Install from backports</p>
+<pre><code>sudo apt -t stretch-backports install nodejs</code></pre>
+</div>
+<div id="deb-packages" class="section level4">
+<h4>DEB packages</h4>
+<p>For software in .deb packages, check the md5sum and install with</p>
+<pre><code>md5sum packagename.deb
+sudo dpkg -i packagename.deb</code></pre>
+<p>or</p>
+<pre><code>sudo apt install ./packagename.deb</code></pre>
+<p>Stack overflow <a
+href="https://unix.stackexchange.com/a/159114/85530">How to install a
+deb file, by dpkg -i or by apt?</a> “When you use apt to install a
+package, under the hood it uses dpkg.”</p>
+<p>If there are missingdependencies and you fix them you can retry the
+previsouly failed installed with:</p>
+<pre><code>sudo dpkg --configure -a</code></pre>
+<p>Remove a package with:</p>
+<pre><code>sudo dpkg -r packagename</code></pre>
 </div>
 </div>
 <div id="nix" class="section level3">
@@ -685,34 +713,6 @@ class="uri">https://nixos.wiki/wiki/K3s</a></p>
 </div>
 </div>
 </div>
-<div id="installing-debian-software-from-backports"
-class="section level2">
-<h2>Installing Debian software from backports</h2>
-<p><a href="https://backports.debian.org/">backports.debian.org</a>
-contains a list of backports available for each LTS Debian version.</p>
-<p>Add the main, contrib and non-free backports to /etc/apt/sources.list
-:</p>
-<pre><code>deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free</code></pre>
-<p>Install from backports</p>
-<pre><code>sudo apt -t stretch-backports install nodejs</code></pre>
-</div>
-<div id="deb-packages" class="section level2">
-<h2>DEB packages</h2>
-<p>For software in .deb packages, check the md5sum and install with</p>
-<pre><code>md5sum packagename.deb
-sudo dpkg -i packagename.deb</code></pre>
-<p>or</p>
-<pre><code>sudo apt install ./packagename.deb</code></pre>
-<p>Stack overflow <a
-href="https://unix.stackexchange.com/a/159114/85530">How to install a
-deb file, by dpkg -i or by apt?</a> “When you use apt to install a
-package, under the hood it uses dpkg.”</p>
-<p>If there are missingdependencies and you fix them you can retry the
-previsouly failed installed with:</p>
-<pre><code>sudo dpkg --configure -a</code></pre>
-<p>Remove a package with:</p>
-<pre><code>sudo dpkg -r packagename</code></pre>
-</div>
 <div id="anbox" class="section level2">
 <h2>Anbox</h2>
 <p><a href="https://anbox.io/">Android in a box</a> is an android
@@ -723,6 +723,65 @@ and non-free backports to /etc/apt/sources.list :</p>
 <pre><code>sudo apt -t stretch-backports install anbox</code></pre>
 <p>I have encountered <a
 href="https://github.com/anbox/anbox/issues/211">issue 211</a></p>
+</div>
+<div id="ansible" class="section level2">
+<h2>Ansible</h2>
+<ul>
+<li><p>Ansible documentation</p>
+<ul>
+<li><p><a
+href="https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html"
+class="uri">https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html</a></p>
+<blockquote>
+<p>“The managed node (the machine that Ansible is managing) does not
+require Ansible to be installed, but requires Python to run
+Ansible-generated Python code. The managed node also needs a user
+account that can connect through SSH to the node with an interactive
+POSIX shell.”</p>
+</blockquote></li>
+<li><p>Playbooks<br />
+<a
+href="https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbooks-intro"
+class="uri">https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbooks-intro</a></p>
+<blockquote>
+<p>“Ansible Playbooks offer a repeatable, reusable, simple configuration
+management and multi-machine deployment system, one that is well suited
+to deploying complex applications. If you need to execute a task with
+Ansible more than once, write a playbook and put it under source
+control. Then you can use the playbook to push out new configuration or
+confirm the configuration of remote systems. The playbooks in the
+ansible-examples repository illustrate many useful techniques.”</p>
+</blockquote></li>
+<li><p>User module to create users on the system <a
+href="https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html"
+class="uri">https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html</a></p></li>
+</ul></li>
+</ul>
+<p>Other resources</p>
+<ul>
+<li><p>How do you handle server automation <a
+href="https://www.reddit.com/r/selfhosted/comments/1069k94/how_do_you_guys_handle_server_automation/"
+class="uri">https://www.reddit.com/r/selfhosted/comments/1069k94/how_do_you_guys_handle_server_automation/</a></p>
+<ul>
+<li>recommends ansible</li>
+</ul></li>
+<li><p><a
+href="https://www.redhat.com/en/topics/automation/ansible-vs-salt"
+class="uri">https://www.redhat.com/en/topics/automation/ansible-vs-salt</a></p>
+<blockquote>
+<p>“Ansible uses the concepts of a control node (where Ansible is
+executed from) and managed nodes (the devices being automated—often a
+Linux® or Windows machine). Since Ansible is agentless, it can
+communicate with devices without requiring an application or service to
+be installed on the managed node. Ansible Automation Platform can spread
+automation jobs out across execution nodes using a technology called
+automation mesh. Ansible users can finely orchestrate different parts of
+their infrastructure using Ansible Playbooks, which are files written in
+human-readable YAML. Ansible uses a procedural (or imperative)
+programming approach, which tries to preserve the configuration of an IT
+infrastructure by defining the steps to reach a desired state.”</p>
+</blockquote></li>
+</ul>
 </div>
 <div id="cewe-photobuch" class="section level2">
 <h2>CEWE Photobuch</h2>
@@ -833,6 +892,13 @@ environment for you. Make sure you have pipx installed.</p>
 <p>Install editor</p>
 <pre><code>pip3 install spyder</code></pre>
 </div>
+</div>
+<div id="quarto" class="section level2">
+<h2>Quarto</h2>
+<p>Install quarto <a href="https://quarto.org/docs/get-started/"
+class="uri">https://quarto.org/docs/get-started/</a></p>
+<p>cd ~/downloads sha256sum quarto-1.5.57-linux-amd64.deb sudo apt
+install ./quarto-1.5.57-linux-amd64.deb</p>
 </div>
 <div id="r-and-rstudio" class="section level2">
 <h2>R and Rstudio</h2>
@@ -1274,8 +1340,31 @@ super key works again.</p>
 <div id="keyboard" class="section level1">
 <h1>Keyboard</h1>
 <ul>
-<li><a href="https://github.com/r03/azerty">A better AZERTY for
-developers</a></li>
+<li><p><a href="https://github.com/r03/azerty">A better AZERTY for
+developers</a></p></li>
+<li><p>In 2024, I had an issue in a HP Elitebook after many years of use
+the Function and Ctrl key got swapped.</p>
+<ul>
+<li><p>This can be fixed by removing the AC chord and battery according
+to <a
+href="https://h30434.www3.hp.com/t5/Notebook-Hardware-and-Upgrade-Questions/CTRL-and-FN-keys-suddenly-swapped-Elitebook-8460p/td-p/5075647"
+class="uri">https://h30434.www3.hp.com/t5/Notebook-Hardware-and-Upgrade-Questions/CTRL-and-FN-keys-suddenly-swapped-Elitebook-8460p/td-p/5075647</a></p>
+<ul>
+<li>Powering off and removing the battery for a minute fixed the issue.
+Ctrl key and Fn key are back to normal functionality.</li>
+</ul></li>
+<li><p>This could also have been changed in a bios setting according to
+<a
+href="https://askubuntu.com/questions/193529/how-to-swap-between-fn-and-ctrl-keys"
+class="uri">https://askubuntu.com/questions/193529/how-to-swap-between-fn-and-ctrl-keys</a>
+But I didn’t find that bios setting. I changed another bios setting for
+the Fn key alone. Activating it ended up messing the row of F1 to F12
+keys. As a result, I didn’t have to press Fn anymore to change the
+keyboard backlight, sound volume and screen brightness settings, but
+that meant I had to press Fn to get to the actual F1 to F12 function
+keys. Annoying, I switched this bios setting back to deactivated
+mode.</p></li>
+</ul></li>
 </ul>
 </div>
 <div id="network" class="section level1">

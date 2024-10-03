@@ -1,7 +1,6 @@
 ---
 author: "Paul Rougieux"
 date: "October 2024"
-date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   html_document: 
     toc: yes

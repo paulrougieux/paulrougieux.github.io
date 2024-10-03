@@ -13,7 +13,7 @@
 
 <title>Vim Commands</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -762,7 +762,7 @@ wiki</a>:</p>
                 1. ~
                 1. ~
             Move to the second &quot;1.&quot; and Visually select three
-            lines, pressing g CTRL-A results in:
+            lines, pressing `g CTRL-A` results in:
                 1. ~
                 2. ~
                 3. ~
@@ -1808,14 +1808,26 @@ the files at a particular line number</a>
 </div>
 <div id="search-in-the-current-file" class="section level2">
 <h2>Search in the current file</h2>
-<p>Use <code>"/"</code> to search, then n forward and N
+<ul>
+<li><p>Use <code>"/"</code> to search, then n forward and N
 backwards <code>"*"</code> to search for the word under the cursor (you
-can also create a mapping to search for a selected text)</p>
-<p>Use <code>:g/pattern</code> to display a list of all search result in
-the document.</p>
+can also create a mapping to search for a selected text).</p></li>
+<li><p>Use <code>"?"</code> to search backward. Very useful with text
+selection.</p></li>
+<li><p>Use <code>:g/pattern</code> to display a list of all search
+result in the document.</p></li>
+</ul>
 <p>Search all occurrences of a pattern and populate the quick fix
 window:</p>
 <pre><code>:vim /pattern/ % | cw</code></pre>
+<ul>
+<li>See also the replace section.</li>
+</ul>
+<div id="search-one-pattern-or-another" class="section level3">
+<h3>Search one pattern or another</h3>
+<p>Search for opening or closing brackets</p>
+<pre><code>/\((\|)\)</code></pre>
+</div>
 <div id="highlight-search-matches" class="section level3">
 <h3>Highlight search matches</h3>
 <p>Define a new highlight group and use it to highlight matches</p>
@@ -1875,10 +1887,12 @@ explained here</a> so I deactivated it.</p>
 <div id="neovim" class="section level1">
 <h1>NeoVim</h1>
 <ul>
-<li>Neo Vim for Vim users <a
+<li><p>Neo Vim for Vim users <a
 href="https://neovim.io/doc/user/nvim.html#nvim-from-vim"
 class="uri">https://neovim.io/doc/user/nvim.html#nvim-from-vim</a>
-explains how to use the .vimrc from Neovim</li>
+explains how to use the .vimrc from Neovim</p></li>
+<li><p><a href="https://nvchad.com/" class="uri">https://nvchad.com/</a>
+Neovim config</p></li>
 </ul>
 </div>
 <div id="plugins" class="section level1">
@@ -2617,8 +2631,9 @@ shell (ipython)</p>
 autocmd FileType python nmap &lt;LocalLeader&gt;l &lt;Plug&gt;SlimeLineSend
 autocmd FileType python nmap &lt;LocalLeader&gt;p &lt;Plug&gt;SlimeParagraphSend</code></pre>
 </div>
-<div id="indentationerror-unexpected-indent" class="section level3">
-<h3>IndentationError: unexpected indent</h3>
+<div id="auto-indent-indentationerror-unexpected-indent"
+class="section level3">
+<h3>Auto indent IndentationError: unexpected indent</h3>
 <p>Excessive indentation issues can arrise when slime sends indented
 lines to the ipython console. For example after a function definition,
 such as <code>def function_name():</code> ipython places the cursor at

@@ -13,7 +13,7 @@
 
 <title>Git Commands</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -626,6 +626,18 @@ master branch.</p>
 <p>For collaborative projects, we use feature branches or also a dev and
 a main branch.</p>
 </div>
+<div id="create-a-branch" class="section level2">
+<h2>Create a branch</h2>
+<p>Create a branch and start working on it</p>
+<pre><code>git branch new-branch-name
+git checkout new-branch-name</code></pre>
+<p>Push the new branch to the remote repo</p>
+<pre><code>git push --set-upstream origin new-branch-name
+git push -u origin new-branch-name</code></pre>
+<p>Move to a commit in history and create a branch at that commit</p>
+<pre><code>git checkout &lt;commit-sha&gt;
+git switch -c new-branch-name</code></pre>
+</div>
 <div id="delete-a-branch" class="section level2">
 <h2>Delete a branch</h2>
 <p>I might need to delete a branch at some point:</p>
@@ -695,6 +707,15 @@ class="uri">https://medium.com/@nitanshu1991/git-branching-conventions-102041e9b
 here separates the two different branch.”</p>
 </blockquote></li>
 </ul>
+</div>
+<div id="rename-a-branch" class="section level2">
+<h2>Rename a branch</h2>
+<p>Create and push under a new branch name to the remote repository</p>
+<pre><code>git switch -c new-branch-name
+git push -u origin new-branch-name</code></pre>
+<p>Delete the old branch name locally and in the remote repository</p>
+<pre><code>git branch -d old-branch-name
+git push --delete origin old-branch-name</code></pre>
 </div>
 </div>
 <div id="configuring-git" class="section level1">
@@ -878,6 +899,28 @@ gr git pull</code></pre>
 </div>
 <div id="going-back-in-time" class="section level1">
 <h1>Going back in time</h1>
+<div id="bissect" class="section level2">
+<h2>Bissect</h2>
+<ul>
+<li><p><a href="https://git-scm.com/docs/git-bisect"
+class="uri">https://git-scm.com/docs/git-bisect</a></p>
+<blockquote>
+<p>“This command uses a binary search algorithm to find which commit in
+your project’s history introduced a bug. You use it by first telling it
+a”bad” commit that is known to contain the bug, and a “good” commit that
+is known to be before the bug was introduced. Then git bisect picks a
+commit between those two endpoints and asks you whether the selected
+commit is “good” or “bad”. It continues narrowing down the range until
+it finds the exact commit that introduced the change. In fact, git
+bisect can be used to find the commit that changed any property of your
+project; e.g., the commit that fixed a bug, or the commit that caused a
+benchmark’s performance to improve. To support this more general usage,
+the terms “old” and “new” can be used in place of “good” and “bad”, or
+you can choose your own terms. See section “Alternate terms” below for
+more information.”</p>
+</blockquote></li>
+</ul>
+</div>
 <div id="log" class="section level2">
 <h2>Log</h2>
 <p>Display the modification log</p>
@@ -1034,6 +1077,8 @@ In case you just want to get to the status of the remote branch</p>
 <p>Reset the local branch</p>
 <pre><code>git fetch origin
 git reset --hard origin/main</code></pre>
+<p>See also the section on checkout <code>--ours</code> or
+<code>--theirs</code>.</p>
 <div id="merge-conflict" class="section level4">
 <h4>Merge conflict</h4>
 <p>To keep only the version of their changes</p>
@@ -1088,8 +1133,12 @@ remove a too large file in a commit</a>:</p>
 <pre><code>git reset HEAD^</code></pre>
 <p>Then added the large file to .gitignore and committed again.</p>
 </div>
-<div id="reset-only-one-file" class="section level2">
-<h2>Reset only one file</h2>
+<div id="restore-only-one-file" class="section level2">
+<h2>Restore only one file</h2>
+<p>Git <code>restore</code> can be used to “restore working tree files”.
+The <code>git checkout</code> command can also be used for this and many
+other things. Git restore was created to simplify and have a dedicated
+command that only focuses on restoring files.</p>
 <p>To go back to this state for only one file, see git checkout</p>
 <pre><code>git checkout commit_hash  path_to_file/file_name</code></pre>
 <p>No need to enter the commit hash to get to get the file from the
@@ -1164,6 +1213,8 @@ blobs behave like commits in that they have a hash too!!”</p>
 Running <code>git cat-file -p blob_sha &gt; /path/to/the/file</code>
 followed by <code>git diff</code> shows me a lot of line deletions. I
 have to explore around to find which blob is adding content back.</p>
+<p>To show the content of a blob</p>
+<pre><code>git show blob_sha</code></pre>
 <p>To retrieve a single file from a dangling blob</p>
 <pre><code>git cat-file -p blob_sha &gt; /path/to/the/file</code></pre>
 <p>To retrieve many files from a dangling tree SO <a
@@ -1219,8 +1270,15 @@ this style, so squashing them into one command saves a lot of time.
 <p>Get help on a command (will start a web browser):</p>
 <pre><code>git init --help</code></pre>
 </div>
-<div id="hosting-services" class="section level1">
-<h1>Hosting services</h1>
+<div id="hosting-services-and-online-platforms" class="section level1">
+<h1>Hosting services and online platforms</h1>
+<div id="github" class="section level2">
+<h2>Github</h2>
+<p>Press <code>y</code> to get a permalink to the current file on
+Gitlab. The URL will include the hash number of the latest commit. <a
+href="https://docs.github.com/en/repositories/working-with-files/using-files/getting-permanent-links-to-files"
+class="uri">https://docs.github.com/en/repositories/working-with-files/using-files/getting-permanent-links-to-files</a></p>
+</div>
 <div id="gitlab" class="section level2">
 <h2>Gitlab</h2>
 <div id="issues" class="section level3">

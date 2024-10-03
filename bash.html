@@ -13,7 +13,7 @@
 
 <title>Bash Commands</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -510,6 +510,11 @@ to from the clipboard in bash script</a></p>
 <p>For example copy the readme file to the clipboard used by CTRL+C
 CTRL+V:</p>
 <pre><code>xclip -selection c README.md</code></pre>
+<p>Copy the full path of a file or of the present directory to the
+standard clipboard</p>
+<pre><code>alias clip=&quot;xclip -selection clipboard&quot;
+realpath README.md | clip
+pwd |clip</code></pre>
 </div>
 <div id="pdf-to-images" class="section level2">
 <h2>Pdf to images</h2>
@@ -672,6 +677,15 @@ counting files</a></p>
 count.</p>
 <pre><code>find . -name &#39;*.py&#39; | xargs wc -l # python code
 find . -name &#39;*.R&#39; | xargs wc -l # R code</code></pre>
+</div>
+<div id="words-and-byte-count" class="section level2">
+<h2>Words and byte count</h2>
+<p>man wc</p>
+<pre><code>&gt; &quot;wc - print newline, word, and byte counts for each file&quot;</code></pre>
+<p>Count the number of words in a string</p>
+<pre><code>echo &quot;bla bla bla&quot; | wc</code></pre>
+<p>Count the number of words in files</p>
+<pre><code>wc *.Rmd</code></pre>
 </div>
 </div>
 <div id="documentation" class="section level1">
@@ -1089,8 +1103,23 @@ POSTGRES_PASS=password</code></pre>
 in bash</p>
 <pre><code>unset VAR_NAME</code></pre>
 </div>
-<div id="find" class="section level1">
-<h1>Find</h1>
+<div id="find-and-check-files" class="section level1">
+<h1>Find and check files</h1>
+<div id="compare-two-files" class="section level2">
+<h2>Compare two files</h2>
+<p>Compare 2 files “byte by byte” to see if they are identical with
+<code>cmp</code>:</p>
+<pre><code>cmp &quot;NUTS_RG_20M_2021_3035(1).geojson&quot; NUTS_RG_20M_2021_3035.geojson</code></pre>
+<p>Compare 2 files line by line:</p>
+<pre><code>diff file1.txt file2.txt</code></pre>
+</div>
+<div id="checksum" class="section level2">
+<h2>Checksum</h2>
+<p>Verify the checksum</p>
+<pre><code>shasum debian-10.1.0-amd64-netinst.iso
+shasum -a 256 debian-12.5.0-amd64-DVD-1.iso
+shasum -a 512 debian-12.5.0-amd64-DVD-1.iso</code></pre>
+</div>
 <div id="find-files" class="section level2">
 <h2>Find files</h2>
 <p>Find files in subdirectories of the current directory (Quotes are
@@ -1180,36 +1209,8 @@ Kōans</a>)</p>
 <pre><code>:%!awk &quot;/paper/{print $4}&quot;</code></pre>
 </div>
 </div>
-<div id="search-in-pdf-files" class="section level2">
-<h2>Search in pdf files</h2>
-<p>Search a text pattern in all PDF files present in a directory:</p>
-<pre><code>pdfgrep pattern *.pdf</code></pre>
-</div>
-<div id="look-at-lines-of-a-text-file-with-less" class="section level2">
-<h2>Look at lines of a text file with less</h2>
-<p>Less and vim can handle very large text files (several Gb). Go to a
-specific line using less</p>
-<pre><code>&lt;line number&gt;g</code></pre>
-<p>To display line numbers in less</p>
-<pre><code>-N</code></pre>
-<p>Go to a specific line using vim</p>
-<pre><code>:&lt;line number&gt;</code></pre>
-<p>To display line numbers in vim</p>
-<pre><code>:set nu</code></pre>
-</div>
-<div id="tail" class="section level2">
-<h2>Tail</h2>
-<p>Follow the end of a log file as it is written</p>
-<pre><code>tail -f</code></pre>
-</div>
-<div id="see-tabs-and-end-of-line-characters" class="section level2">
-<h2>See tabs and end of line characters</h2>
-<p>See tab and end of line characters in a text file</p>
-<pre><code>cat -te filename |less </code></pre>
-</div>
-</div>
-<div id="list-files" class="section level1">
-<h1>List files</h1>
+<div id="list-files" class="section level2">
+<h2>List files</h2>
 <p>List all files in a directory</p>
 <pre><code>ls</code></pre>
 <p>List a file with its full directory path</p>
@@ -1232,8 +1233,8 @@ href="https://stackoverflow.com/a/65002323/2641825">answer</a> I posted
 on Stackoverflow. See also a Unix and Linux stackexchange <a
 href="https://unix.stackexchange.com/questions/268474/how-to-list-all-files-in-a-directory-with-absolute-paths">question
 on how to list all files in a directory with absolute path</a>.</p>
-<div id="tree" class="section level2">
-<h2>Tree</h2>
+<div id="tree" class="section level3">
+<h3>Tree</h3>
 <p>List contents of a directories in a tree like format</p>
 <pre><code>tree
 tree -d # List directories only, no files</code></pre>
@@ -1243,6 +1244,34 @@ tree -d # List directories only, no files</code></pre>
 <p>Show only python file matching the <code>"*.py"</code> pattern with
 the <code>-P</code> option</p>
 <pre><code>tree -P &quot;*.py&quot;</code></pre>
+</div>
+</div>
+<div id="look-at-lines-of-a-text-file-with-less" class="section level2">
+<h2>Look at lines of a text file with less</h2>
+<p>Less and vim can handle very large text files (several Gb). Go to a
+specific line using less</p>
+<pre><code>&lt;line number&gt;g</code></pre>
+<p>To display line numbers in less</p>
+<pre><code>-N</code></pre>
+<p>Go to a specific line using vim</p>
+<pre><code>:&lt;line number&gt;</code></pre>
+<p>To display line numbers in vim</p>
+<pre><code>:set nu</code></pre>
+</div>
+<div id="search-in-pdf-files" class="section level2">
+<h2>Search in pdf files</h2>
+<p>Search a text pattern in all PDF files present in a directory:</p>
+<pre><code>pdfgrep pattern *.pdf</code></pre>
+</div>
+<div id="see-tabs-and-end-of-line-characters" class="section level2">
+<h2>See tabs and end of line characters</h2>
+<p>See tab and end of line characters in a text file</p>
+<pre><code>cat -te filename |less </code></pre>
+</div>
+<div id="tail" class="section level2">
+<h2>Tail</h2>
+<p>Follow the end of a log file as it is written</p>
+<pre><code>tail -f</code></pre>
 </div>
 </div>
 <div id="networking" class="section level1">
@@ -1626,6 +1655,8 @@ sound</p>
 href="https://github.com/cmus/cmus/blob/master/Doc/cmus-tutorial.txt">Cmus
 tutorial</a>:</p>
 <pre><code>man cmus-tutorial</code></pre>
+<div id="view-modes" class="section level3">
+<h3>View modes</h3>
 <p>Cmus has several view modes. When starting cmus for the first time
 press 5 to go to the file-browser panel, choose a folder and press “a”
 to add it to the cmus library. Then press “2” to go to the simple
@@ -1638,6 +1669,9 @@ library view or press “1” to go to the artist/album view.</p>
 5 view browser
 6 view filters
 7 view settings</code></pre>
+</div>
+<div id="commands" class="section level3">
+<h3>Commands</h3>
 <table>
 <colgroup>
 <col width="22%" />
@@ -1647,7 +1681,7 @@ library view or press “1” to go to the artist/album view.</p>
 <thead>
 <tr class="header">
 <th>Common Context</th>
-<th>Remote Command</th>
+<th>cmus-remote -C</th>
 <th>Description</th>
 </tr>
 </thead>
@@ -1668,36 +1702,6 @@ library view or press “1” to go to the artist/album view.</p>
 <td></td>
 </tr>
 <tr class="even">
-<td>q</td>
-<td>quit -i</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>s</td>
-<td>shuffle</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>t</td>
-<td></td>
-<td>toggle show_remaining_time</td>
-</tr>
-<tr class="odd">
-<td>v</td>
-<td>player-stop</td>
-<td></td>
-</tr>
-<tr class="even">
-<td>x</td>
-<td>player-play</td>
-<td></td>
-</tr>
-<tr class="odd">
-<td>z</td>
-<td>player-prev</td>
-<td></td>
-</tr>
-<tr class="even">
 <td>e</td>
 <td></td>
 <td><strong>append tracks to the play queue</strong></td>
@@ -1707,13 +1711,66 @@ library view or press “1” to go to the artist/album view.</p>
 <td></td>
 <td>prepend tracks to the play queue</td>
 </tr>
+<tr class="even">
+<td>i</td>
+<td></td>
+<td>Jump to currently playing song</td>
+</tr>
+<tr class="odd">
+<td>Shift i</td>
+<td></td>
+<td>Show the file path</td>
+</tr>
+<tr class="even">
+<td>L</td>
+<td></td>
+<td>Live filter</td>
+</tr>
+<tr class="odd">
+<td>q</td>
+<td>quit -i</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>s</td>
+<td>shuffle</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>t</td>
+<td></td>
+<td>toggle show_remaining_time</td>
+</tr>
+<tr class="even">
+<td>v</td>
+<td>player-stop</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>x</td>
+<td>player-play</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>z</td>
+<td>player-prev</td>
+<td></td>
+</tr>
 </tbody>
 </table>
+<p>There is a feedback of all the currently active options at the bottom
+right of the cums screen.</p>
 <p>Commands can be sent through a command line with cmus-remote, for
 example to pause a running instance of cmus (and restart it):</p>
 <pre><code>cmus-remote -C player-pause</code></pre>
 <p>I use this in the pomodoro gnome app to pause music at breaks.</p>
-<p>Volume control</p>
+<ul>
+<li>Follow currently playing song <code>f</code> see <a
+href="https://github.com/cmus/cmus/issues/206">issue 206</a></li>
+</ul>
+</div>
+<div id="volume-control" class="section level3">
+<h3>Volume control</h3>
 <table>
 <thead>
 <tr class="header">
@@ -1752,11 +1809,7 @@ example to pause a running instance of cmus (and restart it):</p>
 </tr>
 </tbody>
 </table>
-<p>Jump to currently playing song <code>i</code>. Follow currently
-playing song <code>f</code> see <a
-href="https://github.com/cmus/cmus/issues/206">issue 206</a></p>
-<p>There is a feedback of all the currently active options at the bottom
-right of the cums screen.</p>
+</div>
 <div id="playlist" class="section level3">
 <h3>Playlist</h3>
 <p>Create a playlist file, in bash</p>

@@ -13,7 +13,7 @@
 
 <title>PostgreSQL Commands</title>
 
-<script src="site_libs/header-attrs-2.23/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.0/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.0/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -670,6 +670,32 @@ HINT:  Use DROP ... CASCADE to drop the dependent objects too.</code></pre>
 <pre><code>psql -d tradeflows -h localhost -U rdb -c &quot;DROP SCHEMA raw_comext CASCADE&quot;</code></pre>
 <p>Drop a table</p>
 <pre><code>drop table raw_comtrade.yearly;</code></pre>
+</div>
+</div>
+<div id="optimize" class="section level1">
+<h1>Optimize</h1>
+<div id="indexes" class="section level2">
+<h2>Indexes</h2>
+</div>
+<div id="partial-indexes" class="section level2">
+<h2>Partial indexes</h2>
+<p>Create a partial index on the first 4 characters of the product
+code</p>
+<pre><code>CREATE INDEX ix_raw_comtrade_yearly_product_code_prefix_4
+ON raw_comtrade.yearly (LEFT(product_code, 4));</code></pre>
+<p>The database structure is defined as SQLAlchemy objects, then later
+translated in either SQLite or PostGreSQL dialect. Show the database
+structure as defined in PostGreSQL:</p>
+<pre><code>pg_dump --schema-only -t raw_comtrade.yearly $BIOTRADE_DATABASE_URL &gt; table_structure_dump.sql</code></pre>
+<p>Create an additional index to speed up query on the first 4 digits of
+the product code (it doesn’t actually speed things up, left here for
+information purposes).</p>
+<pre><code>psql $BIOTRADE_DATABASE_URL
+CREATE INDEX ix_raw_comtrade_yearly_product_code_prefix_4
+ON raw_comtrade.yearly (LEFT(product_code, 4));</code></pre>
+<p>Remove an index</p>
+<pre><code>SET search_path TO raw_comtrade, public;
+DROP INDEX ix_raw_comtrade_yearly_product_code_prefix_4;</code></pre>
 </div>
 </div>
 <div id="rename" class="section level1">
