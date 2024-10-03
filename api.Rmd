@@ -14,9 +14,16 @@ Application Programming Interfaces available on the web.
 
 
 # Google
+
 I noticed that Google uses a URL parameter called `tbm` to change the 
 nature of the search. 
 A Stackoverflow  question: [What does “tbm” mean in Google Search](https://webapps.stackexchange.com/questions/58550/what-does-tbm-mean-in-google-search) explains that tbm indicates a search parameter, for example `tbm=isch` changes to an image search.
+
+To search for images of tree hugging:
+
+    https://www.google.com/search?q=tree+hugging&tbm=isch
+
+
 A blogger described the various tbm parameters in 
 [Google Search URL Request Parameters](https://stenevang.wordpress.com/2013/02/22/google-advanced-power-search-url-request-parameters/)
 The official documentation is available at [Google XML API reference](https://developers.google.com/custom-search/docs/xml_results)
