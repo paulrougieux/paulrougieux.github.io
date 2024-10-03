@@ -82,6 +82,13 @@ For example copy the readme file to the clipboard used by CTRL+C CTRL+V:
 
     xclip -selection c README.md
 
+Copy the full path of a file or of the present directory to the standard 
+clipboard
+
+    alias clip="xclip -selection clipboard"
+    realpath README.md | clip
+    pwd |clip
+
 
 ## Pdf to images
 
@@ -285,6 +292,21 @@ Count the number of lines in all files, and give the total line count.
 
     find . -name '*.py' | xargs wc -l # python code
     find . -name '*.R' | xargs wc -l # R code
+
+
+## Words and byte count
+
+man wc
+
+    > "wc - print newline, word, and byte counts for each file"
+
+Count the number of words in a string
+
+    echo "bla bla bla" | wc
+
+Count the number of words in files
+
+    wc *.Rmd
 
 
 # Documentation
@@ -789,7 +811,27 @@ To remove an environment variable (without the `$` sign) in bash
     unset VAR_NAME
 
 
-# Find
+# Find and check files
+
+## Compare two files
+
+Compare 2 files "byte by byte" to see if they are identical with `cmp`:
+
+    cmp "NUTS_RG_20M_2021_3035(1).geojson" NUTS_RG_20M_2021_3035.geojson
+
+Compare 2 files line by line:
+
+    diff file1.txt file2.txt
+
+
+## Checksum
+
+Verify the checksum 
+
+    shasum debian-10.1.0-amd64-netinst.iso
+    shasum -a 256 debian-12.5.0-amd64-DVD-1.iso
+    shasum -a 512 debian-12.5.0-amd64-DVD-1.iso
+
 
 ## Find files
 
@@ -911,48 +953,7 @@ Kōans](https://blog.sanctum.geek.nz/vim-koans/))
     :%!awk "/paper/{print $4}"
 
 
-## Search in pdf files
-
-Search a text pattern in all PDF files present in a directory:
-
-    pdfgrep pattern *.pdf
-
-
-## Look at lines of a text file with less
-
-Less and vim can handle very large text files (several Gb).
-Go to a specific line using less
-
-    <line number>g
-
-To display line numbers in less
-
-    -N
-
-Go to a specific line using vim
-
-    :<line number>
-
-To display line numbers in vim
-
-    :set nu
-
-
-## Tail
-
-Follow the end of a log file as it is written 
-
-    tail -f
-
-
-## See tabs and end of line characters
-
-See tab and end of line characters in a text file
-
-    cat -te filename |less 
-
-
-# List files
+## List files
 
 List all files in a directory
 
@@ -985,7 +986,7 @@ list all files in a directory with absolute
 path](https://unix.stackexchange.com/questions/268474/how-to-list-all-files-in-a-directory-with-absolute-paths).
 
 
-## Tree
+### Tree
 
 List contents of a directories in a tree like format
 
@@ -999,6 +1000,47 @@ Ignore files that contain compiled python bytecode with the `-I` option
 Show only python file matching the `"*.py"` pattern with the `-P` option
 
     tree -P "*.py"
+
+
+## Look at lines of a text file with less
+
+Less and vim can handle very large text files (several Gb).
+Go to a specific line using less
+
+    <line number>g
+
+To display line numbers in less
+
+    -N
+
+Go to a specific line using vim
+
+    :<line number>
+
+To display line numbers in vim
+
+    :set nu
+
+
+## Search in pdf files
+
+Search a text pattern in all PDF files present in a directory:
+
+    pdfgrep pattern *.pdf
+
+
+## See tabs and end of line characters
+
+See tab and end of line characters in a text file
+
+    cat -te filename |less 
+
+
+## Tail
+
+Follow the end of a log file as it is written 
+
+    tail -f
 
 
 # Networking
@@ -1458,6 +1500,9 @@ Installation instruction:
 
     man cmus-tutorial
 
+
+### View modes
+
 Cmus has several view modes. When starting cmus for the first time press 5 to
 go to the file-browser panel, choose a folder and press "a" to add it to the
 cmus library. Then press "2" to go to the simple library view or press "1" to
@@ -1473,20 +1518,28 @@ Here is the list of view modes:
     6 view filters
     7 view settings
 
-| Common Context  | Remote Command  | Description                          |
+
+### Commands
+
+| Common Context  | cmus-remote -C  | Description                          |
 | --------------- | --------------- | ------------------------------------ |
 | b               | player-next     |                                      |
 | C               |                 | Continue at end of track             |
 | c               | player-pause    |                                      |
+| e               |                 | **append tracks to the play queue**  |
+| E               |                 | prepend tracks to the play queue     |
+| i               |                 | Jump to currently playing song       |
+| Shift i         |                 | Show the file path                   |
+| L               |                 | Live filter                          |
 | q               | quit -i         |                                      |
 | s               | shuffle         |                                      |
 | t               |                 | toggle show_remaining_time           |
 | v               | player-stop     |                                      |
 | x               | player-play     |                                      |
 | z               | player-prev     |                                      |
-| e               |                 | **append tracks to the play queue**  |
-| E               |                 | prepend tracks to the play queue     |
 
+There is a feedback of all the currently active options at the bottom right of
+the cums screen.
 
 Commands can be sent through a command line with cmus-remote, for example
 to pause a running instance of cmus (and restart it):
@@ -1495,7 +1548,11 @@ to pause a running instance of cmus (and restart it):
 
 I use this in the pomodoro gnome app to pause music at breaks.
 
-Volume control
+- Follow currently playing song `f` see [issue 
+  206](https://github.com/cmus/cmus/issues/206)
+
+
+### Volume control
 
 |Common Context |Description                                         |
 |---------------|----------------------------------------------------|
@@ -1507,11 +1564,6 @@ Volume control
 | {             |:vol -1% -0%                                        |
 | }             |:vol -0% -1%                                        |
 
-Jump to currently playing song `i`.
-Follow currently playing song `f` see [issue 206](https://github.com/cmus/cmus/issues/206)
-
-There is a feedback of all the currently active options at the bottom right of
-the cums screen.
 
 ### Playlist
 
