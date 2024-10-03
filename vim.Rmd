@@ -378,7 +378,7 @@ Use the auto incrementation `g CTRL-A`
                     1. ~
                     1. ~
                 Move to the second "1." and Visually select three
-                lines, pressing g CTRL-A results in:
+                lines, pressing `g CTRL-A` results in:
                     1. ~
                     2. ~
                     3. ~
@@ -1222,11 +1222,13 @@ explaining how to set it up with vim.
 kept up-to-date automatically from the 
 [Vim source repository](https://github.com/vim/vim).
 
+
 ## Messages
 
 Did you see warning messages but they disappeared before you have had time to
 read them? Type the command |:messages| in Normal mode to see them again.
 (copied from nvim-r help)
+
 
 # Insert 
 
@@ -1666,14 +1668,26 @@ number](https://stackoverflow.com/questions/10392424/how-can-i-open-vim-with-a-p
 
 ## Search in the current file 
 
-Use `"/"` to search, then n forward and N backwards `"*"` to search for the word
-under the cursor (you can also create a mapping to search for a selected text)
+- Use `"/"` to search, then n forward and N backwards `"*"` to search for the 
+  word under the cursor (you can also create a mapping to search for a selected 
+  text).
 
-Use `:g/pattern` to display a list of all search result in the document. 
+- Use `"?"` to search backward. Very useful with text selection.
+
+- Use `:g/pattern` to display a list of all search result in the document. 
 
 Search all occurrences of a pattern and populate the quick fix window:
 
     :vim /pattern/ % | cw
+
+- See also the replace section.
+
+
+### Search one pattern or another
+
+Search for opening or closing brackets
+
+    /\((\|)\)
 
 
 ### Highlight search matches
@@ -1750,6 +1764,8 @@ so I deactivated it.
 
 - Neo Vim for Vim users https://neovim.io/doc/user/nvim.html#nvim-from-vim 
   explains how to use the .vimrc from Neovim
+
+- https://nvchad.com/ Neovim config
 
 
 # Plugins
@@ -2561,7 +2577,7 @@ interactive shell (ipython)
     autocmd FileType python nmap <LocalLeader>p <Plug>SlimeParagraphSend
 
 
-###  IndentationError: unexpected indent
+### Auto indent IndentationError: unexpected indent
 
 Excessive indentation issues can arrise when slime sends indented lines to the
 ipython console. For example  after a function definition, such as `def
