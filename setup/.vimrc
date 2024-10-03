@@ -244,6 +244,8 @@ autocmd BufWritePre *.md %s/\s\+$//e
 
 " Wrap markdown text to 88 characters like psf/black
 au BufRead,BufNewFile *.md setlocal textwidth=88
+" Command to disable auto wrap to edit long tables for example
+command! Nowrap set formatoptions=cq
 " Do not use double spaces after points
 set nojoinspaces
 " Disable folding of vim-pandoc plugin
