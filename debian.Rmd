@@ -23,6 +23,7 @@ http download at [debian.org/CD](https://www.debian.org/CD/):
 Verify the checksum 
 
     shasum debian-10.1.0-amd64-netinst.iso
+    shasum -a 256 debian-12.5.0-amd64-DVD-1.iso
 
 To copy the image to a usb key follow the 
 [instruction on how to copy the iso image to a usb key](https://www.debian.org/releases/stable/amd64/ch04s03.html.en) 
@@ -152,7 +153,7 @@ https://ci.debian.net/packages/p/python-pip/"
 
 # Installing software
 
-## Package management
+## AA package management
 
 ### APT
 
@@ -200,6 +201,43 @@ Search packages with aptitude, the high level interface to the package manager
 
 Search packages on the [Debian
 website](https://www.debian.org/distrib/packages).
+
+
+#### Installing from backports
+
+[backports.debian.org](https://backports.debian.org/) contains a list of backports available for each LTS Debian version.
+
+Add the main, contrib and non-free backports to /etc/apt/sources.list :
+
+    deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free
+
+Install from backports
+
+    sudo apt -t stretch-backports install nodejs
+
+
+#### DEB packages
+
+For software in .deb packages, check the md5sum and install with
+
+    md5sum packagename.deb
+    sudo dpkg -i packagename.deb
+
+or 
+
+    sudo apt install ./packagename.deb
+
+Stack overflow [How to install a deb file, by dpkg -i or by apt?](https://unix.stackexchange.com/a/159114/85530)
+"When you use apt to install a package, under the hood it uses dpkg."
+
+
+If there are missingdependencies and you fix them you can retry the previsouly failed installed with:
+
+    sudo dpkg --configure -a
+
+Remove a package with:
+
+    sudo dpkg -r packagename
 
 
 ### NIX
@@ -269,44 +307,6 @@ website](https://www.debian.org/distrib/packages).
 https://nixos.wiki/wiki/K3s
 
 
-## Installing Debian software from backports
-
-
-[backports.debian.org](https://backports.debian.org/) contains a list of backports available for each LTS Debian version.
-
-Add the main, contrib and non-free backports to /etc/apt/sources.list :
-
-    deb http://ftp.it.debian.org/debian stretch-backports main contrib non-free
-
-Install from backports
-
-    sudo apt -t stretch-backports install nodejs
-
-
-## DEB packages
-
-For software in .deb packages, check the md5sum and install with
-
-    md5sum packagename.deb
-    sudo dpkg -i packagename.deb
-
-or 
-
-    sudo apt install ./packagename.deb
-
-Stack overflow [How to install a deb file, by dpkg -i or by apt?](https://unix.stackexchange.com/a/159114/85530)
-"When you use apt to install a package, under the hood it uses dpkg."
-
-
-If there are missingdependencies and you fix them you can retry the previsouly failed installed with:
-
-    sudo dpkg --configure -a
-
-Remove a package with:
-
-    sudo dpkg -r packagename
-
-
 ## Anbox
 
 [Android in a box](https://anbox.io/)
@@ -320,6 +320,55 @@ Then installed anbox from the backports:
     sudo apt -t stretch-backports install anbox
 
 I have encountered [issue 211](https://github.com/anbox/anbox/issues/211)
+
+
+## Ansible
+
+- Ansible documentation
+
+    - https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html
+
+        > "The managed node (the machine that Ansible is managing) does not 
+        > require Ansible to be installed, but requires Python to run 
+        > Ansible-generated Python code. The managed node also needs a user 
+        > account that can connect through SSH to the node with an interactive 
+        > POSIX shell."
+
+    - Playbooks    
+      https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_intro.html#playbooks-intro
+
+        > "Ansible Playbooks offer a repeatable, reusable, simple configuration 
+        > management and multi-machine deployment system, one that is well 
+        > suited to deploying complex applications. If you need to execute a 
+        > task with Ansible more than once, write a playbook and put it under 
+        > source control. Then you can use the playbook to push out new 
+        > configuration or confirm the configuration of remote systems. The 
+        > playbooks in the ansible-examples repository illustrate many useful 
+        > techniques."
+
+    - User module to create users on the system 
+      https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+
+Other resources
+
+- How do you handle server automation https://www.reddit.com/r/selfhosted/comments/1069k94/how_do_you_guys_handle_server_automation/
+
+    - recommends ansible
+
+- https://www.redhat.com/en/topics/automation/ansible-vs-salt
+
+    > "Ansible uses the concepts of a control node (where Ansible is executed 
+    > from) and managed nodes (the devices being automated—often a Linux® or 
+    > Windows machine). Since Ansible is agentless, it can communicate with 
+    > devices without requiring an application or service to be installed on 
+    > the managed node. Ansible Automation Platform can spread automation jobs 
+    > out across execution nodes using a technology called automation mesh. 
+    > Ansible users can finely orchestrate different parts of their 
+    > infrastructure using Ansible Playbooks, which are files written in 
+    > human-readable YAML. Ansible uses a procedural (or imperative) 
+    > programming approach, which tries to preserve the configuration of an IT 
+    > infrastructure by defining the steps to reach a desired state."
+
 
 ## CEWE Photobuch
 
@@ -435,6 +484,16 @@ If you need tools that can be started at the command line such as jupyter lab,
 Install editor
 
     pip3 install spyder
+
+## Quarto
+
+Install quarto https://quarto.org/docs/get-started/
+
+
+cd ~/downloads
+sha256sum quarto-1.5.57-linux-amd64.deb
+sudo apt install ./quarto-1.5.57-linux-amd64.deb
+
 
 ## R and Rstudio
 
@@ -891,6 +950,25 @@ key works again.
 # Keyboard
 
 * [A better AZERTY for developers](https://github.com/r03/azerty)
+
+- In 2024, I had an issue in a HP Elitebook after many years of use the 
+  Function and Ctrl key got swapped.
+
+    - This can be fixed by removing the AC chord and battery according to 
+      https://h30434.www3.hp.com/t5/Notebook-Hardware-and-Upgrade-Questions/CTRL-and-FN-keys-suddenly-swapped-Elitebook-8460p/td-p/5075647
+
+        - Powering off and removing the battery for a minute fixed the issue. 
+          Ctrl key and Fn key are back to normal functionality.
+
+    - This could also have been changed in a bios setting according to 
+      https://askubuntu.com/questions/193529/how-to-swap-between-fn-and-ctrl-keys
+      But I didn't find that bios setting. I changed another bios setting for 
+      the Fn key alone. Activating it ended up messing the row of F1 to F12 
+      keys. As a result, I didn't have to press Fn anymore to change the 
+      keyboard backlight, sound volume and screen brightness settings, but that 
+      meant I had to press Fn to get to the actual F1 to F12 function keys. 
+      Annoying, I switched this bios setting back to deactivated mode.
+
 
 # Network
 
