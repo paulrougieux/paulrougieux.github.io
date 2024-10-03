@@ -49,9 +49,33 @@ the transport layer. End-to-end encryption would be better, but it's usage is
 rare. 
 
 
+### Gmail
+
+- https://one.google.com/storage/management/gmail/large
+
+
+### Posteo
+
+https://posteo.de/en
+
+
+### Thunderbird
+
+- Backup Thunderbird Emails for Beginners 
+  https://support.mozilla.org/gl/questions/1395205
+
+  > That is correct. Everything is in the profile. Copying what you described 
+  > includes everything. Two reminders:
+
+  > - do the copy when Thunderbird is not running.
+
+  > - in restoring, install thunderbird first and exit prior to copying in the 
+  >   backup. It will overwrite the initial empty profile specification.
+
+
 ## Snail mail
 
-Snail mail can be seen as an emotional form of communication through a physical
+Snail mail is an emotional form of communication through a physical
 medium: paper. You can smell it. You can touch it. You can drop a tear on it.
 You can tear it apart. You can burn it. It's based on plants that were growing
 in a forest somewhere. It might have spent time in a trash bin. It might have
@@ -175,6 +199,30 @@ started. As of January 2020 I still use a nokia 3010 phone. I cannot install
 the signal application on that phone and this means that I cannot use signal on
 my desktop.
 
+- https://www.city-journal.org/article/signals-katherine-maher-problem
+
+    > "One person who has worked extensively with OTF but asked to remain 
+    > anonymous told me that, over time, it became increasingly clear “that the 
+    > project was actually a State Department-connected initiative that planned 
+    > to wield open source Internet projects made by hacker communities as 
+    > tools for American foreign policy goals”—including by empowering 
+    > “activists [and] parties opposed to governments that the USA doesn’t 
+    > like.” Whatever the merits of such efforts, the claim—if true—suggests a 
+    > government involvement with Signal that deserves more scrutiny."
+
+    > "The other potential problem is the Signal Foundation’s current chairman 
+    > of the board, Katherine Maher, who started her career as a U.S.-backed 
+    > agent of regime change. During the Arab Spring period, for instance, 
+    > Maher ran digital-communications initiatives in the Middle East and North 
+    > Africa for the National Democratic Institute, a largely government-funded 
+    > organization that works in concert with American foreign policy 
+    > campaigns. Maher cultivated relationships with online dissidents and used 
+    > American technologies to advance the interests of U.S.-supported Color 
+    > Revolutions abroad."
+
+    > "Maher then became CEO of the Wikimedia Foundation in 2016, and, earlier 
+    > this year, was named CEO of National Public Radio."
+
 
 ## Skype
 
@@ -214,29 +262,32 @@ See the security section at https://en.wikipedia.org/wiki/Telegram_(software)#Se
 
 ## Whatsapp
 
+See also the Facebook Meta section. 
+
 Short message to friends: 
 
-I don't use Whatsapp for ethical reasons, because of the Cambridge Analytica
-scandal and the risk posed by Facebook's extensive use of personal data and
-social connections to sell not only advertisement but also political influence.
-Whatsapp users give away the frequency and location of their interpersonal
-connections. This data describes every users preferences within its social
-graph. As Whatsapps user base grows, it makes the social graph available for a
-better fit of the machine learning models that influence our decision making.
-These rather simple models feed us with information and optimise the effect
-that this information has on shifting the needle of a purchasing decision or a
-voting decision. Facebook has billions of users. Among them there are several
-hundred users similar to us. The information that was the most effective at
-influencing their decision will be shown to us first. The models are driven to
-optimize viewing time and engagement, as a result, controversial or shocking
-news will be shown more often. The use of these models becomes unethical when
-misleading or false information is propagated within the network. Facebook
-provides the infrastructure and sells the users metadata necessary for these
-advertisement models to operate within our societies. It has been accused by
-multiple jurisdictions in the US and in Europe of not putting sufficient
-safeguards in place to avoid the oversized influence of misleading actors.
-Already in many developing countries, Facebook is gaining more revenue from
-political campaign funds than from advertisement.
+I don't use Whatsapp for ethical reasons, because of the Cambridge Analytica 
+scandal and the risk posed by Facebook's extensive use of personal data and 
+social connections to sell not only advertisement but also political influence. 
+Whatsapp users give away their metadata, such as their location, the date of 
+call with each contact and their duration. This metadata describes every users 
+preferences within its social graph. As Whatsapps user base grows, it makes the 
+social graph available for a better fit of the machine learning models that 
+influence our decision making. These rather simple models feed us with 
+information and optimise the effect that this information has on shifting the 
+needle of a purchasing decision or a voting decision. Facebook has billions of 
+users. Among them there are several hundred users similar to us. The 
+information that was the most effective at influencing their decision will be 
+shown to us first. The models are driven to optimize viewing time and 
+engagement, as a result, controversial or shocking news will be shown more 
+often. The use of these models becomes unethical when misleading or false 
+information is propagated within the network. Facebook provides the 
+infrastructure and sells the users metadata necessary for these advertisement 
+models to operate within our societies. It has been accused by multiple 
+jurisdictions in the US and in Europe of not putting sufficient safeguards in 
+place to avoid the oversized influence of misleading actors. Already in many 
+developing countries, Facebook is gaining more revenue from political campaign 
+funds than from advertisement.
 
 [Why you should switch to signal or telegram](https://medium.com/@contactsunny/why-you-should-switch-to-signal-or-telegram-from-whatsapp-today-fa773694d05e) (2018):
 
@@ -246,14 +297,24 @@ political campaign funds than from advertisement.
 > collected a lot of user data, and that’s precious to the Gollum that is
 > Facebook."
 
-Whatsapp betrayed its user by sharing contact details with FaceBook for advertisement purposes:
+- Whatsapp betrayed its user by sharing contact details with FaceBook for 
+  advertisement purposes:
 
-> "Today, we know that there’s a separate WhatsApp app for businesses. And now
-> there are also reports that WhatsApp will soon start showing ads in users’
-> statuses, and in other places within the app ([1][2][3 BBC]). What this means
-> is that WhatsApp and Facebook will start tracking everything you do on your
-> phone to tailor ads to you. They will see your contacts list (which they
-> already are, actually). This is a clear betrayal, for many users. "
+    > "Today, we know that there’s a separate WhatsApp app for businesses. And 
+    > now there are also reports that WhatsApp will soon start showing ads in 
+    > users’ statuses, and in other places within the app ([1][2][3 BBC]). What 
+    > this means is that WhatsApp and Facebook will start tracking everything 
+    > you do on your phone to tailor ads to you. They will see your contacts 
+    > list (which they already are, actually). This is a clear betrayal, for 
+    > many users. "
+
+- Federal trade Commission  FTC Alleges Facebook Resorted to Illegal 
+  Buy-or-Bury Scheme to Crush Competition 
+  https://www.ftc.gov/news-events/news/press-releases/2021/08/ftc-alleges-facebook-resorted-illegal-buy-or-bury-scheme-crush-competition-after-string-failed
+
+    > "Agency’s amended complaint details how the monopolist survived 
+    > existential threats by illegally acquiring innovative competitors and 
+    > burying successful app developers"
 
 
 ## Webex
@@ -348,6 +409,32 @@ stuff](https://yanhan.github.io/posts/2017-09-27-how-to-use-gpg-to-encrypt-stuff
 > "It’s time for PGP to die."
 
 
+# Problem solving
+
+## XY problem
+
+https://en.wikipedia.org/wiki/XY_problem
+
+> "situations where the question is about an end user's attempted solution (X) 
+> rather than the root problem itself (Y or Why?)."
+
+> "The solution for the support personnel is to ask probing questions as to
+> why the information is needed in order to identify the root problem Y and 
+> redirect the end user away from an unproductive path of inquiry."
+
+I have noticed that those probing question can be frustrating to the user. I 
+asked you a question, why do you ask me another question instead of providing a 
+direct answer?
+
+Related links:
+
+- http://www.catb.org/~esr/faqs/smart-questions.html
+
+    > "Ask probing questions to elicit more details. If you're good at this, 
+    > the querent will learn something — and so might you. Try to turn the bad 
+    > question into a good one; remember we were all newbies once."
+
+
 # Search
 
 
@@ -368,6 +455,48 @@ media, you subject yourself to experimentation and behaviour modification.
 - [Facebook–Cambridge Analytica data scandal](https://en.wikipedia.org/wiki/Facebook–Cambridge_Analytica_data_scandal)
 
 - [2021 Facebook leak](https://en.wikipedia.org/wiki/2021_Facebook_leak)
+
+- Facebook Extended API 
+  https://arstechnica.com/gadgets/2024/03/netflix-ad-spend-led-to-facebook-dm-access-end-of-facebook-streaming-biz-lawsuit/ 
+
+    > "By 2013, Netflix had begun entering into a series of “Facebook Extended 
+    > API” agreements, including a so-called “Inbox API” agreement that allowed 
+    > Netflix programmatic access to Facebook’s users' private message inboxes, 
+    > in exchange for which Netflix would “provide to FB a written report every 
+    > two weeks that shows daily counts of recommendation sends and recipient 
+    > clicks by interface, initiation surface, and/or implementation variant 
+    > (e.g., Facebook vs. non-Facebook recommendation recipients). ... In 
+    > August 2013, Facebook provided Netflix with access to its so-called 
+    > “Titan API,” a private API that allowed a whitelisted partner to access, 
+    > among other things, Facebook users' “messaging app and non-app friends."
+
+- Facebook let Netflix see user DMs, quit streaming to keep Netflix happy 
+  (arstechnica.com) https://news.ycombinator.com/item?id=39858850 
+
+    > "For important context on my post here, please read tsunamihippo's post 
+    > first: https://news.ycombinator.com/item?id=39859319. This story seems 
+    > very overblown. Are we arguing that Facebook should not ever allow any 
+    > third party app to ask permission to read the user's Facebook DMs? There 
+    > are valid use cases for this permission, and every case where an app asks 
+    > for it is not a "privacy violation". Sure, did Netflix or Spotify 
+    > actually need the ability to read back DMs instead of just write them so 
+    > that they could send recommendations? No, they shouldn't have needed 
+    > that. If Facebook's API required that they have read access just to send 
+    > a message, then that's crap design. But is it nefarious? No. As long as 
+    > the user is appropriately briefed on what they are granting (and it 
+    > appears that they were), and as long as Facebook addresses over-scoped 
+    > permissions requested by third party apps in a timely manner, then this 
+    > should not be an issue. I for one believe that we need to mandate that 
+    > FAANG companies have these sorts of permission-driven systems to avoid 
+    > the vendor lock in we're all too commonly stuck with today. Because these 
+    > things are needed for competition to thrive and to avoid the big 
+    > companies from creating moats that prevent us, the startups out there, 
+    > trying to dethrone them, its all the more important that these companies 
+    > invest in better UIs that help a user understand the implications of what 
+    > they are doing, and better review processes to stop bad actors from 
+    > exploiting users' ignorance on an ongoing basis. I despise Meta, but come 
+    > on. Don't throw the baby (interoperability) out with the bathwater 
+    > (interoperability can enable exploitation)."
 
 
 ## Twitter now X
