@@ -174,9 +174,22 @@ citation key inside square brackets:
 
     [@citationkey]
 
+To cite more than one reference:
+
+     [see @doe99, pp. 33-35; also @smith04, chap. 1]. 
+
 See also https://quarto.org/docs/visual-editor/technical.html#citations
 
+    > "Citations go inside square brackets and are separated by semicolons."
+
 The bibliography is located at the end of the document by default.
+You can change its location with a `{#refs}` placeholder, as explained in 
+https://quarto.org/docs/authoring/footnotes-and-citations.html
+
+```{text}
+    ::: {#refs}
+    :::
+```
 
 
 ## Code chunks
@@ -268,6 +281,79 @@ Refer to the figures with an `@` label:
     : My Caption {#tbl-letters}
 
     See @tbl-letters.
+
+
+### Grid table
+
+- Use grid tables to merge cells 
+  https://github.com/quarto-dev/quarto-cli/discussions/2603
+
+    +---------------------+----------+
+    | Property            | Earth    |
+    +=============+=======+==========+
+    |             | min   | -89.2 °C |
+    | Temperature +-------+----------+
+    | 1961-1990   | mean  | 14 °C    |
+    |             +-------+----------+
+    |             | max   | 56.7 °C  |
+    +-------------+-------+----------+
+
+- Pandoc Grid tables https://pandoc.org/MANUAL.html#extension-grid_tables
+
+- Force a new line  with `\ `
+  https://stackoverflow.com/questions/33048001/how-do-i-get-a-hard-line-break-in-a-multiline-table-using-markdown
+
+    +---------------------+----------+
+    | Property            | Earth    |
+    +=============+=======+==========+
+    |             | min   | -89.2 °C |
+    | Temperature +-------+----------+
+    | 1961\       | mean  | 14 °C    |
+    | -1990       +-------+----------+
+    |             | max   | 56.7 °C  |
+    +-------------+-------+----------+
+
+
+## Team work
+
+### With git
+
+Co-authors load the quarto document to their machines and make edit suggestions 
+as commits.
+
+
+### With Google Docs
+
+- R markdown and google docs 
+  https://www.matthewvanaman.com/posts/2021-03-17-extremely-simple-guide-to-collaborative-writing-between-r-markdown-and-google-docs-users/collab_writing.html
+  
+    > "At each stage of revision, you, Stewardperson of R, will have written 
+    > the initial draft within R Markdown. Once the draft is ready for 
+    > revisions from collaborators, you will use R to upload the contents of 
+    > your R Markdown document to a Google Doc on your Google Drive. From 
+    > there, you and your collaborators use Google Docs to revise. Once 
+    > everyone is satisfied with the content, you will download the Google Doc 
+    > content back to your R Markdown file, which will rewrite the contents of 
+    > the file to include any changes that were made."
+
+- R package trackdown https://claudiozandonella.github.io/trackdown/
+
+    > "Using trackdown, the local .Rmd (or Quarto / .Rnw) file can be uploaded 
+    > as a plain-text file to Google Drive."
+
+    > During the collaborative writing/editing of an .Rmd (or Quarto / .Rnw) 
+    > document, it is important to employ different workflows for computer code 
+    > and narrative text:
+
+        > Code - Collaborative code writing is done most efficiently by 
+        > following a traditional Git-based workflow using an online repository 
+        > (e.g., GitHub or GitLab).
+
+        > Narrative Text - Collaborative writing of narrative text is done most 
+        > efficiently using Google Docs which provides a familiar and simple online 
+        > interface that allows multiple users to simultaneously write/edit the 
+        > same document.
+
 
 
 ## Yaml in quarto
