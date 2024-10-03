@@ -1,2 +1,4 @@
 [pylint]
 good-names=df,ds,t
+# Use Paul's default virtual environment
+init-hook='import sys; sys.path.append("/home/paul/rp/penv/lib/python3.11/site-packages/")'
