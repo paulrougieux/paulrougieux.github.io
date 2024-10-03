@@ -496,6 +496,8 @@ accessible documentation for the functions.”</p>
 </div>
 <div id="control-flow" class="section level1">
 <h1>Control flow</h1>
+<div id="case-when" class="section level2">
+<h2>Case when</h2>
 <p>dplyr::case_when is a generalised vectorised if. Example use:</p>
 <pre><code> x &lt;- 1:50
  case_when(
@@ -504,6 +506,16 @@ accessible documentation for the functions.”</p>
    x %% 7 == 0 ~ &quot;buzz&quot;,
    TRUE ~ as.character(x)
  )</code></pre>
+</div>
+<div id="for-loop" class="section level2">
+<h2>For loop</h2>
+<ul>
+<li><p><a
+href="https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Repetitive-execution"
+class="uri">https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Repetitive-execution</a></p>
+<p>for (x in c(“bla”, “bla”, “bli”)){ print(x) }</p></li>
+</ul>
+</div>
 </div>
 <div id="data-table" class="section level1">
 <h1>Data table</h1>
@@ -569,6 +581,10 @@ format(max(tralala),&quot;%Y-%m&quot;) </code></pre>
 </div>
 <div id="factors" class="section level3">
 <h3>Factors</h3>
+<p>Create factors</p>
+<pre><code>iris2 &lt;- iris
+iris2$species2 &lt;- factor(iris2$Species, levels =  c(&quot;setosa&quot;, &quot;versicolor&quot;, 
+&quot;virginica&quot;), labels = c(&quot;A&quot;,&quot;B&quot;,&quot;C&quot;))</code></pre>
 <p><a
 href="https://stackoverflow.com/questions/45148897/how-to-reorder-factor-levels-in-a-tidy-way/59246372#59246372">My
 answer to the question how to reorder factor levels the tidy way</a></p>
@@ -1356,7 +1372,7 @@ be defined in the preamble section of the R markdown document.</p>
 documents.</p>
 <pre><code>---
 title: &quot;Title&quot;
-date:  &quot;20 February, 2024&quot;
+date:  &quot;20 June, 2024&quot;
 output:
   pdf_document:
     number_sections: yes
@@ -1450,6 +1466,20 @@ Mardown python engine</a></p>
 <p>See also the reticulate package mentioned below.</p>
 <div id="reticulate-to-call-python-from-r" class="section level3">
 <h3>Reticulate to call python from R</h3>
+<p>To run a python script that prepares data</p>
+<pre><code>py_run_file(&quot;script.py&quot;)</code></pre>
+<p>The object created by the python script will then be available from R
+through the <code>py$oject_name</code> interface.</p>
+<p>To run an import statement in python, then use the imported object
+from R.</p>
+<pre><code>library(reticulate)
+py_run_string(&quot;from biotrade.faostat import faostat&quot;)
+wheat &lt;- py$faostat$db$select(&quot;crop_production&quot;, product=&quot;wheat&quot;)</code></pre>
+<p>More information in the vignette:</p>
+<pre><code>vignette(&quot;calling_python&quot;, package=&quot;reticulate&quot;)</code></pre>
+</div>
+<div id="reticulate-in-a-notebook" class="section level3">
+<h3>Reticulate in a notebook</h3>
 <p>Example of a python chunk followed by an R chunk.</p>
 <pre><code># ---
 # title: &quot;The Ultimate Question&quot;
@@ -1468,8 +1498,6 @@ Mardown python engine</a></p>
 # str(py$df)
 # prod(py$df$x)
 # ```</code></pre>
-<p>More information in the vignette:</p>
-<pre><code>vignette(&quot;calling_python&quot;, package=&quot;reticulate&quot;)</code></pre>
 <p>This can also be used to call python functions in R</p>
 <pre><code>λ{python eval=FALSE}
 from biotrade.faostat import faostat
@@ -1566,7 +1594,7 @@ if you think you might want to reproduce some work later.”</p>
 <h1>Rscript</h1>
 <p>Capture arguments in an Rscript on windows and write them to a
 file</p>
-<pre><code>&quot;C:\Program Files\R\R-3.5.0\bin\Rscript.exe&quot; --verbose -e &quot;args = commandArgs(trailingOnly=TRUE)&quot; -e &quot;writeLines(args,&#39;C:\\Dev\\args.txt&#39;)&quot; &quot;file1.csv&quot; &quot;file2.csv&quot; &quot;file3.csv&quot;</code></pre>
+<pre class="r"><code>&quot;C:\Program Files\R\R-3.5.0\bin\Rscript.exe&quot; --verbose -e &quot;args = commandArgs(trailingOnly=TRUE)&quot; -e &quot;writeLines(args,&#39;C:\\Dev\\args.txt&#39;)&quot; &quot;file1.csv&quot; &quot;file2.csv&quot; &quot;file3.csv&quot;</code></pre>
 <p>Arguments can be extracted one by one with args[1] commandArgs()
 returns a <strong>character vector</strong> containing the name of the
 executable and the user-supplied command line arguments.</p>
@@ -1629,6 +1657,26 @@ to the above Eurostat package</p></li>
 <li><a
 href="https://cran.r-project.org/web/packages/googleway/index.html">Googleway</a></li>
 </ul>
+<div id="bounding-boxes" class="section level3">
+<h3>Bounding boxes</h3>
+<p>Find the position of countries close to the edge of the map</p>
+<pre><code>for (country in c(&quot;Portugal&quot;, &quot;Finland&quot;, &quot;Romania&quot;, &quot;Italy&quot;)){
+    print(country)
+    print(st_bbox(nuts0[nuts0$country == country, ]))
+}</code></pre>
+</div>
+<div id="map-from-geojson-files" class="section level3">
+<h3>Map from geojson files</h3>
+<ul>
+<li><p><a
+href="https://r-graph-gallery.com/325-background-map-from-geojson-format-in-r.html"
+class="uri">https://r-graph-gallery.com/325-background-map-from-geojson-format-in-r.html</a></p>
+<p>library(sf) library(ggplot2) my_sf &lt;- read_sf(tmp_geojson)
+my_sf_region_6 &lt;- my_sf[substr(my_sf$code, 1, 2) == “06”, ]
+ggplot(my_sf_region_6) + geom_sf(fill = “#69b3a2”, color = “white”) +
+theme_void()</p></li>
+</ul>
+</div>
 </div>
 </div>
 <div id="packages" class="section level1">
@@ -1655,6 +1703,14 @@ documentation of each function.</p>
 prompt.</p>
 <p>Since roxygen2 version 6, markdown formating can be used in the
 documentation, by specifying the <code>@md</code> tag.</p>
+<div id="r-manual" class="section level3">
+<h3>R Manual</h3>
+<ul>
+<li><a
+href="https://cran.r-project.org/doc/manuals/R-exts.html#Writing-R-documentation-files"
+class="uri">https://cran.r-project.org/doc/manuals/R-exts.html#Writing-R-documentation-files</a></li>
+</ul>
+</div>
 <div id="examples" class="section level3">
 <h3>Examples</h3>
 <p>Examples are crucial to demonstrate the use of a fonction. They can
@@ -1748,16 +1804,56 @@ href="https://stackoverflow.com/questions/46741739/how-to-use-makefiles-with-r-c
 to use make files with R CMD build</a></li>
 </ul>
 <p>I copied the make file from the knitr package.</p>
+<pre><code># prepare the package for release
+PKGNAME := $(shell sed -n &quot;s/Package: *\([^ ]*\)/\1/p&quot; DESCRIPTION)
+PKGVERS := $(shell sed -n &quot;s/Version: *\([^ ]*\)/\1/p&quot; DESCRIPTION)
+PKGSRC  := $(shell basename `pwd`)
+
+all: docs check clean install
+
+deps:
+    tlmgr install pgf preview xcolor;\
+    Rscript -e &#39;if (!require(&quot;Rd2roxygen&quot;)) install.packages(&quot;Rd2roxygen&quot;, repos=&quot;http://cran.rstudio.com&quot;)&#39;
+
+docs:
+    R -q -e &quot;devtools::document(roclets = c(&#39;rd&#39;, &#39;collate&#39;, &#39;namespace&#39;, &#39;vignette&#39;))&quot;
+
+build:
+    cd ..;\
+    R CMD build $(PKGSRC)
+
+install: build
+    cd ..;\
+    R CMD INSTALL $(PKGNAME)_$(PKGVERS).tar.gz
+
+check: build
+    cd ..;\
+    R CMD check $(PKGNAME)_$(PKGVERS).tar.gz --as-cran
+
+clean:
+    cd ..;\
+    $(RM) -r $(PKGNAME).Rcheck/</code></pre>
 </div>
 <div id="submitting-to-cran" class="section level2">
 <h2>Submitting to CRAN</h2>
-<p><a href="https://cran.r-project.org/submit.html">Submit package to
-CRAN</a> The second page will ask to</p>
+<p>Before submitting to CRAN.</p>
 <ul>
-<li>Step 1 (Upload) the <code>*.tar.gz</code> file.</li>
-<li>Step 2 (Submission) review information from the package’s
-DESCRIPTION file.</li>
-<li>Step 3 (Confirmation)</li>
+<li><p>Update the date and version number in the DESCRIPTION
+file</p></li>
+<li><p>Build the package with the make file. The make file will also run
+the same checks that CRAN will run, so make sure to fix any issues
+reported there. The following command runs checks on the package’s
+<code>.tar.gz</code> archive. It is one of the commands inside the
+makefile:</p>
+<p>R CMD check <span
+class="math inline">\((PKGNAME)_\)</span>(PKGVERS).tar.gz
+–as-cran</p></li>
+<li><p><a href="https://cran.r-project.org/submit.html">Submit package
+to CRAN</a> The second page will ask to</p></li>
+<li><p>Step 1 (Upload) the <code>*.tar.gz</code> file.</p></li>
+<li><p>Step 2 (Submission) review information from the package’s
+DESCRIPTION file.</p></li>
+<li><p>Step 3 (Confirmation)</p></li>
 </ul>
 <p>The maintainer of this package has been sent an email to confirm the
 submission. After their confirmation the package will be passed to CRAN
@@ -1911,8 +2007,27 @@ do.call(grid.arrange, out)
 <p>Different legend for each sub plot using patchwork</p>
 </div>
 </div>
-<div id="math-formulas-in-facet-labels" class="section level3">
-<h3>Math formulas in facet labels</h3>
+<div id="facet-plots" class="section level3">
+<h3>Facet plots</h3>
+<ul>
+<li><p>Facet grid</p>
+<blockquote>
+<p>“‘facet_grid()’ forms a matrix of panels defined by row and column
+faceting variables.”</p>
+</blockquote></li>
+<li><p>Facet wrap, specify only the</p>
+<blockquote>
+<p>“‘facet_wrap()’ wraps a 1d sequence of panels into 2d.”</p>
+</blockquote>
+<pre><code>   p &lt;- ggplot(mpg, aes(displ, hwy)) + geom_point()
+   # Use vars() to supply faceting variables:
+   p + facet_wrap(vars(class))</code></pre></li>
+</ul>
+<p>Note ?vars:</p>
+<pre><code>&gt; ‘vars()’ is superseded because it is only needed for the scoped verbs 
+&gt; (i.e. ‘mutate_at()’, ‘summarise_at()’, and friends), which</code></pre>
+<div id="math-formulas-in-facet-labels" class="section level4">
+<h4>Math formulas in facet labels</h4>
 <p>Note to add a new line to a facet label, simply insert it with</p>
 <pre><code>facet_variable = gsub(&quot; &quot;,&quot;\n&quot;, facet_variable)</code></pre>
 <pre class="r"><code>library(dplyr)
@@ -1967,6 +2082,21 @@ written directly as <code>alpha</code> instead of <code>\alpha</code> in
 Latex. You can find many formulas in the help page of the <a
 href="https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html">plotmath</a>
 function. Good luck with the <code>plotmath</code> examples.</p>
+</div>
+</div>
+<div id="palettes-and-colours" class="section level3">
+<h3>Palettes and colours</h3>
+<blockquote>
+<p>scale_<em><em>gradient2 creates a diverging colour gradient
+(low-mid-high), scale</em></em>_gradientn creates a n-colour gradient.
+For binned variants of these scales, see the color steps scales.</p>
+</blockquote>
+<p>For example, I used this fora choropleth map of carbon sink</p>
+<pre><code>scale_fill_gradient2(low=&quot;#018606&quot;, mid=&quot;white&quot;, high=&quot;red&quot;)+</code></pre>
+<ul>
+<li>Seen in <a href="https://stackoverflow.com/a/57437251/2641825"
+class="uri">https://stackoverflow.com/a/57437251/2641825</a></li>
+</ul>
 </div>
 <div id="save-plots-to-pdf" class="section level3">
 <h3>Save plots to pdf</h3>
@@ -2216,6 +2346,12 @@ counts</p>
 <pre><code>count(iris, Species, wt=Sepal.Length, sort=TRUE)</code></pre>
 </div>
 </div>
+<div id="sum-across-multiple-columns" class="section level3">
+<h3>Sum across multiple columns</h3>
+<p><a
+href="https://stackoverflow.com/questions/29006056/efficiently-sum-across-multiple-columns-in-r"
+class="uri">https://stackoverflow.com/questions/29006056/efficiently-sum-across-multiple-columns-in-r</a></p>
+</div>
 <div id="across" class="section level3">
 <h3>Across</h3>
 <p>Apply the same transformation to multiple columns, allowing to use
@@ -2287,6 +2423,15 @@ iris %&gt;%
 use tidy select syntax; if you want to transform column names with a
 function, you can use rename_with().”</p>
 </blockquote>
+</div>
+<div id="filter" class="section level3">
+<h3>Filter</h3>
+<p>Filter a single species or two species</p>
+<pre><code>library(dplyr)
+iris %&gt;% filter(Species == &quot;setosa&quot;)
+iris %&gt;% filter(Species %in% c(&quot;setosa&quot;, &quot;virginica&quot;))</code></pre>
+<p>Filter rows where the variable contain 2 characters only</p>
+<pre><code>nuts0 &lt;- nuts %&gt;% filter(nchar(nuts$nuts_id) == 2)</code></pre>
 </div>
 <div id="mutate-to-create-a-new-vector" class="section level3">
 <h3>Mutate to create a new vector</h3>

@@ -1,6 +1,7 @@
 ---
 author: "Paul Rougieux"
-date: "17 August 2017"
+date: "October 2024"
+date:  "`r format(Sys.time(), '%d %B, %Y')`"
 output: 
   html_document: 
     toc: yes
@@ -59,6 +60,8 @@ See also the comparison between R and Python below.
 
 # Control flow
 
+## Case when
+
 dplyr::case_when is a generalised vectorised if. Example use:
 
      x <- 1:50
@@ -68,6 +71,15 @@ dplyr::case_when is a generalised vectorised if. Example use:
        x %% 7 == 0 ~ "buzz",
        TRUE ~ as.character(x)
      )
+
+
+## For loop
+
+- https://cran.r-project.org/doc/manuals/r-release/R-intro.html#Repetitive-execution
+
+    for (x in c("bla", "bla", "bli")){
+      print(x)
+    }
 
 
 # Data table
@@ -139,6 +151,13 @@ Represent the date object as a string
 
 
 ### Factors
+
+Create factors
+
+
+    iris2 <- iris
+    iris2$species2 <- factor(iris2$Species, levels =  c("setosa", "versicolor", 
+    "virginica"), labels = c("A","B","C"))
 
 [My answer to the question how to reorder factor levels the tidy
 way](https://stackoverflow.com/questions/45148897/how-to-reorder-factor-levels-in-a-tidy-way/59246372#59246372) 
@@ -900,13 +919,10 @@ Create a template:
     quarto pandoc -o custom-reference-doc.docx \
        --print-default-data-file reference.docx
 
-
 Other notes:
 
 - The redoc package was developped in 2019, but abandoned.
   https://bookdown.org/yihui/rmarkdown-cookbook/word-redoc.html
-
-
 
 
 ## Python engine
@@ -917,6 +933,26 @@ See also the reticulate package mentioned below.
 
 
 ### Reticulate to call python from R
+
+To run a python script that prepares data
+
+    py_run_file("script.py")
+
+The object created by the python script will then be available from R through 
+the `py$oject_name` interface.
+
+To run an import statement in python, then use the imported object from R.
+
+    library(reticulate)
+    py_run_string("from biotrade.faostat import faostat")
+    wheat <- py$faostat$db$select("crop_production", product="wheat")
+
+More information in the vignette:
+
+    vignette("calling_python", package="reticulate")
+
+
+### Reticulate in a notebook
 
 Example of a python chunk followed by an R chunk.
 
@@ -937,10 +973,6 @@ Example of a python chunk followed by an R chunk.
     # str(py$df)
     # prod(py$df$x)
     # ```
-
-More information in the vignette:
-
-    vignette("calling_python", package="reticulate")
 
 This can also be used to call python functions in R
 
@@ -1094,6 +1126,30 @@ Unite multiple columns into one by pasting strings together
 Other potentially interesting packages:
 
 - [Googleway](https://cran.r-project.org/web/packages/googleway/index.html)
+
+### Bounding boxes
+
+Find the position of countries close to the edge of the map
+
+    for (country in c("Portugal", "Finland", "Romania", "Italy")){
+        print(country)
+        print(st_bbox(nuts0[nuts0$country == country, ]))
+    }
+
+
+
+
+### Map from geojson files
+
+- https://r-graph-gallery.com/325-background-map-from-geojson-format-in-r.html
+
+    library(sf)
+    library(ggplot2)
+    my_sf <- read_sf(tmp_geojson)
+    my_sf_region_6 <- my_sf[substr(my_sf$code, 1, 2) == "06", ]
+    ggplot(my_sf_region_6) +
+        geom_sf(fill = "#69b3a2", color = "white") +
+        theme_void()
 
 
 # Packages
@@ -1433,8 +1489,31 @@ Different legend for each sub plot using patchwork
 
 
 
+### Facet plots
 
-### Math formulas in facet labels
+- Facet grid
+
+    > "‘facet_grid()’ forms a matrix of panels defined by row and column 
+    > faceting variables."
+
+- Facet wrap, specify only the 
+
+    > "‘facet_wrap()’ wraps a 1d sequence of panels into 2d."
+
+
+         p <- ggplot(mpg, aes(displ, hwy)) + geom_point()
+         # Use vars() to supply faceting variables:
+         p + facet_wrap(vars(class))
+
+
+Note ?vars:
+
+    > ‘vars()’ is superseded because it is only needed for the scoped verbs 
+    > (i.e. ‘mutate_at()’, ‘summarise_at()’, and friends), which
+
+
+
+#### Math formulas in facet labels
 
 Note to add a new line to a facet label, simply insert it with 
 
@@ -1493,6 +1572,21 @@ written directly as `alpha` instead of `\alpha` in Latex. You can find many
 formulas in the help page of the
 [plotmath](https://stat.ethz.ch/R-manual/R-devel/library/grDevices/html/plotmath.html)
 function. Good luck with the `plotmath` examples. 
+
+
+### Palettes and colours
+
+
+> scale_*_gradient2 creates a diverging colour gradient (low-mid-high), 
+> scale_*_gradientn creates a n-colour gradient. For binned variants of these 
+> scales, see the color steps scales.
+
+For example, I used this fora choropleth map of carbon sink
+
+    scale_fill_gradient2(low="#018606", mid="white", high="red")+
+
+- Seen in https://stackoverflow.com/a/57437251/2641825
+
 
 
 ### Save plots to pdf
@@ -1756,6 +1850,10 @@ The `wt` argument can be used to perform weighted counts
 
     count(iris, Species, wt=Sepal.Length, sort=TRUE)
 
+### Sum across multiple columns
+
+https://stackoverflow.com/questions/29006056/efficiently-sum-across-multiple-columns-in-r
+
 
 ### Across
 
@@ -1804,6 +1902,19 @@ The vignette mentions this about `rename`:
 > "across() doesn’t work with select() or rename() because they already use
 > tidy select syntax; if you want to transform column names with a function,
 > you can use rename_with()." 
+
+
+### Filter
+
+Filter a single species or two species
+
+    library(dplyr)
+    iris %>% filter(Species == "setosa")
+    iris %>% filter(Species %in% c("setosa", "virginica"))
+
+Filter rows where the variable contain 2 characters only
+
+    nuts0 <- nuts %>% filter(nchar(nuts$nuts_id) == 2)
 
 
 ### Mutate to create a new vector
@@ -2001,8 +2112,8 @@ add1000(iris, Sepal.Length)
 
 ## Tidy select
 
-Tidy select [selection
-language](https://tidyselect.r-lib.org/reference/language.html) explains the
+Tidy select [selection 
+language](https://tidyselect.r-lib.org/reference/language.html) explains the 
 various selection function such as `all_of`, `contains` and `starts_with`.
 
 ```{r eval=FALSE}
