@@ -24,6 +24,7 @@ alias mogri2000="mkdir -p small && mogrify -resize 2000 -path ./small/ *.JPG"
 
 # Tools
 alias ll='ls -lah'
+alias tree2='tree -L 2'
 alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work"'
 # Copy pipe output to the standard clipboard
 alias clip="xclip -selection clipboard"
@@ -45,6 +46,7 @@ alias penv="source ~/rp/penv/bin/activate"
 alias p="source ~/rp/penv/bin/activate&&ipython"
 alias jlab="source ~/rp/penv/bin/activate &&jupyter lab"
 alias treep='tree -P "*.py"  -I "__pycache__"'
+
 
 # Paths for python data
 export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
