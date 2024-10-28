@@ -1687,6 +1687,46 @@ When possible, it's better to authenticate with private and public key
 cryptography.
 
 
+## SFTP connections
+
+Since I would like to have Two-way synchronization capabilities between my 
+laptop and an SFTP server, I choose lftp.
+
+Lftp command to mirror from the laptop to the remote directory, use the -R option to
+reverse the mirror operation.
+
+    cd /tmp/repository
+    lftp ftp.server
+    mirror -R subdir subdir
+    quit
+
+Lftp session to mirror from the remote directory to the laptop
+
+    mirror subdir subdir
+    quit
+
+I created a  `.netrc` file to store the credentials in my laptop
+
+    machine ftp.server
+    login user
+    password
+
+You could also use a command in non interactive way with lftp's `-e` flag ending it with `; bye` as follows:
+
+    lftp -e "mirror -R local_dir remote_dir ; bye" ftp.server.com
+
+When using lftp's `-c` flag, you need to perform the connection as a separate command first:
+
+    lftp -c "open ftp.server.com; mirror -R  local_dir remote_dir "
+
+
+- Unix SE explains how to create an lftp alias https://unix.stackexchange.com/a/311619/85530
+
+- I posted an answer explaining how to set up lftp at 
+  https://superuser.com/a/1860113/419414
+
+
+
 ## SSH Secure Shell
 
 ### Generate SSH keys and add them to the agent
@@ -2653,6 +2693,19 @@ to
 
 
 # VPN
+
+- 5% to 15% more data usage due to the encryption process according to Nord VPN 
+  https://nordvpn.com/blog/vpn-data-usage/ 
+
+    > "Does a VPN use data?"
+
+    > "Yes, a VPN will use data. Data consumption will depend on the encryption 
+    > protocol your VPN provider relies on, but usually the extra data used doesn’t 
+    > exceed the 5–15% range. This extra usage is to account for the encryption 
+    > process."
+
+
+## Example use cases
 
 A VPN was useful when:
 
