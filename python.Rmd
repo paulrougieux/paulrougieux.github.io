@@ -33,6 +33,10 @@ setup.py?](https://stackoverflow.com/questions/1471994/what-is-setup-py)
 
 ### Check the version number of a package
 
+List all package versions using pip
+
+    pip list
+
 In Python check the version of a package with the `__version__` attribute,
 however it's not always available.
 
@@ -235,6 +239,26 @@ Remove a list of packages from an environemnt 'myenv':
 
 ### Conda environments
 
+list environemnts
+
+    conda env list
+
+Create an environemnt with an older python version
+
+    conda create -n "myenv" python=3.11.0
+    # Also include ipython in there
+    conda create -n "cbmenv" python=3.11.0 ipython
+
+Connect/activate/go to that environment
+
+    conda activate myenv
+
+Remove an environment
+
+    conda remove --name myenv --all
+
+https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#removing-an-environment
+
 
 #### Environment file
 
@@ -347,6 +371,7 @@ Register an account on pypi (it's a different server than test.pypi). Create a t
     cd repository
     python3 -m build
     twine upload dist/*
+    # Or pload only the latest version inside dist
 
 To use the API token:
 
@@ -512,6 +537,59 @@ Start an ipython prompt to test the package version
     packagename.__version__
 
 
+#### setuptools_scm
+
+To use `setuptools_scm`, include the following line in pyproject.toml
+
+    [tool.setuptools_scm]
+    # can be empty if no extra settings are needed, presence enables setuptools-scm
+
+`setuptools_scm` will will automatically increment the minor version numbers at 
+each change in the repository, it will also add a hash number. Commit and use a 
+git tag to increment minor and major version numbers. This is required before 
+uploading to pypi.
+
+    git tag v0.1.0 -m "Description"
+
+If you don't set a git tag, pypi upload will raise a "local version" error:
+
+    Uploading cobwood-0.1.1.dev0+g14eb5dd.d20241231-py3-none-any.whl
+    100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.8/40.8 kB • 00:00 • 66.7 MB/s
+    WARNING  Error during upload. Retry with the --verbose option for more details.
+    ERROR    HTTPError: 400 Bad Request from https://upload.pypi.org/legacy/
+             The use of local versions in <Version('0.1.1.dev0+g14eb5dd.d20241231')> is not allowed. See https://packaging.python.org/specifications/core-metadata for more information.
+    (penv) paul@castanea:~/rp/cobwood$
+
+- Documentation 
+  https://setuptools-scm.readthedocs.io/en/latest/usage/#default-versioning-scheme
+
+> In the standard configuration setuptools-scm takes a look at three things:
+>      - latest tag (with a version number)
+>      - the distance to this tag (e.g. number of revisions since latest tag)
+>      - workdir state (e.g. uncommitted changes since latest tag)
+
+
+- Is there a need for bumpversion (or bump2version) when setuptools_scm is 
+  available? 
+  https://stackoverflow.com/questions/56921528/is-there-a-need-for-bumpversion-or-bump2version-when-setuptools-scm-is-availab
+
+  > "If you use setuptools_scm, you probably don't need bump2version. And vice 
+  > versa. There is no 'canonical' way to bump a version in Python. Multiple 
+  > tools exist, and you can use the one you like (or none at all)."
+
+
+#### Single sourcing package version
+
+- https://packaging.python.org/en/latest/discussions/single-source-version/
+
+- https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#dynamic-metadata
+
+    > "Note that in the first example of this page we use dynamic to identify 
+    > which metadata fields are dynamically computed during the build by either 
+    > setuptools itself or the plugins installed via build-system.requires 
+    > (e.g. setuptools-scm is capable of deriving the current project version 
+    > directly from the git version control system).
+
 ### Documentation 
 
 #### Pdoc
@@ -546,6 +624,30 @@ documentation on a Continuous Integration system:
     > and Enscons."
 
 
+### Pyproject-toml
+
+- https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/
+
+- https://peps.python.org/pep-0518/ (from 2016 already) is worth looking at. It 
+  discusses why they didn't choose other configuration file formats JSON, YAML 
+  or python literals such as dict. They chose TOML in the end (its used for 
+  RUST package metadata). Details of each format in
+  https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f
+
+
+#### Metadata
+
+Metadata has to follow the classifiers at https://pypi.org/classifiers/
+Otherwise pypi upload will be rejected.
+
+When uploading the cobwood package, I had to change audience, topic and license 
+so that they fit the classifiers available on pypi as follows:
+
+  "Intended Audience :: Science/Research",
+  "Topic :: Scientific/Engineering",
+  "License :: OSI Approved :: MIT License",
+
+
 ### Setup.py (legacy)
 
 - https://pip.pypa.io/en/stable/reference/build-system/setup-py/
@@ -557,17 +659,6 @@ documentation on a Continuous Integration system:
     > "The interface documented here is retained currently solely for legacy 
     > purposes, until the migration to pyproject.toml-based builds can be 
     > completed."
-
-
-### Pyproject-toml
-
-- https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/
-
-- https://peps.python.org/pep-0518/ (from 2016 already) is worth looking at. It 
-  discusses why they didn't choose other configuration file formats JSON, YAML 
-  or python literals such as dict. They chose TOML in the end (its used for 
-  RUST package metadata). Details of each format in
-  https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f
 
 
 ## Location or path
@@ -2186,6 +2277,8 @@ Other attempt using lower level packages
 
 # ipython
 
+## Auto reload
+
 Add these options at the ipyhton command line to reload objects automatically while you are coding
 
     %load_ext autoreload   
@@ -2588,6 +2681,9 @@ As an alternative to Jupytext, you can also clear the output of all cells
 before committing the notebook. That way the notebooks only contain code and
 not the output of tables and plots (which can sometimes take several megabytes
 of data).
+
+If you choose to clear all cell output before the git commit, make sure that 
+all your co authors also do it.
 
 - [how to remove  Jupyter notebook output from terminal and
   when using git](https://janakiev.com/blog/jupyter-git-remove-output/).
@@ -4057,13 +4153,20 @@ Rename the 'a' column to 'new'
 
     df.rename(columns={'a':'new'})
 
+Replace some characters in the columns using a regular expression.
+
+    import re
+    # Replace spaces by underscores
+    df(columns=lambda x: re.sub(r" ", "_", x, inplace=True)
+
 Rename columns to snake case using a regular expression
 
     import re
-    df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
-    # Another regexp that replaces all non alphanumeric characters by an
-    # underscore
+    # Regexp that replaces all non alphanumeric characters by an underscore
     df.rename(columns=lambda x: re.sub(r"\W+", "_", str(x)).lower(), inplace=True)
+    # Simpler regexp for information and to tweek
+    # Replace spaces by underscores and switch to lower case
+    df.rename(columns=lambda x: re.sub(r" ", "_", str(x)).lower(), inplace=True)
 
 Remove parenthesis and dots in column names
 
@@ -7732,7 +7835,6 @@ Edit a user's configuration file
 You can also make a project specific configuration file at the root of a git 
 repository. The content of the configuration file is as follows:
 
-
     [pylint]
     # List of good names that shouldn't give a "short name" warning
     good-names=df,ds,t
@@ -8344,6 +8446,23 @@ to support
 [asyncio](http://pgjones.gitlab.io/quart/asyncio.html#asyncio) 
 This last link contains a nice, simple example of 
 how asyncio works with a simulated delay to fetch a web page.
+
+
+## QR code
+
+- https://pypi.org/project/PyQRCode/
+
+    import pyqrcode
+    url = pyqrcode.create('https://www.meetup.com/backnang-data-science/')
+    url.png('/tmp/bds_qr.png', scale=8)
+
+Installation: 
+
+    pip install pyqrcode
+
+Requires pypng to generate PNG images:
+
+    pip install pypng
 
 
 # Workflows and pipelines
