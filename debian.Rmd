@@ -151,6 +151,16 @@ the results of the python-pip package
 https://ci.debian.net/packages/p/python-pip/"
 
 
+## Debian versions
+
+
+Release dates of the different ALso visible in a csv file
+
+cat /usr/share/distro-info/debian.csv
+
+
+
+
 # Installing software
 
 ## AA package management
@@ -368,6 +378,17 @@ Other resources
     > human-readable YAML. Ansible uses a procedural (or imperative) 
     > programming approach, which tries to preserve the configuration of an IT 
     > infrastructure by defining the steps to reach a desired state."
+
+
+## Cargo for Rust
+
+- https://doc.rust-lang.org/cargo/getting-started/installation.html
+
+    > "The easiest way to get Cargo is to install the current stable release of 
+    > Rust by using rustup. Installing Rust using rustup will also install 
+    > cargo."
+
+
 
 
 ## CEWE Photobuch
@@ -662,6 +683,13 @@ But the scanner is not detected, even when called as super user
     # the USB system correctly. See man sane-usb for details.
     # SANE has been built without libusb support. This may be a reason
     # for not detecting USB scanners. Read README for more details.
+
+
+## Signal
+
+Add the repository then install Signal
+
+    sudo apt update && sudo apt install signal-desktop
 
 
 ## Microsoft
