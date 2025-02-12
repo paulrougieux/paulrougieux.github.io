@@ -371,7 +371,8 @@ Register an account on pypi (it's a different server than test.pypi). Create a t
     cd repository
     python3 -m build
     twine upload dist/*
-    # Or pload only the latest version inside dist
+    # Or pload only the latest versions not already on pypi
+    twine upload --skip-existing dist/*
 
 To use the API token:
 
@@ -2864,6 +2865,10 @@ Do not display the following warnings:
     warnings.filterwarnings("ignore", "is_categorical_dtype") 
     warnings.filterwarnings("ignore", "use_inf_as_na")
 
+You can also use this to ignore FutureWarning
+
+    warnings.simplefilter(action='ignore', category=FutureWarning)
+
 
 ## Logging
 
@@ -4203,6 +4208,20 @@ lower case, remove the "unnamed_1_" part of the column name:
 You can also rename a series with
 
     iris["species"].rename("bla")
+
+
+#### Rename a series with a map
+
+Rename the sink column according to the given mapping:
+
+    sink_mapping = {
+          "living_biomass_sink": "Living Biomass Sink",
+          "dom_sink": "Dead Organic Matter Sink",
+          "soil_sink": "Soil Sink",
+          "hwp_sink_bau": "Harvested Wood Product Sink",
+      }
+      # Renaming the 'sink' column based on the mapping
+      df["sink"] = df["sink"].map(sink_mapping)
 
 
 ### Reorder columns
@@ -6484,6 +6503,28 @@ Save to a file
 Plot.save(loc, **kwargs)
 ```
 
+#### Legend
+
+There was an issue related to a object bar plot showing a truncated legend to 
+the right of the plot. Changing the extent argument of layout and adding 
+bbox_inches="tight" to the save instruction solves the issue. In addition, 
+changing the position of the plot right extent to 98% helps to create a little 
+space between the plot and the legend.
+
+
+    p = p.layout(size=(7,7),engine="constrained", extent=(0,0,0.98,1))
+    p.save('/tmp/plot.png', bbox_inches="tight")
+
+See Also: 
+
+- Issue seaborn.objecs.Plot.save does not include legend #3057 
+  https://github.com/mwaskom/seaborn/issues/3057
+  one of the fixes suggested using bbox_inches="tight"
+
+- SO question on how to manipulate the legend in the object interface 
+  https://stackoverflow.com/questions/73633322/how-can-i-customize-the-legend-with-seaborn-0-12-objects
+
+
 ### Axes and labels
 
 #### Invert axis
@@ -6846,6 +6887,11 @@ Move a legend below a grid plot
 
     g.fig.subplots_adjust(left=0.28, top=0.9) # resize the plot
     g.legend.set_bbox_to_anchor((0.5, 0.15))
+
+You might need to change the plot size  and add more space at the bottom
+
+    g.fig.set_size_inches(7, 10)
+    g.fig.subplots_adjust(top=0.90, left=0.08, right=0.88, bottom=0.4)
 
 Another way to move the legend and make it flat
 

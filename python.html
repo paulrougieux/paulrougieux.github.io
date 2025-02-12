@@ -469,6 +469,8 @@ href="https://stackoverflow.com/questions/1471994/what-is-setup-py">What
 is setup.py?</a></p>
 <div id="check-the-version-number-of-a-package" class="section level3">
 <h3>Check the version number of a package</h3>
+<p>List all package versions using pip</p>
+<pre><code>pip list</code></pre>
 <p>In Python check the version of a package with the
 <code>__version__</code> attribute, however it’s not always
 available.</p>
@@ -649,6 +651,19 @@ class="uri">https://docs.conda.io/projects/conda/en/latest/commands/remove.html<
 </div>
 <div id="conda-environments" class="section level3">
 <h3>Conda environments</h3>
+<p>list environemnts</p>
+<pre><code>conda env list</code></pre>
+<p>Create an environemnt with an older python version</p>
+<pre><code>conda create -n &quot;myenv&quot; python=3.11.0
+# Also include ipython in there
+conda create -n &quot;cbmenv&quot; python=3.11.0 ipython</code></pre>
+<p>Connect/activate/go to that environment</p>
+<pre><code>conda activate myenv</code></pre>
+<p>Remove an environment</p>
+<pre><code>conda remove --name myenv --all</code></pre>
+<p><a
+href="https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#removing-an-environment"
+class="uri">https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#removing-an-environment</a></p>
 <div id="environment-file" class="section level4">
 <h4>Environment file</h4>
 <p>Creating an environment file manually</p>
@@ -746,7 +761,9 @@ the use of keyring</a>.</p>
 Create a token under account settings. Then upload to pypi itself</p>
 <pre><code>cd repository
 python3 -m build
-twine upload dist/*</code></pre>
+twine upload dist/*
+# Or pload only the latest versions not already on pypi
+twine upload --skip-existing dist/*</code></pre>
 <p>To use the API token:</p>
 <pre><code>Set your username to __token__
 Set your password to the token value, including the pypi- prefix</code></pre>
@@ -899,6 +916,68 @@ bumpversion major</code></pre>
 import packagename
 packagename.__version__</code></pre>
 </div>
+<div id="setuptools_scm" class="section level4">
+<h4>setuptools_scm</h4>
+<p>To use <code>setuptools_scm</code>, include the following line in
+pyproject.toml</p>
+<pre><code>[tool.setuptools_scm]
+# can be empty if no extra settings are needed, presence enables setuptools-scm</code></pre>
+<p><code>setuptools_scm</code> will will automatically increment the
+minor version numbers at each change in the repository, it will also add
+a hash number. Commit and use a git tag to increment minor and major
+version numbers. This is required before uploading to pypi.</p>
+<pre><code>git tag v0.1.0 -m &quot;Description&quot;</code></pre>
+<p>If you don’t set a git tag, pypi upload will raise a “local version”
+error:</p>
+<pre><code>Uploading cobwood-0.1.1.dev0+g14eb5dd.d20241231-py3-none-any.whl
+100% ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.8/40.8 kB • 00:00 • 66.7 MB/s
+WARNING  Error during upload. Retry with the --verbose option for more details.
+ERROR    HTTPError: 400 Bad Request from https://upload.pypi.org/legacy/
+         The use of local versions in &lt;Version(&#39;0.1.1.dev0+g14eb5dd.d20241231&#39;)&gt; is not allowed. See https://packaging.python.org/specifications/core-metadata for more information.
+(penv) paul@castanea:~/rp/cobwood$</code></pre>
+<ul>
+<li>Documentation <a
+href="https://setuptools-scm.readthedocs.io/en/latest/usage/#default-versioning-scheme"
+class="uri">https://setuptools-scm.readthedocs.io/en/latest/usage/#default-versioning-scheme</a></li>
+</ul>
+<blockquote>
+<p>In the standard configuration setuptools-scm takes a look at three
+things: - latest tag (with a version number) - the distance to this tag
+(e.g. number of revisions since latest tag) - workdir state
+(e.g. uncommitted changes since latest tag)</p>
+</blockquote>
+<ul>
+<li><p>Is there a need for bumpversion (or bump2version) when
+setuptools_scm is available? <a
+href="https://stackoverflow.com/questions/56921528/is-there-a-need-for-bumpversion-or-bump2version-when-setuptools-scm-is-availab"
+class="uri">https://stackoverflow.com/questions/56921528/is-there-a-need-for-bumpversion-or-bump2version-when-setuptools-scm-is-availab</a></p>
+<blockquote>
+<p>“If you use setuptools_scm, you probably don’t need bump2version. And
+vice versa. There is no ‘canonical’ way to bump a version in Python.
+Multiple tools exist, and you can use the one you like (or none at
+all).”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="single-sourcing-package-version" class="section level4">
+<h4>Single sourcing package version</h4>
+<ul>
+<li><p><a
+href="https://packaging.python.org/en/latest/discussions/single-source-version/"
+class="uri">https://packaging.python.org/en/latest/discussions/single-source-version/</a></p></li>
+<li><p><a
+href="https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#dynamic-metadata"
+class="uri">https://setuptools.pypa.io/en/latest/userguide/pyproject_config.html#dynamic-metadata</a></p>
+<blockquote>
+<p>“Note that in the first example of this page we use dynamic to
+identify which metadata fields are dynamically computed during the build
+by either setuptools itself or the plugins installed via
+build-system.requires (e.g. setuptools-scm is capable of deriving the
+current project version directly from the git version control
+system).</p>
+</blockquote></li>
+</ul>
+</div>
 </div>
 <div id="documentation" class="section level3">
 <h3>Documentation</h3>
@@ -934,6 +1013,34 @@ such as Poetry and Enscons.”</p>
 </blockquote></li>
 </ul>
 </div>
+<div id="pyproject-toml" class="section level3">
+<h3>Pyproject-toml</h3>
+<ul>
+<li><p><a
+href="https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/"
+class="uri">https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/</a></p></li>
+<li><p><a href="https://peps.python.org/pep-0518/"
+class="uri">https://peps.python.org/pep-0518/</a> (from 2016 already) is
+worth looking at. It discusses why they didn’t choose other
+configuration file formats JSON, YAML or python literals such as dict.
+They chose TOML in the end (its used for RUST package metadata). Details
+of each format in <a
+href="https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f"
+class="uri">https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f</a></p></li>
+</ul>
+<div id="metadata" class="section level4">
+<h4>Metadata</h4>
+<p>Metadata has to follow the classifiers at <a
+href="https://pypi.org/classifiers/"
+class="uri">https://pypi.org/classifiers/</a> Otherwise pypi upload will
+be rejected.</p>
+<p>When uploading the cobwood package, I had to change audience, topic
+and license so that they fit the classifiers available on pypi as
+follows:</p>
+<p>“Intended Audience :: Science/Research”, “Topic ::
+Scientific/Engineering”, “License :: OSI Approved :: MIT License”,</p>
+</div>
+</div>
 <div id="setup.py-legacy" class="section level3">
 <h3>Setup.py (legacy)</h3>
 <ul>
@@ -950,22 +1057,6 @@ files that were built using setuptools.”</p>
 legacy purposes, until the migration to pyproject.toml-based builds can
 be completed.”</p>
 </blockquote></li>
-</ul>
-</div>
-<div id="pyproject-toml" class="section level3">
-<h3>Pyproject-toml</h3>
-<ul>
-<li><p><a
-href="https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/"
-class="uri">https://pip.pypa.io/en/stable/reference/build-system/pyproject-toml/</a></p></li>
-<li><p><a href="https://peps.python.org/pep-0518/"
-class="uri">https://peps.python.org/pep-0518/</a> (from 2016 already) is
-worth looking at. It discusses why they didn’t choose other
-configuration file formats JSON, YAML or python literals such as dict.
-They chose TOML in the end (its used for RUST package metadata). Details
-of each format in <a
-href="https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f"
-class="uri">https://gist.github.com/njsmith/78f68204c5d969f8c8bc645ef77d4a8f</a></p></li>
 </ul>
 </div>
 </div>
@@ -2478,10 +2569,13 @@ the difference between UTF-8 and UTF-8 without BOM?</a></p></li>
 </div>
 <div id="ipython" class="section level1">
 <h1>ipython</h1>
+<div id="auto-reload" class="section level2">
+<h2>Auto reload</h2>
 <p>Add these options at the ipyhton command line to reload objects
 automatically while you are coding</p>
 <pre><code>%load_ext autoreload   
 %autoreload 2         </code></pre>
+</div>
 <div id="autoindent" class="section level2">
 <h2>Autoindent</h2>
 <p>When pasting from another place, turn off auto indentation in
@@ -2819,6 +2913,8 @@ jupytext --set-formats ipynb,py --sync ~/repos/example_repos/notebooks/test.ipyn
 cells before committing the notebook. That way the notebooks only
 contain code and not the output of tables and plots (which can sometimes
 take several megabytes of data).</p>
+<p>If you choose to clear all cell output before the git commit, make
+sure that all your co authors also do it.</p>
 <ul>
 <li><p><a
 href="https://janakiev.com/blog/jupyter-git-remove-output/">how to
@@ -2983,6 +3079,8 @@ warnings.filterwarnings(&quot;ignore&quot;, &quot;.*layout has changed to tight.
 # related to https://github.com/mwaskom/seaborn/issues/3462
 warnings.filterwarnings(&quot;ignore&quot;, &quot;is_categorical_dtype&quot;) 
 warnings.filterwarnings(&quot;ignore&quot;, &quot;use_inf_as_na&quot;)</code></pre>
+<p>You can also use this to ignore FutureWarning</p>
+<pre><code>warnings.simplefilter(action=&#39;ignore&#39;, category=FutureWarning)</code></pre>
 </div>
 </div>
 <div id="logging" class="section level2">
@@ -4186,12 +4284,18 @@ df = df[columns_to_keep].copy()</code></pre>
 <h3>Rename columns</h3>
 <p>Rename the ‘a’ column to ‘new’</p>
 <pre><code>df.rename(columns={&#39;a&#39;:&#39;new&#39;})</code></pre>
+<p>Replace some characters in the columns using a regular
+expression.</p>
+<pre><code>import re
+# Replace spaces by underscores
+df(columns=lambda x: re.sub(r&quot; &quot;, &quot;_&quot;, x, inplace=True)</code></pre>
 <p>Rename columns to snake case using a regular expression</p>
 <pre><code>import re
-df.rename(columns=lambda x: re.sub(r&quot; &quot;, &quot;_&quot;, str(x)).lower(), inplace=True)
-# Another regexp that replaces all non alphanumeric characters by an
-# underscore
-df.rename(columns=lambda x: re.sub(r&quot;\W+&quot;, &quot;_&quot;, str(x)).lower(), inplace=True)</code></pre>
+# Regexp that replaces all non alphanumeric characters by an underscore
+df.rename(columns=lambda x: re.sub(r&quot;\W+&quot;, &quot;_&quot;, str(x)).lower(), inplace=True)
+# Simpler regexp for information and to tweek
+# Replace spaces by underscores and switch to lower case
+df.rename(columns=lambda x: re.sub(r&quot; &quot;, &quot;_&quot;, str(x)).lower(), inplace=True)</code></pre>
 <p>Remove parenthesis and dots in column names</p>
 <pre><code>df.rename(columns=lambda x: re.sub(r&quot;[()\.]&quot;, &quot;&quot;, x), inplace=True)</code></pre>
 <p>Replace the content of the columns, see below:</p>
@@ -4221,6 +4325,18 @@ df.rename(columns=lambda x: re.sub(r&quot;unnamed_\d+_&quot;, &quot;&quot;, str(
 <h4>Rename a series</h4>
 <p>You can also rename a series with</p>
 <pre><code>iris[&quot;species&quot;].rename(&quot;bla&quot;)</code></pre>
+</div>
+<div id="rename-a-series-with-a-map" class="section level4">
+<h4>Rename a series with a map</h4>
+<p>Rename the sink column according to the given mapping:</p>
+<pre><code>sink_mapping = {
+      &quot;living_biomass_sink&quot;: &quot;Living Biomass Sink&quot;,
+      &quot;dom_sink&quot;: &quot;Dead Organic Matter Sink&quot;,
+      &quot;soil_sink&quot;: &quot;Soil Sink&quot;,
+      &quot;hwp_sink_bau&quot;: &quot;Harvested Wood Product Sink&quot;,
+  }
+  # Renaming the &#39;sink&#39; column based on the mapping
+  df[&quot;sink&quot;] = df[&quot;sink&quot;].map(sink_mapping)</code></pre>
 </div>
 </div>
 <div id="reorder-columns" class="section level3">
@@ -6196,6 +6312,27 @@ way:</p>
 <pre class="python"><code>Plot.save(loc, **kwargs)</code></pre>
 </div>
 </div>
+<div id="legend" class="section level4">
+<h4>Legend</h4>
+<p>There was an issue related to a object bar plot showing a truncated
+legend to the right of the plot. Changing the extent argument of layout
+and adding bbox_inches=“tight” to the save instruction solves the issue.
+In addition, changing the position of the plot right extent to 98% helps
+to create a little space between the plot and the legend.</p>
+<pre><code>p = p.layout(size=(7,7),engine=&quot;constrained&quot;, extent=(0,0,0.98,1))
+p.save(&#39;/tmp/plot.png&#39;, bbox_inches=&quot;tight&quot;)</code></pre>
+<p>See Also:</p>
+<ul>
+<li><p>Issue seaborn.objecs.Plot.save does not include legend #3057 <a
+href="https://github.com/mwaskom/seaborn/issues/3057"
+class="uri">https://github.com/mwaskom/seaborn/issues/3057</a> one of
+the fixes suggested using bbox_inches=“tight”</p></li>
+<li><p>SO question on how to manipulate the legend in the object
+interface <a
+href="https://stackoverflow.com/questions/73633322/how-can-i-customize-the-legend-with-seaborn-0-12-objects"
+class="uri">https://stackoverflow.com/questions/73633322/how-can-i-customize-the-legend-with-seaborn-0-12-objects</a></p></li>
+</ul>
+</div>
 </div>
 <div id="axes-and-labels" class="section level3">
 <h3>Axes and labels</h3>
@@ -6491,11 +6628,15 @@ inches.</p>
 </blockquote>
 </div>
 </div>
-<div id="legend" class="section level3">
+<div id="legend-1" class="section level3">
 <h3>Legend</h3>
 <p>Move a legend below a grid plot</p>
 <pre><code>g.fig.subplots_adjust(left=0.28, top=0.9) # resize the plot
 g.legend.set_bbox_to_anchor((0.5, 0.15))</code></pre>
+<p>You might need to change the plot size and add more space at the
+bottom</p>
+<pre><code>g.fig.set_size_inches(7, 10)
+g.fig.subplots_adjust(top=0.90, left=0.08, right=0.88, bottom=0.4)</code></pre>
 <p>Another way to move the legend and make it flat</p>
 <pre><code>seaborn.move_legend(g, &quot;upper center&quot;, bbox_to_anchor=(0.5, 0.1), ncol=4)</code></pre>
 <ul>
@@ -8190,6 +8331,21 @@ Evolution into Quart</a> to support <a
 href="http://pgjones.gitlab.io/quart/asyncio.html#asyncio">asyncio</a>
 This last link contains a nice, simple example of how asyncio works with
 a simulated delay to fetch a web page.</p>
+</div>
+<div id="qr-code" class="section level2">
+<h2>QR code</h2>
+<ul>
+<li><p><a href="https://pypi.org/project/PyQRCode/"
+class="uri">https://pypi.org/project/PyQRCode/</a></p>
+<p>import pyqrcode url = pyqrcode.create(‘<a
+href="https://www.meetup.com/backnang-data-science/"
+class="uri">https://www.meetup.com/backnang-data-science/</a>’)
+url.png(‘/tmp/bds_qr.png’, scale=8)</p></li>
+</ul>
+<p>Installation:</p>
+<pre><code>pip install pyqrcode</code></pre>
+<p>Requires pypng to generate PNG images:</p>
+<pre><code>pip install pypng</code></pre>
 </div>
 </div>
 <div id="workflows-and-pipelines" class="section level1">
