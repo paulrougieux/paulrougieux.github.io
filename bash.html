@@ -861,8 +861,14 @@ mogrify -resize 2000 -path ./small -format jpg *.HEIC</code></pre>
 <div id="convert-1" class="section level3">
 <h3>Convert</h3>
 <p>Convert to different color scheme, other file format or rotate
-images. For example to convert from png to jpg and change size</p>
+images.</p>
+<p>For example to convert from png to jpg and change size</p>
 <pre><code>mogrify -resize 2000 -path ./newfolder -format jpg *.png</code></pre>
+<p>Convert iphone heic format to jpeg</p>
+<pre><code>mkdir jpeg
+mogrify -path ./jpeg -format jpg *.HEIC
+mkdir heic
+mv *.HEIC heic</code></pre>
 <p>Convert to <a
 href="http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279">black
 and white</a> (tricky to get the threshold right):</p>
@@ -942,6 +948,15 @@ pdf</a></p>
 <pre><code>pdftk full-pdf.pdf cat 12-15 output outfile_p12-15.pdf</code></pre>
 <p>Also works with several distant groups of pages</p>
 <pre><code>pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf</code></pre>
+</div>
+<div id="crop-pdf" class="section level3">
+<h3>Crop PDF</h3>
+<p>Crop a pdf:</p>
+<pre><code>pdfcrop input.pdf output.pdf</code></pre>
+<p>Define the margins to crop:</p>
+<pre><code>pdfcrop --margins &#39;20 30 40 50&#39; input.pdf output.pdf</code></pre>
+<p>pdfcrop can be installed from:</p>
+<pre><code>sudo apt-get install texlive-extra-utils</code></pre>
 </div>
 <div id="rotate-pdf" class="section level3">
 <h3>Rotate PDF</h3>
@@ -1274,8 +1289,8 @@ specific line using less</p>
 <pre><code>tail -f</code></pre>
 </div>
 </div>
-<div id="networking" class="section level1">
-<h1>Networking</h1>
+<div id="networking-and-hosting" class="section level1">
+<h1>Networking and hosting</h1>
 <div id="show-ip-addresses" class="section level2">
 <h2>Show IP addresses</h2>
 <p>Show the IP address</p>
@@ -1287,6 +1302,28 @@ specific line using less</p>
 <h2>Check ports</h2>
 <p>Check open ports on a system</p>
 <pre><code>nmap -Pn &lt;hostname or IP address&gt;</code></pre>
+</div>
+<div id="htaccess" class="section level2">
+<h2>.htaccess</h2>
+<div id="redirect-http-to-https" class="section level3">
+<h3>Redirect http to https</h3>
+<ul>
+<li>Apache documentation on how to redirect http to https <a
+href="https://httpd.apache.org/docs/2.4/rewrite/remapping.html"
+class="uri">https://httpd.apache.org/docs/2.4/rewrite/remapping.html</a></li>
+</ul>
+<blockquote>
+<p>For example, to redirect a portion of your site to HTTPS, you might
+do the following:</p>
+</blockquote>
+<pre><code>&lt;If &quot;%{SERVER_PROTOCOL} != &#39;HTTPS&#39;&quot;&gt;
+    Redirect &quot;/admin/&quot; &quot;https://www.example.com/admin/&quot;
+&lt;/If&gt;</code></pre>
+<p>I will try to use</p>
+<pre><code>&lt;If &quot;%{SERVER_PROTOCOL} != &#39;HTTPS&#39;&quot;&gt;
+    Redirect &quot;/&quot; &quot;https://www.example.com/&quot;
+&lt;/If&gt;</code></pre>
+</div>
 </div>
 <div id="mac-address" class="section level2">
 <h2>MAC Address</h2>
@@ -1470,6 +1507,27 @@ current directory</p>
 <pre><code>zip dir.zip -r dir</code></pre>
 </div>
 </div>
+<div id="mount-file-systems" class="section level2">
+<h2>Mount file systems</h2>
+<div id="mount-an-iphone-file-system-to-copy-photos"
+class="section level3">
+<h3>Mount an iphone file system to copy photos</h3>
+<p>To mount an iphone disk from linux, you can install <a
+href="https://github.com/libimobiledevice/ifuse">ifuse</a> <em>“A fuse
+filesystem implementation to access the contents of iOS
+devices.”</em></p>
+<pre><code>sudo apt install libimobiledevice-utils ifuse</code></pre>
+<p>The pairing step requires giving an authorization code on the iphone.
+Then you can make a directory and mount the iphone disk at that
+location:</p>
+<pre><code>idevicepair pair
+mkdir ~/iphone_mount
+ifuse ~/iphone_mount</code></pre>
+<p>The pictures are under <code>DCIM</code>:</p>
+<pre><code>ls ~/iphone_mount/
+cd ~/iphone_mount/DCIM/</code></pre>
+</div>
+</div>
 <div id="recursive-copy-of-some-files" class="section level2">
 <h2>Recursive copy of some files</h2>
 <p><a
@@ -1493,6 +1551,10 @@ section on a flatten a file hierarchy for a description.</p>
 <h2>Loop over file names</h2>
 <p>Display all <code>.ogg</code> files in a loop</p>
 <pre><code>for i in *.ogg; do echo &quot;${i%.ogg}&quot;; done</code></pre>
+<p>Crop all pdf files and rename them</p>
+<pre><code>for file in *.pdf; do
+    pdfcrop &quot;$file&quot; &quot;${file%.pdf}-cropped.pdf&quot;
+done</code></pre>
 </div>
 <div id="makefile" class="section level2">
 <h2>Makefile</h2>
@@ -1904,6 +1966,56 @@ strip</a>. It explains how password entropy rises faster with the number
 of characters than with the character set weirdness.</p>
 <p>When possible, it’s better to authenticate with private and public
 key cryptography.</p>
+</div>
+<div id="sftp-connections" class="section level2">
+<h2>SFTP connections</h2>
+<p>Since I would like to have Two-way synchronization capabilities
+between my laptop and an SFTP server, I choose lftp.</p>
+<p>Lftp command to mirror from the laptop to the remote directory, use
+the -R option to reverse the mirror operation.</p>
+<pre><code>cd /tmp/repository
+lftp ftp.server
+mirror -R local_dir remote_dir
+quit</code></pre>
+<p>Lftp session to mirror from the remote directory to the laptop</p>
+<pre><code>mirror local_dir remote_dir
+quit</code></pre>
+<p>I created a  <code>.netrc</code> file to store the credentials in my
+laptop</p>
+<pre><code>machine ftp.server
+login user
+password</code></pre>
+<p>You could also use a command in non interactive way with lftp’s
+<code>-e</code> flag ending it with <code>; bye</code> as follows:</p>
+<pre><code>lftp -e &quot;mirror -R local_dir remote_dir ; bye&quot; ftp.server.com</code></pre>
+<p>When using lftp’s <code>-c</code> flag, you need to perform the
+connection as a separate command first. Note that you
+<strong>don’t</strong> need to use <code>bye</code> as the command exits
+when completed:</p>
+<pre><code>lftp -c &quot;open ftp.server.com; mirror -R  local_dir remote_dir &quot;</code></pre>
+<ul>
+<li>I posted an answer explaining how to set up lftp at <a
+href="https://superuser.com/a/1860113/419414"
+class="uri">https://superuser.com/a/1860113/419414</a></li>
+</ul>
+<div id="lftp-alias" class="section level3">
+<h3>LFTP alias</h3>
+<ul>
+<li><p>Unix SE explains how to create an lftp alias <a
+href="https://unix.stackexchange.com/a/311619/85530"
+class="uri">https://unix.stackexchange.com/a/311619/85530</a></p>
+<blockquote>
+<p>lftp has ~/.lftprc You can place aliases there, for example alias
+con-cme connect <a href="ftp://ftp.cmegroup.com/"
+class="uri">ftp://ftp.cmegroup.com/</a> And this command line works:
+lftp -e “con-cme”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="makefile-to-push-static-site-to-an-sftp-host"
+class="section level3">
+<h3>Makefile to push static site to an SFTP host</h3>
+</div>
 </div>
 <div id="ssh-secure-shell" class="section level2">
 <h2>SSH Secure Shell</h2>
@@ -2687,6 +2799,22 @@ other than root</a></p>
 </div>
 <div id="vpn" class="section level1">
 <h1>VPN</h1>
+<ul>
+<li><p>5% to 15% more data usage due to the encryption process according
+to Nord VPN <a href="https://nordvpn.com/blog/vpn-data-usage/"
+class="uri">https://nordvpn.com/blog/vpn-data-usage/</a></p>
+<blockquote>
+<p>“Does a VPN use data?”</p>
+</blockquote>
+<blockquote>
+<p>“Yes, a VPN will use data. Data consumption will depend on the
+encryption protocol your VPN provider relies on, but usually the extra
+data used doesn’t exceed the 5–15% range. This extra usage is to account
+for the encryption process.”</p>
+</blockquote></li>
+</ul>
+<div id="example-use-cases" class="section level2">
+<h2>Example use cases</h2>
 <p>A VPN was useful when:</p>
 <ul>
 <li>SMS interface didn’t work on orange.fr. I could access it through a
@@ -2753,6 +2881,7 @@ you have any questions or require further assistance.</p>
 </blockquote>
 <p>Changing the VPN location to Frankfurt allowed me to see these
 Elsevier publications again.</p>
+</div>
 <div id="vpn-software" class="section level2">
 <h2>VPN software</h2>
 <p><a href="https://www.wireguard.com/">wireguard</a> wikipedia article

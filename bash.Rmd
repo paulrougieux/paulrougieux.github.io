@@ -524,9 +524,17 @@ Batch processing, resize all jpg images and place the resized images in a new fo
 ### Convert
 
 Convert to different color scheme, other file format or rotate images.
+
 For example to convert from png to jpg and change size
 
     mogrify -resize 2000 -path ./newfolder -format jpg *.png
+
+Convert iphone heic format to jpeg
+
+    mkdir jpeg
+    mogrify -path ./jpeg -format jpg *.HEIC
+    mkdir heic
+    mv *.HEIC heic
 
 Convert to [black and white](http://www.imagemagick.org/discourse-server/viewtopic.php?t=11279)
 (tricky to get the threshold right): 
@@ -629,6 +637,22 @@ Alternatively, pdftk can be used to merge PDF files
 Also works with several distant groups of pages
 
     pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf
+
+
+### Crop PDF
+
+Crop a pdf:
+
+    pdfcrop input.pdf output.pdf
+
+Define the margins to crop:
+
+    pdfcrop --margins '20 30 40 50' input.pdf output.pdf
+
+pdfcrop can be installed from:
+
+    sudo apt-get install texlive-extra-utils
+
 
 ### Rotate PDF
 
@@ -1043,7 +1067,7 @@ Follow the end of a log file as it is written
     tail -f
 
 
-# Networking
+# Networking and hosting
 
 ## Show IP addresses 
 
@@ -1061,6 +1085,28 @@ Show the state of network interfaces
 Check open ports on a system
 
     nmap -Pn <hostname or IP address>
+
+
+## .htaccess
+
+
+### Redirect http to https
+
+- Apache documentation on how to redirect http to https 
+  https://httpd.apache.org/docs/2.4/rewrite/remapping.html
+
+> For example, to redirect a portion of your site to HTTPS, you might do the 
+> following:
+
+    <If "%{SERVER_PROTOCOL} != 'HTTPS'">
+        Redirect "/admin/" "https://www.example.com/admin/"
+    </If>
+
+I will try to use 
+
+    <If "%{SERVER_PROTOCOL} != 'HTTPS'">
+        Redirect "/" "https://www.example.com/"
+    </If>
 
 
 ## MAC Address
@@ -1301,6 +1347,29 @@ Create the zip archive of a directory
     zip dir.zip -r dir
 
 
+## Mount file systems
+
+### Mount an iphone file system to copy photos
+
+To mount an iphone disk from linux, you can install 
+[ifuse](https://github.com/libimobiledevice/ifuse)  *"A fuse filesystem 
+implementation to access the contents of iOS devices."*
+
+    sudo apt install libimobiledevice-utils ifuse
+
+The pairing step requires giving an authorization code on the iphone. Then you 
+can make a directory and mount the iphone disk at that location:
+
+    idevicepair pair
+    mkdir ~/iphone_mount
+    ifuse ~/iphone_mount
+
+The pictures are under `DCIM`:
+
+    ls ~/iphone_mount/
+    cd ~/iphone_mount/DCIM/
+ 
+  
 ## Recursive copy of some files
 
 [Recursive copy some files while keeping the directory structure](https://unix.stackexchange.com/questions/83593/copy-specific-file-type-keeping-the-folder-structure)
@@ -1329,6 +1398,12 @@ For example to rename all upper-case .JPG extension into lower-case .jpg extensi
 Display all `.ogg` files in a loop
 
     for i in *.ogg; do echo "${i%.ogg}"; done
+
+Crop all pdf files and rename them
+
+    for file in *.pdf; do
+        pdfcrop "$file" "${file%.pdf}-cropped.pdf"
+    done
 
 
 ## Makefile
@@ -1697,12 +1772,12 @@ reverse the mirror operation.
 
     cd /tmp/repository
     lftp ftp.server
-    mirror -R subdir subdir
+    mirror -R local_dir remote_dir
     quit
 
 Lftp session to mirror from the remote directory to the laptop
 
-    mirror subdir subdir
+    mirror local_dir remote_dir
     quit
 
 I created a  `.netrc` file to store the credentials in my laptop
@@ -1715,15 +1790,30 @@ You could also use a command in non interactive way with lftp's `-e` flag ending
 
     lftp -e "mirror -R local_dir remote_dir ; bye" ftp.server.com
 
-When using lftp's `-c` flag, you need to perform the connection as a separate command first:
+When using lftp's `-c` flag, you need to perform the connection as a separate 
+command first. Note that you **don't** need to use `bye` as the command exits 
+when completed:
 
     lftp -c "open ftp.server.com; mirror -R  local_dir remote_dir "
 
+- I posted an answer explaining how to set up lftp at 
+  https://superuser.com/a/1860113/419414
+
+
+### LFTP alias
 
 - Unix SE explains how to create an lftp alias https://unix.stackexchange.com/a/311619/85530
 
-- I posted an answer explaining how to set up lftp at 
-  https://superuser.com/a/1860113/419414
+    > lftp has ~/.lftprc
+    > You can place aliases there, for example
+    >       alias con-cme connect ftp://ftp.cmegroup.com/
+    > And this command line works:
+    >       lftp -e "con-cme"
+
+
+### Makefile to push static site to an SFTP host
+
+
 
 
 
