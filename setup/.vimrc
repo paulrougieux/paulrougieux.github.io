@@ -264,6 +264,7 @@ augroup Toc
     " rnoweb are the Rnw notebooks mixing latex and R code
     autocmd Filetype rnoweb command! -buffer Toc Voom
     autocmd Filetype tex command! -buffer Toc VimtexTocOpen
+    autocmd Filetype python command! -buffer Toc vimgrep /#.*#/ %
 augroup END
 command! TOc Toc
 
@@ -275,6 +276,14 @@ au BufRead,BufNewFile *.Rmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x>
 au BufRead,BufNewFile *.qmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x><C-o>
 
 command! -range=% Hyphen <line1>,<line2>s/\(\i\)- /\1/g
+
+" Render markdown documents with Pandoc
+command! Ppdf execute '!pandoc % -o %:r.pdf'
+command! Phtml execute '!pandoc % -o %:r.html'
+
+" Render quarto documents with quarto
+command! Qpdf execute '!quarto render % --to pdf'
+command! Qhtml execute '!quarto render % --to html'
 
 """"""""""""""""""""""""""
 " # Python configuration "
