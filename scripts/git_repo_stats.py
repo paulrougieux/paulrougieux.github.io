@@ -5,9 +5,12 @@ removed in the git repository. The output data frame should be like this:
 
 Usage:
 
-    cd ~/rp/paulrougieux.github.io/scripts && ipython -i git_repo_stats.py
+    cd ~/rp/paulrougieux.github.io/scripts && ipython -i git_repo_stats.py /home/paul/repos/eu_cbm/eu_cbm_hat
 
-    >>> get_git_log_dataframe("/home/paul/repos/eu_cbm/eu_cbm_hat")
+Once started in python, you can call the function
+
+    >>> df_eu_cbm_hat = get_git_log_dataframe(repository_path="/home/paul/repos/eu_cbm/eu_cbm_hat")
+    >>> df_eu_cbm_data = get_git_log_dataframe(repository_path="/home/paul/repos/eu_cbm/eu_cbm_data")
 
 Alternative considerations
 
@@ -19,95 +22,98 @@ Alternative considerations
   https://www.reddit.com/r/Python/comments/6k8h43/best_git_module_for_python/?rdt=63908
 
 """
-
-
-import subprocess
+import sys
 import pandas as pd
-import re
+import pygit2
 from datetime import datetime
 
-def get_git_log_dataframe(path):
-    # Git log format:
-    # %H: commit hash
-    # %ad: author date (format respects --date=format)
-    # %an: author name
-    # %s: subject (commit message first line)
-    git_log_cmd = [
-        'git', 'log', 
-        '--pretty=format:%H|%ad|%an|%s',
-        '--date=format:%Y%m%d %H:%M:%S',
-        '--numstat'
-    ]
-    
+def get_git_log_dataframe(repository_path='.'):
+    """
+    Extract commit information from a git repository using pygit2.
+
+    Parameters:
+    repository_path (str): Path to the git repository
+
+    Returns:
+    pandas.DataFrame: DataFrame containing commit information
+    """
     try:
-        # Run git log command and capture output
-        git_log_output = subprocess.check_output(git_log_cmd, cwd=path).decode('utf-8', errors='replace')
-        
-        # Split the output into commits
+        # Open the repository
+        repo = pygit2.Repository(repository_path)
+
         commits_data = []
-        current_commit = None
-        
-        for line in git_log_output.split('\n'):
-            if '|' in line:  # This is a commit header line
-                # Save previous commit if it exists
-                if current_commit:
-                    commits_data.append(current_commit)
-                
-                # Parse the commit header
-                hash_val, date_str, author, subject = line.split('|', 3)
-                date_parts = date_str.split()
-                day = date_parts[0]
-                time = datetime.strptime(date_parts[1], "%H:%M:%S").strftime("%I:%M:%S %p")
-                
-                current_commit = {
-                    'day': day,
-                    'time': time,
-                    'commit_hash': hash_val,
-                    'lines_added': 0,
-                    'lines_removed': 0,
-                    'Name': author,
-                    'description': subject
-                }
-            elif line.strip() and current_commit is not None:
-                # This is a stats line (lines added/removed)
-                parts = line.strip().split('\t')
-                if len(parts) == 3 and parts[0] != '-' and parts[1] != '-':
-                    # Add up the lines added/removed
-                    current_commit['lines_added'] += int(parts[0]) if parts[0].isdigit() else 0
-                    current_commit['lines_removed'] += int(parts[1]) if parts[1].isdigit() else 0
-        
-        # Add the last commit
-        if current_commit:
-            commits_data.append(current_commit)
-        
+
+        # Walk through commit history
+        for commit in repo.walk(repo.head.target, pygit2.GIT_SORT_TIME):
+            # Get commit details
+            commit_hash = str(commit.id)[:7]  # Short hash
+            author = commit.author
+            name = author.name
+            timestamp = author.time
+            message = commit.message.strip().split('\n')[0]  # First line of commit message
+
+            # Convert timestamp to day and time
+            dt = datetime.fromtimestamp(timestamp)
+            day = dt.strftime('%Y%m%d')
+            time = dt.strftime('%I:%M:%S %p')
+
+            # Calculate lines added/removed if there's a parent
+            lines_added = 0
+            lines_removed = 0
+
+            if len(commit.parents) > 0:
+                parent = commit.parents[0]
+                diff = repo.diff(parent, commit)
+
+                for patch in diff:
+                    # Count line changes in each file
+                    lines_added += patch.line_stats[1]  # Added lines
+                    lines_removed += patch.line_stats[2]  # Removed lines
+
+            # Create a dict for this commit
+            commit_data = {
+                'day': day,
+                'time': time,
+                'commit_hash': commit_hash,
+                'lines_added': lines_added,
+                'lines_removed': lines_removed,
+                'Name': name,
+                'description': message
+            }
+
+            commits_data.append(commit_data)
+
         # Create DataFrame
         df = pd.DataFrame(commits_data)
-        
+
         # Reorder columns to match desired output
-        column_order = ['day', 'time', 'commit_hash', 'lines_added', 'lines_removed', 
+        column_order = ['day', 'time', 'commit_hash', 'lines_added', 'lines_removed',
                         'Name', 'commit_hash', 'description']
-        
-        # Handle duplicated column names
+
+        # Handle duplicated column names by selecting unique columns
+        # (Note: commit_hash appears twice in your example)
         df = df[list(dict.fromkeys(column_order))]
-        
+
         return df
-    
-    except subprocess.CalledProcessError as e:
-        print(f"Error executing git command: {e}")
-        return pd.DataFrame()
+
     except Exception as e:
         print(f"An error occurred: {e}")
         return pd.DataFrame()
 
+# This code will run when imported or executed directly
 if __name__ == "__main__":
-    # Make sure to run this script from within a git repository
-    this_path = "/home/paul/rp/paulrougieux.github.io"
-    df = get_git_log_dataframe(this_path)
-    
+    # Default to current directory if no argument provided
+    repo_path = sys.argv[1] if len(sys.argv) > 1 else '.'
+
+    print(f"Analyzing git repository at: {repo_path}")
+    df = get_git_log_dataframe(repo_path)
+
     if not df.empty:
-        print(df.to_string(index=False))
-        
-        # Optionally save to CSV
-        # df.to_csv('git_commit_history.csv', index=False)
+        print(f"Found {len(df)} commits.")
+        print("\nSample of commits:")
+        print(df.head().to_string(index=False))
     else:
         print("No data found or error occurred.")
+
+# When run with ipython -i, these variables will be available in the interactive session
+print("\nTo access the full dataframe, use the 'df' variable")
