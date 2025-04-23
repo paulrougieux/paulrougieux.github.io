@@ -12,6 +12,8 @@ Once started in python, you can call the function
     >>> df_eu_cbm_hat = get_git_log_dataframe(repository_path="/home/paul/repos/eu_cbm/eu_cbm_hat")
     >>> df_eu_cbm_data = get_git_log_dataframe(repository_path="/home/paul/repos/eu_cbm/eu_cbm_data")
 
+    >>> plot_daily_code_changes(df_eu_cbm_hat, log_scale=True)
+
 Alternative considerations
 
 - I considered using gitpython, but the maintain says it's in maintenance stage
@@ -22,10 +24,13 @@ Alternative considerations
   https://www.reddit.com/r/Python/comments/6k8h43/best_git_module_for_python/?rdt=63908
 
 """
-import sys
+
+from datetime import datetime
+import matplotlib.dates as mdates
+import matplotlib.pyplot as plt
 import pandas as pd
 import pygit2
-from datetime import datetime
+import sys
 
 def get_git_log_dataframe(repository_path='.'):
     """
@@ -100,7 +105,103 @@ def get_git_log_dataframe(repository_path='.'):
         print(f"An error occurred: {e}")
         return pd.DataFrame()
 
-# This code will run when imported or executed directly
+def plot_daily_code_changes(df, figsize=(12, 6), date_format='%Y-%m',
+                           date_interval=3, title='Code Changes Over Time',
+                           log_scale=False):
+    """
+    Create a scatter plot showing daily code changes from git commit data.
+
+    Parameters:
+    -----------
+    df : pandas.DataFrame
+        DataFrame containing git commit data with 'day', 'lines_added', and 'lines_removed' columns
+    figsize : tuple, optional
+        Figure size as (width, height) in inches
+    date_format : str, optional
+        Format string for date labels on x-axis
+    date_interval : int, optional
+        Interval between date ticks in months
+    title : str, optional
+        Plot title
+    log_scale : bool, optional
+        If True, use logarithmic scale for y-axis
+
+    Returns:
+    --------
+    matplotlib.figure.Figure
+        The figure object containing the plot
+    """
+    import matplotlib.pyplot as plt
+    import pandas as pd
+    import numpy as np
+    from matplotlib.dates import DateFormatter
+    import matplotlib.dates as mdates
+
+    # Group by day and sum lines added/removed
+    daily_changes = df.groupby('day').agg({
+        'lines_added': 'sum',
+        'lines_removed': 'sum'
+    }).reset_index()
+
+    # Convert day column to datetime for better x-axis formatting
+    daily_changes['date'] = pd.to_datetime(daily_changes['day'], format='%Y%m%d')
+
+    # Create the scatter plot
+    fig, ax = plt.subplots(figsize=figsize)
+
+    # Need to handle zeros for log scale
+    if log_scale:
+        # Filter out zeros for log scale
+        log_min = 1  # Minimum value for log scale
+
+        # Plot non-zero additions
+        non_zero_added = daily_changes[daily_changes['lines_added'] >= log_min]
+        ax.scatter(non_zero_added['date'], non_zero_added['lines_added'],
+                   color='green', alpha=0.7, label='Lines Added')
+
+        # Plot non-zero removals with negative sign
+        non_zero_removed = daily_changes[daily_changes['lines_removed'] >= log_min]
+        ax.scatter(non_zero_removed['date'], -non_zero_removed['lines_removed'],
+                   color='red', alpha=0.7, label='Lines Removed')
+
+        # Set log scale for y-axis
+        ax.set_yscale('symlog')  # Symmetric log scale to handle negative values
+
+        # Add annotation about log scale
+        ax.text(0.02, 0.98, 'Note: Using logarithmic scale',
+                transform=ax.transAxes, fontsize=9,
+                verticalalignment='top', alpha=0.7)
+    else:
+        # Regular scale - plot all points
+        ax.scatter(daily_changes['date'], daily_changes['lines_added'],
+                   color='green', alpha=0.7, label='Lines Added')
+        ax.scatter(daily_changes['date'], -daily_changes['lines_removed'],
+                   color='red', alpha=0.7, label='Lines Removed')
+
+    # Add a horizontal line at y=0
+    ax.axhline(y=0, color='black', linestyle='-', alpha=0.3)
+
+    # Format the x-axis to show dates nicely
+    ax.xaxis.set_major_formatter(mdates.DateFormatter(date_format))
+    ax.xaxis.set_major_locator(mdates.MonthLocator(interval=date_interval))
+    fig.autofmt_xdate()  # Rotate date labels
+
+    # Add labels and title
+    ax.set_xlabel('Date')
+    y_label = 'Number of Lines (Added/Removed)'
+    if log_scale:
+        y_label += ' (log scale)'
+    ax.set_ylabel(y_label)
+    ax.set_title(title)
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+
+    # Adjust layout
+    plt.tight_layout()
+
+    return fig
+
+
 if __name__ == "__main__":
     # Default to current directory if no argument provided
     repo_path = sys.argv[1] if len(sys.argv) > 1 else '.'
