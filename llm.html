@@ -13,7 +13,7 @@
 
 <title>llm.knit</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -391,6 +391,9 @@ div.tocify {
       <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
+      <a href="cobwood.html">Cobwood forest sector model</a>
+    </li>
+    <li>
       <a href="musical_scales.html">Musical scales</a>
     </li>
   </ul>
@@ -426,6 +429,29 @@ div.tocify {
     Publications
   </a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-brain"></span>
+     
+    Brain
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="biography.html">Biography</a>
+    </li>
+    <li>
+      <a href="communication.html">Communication</a>
+    </li>
+    <li>
+      <a href="procrastination.html">Procrastination</a>
+    </li>
+    <li>
+      <a href="space.html">Maximalist Degrowth - Space Earth</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -457,7 +483,7 @@ Dropping unique values (suggested by Bard) reduces the data by a lot it
 is a misleading answer. Resetting the index is the correct answer
 suggested by GPT4.</p>
 <p>Same code and error fed to both GPT 4 and BARd</p>
-<pre><code>g = seaborn.relplot(data=harvest_demand, x=&#39;year&#39;, y=&#39;harvest_requested&#39;,
+<pre class="python"><code>g = seaborn.relplot(data=harvest_demand, x=&#39;year&#39;, y=&#39;harvest_requested&#39;,
 
                     col=&#39;iso2_code&#39;, hue=&#39;scenario&#39;, kind=&#39;line&#39;, col_wrap=4, 
 
@@ -472,7 +498,6 @@ g.fig.subplots_adjust(hspace=0.3)
 /home/paul/.local/lib/python3.9/site-packages/seaborn/_core.py:1057: FutureWarning: reindexing with a non-unique Index is deprecated and will raise in a future version.
   comp_col.loc[orig.index] = pd.to_numeric(axis.convert_units(orig))
 
----------------------------------------------------------------------------
 ValueError                                Traceback (most recent call last)
 /tmp/ipykernel_58796/3787323421.py in &lt;cell line: 1&gt;()
 ----&gt; 1 g = seaborn.relplot(data=harvest_demand, x=&#39;year&#39;, y=&#39;harvest_requested&#39;,
@@ -614,22 +639,18 @@ ValueError                                Traceback (most recent call last)
    4108 
    4109     def reindex(
 
-ValueError: cannot reindex on an axis with duplicate labels
-
-
-</code></pre>
+ValueError: cannot reindex on an axis with duplicate labels</code></pre>
 <p>Bard Reply:</p>
-<blockquote>
-<p>The error message you are getting is saying that you cannot reindex a
-column with duplicate labels. This is because Seaborn is trying to
-create a new Series for each unique value in the iso2_code column, but
-there are duplicate values in this column.</p>
-</blockquote>
-<blockquote>
-<p>To fix this error, you need to remove the duplicate values from the
-iso2_code column. You can do this using the drop_duplicates() method.
-For example: Python</p>
-</blockquote>
+<pre><code>&gt; The error message you are getting is saying that you cannot reindex a 
+&gt; column
+&gt; with duplicate labels. This is because Seaborn is trying to create a new
+&gt; Series for each unique value in the iso2_code column, but there are duplicate
+&gt; values in this column.
+
+&gt; To fix this error, you need to remove the duplicate values from the 
+&gt; iso2_code
+&gt; column. You can do this using the drop_duplicates() method. For example:
+&gt; Python</code></pre>
 <p>harvest_demand =
 harvest_demand.drop_duplicates(subset=“iso2_code”)</p>
 <p>Use code with caution. Learn more</p>
@@ -693,6 +714,90 @@ line.</p>
     # Wrong because max(x) is not necessarilty equal to max(y)
     # same for min(x) and min(y).
     plt.plot([min(x), max(x)], [min(y), max(y)], &#39;r&#39;)</code></pre>
+</div>
+</div>
+<div id="example-where-llm-provide-wrong-answers"
+class="section level2">
+<h2>Example where LLM provide wrong answers</h2>
+<div id="iban-checksum" class="section level3">
+<h3>IBAN checksum</h3>
+<p>Prompt:</p>
+<p>Please provide a code example using ISO7064_mod97_10().compute
+imported from schwifty.checksum.</p>
+<pre><code>from schwifty.iban import IBAN
+from schwifty.checksum import ISO7064_mod97_10
+print(ISO7064_mod97_10().compute(IBAN(&quot;DE89370400440532013000&quot;).bban))
+# 50 </code></pre>
+<p>Why is this returning 50 although the third and fourth digits are 89
+in this IBAN?</p>
+<p>Perplexity reply:</p>
+<pre><code>&gt;   The result is 50 because:
+
+&gt;   - The ISO7064_mod97_10().compute() method is calculating a checksum for the 
+&gt;     BBAN (Basic Bank Account Number) part of the IBAN, not the entire IBAN15.
+&gt;   - The BBAN for this IBAN is &quot;370400440532013000&quot;, which doesn&#39;t include the 
+&gt;     country code (DE) or the check digits (89).
+&gt;   - The &quot;89&quot; in the IBAN are actually the check digits for the entire IBAN, 
+&gt;     calculated differently from the BBAN checksum2.
+
+&gt;   The IBAN check digits (89) are calculated using the following process:
+
+&gt;   - Move the first four characters to the end: &quot;370400440532013000DE89&quot;
+&gt;   - Convert letters to numbers (D=13, E=14): &quot;370400440532013000131489&quot;
+&gt;   - Interpret as a decimal integer and compute modulo 97
+&gt;   - Subtract the result from 98</code></pre>
+<p>Gemeni reply:</p>
+<pre><code>  &gt; You&#39;re observing the incorrect result (50 instead of 89) because you&#39;re 
+  &gt; again providing only the bban (Basic Bank Account Number) to the 
+  &gt; ISO7064_mod97_10().compute method, and not the complete IBAN structure 
+  &gt; needed for the ISO 7064 MOD 97-10 algorithm.
+
+  &gt; Here&#39;s the corrected code and explanation:
+  &gt; Python
+
+  &gt; from schwifty.iban import IBAN
+  &gt; from schwifty.checksum import ISO7064_mod97_10
+
+  &gt; iban_string = &quot;DE89370400440532013000&quot;
+  &gt; iban_object = IBAN(iban_string)
+
+  &gt; # Correctly pass the country code, check digits, and BBAN as one string
+  &gt; iban_components = [iban_object.country_code + iban_object.check_digits + iban_object.bban]
+
+  &gt; # Compute the check digits
+  &gt; computed_check_digits = ISO7064_mod97_10().compute(iban_components)
+
+  &gt; print(computed_check_digits) # Output: 89
+
+  &gt; #validate the iban.
+  &gt; print(iban_object.is_valid) #output: True
+
+  &gt; Explanation of the Correction:
+
+  &gt;     Correct Input:
+  &gt;         The ISO7064_mod97_10().compute method expects the entire IBAN structure (or at least the parts needed to calculate the check digits).
+  &gt;         Therefore, we correctly create the iban_components list by concatenating the country_code, check_digits, and bban from the IBAN object.
+  &gt;     Algorithm Behavior:
+  &gt;         The ISO 7064 MOD 97-10 algorithm, as implemented in schwifty, performs the necessary rearrangement and numerical conversion of the IBAN string before applying the modulus 97 operation.
+  &gt;         When the correct input is provided, it accurately calculates the check digits, which are &quot;89&quot; in this case.
+
+  &gt; Why Your Original Code Failed:
+
+  &gt;     By providing only the bban, you were giving the algorithm incomplete data. The algorithm then proceeded to perform calculations on this incomplete data, resulting in the incorrect &quot;50&quot;.
+  &gt;     It is very important to remember that the ISO 7064 MOD 97-10 algorithm 
+  &gt;     works on the entire IBAN structure.</code></pre>
+<p>The LLM answers and suggestions are wrong. The problem is that the
+input should be a list with BBAN first and then country code as
+such:</p>
+<pre><code>from schwifty.checksum import ISO7064_mod97_10
+iban_de = IBAN(&quot;DE89370400440532013000&quot;)
+print(&quot;Checksum: &quot;, ISO7064_mod97_10().compute([iban_de.bban, iban_de.country_code]))
+# Checksum:  89
+
+Formulated directly without using an IBAN object:
+print(&quot;Checksum: &quot;, ISO7064_mod97_10().compute([&quot;370400440532013000&quot;, 
+&quot;DE&quot;]))
+# Checksum:  89</code></pre>
 </div>
 </div>
 </div>

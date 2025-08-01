@@ -1,7 +1,9 @@
 # Taking notes
+alias vi="nvim"
 alias bookmark="vim -c 'syn off' ~/rp/bookmarkdown/bookmark.md"
 alias overflow="vim ~/rp/bookmarkdown/work/overflow.md"
 alias matrix="cd ~/rp/bookmarkdown/work && vim matrix.Rmd"
+alias partners="cd ~/rp/bookmarkdown/work/freelance/ && nvim partners.md"
 alias open="xdg-open"
 alias openallpdf="find -iname '*.pdf' -print0 | xargs -0 -n 1 xdg-open"
 alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && vim -c 'syn off' readings_jrc.md"
@@ -21,6 +23,9 @@ alias youtubeplaylist="youtube-dl --extract-audio --audio-format vorbis --sleep-
 # Pictures
 alias mogri1000="mkdir -p small && mogrify -resize 1000 -path ./small/ *.JPG"
 alias mogri2000="mkdir -p small && mogrify -resize 2000 -path ./small/ *.JPG"
+
+# Pomodoro
+alias poiu="pkill -f pomodoro_buzzer.py"
 
 # Tools
 alias ll='ls -lah'

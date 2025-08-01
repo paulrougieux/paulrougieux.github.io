@@ -13,7 +13,7 @@
 
 <title>tales.knit</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -391,6 +391,9 @@ div.tocify {
       <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
+      <a href="cobwood.html">Cobwood forest sector model</a>
+    </li>
+    <li>
       <a href="musical_scales.html">Musical scales</a>
     </li>
   </ul>
@@ -426,6 +429,29 @@ div.tocify {
     Publications
   </a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-brain"></span>
+     
+    Brain
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="biography.html">Biography</a>
+    </li>
+    <li>
+      <a href="communication.html">Communication</a>
+    </li>
+    <li>
+      <a href="procrastination.html">Procrastination</a>
+    </li>
+    <li>
+      <a href="space.html">Maximalist Degrowth - Space Earth</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -446,43 +472,58 @@ div.tocify {
 <h1>Introduction</h1>
 <div id="folk-tales" class="section level2">
 <h2>Folk tales</h2>
-<p><a href="https://en.wikipedia.org/wiki/Narrative">narrative</a> &gt;
-Janet Bacon: “Folk-tale, however, calls for no belief, being wholly the
-&gt; product of the imagination. In far distant ages some inventive
-story-teller &gt; was pleased to pass an idle hour with stories told of
+<ul>
+<li><p><a
+href="https://en.wikipedia.org/wiki/Narrative">narrative</a></p>
+<blockquote>
+<p>Janet Bacon: “Folk-tale, however, calls for no belief, being wholly
+the product of the imagination. In far distant ages some inventive
+story-teller was pleased to pass an idle hour with stories told of
 many-a-feat.”</p>
-<p><a href="https://fr.wikipedia.org/wiki/Conte">Conte</a> en
-français.</p>
-<p><a href="https://fr.wikipedia.org/wiki/Conte_merveilleux">Conte
-merveilleux</a> &gt; “Une étude récente publiée dans Royal Society Open
-Science en 2017 a évalué &gt; ces fables comme on étudie les espèces en
-évolution, et conclut que certains &gt; des contes d’occident pourraient
-dater d’au moins 6000 ans, à partir d’un &gt; corpus massif de plus de
-2000 contes déposé en ligne, provenant de &gt; différentes cultures
-indo-européennes (index Aarne-Thompson-Uther, compilé en &gt; 2004.
-Toutes ces cultures indo-européennes (englobant toute l’Europe et une
-&gt; grande partie de l’Asie) descendrait des peuples
-Proto-Indo-européens &gt; néolithique établis en Europe de l’Est (10.200
-BCE-2000 BCE), aussi à &gt; l’origine d’une grande partie des langues
-contemporaines” […] des méthodes &gt; statistiques calquées sur celles
-de la phylogénétique ont été utilisées pour &gt; tracer les lignées
-d’histoires se ramifiant dans le temps, en différentes &gt; langues.
-Ainsi quand une même histoire peut être retrouvée en langues slaves &gt;
-et celtiques (ex : Jack et le Haricot magique) elle est considérée comme
-&gt; ayant un « ancêtre commun » (Proto-ouest-Indo-Européen) dont ces
-deux &gt; lignages ont divergé il y a au moins 6 800 ans. Les auteurs
-ont cherché à &gt; aussi tenir compte de la transmission horizontale
-d’une culture à l’autre”. The study was based on the <a
+</blockquote></li>
+<li><p><a href="https://fr.wikipedia.org/wiki/Conte">Conte</a> en
+français.</p></li>
+<li><p><a href="https://fr.wikipedia.org/wiki/Conte_merveilleux">Conte
+merveilleux</a></p>
+<blockquote>
+<p>“Une étude récente publiée dans Royal Society Open Science en 2017 a
+évalué ces fables comme on étudie les espèces en évolution, et conclut
+que certains des contes d’occident pourraient dater d’au moins 6000 ans,
+à partir d’un corpus massif de plus de 2000 contes déposé en ligne,
+provenant de différentes cultures indo-européennes (index
+Aarne-Thompson-Uther, compilé en 2004. Toutes ces cultures
+indo-européennes (englobant toute l’Europe et une grande partie de
+l’Asie) descendrait des peuples Proto-Indo-européens néolithique établis
+en Europe de l’Est (10.200 BCE-2000 BCE), aussi à l’origine d’une grande
+partie des langues contemporaines” […] des méthodes statistiques
+calquées sur celles de la phylogénétique ont été utilisées pour tracer
+les lignées d’histoires se ramifiant dans le temps, en différentes
+langues. Ainsi quand une même histoire peut être retrouvée en langues
+slaves et celtiques (ex : Jack et le Haricot magique) elle est
+considérée comme ayant un « ancêtre commun » (Proto-ouest-Indo-Européen)
+dont ces deux lignages ont divergé il y a au moins 6 800 ans. Les
+auteurs ont cherché à aussi tenir compte de la transmission horizontale
+d’une culture à l’autre”.</p>
+</blockquote></li>
+<li><p>The study was based on the <a
 href="https://en.wikipedia.org/wiki/Aarne%E2%80%93Thompson%E2%80%93Uther_Index">Aarne
-Thompson Uther Index</a></p>
+Thompson Uther Index</a></p></li>
+</ul>
 <p>Several lists of folk tales available at:</p>
 <ul>
-<li>German <a
+<li><p>German</p>
+<ul>
+<li><a
 href="http://www.maerchenlexikon.de/suchemotiv.htm">Märchenlexikon.de</a></li>
-<li>English <a href="http://www.pitt.edu/~dash/folktexts.html">Folklore
-and mythology electronic texts</a></li>
+<li><a
+href="https://de.wikipedia.org/wiki/M%C3%A4rchen">Märchen</a></li>
+</ul></li>
+<li><p>English</p>
+<ul>
+<li><a href="http://www.pitt.edu/~dash/folktexts.html">Folklore and
+mythology texts</a></li>
+</ul></li>
 </ul>
-<p><a href="https://de.wikipedia.org/wiki/M%C3%A4rchen">Märchen</a></p>
 </div>
 </div>
 <div id="french" class="section level1">

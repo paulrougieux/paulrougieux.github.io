@@ -691,6 +691,27 @@ Show all commits where a file was modified
     git log --full-history -- biomass_mandate_s2p/biomass_mandate_s2p_report.Rmd
 
 
+### All commits affecting one file
+
+Show all commits affecting one file including dangling commits
+
+    git reflog -- README.md
+
+https://stackoverflow.com/questions/17195604/how-can-i-see-the-list-of-all-commits-that-affect-a-specific-file-with-git-incl
+
+
+### Reference log
+
+git help reflog
+
+    > Reference logs, or "reflogs", record when the tips of branches and other 
+    > references were updated in the local repository. Reflogs are useful in 
+    > various Git commands, to specify the old value of a reference. For 
+    > example, HEAD@{2} means "where HEAD used to be two moves ago", 
+    > master@{one.week.ago} means "where master used to point to one week ago 
+    > in this local repository", and so on.
+
+
 ### Tig
 
 The tig utility is a repository browser for git log and git diff.
@@ -749,9 +770,8 @@ Explained in this [Stackoverflow Answer](https://stackoverflow.com/a/457396/2641
 
 ### Rebase your changes on top of the remote head commit
 
-It is safe to use rebase as long as the commits have not been pushed 
-to another repository. 
-To rename older commits, simply run:
+It is safe to use rebase as long as the commits have not been pushed to another 
+repository. To rename older commits, simply run:
 
     git rebase -i
     git rebase -i @~9   # Show the last 9 commits in a text editor
@@ -773,7 +793,7 @@ See also :
   applied directly to the head node"
 
 
-### Rebase when a remote branch has diverged and there is a merge conflict
+### Rebase when a remote upstream branch has diverged and there is a merge conflict
 
 You can either go through with the rebase and resolve the conflict. 
 In case you just want to get to the status of the remote branch
@@ -788,6 +808,38 @@ Reset the local branch
     git reset --hard origin/main
 
 See also the section on checkout `--ours` or `--theirs`.
+
+
+### Rebase a feature branch to the main branch
+
+This is not a good idea if other people are working on the same project and 
+have committed to that branch. Go to the feature branch and rebase the changes 
+onto the main branch
+
+    git checkout feature-branch
+    git rebase main
+
+Note that if the main branch has already been merged into the feature branch 
+with `git checkout feature-branch` followed by `git merge main`, then it's too 
+late, you cannot rebase anymore. 
+
+List of commands used to delete a feature branch where I had mistakenly merged 
+main, I wanted to delete the branch and rebase and then try again.
+
+Delete the feature branch, recreate it and pull again
+
+    git checkout main
+    git branch -D crcf
+    git branch crcf
+    git checkout crcf
+    git pull origin crcf
+
+From the feature branch, rebase on top of the main branch
+
+    git rebase main
+    git rebase --continue
+    git checkout main
+    git rebase crcf
 
 
 #### Merge conflict
@@ -951,11 +1003,7 @@ git](https://stackoverflow.com/questions/9560184/recover-dangling-blobs-in-git)
     git checkout  commit_sha -- .
 
 
-
-
-
 # Going forward in time
-
 
 ## Cherry pick one commit
 
@@ -967,6 +1015,13 @@ yet to be shared on the main branch. In order to pick just the commit that
 changed the README file and put it in the main branch I did:
 
     git cherry-pick <commit-hash>
+
+-  https://www.atlassian.com/git/tutorials/cherry-pick
+
+    > "Cherry picking is a powerful and convenient command that is incredibly 
+    > useful in a few scenarios. Cherry picking should not be misused in place 
+    > of git merge or git rebase. The git log command is required to help find 
+    > commits to cherry pick."
 
 
 # GUI Graphical User Interface
@@ -1231,6 +1286,22 @@ The output of git push -v shows that it is now pushing to both repositories
     updating local tracking ref 'refs/remotes/origin/master'
     Everything up-to-date
 
+The problem with pushing to multiple remotes and doing rebase commits at the 
+same time is that this might lead to a situation where the push on remote A 
+fails because there are new changes in that remote repository, while the push 
+to the other remote B succeeds. Now if you rebase your changes at the top of 
+the branch changes that you pulled from A. The branch will have a different 
+order than the branch in remote B (I think, to be checked).
+
+Using the push to multiple remote should be combined with a command that pulls 
+first before any push.
+
+To solve issues when someone updated a remote and you didn't have the changes, 
+then the push pussed only to gitlab and not to github, you can merge the 2 
+branches as such: 
+
+    git merge github/main origin/main
+
 
 ## Pull rebase versus merge
 
@@ -1396,7 +1467,7 @@ Stackoverflow [Is there a way to autosign commits in git with a GPG key?](https:
 
 Configure git to use the key
 
-     git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0
+     git config --global user.signingkey <-- key number -->
 
 Configure git to always sign commits and tags
 
@@ -1441,6 +1512,15 @@ Show signatures in the log:
 
 - Gitlab [sign commits with
   GPG](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html)
+
+    - Export the text of the public key to a text file with:
+
+        gpg --list-keys
+        gpg --armor --export paul.rougieux@gmail.com
+        # Or export it to a file
+        gpg --armor --export paul.rougieux@gmail.com > ~/downloads/gpg_pubkey_paul.asc
+
+
 
 - Once GPG is configured in git, you need to [add a GPG key to your
   account](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html#add-a-gpg-key-to-your-account)

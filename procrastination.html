@@ -11,7 +11,7 @@
 
 
 
-<title>Data Sources</title>
+<title>procrastination.knit</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +29,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -222,6 +225,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -229,6 +295,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -388,69 +464,44 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Data Sources</h1>
 
 </div>
 
 
-<ul>
-<li><p>Eurostat <a
-href="https://ec.europa.eu/eurostat/statistics-explained/index.php?title=Forests,_forestry_and_logging">forestry
-statistics</a>, <a
-href="http://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?sort=1&amp;dir=comext">Comext
-statistics on international trade in goods</a></p></li>
-<li><p>FAO <a href="http://www.fao.org/faostat/en/#data/FO">forestry
-production and trade</a>, <a
-href="http://www.fao.org/faostat/en/#data/FT">forest products trade
-flows</a></p></li>
-<li><p>United Nations Trade Statistics <a
-href="https://comtrade.un.org/data">Comtrade</a></p></li>
-</ul>
-<div id="eurostat" class="section level1">
-<h1>Eurostat</h1>
-<p>Load population data from the Eurostat bulk download API</p>
-<p>A table of content is available on the <a
-href="https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing">BulkDownloadListing</a>.</p>
-<pre><code>
-import pandas
-def read_eurostat_bulk(bulk_file_name):
-    &quot;&quot;&quot;Download a file from the Eurostat bulk facility and read it into python
-    &quot;&quot;&quot;
-    url_base = &quot;https://ec.europa.eu/eurostat/estat-navtree-portlet-prod/BulkDownloadListing?file=data/&quot;
-    url = url_base + bulk_file_name
-    df = pandas.read_csv(url, delimiter=&#39;\t&#39;, compression=&#39;gzip&#39;, header=0, encoding=&#39;utf-8&#39;, skiprows=[1, 2])
-    col_to_fix = &quot;indic_de,geo\\time&quot;
-    if col_to_fix in df.columns:
-        print(f&quot;Separating &#39;{col_to_fix}&#39; in two columns placed first.&quot;)
-        df[[&quot;indic_de&quot;,&quot;geo&quot;]] = df[col_to_fix].str.split(&quot;,&quot;,1,expand=True)
-        cols = df.columns.to_list()
-        df = df[cols[-2:] + cols[1:-2]]
-    return df
+<div id="hyperfocus" class="section level1">
+<h1>Hyperfocus</h1>
+<p>• The Pomodoro Technique for ADHD: Does It Really Work? <a
+href="https://www.audhdpsychiatry.co.uk/does-pomodoro-really-work-for-adhd/"
+class="uri">https://www.audhdpsychiatry.co.uk/does-pomodoro-really-work-for-adhd/</a></p>
+<pre><code>&gt; &quot;Switching Tasks Feels Impossible Some people with ADHD experience 
+&gt; **hyperfocus**, which makes switching away from a task difficult. When 
+&gt; this occurs, try setting a visible break timer to signal transitions. 
+&gt; Building in a short transition activity between tasks, such as standing, 
+&gt; stretching, or walking, can ease the shift between focus modes and reduce 
+&gt; cognitive friction. It may also help to use auditory cues or gentle 
+&gt; alarms that fade in, rather than loud timers that cause stress or 
+&gt; confusion. Creating a consistent environment for work and rest also 
+&gt; supports smoother transitions.&quot;
 
-# For example load population data by country as seen in 
-# https://ec.europa.eu/eurostat/databrowser/view/tps00001/default/table?lang=en
-pop = read_eurostat_bulk(&quot;tps00001.tsv.gz&quot;)
-</code></pre>
-<p>Notes:</p>
-<ul>
-<li><p>There is a mix of month and country code in the first column.
-Those fields are separated by a comma while the rest of the fields were
-separated by a tab in the input <code>.tsv</code> file. These can be
-separated in two columns with str.split() as illustrated in the function
-above.</p></li>
-<li><p>There are additional letters besides some values, these need to
-be fixed.</p></li>
-</ul>
-<p>The python package Eurostat can also be used to load Eurostat data.
-It loads from a different source based on SDMX files. The first column
-is separated in two and the accompanying letters besides certain lines
-have disappeared.</p>
-<pre><code>import eurostat
-pop2 = eurostat.get_data_df(&quot;tps00001&quot;)</code></pre>
+&gt; **The Urge to Extend Work Periods** 
+
+&gt; One of the common pitfalls when using the Pomodoro Technique is the 
+&gt; temptation to keep working past the 25-minute limit. While it may feel 
+&gt; productive in the moment, extending work sessions can lead to burnout and 
+&gt; reduce long-term efficiency. For individuals with ADHD, adhering to the 
+&gt; set work intervals is vital for maintaining consistent energy levels and 
+&gt; supporting the brain’s natural need for regular stimulation and rest. 
+&gt; Longer stretches of unbroken concentration can also increase the risk of 
+&gt; hyperfocus, making it harder to shift attention when necessary. By 
+&gt; sticking to shorter, defined sessions, users allow their brains to reset 
+&gt; and return with renewed focus. This supports better attention regulation 
+&gt; and reduces the build-up of mental fatigue over time.&quot;</code></pre>
 </div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -483,6 +534,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

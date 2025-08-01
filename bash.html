@@ -13,7 +13,7 @@
 
 <title>Bash Commands</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -391,6 +391,9 @@ div.tocify {
       <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
+      <a href="cobwood.html">Cobwood forest sector model</a>
+    </li>
+    <li>
       <a href="musical_scales.html">Musical scales</a>
     </li>
   </ul>
@@ -425,6 +428,29 @@ div.tocify {
      
     Publications
   </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-brain"></span>
+     
+    Brain
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="biography.html">Biography</a>
+    </li>
+    <li>
+      <a href="communication.html">Communication</a>
+    </li>
+    <li>
+      <a href="procrastination.html">Procrastination</a>
+    </li>
+    <li>
+      <a href="space.html">Maximalist Degrowth - Space Earth</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -776,7 +802,7 @@ cut off.)”</p>
 <div id="download-videos-and-audio" class="section level2">
 <h2>Download videos and audio</h2>
 <p>Install youtube-dl using pip:</p>
-<pre><code> sudo pip install --upgrade youtube_dl</code></pre>
+<pre><code> pip install --upgrade youtube_dl</code></pre>
 <p>Install from the compressed <code>tar.gz</code> version of a
 repository that doesn’t require git to be installed on your laptop:</p>
 <pre><code>pip install --force-reinstall https://github.com/ytdl-org/youtube-dl/archive/refs/heads/master.tar.gz</code></pre>
@@ -1505,6 +1531,8 @@ current directory</p>
 <h3>Zip archive</h3>
 <p>Create the zip archive of a directory</p>
 <pre><code>zip dir.zip -r dir</code></pre>
+<p>To add a password (note this is insecure)</p>
+<pre><code>zip --encrypt file.zip files</code></pre>
 </div>
 </div>
 <div id="mount-file-systems" class="section level2">
@@ -2171,8 +2199,9 @@ GPG getting too old?</a></li>
 </div>
 <div id="public-key-servers" class="section level3">
 <h3>Public key servers</h3>
-<p>To submit your key to a server, export the key</p>
-<pre><code>gpg -a --export name@emailserver.com &gt; public_key_sender.asc </code></pre>
+<p>To submit your key to a server, export the key to a file</p>
+<pre><code>gpg --list-keys
+gpg --armor --export paste_key_id_here  &gt; public_key.asc</code></pre>
 <p>My keys were visible on pgp.mit.edu <a
 href="https://pgp.mit.edu/pks/lookup?search=rougieux&amp;op=index">search=rougieux</a>.
 2019 Update following a look at a super user <a

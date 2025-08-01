@@ -17,7 +17,7 @@ answer. Resetting the index is the correct answer suggested by GPT4.
 
 Same code and error fed to both GPT 4 and BARd
 
-```
+```{python, eval=FALSE}
 g = seaborn.relplot(data=harvest_demand, x='year', y='harvest_requested',
 
                     col='iso2_code', hue='scenario', kind='line', col_wrap=4, 
@@ -33,7 +33,6 @@ g.fig.subplots_adjust(hspace=0.3)
 /home/paul/.local/lib/python3.9/site-packages/seaborn/_core.py:1057: FutureWarning: reindexing with a non-unique Index is deprecated and will raise in a future version.
   comp_col.loc[orig.index] = pd.to_numeric(axis.convert_units(orig))
 
----------------------------------------------------------------------------
 ValueError                                Traceback (most recent call last)
 /tmp/ipykernel_58796/3787323421.py in <cell line: 1>()
 ----> 1 g = seaborn.relplot(data=harvest_demand, x='year', y='harvest_requested',
@@ -177,22 +176,23 @@ ValueError                                Traceback (most recent call last)
 
 ValueError: cannot reindex on an axis with duplicate labels
 
-
-
 ```
+
 
 
 
 Bard Reply:
 
-> The error message you are getting is saying that you cannot reindex a column
-> with duplicate labels. This is because Seaborn is trying to create a new
-> Series for each unique value in the iso2_code column, but there are duplicate
-> values in this column.
+    > The error message you are getting is saying that you cannot reindex a 
+    > column
+    > with duplicate labels. This is because Seaborn is trying to create a new
+    > Series for each unique value in the iso2_code column, but there are duplicate
+    > values in this column.
 
-> To fix this error, you need to remove the duplicate values from the iso2_code
-> column. You can do this using the drop_duplicates() method. For example:
-> Python
+    > To fix this error, you need to remove the duplicate values from the 
+    > iso2_code
+    > column. You can do this using the drop_duplicates() method. For example:
+    > Python
 
 harvest_demand = harvest_demand.drop_duplicates(subset="iso2_code")
 
@@ -262,6 +262,100 @@ Note on suggestions compared between Bard and Chat GPT-4
         # Wrong because max(x) is not necessarilty equal to max(y)
         # same for min(x) and min(y).
         plt.plot([min(x), max(x)], [min(y), max(y)], 'r')
+
+
+
+## Example where LLM provide wrong answers
+
+### IBAN checksum
+
+Prompt: 
+
+Please provide a code example using ISO7064_mod97_10().compute imported from schwifty.checksum.
+
+    from schwifty.iban import IBAN
+    from schwifty.checksum import ISO7064_mod97_10
+    print(ISO7064_mod97_10().compute(IBAN("DE89370400440532013000").bban))
+    # 50 
+
+Why is this returning 50 although the third and fourth digits are 89 in this 
+IBAN?
+
+Perplexity reply:
+
+    >   The result is 50 because:
+
+    >   - The ISO7064_mod97_10().compute() method is calculating a checksum for the 
+    >     BBAN (Basic Bank Account Number) part of the IBAN, not the entire IBAN15.
+    >   - The BBAN for this IBAN is "370400440532013000", which doesn't include the 
+    >     country code (DE) or the check digits (89).
+    >   - The "89" in the IBAN are actually the check digits for the entire IBAN, 
+    >     calculated differently from the BBAN checksum2.
+
+    >   The IBAN check digits (89) are calculated using the following process:
+
+    >   - Move the first four characters to the end: "370400440532013000DE89"
+    >   - Convert letters to numbers (D=13, E=14): "370400440532013000131489"
+    >   - Interpret as a decimal integer and compute modulo 97
+    >   - Subtract the result from 98
+
+
+Gemeni reply:
+
+      > You're observing the incorrect result (50 instead of 89) because you're 
+      > again providing only the bban (Basic Bank Account Number) to the 
+      > ISO7064_mod97_10().compute method, and not the complete IBAN structure 
+      > needed for the ISO 7064 MOD 97-10 algorithm.
+
+      > Here's the corrected code and explanation:
+      > Python
+
+      > from schwifty.iban import IBAN
+      > from schwifty.checksum import ISO7064_mod97_10
+
+      > iban_string = "DE89370400440532013000"
+      > iban_object = IBAN(iban_string)
+
+      > # Correctly pass the country code, check digits, and BBAN as one string
+      > iban_components = [iban_object.country_code + iban_object.check_digits + iban_object.bban]
+
+      > # Compute the check digits
+      > computed_check_digits = ISO7064_mod97_10().compute(iban_components)
+
+      > print(computed_check_digits) # Output: 89
+
+      > #validate the iban.
+      > print(iban_object.is_valid) #output: True
+
+      > Explanation of the Correction:
+
+      >     Correct Input:
+      >         The ISO7064_mod97_10().compute method expects the entire IBAN structure (or at least the parts needed to calculate the check digits).
+      >         Therefore, we correctly create the iban_components list by concatenating the country_code, check_digits, and bban from the IBAN object.
+      >     Algorithm Behavior:
+      >         The ISO 7064 MOD 97-10 algorithm, as implemented in schwifty, performs the necessary rearrangement and numerical conversion of the IBAN string before applying the modulus 97 operation.
+      >         When the correct input is provided, it accurately calculates the check digits, which are "89" in this case.
+
+      > Why Your Original Code Failed:
+
+      >     By providing only the bban, you were giving the algorithm incomplete data. The algorithm then proceeded to perform calculations on this incomplete data, resulting in the incorrect "50".
+      >     It is very important to remember that the ISO 7064 MOD 97-10 algorithm 
+      >     works on the entire IBAN structure.
+
+
+The LLM answers and suggestions are wrong. The problem is that the input should 
+be a list with BBAN first and then country code as such:
+
+    from schwifty.checksum import ISO7064_mod97_10
+    iban_de = IBAN("DE89370400440532013000")
+    print("Checksum: ", ISO7064_mod97_10().compute([iban_de.bban, iban_de.country_code]))
+    # Checksum:  89
+
+    Formulated directly without using an IBAN object:
+    print("Checksum: ", ISO7064_mod97_10().compute(["370400440532013000", 
+    "DE"]))
+    # Checksum:  89
+
 
 
 

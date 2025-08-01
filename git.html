@@ -13,7 +13,7 @@
 
 <title>Git Commands</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -391,6 +391,9 @@ div.tocify {
       <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
+      <a href="cobwood.html">Cobwood forest sector model</a>
+    </li>
+    <li>
       <a href="musical_scales.html">Musical scales</a>
     </li>
   </ul>
@@ -425,6 +428,29 @@ div.tocify {
      
     Publications
   </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-brain"></span>
+     
+    Brain
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="biography.html">Biography</a>
+    </li>
+    <li>
+      <a href="communication.html">Communication</a>
+    </li>
+    <li>
+      <a href="procrastination.html">Procrastination</a>
+    </li>
+    <li>
+      <a href="space.html">Maximalist Degrowth - Space Earth</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -979,6 +1005,24 @@ history even if the file was renamed.</p>
 <p>Show all commits where a file was modified</p>
 <pre><code>git log --full-history -- biomass_mandate_s2p/biomass_mandate_s2p_report.Rmd</code></pre>
 </div>
+<div id="all-commits-affecting-one-file" class="section level3">
+<h3>All commits affecting one file</h3>
+<p>Show all commits affecting one file including dangling commits</p>
+<pre><code>git reflog -- README.md</code></pre>
+<p><a
+href="https://stackoverflow.com/questions/17195604/how-can-i-see-the-list-of-all-commits-that-affect-a-specific-file-with-git-incl"
+class="uri">https://stackoverflow.com/questions/17195604/how-can-i-see-the-list-of-all-commits-that-affect-a-specific-file-with-git-incl</a></p>
+</div>
+<div id="reference-log" class="section level3">
+<h3>Reference log</h3>
+<p>git help reflog</p>
+<pre><code>&gt; Reference logs, or &quot;reflogs&quot;, record when the tips of branches and other 
+&gt; references were updated in the local repository. Reflogs are useful in 
+&gt; various Git commands, to specify the old value of a reference. For 
+&gt; example, HEAD@{2} means &quot;where HEAD used to be two moves ago&quot;, 
+&gt; master@{one.week.ago} means &quot;where master used to point to one week ago 
+&gt; in this local repository&quot;, and so on.</code></pre>
+</div>
 <div id="tig" class="section level3">
 <h3>Tig</h3>
 <p>The tig utility is a repository browser for git log and git diff.</p>
@@ -1066,10 +1110,10 @@ node”</p></li>
 </ul>
 </div>
 <div
-id="rebase-when-a-remote-branch-has-diverged-and-there-is-a-merge-conflict"
+id="rebase-when-a-remote-upstream-branch-has-diverged-and-there-is-a-merge-conflict"
 class="section level3">
-<h3>Rebase when a remote branch has diverged and there is a merge
-conflict</h3>
+<h3>Rebase when a remote upstream branch has diverged and there is a
+merge conflict</h3>
 <p>You can either go through with the rebase and resolve the conflict.
 In case you just want to get to the status of the remote branch</p>
 <p>Abort the Rebase:</p>
@@ -1079,6 +1123,33 @@ In case you just want to get to the status of the remote branch</p>
 git reset --hard origin/main</code></pre>
 <p>See also the section on checkout <code>--ours</code> or
 <code>--theirs</code>.</p>
+</div>
+<div id="rebase-a-feature-branch-to-the-main-branch"
+class="section level3">
+<h3>Rebase a feature branch to the main branch</h3>
+<p>This is not a good idea if other people are working on the same
+project and have committed to that branch. Go to the feature branch and
+rebase the changes onto the main branch</p>
+<pre><code>git checkout feature-branch
+git rebase main</code></pre>
+<p>Note that if the main branch has already been merged into the feature
+branch with <code>git checkout feature-branch</code> followed by
+<code>git merge main</code>, then it’s too late, you cannot rebase
+anymore.</p>
+<p>List of commands used to delete a feature branch where I had
+mistakenly merged main, I wanted to delete the branch and rebase and
+then try again.</p>
+<p>Delete the feature branch, recreate it and pull again</p>
+<pre><code>git checkout main
+git branch -D crcf
+git branch crcf
+git checkout crcf
+git pull origin crcf</code></pre>
+<p>From the feature branch, rebase on top of the main branch</p>
+<pre><code>git rebase main
+git rebase --continue
+git checkout main
+git rebase crcf</code></pre>
 <div id="merge-conflict" class="section level4">
 <h4>Merge conflict</h4>
 <p>To keep only the version of their changes</p>
@@ -1235,6 +1306,16 @@ branch that were not ready yet to be shared on the main branch. In order
 to pick just the commit that changed the README file and put it in the
 main branch I did:</p>
 <pre><code>git cherry-pick &lt;commit-hash&gt;</code></pre>
+<ul>
+<li><p><a href="https://www.atlassian.com/git/tutorials/cherry-pick"
+class="uri">https://www.atlassian.com/git/tutorials/cherry-pick</a></p>
+<blockquote>
+<p>“Cherry picking is a powerful and convenient command that is
+incredibly useful in a few scenarios. Cherry picking should not be
+misused in place of git merge or git rebase. The git log command is
+required to help find commits to cherry pick.”</p>
+</blockquote></li>
+</ul>
 </div>
 </div>
 <div id="gui-graphical-user-interface" class="section level1">
@@ -1509,6 +1590,19 @@ To github.com:paulrougieux/paulrougieux.github.io.git
  = [up to date]      master -&gt; master
 updating local tracking ref &#39;refs/remotes/origin/master&#39;
 Everything up-to-date</code></pre>
+<p>The problem with pushing to multiple remotes and doing rebase commits
+at the same time is that this might lead to a situation where the push
+on remote A fails because there are new changes in that remote
+repository, while the push to the other remote B succeeds. Now if you
+rebase your changes at the top of the branch changes that you pulled
+from A. The branch will have a different order than the branch in remote
+B (I think, to be checked).</p>
+<p>Using the push to multiple remote should be combined with a command
+that pulls first before any push.</p>
+<p>To solve issues when someone updated a remote and you didn’t have the
+changes, then the push pussed only to gitlab and not to github, you can
+merge the 2 branches as such:</p>
+<pre><code>git merge github/main origin/main</code></pre>
 </div>
 <div id="pull-rebase-versus-merge" class="section level2">
 <h2>Pull rebase versus merge</h2>
@@ -1649,7 +1743,7 @@ href="bash.html">bash page</a>. Display what keys are available</p>
 href="https://stackoverflow.com/questions/10161198/is-there-a-way-to-autosign-commits-in-git-with-a-gpg-key">Is
 there a way to autosign commits in git with a GPG key?</a></p>
 <p>Configure git to use the key</p>
-<pre><code> git config --global user.signingkey CC44A3EC868FDAE69F0E57148A77836103E2ADB0</code></pre>
+<pre><code> git config --global user.signingkey &lt;-- key number --&gt;</code></pre>
 <p>Configure git to always sign commits and tags</p>
 <pre><code>git config --global commit.gpgSign true
 git config --global tag.gpgSign true</code></pre>
@@ -1678,7 +1772,16 @@ git config --global push.gpgSign &quot;if-asked&quot; </code></pre>
 <ul>
 <li><p>Gitlab <a
 href="https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html">sign
-commits with GPG</a></p></li>
+commits with GPG</a></p>
+<ul>
+<li><p>Export the text of the public key to a text file with:</p>
+<p>gpg –list-keys gpg –armor –export <a
+href="mailto:paul.rougieux@gmail.com"
+class="email">paul.rougieux@gmail.com</a> # Or export it to a file gpg
+–armor –export <a href="mailto:paul.rougieux@gmail.com"
+class="email">paul.rougieux@gmail.com</a> &gt;
+~/downloads/gpg_pubkey_paul.asc</p></li>
+</ul></li>
 <li><p>Once GPG is configured in git, you need to <a
 href="https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html#add-a-gpg-key-to-your-account">add
 a GPG key to your account</a> so that it appears as verified.</p></li>

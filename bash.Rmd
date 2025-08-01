@@ -414,7 +414,7 @@ file name from the URL as explained in the curl man page.
 
 Install youtube-dl using pip:
 
-     sudo pip install --upgrade youtube_dl
+     pip install --upgrade youtube_dl
 
 Install from the compressed `tar.gz` version of a repository that doesn't 
 require git to be installed on your laptop:
@@ -1346,6 +1346,10 @@ Create the zip archive of a directory
 
     zip dir.zip -r dir
 
+To add a password (note this is insecure)
+
+    zip --encrypt file.zip files
+
 
 ## Mount file systems
 
@@ -1992,9 +1996,11 @@ Export the key to a file
 
 ### Public key servers
 
-To submit your key to a server, export the key
+To submit your key to a server, export the key to a file
 
-    gpg -a --export name@emailserver.com > public_key_sender.asc 
+
+    gpg --list-keys
+    gpg --armor --export paste_key_id_here  > public_key.asc
 
 My keys were visible on pgp.mit.edu 
 [search=rougieux](https://pgp.mit.edu/pks/lookup?search=rougieux&op=index).

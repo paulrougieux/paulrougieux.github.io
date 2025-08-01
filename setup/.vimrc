@@ -285,6 +285,40 @@ command! Phtml execute '!pandoc % -o %:r.html'
 command! Qpdf execute '!quarto render % --to pdf'
 command! Qhtml execute '!quarto render % --to html'
 
+" Add quote formatting to pasted text - only for markdown files
+augroup markdown_quotes
+  autocmd!
+  autocmd FileType markdown,rmd,qmd nnoremap <buffer> <localleader>pq :call PasteQuoted()<CR>
+augroup END
+
+function! PasteQuoted()
+  " Create a temporary file
+  let l:tmpfile = tempname()
+  
+  " Use system clipboard tools to get content
+  if has('mac')
+    silent execute '!pbpaste > ' . l:tmpfile
+  elseif has('unix')
+    silent execute '!xclip -selection clipboard -o > ' . l:tmpfile
+  elseif has('win32') || has('win64')
+    silent execute '!powershell -command "Get-Clipboard" > ' . l:tmpfile
+  endif
+  
+  " Read the content from temp file
+  let lines = readfile(l:tmpfile)
+
+  
+
+  " Process each line - add > and quotes
+  let quoted_lines = map(lines, '"> \"" . v:val . "\""')
+  
+  " Insert the formatted text at cursor position
+  call append(line('.'), quoted_lines)
+  
+  " Clean up
+  call delete(l:tmpfile)
+endfunction
+
 """"""""""""""""""""""""""
 " # Python configuration "
 """"""""""""""""""""""""""
@@ -418,6 +452,14 @@ autocmd FileType markdown xmap <buffer> <LocalLeader>m <Plug>SlimeRegionSend
 autocmd FileType python nmap <buffer> <LocalLeader>w viw<Plug>SlimeRegionSend
 autocmd Filetype markdown nmap <buffer> <LocalLeader>w viw<Plug>SlimeRegionSend
 
+
+" # TODO
+" I have a vim markdown plugin that displays
+" ## Title
+" "quote"  as
+" §§ Title
+" “quote” this is really annoying how can I remove this behaviour?
+" See LLM reply
 
 
 

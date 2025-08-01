@@ -295,6 +295,15 @@ package](https://ftp.gwdg.de/pub/ctan/macros/latex/required/tools/multicol.pdf)
     Interface}] ...
 
 
+## Conversion to other format
+
+
+### HTML
+
+- Arxiv conversion efforts to HTML says that 90% of received papers are in 
+  Latex format. https://info.arxiv.org/about/accessible_HTML.html
+
+
 # Lyx 
 
 The Lyx "What You See is What You Mean" editor is available at Lyx and from your package manager.

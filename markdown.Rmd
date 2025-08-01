@@ -22,7 +22,18 @@ editing ideas.
 
 # Images
 
-![Image](https://avatars0.githubusercontent.com/u/5647397?v=4&s=460) 
+Insert an image from a local path
+
+    ![](/tmp/Squirrel-in-6-step.jpg "Nussli")
+
+Insert an image from the internet
+
+    ![Image](https://avatars0.githubusercontent.com/u/5647397?v=4&s=460) 
+
+Resize an image
+
+    ![image](/path/to/image){width=100%}
+    ![image](/path/to/image){width=100px}
 
 
 # Pandoc convert to and from other file formats
@@ -174,7 +185,7 @@ citation key inside square brackets:
 
     [@citationkey]
 
-To cite more than one reference:
+To cite more than one reference separated by a semicolon:
 
      [see @doe99, pp. 33-35; also @smith04, chap. 1]. 
 
@@ -250,6 +261,14 @@ Refer to the figures with an `@` label:
 
     see @fig-plot and @fig-elephant
 
+
+## Render
+
+Render a document as explained in `quarto help renderi`:
+
+    quarto render document.qmd
+    quarto render document.qmd --to html
+    quarto render document.qmd --to pdf --toc
 
 ## Tables
 

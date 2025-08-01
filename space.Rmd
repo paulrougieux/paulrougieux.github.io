@@ -1,6 +1,4 @@
 
-
-
 A bit of science fiction to lighten you up. The pressure on the environment
 will be relieved once humanity and especially manufacturing has moved to space.
 The computing industry is rising as the most energy hungry on earth. IT can
@@ -9,3 +7,11 @@ solar powered space computers, then we can set new goals of total earth
 protection. 
 
 
+# Zero Earth data centre
+
+The Maximalist Degrowth movement is a movement that believes in space expansion 
+to protect the Earth. They are implementing a 'zero Earth' data center 
+certification powered solely by solar energy in space and built in space with 
+materials extracted from asteroid mining.
+
+This approach aligns with principles of degrowth on Earth by minimizing terrestrial environmental impact through shifting energy and industrial activities off-planet, using renewable space-based solar power, and asteroidal material utilization. The intent is to protect Earth's environment by reducing resource pressures and pollution on Earth.

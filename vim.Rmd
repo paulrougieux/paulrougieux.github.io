@@ -337,6 +337,14 @@ Similarly to enter text at the end of multiple lines ([vim.wikia](http://vim.wik
 > all lines `$A` a comma ,, then press Esc to confirm."
 
 
+### Insert a comma at the end of each line
+
+- Enter Visual Block mode: Press `Ctrl-v`
+- Select the lines: Use `j` to move down and select the desired lines.
+- Append text: Press `$A` (append after the end of each line).
+- Type `,` and press `Esc` to exit insert mode.
+
+
 ### Delete all lines that contain a pattern
 
 Delete all lines that contain "pattern":
@@ -595,10 +603,17 @@ For example to [remove the last 2 characters of each line in a selection](https:
 
     :'<,'>s/..$//
 
-In case you have slashes in the pattern, you can use another separator such as
+
+### Other delimiter for path replacement
+
+In case you have slashes in the pattern, you can use another delimitor such as
 `#`
 
     :%s#/path/to/file#/new/path#g
+
+For example to replace a path by nothing
+
+    :%s#/home/paul/repos/eu_cbm/eu_cbm_data/output/reference/IE/0/input/csv/##g
 
 
 See also:
@@ -799,6 +814,14 @@ Replace this or that with a dot
 Replace opening or closing curly braces by two curly braces
 
     :'<,'>s/{/{{/g | s/}/}}/g
+
+
+#### Spaces and new lines
+
+Replace the text even if the spaces are sometimes spaces and sometimes new 
+lines
+
+    :%s/Hilfe\_s*zum\_s*Begriff\_s*anzeigen//g
 
 
 ### Replace list items
@@ -1042,10 +1065,6 @@ explains how to display indentation setting for the current file type:
     :verbose set ai? cin? cink? cino? si? inde? indk?
 
 
-## Repeat Commands
-
-[Repeating commands, Vim scripts and debugging](http://vimhelp.appspot.com/repeat.txt.html)
-
 
 ## Save files
 
@@ -1123,6 +1142,24 @@ To format the text, select it with v and up or down movements, and press
 
     gq
 
+I defined a custom shortcut `Ctrl+P` to wrap a paragraph
+
+    au BufRead,BufNewFile *.md map <C-P> vipJgqk
+
+Note vim behaves differently when opening a markdown file from the vim file 
+explorer as opposed to opening that file directly. When opening the directory 
+at the command line first and then opening the file from the vim file explorer, 
+lines wrap at 80 characters.
+
+    vim paper/
+
+When opening the file at the command line directly, lines wrap at 88 
+characters.
+
+   vim paper/paper.md
+
+How can this be fixed by changing the autocommand? 
+
 
 ### Disable auto wrap
 
@@ -1130,8 +1167,29 @@ To disable auto wrapping, call
 
     :set formatoptions=cq
 
+In `.vimrc`, I defined a `Nowrap` command to disable auto wrap to edit long 
+tables for example
+
+    command! Nowrap set formatoptions=cq
+
+Usage:
+
+    :Nowrap
+
 [SO answer on how to disable auto
 wrapping](https://stackoverflow.com/a/23032068/2641825).
+It's necessary to distinguish hard wraps which are actual line breaks in the 
+text file from soft wraps which appear only on screen.
+
+## Word count
+
+- https://vim.fandom.com/wiki/Word_count
+
+> "To count the number of words in the current buffer, press g then Ctrl-g."
+
+To see how many words are in the current file, run:
+
+    :! wc %
 
 
 # Select and visual mode
@@ -1172,8 +1230,15 @@ These selection methods can also be used to delete `diw` and yank `yiw`.
 
 
 
+# Commands
 
-# Enter commands, save and quit
+Commands are everywhere in this vim page. This is a generic sections on 
+commands that talks about command history and how to repeat commands for 
+example. See also how to create your own commands under the section called 
+configure vim in `.vimrc`.
+
+
+## Enter commands, save and quit for beginners
 
 To enter edit mode:
 
@@ -1203,6 +1268,20 @@ which provides a workaround: entering `stty -ixon` in .bashrc.
 To save content and exit:
 
     :wq
+
+
+## Command history
+
+To find a command in the command history, enter the first few letter at the `:` 
+prompt, then press the up arrow of the keyboard.
+
+Display the command history
+
+    q:
+
+## Repeat Commands
+
+[Repeating commands, Vim scripts and debugging](http://vimhelp.appspot.com/repeat.txt.html)
 
 # Email with Mutt
 
@@ -1672,6 +1751,11 @@ number](https://stackoverflow.com/questions/10392424/how-can-i-open-vim-with-a-p
   word under the cursor (you can also create a mapping to search for a selected 
   text).
 
+- Use `:vimgrep /pattern/ %` to display search results in a quick fix window. 
+  For example display all lines that start and end with `#` in the current file
+
+      :vimgrep /#.*#/ %
+
 - Use `"?"` to search backward. Very useful with text selection.
 
 - Use `:g/pattern` to display a list of all search result in the document. 
@@ -1766,6 +1850,54 @@ so I deactivated it.
   explains how to use the .vimrc from Neovim
 
 - https://nvchad.com/ Neovim config
+
+
+## LLM code completion in NeoVim
+
+See also the bookmark two sections on LLM code completion and coding assistant.
+
+List of neovim code completion tools with Github stars as of February 2025
+
+- avante.nvim 
+  https://github.com/yetone/avante.nvim?tab=readme-ov-file#installation 9900 
+  stars
+
+- codecompanion.nvim https://github.com/olimorris/codecompanion.nvim 2300 stars
+
+- minuet.ai 
+  https://github.com/milanglacier/minuet-ai.nvim?tab=readme-ov-file#minuet-ai 
+  307 stars
+
+- LLM.nvim https://github.com/Kurama622/llm.nvim 187 stars 
+
+    - The code completion part is apparently a 95% copy of minuet.ai according 
+      to 
+      https://www.reddit.com/r/neovim/comments/1idfbir/comment/m9z6tz8/?utm_source=share&utm_medium=web3x&utm_name=web3xcss&utm_term=1&utm_content=share_button
+
+- Neovim plugins for the Perplexity API suggested by Perplexity 
+  https://www.perplexity.ai/search/i-am-a-environmental-macroecon-.Na30HtfQdCzocg6SPkenw#2
+
+    - https://github.com/frankroeder/parrot.nvim Lightweight chat-like plugin
+
+    - https://github.com/Robitx/gp.nvim
+
+    - Avante can also use the perplexity API.
+
+
+## Share config between vim and nvim
+
+- https://neovim.io/doc/user/nvim.html#nvim-from-vim
+
+> "Create your init.vim (user config) file"
+
+    :exe 'edit '.stdpath('config').'/init.vim'
+    :write ++p
+
+> "Add these contents to the file"
+
+    set runtimepath^=~/.vim runtimepath+=~/.vim/after
+    let &packpath = &runtimepath
+    source ~/.vimrc
 
 
 # Plugins

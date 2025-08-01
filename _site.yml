@@ -40,6 +40,8 @@ navbar:
       menu:
         - text: "Carbon Budget Model"
           href: carbon_budget_model.html
+        - text: "Cobwood forest sector model"
+          href: cobwood.html
         - text: "Musical scales"
           href: musical_scales.html
     - text: "Data"
@@ -55,6 +57,17 @@ navbar:
     - text: "Publications"
       icon: fa-book
       href: publications.html
+    - text: "Brain"
+      icon: fa-brain
+      menu:
+        - text: "Biography"
+          href: biography.html
+        - text: "Communication"
+          href: communication.html
+        - text: "Procrastination"
+          href: procrastination.html
+        - text: "Maximalist Degrowth - Space Earth"
+          href: space.html
 output:
   html_document:
     toc: true

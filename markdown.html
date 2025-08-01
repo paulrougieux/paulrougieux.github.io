@@ -13,7 +13,7 @@
 
 <title>Markdown</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -391,6 +391,9 @@ div.tocify {
       <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
+      <a href="cobwood.html">Cobwood forest sector model</a>
+    </li>
+    <li>
       <a href="musical_scales.html">Musical scales</a>
     </li>
   </ul>
@@ -426,6 +429,29 @@ div.tocify {
     Publications
   </a>
 </li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-brain"></span>
+     
+    Brain
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="biography.html">Biography</a>
+    </li>
+    <li>
+      <a href="communication.html">Communication</a>
+    </li>
+    <li>
+      <a href="procrastination.html">Procrastination</a>
+    </li>
+    <li>
+      <a href="space.html">Maximalist Degrowth - Space Earth</a>
+    </li>
+  </ul>
+</li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
@@ -457,12 +483,13 @@ Latex tips and other editing ideas.</p>
 </div>
 <div id="images" class="section level1">
 <h1>Images</h1>
-<div class="figure">
-<img
-src="https://avatars0.githubusercontent.com/u/5647397?v=4&amp;s=460"
-alt="" />
-<p class="caption">Image</p>
-</div>
+<p>Insert an image from a local path</p>
+<pre><code>![](/tmp/Squirrel-in-6-step.jpg &quot;Nussli&quot;)</code></pre>
+<p>Insert an image from the internet</p>
+<pre><code>![Image](https://avatars0.githubusercontent.com/u/5647397?v=4&amp;s=460) </code></pre>
+<p>Resize an image</p>
+<pre><code>![image](/path/to/image){width=100%}
+![image](/path/to/image){width=100px}</code></pre>
 </div>
 <div id="pandoc-convert-to-and-from-other-file-formats"
 class="section level1">
@@ -599,7 +626,7 @@ bibliography, use:</p>
 <p>To cite a reference inside brackets in the form of “(author year)”,
 place the citation key inside square brackets:</p>
 <pre><code>[@citationkey]</code></pre>
-<p>To cite more than one reference:</p>
+<p>To cite more than one reference separated by a semicolon:</p>
 <pre><code> [see @doe99, pp. 33-35; also @smith04, chap. 1]. </code></pre>
 <p>See also <a
 href="https://quarto.org/docs/visual-editor/technical.html#citations"
@@ -668,6 +695,14 @@ these are only here so that this code chunk is not interpreted.</p>
 </code></pre>
 <p>Refer to the figures with an <code>@</code> label:</p>
 <pre><code>see @fig-plot and @fig-elephant</code></pre>
+</div>
+<div id="render" class="section level2">
+<h2>Render</h2>
+<p>Render a document as explained in
+<code>quarto help renderi</code>:</p>
+<pre><code>quarto render document.qmd
+quarto render document.qmd --to html
+quarto render document.qmd --to pdf --toc</code></pre>
 </div>
 <div id="tables" class="section level2">
 <h2>Tables</h2>

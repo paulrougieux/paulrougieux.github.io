@@ -1453,4 +1453,8 @@ life what they use to get the job done".
 * [John Mac Farlane](https://usesthis.com/interviews/john.macfarlane/), the
   author of pandoc uses Debian and Vim.
 
-
+- [Raphael Herzog](https://raphaelhertzog.com/) provides services for long 
+  maintenance of Debian distributions through his company Freexian. 
+  https://wiki.debian.org/LTS Freexian got sponsors from many companies and 
+  institutions. For example the Civil Infrastructure Project 
+  https://www.cip-project.org/ is a sponsor.

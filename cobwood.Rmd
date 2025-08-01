@@ -1,0 +1,32 @@
+---
+title: "Cobwood forest sector model"
+output: 
+  html_document: 
+    toc: yes
+    toc_float: true
+---
+
+Cobwood is a Python package designed to analyse global forest products markets. 
+The first model programmed inside cobwood is a reimplementation of a simple 
+forest sector model, the main value of this python package doesn't lie in the 
+model itself, but in the panel data structure that can be used to implement 
+many models.
+
+- https://pypi.org/project/cobwood/
+
+- https://gitlab.com/bioeconomy/cobwood/cobwood
+
+Key Features:
+
+- **Panel Data Structure**: The package represents international forest products market
+  data through 2 dimensional arrays with multiple years
+  and countries, enabling time-series and cross-sectional analysis.
+
+- **Data Handling with Xarray**: Cobwood utilizes Xarray datasets to 
+  efficiently manipulate multi-dimensional data structures. X array is tightly 
+  integrated with pandas. Conversion to and from pandas data frames is very 
+  straightforward. Xarray datasets are saved on disk using the NetCDF format. 
+  This format has the advantage of providing good metadata descriptors. NetCDF 
+  is a standard data format used in earth systems modelling, that will just 
+  help this model become a component of a greater modelling tool chain.
+

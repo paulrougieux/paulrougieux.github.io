@@ -350,17 +350,23 @@ To upload a package to pypi, you need a pypi account. The [instructions on
 uploading distribution archives explain how to upload the package to test.pypi](
 https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives):
     
-    python3 -m twine upload --repository testpypi dist/*
+Upload for project having a pyproject.toml. If you use setuptools-scm to manage 
+the version number based on git tags. `setuptools_scm` automatically adds a 
+hash number to the version if there is no git tag for the latest commit (or 
+change in the repo). The version with a hash number is not acceptable for 
+upload on pypi. Commit and use a git tag to increment minor and major version 
+numbers. This is required before uploading to pypi.
 
-I updated the following package before running this
-
-    pip install --upgrade build
-    pip install --upgrade twine
-
-I built the package with
-
-    cd forobs/biotrade
+    cd package_dir
+    git tag
     python3 -m build
+    twine upload dist/*
+    # Or pload only the latest versions not already on pypi
+    twine upload --skip-existing dist/*
+
+Test upload
+
+    python3 -m twine upload --repository testpypi dist/*
 
 `twine` uses kde wallet to store the password, press cancel if you can't use kde
 wallet, it will then ask for the password at the command line. There is a [twine
@@ -378,6 +384,39 @@ To use the API token:
 
     Set your username to __token__
     Set your password to the token value, including the pypi- prefix
+
+#### Version dependency issue
+
+Summer 2025 there was an issue  related to the metadata version beeing 
+incompatible with twine upload. But maybe it's something else. 
+
+The error:
+
+    twine upload dist/*
+    Uploading distributions to https://upload.pypi.org/legacy/
+    ERROR    InvalidDistribution: Metadata is missing required fields: Name, Version.
+             Make sure the distribution includes the files where those fields are specified, and
+             is using a supported Metadata-Version: 1.0, 1.1, 1.2, 2.0, 2.1, 2.2.
+
+I'm not sure which downgrade or upgrade fixed it, but I finally managed to 
+upload. Bash history
+
+    pip install 'setuptools<70' 'build<1.2'
+    python3 -m build
+    twine upload dist/* # Error
+    open dist/cobwood-0.1.7.tar.gz # View metadata
+    pip install --upgrade twine
+    pip install 'setuptools<70' 'build<1.2'
+    pip install pkginfo
+    pip install packaging
+    twine upload dist/*  # Worked
+
+
+#### Wheel
+
+See the metadata inside a wheel:
+
+    unzip -p dist/cobwood-*.whl */METADATA | head -20
 
 
 ### Test install in a virtual environment
@@ -483,6 +522,28 @@ the patterns
 > " The meanings should be fairly clear: include all files in the distribution
 > root matching `*.txt`, all files anywhere under the examples directory matching
 > `*.txt` or `*.py`, and exclude all directories matching examples/sample?/build.
+
+
+### `__init__.py`
+
+Move constants to a dedicated constants.py to avoid circular imports. See for 
+example issue 115 and related commits: 
+https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat/-/issues/115
+
+
+### Lazy import
+
+Lazy import mechanism - only imports when actually accessed, can be used at the 
+top level `__init__.py` of a package.
+
+```{python, eval=FALSE}
+def __getattr__(name):
+    if name == "Bud":
+        from eu_cbm_hat.bud import Bud
+        return Bud
+    raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+```
+
 
 
 ### Version
@@ -616,6 +677,112 @@ documentation on a Continuous Integration system:
       interruptible: true
 
 
+#### Conventions and styles
+
+Pdoc supports multiple docstring conventions, including:
+
+- Google style - with `Args:`, `Returns:`, `Raises:`
+  
+- NumPy style - with `Parameters`, `Returns`, `Raises` sections. This is the 
+  style used by pandas, see for example 
+  [`pandas/plotting/_core.py`](https://github.com/pandas-dev/pandas/blob/main/pandas/plotting/_core.py)
+
+- Sphinx style - with `:param:`, `:returns:`, `:raises:` directives
+
+Comparison of documentation styles 
+https://www.datacamp.com/tutorial/docstrings-python :
+
+  > - "Sphinx Style: Often used in large projects where comprehensive 
+  >   documentation is required. It integrates well with Sphinx's documentation 
+  >   generator.
+  > - Google Style: Ideal for projects where simplicity and readability are 
+  >   prioritized, especially within organizations using Google's style guides.
+  > - NumPy Style: Best suited for projects requiring detailed and extensive 
+  >   documentation, common in data science and scientific computing.
+  > - PyDoc: Useful for generating text and HTML documentation, but lacks the 
+  >   structured format of others."
+
+
+- https://www.perplexity.ai/search/in-14-ref-num-timesteps-30-att-gBja8zHvScWCfIxfpsHJdw#5
+
+
+  > "How to Get Consistent, Structured Output
+  > - For best results with Pandoc and similar tools: Use NumPy-style 
+  >   docstrings. They are more likely to be parsed into structured HTML/PDF 
+  >   with proper section headings.
+  > - If you prefer Google style: Consider using Sphinx with the Napoleon 
+  >   extension, which can parse both Google and NumPy styles and output 
+  >   structured documentation.
+
+
+#### Google style
+
+- libcbm uses Google style to document methods, see for example 
+  https://github.com/cat-cfs/libcbm_py/blob/main/libcbm/input/sit/sit_cbm_factory.py#L343
+
+- `Args` and `Returns` are not rendered correctly by pdoc. See example in this 
+  question.  
+  https://www.perplexity.ai/search/in-14-ref-num-timesteps-30-att-gBja8zHvScWCfIxfpsHJdw#5
+
+- Specifications
+
+```{python, eval=FALSE}
+def add(a, b):
+  """
+  Add two numbers.
+
+  Args:
+      a (int): The first number.
+      b (int): The second number.
+
+  Returns:
+      int: The sum of a and b.
+  """
+  return a + b
+```
+
+
+
+#### NumPy style 
+
+- NumPy style is the documentation convention used by pandas, see for example 
+  [`pandas/plotting/_core.py`](https://github.com/pandas-dev/pandas/blob/main/pandas/plotting/_core.py)
+
+- "syntax and best practices for docstrings used with the numpydoc extension 
+  for Sphinx." https://numpydoc.readthedocs.io/en/latest/format.html#sections
+
+> "Description of the function arguments, keywords and their respective types."
+
+    Parameters
+    ----------
+    x : type
+        Description of parameter `x`.
+    y
+        Description of parameter `y` (with type not specified).
+
+> "Explanation of the returned values and their types."
+
+    Returns
+    -------
+    int
+        Description of anonymous integer return value.
+
+> "An optional section detailing which errors get raised and under what 
+> conditions:"
+
+    Raises
+    ------
+    LinAlgException
+        If the matrix is not numerically invertible.
+
+> "This section should be used judiciously, i.e., only for errors that are 
+> non-obvious or have a large chance of getting raised."
+
+
+#### Type hints
+
+See the sub-section on type hints in the object type section.
+
 ### Packaging tools
 
 - https://flit.pypa.io/en/latest/rationale.html
@@ -623,6 +790,21 @@ documentation on a Continuous Integration system:
     > " The existence of Flit spurred the development of new standards, like PEP
     > 518 and PEP 517, which are now used by other packaging tools such as Poetry
     > and Enscons."
+
+
+### Py.typed
+
+- https://typing.python.org/en/latest/spec/distributing.html#packaging-type-information
+
+    > "Package maintainers who wish to support type checking of their code 
+    > MUST add a marker file named py.typed to their package supporting 
+    > typing. This marker applies recursively: if a top-level package 
+    > includes it, all its sub-packages MUST support type checking as 
+    > well."
+
+- Pandas has partial support for py.typed
+
+- Numpy has full support for py.typed
 
 
 ### Pyproject-toml
@@ -648,6 +830,9 @@ so that they fit the classifiers available on pypi as follows:
   "Topic :: Scientific/Engineering",
   "License :: OSI Approved :: MIT License",
 
+#### Version numbering
+
+
 
 ### Setup.py (legacy)
 
@@ -660,6 +845,21 @@ so that they fit the classifiers available on pypi as follows:
     > "The interface documented here is retained currently solely for legacy 
     > purposes, until the migration to pyproject.toml-based builds can be 
     > completed."
+
+
+### Subpackage
+
+A subpackage is a directory inside a python package that contains python 
+modules.
+
+- Intra-package References 
+  https://docs.python.org/3/tutorial/modules.html#intra-package-references
+
+    > "When packages are structured into subpackages (as with the sound package 
+    > in the example), you can use absolute imports to refer to submodules of 
+    > siblings packages. For example, if the module sound.filters.vocoder needs 
+    > to use the echo module in the sound.effects package, it can use from 
+    > sound.effects import echo."
 
 
 ## Location or path
@@ -1715,6 +1915,27 @@ files?](https://stackoverflow.com/a/59535659/2641825)
   pickle](https://towardsdatascience.com/the-best-format-to-save-pandas-data-414dca023e0d)
 
 
+## Progress bar
+
+When input or output takes time. You need a progress bar
+
+Simple print message
+
+    print(f"{timestep} ", end="", flush=True)
+
+More elaborate with tqdm
+
+    total_steps = 70  # Set your expected total here
+
+    if timestep == 1:
+        # Initialize progress bar
+        self.progress_bar = tqdm(total=total_steps, desc="Model running", bar_format='{desc}: {bar} {n_fmt}/{total_fmt}')
+    
+    # Update progress bar
+    if self.progress_bar:
+        self.progress_bar.update(1)
+
+
 ## Pickle
 
 
@@ -2003,6 +2224,24 @@ But this is not a union:
 
 ### Type hints
 
+- Python documentation on typing — Support for type hints
+  https://docs.python.org/3/library/typing.html
+
+    > "The function surface_area_of_cube takes an argument expected to be an 
+    > instance of float, as indicated by the type hint edge_length: float. The 
+    > function is expected to return an instance of str, as indicated by the -> 
+    > str hint. While type hints can be simple classes like float or str, they 
+    > can also be more complex. The typing module provides a vocabulary of more 
+    > advanced type hints."
+
+```{python, eval=FALSE}
+def surface_area_of_cube(edge_length: float) -> str:
+    return f"The surface area of the cube is {6 * edge_length ** 2}."
+```
+
+
+#### Type hints in pandas
+
 For example 
 
     import panda
@@ -2021,15 +2260,38 @@ For example
       https://github.com/pandas-dev/pandas-stubs maintained by the core pandas 
       team. See also pandera.
 
-
-#### Type hints of pandas data frames
-
 - https://stackoverflow.com/questions/43890844/pythonic-type-hints-with-pandas 
   Provides an answer that uses pandera https://github.com/unionai-oss/pandera 
   to specify the type of each column in the input data frame
 
   - a comment talks about pandera providing more details in terms of column 
     types compared to pandas-stubs.
+
+
+#### Type hints for your own classes
+
+Providing a type hint for a function argument that is an instance of a class I 
+defined myself. `from __future__ import annotations` is necessary for python < 
+3.14.
+
+```{python, eval=FALSE}
+from __future__ import annotations # To use type hints on classes defined here
+from cobwood.gfpmx import GFPMX
+def my_function(arg: GFPMX):
+    ...
+```
+
+- PEP 649 – Deferred Evaluation Of Annotations Using Descriptors 
+  https://peps.python.org/pep-0649/
+
+    > "This PEP proposes a third approach, delaying the evaluation of the 
+    > annotations by computing them in their own function. "
+    
+
+#### py.typed
+
+See the sub-section on py.typed in the "create a package" section.
+
 
 
 ## Meta programming
@@ -2122,6 +2384,20 @@ Vehicle objects.
 
     sport_car = mike.build_car('rouge')
 
+### Call parent's `__init__` class
+
+Call parent's `__init__` class
+
+    class ParentClass:
+        def __init__(self, name, age):
+            self.name = name
+            self.age = age
+
+    class ChildClass(ParentClass):
+        def __init__(self, name, age, grade):
+            super().__init__(name, age)  # Call parent's __init__
+            self.grade = grade
+
 
 ### Why do Python classes inherit object?
 
@@ -2139,6 +2415,23 @@ object?](https://stackoverflow.com/questions/4015417/why-do-python-classes-inher
 
 
 # Git
+
+## Pygit2
+
+- Documentation https://www.pygit2.org/
+- Repository https://github.com/libgit2/pygit2
+- pygit2 are the python bindings to libgit2 https://libgit2.org/
+
+    > "libgit2 is a portable, pure C implementation of the Git core methods 
+    > provided as a re-entrant linkable library, with an API that's designed to 
+    > be ergonomic to use from C directly, or from another language through FFI 
+    > bindings."
+
+- Issue in a git related python project explaining the move from GitPython to 
+  pygit2 https://github.com/godaddy/tartufo/issues/66
+
+
+## GitPython (in maintenance stage)
 
 Get the active branch name in a git repository with
 [GitPython](https://pypi.org/project/GitPython/):
@@ -2178,6 +2471,7 @@ Checkout a branch if the repository is clean (no changes)
 
     #Usage
     checkout_branch(repo_libcbm_py, "2.x")
+
 
 
 # HTTP
@@ -2326,6 +2620,19 @@ ipython](https://stackoverflow.com/questions/16867347/step-by-step-debugging-wit
     continue
 
 
+### Pretty print
+
+It is sometimes necessary to prefix your python command with the pretty print 
+command `p`. For example when using the `list` command Pdb interprets it as its 
+own list command. There you need to prefix the calls with `p` to call the 
+actual python list command as illustrated below.
+
+
+    (Pdb) test_dict = {"a":1, "b":2} 
+    (Pdb) list(test_dict.keys())
+    *** Error in argument: '(test_dict)'
+    (Pdb) p list(test_dict.keys())
+    ['a', 'b']
 
 
 ## Profiling in ipython
@@ -3018,7 +3325,38 @@ There is also a `@cache` decorator
 [functools.cache](https://docs.python.org/dev/library/functools.html#functools.cache)
 that creates:
 
-> "a thin wrapper around a dictionary lookup for the function arguments. Because it never needs to evict old values, this is smaller and faster than lru_cache() with a size limit.
+> "a thin wrapper around a dictionary lookup for the function arguments. 
+> Because it never needs to evict old values, this is smaller and faster than 
+> lru_cache() with a size limit."
+
+
+#### Clear the cache
+
+- functools documentation  of `@cached_property` 
+  https://docs.python.org/3/library/functools.html#functools.cached_property
+
+    > "The cached value can be cleared by deleting the attribute. This allows 
+    > the cached_property method to run again."
+
+Example:
+
+    from functools import cached_property
+    import random
+
+    class Bicycle:
+        @cached_property
+        def seat_id(self):
+            return random.randint(1000, 9999)
+
+        def invalidate_cache(self):
+            """Invalidate the cached seat_id property."""
+            try:
+                del self.seat_id
+            except AttributeError:
+                pass
+
+I suggested this example as an improvement to the functools documentation 
+https://github.com/python/cpython/issues/135936
 
 
 ## Deprecate arguments
@@ -3057,6 +3395,10 @@ Document python functions with the sphinx convention
 
 
 # Mapping
+
+## Natural earth map
+
+https://www.naturalearthdata.com/
 
 ## Cartopy drawing maps
 
@@ -3954,7 +4296,7 @@ scalar](https://stackoverflow.com/questions/47910328/convert-pandas-dataframe-va
     > safely call squeeze to ensure you have a Series."
 
 
-## Compare data frames
+## Compare values in data frames
 
 Pure equality example from
 [pandas.DataFrame.equals](https://pandas.pydata.org/docs/reference/api/pandas.DataFrame.equals.html)
@@ -3983,6 +4325,24 @@ Other examples
     df.equals(df+1e-6)
     np.testing.assert_allclose(df,df+1e-7)
     np.testing.assert_allclose(df,df+1e-3)
+
+See also `np.isclose` for a vector comparison
+
+
+### Find closest values in another df using .abs().idxmin() on the difference
+
+ # Define a function to find the closest value for one pct_th_vol
+
+    def get_closest_dist_type(pct_th_vol, dist_desc):
+        # Get the index of minimal absolute difference
+        idx = (dist_desc['percentage'] - pct_th_vol).abs().idxmin()
+        return dist_desc.loc[idx, 'dist_type_name']
+
+    # Apply this function to each row in df['pct_th_vol']
+    df['closest_dist_type'] = df['pct_th_vol'].apply(
+    # pct_th_vol is from 0 to 1, multiply by 100
+        lambda x: get_closest_dist_type(x*100, dist_desc)
+    )
 
 
 ## Concatenate and merge
@@ -4162,7 +4522,12 @@ Replace some characters in the columns using a regular expression.
 
     import re
     # Replace spaces by underscores
-    df(columns=lambda x: re.sub(r" ", "_", x, inplace=True)
+    df.rename(columns=lambda x: re.sub(r" ", "_", x), inplace=True)
+
+Use an or pattern to replace one character or the other, only at the end of the 
+string
+
+    df.rename(columns=lambda x: re.sub(r"m3$|t$", "eu", x), inplace=True)
 
 Rename columns to snake case using a regular expression
 
@@ -4224,12 +4589,12 @@ Rename the sink column according to the given mapping:
       df["sink"] = df["sink"].map(sink_mapping)
 
 
-### Reorder columns
+### Reorder columns last column first
 
 Place the last column first
 
       cols = df.columns.to_list()
-      cols = [cols[-1] + cols[:-1]
+      cols = cols[-1:] + cols[:-1]
       df = df[cols]
    
 This [SO Answer](https://stackoverflow.com/a/58776941/2641825) provide 6
@@ -4254,6 +4619,11 @@ Replace Comtrade product code by the FAOSTAT product codes
     # Create a dictionary from 2 columns of a data frame
     product_dict = product_mapping.set_index('comtrade_code').to_dict()['faostat_code']
     df_comtrade["product_code"] = df_comtrade["product_code"].replace(product_dict)
+
+Rename countries
+
+    area_dict = {'Netherlands (Kingdom of the)': "Netherlands"}
+    df["Area"] = df["Area"].replace(area_dict)
 
 
 ### Variable Type
@@ -4466,6 +4836,15 @@ Aggregate a trade data frame by decades
     )
 
 
+### Group by Sum
+
+
+
+The min_count argument requires at least one value otherwise the sum will be NA
+
+    df_agg = df.groupby("A").sum(min_count=1)
+
+
 ### Compute with a lambda function
 
 Beyond standard function such as `sum` and `mean`, it's possible to use a self
@@ -4528,15 +4907,20 @@ method.
 
 ### Unique values 
 
-The fist element of the aggregation dictionary shows how to simply compute all 
-the unique values
+Get unique ages at each time step
+
+    df.groupby("timestep").agg(age=("age", "unique"))
+
+The fist element of the aggregation dictionary shows how to compute all the 
+unique values by defining a lambda function
 
     agg =  {
         # All unique values in a list
         "country_iso2":lambda x: x.unique(),
         # Concatenate a list of strings into a string
         lambda x: "".join(x.unique()),
-        # The first value if the value is repeated and only present once
+        # Get only the first value if the value is repeated and only present 
+        once
         'primary_eq':lambda x: x.unique()[0] if x.nunique() == 1 else np.nan,
         'import_quantity':lambda x: x.unique()[0] if x.nunique() == 1 else np.nan,
         # Sum the values
@@ -4653,6 +5037,12 @@ Compute the area diff
       df["area_diff"] = df.groupby(groupby_area_diff)["area"].transform(
           lambda x: x.diff()
       )
+
+#### Compute a percentage change
+
+Groupby by country and compute a Percentage change
+
+    df|"x"].pct_change()
 
 
 ### Concatenate strings in the same group
@@ -4857,6 +5247,8 @@ refer to pandas IO.
 gives several example using `melt` (easier to rename the  “variable” and “value” columns) 
 or `stack` (designed to work together with MultiIndex objects).
 
+#### Melt
+
 Reshape using `melt`
 
     import seaborn
@@ -4902,8 +5294,89 @@ Reshape using the `wide_to_long` convenience function
     dft
     pandas.wide_to_long(dft, stubnames=["A", "B"], i="id", j="year")
 
+#### Stack columns as an index level
+
+Reshape to long format
+
+    df_long = (df
+        .set_index("disturbance_type")[self.classif_list]
+        .stack().reset_index()
+        .rename(columns={'level_1': 'classifier', 0: 'value'})
+    )
+
+Compare stack to melt, note the importance of `dropna=False` in stack going 
+from 575 to 513 rows without the NA values in `dropna=True` (default argument 
+of stack).
+
+```{python, eval=FALSE}
+ipdb> events_long1 = events.melt(id_vars="disturbance_type",
+value_vars=self.classif_list,
+var_name="classifier",
+value_name='value')
+ipdb> events_long1
+     disturbance_type     classifier  value
+0                  16         status    1.0
+1                  18         status    1.0
+2                  22         status    1.0
+3                  15         status    1.0
+4                  17         status    1.0
+..                ...            ...    ...
+571                30  growth_period   34.0
+572                29  growth_period   34.0
+573                30  growth_period   34.0
+574               800  growth_period   34.0
+575               800  growth_period   34.0
+
+[576 rows x 3 columns]
+ipdb> events_long2 = (events
+.set_index("disturbance_type")[self.classif_list]
+.stack(dropna=False).reset_index()
+.rename(columns={'level_1': 'classifier', 0: 'value'})
+)
+ipdb> events_long2
+     disturbance_type     classifier  value
+0                  16         status    1.0
+1                  16    forest_type    5.0
+2                  16         region   17.0
+3                  16      mgmt_type   18.0
+4                  16  mgmt_strategy   20.0
+..                ...            ...    ...
+571               800  mgmt_strategy   20.0
+572               800        climate   25.0
+573               800      con_broad   31.0
+574               800     site_index   32.0
+575               800  growth_period   34.0
+
+[576 rows x 3 columns]
+
+ipdb> events_long3 = (events
+.set_index("disturbance_type")[self.classif_list]
+.stack(dropna=True).reset_index()
+.rename(columns={'level_1': 'classifier', 0: 'value'})
+)
+ipdb> events_long3
+     disturbance_type     classifier  value
+0                  16         status    1.0
+1                  16    forest_type    5.0
+2                  16         region   17.0
+3                  16      mgmt_type   18.0
+4                  16  mgmt_strategy   20.0
+..                ...            ...    ...
+509               800  mgmt_strategy   20.0
+510               800        climate   25.0
+511               800      con_broad   31.0
+512               800     site_index   32.0
+513               800  growth_period   34.0
+
+[514 rows x 3 columns]
+ipdb>
+
+```
+
 
 ### From long to wide
+
+#### Pivot
 
 Pivot from long to wide format using `pivot`:
 
@@ -4922,7 +5395,7 @@ Pivot from long to wide format using `pivot`:
     # 1     0.0  1.0  2.0  NaN
     # 2     4.0  3.0  NaN  5.0
 
-Rename the (sometimes confusing) axis names
+Rename the (sometimes confusing) axis names when there are many levels
 
     df_wide.rename_axis(columns=[None, None])
 
@@ -4932,6 +5405,11 @@ Rename the (sometimes confusing) axis names
     # 1     0.0  1.0  2.0  NaN
     # 2     4.0  3.0  NaN  5.0
 
+When there is only one level
+
+    # Remove the (sometimes confusing) axis name after pivot
+    df.rename_axis(columns=None, inplace=True)
+
 Add a prefix to a year columns before pivoting 
 
     (df
@@ -4939,6 +5417,50 @@ Add a prefix to a year columns before pivoting
         .pivot(columns="year", index=["product", "scenario"], values="net_trade")
         .reset_index()
     )
+
+
+#### Unstack an index level
+
+Create a multi-level column structure
+
+    import pandas
+    df = pandas.DataFrame({"variable":["x","x","x","x","y","y","y","y"],
+                           "i":["a","a","b","b","a","a","b","b"],
+                           "j":["m","n","m","n","m","n","m","n"],
+                           "value":[1,2,3,4,5,6,7,8]})
+    df = df.set_index(["variable", "i", "j"])
+    print(df)
+    print(df.unstack("variable"))
+    print(df.unstack(["i","j"]))
+
+Reshape to wide format with variables in columns
+
+    df2 = df.unstack(["variable"])
+    # Flaten column index names
+    df2.columns = [cl[0]+"_"+cl[1] for cl in df2.columns.to_flat_index()]
+    print(df2.reset_index())
+
+Flaten row muti index names and column multi index
+
+    df3 = df.unstack(["j"])
+    # Flaten row index
+    df3.index = [row[0]+"_"+row[1] for row in df3.index.to_flat_index()]
+    # Flaten column index names
+    df3.columns = [col[0]+"_"+col[1] for col in df3.columns.to_flat_index()]
+    print(df3.reset_index(names="variable_i"))
+
+Flatten the column names to get format like 'fuel_prod_pikssp2'
+
+    prod_wide2.columns = [f"{col[0]}_{col[1]}" for col in prod_wide2.columns]
+    prod_wide2 = prod_wide2.reset_index()
+
+Unstack the scenario level to create columns
+
+Other example with variables from a cobwood output table
+
+    index = ['country', 'year', 'scenario']
+    df_grouped = prod.set_index(index)[['fuel_prod', 'indround_prod']]
+    df_wide = prod_grouped.unstack('scenario')
 
 
 ### Transpose index and columns
@@ -6125,17 +6647,24 @@ Save a grid plot object to a pdf file
 ### Add another line to a pandas plot
 
 The function `df.plot()` returns a matplotlib axes object for a plot of the A 
-and B variables. You can add another line for a different variable C using the 
-plot() method of that axes object.
+and B variables. 
 
     import pandas
     import matplotlib.pyplot as plt
     df = pandas.DataFrame({"A":range(0,30), "B":range(10,40)})
     df["C"] = df["B"] + 2
-    # Using the plot method
+    # Using the df.plot() method
     ax = df.plot(x="A", y="B")
+
+You can add another line for a different variable C using the plot() method of 
+that axes object.
+
     ax.plot(df["A"], df["C"])
     plt.show()
+
+Plot with title and axis labels (see more arguments in the section below):
+
+    df.plot(title='bla bla', xlabel="lkj", ylabel="lkj")
 
 
 ### Arguments of the df.plot() function
@@ -6152,7 +6681,15 @@ Example values for the df.plot() function:
 
 - `title='bla bla'` add a plot title
 
+- xlabel="lkj"
+
+- ylabel="lkj"
+
 - `colormap` change colours
+
+- xlim : 2-tuple/list Set the x limits of the current axes.
+
+- ylim : 2-tuple/list Set the y limits of the current axes.
 
 
 ### Show pandas plots in ipython
@@ -6226,9 +6763,13 @@ Histogram with a log scale
 
 Using the same df as above show 2 plost side by side based on this [SO answer](https://stackoverflow.com/a/68008119/2641825)
 
+    import pandas
+    import matplotlib.pyplot as plt
+    df = pandas.DataFrame({'x':range(0,30), 'y':range(10,40)})
+    df.set_index('x', inplace=True)
     fig, (ax1, ax2) = plt.subplots(1,2, figsize=(15,6))
-    df.plot(title='Two ranges', ax=ax1)
-    df.plot(title='Two ranges', ax=ax2)
+    df.plot(title='Positive', ax=ax1)
+    (-df).plot(title='Negative', ax=ax2)
     plt.show()
 
 
@@ -6494,14 +7035,6 @@ https://seaborn.pydata.org/generated/seaborn.objects.Plot.facet.html
 
     p.facet("clarity", wrap=3).share(x=False)
 
-
-##### Save to a file
-
-Save to a file
-
-```{python, eval=FALSE}
-Plot.save(loc, **kwargs)
-```
 
 #### Legend
 
@@ -6985,7 +7518,7 @@ with a series of prompt related to a time series plot I was refining.
 
 
 
-#### Grid line plot
+#### Facet Grid line plot
 
 #### relplot
 
@@ -7008,24 +7541,28 @@ Example:
 - adjust the left margin so that the y label doesn't overwrite the axis
 - Set the Y limit to zero
 
-
     g = seaborn.relplot(
         data=fmri, x="timepoint", y="signal", col="region",
         hue="event", style="event", kind="line",
-        col_wrap=1, height=3,
+        col_wrap=1, 
+        height=3,
+        aspect=4,  # Increase this value to make the plot wider
         facet_kws={'sharey': False, 'sharex': False}
     )
-    g.fig.supylabel("Adaptive Engagement of Cognitive Control")
-    g.fig.subplots_adjust(left=0.28, top=0.9)
     g.fig.suptitle("Example")
+    g.set_titles(col_template="{region}") # Simplify facet names
+    g.fig.supylabel("Adaptive Engagement of Cognitive Control")
     g.set_ylabels("Y label")
-    g.set(ylim=(0, None))
-    plt.show()
+    # g.set(ylim=(0, None))
+    g.fig.subplots_adjust(left=0.28, top=0.9)
+    g.savefig("/tmp/plot.pdf", bbox_inches="tight")
 
+Simplify facet names if there are both row and col facets
+
+    g.set_titles(row_template="{row_name}", col_template="{col_name}")
 
 Older example from
 https://seaborn.pydata.org/examples/faceted_lineplot.html
-
 
     import seaborn as sns
     sns.set_theme(style="ticks")
@@ -7098,6 +7635,20 @@ From [SO answer][https://stackoverflow.com/a/59775753/2641825)
 
 > "Plot pairwise relationships in a dataset."
 
+
+### Save to an image or pdf file
+
+Save a Seaborn grid plot to a file
+
+```{python, eval=FALSE}
+g.savefig(composite_plot_dir / "harea_eu.png")
+```
+
+Save a Seaborn object interface plot to a file
+
+```{python, eval=FALSE}
+Plot.save(loc, **kwargs)
+```
 
 ### Scatter Plot
 
@@ -7240,7 +7791,14 @@ gallery](https://www.python-graph-gallery.com/treemap/)
     - Vega gallery https://vega.github.io/vega/examples/
 
 
+# Polars
 
+- https://github.com/pola-rs/polars
+
+    > "Polars is a DataFrame interface on top of an OLAP Query Engine 
+    > implemented in Rust using [Apache Arrow Columnar 
+    > Format](https://arrow.apache.org/docs/format/Columnar.html) as the memory 
+    > model."
 
 # Print
 
@@ -7256,6 +7814,16 @@ For example
                   "\x1b[1;32;42m" + "Spring" + "\x1b[0m" + ", " +
                   "\x1b[1;35;41m" + "Summer" + "\x1b[0m" + ", " +
                   "\x1b[1;35;45m" + "Autumn" + "\x1b[0m" + ", "))
+
+## Align with spaces
+
+Print a list of model parameters aligned to a 12 character spacing
+
+    parameters = dict(zip(['x', 'radius', 'circumference'], [1, 2, 3]))
+    for name, value in parameters.items():
+        print("\t{:12}= {}".format(name, value))
+
+
 
 
 # Profiling and measuring time
@@ -8502,6 +9070,14 @@ how asyncio works with a simulated delay to fetch a web page.
     url = pyqrcode.create('https://www.meetup.com/backnang-data-science/')
     url.png('/tmp/bds_qr.png', scale=8)
 
+To use a transparent background color, set the transparency channel to zero
+
+    url.png('/tmp/bds_qr.png', scale=8, background=[255, 255, 255, 0])
+    
+To change the front color, the black part as well
+
+    url.png('/tmp/bds_qr.png', scale=8, background=[255, 255, 255, 0], module_color=(0, 255, 0, 255))
+
 Installation: 
 
     pip install pyqrcode
@@ -8527,52 +9103,236 @@ Requires pypng to generate PNG images:
 
 - https://airflow.apache.org/docs/apache-airflow/1.10.12/concepts.html
 
-> "DAGs In Airflow, a DAG – or a Directed Acyclic Graph – is a collection of 
-> all the tasks you want to run, organized in a way that reflects their 
-> relationships and dependencies. A DAG is defined in a Python script, which 
-> represents the DAGs structure (tasks and their dependencies) as code. For 
-> example, a simple DAG could consist of three tasks: A, B, and 
-> C. It could say that A has to run successfully before B can run, but C 
-> can run anytime. It could say that task A times out after 5 minutes, and 
-> B can be restarted up to 5 times in case it fails. It might also say that 
-> the workflow will run every night at 10pm, but shouldn’t start until a 
-> certain date. In this way, a DAG describes how you want to carry out your 
-> workflow; but notice that we haven’t said anything about what we actually 
-> want to do! A, B, and C could be anything. Maybe A prepares data for B to 
-> analyze while C sends an email. Or perhaps A monitors your location so B 
-> can open your garage door while C turns on your house lights. The 
-> important thing is that the DAG isn’t concerned with what its constituent 
-> tasks do; its job is to make sure that whatever they do happens at the 
-> right time, or in the right order, or with the right handling of any 
-> unexpected issues. DAGs are defined in standard Python files that are 
-> placed in Airflow’sDAG_FOLDER. Airflow will execute the code in each file 
-> to dynamically build the DAG objects. You can have as many DAGs as you 
-> want, each describing an arbitrary number of tasks. In general, each one 
-> should correspond to a single logical workflow."
+    > "DAGs In Airflow, a DAG – or a Directed Acyclic Graph – is a collection 
+    > of all the tasks you want to run, organized in a way that reflects their 
+    > relationships and dependencies. A DAG is defined in a Python script, 
+    > which represents the DAGs structure (tasks and their dependencies) as 
+    > code. For example, a simple DAG could consist of three tasks: A, B, and 
+    > C. It could say that A has to run successfully before B can run, but C 
+    > can run anytime. It could say that task A times out after 5 minutes, and 
+    > B can be restarted up to 5 times in case it fails. It might also say that 
+    > the workflow will run every night at 10pm, but shouldn’t start until a 
+    > certain date. In this way, a DAG describes how you want to carry out your 
+    > workflow; but notice that we haven’t said anything about what we actually 
+    > want to do! A, B, and C could be anything. Maybe A prepares data for B to 
+    > analyze while C sends an email. Or perhaps A monitors your location so B 
+    > can open your garage door while C turns on your house lights. The 
+    > important thing is that the DAG isn’t concerned with what its constituent 
+    > tasks do; its job is to make sure that whatever they do happens at the 
+    > right time, or in the right order, or with the right handling of any 
+    > unexpected issues. DAGs are defined in standard Python files that are 
+    > placed in Airflow’sDAG_FOLDER. Airflow will execute the code in each file 
+    > to dynamically build the DAG objects. You can have as many DAGs as you 
+    > want, each describing an arbitrary number of tasks. In general, each one 
+    > should correspond to a single logical workflow."
 
-> " Workflows You’re now familiar with the core building blocks of Airflow. 
-> Some of the concepts may sound very similar, but the vocabulary can be 
-> conceptualized like this:
->
-> - DAG: The work (tasks), and the order in which work should take place 
->   (dependencies), written in Python.
-> 
-> - DAG Run: An instance of a DAG for a particular logical date and time.
-> 
-> - Operator: A class that acts as a template for carrying out some work.
-> 
-> - Task: Defines work by implementing an operator, written in Python.
-> 
-> - Task Instance: An instance of a task - that has been assigned to a DAG 
->   and has a state associated with a specific DAG run (i.e for a specific 
->   execution_date).
-> 
-> - execution_date: The logical date and time for a DAG Run and its Task 
->   Instances.
+    > " Workflows You’re now familiar with the core building blocks of Airflow. 
+    > Some of the concepts may sound very similar, but the vocabulary can be 
+    > conceptualized like this:
+    >
+    > - DAG: The work (tasks), and the order in which work should take place 
+    >   (dependencies), written in Python.
+    > 
+    > - DAG Run: An instance of a DAG for a particular logical date and time.
+    > 
+    > - Operator: A class that acts as a template for carrying out some work.
+    > 
+    > - Task: Defines work by implementing an operator, written in Python.
+    > 
+    > - Task Instance: An instance of a task - that has been assigned to a DAG 
+    >   and has a state associated with a specific DAG run (i.e for a specific 
+    >   execution_date).
+    > 
+    > - execution_date: The logical date and time for a DAG Run and its Task 
+    >   Instances.
 
-> By combining DAGs and Operators to create TaskInstances, you can build 
-> complex workflows."
- 
+    > By combining DAGs and Operators to create TaskInstances, you can build 
+    > complex workflows."
+
+- According to https://www.integrate.io/blog/airflow-vs-luigi/
+
+    Robinhood, Square, 9GAG, and Walmart use Airflow.
+
+
+## Luigi
+
+- Luigi https://github.com/spotify/luigi
+  
+  > "helps you build complex pipelines of batch jobs. It handles dependency 
+  > resolution, workflow management, visualization, handling failures, command 
+  > line integration, and much more."
+
+  > "The purpose of Luigi is to address all the plumbing typically associated 
+  > with long-running batch processes. You want to chain many tasks, automate 
+  > them, and failures will happen. These tasks can be anything, but are 
+  > typically long running things like Hadoop jobs, dumping data to/from 
+  > databases, running machine learning algorithms, or anything else."
+
+- Start a simple task with its own local scheduler for a test (not recomended 
+  for production use)
+
+      cd /home/paul/eu_cbm/eu_cbm_hat/scripts/running
+      luigi --module run_in_luigi RunCBM --country-iso2 LU --final-year 2047 --local-scheduler
+
+- Start the central scheduler on a server accessible by all workers:
+
+    luigid --background --port 8082
+
+- Start a task using the central scheduler
+
+    python3 run_in_luigi.py RunCountryModel --country-iso2 LU --final-year 2050 --scheduler-host <scheduler-host> --scheduler-port 8082
+
+- How will I start instances for the 26 EU countries in my model?  
+  https://www.perplexity.ai/search/role-software-architect-at-a-g-Su_81GsxTRG1Zd0azIe6IQ#19
+
+  > - For large-scale or repeated runs, consider using:
+  >    -  Cluster job schedulers (Slurm, Kubernetes jobs) to launch Luigi 
+  >       workers and tasks on multiple nodes.
+  >    -  Workflow orchestrators (e.g., Apache Airflow) to trigger Luigi tasks 
+  >       per country.
+
+- Using the Central Scheduler "There is no central process that automatically 
+  triggers jobs."
+  https://luigi.readthedocs.io/en/latest/central_scheduler.html
+
+    > "While the --local-scheduler flag is useful for development purposes, it’s 
+    > not recommended for production usage. The centralized scheduler serves two 
+    > purposes:
+    > - Make sure two instances of the same task are not running simultaneously
+    > - Provide visualization of everything that’s going on.
+    > Note that the central scheduler does not execute anything for you or help 
+    > you with job parallelization. For running tasks periodically, the easiest 
+    > thing to do is to trigger a Python script from cron or from a 
+    > continuously running process. There is no central process that 
+    > automatically triggers jobs. This model may seem limited, but we believe 
+    > that it makes things far more intuitive and easy to understand."
+
+- Does the central scheduler need to run permanently as a long running process? 
+  https://www.perplexity.ai/search/role-software-architect-at-a-g-Su_81GsxTRG1Zd0azIe6IQ#18
+
+    > "The cron job example you gave
+
+```{bash, eval=FALSE}
+0 0 1 * * /path/to/python /path/to/your_luigi_script.py RunCountryModel --country-iso2 LU --final-year 2050 --scheduler-host <host> --scheduler-port 8082
+```
+
+    > does use the central scheduler, because the command specifies 
+    > --scheduler-host and --scheduler-port. This means the task run connects 
+    > to the central scheduler (luigid) to register task status and coordinate 
+    > with other workers.
+
+    > The central scheduler (luigid) must be running continuously as a 
+    > long-running process on a server accessible to all workers and clients. 
+    > It does not execute tasks itself but tracks task states, prevents 
+    > duplicate runs, and provides a UI for monitoring.
+
+    > Luigi itself does not have a built-in automatic trigger or timer to start 
+    > tasks. Instead, you use an external scheduler like cron to invoke the 
+    > Luigi command at desired intervals (e.g., monthly). The cron job triggers 
+    > the task run, which then interacts with the central scheduler to 
+    > coordinate execution"
+
+- Company users according to https://www.integrate.io/blog/airflow-vs-luigi/
+
+    Stripe, Giphy, Tapingo, and Foursquare use Luigi.
+
+### Task outputs and dependencies
+
+- how to deal with files that have to be exchanged between the different 
+  modelling steps in luigi? https://www.perplexity.ai/search/role-software-architect-at-a-g-Su_81GsxTRG1Zd0azIe6IQ#24
+
+  > When using Luigi to manage workflows where different modeling steps 
+  > exchange files, the recommended approach is to use Luigi’s built-in task 
+  > outputs and dependencies to handle file passing between tasks. Here’s how 
+  > to deal with files exchanged between modeling steps effectively: 
+
+  > 1. Use output() and requires() methods to pass files between tasks. Each Luigi 
+  >    task declares its output as a Target (usually a LocalTarget for files). 
+  >    Downstream tasks declare their dependencies via requires(), returning the 
+  >    upstream task(s). Luigi ensures that dependent tasks run only after their 
+  >    required outputs exist.
+
+  > 2. Organize files and tasks clearly. - Use meaningful directory structures for 
+  >    outputs (e.g., separate folders per modeling step or data type). - Make 
+  >    output paths depend on task parameters to avoid conflicts and enable caching 
+  >    of results.
+
+  > 3. Avoid concurrent writes to the same file Luigi’s patterns documentation 
+  >    recommends not overwriting the same file from multiple tasks simultaneously. 
+  >    If unavoidable, use Luigi’s resources feature to serialize access or design 
+  >    your pipeline to produce unique output files per run.
+
+  > 4. Handling external or manual files Use ExternalTask to represent files 
+  >    created outside Luigi (e.g., manual data dumps). Luigi will wait until such 
+  >    files exist before running dependent tasks.
+
+
+## Input validation
+
+See also the section on input output. This section is once the data has been 
+read how do we validate data as part of a workflow.
+
+
+### IBAN
+
+Use the schwifty package https://pypi.org/project/schwifty/ to validate an IBAN 
+as follows:
+
+    from schwifty import IBAN
+    iban = IBAN('your_iban_number_here')
+
+If the IBAN checksum is incorrect. IBAN creation will return an error.
+
+The main checksum valid internationally is called the [ISO 7064 MOD 97-10 
+algorithm](https://en.wikipedia.org/wiki/ISO/IEC_7064). The resulting checksum 
+digits follow the two-letter country code. They are the third and fourth 
+characters of the IBAN. The MOD 97-10 algorithm is implemented in 
+[`schwifty/checksum/__init__.py`](https://github.com/mdomke/schwifty/blob/main/schwifty/checksum/__init__.py)
+
+Here is an example computing the checksum from the BBAN using low level 
+functions from the schwifty package:
+
+    from schwifty.checksum import ISO7064_mod97_10
+    print("Checksum: ", ISO7064_mod97_10().compute(["370400440532013000", "DE"]))
+    # Checksum:  89
+    print("Checksum: ", ISO7064_mod97_10().compute(["30006000011234567890189", "FR"]))
+    # Checksum:  76
+
+Schwifty decomposes the different parts of an IBAN:
+
+    iban_fr = IBAN("FR7630006000011234567890189")
+    print("Checksum: ", ISO7064_mod97_10().compute([iban_fr.bban, iban_fr.country_code]))
+    # Checksum:  76
+    iban_de = IBAN("DE89370400440532013000")
+    print("Checksum: ", ISO7064_mod97_10().compute([iban_de.bban, iban_de.country_code]))
+
+Different countries have additional checks in place. The checksum rules for 
+different countries are implemented in 
+[schwifty/checksum](https://github.com/mdomke/schwifty/tree/main/schwifty/checksum)
+
+
+### VAT number
+
+Code from https://evatr.bff-online.de/eVatR/xmlrpc/python
+updated to a more recent version of xmlrpc
+
+    import xmlrpc.client
+
+    server_url = 'https://evatr.bff-online.de/'
+    server     = xmlrpc.client.ServerProxy(server_url)
+
+    UstId_1    = 'DE123456789'
+    UstId_2    = 'AB123456789012'
+    Firmenname = 'Firmenname einschl. Rechtsform'
+    Ort        = 'Ort'
+    PLZ        = '1234567'
+    Strasse    = 'Strasse und Hausnummer'
+
+    rpc = server.evatrRPC(UstId_1, UstId_2, Firmenname, Ort, PLZ, Strasse)
+
+    print(rpc)
+
+
 
 # Xarray
 
@@ -8730,7 +9490,7 @@ We can add attributes to qualify metadata.
 
 ### Convert xarray to pandas and back
 
-Convert the xarray dataset to a pandas data frame
+Convert an xarray dataset to a pandas data frame in long format
 
     df = ds.to_dataframe()
     df
@@ -8738,6 +9498,7 @@ Convert the xarray dataset to a pandas data frame
 Convert the data frame back to a dataset
 
     xarray.Dataset.from_dataframe(df)
+
 
 > "Notice that that dimensions of variables in the Dataset have now expanded
 > after the round-trip conversion to a DataFrame. This is because every object
@@ -8750,6 +9511,10 @@ You can also use
 
     xarray.DataArray(df)
 
+You can also convert 2 dimensional xarray dataset to a pandas data frame in 
+wide format
+
+    df_wide = ds.to_pandas()
 
 
 ### Create an empty dataset similar to existing one

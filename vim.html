@@ -13,7 +13,7 @@
 
 <title>Vim Commands</title>
 
-<script src="site_libs/header-attrs-2.28/header-attrs.js"></script>
+<script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
@@ -35,8 +35,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-6.4.2/css/all.min.css" rel="stylesheet" />
-<link href="site_libs/font-awesome-6.4.2/css/v4-shims.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/all.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet" />
 
 <style type="text/css">
   code{white-space: pre-wrap;}
@@ -391,6 +391,9 @@ div.tocify {
       <a href="carbon_budget_model.html">Carbon Budget Model</a>
     </li>
     <li>
+      <a href="cobwood.html">Cobwood forest sector model</a>
+    </li>
+    <li>
       <a href="musical_scales.html">Musical scales</a>
     </li>
   </ul>
@@ -425,6 +428,29 @@ div.tocify {
      
     Publications
   </a>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+    <span class="fa fa-brain"></span>
+     
+    Brain
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="biography.html">Biography</a>
+    </li>
+    <li>
+      <a href="communication.html">Communication</a>
+    </li>
+    <li>
+      <a href="procrastination.html">Procrastination</a>
+    </li>
+    <li>
+      <a href="space.html">Maximalist Degrowth - Space Earth</a>
+    </li>
+  </ul>
 </li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
@@ -724,6 +750,18 @@ to add text at the end of each line in Vim?</a></p>
 mode <code>CTRL V</code>, append to all lines <code>$A</code> a comma ,,
 then press Esc to confirm.”</p>
 </blockquote>
+<div id="insert-a-comma-at-the-end-of-each-line" class="section level3">
+<h3>Insert a comma at the end of each line</h3>
+<ul>
+<li>Enter Visual Block mode: Press <code>Ctrl-v</code></li>
+<li>Select the lines: Use <code>j</code> to move down and select the
+desired lines.</li>
+<li>Append text: Press <code>$A</code> (append after the end of each
+line).</li>
+<li>Type <code>,</code> and press <code>Esc</code> to exit insert
+mode.</li>
+</ul>
+</div>
 <div id="delete-all-lines-that-contain-a-pattern"
 class="section level3">
 <h3>Delete all lines that contain a pattern</h3>
@@ -938,15 +976,20 @@ selection:</p>
 href="https://stackoverflow.com/a/36264759/2641825">remove the last 2
 characters of each line in a selection</a> :</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/..$//</code></pre>
+<div id="other-delimiter-for-path-replacement" class="section level3">
+<h3>Other delimiter for path replacement</h3>
 <p>In case you have slashes in the pattern, you can use another
-separator such as <code>#</code></p>
+delimitor such as <code>#</code></p>
 <pre><code>:%s#/path/to/file#/new/path#g</code></pre>
+<p>For example to replace a path by nothing</p>
+<pre><code>:%s#/home/paul/repos/eu_cbm/eu_cbm_data/output/reference/IE/0/input/csv/##g</code></pre>
 <p>See also:</p>
 <ul>
 <li><a
 href="https://stackoverflow.com/questions/11823616/how-to-include-forward-slash-in-vi-search-replace"
 class="uri">https://stackoverflow.com/questions/11823616/how-to-include-forward-slash-in-vi-search-replace</a></li>
 </ul>
+</div>
 <div id="abbreviations-and-boilerplate-code" class="section level3">
 <h3>Abbreviations and boilerplate code</h3>
 <p>Add a read counter item to a list of papers to read</p>
@@ -1100,6 +1143,12 @@ digit.</p>
 <pre><code>:%s/this\|that/./g</code></pre>
 <p>Replace opening or closing curly braces by two curly braces</p>
 <pre><code>:&#39;&lt;,&#39;&gt;s/{/{{/g | s/}/}}/g</code></pre>
+</div>
+<div id="spaces-and-new-lines" class="section level4">
+<h4>Spaces and new lines</h4>
+<p>Replace the text even if the spaces are sometimes spaces and
+sometimes new lines</p>
+<pre><code>:%s/Hilfe\_s*zum\_s*Begriff\_s*anzeigen//g</code></pre>
 </div>
 </div>
 <div id="replace-list-items" class="section level3">
@@ -1297,11 +1346,6 @@ stop auto indentation</a> explains how to display indentation setting
 for the current file type:</p>
 <pre><code>:verbose set ai? cin? cink? cino? si? inde? indk?</code></pre>
 </div>
-<div id="repeat-commands" class="section level2">
-<h2>Repeat Commands</h2>
-<p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating
-commands, Vim scripts and debugging</a></p>
-</div>
 <div id="save-files" class="section level2">
 <h2>Save files</h2>
 <p>Save the current file</p>
@@ -1375,13 +1419,45 @@ existing block of text to 80 characters</a>:</p>
 <p>To format the text, select it with v and up or down movements, and
 press</p>
 <pre><code>gq</code></pre>
+<p>I defined a custom shortcut <code>Ctrl+P</code> to wrap a
+paragraph</p>
+<pre><code>au BufRead,BufNewFile *.md map &lt;C-P&gt; vipJgqk</code></pre>
+<p>Note vim behaves differently when opening a markdown file from the
+vim file explorer as opposed to opening that file directly. When opening
+the directory at the command line first and then opening the file from
+the vim file explorer, lines wrap at 80 characters.</p>
+<pre><code>vim paper/</code></pre>
+<p>When opening the file at the command line directly, lines wrap at 88
+characters.</p>
+<p>vim paper/paper.md</p>
+<p>How can this be fixed by changing the autocommand?</p>
 <div id="disable-auto-wrap" class="section level3">
 <h3>Disable auto wrap</h3>
 <p>To disable auto wrapping, call</p>
 <pre><code>:set formatoptions=cq</code></pre>
+<p>In <code>.vimrc</code>, I defined a <code>Nowrap</code> command to
+disable auto wrap to edit long tables for example</p>
+<pre><code>command! Nowrap set formatoptions=cq</code></pre>
+<p>Usage:</p>
+<pre><code>:Nowrap</code></pre>
 <p><a href="https://stackoverflow.com/a/23032068/2641825">SO answer on
-how to disable auto wrapping</a>.</p>
+how to disable auto wrapping</a>. It’s necessary to distinguish hard
+wraps which are actual line breaks in the text file from soft wraps
+which appear only on screen.</p>
 </div>
+</div>
+<div id="word-count" class="section level2">
+<h2>Word count</h2>
+<ul>
+<li><a href="https://vim.fandom.com/wiki/Word_count"
+class="uri">https://vim.fandom.com/wiki/Word_count</a></li>
+</ul>
+<blockquote>
+<p>“To count the number of words in the current buffer, press g then
+Ctrl-g.”</p>
+</blockquote>
+<p>To see how many words are in the current file, run:</p>
+<pre><code>:! wc %</code></pre>
 </div>
 </div>
 <div id="select-and-visual-mode" class="section level1">
@@ -1407,8 +1483,15 @@ vf&lt;char&gt; - till a given character</code></pre>
 <p>These selection methods can also be used to delete <code>diw</code>
 and yank <code>yiw</code>.</p>
 </div>
-<div id="enter-commands-save-and-quit" class="section level1">
-<h1>Enter commands, save and quit</h1>
+<div id="commands" class="section level1">
+<h1>Commands</h1>
+<p>Commands are everywhere in this vim page. This is a generic sections
+on commands that talks about command history and how to repeat commands
+for example. See also how to create your own commands under the section
+called configure vim in <code>.vimrc</code>.</p>
+<div id="enter-commands-save-and-quit-for-beginners"
+class="section level2">
+<h2>Enter commands, save and quit for beginners</h2>
 <p>To enter edit mode:</p>
 <pre><code>i</code></pre>
 <p>To enter command mode:</p>
@@ -1427,6 +1510,20 @@ hang terminal emulator?</a> which provides a workaround: entering
 <code>stty -ixon</code> in .bashrc.</p>
 <p>To save content and exit:</p>
 <pre><code>:wq</code></pre>
+</div>
+<div id="command-history" class="section level2">
+<h2>Command history</h2>
+<p>To find a command in the command history, enter the first few letter
+at the <code>:</code> prompt, then press the up arrow of the
+keyboard.</p>
+<p>Display the command history</p>
+<pre><code>q:</code></pre>
+</div>
+<div id="repeat-commands" class="section level2">
+<h2>Repeat Commands</h2>
+<p><a href="http://vimhelp.appspot.com/repeat.txt.html">Repeating
+commands, Vim scripts and debugging</a></p>
+</div>
 </div>
 <div id="email-with-mutt" class="section level1">
 <h1>Email with Mutt</h1>
@@ -1812,6 +1909,10 @@ the files at a particular line number</a>
 <li><p>Use <code>"/"</code> to search, then n forward and N
 backwards <code>"*"</code> to search for the word under the cursor (you
 can also create a mapping to search for a selected text).</p></li>
+<li><p>Use <code>:vimgrep /pattern/ %</code> to display search results
+in a quick fix window. For example display all lines that start and end
+with <code>#</code> in the current file</p>
+<pre><code>:vimgrep /#.*#/ %</code></pre></li>
 <li><p>Use <code>"?"</code> to search backward. Very useful with text
 selection.</p></li>
 <li><p>Use <code>:g/pattern</code> to display a list of all search
@@ -1894,6 +1995,64 @@ explains how to use the .vimrc from Neovim</p></li>
 <li><p><a href="https://nvchad.com/" class="uri">https://nvchad.com/</a>
 Neovim config</p></li>
 </ul>
+<div id="llm-code-completion-in-neovim" class="section level2">
+<h2>LLM code completion in NeoVim</h2>
+<p>See also the bookmark two sections on LLM code completion and coding
+assistant.</p>
+<p>List of neovim code completion tools with Github stars as of February
+2025</p>
+<ul>
+<li><p>avante.nvim <a
+href="https://github.com/yetone/avante.nvim?tab=readme-ov-file#installation"
+class="uri">https://github.com/yetone/avante.nvim?tab=readme-ov-file#installation</a>
+9900 stars</p></li>
+<li><p>codecompanion.nvim <a
+href="https://github.com/olimorris/codecompanion.nvim"
+class="uri">https://github.com/olimorris/codecompanion.nvim</a> 2300
+stars</p></li>
+<li><p>minuet.ai <a
+href="https://github.com/milanglacier/minuet-ai.nvim?tab=readme-ov-file#minuet-ai"
+class="uri">https://github.com/milanglacier/minuet-ai.nvim?tab=readme-ov-file#minuet-ai</a>
+307 stars</p></li>
+<li><p>LLM.nvim <a href="https://github.com/Kurama622/llm.nvim"
+class="uri">https://github.com/Kurama622/llm.nvim</a> 187 stars</p>
+<ul>
+<li>The code completion part is apparently a 95% copy of minuet.ai
+according to <a
+href="https://www.reddit.com/r/neovim/comments/1idfbir/comment/m9z6tz8/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button"
+class="uri">https://www.reddit.com/r/neovim/comments/1idfbir/comment/m9z6tz8/?utm_source=share&amp;utm_medium=web3x&amp;utm_name=web3xcss&amp;utm_term=1&amp;utm_content=share_button</a></li>
+</ul></li>
+<li><p>Neovim plugins for the Perplexity API suggested by Perplexity <a
+href="https://www.perplexity.ai/search/i-am-a-environmental-macroecon-.Na30HtfQdCzocg6SPkenw#2"
+class="uri">https://www.perplexity.ai/search/i-am-a-environmental-macroecon-.Na30HtfQdCzocg6SPkenw#2</a></p>
+<ul>
+<li><p><a href="https://github.com/frankroeder/parrot.nvim"
+class="uri">https://github.com/frankroeder/parrot.nvim</a> Lightweight
+chat-like plugin</p></li>
+<li><p><a href="https://github.com/Robitx/gp.nvim"
+class="uri">https://github.com/Robitx/gp.nvim</a></p></li>
+<li><p>Avante can also use the perplexity API.</p></li>
+</ul></li>
+</ul>
+</div>
+<div id="share-config-between-vim-and-nvim" class="section level2">
+<h2>Share config between vim and nvim</h2>
+<ul>
+<li><a href="https://neovim.io/doc/user/nvim.html#nvim-from-vim"
+class="uri">https://neovim.io/doc/user/nvim.html#nvim-from-vim</a></li>
+</ul>
+<blockquote>
+<p>“Create your init.vim (user config) file”</p>
+</blockquote>
+<pre><code>:exe &#39;edit &#39;.stdpath(&#39;config&#39;).&#39;/init.vim&#39;
+:write ++p</code></pre>
+<blockquote>
+<p>“Add these contents to the file”</p>
+</blockquote>
+<pre><code>set runtimepath^=~/.vim runtimepath+=~/.vim/after
+let &amp;packpath = &amp;runtimepath
+source ~/.vimrc</code></pre>
+</div>
 </div>
 <div id="plugins" class="section level1">
 <h1>Plugins</h1>
