@@ -677,7 +677,7 @@ documentation on a Continuous Integration system:
       interruptible: true
 
 
-#### Conventions and styles
+#### Docstring styles and conventions
 
 Pdoc supports multiple docstring conventions, including:
 
@@ -704,7 +704,6 @@ https://www.datacamp.com/tutorial/docstrings-python :
 
 
 - https://www.perplexity.ai/search/in-14-ref-num-timesteps-30-att-gBja8zHvScWCfIxfpsHJdw#5
-
 
   > "How to Get Consistent, Structured Output
   > - For best results with Pandoc and similar tools: Use NumPy-style 
@@ -3374,6 +3373,9 @@ function.
 
 
 ## Docstring Documentation 
+
+The section on how to create a package has a subsection on documentation and in 
+particular the choice of doctring styles.
 
 Document python functions with the sphinx convention
 [SO Answer](https://stackoverflow.com/a/40596167)

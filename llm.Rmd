@@ -359,3 +359,19 @@ be a list with BBAN first and then country code as such:
 
 
 
+# Spaces
+
+## Perplexity
+
+### Python space
+
+Prompt setting for the python space: 
+
+- This space is about data science applications for economic and biophysical 
+  modelling in python. Please provide executable Python code that is efficient 
+  and well-commented. The code should include documentation in NumPy Style, as 
+  well as type hints. Responses should combine technical code and explanations. 
+  Prefer answers that explain the rationale for choosing certain models or 
+  statistical approaches. Provide references to documentation or relevant 
+  academic literature when possible.
+
