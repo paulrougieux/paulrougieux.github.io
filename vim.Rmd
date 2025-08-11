@@ -2592,7 +2592,7 @@ accessible after pressing `i` on a file name:
     :g/+##
 
 
-### Git commands within vim
+### Git commands using fugitive
 
 Blame the current file in a left side split
 
@@ -2609,6 +2609,32 @@ Since the word diff provided by fugitive is not colourized, I created an alias t
 It's defined in .vimrc as:
 
     command! Gwdiff vert term git diff --word-diff
+
+
+### Rebase with fugitive
+
+Show the log 
+
+    :G log
+
+Navigate to the commit you want to perform the rebase. For example perform an 
+interactive rebase with the commit under the cursor set to edit.
+
+    rm 
+
+If you are happy with the "edit" and "pick" messages at the berining of each 
+line, then pres wq in the rebase window. You will be placed a the commit state 
+of the edit commit, then you will be able to edit files in that commit state. 
+Then amend the commit with 
+
+    :G commit --amend
+
+After amending the commit of interest, Then you will be able to continue the 
+ongoing rebase from the fugitive window with:
+
+    :G
+    rr
+
 
 
 ## Navigate code with tags 
