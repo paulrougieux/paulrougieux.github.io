@@ -1,15 +1,16 @@
 # Taking notes
 alias vi="nvim"
+alias blogp="cd ~/rp/paulrougieux.github.io && nvim python.Rmd"
+alias blogr="cd ~/rp/paulrougieux.github.io && nvim R.Rmd"
 alias bookmark="vim -c 'syn off' ~/rp/bookmarkdown/bookmark.md"
-alias overflow="vim ~/rp/bookmarkdown/work/overflow.md"
-alias matrix="cd ~/rp/bookmarkdown/work && vim matrix.Rmd"
-alias partners="cd ~/rp/bookmarkdown/work/freelance/ && nvim partners.md"
+alias matrix="cd ~/rp/bookmarkdown/work && nvim matrix.Rmd"
+alias overflow="nvim ~/rp/bookmarkdown/work/overflow.md"
+alias partners="cd ~/rp/bookmarkdown/work/freelance && nvim partners.md"
+alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && nvim -c 'syn off' readings_jrc.md"
+
+# Opening files
 alias open="xdg-open"
 alias openallpdf="find -iname '*.pdf' -print0 | xargs -0 -n 1 xdg-open"
-alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && vim -c 'syn off' readings_jrc.md"
-alias blog="cd ~/rp/paulrougieux.github.io && vim ."
-alias blogr="cd ~/rp/paulrougieux.github.io && vim R.Rmd"
-alias blogp="cd ~/rp/paulrougieux.github.io && vim python.Rmd"
 
 # Music
 alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
