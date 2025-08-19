@@ -356,6 +356,18 @@ Delete the old branch name locally and in the remote repository
     git push --delete origin old-branch-name
 
 
+## Upstream branch
+
+Display which upstream branch a branch is tracking:
+
+    git branch -vv 
+
+Change the upstream branch of the current branch
+
+    git push --set-upstream origin new-branch-name
+    git push -u origin new-branch-name
+
+
 # Configuring git 
 
 ## Configuring user name and email

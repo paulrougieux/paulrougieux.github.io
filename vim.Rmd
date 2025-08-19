@@ -1181,11 +1181,13 @@ wrapping](https://stackoverflow.com/a/23032068/2641825).
 It's necessary to distinguish hard wraps which are actual line breaks in the 
 text file from soft wraps which appear only on screen.
 
+
 ## Word count
 
 - https://vim.fandom.com/wiki/Word_count
 
-> "To count the number of words in the current buffer, press g then Ctrl-g."
+> "To count the number of words in the current buffer, press **g then 
+> Ctrl-g**."
 
 To see how many words are in the current file, run:
 

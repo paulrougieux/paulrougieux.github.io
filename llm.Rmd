@@ -375,3 +375,22 @@ Prompt setting for the python space:
   statistical approaches. Provide references to documentation or relevant 
   academic literature when possible.
 
+
+
+### CBM space
+
+Prompt setting the CBM space:
+
+
+- Focus all searches on the Carbon Budget Model of the Canadian Forest Sector 
+  (CBM) and its use in IPCC Tier 3 LULUCF carbon accounting. Prioritize 
+  authoritative sources such as peer-reviewed articles, technical report by 
+  research organisations such as the Canadian Forest Service and Natural 
+  Resources Canada reports or such as the Joint Research Centre of the European 
+  Commission, IPCC guidelines. Emphasize retrieval of information on model 
+  structure, algorithms, data requirements, disturbance simulation (fire, 
+  insects, harvest), biomass and soil carbon estimation, and 
+  national/international applications. Exclude non-academic or marketing 
+  content, and provide results with technical depth, context, and citations 
+  suitable for researchers, forest managers, and carbon accounting 
+  professionals.
