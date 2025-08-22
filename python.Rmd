@@ -7450,6 +7450,15 @@ Code snippet to redraw a legend (didn't use it in the edn)
     g.legend.set_bbox_to_anchor((.05,.05)) #, transform=g.fig.transFigure)
 
 
+#### Get palette and label mapping from a legend
+
+Get the color of the text label from the legend of a facet grid plot
+
+    legend = g._legend
+    legend_labels = [t.get_text() for t in legend.get_texts()]
+    legend_colors = [h.get_color() for h in legend.legend_handles]
+    palette = dict(zip(legend_labels, legend_colors))
+
 
 ### Line plot
 
