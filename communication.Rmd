@@ -58,6 +58,9 @@ rare.
 
 https://posteo.de/en
 
+- Forward spam email to spamreport@posteo.de
+  https://posteo.de/en/help/what-should-i-do-with-a-spam-email
+
 
 ### Thunderbird
 
