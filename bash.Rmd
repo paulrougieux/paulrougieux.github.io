@@ -654,6 +654,29 @@ pdfcrop can be installed from:
     sudo apt-get install texlive-extra-utils
 
 
+### Edit pdf text
+
+- https://stackoverflow.com/questions/9871585/how-to-find-and-replace-text-in-a-existing-pdf-file-with-pdftk-or-other-command
+
+The following suggestion didn't work.
+
+Uncompress the text streams of PDF
+
+    pdftk input.pdf output uncompressed.pdf uncompress
+
+Use sed to replace your text with another
+
+    sed -e "s/ORIGINALSTRING/NEWSTRING/g" <uncompressed.pdf >modified.pdf
+    sed -e "s|ORIGINALSTRING|NEWSTRING|g" <uncompressed.pdf >modified.pdf
+
+If this attempt was successful, re-compress the PDF with pdftk
+
+    pdftk modified.pdf output recompressed.pdf compress
+
+
+
+
+
 ### Rotate PDF
 
 [Stack Exchange Linux and Unix
@@ -1092,6 +1115,13 @@ Check open ports on a system
 
 ### Redirect http to https
 
+To redirect http to https, I used:
+
+    RewriteEngine On
+    RewriteCond %{HTTPS} off
+    RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+
 - Apache documentation on how to redirect http to https 
   https://httpd.apache.org/docs/2.4/rewrite/remapping.html
 
@@ -1102,11 +1132,13 @@ Check open ports on a system
         Redirect "/admin/" "https://www.example.com/admin/"
     </If>
 
-I will try to use 
+I tried to use 
 
     <If "%{SERVER_PROTOCOL} != 'HTTPS'">
         Redirect "/" "https://www.example.com/"
     </If>
+
+But it didn't work. The RewriteRule above did work.
 
 
 ## MAC Address
@@ -2040,6 +2072,42 @@ Decrypt a document
     gpg --output file.ext --decrypt file.ext.gpg
 
 
+### Revoke a key
+
+- How to revoke a GPG Key and upload in GPG server? 
+  https://superuser.com/questions/1526283/how-to-revoke-a-gpg-key-and-upload-in-gpg-server
+
+    > Q "As far as I know, if key is compromised then i can revoke the key 
+    > using revocation certificate."
+
+    > A "Yes, but as long as you have the actual private key (f it's 
+    > compromised but not destroyed), you can always use it to revoke itself. 
+    > That is, it can always generate new revocation certificates "on the fly". 
+    > Instead, the pre-generated revocation certificate exists for situations 
+    > when the private key is completely lost, not merely when it's 
+    > compromised. It's something to store on a USB stick at a friend's house. 
+    > (Of course, you should always keep a backup of the private key off-site 
+    > as well. But the big difference is that a backup of the private key is 
+    > much more sensitive, since if stolen it can be used to do anything under 
+    > your name, whereas the 'revocation certificate' can only be used to do 
+    > one very specific thing.)"
+
+    > Q "Can someone suggest me how to revoke my key with revocation 
+    > certificate?"
+
+    > A "It should be enough to import the revcert into your PGP keyring – it 
+    > is essentially just a key signature ("self-certification" in GnuPG) that 
+    > attaches to your main public key in the exact same way as you can have 
+    > other people sign your key and import those signatures. As soon as it is 
+    > imported, the program should show the key as revoked and you should 
+    > publish the updated public key in standard locations (keyserver, etc.)
+
+    > Q "Also one more doubt is, after revoking keys should I upload at any GPG 
+    > Key server?"
+
+    > A "Yes, you should. Publishing keys (and updates to keys) is what 
+    > keyservers are for."
+
 
 
 ### Sign files
@@ -2264,30 +2332,45 @@ Show environment variables
     printenv 
     printenv LC_TIME
 
+
 ## Jobs and processes 
 
 ### Monitor processes
 
-Display Linux processes
+Display Linux processes with `top` or with the interactive process viewer 
+`htop`:
 
     top
-
-Interactive process viewer
-
     htop
 
-Run a command every 2 seconds, 
-for example to list a folder as new files are being written to it:
+Display processes owned by the user
+
+    ps -u paul
+
+Sort processes by memory usage
+
+    ps -u rougipa -o pid,%mem,rss,comm --sort=-%mem
+    ps -u rougipa -o pid,%mem,rss,comm --sort=-%mem | grep python
+    # Convert memory usage to IEC units (KiB, MiB, GiB)
+    ps -u rougipa -o pid,%mem,rss,comm --sort=-%mem | grep python | numfmt --to=iec --field=3
+
+Find out which program is listening to which port
+
+    sudo netstat -pna | grep <port_number>
+
+
+#### Monitor log files and data updates
+
+Run a command every 2 seconds, for example to list a folder as new files are 
+being written to it:
 
     watch ls
 
 Follow the end of a log file, as it is written
 
     tail filename.log
+    tail -f filename.log
 
-Find out which program is listening to which port
-
-    sudo netstat -pna | grep <port_number>
 
 ### Start, stop, move to background
 
