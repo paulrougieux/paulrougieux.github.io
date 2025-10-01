@@ -188,6 +188,11 @@ The bibliography uses the [Pandoc citation style
 guide](https://pandoc.org/MANUAL.html#extension-citations).
 
 
+# Website
+
+See also the networking and hosting section in the bash page. 
+
+
 # Working habits
 
 ## Sprints
