@@ -1,0 +1,55 @@
+---
+title: "Javascripts Commands"
+author: "Paul Rougieux"
+date: "2025"
+output: 
+  html_document: 
+    toc: yes
+---
+
+
+# Input output
+
+## Parquet files
+
+- hyparquet https://github.com/hyparam/hyparquet is a "dependency-free, pure 
+  JavaScript library for parsing Apache Parquet files".
+
+    - Demo website at https://hyperparam.app/
+
+
+## CSV files
+
+### Compression
+
+- https://www.perplexity.ai/search/please-provide-a-short-descrip-7PlVT6OlTMqCquc7J8vWBg#1
+
+    > "You don’t need to manually compress CSV files. Servers and browsers 
+    > handle it automatically. When a user requests your file, the server 
+    > applies HTTP compression (e.g. gzip or Brotli), the browser decompresses 
+    > it, and your javascript libraries just receives plain CSV data without 
+    > noticing."
+
+**References:**
+
+- MDN: [HTTP compression](https://developer.mozilla.org/en-US/docs/Web/HTTP/Compression)
+- RFC 9110: [Content-Encoding](https://www.rfc-editor.org/rfc/rfc9110.html#name-content-encoding)
+
+
+# Visualization
+
+## Altair
+
+Altair visualizations can be exported from python as JSON files, then rendered 
+in the browser as Javascript.
+
+Pros and cons https://claude.ai/share/6800f20a-e068-450e-bca4-f3e3db45c71b
+
+- Part of the broader Vega visualization ecosystem
+- Benefits from academic research in visualization grammar
+- More principled approach to visualization design
+
+
+## Plotly
+
+
