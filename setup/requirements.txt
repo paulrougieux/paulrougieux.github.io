@@ -1,0 +1,13 @@
+autopaths
+matplotlib
+numexpr
+p_tqdm
+pandas
+plumbing
+pyarrow
+pymarktex
+pystache
+pyyaml
+simplejson
+tqdm
+xarray
