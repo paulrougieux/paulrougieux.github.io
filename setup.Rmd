@@ -1,0 +1,28 @@
+---
+title: "Setup"
+author: "Paul Rougieux"
+date: "2025"
+output: 
+  html_document: 
+    toc: yes
+---
+
+This is a description of how I edit text files for persons looking at my screen 
+and wondering what editor I use to move so fast. Does a text editor still 
+matter in the age of AI?
+
+Let me describe my text editing setup. This text was written by a human with 
+his fingers on a keyboard in Vim.
+
+
+# Text editing
+
+I use Vim or Neovim to edit markdown files and source code. Mostly python code 
+as of 2025, occasionally R code or other programming languages as well.
+
+When editing python code, the most used shortcut is `<leaderkey>p` which sends 
+a paragraph to the ipython read–eval–print loop (REPL). This shortcut uses 
+[vim-slime](https://github.com/jpalardy/vim-slime) to "grab some text and send 
+it to a target" tmux pane.
+
+
