@@ -1,49 +1,53 @@
+" Should be at the beginning we don't need vi compatibility
+set nocompatible              " be iMproved, required
+
+
 """"""""""""""""""""""""""""
 " # Vundle package manager "
 """"""""""""""""""""""""""""
-" Should be at the beginning 
-set nocompatible              " be iMproved, required
-filetype off                  " required
+" **ONLY VIM** uses Vundle, neovim uses another plugin manager
+if !has('nvim')
+  filetype off                  " required
+  " set the runtime path to include Vundle and initialize
+  set rtp+=~/.vim/bundle/Vundle.vim
+  call vundle#begin()
+  " alternatively, pass a path where Vundle should install plugins
+  "call vundle#begin('~/some/path/here')
+  " let Vundle manage Vundle, required
+  " TODO: add tmux navigator currently installed in a different way
+  " TODO: add slime also currently installed in a different way
+  Plugin 'VundleVim/Vundle.vim'
+  " Colour themes for Vim
+  Plugin 'morhetz/gruvbox'
+  Plugin 'nanotech/jellybeans.vim'
+  " Code structure i.e. table of content of classes, methods and functions
+  Plugin 'yegappan/taglist'
+  " Git interface 
+  Plugin 'tpope/vim-fugitive'
+  Plugin 'tpope/vim-dispatch'
+  " Latex editing
+  Plugin 'lervag/vimtex'
+  " Line up text in tables
+  Plugin 'godlygeek/tabular'
+  " Markdown table of content 
+  Plugin 'vim-voom/VOoM'
+  " Markdown citation and syntax
+  Plugin 'vim-pandoc/vim-pandoc'
+  Plugin 'vim-pandoc/vim-pandoc-syntax' 
+  " Python autocompletion 
+  Plugin 'davidhalter/jedi-vim'
+  " Python linter
+  Plugin 'dense-analysis/ale' 
+  " R programming
+  Plugin 'jalvesaq/Nvim-R'
+  Plugin 'jalvesaq/R-Vim-runtime'
+  " Tests
+  Plugin 'vim-test/vim-test'
+  " All of your Plugins must be added before the following line
+  call vundle#end()            " required
+  filetype plugin indent on    " required
+endif
 
-
-" set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
-" alternatively, pass a path where Vundle should install plugins
-"call vundle#begin('~/some/path/here')
-
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
-" Colour themes for Vim
-Plugin 'morhetz/gruvbox'
-Plugin 'nanotech/jellybeans.vim'
-" Code structure i.e. table of content of classes, methods and functions
-Plugin 'yegappan/taglist'
-" Git interface 
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-dispatch'
-" Latex editing
-Plugin 'lervag/vimtex'
-" Line up text in tables
-Plugin 'godlygeek/tabular'
-" Markdown table of content 
-Plugin 'vim-voom/VOoM'
-" Markdown citation and syntax
-Plugin 'vim-pandoc/vim-pandoc'
-Plugin 'vim-pandoc/vim-pandoc-syntax' 
-" Python autocompletion 
-Plugin 'davidhalter/jedi-vim'
-" Python linter
-Plugin 'dense-analysis/ale' 
-" R programming
-Plugin 'jalvesaq/Nvim-R'
-Plugin 'jalvesaq/R-Vim-runtime'
-" Tests
-Plugin 'vim-test/vim-test'
-
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
 "
@@ -149,20 +153,23 @@ set t_Co=256
 " Change the background colour
 "set background=dark
 
-" copied from https://github.com/nanotech/jellybeans.vim#screenshots
-" These settings have to be before setting the colour scheme
-let g:jellybeans_overrides = {
-\    'background': { 'guibg': '303030' },
-\    'signcolumn': { 'guibg': '000000' },
-\}
-" Use the jelly beans colour scheme
-colorscheme jellybeans
+" Vim only setting. Because Neovim loads .vimrc first, before 
+if !has('nvim')
+  " copied from https://github.com/nanotech/jellybeans.vim#screenshots
+  " These settings have to be before setting the colour scheme
+  let g:jellybeans_overrides = {
+  \    'background': { 'guibg': '303030' },
+  \    'signcolumn': { 'guibg': '000000' },
+  \}
+  " Use the jelly beans colour scheme
+  colorscheme jellybeans
 
-" Underline bad spelling instead of highlighting it
-" this should be placed after colorscheme and background colour
-hi clear SpellBad
-"hi SpellBad cterm=underline
-hi SpellBad cterm=underline ctermbg=black
+  " Underline bad spelling instead of highlighting it
+  " this should be placed after colorscheme and background colour
+  hi clear SpellBad
+  "hi SpellBad cterm=underline
+  hi SpellBad cterm=underline ctermbg=black
+endif
 
 """""""""""""""""""
 " # File Explorer "
