@@ -12,3 +12,6 @@ todo.html
 # Except some of them
 !R_files/figure-html/math_in_facet_labels-1.png
 !figures/paul_bellinzona.png
+
+# Ignore temporary config files
+setup/nvim/lazy-lock.json
