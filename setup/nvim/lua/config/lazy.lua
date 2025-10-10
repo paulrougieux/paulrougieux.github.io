@@ -18,25 +18,54 @@ vim.opt.rtp:prepend(lazypath)
 -- Make sure to setup `mapleader` and `maplocalleader` before
 -- loading lazy.nvim so that mappings are correct.
 -- This is also a good place to setup other settings (vim.opt)
-vim.g.mapleader = " "
-vim.g.maplocalleader = "\\"
+-- leader keys are defied in .vimrc sourced by nvim/init.lua
+-- Redefine them here?
+-- vim.g.mapleader = " "
+-- vim.g.maplocalleader = ";"
 
 -- Added by Paul
 -- Setup lazy.nvim
 require("lazy").setup({
   spec = {
-    -- import your plugins
+    -- Import plugins
     { import = "plugins" },
 
     -- Colour theme
     {
       "nanotech/jellybeans.vim",
       priority = 1000,
+      config = function()
+        vim.g.jellybeans_overrides = {
+          background = { guibg = "303030" },
+          signcolumn = { guibg = "000000" },
+        }
+        vim.cmd.colorscheme("jellybeans")
+      end,
     },
 
-    -- Slime send text to a live Read Eval Print Loop
+    -- Slime sends text to a live Read Eval Print Loop
     {
       "jpalardy/vim-slime",
+    },
+
+    -- Navigate between vim splits and tmux panes
+    {
+      "christoomey/vim-tmux-navigator",
+      cmd = {
+        "TmuxNavigateLeft",
+        "TmuxNavigateDown",
+        "TmuxNavigateUp",
+        "TmuxNavigateRight",
+        "TmuxNavigatePrevious",
+        "TmuxNavigatorProcessList",
+      },
+      keys = {
+        { "<c-h>", "<cmd><C-U>TmuxNavigateLeft<cr>" },
+        { "<c-j>", "<cmd><C-U>TmuxNavigateDown<cr>" },
+        { "<c-k>", "<cmd><C-U>TmuxNavigateUp<cr>" },
+        { "<c-l>", "<cmd><C-U>TmuxNavigateRight<cr>" },
+        { "<c-\\>", "<cmd><C-U>TmuxNavigatePrevious<cr>" },
+      },
     },
 
     -- Git interface
@@ -49,7 +78,19 @@ require("lazy").setup({
     -- Markdown table of contents
     {
       "vim-voom/VOoM",
-      ft = "markdown",
+      ft = { "markdown", "rmd", "quarto", "rnoweb" },
+      config = function()
+        -- Create a Toc command for each filetype
+        local augroup = vim.api.nvim_create_augroup("Toc", { clear = true })
+        
+        vim.api.nvim_create_autocmd("FileType", {
+          group = augroup,
+          pattern = { "markdown", "rmd", "quarto", "rnoweb" },
+          callback = function()
+            vim.api.nvim_buf_create_user_command(0, "Toc", "Voom", {})
+          end,
+        })
+      end,
     },
 
     -- Python linter
