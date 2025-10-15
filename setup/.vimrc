@@ -111,8 +111,12 @@ set splitright
 " Recursively search all files in pwd for the word under the cursor 
 nmap <F3> :vimgrep /<C-R><C-W>/ **<CR>
 
-" Toggle taglist
-nnoremap <silent> <F8> :TlistToggle<CR>
+" List python methods in a side bar such as a table of content
+" **ONLY VIM** uses taglist, neovim uses another plugin 
+if !has('nvim')
+  " Toggle taglist
+  nnoremap <silent> <F8> :TlistToggle<CR>
+endif
 
 " Add date 
 command! Date put =strftime('%Y-%m-%d')

@@ -14,8 +14,9 @@ return {
       -- add any opts here
       -- this file can contain specific instructions for your project
       instructions_file = "avante.md",
-      -- for example
-      provider = "claude",
+      -- Set xai as the default provider
+      provider = "xai",
+      -- Options for each provider
       providers = {
         claude = {
           endpoint = "https://api.anthropic.com",
@@ -26,14 +27,10 @@ return {
               max_tokens = 20480,
             },
         },
-        moonshot = {
-          endpoint = "https://api.moonshot.ai/v1",
-          model = "kimi-k2-0711-preview",
-          timeout = 30000, -- Timeout in milliseconds
-          extra_request_body = {
-            temperature = 0.75,
-            max_tokens = 32768,
-          },
+        xai = {
+          model = "grok-code-fast-1", -- Or "grok-4" / keep as  for speed
+          temperature = 0.2,
+          max_tokens = 4096,
         },
       },
     },

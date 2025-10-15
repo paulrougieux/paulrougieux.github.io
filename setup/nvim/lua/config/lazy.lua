@@ -93,6 +93,29 @@ require("lazy").setup({
       end,
     },
 
+    -- Python methods table of contents
+    {
+      'stevearc/aerial.nvim',
+      opts = {
+          -- Determines where the aerial window will be opened
+          --   edge   - open aerial at the far right/left of the editor
+          --   window - open aerial to the right/left of the current window
+          placement = "window",
+          -- Optional: specify the width of the sidebar
+          width = 30,
+      },
+      -- Optional dependencies
+      dependencies = {
+         "nvim-treesitter/nvim-treesitter",
+         "nvim-tree/nvim-web-devicons"
+      },
+      config = function()
+          require('aerial').setup({})
+          -- Map F8 to toggle Aerial
+          vim.keymap.set('n', '<F8>', '<cmd>AerialToggle left<CR>', { noremap = true, silent = true })
+      end,
+    },
+
     -- Python linter
     {
       "dense-analysis/ale",
