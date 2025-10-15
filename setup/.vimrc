@@ -351,12 +351,6 @@ let g:jedi#popup_on_dot = 0
 " Disable call signatures
 let g:jedi#show_call_signatures = "0" 
 
-" Vim Test
-let g:test#python#pytest#executable = 'python3 -m pytest'
-let test#strategy = "make"
-" let test#strategy = "dispatch"
-nmap <silent> <leader>T :TestFile<CR>
-nmap <silent> <leader>a :TestSuite<CR>
 
 " Pytest TODO: delete if not used
 autocmd FileType python nmap <silent><Leader>f <Esc>:Pytest file<CR>
