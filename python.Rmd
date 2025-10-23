@@ -1,7 +1,7 @@
 ---
 title: "Python Commands"
 author: "Paul Rougieux"
-date: "October 2024"
+date: "2025"
 output: 
   html_document: 
     toc: yes
@@ -299,14 +299,56 @@ Note the use of the wildcard * when defining the patch version number. Defining 
     https://docs.anaconda.com/free/navigator/tutorials/manage-environments/#using-an-environment
 
 
-### Mamba
+### Mamba solver in Anaconda
 
 The mamba solver can speed up the dependency resolution process. It doesn't
-require a special mamba installation You can switch the default solver in a
-normal conda installation:
+require a special mamba installation You can switch the default solver to mamba
+in a normal conda installation:
 
     conda install -n base -c defaults conda-libmamba-solver
     conda config --set solver libmamba
+
+
+## Install with Mamba
+
+- Mamba user guide and concepts
+  https://mamba.readthedocs.io/en/latest/user_guide/concepts.html
+
+    - Prefix/Environment
+
+        > "In Unix-like platforms, installing a piece of software consists of
+        > placing files in subdirectories of an “installation prefix”:
+
+        >   - no file is placed outside of the installation prefix
+
+        >   - dependencies must be installed in the same prefix (or standard system
+        >     prefixes with lower precedence)
+
+        > "Note. Examples on Unix: the root of the filesystem, the `/usr/` and
+        > `/usr/local/` directories. A prefix is a fully self-contained and
+        > portable installation. To disambiguate with root prefix, prefix is
+        > often referred to as target prefix. Without an explicit target or
+        > root prefix, you can assume it refers to a target prefix. **An
+        > environment is just another name for a target prefix**. Mamba’s
+        > environments are similar to virtual environments as seen in Python’s
+        > virtualenv and similar software, but more powerful since Mamba also
+        > manages native dependencies and generalizes the virtual environment
+        > concept to many programming languages."
+
+    - Activation 
+
+        > "The activation of an environment makes all its contents available
+        > to your shell. It mainly adds target prefix subdirectories to your `$PATH`
+        > environment variable. Note activation implementation is platform dependent.
+        > When activating an environment from another, you can choose to stack or not
+        > upon the currently activated env. Stacking will result in a new intermediate
+        > prefix: system prefix < base < env1 < env2. "
+
+    - Deactivation
+
+        > "The deactivation is the opposite operation of activation, removing
+        > from your shell what makes the environment content accessible."
+
 
 
 ## Install with the OS's package manager
@@ -350,19 +392,25 @@ To upload a package to pypi, you need a pypi account. The [instructions on
 uploading distribution archives explain how to upload the package to test.pypi](
 https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives):
     
-Upload for project having a pyproject.toml. If you use setuptools-scm to manage 
-the version number based on git tags. `setuptools_scm` automatically adds a 
-hash number to the version if there is no git tag for the latest commit (or 
-change in the repo). The version with a hash number is not acceptable for 
-upload on pypi. Commit and use a git tag to increment minor and major version 
-numbers. This is required before uploading to pypi.
+Pypi upload instructions for project having a `pyproject.toml`. If you use
+setuptools-scm to manage the version number based on git tags. `setuptools_scm`
+automatically adds a hash number to the version if there is no git tag for the
+latest commit (or change in the repo). The version with a hash number is not
+acceptable for upload on pypi. Commit and use a git tag to increment minor and
+major version numbers. This is required before uploading to pypi.
 
     cd package_dir
+    # Use bumpversion for packages still using setup.py
+    # Use git tag for packages using pyproject.toml
     git tag
+    git tag v0.0.2  -m "Version 0.0.2"  
+    git push origin --tags
+    # Build
     python3 -m build
+    # Upload all or only the latest version
     twine upload dist/*
-    # Or pload only the latest versions not already on pypi
     twine upload --skip-existing dist/*
+
 
 Test upload
 
@@ -384,6 +432,7 @@ To use the API token:
 
     Set your username to __token__
     Set your password to the token value, including the pypi- prefix
+
 
 #### Version dependency issue
 
@@ -542,6 +591,18 @@ def __getattr__(name):
         from eu_cbm_hat.bud import Bud
         return Bud
     raise AttributeError(f"module '{__name__}' has no attribute '{name}'")
+```
+
+
+
+### Module directory
+
+Get the directory where the package is located from the location of its init 
+file:
+
+```{python, eval=FALSE}
+INIT_FILE = sys.modules[__name__].__file__
+MODULE_DIR = Path(INIT_FILE).parent
 ```
 
 
@@ -934,6 +995,19 @@ path can be deduced from
 - Illustration of the complementarity between pyenv and pipenv.
 
 
+### Location of virtual environment directories
+
+- Manage the Location of Your Virtual Environments 
+  https://www.pythonguis.com/tutorials/python-virtual-environments/#manage-the-location-of-your-virtual-environments
+
+    > "The most common one is inside the relevant project folder. As you 
+    > already learned, the folder will usually be named venv or .venv."
+    > [...]
+    > make sure to ignore the virtual environment folder by adding it to 
+    > .gitignore.
+
+
+
 ### Remove environment variables
 
 To test a fresh install of a package or test it in conditions where some
@@ -942,6 +1016,25 @@ environmental variables are not defined.
 For example remove environment variables with `unset`.
 
     unset BIOTRADE_DATABASE_URL
+
+
+### Penv
+
+A virtual environment for many models
+
+    mkdir ~/rp/penv
+    python3 -m venv ~/rp/penv
+    source ~/rp/penv/bin/activate
+    # Upgrade pip
+    python -m pip install --upgrade pip
+
+See setup/requirements.txt
+
+Install these packages in the virtual environment
+
+    cd ~/rp/penv/
+    source ~/rp/penv/bin/activate
+    pip install -r /home/paul/rp/paulrougieux.github.io/setup/requirements.txt
 
 
 # Applications
@@ -1713,9 +1806,11 @@ You can also use gzip compression for a smaller file size (but slower read and w
     iris.to_parquet("/tmp/iris.parquet.gzip", compression='gzip') 
 
 
-### Partition column
+### AA partition column
 
-Write to multiple files along a column used as partition variable
+One of the main reason I use parquet, besides file compression, is its ability 
+to write a data frame to multiple files automatically split by sub directories 
+along columns used as partition variables:
 
     iris.to_parquet("/tmp/iris",partition_cols="species") 
 
@@ -1758,6 +1853,87 @@ Changing it back to a strings makes the 2 data frames equals again.
     # True
 
 
+### Data types
+
+Note that a pyarro schema is different from a pyarrow parquet schema
+
+- `pyarrow.Schema` contains a named collection of types  with `.names` and 
+  `.types` attributes
+  https://arrow.apache.org/docs/python/generated/pyarrow.Schema.html
+
+- `pyarrow.parquet.ParquetSchema` only has names attributes, but you can 
+  convert it to an arrow schema with the `to_arrow_schema()` method.
+
+
+- a schema has names and types
+
+
+#### Check data types across parquet partitions
+
+Functions to read parquest files with heterogenous schemas. For example between 
+1999 and 2000 the Comtrade bilateral trade columns altqty and grosswgt change 
+from null to double.
+
+- I wrote the function below using perplexity : 
+  https://www.perplexity.ai/search/please-create-a-function-that-BmxfzA5aSGeHKQLX37PO3w#8
+  but perplexity didn't come up with the reshape format and it provided an 
+  unusable function.
+
+
+```{python, eval=FALSE}
+
+def get_parquet_partition_column_types(directory: Union[str, pathlib.Path]) -> pandas.DataFrame:
+    """
+    List column types for all parquet files in all partitions of a dataset directory.
+
+    Parameters
+    ----------
+    product_directory : str or Path
+        Root directory of the partitioned parquet dataset.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with columns: file_path, and all columns in the data
+
+    Examples
+    --------
+    >>> import pathlib
+    >>> product_directory = pathlib.Path.home() / "rp/forobs/biotrade_data/comtrade/products/download_date=20250906/product_code=440791"
+    >>> df = get_parquet_partition_column_types(product_directory)
+    >>> # If there is more than one data type print the column name
+    >>> for col in df.columns[1:]:
+    ...     unique_values = df[col].unique()
+    ...     if len(unique_values) > 1:
+    ...         print(col, "has more than one value:", unique_values)
+
+    """
+    directory = pathlib.Path(directory)
+    df_all = pandas.DataFrame()
+    for parquet_file in directory.glob('**/*.parquet'):
+        try:
+            pf = pyarrow.parquet.ParquetFile(parquet_file)
+            # Convert to an arrow schema to get the types attributes
+            schema = pf.schema.to_arrow_schema()
+            df = pandas.DataFrame({
+                "file_name": str(parquet_file),
+                "column_name": schema.names,
+                "column_type": schema.types})
+        except Exception as e:
+            df = pandas.DataFrame({
+                'file_name': str(parquet_file),
+                'column_name': '<ERROR>',
+                'column_type': str(e)
+            })
+        df_all = pandas.concat([df_all, df])
+    # Reshape to wide format
+    df_all_wide = df_all.pivot(columns="column_name", index="file_name", values="column_type")
+    return df_all_wide
+
+```
+
+
+
 ### Filters
 
 Read  only part of the content from parquet files with a filter. See
@@ -1784,9 +1960,9 @@ Depending on whether or not the query is on the partition variable, read time
 can be increased by a lot. See experiment in the next section.
 
 
-### Experiment with the parquet format using filters and partition columns.
+#### Experiment with the parquet format using filters and partition columns.
 
-Note the detaset to perform these comparisons is
+Note the dataset to perform these comparisons is
 not made available here. I keep these for information purposes.
 
 Compare a read of 2 countries with the read of the whole dataset
@@ -1824,6 +2000,27 @@ Also try the feather format.
     # start_time = timeit.default_timer()
     # ft_frde2 = pandas.read_feather(la_fo_data_dir / "comtrade_forest_footprint.feather")
     # print("Reading a feather file took:",timeit.default_timer() - start_time)
+
+
+### One large parquet file or many smaller files?
+
+[Is it better to have one large parquet file or lots of smaller parquet
+files?](https://stackoverflow.com/a/59535659/2641825)
+
+> "Notice that Parquet files are internally split into row groups
+> https://parquet.apache.org/documentation/latest/ So by making parquet files
+> larger, row groups can still be the same if your baseline parquet files were
+> not small/tiny. There is no huge direct penalty on processing, but opposite,
+> there are more opportunities for readers to take advantage of perhaps larger/
+> more optimal row groups if your parquet files were smaller/tiny for example
+> as row groups can't span multiple parquet files."
+
+> "Also larger parquet files don't limit parallelism of readers, as each
+> parquet file can be broken up logically into multiple splits (consisting of
+> one or more row groups)."
+
+> "The only downside of larger parquet files is it takes more memory to create
+> them. So you can watch out if you need to bump up Spark executors' memory."
 
 
 ### What is the difference between Apache Arrow and Apache Parquet?
@@ -1882,30 +2079,10 @@ Also try the feather format.
 >     short-term storage or caching.
 
 
-### One large parquet file or many smaller files?
+### ZZ see also
 
-[Is it better to have one large parquet file or lots of smaller parquet
-files?](https://stackoverflow.com/a/59535659/2641825)
-
-> "Notice that Parquet files are internally split into row groups
-> https://parquet.apache.org/documentation/latest/ So by making parquet files
-> larger, row groups can still be the same if your baseline parquet files were
-> not small/tiny. There is no huge direct penalty on processing, but opposite,
-> there are more opportunities for readers to take advantage of perhaps larger/
-> more optimal row groups if your parquet files were smaller/tiny for example
-> as row groups can't span multiple parquet files."
-
-> "Also larger parquet files don't limit parallelism of readers, as each
-> parquet file can be broken up logically into multiple splits (consisting of
-> one or more row groups)."
-
-> "The only downside of larger parquet files is it takes more memory to create
-> them. So you can watch out if you need to bump up Spark executors' memory."
-
-
-### See also
-
-- It's not possible to [store multiple data frames of different widths with parquet](https://stackoverflow.com/questions/50456673/storing-multiple-dataframes-of-different-widths-with-parquet)
+- It's not possible to [store multiple data frames of different widths with 
+  parquet](https://stackoverflow.com/questions/50456673/storing-multiple-dataframes-of-different-widths-with-parquet)
 
 - [Control row groups size with pandas
   df.to_parquet](https://stackoverflow.com/questions/59972588/control-row-groups-with-pandas-dataframe-to-parquet)
@@ -5206,6 +5383,29 @@ groupby](https://stackoverflow.com/questions/37057187/pandas-interpolate-within-
     df.groupby("a")["b"].transform(pandas.Series.interpolate)
 
 
+## Options
+
+Check if a future attribute is available as a pandas option
+
+Note: I furst check the option on this way, but the location of future options 
+has changed between pandas 1.5 and pandas 2, therefore it's better to use a try 
+except statement see further down below.
+
+    if hasattr(pd.options.future, 'no_silent_downcasting'):
+        print("no_silent_downcasting available")
+
+
+Opt in to future behaviour to remove pandas FutureWarning: Downcasting
+behavior in `replace` is deprecated and will be removed in a future version.
+
+    try:
+        pd.set_option('future.no_silent_downcasting', True)
+    except (AttributeError, pd.errors.OptionError):
+        # If the option doesn't exist in this pandas version, skip it
+        pass
+
+
+
 ## PyArrow
 
 - [Apache Arrow overview](https://arrow.apache.org/overview/) explains the
@@ -7415,6 +7615,10 @@ the `height` and `aspect` arguments of the FacetGrid call as such:
 
 > ``aspect * height`` gives the width of each facet in inches.
 
+The `height` and `aspect` arguments can also be used on relplot see
+`seaborn.relplot?`.
+
+
 
 ### Legend
 
@@ -8986,6 +9190,61 @@ pytest [assert](https://docs.pytest.org/en/6.2.x/assert.html)
 
 ### Fixtures
 
+- pytest fixtures https://docs.pytest.org/en/stable/explanation/fixtures.html
+
+  > In testing, a fixture provides a defined, reliable and consistent context for
+  > the tests. This could include environment (for example a database configured
+  > with known parameters) or content (such as a dataset).
+
+  > Fixtures define the steps and data that constitute the arrange phase of a test
+  > (see Anatomy of a test). In pytest, they are functions you define that serve
+  > this purpose. They can also be used to define a test’s act phase; this is a
+  > powerful technique for designing more complex tests.
+
+  > The services, state, or other operating environments set up by fixtures are
+  > accessed by test functions through arguments. For each fixture used by a test
+  > function there is typically a parameter (named after the fixture) in the test
+  > function’s definition.
+
+  > We can tell pytest that a particular function is a fixture by decorating it
+  > with @pytest.fixture. Here’s a simple example of what a fixture in pytest might
+  > look like:
+
+- See also the section on Improvements over xUnit-style setup/teardown
+  functions
+  https://docs.pytest.org/en/stable/explanation/fixtures.html#improvements-over-xunit-style-setup-teardown-functions
+
+
+
+    @pytest.fixture
+    def primary_product_dataset():
+        """Create a sample primary products dataset         """
+        ds = xarray.Dataset(
+            {
+                "cons_constant": xarray.DataArray([2, 3, 4], dims=["country"]),
+                "imp_constant": xarray.DataArray([2, 3, 4], dims=["country"]),
+                "price": xarray.DataArray(
+                    [[1, 2], [3, 4], [5, 6]], dims=["country", "year"]
+                ),
+                "cons_paper_production_elasticity": xarray.DataArray(
+                    [0.9, 1.0, 0.8], dims=["country"]
+                ),
+                "cons_price_elasticity": xarray.DataArray(
+                    [0.5, 0.6, 0.7], dims=["country"]
+                ),
+                "cons_products_elasticity": xarray.DataArray(
+                    [0.5, 0.6, 0.7], dims=["country"]
+                ),
+                "tariff": xarray.DataArray(
+                    [[0.1, 0.2], [0.3, 0.4], [0.5, 0.6]], dims=["country", "year"]
+                ),
+                "c": xarray.DataArray([True, True, True], dims=["country"]),
+            }
+        )
+        return ds
+
+
+
     import pytest
     import xarray
     from cobwood.gfpmx_equations import (
@@ -9015,6 +9274,72 @@ pytest [assert](https://docs.pytest.org/en/6.2.x/assert.html)
         result = consumption(ds, t)
         xarray.testing.assert_allclose(result, expected_result)
 
+
+#### Interactive sessions and fixtures
+
+If your goal is debugging or inspection (in a notebook or console), remove the
+`@pytest.fixture` decorator temporarily. To be able to allocate the output of
+the function to an actual dataset: 
+
+>>> ds = secondary_product_dataset()
+
+Otherwise pytest will return an error:
+
+    > Failed: Fixture "secondary_product_dataset" called directly. Fixtures are
+    > not meant to be called directly, but are created automatically when test
+    > functions request them as parameters. See
+    > https://docs.pytest.org/en/stable/explanation/fixtures.html for more
+    > information about fixtures, and
+    > https://docs.pytest.org/en/stable/deprecations.html#calling-fixtures-directly
+
+- pytest documentation on calling fixtures directly
+  https://docs.pytest.org/en/stable/deprecations.html#calling-fixtures-directly
+
+    > "Calling a fixture function directly, as opposed to request them in a
+    > test function, is deprecated."
+
+    > "For example:
+
+    @pytest.fixture
+    def cell():
+        return ...
+
+
+    @pytest.fixture
+    def full_cell():
+        cell = cell()
+        cell.make_full()
+        return cell
+
+    > "This is a great source of confusion to new users, which will often call
+    > the fixture functions and request them from test functions
+    > interchangeably, which breaks the fixture resolution model.
+
+    > "In those cases just request the function directly in the dependent fixture:
+
+    @pytest.fixture
+    def cell():
+        return ...
+
+
+    @pytest.fixture
+    def full_cell(cell):
+        cell.make_full()
+        return cell
+
+
+#### Sharing test data
+
+- pytest documentation on sharing test data
+  https://docs.pytest.org/en/stable/explanation/fixtures.html#sharing-test-data
+
+  > "If you want to make test data from files available to your tests, a good way to
+  > do this is by loading these data in a fixture for use by your tests. This makes
+  > use of the automatic caching mechanisms of pytest.
+
+  > Another good approach is by adding the data files in the tests folder. There
+  > are also community plugins available to help to manage this aspect of testing,
+  > e.g. pytest-datadir and pytest-datafiles."
 
 
 
