@@ -58,7 +58,7 @@ alias treep='tree -P "*.py"  -I "__pycache__"'
 # Paths for python data
 export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
 export DEFORESTFOOT_DATA="$HOME/repos/forobs/deforestfoot_data/"
-export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost:5433/biotrade"
+# export BIOTRADE_DATABASE_URL="postgresql://rdb@localhost:5433/biotrade"
 export COBWOOD_DATA="$HOME/repos/cobwood_data/"
 export EU_CBM_AIDB="$HOME/repos/eu_cbm/eu_cbm_aidb/"
 export EU_CBM_DATA="$HOME/repos/eu_cbm/eu_cbm_data/"
@@ -78,6 +78,11 @@ export PYTHONPATH="$HOME/repos/eu_cbm/libcbm_py/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/forest_puller/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/forobs/biotrade/":$PYTHONPATH
 export PYTHONPATH="$HOME/repos/plumbing/":$PYTHONPATH
+
+# Make conda available
+if [ -f /opt/conda/etc/profile.d/conda.sh ]; then
+    source /opt/conda/etc/profile.d/conda.sh
+fi
 
 # Create tag files for an R project, from within an R project's R folder
 rtags() {
