@@ -23,6 +23,7 @@ vim.opt.rtp:prepend(lazypath)
 -- vim.g.mapleader = " "
 -- vim.g.maplocalleader = ";"
 
+
 -- Added by Paul
 -- Setup lazy.nvim
 require("lazy").setup({
@@ -72,6 +73,9 @@ require("lazy").setup({
     {
       "tpope/vim-fugitive",
       cmd = { "Git", "G", "Gwrite", "Gread", "Gdiffsplit" },
+      config = function()
+        vim.keymap.set('n', '<leader>g', '<cmd>belowright Git<cr>', { desc = 'Git status (below)' })
+      end
     },
     "tpope/vim-dispatch",
 
