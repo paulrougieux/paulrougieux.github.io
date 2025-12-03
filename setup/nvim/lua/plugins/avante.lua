@@ -8,7 +8,10 @@ return {
         or "make",
     event = "VeryLazy",
     version = false, -- Never set this value to "*"! Never!
-    commit = "216ba4a8b2b75", -- Revert to a previous commit if needed
+    -- See issue https://github.com/yetone/avante.nvim/issues/2825
+    -- commit = "216ba4a8b2b75", -- Revert to a previous commit where the API call was working
+    -- See pull request https://github.com/yetone/avante.nvim/pull/2845/commits/d2b56ab19b5225236a35c27ad8fd3bb10631954f?diff=split&w=0
+    -- commit = "d2b56ab19b5225236a35c27ad8fd3bb10631954f", ---Revert to the commit of a pull request 
     ---@module 'avante'
     ---@type avante.Config
     opts = {

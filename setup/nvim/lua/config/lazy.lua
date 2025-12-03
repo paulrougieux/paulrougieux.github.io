@@ -73,9 +73,9 @@ require("lazy").setup({
     {
       "tpope/vim-fugitive",
       cmd = { "Git", "G", "Gwrite", "Gread", "Gdiffsplit" },
-      config = function()
-        vim.keymap.set('n', '<leader>g', '<cmd>belowright Git<cr>', { desc = 'Git status (below)' })
-      end
+      keys = {
+          { "<leader>g", "<cmd>belowright Git<cr>", desc = "Git status (below)" },
+      },
     },
     "tpope/vim-dispatch",
 
@@ -121,13 +121,6 @@ require("lazy").setup({
     },
 
     -- Python linter
-    {
-      "dense-analysis/ale",
-      event = { "BufReadPre", "BufNewFile" },
-      config = function()
-        -- Add your ALE configuration here if needed
-      end,
-    },
   },
   -- Configure any other settings here. See the documentation for more details.
   -- colorscheme that will be used when installing plugins.

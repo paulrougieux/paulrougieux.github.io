@@ -1,3 +1,4 @@
+export EDITOR=nvim
 # Taking notes
 alias vi="nvim"
 alias blogp="cd ~/rp/paulrougieux.github.io && nvim python.Rmd"
@@ -50,9 +51,27 @@ alias vpns="expressvpn status"
 # Python
 # Activate the default environment
 alias penv="source ~/rp/penv/bin/activate"
-alias p="source ~/rp/penv/bin/activate&&ipython"
 alias jlab="source ~/rp/penv/bin/activate &&jupyter lab"
 alias treep='tree -P "*.py"  -I "__pycache__"'
+# Function to start ipython in a virtual env, unless an env is already started
+p() {
+    # Check if a venv is active
+    if [ -n "$VIRTUAL_ENV" ]; then
+        echo "venv environment '$VIRTUAL_ENV' is already active"
+        ipython
+    # Check if conda env is active
+    elif [ -n "$CONDA_DEFAULT_ENV" ]; then
+        echo "Conda environment '$CONDA_DEFAULT_ENV' is already active"
+        ipython
+    # Check if pyenv is active (and not using system Python)
+    elif command -v pyenv >/dev/null 2>&1 && [ "$(pyenv version-name)" != "system" ]; then
+        echo "pyenv environment '$(pyenv version-name)' is already active"
+        ipython
+    else
+        # No environment active, start your default one
+        source ~/rp/penv/bin/activate && ipython  # or whatever your default is
+    fi
+}
 
 
 # Paths for python data
@@ -64,6 +83,7 @@ export EU_CBM_AIDB="$HOME/repos/eu_cbm/eu_cbm_aidb/"
 export EU_CBM_DATA="$HOME/repos/eu_cbm/eu_cbm_data/"
 export FOREST_PULLER_CACHE="$HOME/rp/puller_cache/"
 export OBS3DF_METHODS="$HOME/repos/forobs/obs3df_methods"
+export TIMBA_DATA_DIR="$HOME/eu_cbm/TiMBA_Data"
 
 # Paths for python modules in development
 export PYTHONPATH="$HOME/repos/autopaths/":$PYTHONPATH

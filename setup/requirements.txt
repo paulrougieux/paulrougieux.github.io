@@ -11,6 +11,7 @@ pre-commit
 pyarrow
 pymarktex
 pystache
+pytest
 pyyaml
 seaborn
 simplejson
