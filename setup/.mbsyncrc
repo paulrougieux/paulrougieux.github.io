@@ -1,0 +1,26 @@
+IMAPAccount gmail
+Host imap.gmail.com
+User paul.rougieux@gmail.com
+PassCmd "pass gmail"
+TLSType IMAPS  # Updated from SSLType
+AuthMechs LOGIN
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/Mail/
+Inbox ~/Mail/INBOX
+SubFolders Verbatim
+
+Channel gmail
+Far :gmail-remote:
+Near :gmail-local:
+Patterns *
+Create Both
+# Expunge Both removes messages that are marked as deleted on both sides, so
+# that server-side deletions become effective instead of just flagged.
+Expunge Both
+SyncState *
+
+

@@ -11,6 +11,8 @@ neww
 rename-window server 
 neww
 rename-window todo
+neww
+rename-window llm
 select-window -t :1 
 
 # Tools used on desktop
