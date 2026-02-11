@@ -170,6 +170,28 @@ can change the channel to
     >    AMD64."
 
 
+### Environment
+
+Creating a Conda Environment
+
+    conda create --name myenv
+
+To create and also specify packages (e.g., Python 3.9) during creation
+
+    conda create --name myenv python=3.9
+
+Activate the environment to use it
+
+    conda activate myenv
+
+
+#### Deleting a Conda Environment
+
+Remove the timbaenv 
+
+    conda env remove --name timbaenv
+
+
 ### Install
 
 Documentation conda.io  [installing
@@ -407,7 +429,7 @@ major version numbers. This is required before uploading to pypi.
     git push origin --tags
     # Build
     python3 -m build
-    # Upload all or only the latest version
+    # Upload all builds or only the latest version
     twine upload dist/*
     twine upload --skip-existing dist/*
 
@@ -605,6 +627,15 @@ INIT_FILE = sys.modules[__name__].__file__
 MODULE_DIR = Path(INIT_FILE).parent
 ```
 
+
+
+### Namespace
+
+To make functions accessible at the top‑level namespace (like np.array,
+pd.read_csv), reexport them into the main package name space:
+
+    from .growth import load_yield
+    __all__ = ["load_yield", ...]
 
 
 ### Version
@@ -1037,6 +1068,48 @@ Install these packages in the virtual environment
     pip install -r /home/paul/rp/paulrougieux.github.io/setup/requirements.txt
 
 
+## pyenv
+
+Change the version of python you are using. This is
+complementary to virtual environments. pyenv is a pure bash
+script that doesn't depend on python. 
+
+- https://github.com/pyenv/pyenv
+
+    > "pyenv lets you easily switch between multiple versions of
+    > Python."
+
+
+
+# Bash function to start ipython in a virtual env
+
+
+Bash function to start ipython in a virtual env, unless an env
+is already started.
+
+
+```{bash, eval=FALSE}
+p() {
+    # Check if a venv is active
+    if [ -n "$VIRTUAL_ENV" ]; then
+        echo "venv environment '$VIRTUAL_ENV' is already active"
+        ipython
+    # Check if conda env is active
+    elif [ -n "$CONDA_DEFAULT_ENV" ]; then
+        echo "Conda environment '$CONDA_DEFAULT_ENV' is already active"
+        ipython
+    # Check if pyenv is active (and not using system Python)
+    elif command -v pyenv >/dev/null 2>&1 && [ "$(pyenv version-name)" != "system" ]; then
+        echo "pyenv environment '$(pyenv version-name)' is already active"
+        ipython
+    else
+        # No environment active, start your default one
+        source ~/rp/penv/bin/activate && ipython  # or whatever your default is
+    fi
+}
+```
+
+
 # Applications
 
 - towardsdatascience.com [Plotly Dash versus
@@ -1064,6 +1137,15 @@ select a default value.
     n_partners = streamlit.sidebar.slider(
         "Select N First Partners", min_value=1, max_value=10, value=5
     )
+
+
+### How to prevent reloading the whole page
+
+- 2021 Discussion on a streamlit user forum on how to prevent reloading the
+  whole page.
+  https://discuss.streamlit.io/t/how-to-prevent-the-reloading-of-the-whole-page-when-i-let-the-user-to-perform-an-action/10800/22
+
+    - Some comments point to cache and session state.
 
 
 # Compilers
@@ -1495,6 +1577,11 @@ Blogs and Stackoverflow
 
 
 ## SQLite
+
+Create an SQLite engine from a file
+
+    from sqlalchemy import create_engine
+    engine = create_engine('sqlite:///relative_path_to_file.db')
 
 Create an SQLITE in memory database and add a table to it. 
 
@@ -2228,6 +2315,14 @@ Invert keys and values
     {value:key for key,value in ceci.items()}
 
 
+#### Sort dict keys
+
+Return a list of sorted dictionary keys
+
+    from eu_cbm_hat.core.continent import continent
+    sorted(continent.combos.keys())
+
+
 ### Iterator
 
 The `map` function makes an iterator object of type `map`
@@ -2300,6 +2395,17 @@ Using `extend`:
 
 
 ### Set operations
+
+#### Check for an empty set
+
+Check for an empty set by comparing it to the empty set
+
+    ({1} - {1}) == set()
+
+Check for an empty set by using not
+
+   not ({1} - {1})
+   not ({1} - {2})
 
 
 #### Difference between sets
@@ -2468,6 +2574,31 @@ def my_function(arg: GFPMX):
 
 See the sub-section on py.typed in the "create a package" section.
 
+
+### Mypy static type checker
+
+Install mypy
+
+    pip install mypy
+
+Then install common types otherwise mypy doesn't know about
+types in common libraries such as pandas, scipy and seaborn.
+
+    mypy --install-types
+
+Install other types
+
+    pip install types-PyYAML
+    pip install types-tqdm
+
+These type annotations packages of the form `types-package_name` are generated
+by the type shed project https://github.com/python/typeshed
+
+    > "Typeshed contains external type annotations for the Python standard
+    > library and Python builtins, as well as third-party packages that are
+    > contributed by people external to those projects. This data can, e.g., be
+    > used for static analysis, type checking, type inference, and
+    > autocompletion."
 
 
 ## Meta programming
@@ -4198,6 +4329,21 @@ All code below assumes you have imported pandas
 
 ## Assign values
 
+### Apply function with extra argument
+
+Apply to a series allows to pass extra arguments as args:
+
+    .apply(mean_without_peaks, args=(self.n_peaks_to_remove_flux_by_grade))
+
+You can also pass a named argument with kwargs
+
+    df[column] = (
+        df[column]
+        .rolling(window=self.n_years_window_flux_by_grade, min_periods=1)
+        .apply(mean_without_peaks, kwargs={'n_peaks_to_remove': n_peaks_to_remove})
+    )
+
+
 ### Create a data frame
 
 You can create a data frame by passing a **dictionary of lists** with column names as keys
@@ -4649,6 +4795,15 @@ Select only certain columns in a list
 
 ### NA values in columns
 
+#### Select columns with at least one value
+
+Get a single boolean value telling whether a group of columns contains at least
+one non NA value:
+
+    fractions_defined = (~df[frac_cols].isna()).any().any()
+    amounts_defined = (~df[amount_cols].isna()).any().any()
+
+
 #### Select rows where at least one column is NA
 
 - https://datatofish.com/rows-with-nan-pandas-dataframe/
@@ -4936,6 +5091,19 @@ Convert UN Comtrade dates in the format 202201 to a datetime type
 
 ### Rolling sum and mean
 
+Rolling mean over a 5 year window, with mean values applied to the center of
+the window (otherwise defaults to the right of the window, which shifts peak
+values to the right)
+
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    df = pd.DataFrame({"year" : [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+                       "x1": [1,2,3,4,5,6,5,4,3,2,1]})
+    # Apply a rolling mean at the center of the window index
+    df["x2"] = df["x1"].rolling(window=5, min_periods=3, center=True).apply(lambda x: x.mean())
+    df.set_index("year").plot()
+    plt.show()
+
 Rolling mean over a 5 year window for the whole data frame (provided that year 
 is the index variable)
 
@@ -4947,8 +5115,12 @@ Plot the difference to a 5 years rolling mean
 
 Example "rolling sum with a window length of 2 observations."
 
-    df = pandas.DataFrame({'B': [0, 1, 2, np.nan, 4, 5, 6, 7]})
-    df.rolling(2).sum()
+    import pandas as pd
+    import numpy as np
+    df = pandas.DataFrame({'B': [0, 1, 2, np.nan, 4, 5, 3, 2]})
+    df["C"] = df["B"].rolling(2).sum()
+    df.plot()
+    plt.show()
 
 Yearly rolling of a monthly time series:
 
@@ -7286,13 +7458,18 @@ Use p.set() to set a y label and a title
 
 #### Scientific notation on axes
 
+
+Use scientific notation on y-axis, only for numbers greater than 1e4
+
+    for ax in g.axes.flat:
+        ax.ticklabel_format(axis="y", style="sci", scilimits=(0, 4))
+
 Use scientific notation on the axes of a `g` FacetGrid object:
 
     for axes in g.axes.flat:
         axes.ticklabel_format(axis='both', style='scientific', scilimits=(0, 0))
 
 Do not use scientific notation on the axes
-
 
     plt.ticklabel_format(style='plain', axis='y')
 
@@ -8251,6 +8428,16 @@ implementation of expand grid using itertools:
 Another [SO answer on the same topic](https://stackoverflow.com/a/64449660/2641825)
 
 
+With index columns and years
+
+    index = ['region_name', 'region_code', 'commodity_name', 'commodity_code', 'domain']
+    years = list(range(df['year'].min(), df['year'].max() + 1))                                                     
+    unique_groups = df[index].drop_duplicates()                                                                     
+    # Create all combinations of groups and years using cross join                                                  
+    years_df = pandas.DataFrame({'year': years})                                                                    
+    index_with_all_years = unique_groups.assign(key=1).merge(years_df.assign(key=1), on='key').drop('key', axis=1)
+
+
 ### Blogs and quotes on Pandas and R
 
  - [Moving from R to
@@ -8949,70 +9136,10 @@ A good post about TDD
 
 ## Assertions
 
-
 - [Use of Assertions](https://blog.regehr.org/archives/1091)
 
 
-## Unit tests
-
-See 
-
-- [python markdown unit tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
-
-- [Unit testing with
-  singleton](https://stackoverflow.com/questions/2085953/unit-testing-with-singletons)
-
-
-## pytest
-
-Numpy moved from nose to pytest as explained in their
-[testing guidelines](https://docs.scipy.org/doc/numpy/reference/testing.html):
-
-> "Until the 1.15 release, NumPy used the nose testing framework, it now uses the pytest framework. The older framework is still maintained in order to support downstream projects that use the old numpy framework, but all tests for NumPy should use pytest." 
-
-Save this function in a file names test_numpy.py
-
-    def test_numpy_closeness():
-        assert [1,2] == [1,2]
-        assert (np.array([1,2]) == np.array([1,2])).all()
-        np.testing.assert_allclose(np.array([1,2]),np.array([1,3]))
-
-Save the file to test_nn.py
-
-    import neural_nets as nn
-    import numpy as np
-
-    def test_rectified_linear_unit():
-        x = np.array([[1,0],
-                      [-1,-3]])
-        expected = np.array([[1,0],
-                             [0,0]])
-        provided = nn.rectified_linear_unit(x)
-        assert np.allclose(expected, provided), "test failed"
-
-Execute the test suite from bash with py.test as follows:
-
-    cd ~/rp/course_machine_learning/projects/project_2_3_mnist/part2-nn
-    py.test
-
-
-### AA run
-
-- Run and enter debug mode https://stackoverflow.com/a/48739098/2641825
-  suggests starting an ipython shell within the package directory and then
-  running `!pytest --pdb` to enter inside the function that is causing a test
-  to fail. Objects in that function can then be inspected at the [python
-  debugger](https://docs.python.org/3/library/pdb.html) prompt.
-
-    !pytest --pdb
-
-- Run unittest with pytest [How to use unittest-based tests with
-  pytest](https://docs.pytest.org/en/7.1.x/how-to/unittest.html)
-
-    pytest file_test.py
-
-
-### Doctest 
+## Doctest
 
 - https://docs.python.org/3/library/doctest.html
 
@@ -9020,7 +9147,10 @@ Execute the test suite from bash with py.test as follows:
     > interactive Python sessions, and then executes those sessions to verify 
     > that they work exactly as shown."
 
-- Run doctest in pytest https://docs.pytest.org/en/7.1.x/how-to/doctest.html
+
+### Doctest in pytest
+
+Run doctest in pytest https://docs.pytest.org/en/7.1.x/how-to/doctest.html
 
     - Test examples in the whole module
 
@@ -9042,7 +9172,17 @@ Execute the test suite from bash with py.test as follows:
         2
         """
 
-#### Doctest errors
+
+### Run doctests for a single module
+
+Run doctests for a single module
+
+    python -m doctest eu_cbm_hat/core/utils.py -v
+    # Or 
+    pytest --doctest-modules post_processor/nai.py
+
+
+### Doctest errors
     
 - "ValueError: line 32 of the docstring for <object> has inconsistent leading 
   whitespace"
@@ -9135,6 +9275,119 @@ Differences (unified diff with -expected +actual):
     +2           2           2           2  ...           2           2           2
     +<BLANKLINE>
     +[3 rows x 7 columns]
+
+
+### Regression testing with doctest
+
+- doctest documentation, sopabox section
+  https://docs.python.org/3/library/doctest.html#soapbox
+
+  > As mentioned in the introduction, doctest has grown to have three primary uses:
+
+  > - Checking examples in docstrings.
+
+  > - Regression testing.
+
+  > - Executable documentation / literate testing.
+
+  > These uses have different requirements, and it is important to distinguish
+  > them. In particular, filling your docstrings with obscure test cases makes for
+  > bad documentation.
+
+  > When writing a docstring, choose docstring examples with care. There’s an art
+  > to this that needs to be learned—it may not be natural at first. Examples
+  > should add genuine value to the documentation. A good example can often be
+  > worth many words. If done with care, the examples will be invaluable for your
+  > users, and will pay back the time it takes to collect them many times over as
+  > the years go by and things change. I’m still amazed at how often one of my
+  > doctest examples stops working after a “harmless” change.
+
+  > Doctest also makes an excellent tool for regression testing, especially if you
+  > don’t skimp on explanatory text. By interleaving prose and examples, it becomes
+  > much easier to keep track of what’s actually being tested, and why. When a test
+  > fails, good prose can make it much easier to figure out what the problem is,
+  > and how it should be fixed. It’s true that you could write extensive comments
+  > in code-based testing, but few programmers do. Many have found that using
+  > doctest approaches instead leads to much clearer tests. Perhaps this is simply
+  > because doctest makes writing prose a little easier than writing code, while
+  > writing comments in code is a little harder. I think it goes deeper than just
+  > that: the natural attitude when writing a doctest-based test is that you want
+  > to explain the fine points of your software, and illustrate them with examples.
+  > This in turn naturally leads to test files that start with the simplest
+  > features, and logically progress to complications and edge cases. A coherent
+  > narrative is the result, instead of a collection of isolated functions that
+  > test isolated bits of functionality seemingly at random. It’s a different
+  > attitude, and produces different results, blurring the distinction between
+  > testing and explaining.
+
+
+### Testable examples
+
+Specification of testable examples versus non testable examples in the documentation:
+
+- doctest will test example lines starting with triple superior signs `>>>`
+
+- but doctest will not test example lines that are without these signs. 
+
+
+## pytest
+
+Numpy moved from nose to pytest as explained in their
+[testing guidelines](https://docs.scipy.org/doc/numpy/reference/testing.html):
+
+> "Until the 1.15 release, NumPy used the nose testing framework, it now uses the pytest framework. The older framework is still maintained in order to support downstream projects that use the old numpy framework, but all tests for NumPy should use pytest." 
+
+Save this function in a file names test_numpy.py
+
+    def test_numpy_closeness():
+        assert [1,2] == [1,2]
+        assert (np.array([1,2]) == np.array([1,2])).all()
+        np.testing.assert_allclose(np.array([1,2]),np.array([1,3]))
+
+Save the file to test_nn.py
+
+    import neural_nets as nn
+    import numpy as np
+
+    def test_rectified_linear_unit():
+        x = np.array([[1,0],
+                      [-1,-3]])
+        expected = np.array([[1,0],
+                             [0,0]])
+        provided = nn.rectified_linear_unit(x)
+        assert np.allclose(expected, provided), "test failed"
+
+Execute the test suite from bash with py.test as follows:
+
+    cd ~/rp/course_machine_learning/projects/project_2_3_mnist/part2-nn
+    py.test
+
+
+### AA run
+
+- Run and enter debug mode https://stackoverflow.com/a/48739098/2641825
+  suggests starting an ipython shell within the package directory and then
+  running `!pytest --pdb` to enter inside the function that is causing a test
+  to fail. Objects in that function can then be inspected at the [python
+  debugger](https://docs.python.org/3/library/pdb.html) prompt.
+
+    !pytest --pdb
+
+- Run unittest with pytest [How to use unittest-based tests with
+  pytest](https://docs.pytest.org/en/7.1.x/how-to/unittest.html)
+
+    pytest file_test.py
+
+
+### Coverage
+
+Usage
+
+    pytest --cov
+
+Install
+
+    pip install pytest-cov
 
 
 ### Test pandas data frame 
@@ -9366,6 +9619,17 @@ https://docs.pytest.org/en/6.2.x/parametrize.html
 Add this at the beginning of pytest files
 
     # pylint: disable=redefined-outer-name
+
+
+## Unit tests
+
+See 
+
+- [python markdown unit
+  tests](https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py)
+
+- [Unit testing with
+  singleton](https://stackoverflow.com/questions/2085953/unit-testing-with-singletons)
 
 
 ## Test use in projects
@@ -9755,11 +10019,56 @@ arrays](https://docs.xarray.dev/en/stable/user-guide/reshaping.html#converting-b
 
 ## Convert to-from other formats
 
-### To a list
+### To a pandas data frame and back to an xarray dataset
+
+Convert an xarray dataset to a pandas data frame in long format
+
+    df = ds.to_dataframe()
+    df
+
+Convert the data frame back to a dataset
+
+    xarray.Dataset.from_dataframe(df)
+
+
+> "Notice that that dimensions of variables in the Dataset have now expanded
+> after the round-trip conversion to a DataFrame. This is because every object
+> in a DataFrame must have the same indices, so we need to broadcast the data
+> of each array to the full size of the new MultiIndex. Likewise, all the
+> coordinates (other than indexes) ended up as variables, because pandas does
+> not distinguish non-index coordinates."
+
+You can also use 
+
+    xarray.DataArray(df)
+
+You can also convert 2 dimensional xarray dataset to a pandas data frame in 
+wide format
+
+    df_wide = ds.to_pandas()
+
+
+### To a list with tolist()
 
 Convert a 1 dimensional data array to a list
 
     ds.country.values.tolist()
+
+
+### To a scalar with item()
+
+    gfpmxb2021["sawn"]["cons"].loc["Italy", 2070].item()
+
+
+### To a numpy array with values
+
+Convert an xarray dataset to a numpy array:
+
+    In : model["sawn"]["cons"].loc["Italy", 2070].values
+    Out: array(5307.84727538)
+
+    In : type(model["sawn"]["cons"].loc["Italy", 2070].values)
+    Out: numpy.ndarray
 
 
 ## Copy shallow and deep
@@ -9824,33 +10133,23 @@ We can add attributes to qualify metadata.
     ds.attrs["product"] = "sponge"
 
 
-### Convert xarray to pandas and back
+Print units from a dataset in the cobwood model
 
-Convert an xarray dataset to a pandas data frame in long format
+    from cobwood.gfpmx import GFPMX
+    gfpmxb2021 = GFPMX(scenario="base_2021", rerun=False)
+    variables = ["cons", "imp", "exp", "prod", "price"]    
+    for var in variables:
+        print(gfpmxb2021.indround[var].unit)
 
-    df = ds.to_dataframe()
-    df
-
-Convert the data frame back to a dataset
-
-    xarray.Dataset.from_dataframe(df)
-
-
-> "Notice that that dimensions of variables in the Dataset have now expanded
-> after the round-trip conversion to a DataFrame. This is because every object
-> in a DataFrame must have the same indices, so we need to broadcast the data
-> of each array to the full size of the new MultiIndex. Likewise, all the
-> coordinates (other than indexes) ended up as variables, because pandas does
-> not distinguish non-index coordinates."
-
-You can also use 
-
-    xarray.DataArray(df)
-
-You can also convert 2 dimensional xarray dataset to a pandas data frame in 
-wide format
-
-    df_wide = ds.to_pandas()
+To assign to an attribute use the `.attrs` accessors, which provides a
+dictionary of attributes.
+                                                       
+    print(gfpmxb2021.indround["cons"].unit)
+    # Same as 
+    print(gfpmxb2021.indround["cons"].attrs["unit"])
+    ds = gfpmxb2021.indround.copy()
+    ds["cons"].attrs["unit"]
+    ds["cons"].attrs["unit"] = "test"
 
 
 ### Create an empty dataset similar to existing one
@@ -9858,7 +10157,7 @@ wide format
 Fill an array with zero values, similar to an existing data array. Or fill it 
 with NA values.
 
-    xarray.zeros_like(da)
+    xarray.zeros_like(da
     xarray.full_like(da, fill_value=xarray.nan)
 
 ## Data variables

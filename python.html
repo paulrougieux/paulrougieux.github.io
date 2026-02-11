@@ -11,6 +11,7 @@
 
 <meta name="author" content="Paul Rougieux" />
 
+<meta name="date" content="2025-01-01" />
 
 <title>Python Commands</title>
 
@@ -467,7 +468,7 @@ div.tocify {
 
 <h1 class="title toc-ignore">Python Commands</h1>
 <h4 class="author">Paul Rougieux</h4>
-<h4 class="date">October 2024</h4>
+<h4 class="date">2025</h4>
 
 </div>
 
@@ -601,6 +602,21 @@ href="https://conda-forge.org/docs/user/introduction.html">conda-forge</a>:</p>
 &gt;  - By default, we build packages for macOS, Linux AMD64 and Windows
 &gt;    AMD64.&quot;</code></pre>
 </div>
+<div id="environment" class="section level3">
+<h3>Environment</h3>
+<p>Creating a Conda Environment</p>
+<pre><code>conda create --name myenv</code></pre>
+<p>To create and also specify packages (e.g., Python 3.9) during
+creation</p>
+<pre><code>conda create --name myenv python=3.9</code></pre>
+<p>Activate the environment to use it</p>
+<pre><code>conda activate myenv</code></pre>
+<div id="deleting-a-conda-environment" class="section level4">
+<h4>Deleting a Conda Environment</h4>
+<p>Remove the timbaenv</p>
+<pre><code>conda env remove --name timbaenv</code></pre>
+</div>
+</div>
 <div id="install" class="section level3">
 <h3>Install</h3>
 <p>Documentation conda.io <a
@@ -718,14 +734,68 @@ class="uri">https://docs.anaconda.com/free/navigator/tutorials/manage-environmen
 </ul>
 </div>
 </div>
-<div id="mamba" class="section level3">
-<h3>Mamba</h3>
+<div id="mamba-solver-in-anaconda" class="section level3">
+<h3>Mamba solver in Anaconda</h3>
 <p>The mamba solver can speed up the dependency resolution process. It
 doesn’t require a special mamba installation You can switch the default
-solver in a normal conda installation:</p>
+solver to mamba in a normal conda installation:</p>
 <pre><code>conda install -n base -c defaults conda-libmamba-solver
 conda config --set solver libmamba</code></pre>
 </div>
+</div>
+<div id="install-with-mamba" class="section level2">
+<h2>Install with Mamba</h2>
+<ul>
+<li><p>Mamba user guide and concepts <a
+href="https://mamba.readthedocs.io/en/latest/user_guide/concepts.html"
+class="uri">https://mamba.readthedocs.io/en/latest/user_guide/concepts.html</a></p>
+<ul>
+<li><p>Prefix/Environment</p>
+<blockquote>
+<p>“In Unix-like platforms, installing a piece of software consists of
+placing files in subdirectories of an “installation prefix”:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>no file is placed outside of the installation prefix</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>dependencies must be installed in the same prefix (or standard
+system prefixes with lower precedence)</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>“Note. Examples on Unix: the root of the filesystem, the
+<code>/usr/</code> and <code>/usr/local/</code> directories. A prefix is
+a fully self-contained and portable installation. To disambiguate with
+root prefix, prefix is often referred to as target prefix. Without an
+explicit target or root prefix, you can assume it refers to a target
+prefix. <strong>An environment is just another name for a target
+prefix</strong>. Mamba’s environments are similar to virtual
+environments as seen in Python’s virtualenv and similar software, but
+more powerful since Mamba also manages native dependencies and
+generalizes the virtual environment concept to many programming
+languages.”</p>
+</blockquote></li>
+<li><p>Activation</p>
+<blockquote>
+<p>“The activation of an environment makes all its contents available to
+your shell. It mainly adds target prefix subdirectories to your
+<code>$PATH</code> environment variable. Note activation implementation
+is platform dependent. When activating an environment from another, you
+can choose to stack or not upon the currently activated env. Stacking
+will result in a new intermediate prefix: system prefix &lt; base &lt;
+env1 &lt; env2.”</p>
+</blockquote></li>
+<li><p>Deactivation</p>
+<blockquote>
+<p>“The deactivation is the opposite operation of activation, removing
+from your shell what makes the environment content accessible.”</p>
+</blockquote></li>
+</ul></li>
+</ul>
 </div>
 <div id="install-with-the-oss-package-manager" class="section level2">
 <h2>Install with the OS’s package manager</h2>
@@ -771,19 +841,25 @@ installer for each OS that we support.”</p>
 href="https://packaging.python.org/tutorials/packaging-projects/#uploading-the-distribution-archives">instructions
 on uploading distribution archives explain how to upload the package to
 test.pypi</a>:</p>
-<p>Upload for project having a pyproject.toml. If you use setuptools-scm
-to manage the version number based on git tags.
-<code>setuptools_scm</code> automatically adds a hash number to the
-version if there is no git tag for the latest commit (or change in the
-repo). The version with a hash number is not acceptable for upload on
-pypi. Commit and use a git tag to increment minor and major version
-numbers. This is required before uploading to pypi.</p>
+<p>Pypi upload instructions for project having a
+<code>pyproject.toml</code>. If you use setuptools-scm to manage the
+version number based on git tags. <code>setuptools_scm</code>
+automatically adds a hash number to the version if there is no git tag
+for the latest commit (or change in the repo). The version with a hash
+number is not acceptable for upload on pypi. Commit and use a git tag to
+increment minor and major version numbers. This is required before
+uploading to pypi.</p>
 <pre><code>cd package_dir
+# Use bumpversion for packages still using setup.py
+# Use git tag for packages using pyproject.toml
 git tag
-python3 -m build</code></pre>
-<p><br />
-twine upload dist/<em> # Or pload only the latest versions not already
-on pypi twine upload –skip-existing dist/</em></p>
+git tag v0.0.2  -m &quot;Version 0.0.2&quot;  
+git push origin --tags
+# Build
+python3 -m build
+# Upload all builds or only the latest version
+twine upload dist/*
+twine upload --skip-existing dist/*</code></pre>
 <p>Test upload</p>
 <pre><code>python3 -m twine upload --repository testpypi dist/*</code></pre>
 <p><code>twine</code> uses kde wallet to store the password, press
@@ -951,6 +1027,21 @@ used at the top level <code>__init__.py</code> of a package.</p>
         return Bud
     raise AttributeError(f&quot;module &#39;{__name__}&#39; has no attribute &#39;{name}&#39;&quot;)</code></pre>
 </div>
+<div id="module-directory" class="section level3">
+<h3>Module directory</h3>
+<p>Get the directory where the package is located from the location of
+its init file:</p>
+<pre class="python"><code>INIT_FILE = sys.modules[__name__].__file__
+MODULE_DIR = Path(INIT_FILE).parent</code></pre>
+</div>
+<div id="namespace" class="section level3">
+<h3>Namespace</h3>
+<p>To make functions accessible at the top‑level namespace (like
+np.array, pd.read_csv), reexport them into the main package name
+space:</p>
+<pre><code>from .growth import load_yield
+__all__ = [&quot;load_yield&quot;, ...]</code></pre>
+</div>
 <div id="version" class="section level3">
 <h3>Version</h3>
 <p><a
@@ -1078,8 +1169,8 @@ generate the documentation on a Continuous Integration system:</p>
   - main
   interruptible: true</code></pre>
 </div>
-<div id="conventions-and-styles" class="section level4">
-<h4>Conventions and styles</h4>
+<div id="docstring-styles-and-conventions" class="section level4">
+<h4>Docstring styles and conventions</h4>
 <p>Pdoc supports multiple docstring conventions, including:</p>
 <ul>
 <li><p>Google style - with <code>Args:</code>, <code>Returns:</code>,
@@ -1363,6 +1454,21 @@ environment you can also install different packages with pip.</p></li>
 <li><p>Illustration of the complementarity between pyenv and
 pipenv.</p></li>
 </ul>
+<div id="location-of-virtual-environment-directories"
+class="section level3">
+<h3>Location of virtual environment directories</h3>
+<ul>
+<li><p>Manage the Location of Your Virtual Environments <a
+href="https://www.pythonguis.com/tutorials/python-virtual-environments/#manage-the-location-of-your-virtual-environments"
+class="uri">https://www.pythonguis.com/tutorials/python-virtual-environments/#manage-the-location-of-your-virtual-environments</a></p>
+<blockquote>
+<p>“The most common one is inside the relevant project folder. As you
+already learned, the folder will usually be named venv or .venv.” […]
+make sure to ignore the virtual environment folder by adding it to
+.gitignore.</p>
+</blockquote></li>
+</ul>
+</div>
 <div id="remove-environment-variables" class="section level3">
 <h3>Remove environment variables</h3>
 <p>To test a fresh install of a package or test it in conditions where
@@ -1370,7 +1476,59 @@ some environmental variables are not defined.</p>
 <p>For example remove environment variables with <code>unset</code>.</p>
 <pre><code>unset BIOTRADE_DATABASE_URL</code></pre>
 </div>
+<div id="penv" class="section level3">
+<h3>Penv</h3>
+<p>A virtual environment for many models</p>
+<pre><code>mkdir ~/rp/penv
+python3 -m venv ~/rp/penv
+source ~/rp/penv/bin/activate
+# Upgrade pip
+python -m pip install --upgrade pip</code></pre>
+<p>See setup/requirements.txt</p>
+<p>Install these packages in the virtual environment</p>
+<pre><code>cd ~/rp/penv/
+source ~/rp/penv/bin/activate
+pip install -r /home/paul/rp/paulrougieux.github.io/setup/requirements.txt</code></pre>
 </div>
+</div>
+<div id="pyenv" class="section level2">
+<h2>pyenv</h2>
+<p>Change the version of python you are using. This is complementary to
+virtual environments. pyenv is a pure bash script that doesn’t depend on
+python.</p>
+<ul>
+<li><p><a href="https://github.com/pyenv/pyenv"
+class="uri">https://github.com/pyenv/pyenv</a></p>
+<blockquote>
+<p>“pyenv lets you easily switch between multiple versions of
+Python.”</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="bash-function-to-start-ipython-in-a-virtual-env"
+class="section level1">
+<h1>Bash function to start ipython in a virtual env</h1>
+<p>Bash function to start ipython in a virtual env, unless an env is
+already started.</p>
+<pre class="bash"><code>p() {
+    # Check if a venv is active
+    if [ -n &quot;$VIRTUAL_ENV&quot; ]; then
+        echo &quot;venv environment &#39;$VIRTUAL_ENV&#39; is already active&quot;
+        ipython
+    # Check if conda env is active
+    elif [ -n &quot;$CONDA_DEFAULT_ENV&quot; ]; then
+        echo &quot;Conda environment &#39;$CONDA_DEFAULT_ENV&#39; is already active&quot;
+        ipython
+    # Check if pyenv is active (and not using system Python)
+    elif command -v pyenv &gt;/dev/null 2&gt;&amp;1 &amp;&amp; [ &quot;$(pyenv version-name)&quot; != &quot;system&quot; ]; then
+        echo &quot;pyenv environment &#39;$(pyenv version-name)&#39; is already active&quot;
+        ipython
+    else
+        # No environment active, start your default one
+        source ~/rp/penv/bin/activate &amp;&amp; ipython  # or whatever your default is
+    fi
+}</code></pre>
 </div>
 <div id="applications" class="section level1">
 <h1>Applications</h1>
@@ -1399,6 +1557,19 @@ flow = streamlit.sidebar.selectbox(
 n_partners = streamlit.sidebar.slider(
     &quot;Select N First Partners&quot;, min_value=1, max_value=10, value=5
 )</code></pre>
+<div id="how-to-prevent-reloading-the-whole-page"
+class="section level3">
+<h3>How to prevent reloading the whole page</h3>
+<ul>
+<li><p>2021 Discussion on a streamlit user forum on how to prevent
+reloading the whole page. <a
+href="https://discuss.streamlit.io/t/how-to-prevent-the-reloading-of-the-whole-page-when-i-let-the-user-to-perform-an-action/10800/22"
+class="uri">https://discuss.streamlit.io/t/how-to-prevent-the-reloading-of-the-whole-page-when-i-let-the-user-to-perform-an-action/10800/22</a></p>
+<ul>
+<li>Some comments point to cache and session state.</li>
+</ul></li>
+</ul>
+</div>
 </div>
 </div>
 <div id="compilers" class="section level1">
@@ -1809,6 +1980,9 @@ replacement.</p></li>
 </div>
 <div id="sqlite" class="section level2">
 <h2>SQLite</h2>
+<p>Create an SQLite engine from a file</p>
+<pre><code>from sqlalchemy import create_engine
+engine = create_engine(&#39;sqlite:///relative_path_to_file.db&#39;)</code></pre>
 <p>Create an SQLITE in memory database and add a table to it.</p>
 <pre><code>In [17]: from sqlalchemy import create_engine, inspect
     ...: from sqlalchemy import MetaData, Table, Column, Text
@@ -2078,9 +2252,11 @@ iris3.equals(iris)</code></pre>
 <p>You can also use gzip compression for a smaller file size (but slower
 read and write times)</p>
 <pre><code>iris.to_parquet(&quot;/tmp/iris.parquet.gzip&quot;, compression=&#39;gzip&#39;) </code></pre>
-<div id="partition-column" class="section level3">
-<h3>Partition column</h3>
-<p>Write to multiple files along a column used as partition variable</p>
+<div id="aa-partition-column" class="section level3">
+<h3>AA partition column</h3>
+<p>One of the main reason I use parquet, besides file compression, is
+its ability to write a data frame to multiple files automatically split
+by sub directories along columns used as partition variables:</p>
 <pre><code>iris.to_parquet(&quot;/tmp/iris&quot;,partition_cols=&quot;species&quot;) </code></pre>
 <p>The partitioned dataset is saved under a sub directory for each
 unique value of the partition variable. For example there is a sub
@@ -2111,6 +2287,82 @@ again.</p>
 iris4.equals(iris)
 # True</code></pre>
 </div>
+<div id="data-types" class="section level3">
+<h3>Data types</h3>
+<p>Note that a pyarro schema is different from a pyarrow parquet
+schema</p>
+<ul>
+<li><p><code>pyarrow.Schema</code> contains a named collection of types
+with <code>.names</code> and <code>.types</code> attributes <a
+href="https://arrow.apache.org/docs/python/generated/pyarrow.Schema.html"
+class="uri">https://arrow.apache.org/docs/python/generated/pyarrow.Schema.html</a></p></li>
+<li><p><code>pyarrow.parquet.ParquetSchema</code> only has names
+attributes, but you can convert it to an arrow schema with the
+<code>to_arrow_schema()</code> method.</p></li>
+<li><p>a schema has names and types</p></li>
+</ul>
+<div id="check-data-types-across-parquet-partitions"
+class="section level4">
+<h4>Check data types across parquet partitions</h4>
+<p>Functions to read parquest files with heterogenous schemas. For
+example between 1999 and 2000 the Comtrade bilateral trade columns
+altqty and grosswgt change from null to double.</p>
+<ul>
+<li>I wrote the function below using perplexity : <a
+href="https://www.perplexity.ai/search/please-create-a-function-that-BmxfzA5aSGeHKQLX37PO3w#8"
+class="uri">https://www.perplexity.ai/search/please-create-a-function-that-BmxfzA5aSGeHKQLX37PO3w#8</a>
+but perplexity didn’t come up with the reshape format and it provided an
+unusable function.</li>
+</ul>
+<pre class="python"><code>def get_parquet_partition_column_types(directory: Union[str, pathlib.Path]) -&gt; pandas.DataFrame:
+    &quot;&quot;&quot;
+    List column types for all parquet files in all partitions of a dataset directory.
+
+    Parameters
+    ----------
+    product_directory : str or Path
+        Root directory of the partitioned parquet dataset.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with columns: file_path, and all columns in the data
+
+    Examples
+    --------
+    &gt;&gt;&gt; import pathlib
+    &gt;&gt;&gt; product_directory = pathlib.Path.home() / &quot;rp/forobs/biotrade_data/comtrade/products/download_date=20250906/product_code=440791&quot;
+    &gt;&gt;&gt; df = get_parquet_partition_column_types(product_directory)
+    &gt;&gt;&gt; # If there is more than one data type print the column name
+    &gt;&gt;&gt; for col in df.columns[1:]:
+    ...     unique_values = df[col].unique()
+    ...     if len(unique_values) &gt; 1:
+    ...         print(col, &quot;has more than one value:&quot;, unique_values)
+
+    &quot;&quot;&quot;
+    directory = pathlib.Path(directory)
+    df_all = pandas.DataFrame()
+    for parquet_file in directory.glob(&#39;**/*.parquet&#39;):
+        try:
+            pf = pyarrow.parquet.ParquetFile(parquet_file)
+            # Convert to an arrow schema to get the types attributes
+            schema = pf.schema.to_arrow_schema()
+            df = pandas.DataFrame({
+                &quot;file_name&quot;: str(parquet_file),
+                &quot;column_name&quot;: schema.names,
+                &quot;column_type&quot;: schema.types})
+        except Exception as e:
+            df = pandas.DataFrame({
+                &#39;file_name&#39;: str(parquet_file),
+                &#39;column_name&#39;: &#39;&lt;ERROR&gt;&#39;,
+                &#39;column_type&#39;: str(e)
+            })
+        df_all = pandas.concat([df_all, df])
+    # Reshape to wide format
+    df_all_wide = df_all.pivot(columns=&quot;column_name&quot;, index=&quot;file_name&quot;, values=&quot;column_type&quot;)
+    return df_all_wide</code></pre>
+</div>
+</div>
 <div id="filters" class="section level3">
 <h3>Filters</h3>
 <p>Read only part of the content from parquet files with a filter. See
@@ -2131,13 +2383,12 @@ iris7.equals(iris6)</code></pre>
 <p>Depending on whether or not the query is on the partition variable,
 read time can be increased by a lot. See experiment in the next
 section.</p>
-</div>
 <div
 id="experiment-with-the-parquet-format-using-filters-and-partition-columns."
-class="section level3">
-<h3>Experiment with the parquet format using filters and partition
-columns.</h3>
-<p>Note the detaset to perform these comparisons is not made available
+class="section level4">
+<h4>Experiment with the parquet format using filters and partition
+columns.</h4>
+<p>Note the dataset to perform these comparisons is not made available
 here. I keep these for information purposes.</p>
 <p>Compare a read of 2 countries with the read of the whole dataset</p>
 <pre><code># start_time = timeit.default_timer()
@@ -2169,6 +2420,34 @@ about 10 times faster!</p>
 # start_time = timeit.default_timer()
 # ft_frde2 = pandas.read_feather(la_fo_data_dir / &quot;comtrade_forest_footprint.feather&quot;)
 # print(&quot;Reading a feather file took:&quot;,timeit.default_timer() - start_time)</code></pre>
+</div>
+</div>
+<div id="one-large-parquet-file-or-many-smaller-files"
+class="section level3">
+<h3>One large parquet file or many smaller files?</h3>
+<p><a href="https://stackoverflow.com/a/59535659/2641825">Is it better
+to have one large parquet file or lots of smaller parquet files?</a></p>
+<blockquote>
+<p>“Notice that Parquet files are internally split into row groups <a
+href="https://parquet.apache.org/documentation/latest/"
+class="uri">https://parquet.apache.org/documentation/latest/</a> So by
+making parquet files larger, row groups can still be the same if your
+baseline parquet files were not small/tiny. There is no huge direct
+penalty on processing, but opposite, there are more opportunities for
+readers to take advantage of perhaps larger/ more optimal row groups if
+your parquet files were smaller/tiny for example as row groups can’t
+span multiple parquet files.”</p>
+</blockquote>
+<blockquote>
+<p>“Also larger parquet files don’t limit parallelism of readers, as
+each parquet file can be broken up logically into multiple splits
+(consisting of one or more row groups).”</p>
+</blockquote>
+<blockquote>
+<p>“The only downside of larger parquet files is it takes more memory to
+create them. So you can watch out if you need to bump up Spark
+executors’ memory.”</p>
+</blockquote>
 </div>
 <div id="what-is-the-difference-between-apache-arrow-and-apache-parquet"
 class="section level3">
@@ -2239,35 +2518,8 @@ storage or network is slow, Parquet may be a better choice even for
 short-term storage or caching.</code></pre>
 </blockquote>
 </div>
-<div id="one-large-parquet-file-or-many-smaller-files"
-class="section level3">
-<h3>One large parquet file or many smaller files?</h3>
-<p><a href="https://stackoverflow.com/a/59535659/2641825">Is it better
-to have one large parquet file or lots of smaller parquet files?</a></p>
-<blockquote>
-<p>“Notice that Parquet files are internally split into row groups <a
-href="https://parquet.apache.org/documentation/latest/"
-class="uri">https://parquet.apache.org/documentation/latest/</a> So by
-making parquet files larger, row groups can still be the same if your
-baseline parquet files were not small/tiny. There is no huge direct
-penalty on processing, but opposite, there are more opportunities for
-readers to take advantage of perhaps larger/ more optimal row groups if
-your parquet files were smaller/tiny for example as row groups can’t
-span multiple parquet files.”</p>
-</blockquote>
-<blockquote>
-<p>“Also larger parquet files don’t limit parallelism of readers, as
-each parquet file can be broken up logically into multiple splits
-(consisting of one or more row groups).”</p>
-</blockquote>
-<blockquote>
-<p>“The only downside of larger parquet files is it takes more memory to
-create them. So you can watch out if you need to bump up Spark
-executors’ memory.”</p>
-</blockquote>
-</div>
-<div id="see-also" class="section level3">
-<h3>See also</h3>
+<div id="zz-see-also" class="section level3">
+<h3>ZZ see also</h3>
 <ul>
 <li><p>It’s not possible to <a
 href="https://stackoverflow.com/questions/50456673/storing-multiple-dataframes-of-different-widths-with-parquet">store
@@ -2384,6 +2636,12 @@ in function</p>
     print(key, &quot;has the value&quot;, value)</code></pre>
 <p>Invert keys and values</p>
 <pre><code>{value:key for key,value in ceci.items()}</code></pre>
+<div id="sort-dict-keys" class="section level4">
+<h4>Sort dict keys</h4>
+<p>Return a list of sorted dictionary keys</p>
+<pre><code>from eu_cbm_hat.core.continent import continent
+sorted(continent.combos.keys())</code></pre>
+</div>
 </div>
 <div id="iterator" class="section level3">
 <h3>Iterator</h3>
@@ -2442,6 +2700,13 @@ flat_list
 </div>
 <div id="set-operations" class="section level3">
 <h3>Set operations</h3>
+<div id="check-for-an-empty-set" class="section level4">
+<h4>Check for an empty set</h4>
+<p>Check for an empty set by comparing it to the empty set</p>
+<pre><code>({1} - {1}) == set()</code></pre>
+<p>Check for an empty set by using not</p>
+<p>not ({1} - {1}) not ({1} - {2})</p>
+</div>
 <div id="difference-between-sets" class="section level4">
 <h4>Difference between sets</h4>
 <p>Difference between two sets:</p>
@@ -2599,6 +2864,26 @@ annotations by computing them in their own function.”</p>
 <p>See the sub-section on py.typed in the “create a package”
 section.</p>
 </div>
+</div>
+<div id="mypy-static-type-checker" class="section level3">
+<h3>Mypy static type checker</h3>
+<p>Install mypy</p>
+<pre><code>pip install mypy</code></pre>
+<p>Then install common types otherwise mypy doesn’t know about types in
+common libraries such as pandas, scipy and seaborn.</p>
+<pre><code>mypy --install-types</code></pre>
+<p>Install other types</p>
+<pre><code>pip install types-PyYAML
+pip install types-tqdm</code></pre>
+<p>These type annotations packages of the form
+<code>types-package_name</code> are generated by the type shed project
+<a href="https://github.com/python/typeshed"
+class="uri">https://github.com/python/typeshed</a></p>
+<pre><code>&gt; &quot;Typeshed contains external type annotations for the Python standard
+&gt; library and Python builtins, as well as third-party packages that are
+&gt; contributed by people external to those projects. This data can, e.g., be
+&gt; used for static analysis, type checking, type inference, and
+&gt; autocompletion.&quot;</code></pre>
 </div>
 </div>
 <div id="meta-programming" class="section level2">
@@ -3623,6 +3908,8 @@ number of arguments to the function.</p>
 </div>
 <div id="docstring-documentation" class="section level2">
 <h2>Docstring Documentation</h2>
+<p>The section on how to create a package has a subsection on
+documentation and in particular the choice of doctring styles.</p>
 <p>Document python functions with the sphinx convention <a
 href="https://stackoverflow.com/a/40596167">SO Answer</a></p>
 <pre><code>def send_message(sender, recipient, message_body, priority=1) -&gt; int:
@@ -4224,6 +4511,17 @@ print(np.random.choice(2, (10,10), p=[0.1, 0.9]))
 <pre><code>import pandas </code></pre>
 <div id="assign-values" class="section level2">
 <h2>Assign values</h2>
+<div id="apply-function-with-extra-argument" class="section level3">
+<h3>Apply function with extra argument</h3>
+<p>Apply to a series allows to pass extra arguments as args:</p>
+<pre><code>.apply(mean_without_peaks, args=(self.n_peaks_to_remove_flux_by_grade))</code></pre>
+<p>You can also pass a named argument with kwargs</p>
+<pre><code>df[column] = (
+    df[column]
+    .rolling(window=self.n_years_window_flux_by_grade, min_periods=1)
+    .apply(mean_without_peaks, kwargs={&#39;n_peaks_to_remove&#39;: n_peaks_to_remove})
+)</code></pre>
+</div>
 <div id="create-a-data-frame" class="section level3">
 <h3>Create a data frame</h3>
 <p>You can create a data frame by passing a <strong>dictionary of
@@ -4595,7 +4893,7 @@ right_index=True</p></li>
 </div>
 <div id="columns" class="section level2">
 <h2>Columns</h2>
-<div id="data-types" class="section level3">
+<div id="data-types-1" class="section level3">
 <h3>Data types</h3>
 <p>Three example data types</p>
 <pre><code>df = pandas.DataFrame({&quot;a&quot;:range(0,3),
@@ -4634,6 +4932,13 @@ cols = df.columns.tolist()
 </div>
 <div id="na-values-in-columns" class="section level3">
 <h3>NA values in columns</h3>
+<div id="select-columns-with-at-least-one-value" class="section level4">
+<h4>Select columns with at least one value</h4>
+<p>Get a single boolean value telling whether a group of columns
+contains at least one non NA value:</p>
+<pre><code>fractions_defined = (~df[frac_cols].isna()).any().any()
+amounts_defined = (~df[amount_cols].isna()).any().any()</code></pre>
+</div>
 <div id="select-rows-where-at-least-one-column-is-na"
 class="section level4">
 <h4>Select rows where at least one column is NA</h4>
@@ -4866,14 +5171,29 @@ df.info()</code></pre>
 </div>
 <div id="rolling-sum-and-mean" class="section level3">
 <h3>Rolling sum and mean</h3>
+<p>Rolling mean over a 5 year window, with mean values applied to the
+center of the window (otherwise defaults to the right of the window,
+which shifts peak values to the right)</p>
+<pre><code>import pandas as pd
+import matplotlib.pyplot as plt
+df = pd.DataFrame({&quot;year&quot; : [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010, 2011],
+                   &quot;x1&quot;: [1,2,3,4,5,6,5,4,3,2,1]})
+# Apply a rolling mean at the center of the window index
+df[&quot;x2&quot;] = df[&quot;x1&quot;].rolling(window=5, min_periods=3, center=True).apply(lambda x: x.mean())
+df.set_index(&quot;year&quot;).plot()
+plt.show()</code></pre>
 <p>Rolling mean over a 5 year window for the whole data frame (provided
 that year is the index variable)</p>
 <pre><code>df.rolling(window=5).mean()</code></pre>
 <p>Plot the difference to a 5 years rolling mean</p>
 <pre><code>(df - df.rolling(window=5).mean()).plot.bar()</code></pre>
 <p>Example “rolling sum with a window length of 2 observations.”</p>
-<pre><code>df = pandas.DataFrame({&#39;B&#39;: [0, 1, 2, np.nan, 4, 5, 6, 7]})
-df.rolling(2).sum()</code></pre>
+<pre><code>import pandas as pd
+import numpy as np
+df = pandas.DataFrame({&#39;B&#39;: [0, 1, 2, np.nan, 4, 5, 3, 2]})
+df[&quot;C&quot;] = df[&quot;B&quot;].rolling(2).sum()
+df.plot()
+plt.show()</code></pre>
 <p>Yearly rolling of a monthly time series:</p>
 <pre><code>.transform(lambda x: x.rolling(13, min_periods=1).mean()))</code></pre>
 <p>Note you might actually not need the transform in this case.</p>
@@ -5243,6 +5563,23 @@ within a groupby</a></p>
 df.groupby(&quot;a&quot;).transform(pandas.DataFrame.interpolate)
 # Only one column
 df.groupby(&quot;a&quot;)[&quot;b&quot;].transform(pandas.Series.interpolate)</code></pre>
+</div>
+<div id="options" class="section level2">
+<h2>Options</h2>
+<p>Check if a future attribute is available as a pandas option</p>
+<p>Note: I furst check the option on this way, but the location of
+future options has changed between pandas 1.5 and pandas 2, therefore
+it’s better to use a try except statement see further down below.</p>
+<pre><code>if hasattr(pd.options.future, &#39;no_silent_downcasting&#39;):
+    print(&quot;no_silent_downcasting available&quot;)</code></pre>
+<p>Opt in to future behaviour to remove pandas FutureWarning:
+Downcasting behavior in <code>replace</code> is deprecated and will be
+removed in a future version.</p>
+<pre><code>try:
+    pd.set_option(&#39;future.no_silent_downcasting&#39;, True)
+except (AttributeError, pd.errors.OptionError):
+    # If the option doesn&#39;t exist in this pandas version, skip it
+    pass</code></pre>
 </div>
 <div id="pyarrow" class="section level2">
 <h2>PyArrow</h2>
@@ -6892,6 +7229,10 @@ plt.show()</code></pre>
 </div>
 <div id="scientific-notation-on-axes" class="section level4">
 <h4>Scientific notation on axes</h4>
+<p>Use scientific notation on y-axis, only for numbers greater than
+1e4</p>
+<pre><code>for ax in g.axes.flat:
+    ax.ticklabel_format(axis=&quot;y&quot;, style=&quot;sci&quot;, scilimits=(0, 4))</code></pre>
 <p>Use scientific notation on the axes of a <code>g</code> FacetGrid
 object:</p>
 <pre><code>for axes in g.axes.flat:
@@ -7163,6 +7504,8 @@ plt.show()</code></pre>
 <p><code>aspect * height</code> gives the width of each facet in
 inches.</p>
 </blockquote>
+<p>The <code>height</code> and <code>aspect</code> arguments can also be
+used on relplot see <code>seaborn.relplot?</code>.</p>
 </div>
 </div>
 <div id="legend-1" class="section level3">
@@ -7190,6 +7533,16 @@ class="uri">https://stackoverflow.com/questions/56575756/how-to-split-seaborn-le
 g.axes[0].legend_.remove()
 g.fig.legend(h,l, ncol=4)
 g.legend.set_bbox_to_anchor((.05,.05)) #, transform=g.fig.transFigure)</code></pre>
+<div id="get-palette-and-label-mapping-from-a-legend"
+class="section level4">
+<h4>Get palette and label mapping from a legend</h4>
+<p>Get the color of the text label from the legend of a facet grid
+plot</p>
+<pre><code>legend = g._legend
+legend_labels = [t.get_text() for t in legend.get_texts()]
+legend_colors = [h.get_color() for h in legend.legend_handles]
+palette = dict(zip(legend_labels, legend_colors))</code></pre>
+</div>
 </div>
 <div id="line-plot" class="section level3">
 <h3>Line plot</h3>
@@ -7893,6 +8246,13 @@ expand_grid = list(itertools.product(countries, years))
 df = pandas.DataFrame(expand_grid, columns=(&#39;country&#39;, &#39;year&#39;))</code></pre>
 <p>Another <a href="https://stackoverflow.com/a/64449660/2641825">SO
 answer on the same topic</a></p>
+<p>With index columns and years</p>
+<pre><code>index = [&#39;region_name&#39;, &#39;region_code&#39;, &#39;commodity_name&#39;, &#39;commodity_code&#39;, &#39;domain&#39;]
+years = list(range(df[&#39;year&#39;].min(), df[&#39;year&#39;].max() + 1))                                                     
+unique_groups = df[index].drop_duplicates()                                                                     
+# Create all combinations of groups and years using cross join                                                  
+years_df = pandas.DataFrame({&#39;year&#39;: years})                                                                    
+index_with_all_years = unique_groups.assign(key=1).merge(years_df.assign(key=1), on=&#39;key&#39;).drop(&#39;key&#39;, axis=1)</code></pre>
 </div>
 <div id="blogs-and-quotes-on-pandas-and-r" class="section level3">
 <h3>Blogs and quotes on Pandas and R</h3>
@@ -8571,68 +8931,8 @@ Beck”</p>
 Assertions</a></li>
 </ul>
 </div>
-<div id="unit-tests" class="section level2">
-<h2>Unit tests</h2>
-<p>See</p>
-<ul>
-<li><p><a
-href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python
-markdown unit tests</a></p></li>
-<li><p><a
-href="https://stackoverflow.com/questions/2085953/unit-testing-with-singletons">Unit
-testing with singleton</a></p></li>
-</ul>
-</div>
-<div id="pytest" class="section level2">
-<h2>pytest</h2>
-<p>Numpy moved from nose to pytest as explained in their <a
-href="https://docs.scipy.org/doc/numpy/reference/testing.html">testing
-guidelines</a>:</p>
-<blockquote>
-<p>“Until the 1.15 release, NumPy used the nose testing framework, it
-now uses the pytest framework. The older framework is still maintained
-in order to support downstream projects that use the old numpy
-framework, but all tests for NumPy should use pytest.”</p>
-</blockquote>
-<p>Save this function in a file names test_numpy.py</p>
-<pre><code>def test_numpy_closeness():
-    assert [1,2] == [1,2]
-    assert (np.array([1,2]) == np.array([1,2])).all()
-    np.testing.assert_allclose(np.array([1,2]),np.array([1,3]))</code></pre>
-<p>Save the file to test_nn.py</p>
-<pre><code>import neural_nets as nn
-import numpy as np
-
-def test_rectified_linear_unit():
-    x = np.array([[1,0],
-                  [-1,-3]])
-    expected = np.array([[1,0],
-                         [0,0]])
-    provided = nn.rectified_linear_unit(x)
-    assert np.allclose(expected, provided), &quot;test failed&quot;</code></pre>
-<p>Execute the test suite from bash with py.test as follows:</p>
-<pre><code>cd ~/rp/course_machine_learning/projects/project_2_3_mnist/part2-nn
-py.test</code></pre>
-<div id="aa-run" class="section level3">
-<h3>AA run</h3>
-<ul>
-<li><p>Run and enter debug mode <a
-href="https://stackoverflow.com/a/48739098/2641825"
-class="uri">https://stackoverflow.com/a/48739098/2641825</a> suggests
-starting an ipython shell within the package directory and then running
-<code>!pytest --pdb</code> to enter inside the function that is causing
-a test to fail. Objects in that function can then be inspected at the <a
-href="https://docs.python.org/3/library/pdb.html">python debugger</a>
-prompt.</p>
-<p>!pytest –pdb</p></li>
-<li><p>Run unittest with pytest <a
-href="https://docs.pytest.org/en/7.1.x/how-to/unittest.html">How to use
-unittest-based tests with pytest</a></p>
-<p>pytest file_test.py</p></li>
-</ul>
-</div>
-<div id="doctest" class="section level3">
-<h3>Doctest</h3>
+<div id="doctest" class="section level2">
+<h2>Doctest</h2>
 <ul>
 <li><p><a href="https://docs.python.org/3/library/doctest.html"
 class="uri">https://docs.python.org/3/library/doctest.html</a></p>
@@ -8641,30 +8941,41 @@ class="uri">https://docs.python.org/3/library/doctest.html</a></p>
 interactive Python sessions, and then executes those sessions to verify
 that they work exactly as shown.”</p>
 </blockquote></li>
-<li><p>Run doctest in pytest <a
+</ul>
+<div id="doctest-in-pytest" class="section level3">
+<h3>Doctest in pytest</h3>
+<p>Run doctest in pytest <a
 href="https://docs.pytest.org/en/7.1.x/how-to/doctest.html"
 class="uri">https://docs.pytest.org/en/7.1.x/how-to/doctest.html</a></p>
-<ul>
-<li><p>Test examples in the whole module</p>
-<pre><code>  pytest --doctest-modules</code></pre></li>
-<li><p>Test only one file</p>
-<pre><code>  pytest --doctest-modules post_processor/nai.py</code></pre></li>
-</ul>
-<blockquote>
-<p>“To skip a single check inside a doctest you can use the standard
-doctest.SKIP directive:”</p>
-</blockquote>
-<pre><code>  def test_random(y):
-  &quot;&quot;&quot;
-  &gt;&gt;&gt; random.random()  # doctest: +SKIP
-  0.156231223
+<pre><code>- Test examples in the whole module
 
-  &gt;&gt;&gt; 1 + 1
-  2
-  &quot;&quot;&quot;</code></pre></li>
-</ul>
-<div id="doctest-errors" class="section level4">
-<h4>Doctest errors</h4>
+        pytest --doctest-modules
+
+- Test only one file
+
+        pytest --doctest-modules post_processor/nai.py
+
+&gt; &quot;To skip a single check inside a doctest you can use the standard 
+&gt; doctest.SKIP directive:&quot;
+
+    def test_random(y):
+    &quot;&quot;&quot;
+    &gt;&gt;&gt; random.random()  # doctest: +SKIP
+    0.156231223
+
+    &gt;&gt;&gt; 1 + 1
+    2
+    &quot;&quot;&quot;</code></pre>
+</div>
+<div id="run-doctests-for-a-single-module" class="section level3">
+<h3>Run doctests for a single module</h3>
+<p>Run doctests for a single module</p>
+<pre><code>python -m doctest eu_cbm_hat/core/utils.py -v
+# Or 
+pytest --doctest-modules post_processor/nai.py</code></pre>
+</div>
+<div id="doctest-errors" class="section level3">
+<h3>Doctest errors</h3>
 <ul>
 <li><p>“ValueError: line 32 of the docstring for <object> has
 inconsistent leading whitespace”</p>
@@ -8755,6 +9066,135 @@ variable_1 variable_2 variable_3 … variable_5 variable_6 variable_7 +0 0
 0 0 … 0 0 0 +1 1 1 1 … 1 1 1 +2 2 2 2 … 2 2 2 +<BLANKLINE> +[3 rows x 7
 columns]</p>
 </div>
+<div id="regression-testing-with-doctest" class="section level3">
+<h3>Regression testing with doctest</h3>
+<ul>
+<li><p>doctest documentation, sopabox section <a
+href="https://docs.python.org/3/library/doctest.html#soapbox"
+class="uri">https://docs.python.org/3/library/doctest.html#soapbox</a></p>
+<blockquote>
+<p>As mentioned in the introduction, doctest has grown to have three
+primary uses:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Checking examples in docstrings.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>Regression testing.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>Executable documentation / literate testing.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>These uses have different requirements, and it is important to
+distinguish them. In particular, filling your docstrings with obscure
+test cases makes for bad documentation.</p>
+</blockquote>
+<blockquote>
+<p>When writing a docstring, choose docstring examples with care.
+There’s an art to this that needs to be learned—it may not be natural at
+first. Examples should add genuine value to the documentation. A good
+example can often be worth many words. If done with care, the examples
+will be invaluable for your users, and will pay back the time it takes
+to collect them many times over as the years go by and things change.
+I’m still amazed at how often one of my doctest examples stops working
+after a “harmless” change.</p>
+</blockquote>
+<blockquote>
+<p>Doctest also makes an excellent tool for regression testing,
+especially if you don’t skimp on explanatory text. By interleaving prose
+and examples, it becomes much easier to keep track of what’s actually
+being tested, and why. When a test fails, good prose can make it much
+easier to figure out what the problem is, and how it should be fixed.
+It’s true that you could write extensive comments in code-based testing,
+but few programmers do. Many have found that using doctest approaches
+instead leads to much clearer tests. Perhaps this is simply because
+doctest makes writing prose a little easier than writing code, while
+writing comments in code is a little harder. I think it goes deeper than
+just that: the natural attitude when writing a doctest-based test is
+that you want to explain the fine points of your software, and
+illustrate them with examples. This in turn naturally leads to test
+files that start with the simplest features, and logically progress to
+complications and edge cases. A coherent narrative is the result,
+instead of a collection of isolated functions that test isolated bits of
+functionality seemingly at random. It’s a different attitude, and
+produces different results, blurring the distinction between testing and
+explaining.</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="testable-examples" class="section level3">
+<h3>Testable examples</h3>
+<p>Specification of testable examples versus non testable examples in
+the documentation:</p>
+<ul>
+<li><p>doctest will test example lines starting with triple superior
+signs <code>&gt;&gt;&gt;</code></p></li>
+<li><p>but doctest will not test example lines that are without these
+signs.</p></li>
+</ul>
+</div>
+</div>
+<div id="pytest" class="section level2">
+<h2>pytest</h2>
+<p>Numpy moved from nose to pytest as explained in their <a
+href="https://docs.scipy.org/doc/numpy/reference/testing.html">testing
+guidelines</a>:</p>
+<blockquote>
+<p>“Until the 1.15 release, NumPy used the nose testing framework, it
+now uses the pytest framework. The older framework is still maintained
+in order to support downstream projects that use the old numpy
+framework, but all tests for NumPy should use pytest.”</p>
+</blockquote>
+<p>Save this function in a file names test_numpy.py</p>
+<pre><code>def test_numpy_closeness():
+    assert [1,2] == [1,2]
+    assert (np.array([1,2]) == np.array([1,2])).all()
+    np.testing.assert_allclose(np.array([1,2]),np.array([1,3]))</code></pre>
+<p>Save the file to test_nn.py</p>
+<pre><code>import neural_nets as nn
+import numpy as np
+
+def test_rectified_linear_unit():
+    x = np.array([[1,0],
+                  [-1,-3]])
+    expected = np.array([[1,0],
+                         [0,0]])
+    provided = nn.rectified_linear_unit(x)
+    assert np.allclose(expected, provided), &quot;test failed&quot;</code></pre>
+<p>Execute the test suite from bash with py.test as follows:</p>
+<pre><code>cd ~/rp/course_machine_learning/projects/project_2_3_mnist/part2-nn
+py.test</code></pre>
+<div id="aa-run" class="section level3">
+<h3>AA run</h3>
+<ul>
+<li><p>Run and enter debug mode <a
+href="https://stackoverflow.com/a/48739098/2641825"
+class="uri">https://stackoverflow.com/a/48739098/2641825</a> suggests
+starting an ipython shell within the package directory and then running
+<code>!pytest --pdb</code> to enter inside the function that is causing
+a test to fail. Objects in that function can then be inspected at the <a
+href="https://docs.python.org/3/library/pdb.html">python debugger</a>
+prompt.</p>
+<p>!pytest –pdb</p></li>
+<li><p>Run unittest with pytest <a
+href="https://docs.pytest.org/en/7.1.x/how-to/unittest.html">How to use
+unittest-based tests with pytest</a></p>
+<p>pytest file_test.py</p></li>
+</ul>
+</div>
+<div id="coverage" class="section level3">
+<h3>Coverage</h3>
+<p>Usage</p>
+<pre><code>pytest --cov</code></pre>
+<p>Install</p>
+<pre><code>pip install pytest-cov</code></pre>
 </div>
 <div id="test-pandas-data-frame" class="section level3">
 <h3>Test pandas data frame</h3>
@@ -8806,34 +9246,136 @@ actual exception raised. The main attributes of interest are .type,
 </div>
 <div id="fixtures" class="section level3">
 <h3>Fixtures</h3>
-<pre><code>import pytest
-import xarray
-from cobwood.gfpmx_equations import (
-    consumption,
-    consumption_pulp,
-    consumption_indround,
-)
-
-@pytest.fixture
-def secondary_product_dataset():
-    &quot;&quot;&quot;Create a sample dataset for testing&quot;&quot;&quot;
-    ds = xarray.Dataset({
-        &quot;cons_constant&quot;: xarray.DataArray([2, 3, 4], dims=[&quot;c&quot;]),
-        &quot;price&quot;: xarray.DataArray([[1, 2], [3, 4], [5, 6]], dims=[&quot;c&quot;, &quot;t&quot;]),
-        &quot;gdp&quot;: xarray.DataArray([[100, 200], [300, 400], [500, 600]], dims=[&quot;c&quot;, &quot;t&quot;]),
-        &quot;prod&quot;: xarray.DataArray([[100, 200], [300, 400], [500, 600]], dims=[&quot;c&quot;, &quot;t&quot;]),
-        &quot;cons_price_elasticity&quot;: xarray.DataArray([0.5, 0.6, 0.7], dims=[&quot;c&quot;]),
-        &quot;cons_gdp_elasticity&quot;: xarray.DataArray([0.8, 0.9, 1.0], dims=[&quot;c&quot;]),
-    })
-    return ds
-
-def test_consumption(secondary_product_dataset):
-    &quot;&quot;&quot;Test the consumption function&quot;&quot;&quot;
-    ds = secondary_product_dataset
-    t = 1
-    expected_result = xarray.DataArray([138.62896863, 1274.23051055, 7404.40635264], dims=[&quot;c&quot;])
-    result = consumption(ds, t)
-    xarray.testing.assert_allclose(result, expected_result)</code></pre>
+<ul>
+<li><p>pytest fixtures <a
+href="https://docs.pytest.org/en/stable/explanation/fixtures.html"
+class="uri">https://docs.pytest.org/en/stable/explanation/fixtures.html</a></p>
+<blockquote>
+<p>In testing, a fixture provides a defined, reliable and consistent
+context for the tests. This could include environment (for example a
+database configured with known parameters) or content (such as a
+dataset).</p>
+</blockquote>
+<blockquote>
+<p>Fixtures define the steps and data that constitute the arrange phase
+of a test (see Anatomy of a test). In pytest, they are functions you
+define that serve this purpose. They can also be used to define a test’s
+act phase; this is a powerful technique for designing more complex
+tests.</p>
+</blockquote>
+<blockquote>
+<p>The services, state, or other operating environments set up by
+fixtures are accessed by test functions through arguments. For each
+fixture used by a test function there is typically a parameter (named
+after the fixture) in the test function’s definition.</p>
+</blockquote>
+<blockquote>
+<p>We can tell pytest that a particular function is a fixture by
+decorating it with <span class="citation">@pytest.fixture</span>. Here’s
+a simple example of what a fixture in pytest might look like:</p>
+</blockquote></li>
+<li><p>See also the section on Improvements over xUnit-style
+setup/teardown functions <a
+href="https://docs.pytest.org/en/stable/explanation/fixtures.html#improvements-over-xunit-style-setup-teardown-functions"
+class="uri">https://docs.pytest.org/en/stable/explanation/fixtures.html#improvements-over-xunit-style-setup-teardown-functions</a></p>
+<p><span class="citation">@pytest.fixture</span> def
+primary_product_dataset(): “““Create a sample primary products
+dataset”“” ds = xarray.Dataset( { “cons_constant”: xarray.DataArray([2,
+3, 4], dims=[“country”]), “imp_constant”: xarray.DataArray([2, 3, 4],
+dims=[“country”]), “price”: xarray.DataArray( [[1, 2], [3, 4], [5, 6]],
+dims=[“country”, “year”] ), “cons_paper_production_elasticity”:
+xarray.DataArray( [0.9, 1.0, 0.8], dims=[“country”] ),
+“cons_price_elasticity”: xarray.DataArray( [0.5, 0.6, 0.7],
+dims=[“country”] ), “cons_products_elasticity”: xarray.DataArray( [0.5,
+0.6, 0.7], dims=[“country”] ), “tariff”: xarray.DataArray( [[0.1, 0.2],
+[0.3, 0.4], [0.5, 0.6]], dims=[“country”, “year”] ), “c”:
+xarray.DataArray([True, True, True], dims=[“country”]), } ) return
+ds</p>
+<p>import pytest import xarray from cobwood.gfpmx_equations import (
+consumption, consumption_pulp, consumption_indround, )</p>
+<p><span class="citation">@pytest.fixture</span> def
+secondary_product_dataset(): “““Create a sample dataset for testing”“”
+ds = xarray.Dataset({ “cons_constant”: xarray.DataArray([2, 3, 4],
+dims=[“c”]), “price”: xarray.DataArray([[1, 2], [3, 4], [5, 6]],
+dims=[“c”, “t”]), “gdp”: xarray.DataArray([[100, 200], [300, 400], [500,
+600]], dims=[“c”, “t”]), “prod”: xarray.DataArray([[100, 200], [300,
+400], [500, 600]], dims=[“c”, “t”]), “cons_price_elasticity”:
+xarray.DataArray([0.5, 0.6, 0.7], dims=[“c”]), “cons_gdp_elasticity”:
+xarray.DataArray([0.8, 0.9, 1.0], dims=[“c”]), }) return ds</p>
+<p>def test_consumption(secondary_product_dataset): “““Test the
+consumption function”“” ds = secondary_product_dataset t = 1
+expected_result = xarray.DataArray([138.62896863, 1274.23051055,
+7404.40635264], dims=[“c”]) result = consumption(ds, t)
+xarray.testing.assert_allclose(result, expected_result)</p></li>
+</ul>
+<div id="interactive-sessions-and-fixtures" class="section level4">
+<h4>Interactive sessions and fixtures</h4>
+<p>If your goal is debugging or inspection (in a notebook or console),
+remove the <code>@pytest.fixture</code> decorator temporarily. To be
+able to allocate the output of the function to an actual dataset:</p>
+<blockquote>
+<blockquote>
+<blockquote>
+<p>ds = secondary_product_dataset()</p>
+</blockquote>
+</blockquote>
+</blockquote>
+<p>Otherwise pytest will return an error:</p>
+<pre><code>&gt; Failed: Fixture &quot;secondary_product_dataset&quot; called directly. Fixtures are
+&gt; not meant to be called directly, but are created automatically when test
+&gt; functions request them as parameters. See
+&gt; https://docs.pytest.org/en/stable/explanation/fixtures.html for more
+&gt; information about fixtures, and
+&gt; https://docs.pytest.org/en/stable/deprecations.html#calling-fixtures-directly</code></pre>
+<ul>
+<li><p>pytest documentation on calling fixtures directly <a
+href="https://docs.pytest.org/en/stable/deprecations.html#calling-fixtures-directly"
+class="uri">https://docs.pytest.org/en/stable/deprecations.html#calling-fixtures-directly</a></p>
+<blockquote>
+<p>“Calling a fixture function directly, as opposed to request them in a
+test function, is deprecated.”</p>
+</blockquote>
+<blockquote>
+<p>“For example:</p>
+</blockquote>
+<p><span class="citation">@pytest.fixture</span> def cell(): return
+…</p>
+<p><span class="citation">@pytest.fixture</span> def full_cell(): cell =
+cell() cell.make_full() return cell</p>
+<blockquote>
+<p>“This is a great source of confusion to new users, which will often
+call the fixture functions and request them from test functions
+interchangeably, which breaks the fixture resolution model.</p>
+</blockquote>
+<blockquote>
+<p>“In those cases just request the function directly in the dependent
+fixture:</p>
+</blockquote>
+<p><span class="citation">@pytest.fixture</span> def cell(): return
+…</p>
+<p><span class="citation">@pytest.fixture</span> def full_cell(cell):
+cell.make_full() return cell</p></li>
+</ul>
+</div>
+<div id="sharing-test-data" class="section level4">
+<h4>Sharing test data</h4>
+<ul>
+<li><p>pytest documentation on sharing test data <a
+href="https://docs.pytest.org/en/stable/explanation/fixtures.html#sharing-test-data"
+class="uri">https://docs.pytest.org/en/stable/explanation/fixtures.html#sharing-test-data</a></p>
+<blockquote>
+<p>“If you want to make test data from files available to your tests, a
+good way to do this is by loading these data in a fixture for use by
+your tests. This makes use of the automatic caching mechanisms of
+pytest.</p>
+</blockquote>
+<blockquote>
+<p>Another good approach is by adding the data files in the tests
+folder. There are also community plugins available to help to manage
+this aspect of testing, e.g. pytest-datadir and pytest-datafiles.”</p>
+</blockquote></li>
+</ul>
+</div>
 </div>
 <div id="parametrize" class="section level3">
 <h3>Parametrize</h3>
@@ -8865,6 +9407,18 @@ class="uri">https://stackoverflow.com/questions/46089480/pytest-fixtures-redefin
 <p>Add this at the beginning of pytest files</p>
 <pre><code># pylint: disable=redefined-outer-name</code></pre>
 </div>
+</div>
+<div id="unit-tests" class="section level2">
+<h2>Unit tests</h2>
+<p>See</p>
+<ul>
+<li><p><a
+href="https://github.com/okken/markdown.py/blob/master/test_markdown_unittest.py">python
+markdown unit tests</a></p></li>
+<li><p><a
+href="https://stackoverflow.com/questions/2085953/unit-testing-with-singletons">Unit
+testing with singleton</a></p></li>
+</ul>
 </div>
 <div id="test-use-in-projects" class="section level2">
 <h2>Test use in projects</h2>
@@ -9279,10 +9833,46 @@ between datasets and arrays</a></p>
 </div>
 <div id="convert-to-from-other-formats" class="section level2">
 <h2>Convert to-from other formats</h2>
-<div id="to-a-list" class="section level3">
-<h3>To a list</h3>
+<div id="to-a-pandas-data-frame-and-back-to-an-xarray-dataset"
+class="section level3">
+<h3>To a pandas data frame and back to an xarray dataset</h3>
+<p>Convert an xarray dataset to a pandas data frame in long format</p>
+<pre><code>df = ds.to_dataframe()
+df</code></pre>
+<p>Convert the data frame back to a dataset</p>
+<pre><code>xarray.Dataset.from_dataframe(df)</code></pre>
+<blockquote>
+<p>“Notice that that dimensions of variables in the Dataset have now
+expanded after the round-trip conversion to a DataFrame. This is because
+every object in a DataFrame must have the same indices, so we need to
+broadcast the data of each array to the full size of the new MultiIndex.
+Likewise, all the coordinates (other than indexes) ended up as
+variables, because pandas does not distinguish non-index
+coordinates.”</p>
+</blockquote>
+<p>You can also use</p>
+<pre><code>xarray.DataArray(df)</code></pre>
+<p>You can also convert 2 dimensional xarray dataset to a pandas data
+frame in wide format</p>
+<pre><code>df_wide = ds.to_pandas()</code></pre>
+</div>
+<div id="to-a-list-with-tolist" class="section level3">
+<h3>To a list with tolist()</h3>
 <p>Convert a 1 dimensional data array to a list</p>
 <pre><code>ds.country.values.tolist()</code></pre>
+</div>
+<div id="to-a-scalar-with-item" class="section level3">
+<h3>To a scalar with item()</h3>
+<pre><code>gfpmxb2021[&quot;sawn&quot;][&quot;cons&quot;].loc[&quot;Italy&quot;, 2070].item()</code></pre>
+</div>
+<div id="to-a-numpy-array-with-values" class="section level3">
+<h3>To a numpy array with values</h3>
+<p>Convert an xarray dataset to a numpy array:</p>
+<pre><code>In : model[&quot;sawn&quot;][&quot;cons&quot;].loc[&quot;Italy&quot;, 2070].values
+Out: array(5307.84727538)
+
+In : type(model[&quot;sawn&quot;][&quot;cons&quot;].loc[&quot;Italy&quot;, 2070].values)
+Out: numpy.ndarray</code></pre>
 </div>
 </div>
 <div id="copy-shallow-and-deep" class="section level2">
@@ -9341,35 +9931,27 @@ ds</code></pre>
 <h3>Attributes</h3>
 <p>We can add attributes to qualify metadata.</p>
 <pre><code>ds.attrs[&quot;product&quot;] = &quot;sponge&quot;</code></pre>
-</div>
-<div id="convert-xarray-to-pandas-and-back" class="section level3">
-<h3>Convert xarray to pandas and back</h3>
-<p>Convert an xarray dataset to a pandas data frame in long format</p>
-<pre><code>df = ds.to_dataframe()
-df</code></pre>
-<p>Convert the data frame back to a dataset</p>
-<pre><code>xarray.Dataset.from_dataframe(df)</code></pre>
-<blockquote>
-<p>“Notice that that dimensions of variables in the Dataset have now
-expanded after the round-trip conversion to a DataFrame. This is because
-every object in a DataFrame must have the same indices, so we need to
-broadcast the data of each array to the full size of the new MultiIndex.
-Likewise, all the coordinates (other than indexes) ended up as
-variables, because pandas does not distinguish non-index
-coordinates.”</p>
-</blockquote>
-<p>You can also use</p>
-<pre><code>xarray.DataArray(df)</code></pre>
-<p>You can also convert 2 dimensional xarray dataset to a pandas data
-frame in wide format</p>
-<pre><code>df_wide = ds.to_pandas()</code></pre>
+<p>Print units from a dataset in the cobwood model</p>
+<pre><code>from cobwood.gfpmx import GFPMX
+gfpmxb2021 = GFPMX(scenario=&quot;base_2021&quot;, rerun=False)
+variables = [&quot;cons&quot;, &quot;imp&quot;, &quot;exp&quot;, &quot;prod&quot;, &quot;price&quot;]    
+for var in variables:
+    print(gfpmxb2021.indround[var].unit)</code></pre>
+<p>To assign to an attribute use the <code>.attrs</code> accessors,
+which provides a dictionary of attributes.</p>
+<pre><code>print(gfpmxb2021.indround[&quot;cons&quot;].unit)
+# Same as 
+print(gfpmxb2021.indround[&quot;cons&quot;].attrs[&quot;unit&quot;])
+ds = gfpmxb2021.indround.copy()
+ds[&quot;cons&quot;].attrs[&quot;unit&quot;]
+ds[&quot;cons&quot;].attrs[&quot;unit&quot;] = &quot;test&quot;</code></pre>
 </div>
 <div id="create-an-empty-dataset-similar-to-existing-one"
 class="section level3">
 <h3>Create an empty dataset similar to existing one</h3>
 <p>Fill an array with zero values, similar to an existing data array. Or
 fill it with NA values.</p>
-<pre><code>xarray.zeros_like(da)
+<pre><code>xarray.zeros_like(da
 xarray.full_like(da, fill_value=xarray.nan)</code></pre>
 </div>
 </div>
