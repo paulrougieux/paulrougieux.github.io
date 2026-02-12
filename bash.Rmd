@@ -220,16 +220,25 @@ Convert a markdown document to pptx
 
 ## Pdf to text with pdfminer
 
+pdftotext is part of the [poppler-utils Debian
+package](https://manpages.debian.org/testing/poppler-utils/index.html).
+
 (pdfminer](https://github.com/pdfminer/pdfminer.six)
 Convert all pdf documents to text files in the current folder:
 
     for pdffile in *.pdf; do
     txtfile=${pdffile%.pdf}.txt
     echo "converting $pdffile to $txtfile"
-    pdf2txt.py $pdffile > $txtfile
+    pdftotext.py $pdffile > $txtfile
     done
 
-See also a utility to extract tables from pdf documents.
+Convert only one pdf
+
+    cd $HOME/rp/bioeconomy_papers/literature
+    pdftotext "Kull2014 Operational-scale carbon budget model of the Canadian forest sector (CBM-CFS3) version 1.2 user s guide. 2014..pdf" /tmp/cbm_user_guide.txt
+
+See also the tabula utility to extract tables from pdf documents.
+
 
 ## Pdf to tables with tabula
 
@@ -639,6 +648,8 @@ Also works with several distant groups of pages
     pdftk Accordeon-facile-Volume-3.pdf cat 10-11 14-17 30 output la_java_bleue.pdf
 
 
+
+
 ### Crop PDF
 
 Crop a pdf:
@@ -712,7 +723,17 @@ Based on this quick assessment, `ebook` seems to be a good compromise in terms
 of file size and image resolution.
 
 
-### Split PDF
+### Split pages 
+
+Split page 1,2,3 in one document and page 4 and 5 in two other
+documents
+
+    pdftk Gabriele\ Rougieux\ Vertrag\ Gemeinde.pdf cat 1-3 output Vertrag.pdf 
+    pdftk Gabriele\ Rougieux\ Vertrag\ Gemeinde.pdf cat 4 output payslip_oct.pdf
+    pdftk Gabriele\ Rougieux\ Vertrag\ Gemeinde.pdf cat 5 output payslip_nov.pdf
+
+
+### Split a PDF in two
 
 Split a pdf in two
 
@@ -720,8 +741,8 @@ Split a pdf in two
     # if necessary, install mutool with 
     apt install mupdf-tools
 
-
 ## Replace strings in text files
+
 Replace strings
 
     first="I love Suzy and Mary"
@@ -856,6 +877,23 @@ To display an environment variable in bash
 To remove an environment variable (without the `$` sign) in bash
 
     unset VAR_NAME
+
+## Direnv
+
+- https://manpages.debian.org/testing/direnv/direnv.1.en.html
+
+> "direnv is an environment variable manager for your shell.
+> It knows how to hook into bash, zsh and fish shell to load
+> or unload environment variables depending on your current
+> directory. This allows you to have project-specific
+> environment variables and not clutter the "~/.profile"
+> file."
+
+Setup for Bash
+
+> Add the following line at the end of the ~/.bashrc file:
+
+    eval "$(direnv hook bash)"
 
 
 # Find and check files
@@ -998,6 +1036,17 @@ Can be used in vim to filter the file in place (seen in a blog post called [Vim
 Kōans](https://blog.sanctum.geek.nz/vim-koans/))
 
     :%!awk "/paper/{print $4}"
+
+
+### Files that don't contain a pattern
+
+Search all files that don't contain a pattern
+
+    grep -RL "pattern" .
+
+For example
+
+    grep -RL "runner_type" .
 
 
 ## List files
@@ -1898,6 +1947,7 @@ Change the permission so only the current user has access to the file:
 
     chmod 600 id_rsa
 
+
 ### Load SSH keys into the remote server
 
 Based on [Install the public key in remote
@@ -1911,8 +1961,10 @@ OR just copy the public key in remote server as authorized_keys in ~/.ssh/ direc
 
     scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys
 
-The remainder of the [cybercity.biz document](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/) explains how to disable the password based login
-on a server.
+The remainder of the [cybercity.biz
+document](https://www.cyberciti.biz/faq/how-to-set-up-ssh-keys-on-linux-unix/)
+explains how to disable the password based login on a server.
+
 
 ### Check a key's fingerprint
 
@@ -2305,7 +2357,6 @@ guide](https://docs.kernel.org/process/maintainer-pgp-guide.html)
         git config --global user.signingKey [fpr]
 
 
-
 # System
 
 ## Disk usage and memory
@@ -2323,6 +2374,24 @@ Display available RAM memory
 
     cat /proc/meminfo
 
+
+### GDU disk usage analyser
+
+Start with
+
+    gdu
+
+Keys
+
+    hjkl or arrow keys to navigate
+    o open a file in an external editor
+    d delete a file
+    space to select files for deletion
+    ? help
+
+Installation 
+
+    sudo apt install gdu
 
 
 ## Environment variables
@@ -2540,6 +2609,10 @@ Print the number of processors available
 Print CPU architecture
 
     lscpu
+
+Print the architecture of package install, for example i386 or amd64
+
+    dpkg --print-architecture
 
 
 ## User activity

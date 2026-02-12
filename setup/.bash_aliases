@@ -1,6 +1,7 @@
 export EDITOR=nvim
 # Taking notes
 alias vi="nvim"
+alias viz='nvim "$(fzf)"' # Single quotes prevent the shell from expanding $(fzf) when the alias is defined.
 alias blogp="cd ~/rp/paulrougieux.github.io && nvim python.Rmd"
 alias blogr="cd ~/rp/paulrougieux.github.io && nvim R.Rmd"
 alias bookmark="vim -c 'syn off' ~/rp/bookmarkdown/bookmark.md"
@@ -9,6 +10,8 @@ alias matrix="cd ~/rp/bookmarkdown/work && nvim matrix.Rmd"
 alias overflow="nvim ~/rp/bookmarkdown/work/overflow.md"
 alias partners="cd ~/rp/bookmarkdown/work/freelance && nvim partners.md"
 alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && nvim -c 'syn off' readings_jrc.md"
+alias pom="$HOME/rp/bookmarkdown/work/pomodori/pomodoro.sh 25"
+
 
 # Opening files
 alias open="xdg-open"
@@ -33,6 +36,7 @@ alias poiu="pkill -f pomodoro_buzzer.py"
 # Tools
 alias ll='ls -lah'
 alias tree2='tree -L 2'
+# A symlink work -> /home/paul/repos/paulrougieux.github.io/setup/work.tmux
 alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work"'
 # Copy pipe output to the standard clipboard
 alias clip="xclip -selection clipboard"
@@ -73,7 +77,8 @@ p() {
     fi
 }
 
-
+# Environment variables
+eval "$(direnv hook bash)"
 # Paths for python data
 export BIOTRADE_DATA="$HOME/repos/forobs/biotrade_data/"
 export DEFORESTFOOT_DATA="$HOME/repos/forobs/deforestfoot_data/"
@@ -138,6 +143,4 @@ alias lyx='QT_X11_NO_MITSHM=1 lyx'
 alias spyder='QT_X11_NO_MITSHM=1 spyder'
 
 
-# Enable git autocompletion
-source /usr/share/bash-completion/completions/git
 

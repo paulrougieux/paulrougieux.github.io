@@ -519,8 +519,8 @@ href="https://askubuntu.com/questions/442997/how-can-i-convert-audio-from-ogg-to
 audio from ogg to mp3</a></p>
 <p>ffmpeg -i “file name with spaces”.{ogg,mp3} # Convert all files from
 ogg to mp3 for i in *.ogg; do ffmpeg -i “<span
-class="math inline">\({i%.ogg}&quot;.{ogg,mp3}; done  for i in *.ogg; do
-echo &quot;\)</span>{i%.ogg}”; done</p></li>
+class="math inline">\({i%.ogg}&quot;.{ogg,mp3}; done
+  for i in *.ogg; do echo &quot;\)</span>{i%.ogg}”; done</p></li>
 </ul>
 <p>Cut an audio file at the given start time in seconds</p>
 <pre><code>ffmpeg -ss 132 -i input.mp3 output.mp3
@@ -646,15 +646,21 @@ bibliography, change the font size or use a two column layout.</p>
 </div>
 <div id="pdf-to-text-with-pdfminer" class="section level2">
 <h2>Pdf to text with pdfminer</h2>
+<p>pdftotext is part of the <a
+href="https://manpages.debian.org/testing/poppler-utils/index.html">poppler-utils
+Debian package</a>.</p>
 <p>(pdfminer](<a href="https://github.com/pdfminer/pdfminer.six"
 class="uri">https://github.com/pdfminer/pdfminer.six</a>) Convert all
 pdf documents to text files in the current folder:</p>
 <pre><code>for pdffile in *.pdf; do
 txtfile=${pdffile%.pdf}.txt
 echo &quot;converting $pdffile to $txtfile&quot;
-pdf2txt.py $pdffile &gt; $txtfile
+pdftotext.py $pdffile &gt; $txtfile
 done</code></pre>
-<p>See also a utility to extract tables from pdf documents.</p>
+<p>Convert only one pdf</p>
+<pre><code>cd $HOME/rp/bioeconomy_papers/literature
+pdftotext &quot;Kull2014 Operational-scale carbon budget model of the Canadian forest sector (CBM-CFS3) version 1.2 user s guide. 2014..pdf&quot; /tmp/cbm_user_guide.txt</code></pre>
+<p>See also the tabula utility to extract tables from pdf documents.</p>
 </div>
 <div id="pdf-to-tables-with-tabula" class="section level2">
 <h2>Pdf to tables with tabula</h2>
@@ -984,6 +990,22 @@ pdf</a></p>
 <p>pdfcrop can be installed from:</p>
 <pre><code>sudo apt-get install texlive-extra-utils</code></pre>
 </div>
+<div id="edit-pdf-text" class="section level3">
+<h3>Edit pdf text</h3>
+<ul>
+<li><a
+href="https://stackoverflow.com/questions/9871585/how-to-find-and-replace-text-in-a-existing-pdf-file-with-pdftk-or-other-command"
+class="uri">https://stackoverflow.com/questions/9871585/how-to-find-and-replace-text-in-a-existing-pdf-file-with-pdftk-or-other-command</a></li>
+</ul>
+<p>The following suggestion didn’t work.</p>
+<p>Uncompress the text streams of PDF</p>
+<pre><code>pdftk input.pdf output uncompressed.pdf uncompress</code></pre>
+<p>Use sed to replace your text with another</p>
+<pre><code>sed -e &quot;s/ORIGINALSTRING/NEWSTRING/g&quot; &lt;uncompressed.pdf &gt;modified.pdf
+sed -e &quot;s|ORIGINALSTRING|NEWSTRING|g&quot; &lt;uncompressed.pdf &gt;modified.pdf</code></pre>
+<p>If this attempt was successful, re-compress the PDF with pdftk</p>
+<pre><code>pdftk modified.pdf output recompressed.pdf compress</code></pre>
+</div>
 <div id="rotate-pdf" class="section level3">
 <h3>Rotate PDF</h3>
 <p><a href="https://unix.stackexchange.com/a/394068">Stack Exchange
@@ -1016,8 +1038,16 @@ anyway.</p></li>
 <p>Based on this quick assessment, <code>ebook</code> seems to be a good
 compromise in terms of file size and image resolution.</p>
 </div>
-<div id="split-pdf" class="section level3">
-<h3>Split PDF</h3>
+<div id="split-pages" class="section level3">
+<h3>Split pages</h3>
+<p>Split page 1,2,3 in one document and page 4 and 5 in two other
+documents</p>
+<pre><code>pdftk Gabriele\ Rougieux\ Vertrag\ Gemeinde.pdf cat 1-3 output Vertrag.pdf 
+pdftk Gabriele\ Rougieux\ Vertrag\ Gemeinde.pdf cat 4 output payslip_oct.pdf
+pdftk Gabriele\ Rougieux\ Vertrag\ Gemeinde.pdf cat 5 output payslip_nov.pdf</code></pre>
+</div>
+<div id="split-a-pdf-in-two" class="section level3">
+<h3>Split a PDF in two</h3>
 <p>Split a pdf in two</p>
 <pre><code>mutool poster -x 2 cbmflow.pdf output.pdf
 # if necessary, install mutool with 
@@ -1249,6 +1279,13 @@ called <a href="https://blog.sanctum.geek.nz/vim-koans/">Vim
 Kōans</a>)</p>
 <pre><code>:%!awk &quot;/paper/{print $4}&quot;</code></pre>
 </div>
+<div id="files-that-dont-contain-a-pattern" class="section level3">
+<h3>Files that don’t contain a pattern</h3>
+<p>Search all files that don’t contain a pattern</p>
+<pre><code>grep -RL &quot;pattern&quot; .</code></pre>
+<p>For example</p>
+<pre><code>grep -RL &quot;runner_type&quot; .</code></pre>
+</div>
 </div>
 <div id="list-files" class="section level2">
 <h2>List files</h2>
@@ -1333,6 +1370,10 @@ specific line using less</p>
 <h2>.htaccess</h2>
 <div id="redirect-http-to-https" class="section level3">
 <h3>Redirect http to https</h3>
+<p>To redirect http to https, I used:</p>
+<pre><code>RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]</code></pre>
 <ul>
 <li>Apache documentation on how to redirect http to https <a
 href="https://httpd.apache.org/docs/2.4/rewrite/remapping.html"
@@ -1345,10 +1386,11 @@ do the following:</p>
 <pre><code>&lt;If &quot;%{SERVER_PROTOCOL} != &#39;HTTPS&#39;&quot;&gt;
     Redirect &quot;/admin/&quot; &quot;https://www.example.com/admin/&quot;
 &lt;/If&gt;</code></pre>
-<p>I will try to use</p>
+<p>I tried to use</p>
 <pre><code>&lt;If &quot;%{SERVER_PROTOCOL} != &#39;HTTPS&#39;&quot;&gt;
     Redirect &quot;/&quot; &quot;https://www.example.com/&quot;
 &lt;/If&gt;</code></pre>
+<p>But it didn’t work. The RewriteRule above did work.</p>
 </div>
 </div>
 <div id="mac-address" class="section level2">
@@ -2052,7 +2094,10 @@ class="section level3">
 <h3>Generate SSH keys and add them to the agent</h3>
 <p>Mon Sep 28 09:36:26 CEST 2020 Generate a new key</p>
 <pre><code>cd ~/.ssh
-ssh-keygen &lt;id_rsa_keyname&gt;</code></pre>
+ssh-keygen
+# Generating public/private rsa key pair.
+# Enter file in which to save the key:
+&lt;id_rsa_keyname&gt;</code></pre>
 <p>Temporarily add a key to ssh</p>
 <pre><code>ssh-add ~/.ssh/&lt;id_rsa_keyname&gt;</code></pre>
 <p>List keys</p>
@@ -2225,6 +2270,52 @@ gpg -er user@email file.ext</code></pre>
 gpg -esr user@email file.ext</code></pre>
 <p>Decrypt a document</p>
 <pre><code>gpg --output file.ext --decrypt file.ext.gpg</code></pre>
+</div>
+<div id="revoke-a-key" class="section level3">
+<h3>Revoke a key</h3>
+<ul>
+<li><p>How to revoke a GPG Key and upload in GPG server? <a
+href="https://superuser.com/questions/1526283/how-to-revoke-a-gpg-key-and-upload-in-gpg-server"
+class="uri">https://superuser.com/questions/1526283/how-to-revoke-a-gpg-key-and-upload-in-gpg-server</a></p>
+<blockquote>
+<p>Q “As far as I know, if key is compromised then i can revoke the key
+using revocation certificate.”</p>
+</blockquote>
+<blockquote>
+<p>A “Yes, but as long as you have the actual private key (f it’s
+compromised but not destroyed), you can always use it to revoke itself.
+That is, it can always generate new revocation certificates”on the fly”.
+Instead, the pre-generated revocation certificate exists for situations
+when the private key is completely lost, not merely when it’s
+compromised. It’s something to store on a USB stick at a friend’s house.
+(Of course, you should always keep a backup of the private key off-site
+as well. But the big difference is that a backup of the private key is
+much more sensitive, since if stolen it can be used to do anything under
+your name, whereas the ‘revocation certificate’ can only be used to do
+one very specific thing.)”</p>
+</blockquote>
+<blockquote>
+<p>Q “Can someone suggest me how to revoke my key with revocation
+certificate?”</p>
+</blockquote>
+<blockquote>
+<p>A “It should be enough to import the revcert into your PGP keyring –
+it is essentially just a key signature (”self-certification” in GnuPG)
+that attaches to your main public key in the exact same way as you can
+have other people sign your key and import those signatures. As soon as
+it is imported, the program should show the key as revoked and you
+should publish the updated public key in standard locations (keyserver,
+etc.)</p>
+</blockquote>
+<blockquote>
+<p>Q “Also one more doubt is, after revoking keys should I upload at any
+GPG Key server?”</p>
+</blockquote>
+<blockquote>
+<p>A “Yes, you should. Publishing keys (and updates to keys) is what
+keyservers are for.”</p>
+</blockquote></li>
+</ul>
 </div>
 <div id="sign-files" class="section level3">
 <h3>Sign files</h3>
@@ -2432,6 +2523,19 @@ du -hs * # sub-folder size summary</code></pre>
 <pre><code>df -h</code></pre>
 <p>Display available RAM memory</p>
 <pre><code>cat /proc/meminfo</code></pre>
+<div id="gdu-disk-usage-analyser" class="section level3">
+<h3>GDU disk usage analyser</h3>
+<p>Start with</p>
+<pre><code>gdu</code></pre>
+<p>Keys</p>
+<pre><code>hjkl or arrow keys to navigate
+o open a file in an external editor
+d delete a file
+space to select files for deletion
+? help</code></pre>
+<p>Installation</p>
+<pre><code>sudo apt install gdu</code></pre>
+</div>
 </div>
 <div id="environment-variables-1" class="section level2">
 <h2>Environment variables</h2>
@@ -2443,17 +2547,28 @@ printenv LC_TIME</code></pre>
 <h2>Jobs and processes</h2>
 <div id="monitor-processes" class="section level3">
 <h3>Monitor processes</h3>
-<p>Display Linux processes</p>
-<pre><code>top</code></pre>
-<p>Interactive process viewer</p>
-<pre><code>htop</code></pre>
+<p>Display Linux processes with <code>top</code> or with the interactive
+process viewer <code>htop</code>:</p>
+<pre><code>top
+htop</code></pre>
+<p>Display processes owned by the user</p>
+<pre><code>ps -u paul</code></pre>
+<p>Sort processes by memory usage</p>
+<pre><code>ps -u rougipa -o pid,%mem,rss,comm --sort=-%mem
+ps -u rougipa -o pid,%mem,rss,comm --sort=-%mem | grep python
+# Convert memory usage to IEC units (KiB, MiB, GiB)
+ps -u rougipa -o pid,%mem,rss,comm --sort=-%mem | grep python | numfmt --to=iec --field=3</code></pre>
+<p>Find out which program is listening to which port</p>
+<pre><code>sudo netstat -pna | grep &lt;port_number&gt;</code></pre>
+<div id="monitor-log-files-and-data-updates" class="section level4">
+<h4>Monitor log files and data updates</h4>
 <p>Run a command every 2 seconds, for example to list a folder as new
 files are being written to it:</p>
 <pre><code>watch ls</code></pre>
 <p>Follow the end of a log file, as it is written</p>
-<pre><code>tail filename.log</code></pre>
-<p>Find out which program is listening to which port</p>
-<pre><code>sudo netstat -pna | grep &lt;port_number&gt;</code></pre>
+<pre><code>tail filename.log
+tail -f filename.log</code></pre>
+</div>
 </div>
 <div id="start-stop-move-to-background" class="section level3">
 <h3>Start, stop, move to background</h3>
@@ -2577,6 +2692,9 @@ the command: sudo parted /dev/mmcblk0 # then: print</p>
 <pre><code>nproc</code></pre>
 <p>Print CPU architecture</p>
 <pre><code>lscpu</code></pre>
+<p>Print the architecture of package install, for example i386 or
+amd64</p>
+<pre><code>dpkg --print-architecture</code></pre>
 </div>
 <div id="user-activity" class="section level2">
 <h2>User activity</h2>
@@ -2585,6 +2703,32 @@ the command: sudo parted /dev/mmcblk0 # then: print</p>
 <p>Last time the system was started</p>
 <pre><code>last reboot 
 last</code></pre>
+<div id="last-login-attempts" class="section level4">
+<h4>Last login attempts</h4>
+<p>Successful login attempts:</p>
+<pre><code>last
+last username</code></pre>
+<p>Failed login attempts:</p>
+<pre><code>sudo grep &#39;Failed password&#39; /var/log/auth.log</code></pre>
+<p>My laptop was stolen (August 8) and then given back (August 9). Last
+output around those dates:</p>
+<pre><code>paul     pts/9        tmux(4442).%10   Fri Aug  8 18:11 - 18:11  (00:00)
+paul     pts/3        tmux(4442).%9    Fri Aug  8 17:59 - 13:52 (3+19:52)
+paul     pts/1        tmux(4442).%8    Fri Aug  8 17:49 - 11:24 (4+17:34)
+paul     pts/8        tmux(4442).%7    Fri Aug  8 16:09 - crash (6+22:00)
+paul     pts/7        tmux(4442).%6    Fri Aug  8 16:09 - crash (6+22:00)
+paul     pts/6        tmux(4442).%5    Fri Aug  8 16:09 - crash (6+22:00)
+paul     pts/5        tmux(4442).%4    Fri Aug  8 16:09 - 17:34 (3+01:25)
+paul     pts/4        tmux(4442).%3    Fri Aug  8 16:09 - crash (6+22:00)
+paul     pts/3        tmux(4442).%2    Fri Aug  8 16:09 - 17:15  (01:06)
+paul     pts/2        tmux(4442).%1    Fri Aug  8 16:09 - crash (6+22:00)
+paul     pts/1        tmux(4442).%0    Fri Aug  8 16:09 - 16:09  (00:00)
+paul     tty2         tty2             Fri Aug  8 16:06 - crash (6+22:03)
+reboot   system boot  6.1.0-37-amd64   Fri Aug  8 16:05   still running
+paul     pts/9        tmux(5197).%14   Sun Aug  3 19:01 - 19:01  (00:00)
+paul     pts/9        tmux(5197).%13   Fri Aug  1 21:18 - 21:36  (00:18)
+paul     pts/9        tmux(5197).%12   Fri Aug  1 11:37 - 11:38  (00:01)</code></pre>
+</div>
 </div>
 <div id="super-user" class="section level3">
 <h3>Super user</h3>
