@@ -722,6 +722,17 @@ unusually large size (12Mb). File size of the output files with comments:
 Based on this quick assessment, `ebook` seems to be a good compromise in terms
 of file size and image resolution.
 
+    mkdir /tmp/scan
+    cd /tmp/scan
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+
+#### Loop on all pdf files in the directory
+
+    for file in *.pdf; do
+        ll "$file"
+        gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile="${file%.pdf}-small.pdf" "$file"
+    done
+
 
 ### Split pages 
 
