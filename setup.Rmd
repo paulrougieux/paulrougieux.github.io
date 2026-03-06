@@ -26,3 +26,55 @@ a paragraph to the ipython read–eval–print loop (REPL). This shortcut uses
 it to a target" tmux pane.
 
 
+# Server setup
+
+
+## Connect with alias in ssh config
+
+See config in ~/.ssh/config
+The password can be saved in 
+
+
+## Create users
+
+**On the server**
+
+Log in as root and run these:
+
+Create user: 
+
+    adduser modeluser
+
+Grant sudo: 
+
+    usermod -aG sudo modeluser
+
+Set password: 
+
+    passwd modeluser.
+
+Disable root SSH: Edit /etc/ssh/sshd_config, set PermitRootLogin no, then systemctl restart ssh.
+
+**On the laptop**
+
+Update your ~/.ssh/config alias to use User modeluser.
+
+Copy the public key in remote server as authorized keys
+First check which public key is the most recent.
+
+    scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys
+
+**On the server**
+
+- disable password authentication
+
+  vi /etc/ssh/sshd_config
+
+    PasswordAuthentication no
+    ChallengeResponseAuthentication no
+    PubkeyAuthentication yes
+
+
+## Use authentication tokens to clone private repos
+
+
