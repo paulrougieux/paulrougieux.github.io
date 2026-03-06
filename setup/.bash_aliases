@@ -57,26 +57,33 @@ alias vpns="expressvpn status"
 alias penv="source ~/rp/penv/bin/activate"
 alias jlab="source ~/rp/penv/bin/activate &&jupyter lab"
 alias treep='tree -P "*.py"  -I "__pycache__"'
+# Activate a virtual env
+alias sv="source .venv/bin/activate"
 # Function to start ipython in a virtual env, unless an env is already started
 p() {
-    # Check if a venv is active
-    if [ -n "$VIRTUAL_ENV" ]; then
-        echo "venv environment '$VIRTUAL_ENV' is already active"
-        ipython
-    # Check if conda env is active
-    elif [ -n "$CONDA_DEFAULT_ENV" ]; then
-        echo "Conda environment '$CONDA_DEFAULT_ENV' is already active"
-        ipython
-    # Check if pyenv is active (and not using system Python)
-    elif command -v pyenv >/dev/null 2>&1 && [ "$(pyenv version-name)" != "system" ]; then
-        echo "pyenv environment '$(pyenv version-name)' is already active"
-        ipython
-    else
-        # No environment active, start your default one
-        source ~/rp/penv/bin/activate && ipython  # or whatever your default is
-    fi
-}
+      local python_bin
 
+      # Prefer local .venv in current directory
+      if [ -x ".venv/bin/python" ]; then
+          echo "Using local venv '$(pwd)/.venv'"
+          python_bin=".venv/bin/python"
+      # Fall back to active venv, but validate it exists
+      elif [ -n "$VIRTUAL_ENV" ] && [ -x "$VIRTUAL_ENV/bin/python" ]; then
+          echo "venv environment '$VIRTUAL_ENV' is already active"
+          python_bin="$VIRTUAL_ENV/bin/python"
+      elif [ -n "$CONDA_DEFAULT_ENV" ]; then
+          echo "Conda environment '$CONDA_DEFAULT_ENV' is already active"
+          python_bin="python"
+      elif command -v pyenv >/dev/null 2>&1 && [ "$(pyenv version-name)" != "system" ]; then
+          echo "pyenv environment '$(pyenv version-name)' is already active"
+          python_bin="python"
+      else
+          source ~/rp/penv/bin/activate
+          python_bin="python"
+      fi
+
+      "$python_bin" -m IPython
+  }
 # Environment variables
 eval "$(direnv hook bash)"
 # Paths for python data
