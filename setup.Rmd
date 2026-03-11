@@ -29,13 +29,18 @@ it to a target" tmux pane.
 # Server setup
 
 
-## Connect with alias in ssh config
+## Modelling server
+
+A server setup to run mostly python models.
+
+
+### Connect with alias in ssh config
 
 See config in ~/.ssh/config
-The password can be saved in 
+The password can be saved in a storage file.
 
 
-## Create users
+### Create users
 
 **On the server**
 
@@ -75,6 +80,67 @@ First check which public key is the most recent.
     PubkeyAuthentication yes
 
 
-## Use authentication tokens to clone private repos
+### Install tools
+
+Install
+
+    sudo apt install git
+    sudo apt install tree
+    sudo apt install tmux
+    sudo apt install python-is-python3
+    sudo apt install python3-pip
+    sudo apt install ipython3
+    sudo apt install python3.13-venv
+    sudo apt install neovim
+    sudo apt install gdu
+
+
+### Clone repositories
+
+Use authentication tokens to clone private repos
+
+    git config --global credential.helper store
+    git clone git@gitlab.com:bioeconomy/eu_cbm/eu_cbm_data.git
+    git clone https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_data.git
+    git clone https://gitlab.com/forest-modellers/cbm-timba-coupling.git
+
+Create directories and symbolic links to accommodate pre-defined legacy python
+paths from the bash aliases dot files downloaded with curl below. These aliases
+are partly a workaround that shouldn't be needed once we have a better way to
+set up the python path and model related environment variables.
+
+    cd ~
+    mkdir repos
+    ln -s repos rp
+    cd repos
+    ln -s ../eu_cbm eu_cbm
+    mkdir eu_cbm/.venv
+    ln -s eu_cbm/.venv penv
+
+
+### Dot files
+
+Get bash alias file from Paul's blog setup repository
+
+    curl -O https://gitlab.com/paulrougieux/paulrougieux/-/raw/master/setup/.bash_aliases?ref_type=heads&inline=false
+
+
+### Setup python models
+
+Create a virtual environment and install the model and its dependencies inside
+
+    cd ~
+    mkdir eu_cbm/.venv
+    python3 -m venv eu_cbm/.venv
+    source eu_cbm/.venv/bin/activate
+    cd ~/eu_cbm/eu_cbm_hat/
+    pip install -e .
+    pip install ipython # Inside the environment
+    pip install libcbm # Why is this not a dependency of eu_cbm_hat? 
+
+See ~/eu_cbm/eu_cbm_hat/docs/setup_on_jrc_bdap.md
+For AIDB initialization and model run instructions.
+
+
 
 
