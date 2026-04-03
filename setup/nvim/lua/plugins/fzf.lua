@@ -12,5 +12,6 @@ return {
     vim.keymap.set('n', '<leader>ff', require('fzf-lua').files, { desc = 'Fzf files' })
     vim.keymap.set('n', '<leader>fg', require('fzf-lua').live_grep, { desc = 'Fzf live grep' })
     vim.keymap.set('n', '<leader>fw', require('fzf-lua').grep_cword, { desc = 'Fzf live grep word' })
+    vim.keymap.set('n', '<leader>fr', ':FzfLua files cwd=~/rp/<CR>', { desc = 'Files in rp' })
   end
 }

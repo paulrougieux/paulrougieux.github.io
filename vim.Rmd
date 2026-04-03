@@ -1,9 +1,10 @@
 ---
-title: "Vim Commands"
+title: "Vim Commands" 
+author: "Paul Rougieux"
+date: "2025"
 output: 
   html_document: 
     toc: yes
-    toc_float: true
 ---
 
 # Introduction
@@ -168,6 +169,15 @@ In the end I changed the mapping > to %>% [as explained in NVimR issue 85](https
 [different mappings for CTRL+A and
 CTRL+SHIFT+A](https://stackoverflow.com/questions/1506764/how-to-map-ctrla-and-ctrlshifta-differently)
 It's generally not possible.
+
+
+## Leader keys
+
+Display leader keys and local leader key
+
+    :echo mapleader
+    :echo maplocalleader
+
 
 ## Minimal .vimrc for bug reports
 
@@ -1291,6 +1301,8 @@ See also the [debian.html] page. The Arch Linux [wiki page on
 Mutt](https://wiki.archlinux.org/index.php/Mutt#Installation) has a section
 explaining how to set it up with vim.
 
+
+
 # Help
 
     :help - vim help
@@ -1574,6 +1586,86 @@ Explains how to turn the banner off:
 You can put the banner back on by pressing `I`.
 
 
+### fzf lua
+
+Search for files in a path:
+
+    :FzfLua files cwd=~/rp/eu_cbm
+
+I defined the following key mappings for file search, grep and grep word:
+
+    vim.keymap.set('n', '<leader>ff', require('fzf-lua').files, { desc = 'Fzf files' })
+    vim.keymap.set('n', '<leader>fg', require('fzf-lua').live_grep, { desc = 'Fzf live grep' })
+    vim.keymap.set('n', '<leader>fw', require('fzf-lua').grep_cword, { desc = 'Fzf live grep word' })
+
+I later added this command to search for files in all my repositories
+
+    vim.keymap.set('n', '<leader>fr', ':FzfLua files cwd=~/rp/<CR>', { desc = 'Files in rp' })
+
+To navigate in the file preview window on the right, user
+
+    shift up
+    shift down
+
+https://github.com/ibhagwan/fzf-lua
+
+    :FzfLua files - Find files (use this constantly)
+    :FzfLua live_grep - Search in files (your main search tool)
+    :FzfLua buffers - Switch between open files
+    :FzfLua oldfiles - Recent files (muscle memory alternative to file search)
+    :FzfLua lsp_references - Find where something is used (if using LSP)
+
+Pro Tips
+Resume last search:
+
+- I choose fzf lua over telescope because it's simpler and faster
+  https://claude.ai/share/ffcb6e5a-e3a4-413e-ad71-9116da62d0af
+
+    > "There's been a quiet migration from Telescope to fzf-lua among
+    > performance-conscious users, especially those on larger codebases.
+    > fzf-lua has matured significantly and now covers 90% of common use cases
+    > while being noticeably faster. My take: If you're starting fresh, try
+    > fzf-lua first. It's faster, simpler, and probably sufficient. Only reach
+    > for Telescope if you discover you need its specific advanced features or
+    > extensions."
+
+    - Some people run both
+
+        -- Use fzf-lua for file/grep (speed matters)
+        vim.keymap.set('n', '<leader>ff', require('fzf-lua').files)
+        vim.keymap.set('n', '<leader>fg', require('fzf-lua').live_grep)
+
+        -- Use Telescope for specialized stuff (features matter)
+        vim.keymap.set('n', '<leader>fs', require('telescope.builtin').lsp_document_symbols)
+        vim.keymap.set('n', '<leader>fr', require('telescope.builtin').lsp_references)
+
+
+### Telescope (not used)
+
+- https://github.com/nvim-telescope/telescope.nvim
+
+    > "a highly extendable fuzzy finder over lists. Built on the latest awesome
+    > features from neovim core. Telescope is centered around modularity, allowing
+    > for easy customization."
+
+Command to find files
+
+    :Telescope find_files
+
+Find and preview buffers
+
+    :Telescope buffers
+
+Find help about nvim commands
+
+    :Telescope help_tags
+
+Create short cuts
+
+    local builtin = require('telescope.builtin')
+    vim.keymap.set('n', '<leader>ff', builtin.find_files, { desc = 'Telescope find files' })
+
+
 ## Go to files or open them in an external viewer
 
 Open the file name or path under the cursor, in the current window:
@@ -1854,7 +1946,356 @@ so I deactivated it.
 - https://nvchad.com/ Neovim config
 
 
-## LLM code completion in NeoVim
+## Fonts for neovim plugins
+
+Neovim plugins such as avante and aerial require nerd fonts. Available from
+https://www.nerdfonts.com/font-downloads
+
+Download and install DejaVuSansMono from nerd font:
+
+    mkdir ~/.local/share/fonts
+    wget -P ~/.local/share/fonts https://github.com/ryanoasis/nerd-fonts/releases/download/v3.4.0/DejaVuSansMono.zip
+    unzip ~/.local/share/fonts/DejaVuSansMono.zip -d ~/.local/share/fonts/
+    rm ~/.local/share/fonts/DejaVuSansMono.zip
+
+Debian
+
+- NerdFonts are not packaged by debian https://wiki.debian.org/Fonts/NerdFonts
+
+- Debian apt packages containing fonts related to nerd fonts in the hope that
+  they will cover these:
+
+    - fonts-symbola symbolic font providing emoji characters from Unicode 9.0
+
+    - fonts-firacode Monospaced font with programming ligatures
+
+    - fonts-powerline prompt and statusline utility (symbols font)
+
+    - fonts-material-design-icons-iconfont Material Design Icons DX
+
+    - fonts-font-awesome iconic font designed for use with Twitter Bootstrap
+
+
+    sudo apt install fonts-font-awesome fonts-material-design-icons-iconfont fonts-powerline fonts-symbola fonts-firacode
+
+
+
+
+
+## lazy.nvim
+
+Update plugins with
+
+    :Lazy update
+
+
+### Lazy installation and setup
+
+A plugin manager for Neovim, recommended by avante.
+
+To install it, create the following files:
+
+    vi ~/.config/nvim/init.lua
+
+File content
+
+    require("config.lazy")
+
+Make the lua config directory if needed and create a lazy config file there:
+
+    mkdir -p ~/.config/nvim/lua/config/
+    vi ~/.config/nvim/lua/config/lazy.lua 
+
+File content see https://lazy.folke.io/installation
+
+Make the lua plugin directory
+
+    mkdir ~/.config/nvim/lua/plugins
+
+Error conflicting config
+
+    E5422: Conflicting configs: 
+    "/home/paul/.config/nvim/init.lua"
+    "/home/paul/.config/nvim/init.vim"
+
+I removed the init.vim and placed the content in init.lua instead.
+
+There was a missing lua parser, I installed it on Debian with:
+
+    sudo apt install tree-sitter-lua-src
+
+The help page returns an error while calling lua chunk:
+`/usr/share/nvim/runtime/lua/vim/treesitter/language.lua:107:` no parser for 
+'vimdoc' language.
+
+Add vimdoc parser to the lua config:
+
+    require'nvim-treesitter.configs'.setup {
+      ensure_installed = { "lua", "vim", "vimdoc", "query" },  -- add vimdoc here
+      highlight = { enable = true },
+      auto_install = true,
+    }
+
+
+### Refresh the cache
+
+I had an error even thout I had changed the configuration to remove that
+missing branch and replace it with a tag
+
+    Failed (2)
+      ● aerial.nvim 11.55ms  start     ■ fetch failed
+          fatal: couldn't find remote ref refs/heads/nvim-0.10
+
+
+Manually Remove local cache
+
+    rm -rf ~/.local/share/nvim/lazy/aerial.nvim
+
+Or use 
+
+    :Lazy clean <package-name>
+    # Such as 
+    :Lazy clean VOoM
+    :Lazy clean Aerial
+
+FOllowed by Lazy update
+
+### Python Linter
+
+TODO: see https://claude.ai/share/9a9566d9-1ebf-4a1a-a7f3-4c0c5b4b2a4f
+for instructions on how to replace outdated ALE with another linter.
+
+
+### Table of Content for markdown files
+
+lazy.lua setup of the table of content using the Voom plugin:
+
+    -- Markdown table of contents
+    {
+      "vim-voom/VOoM",
+      ft = { "markdown", "rmd", "quarto", "rnoweb" },
+      config = function()
+        -- Create a Toc command for each filetype
+        local augroup = vim.api.nvim_create_augroup("Toc", { clear = true })
+        
+        vim.api.nvim_create_autocmd("FileType", {
+          group = augroup,
+          pattern = { "markdown", "rmd", "quarto", "rnoweb" },
+          callback = function()
+            vim.api.nvim_buf_create_user_command(0, "Toc", "Voom", {})
+          end,
+        })
+      end,
+    },
+
+
+### Tmux navigation and send to REPL
+
+Setup two functionalities:
+
+- Navigate between Tmux panes and vim splits with hjkl
+
+- Send lines of codes to a Read Eval Print Loop
+
+
+## Code completion and LLM 
+
+> Use them complementary to each other: https://claude.ai/share/bf471457-d762-439d-9292-d73e40876478
+
+>  - Avante for quick inline edits and when you want tight visual feedback
+> 
+>  - codecompanion for brainstorming, debugging conversations, and learning
+> 
+>  - Claude Code for substantial refactoring, multi-file changes, or when you want
+>    an autonomous agent to handle a complete feature or fix
+
+
+### Agentic workflow
+
+- What code completion tools go beyond autocomplete to generate their own 
+  integration and unit tests and to edit many files at once?  
+  https://g.co/gemini/share/1715f6de5168
+
+ > Key Neovim Concepts for Agentic Workflows
+
+ >      Context Management: For an agent to edit multiple files, it needs to 
+ >      see all of them. Plugins often provide commands to "add buffer to 
+ >      context," "add file to context," or "add project to context." This is a 
+ >      crucial step for anything beyond single-file edits.
+ 
+ >      LSP (Language Server Protocol): Many AI plugins use the LSP to get a deeper 
+ >      understanding of your code's structure, including variable definitions, 
+ >      function signatures, and diagnostics. This is how the AI can generate 
+ >      accurate and context-aware code and tests.
+
+ >      Chat vs. Inline: Neovim plugins for these agents typically offer two modes: 
+ >      a chat window for complex, multi-turn conversations and multi-file tasks, 
+ >      and inline suggestions for quick autocompletions. You'll use the chat 
+ >      window for any true "agentic" work.
+
+- https://www.perplexity.ai/search/using-neovim-what-plugin-can-b-JIUNSoghSFex1uQ83hdiuQ
+
+  > Conclusion: For an agentic workflow in Neovim with code completion that 
+  > autonomously generates integration and unit tests and edits multiple files, 
+  > avante.nvim is a primary plugin to explore due to its agentic mode with 
+  > AI-driven code changes. Complementing that with neotest provides deeper 
+  > integration for automated testing workflows within Neovim.
+
+
+### API providers
+
+#### Grok code
+
+- Prompt engineering https://docs.x.ai/docs/guides/grok-code-prompt-engineering
+
+    > "Introduce context to the model grok-code-fast-1 is accustomed to seeing 
+    > a lot of context in the initial user prompt. We recommend developers to 
+    > use XML tags or **Markdown-formatted** content to mark various 
+    > **sections** of the context and to add clarity to certain sections. 
+    > Descriptive Markdown headings/XML tags and their corresponding 
+    > definitions will allow grok-code-fast-1 to use the context more 
+    > effectively.
+
+
+#### Mistral
+
+- Mistral Console https://console.mistral.ai/home
+
+    - Codestral code generation https://mistral.ai/news/codestral 
+
+        > "Codestral is an open-weight generative AI model explicitly designed for code
+        > generation tasks. It helps developers write and interact with code through a
+        > shared instruction and completion API endpoint."
+
+    - Avante Neovim configuration for mistral
+      https://github.com/yetone/avante.nvim/discussions/1570
+
+
+### Avante.nvim
+
+- https://github.com/yetone/avante.nvim
+
+    > "avante.nvim is currently only compatible with Neovim 0.10.1 or later."
+
+- Scoped keys
+
+Scoped keys are recommended:
+
+    export AVANTE_ANTHROPIC_API_KEY=your-claude-api-key
+    export AVANTE_OPENAI_API_KEY=your-openai-api-key
+    export AVANTE_AZURE_OPENAI_API_KEY=your-azure-api-key
+    export AVANTE_GEMINI_API_KEY=your-gemini-api-key
+    export AVANTE_CO_API_KEY=your-cohere-api-key
+    export AVANTE_AIHUBMIX_API_KEY=your-aihubmix-api-key
+    export AVANTE_MOONSHOT_API_KEY=your-moonshot-api-key
+
+Grok is also available with  XAI_API_KEY 
+
+
+#### Keys bindings in avante
+
+Assuming the leader key is `,`:
+
+    ,aa # Start a chat
+    ,a? # Select model
+
+
+Display the currently selected model
+
+    :AvanteInfo
+
+:
+
+
+#### Slash commands in the avante chat
+
+leader key `aa` will start the avante chat split
+
+- `/clear` clears the context window without restarting the chat
+
+- `/init` initialises the AGENTS.md file or add content to AGENTS.md if
+  existing. The `/init`  command creates this prompt:
+
+     > "You are a responsible senior development engineer, and
+     > you are about to leave your position. Please carefully
+     > analyze the entire project and generate a handover
+     > document to be stored in the AGENTS.md file, so that
+     > subsequent developers can quickly get up to speed. The
+     > requirements are as follows:     [<r>: retry, <e>: edit]
+     > - If there is an AGENTS.md file in the project root
+     > directory, combine it with the existing AGENTS.md
+     > content to generate a new AGENTS.md.
+     > - If the existing AGENTS.md content conflicts with the
+     > newly generated content, replace the conflicting old
+     > parts with the new content.
+     > - If there is no AGENTS.md file in the project root
+     > directory, create a new AGENTS.md file and write the new
+     > content in it."
+
+#### Errors
+
+- I reported a bug with the API call
+  https://github.com/yetone/avante.nvim/issues/2825
+
+    Error: API request failed with status 422. Body: "Failed
+    to deserialize the JSON body into the target type:
+    tools[8]: missing field `parameters` at line 1 column
+    6488"
+
+    - Temporary fix revert Avante to a previous commit, see below.
+
+    - Was fixed in this pull request,
+      https://github.com/yetone/avante.nvim/pull/2845 merged by the author.
+
+- Error: Channel xcode is overloaded: num_requests
+
+    - https://github.com/yetone/avante.nvim/issues/942
+      retry the request
+
+
+##### Revert to a previous working version 
+
+
+My last working code change was on October 15 2025, Try to revert avante to a
+commit on that day 216ba4a8b2b751e2e86da6f7d8fe59b1a67c1197
+
+By uncommenting the commit line in nvim/lua/plugins/avante.lua
+
+    "yetone/avante.nvim",
+    ... other lines ...
+    commit = "216ba4a8b2b75", -- Revert to a previous commit if needed
+
+
+### code Companion
+
+
+olimorris/codecompanion.nvim
+
+   > "Code with LLMs and Agents via [...] adapters" 
+
+
+
+
+### Code completion (no LLM)
+
+#### Blink (needs an LSP)
+
+Keys:
+
+- ctrl y to accept a suggestion
+- ctrl n to move to the next suggestion
+
+- Blink https://github.com/saghen/blink.cmp
+
+- Installation instructions https://cmp.saghen.dev/installation
+
+
+#### Ruff Python linter and code formatter, written in Rust.
+
+https://docs.astral.sh/ruff/editors/setup/
+
+
+### List of AI code completion tools in NeoVim
 
 See also the bookmark two sections on LLM code completion and coding assistant.
 
@@ -1886,6 +2327,74 @@ List of neovim code completion tools with Github stars as of February 2025
     - Avante can also use the perplexity API.
 
 
+### Windsurf auto completion
+
+Warning: this is sending all code to the Windsurf API. 
+
+- Windsurf Documentation explain connection capabilities to many text editors
+  https://docs.windsurf.com/plugins/getting-started#vim-%2F-neovim
+
+- https://github.com/Exafunction/windsurf.vim
+
+  - Official Windsurf package for Neovim.
+
+- https://github.com/monkoose/neocodeium
+
+    - NeoCodeium is an AI powered tab completion. Sends all code to the Windsurf
+
+    > "NeoCodeium is a plugin that provides AI completion powered by Windsurf.
+    > The primary reason for creating NeoCodeium was to address the issue of
+    > flickering suggestions in the official plugin which was particularly
+    > annoying when dealing with multi-line virtual text."
+
+
+## LSP and linter
+
+Needed to use nvim-lspconfig version 2.5.0 so that it is compatible with neovim
+version 10 available in the current Debian stable.
+
+- Mason is managing the LSP server installation.
+  https://github.com/mason-org/mason.nvim
+
+
+### Go to definition
+
+Provided by 
+
+Python Example
+
+    import pandas as pd
+    df = pd.DataFrame()  # <- cursor here, press `gd`
+
+    gd → Jumps to DataFrame definition in pandas source
+    K → Shows type/doc popup
+
+See diagnostics
+
+    :LspInfo
+
+
+### Ruff
+
+- https://github.com/astral-sh/ruff
+
+    > "Ruff can be used to replace Flake8 (plus dozens of plugins), Black, isort,
+    > pydocstyle, pyupgrade, autoflake, and more, all while executing tens or
+    > hundreds of times faster than any individual tool."
+
+
+
+## Pynvim
+
+I pointed neovim to a python environment with this setting in `nvim/init.lua`: 
+
+    vim.g.python3_host_prog = "/home/paul/rp/penv/bin/python3"
+
+The communication between neovim and python requires pynvim:
+
+    pip install pynvim
+
+
 ## Share config between vim and nvim
 
 - https://neovim.io/doc/user/nvim.html#nvim-from-vim
@@ -1895,17 +2404,30 @@ List of neovim code completion tools with Github stars as of February 2025
     :exe 'edit '.stdpath('config').'/init.vim'
     :write ++p
 
+The nvim config file is located in this config directory in my case:
+
+    ~/.config/nvim/init.vim
+
 > "Add these contents to the file"
 
     set runtimepath^=~/.vim runtimepath+=~/.vim/after
     let &packpath = &runtimepath
     source ~/.vimrc
 
+- What does this do?
+  https://www.perplexity.ai/search/what-does-this-do-the-nvim-con-uXkjJsq9Sm.QYikqG6vW3Q#1
+
+    - `~/.vim` contains your normal Vim config and runtime files.
+
+    - `~/.vim/after` contains files that load after all other runtime files, 
+      allowing you to override plugin settings or default configuration.
+
 
 # Plugins
 
-Plugins are mentioned in diverse section of this document. 
-This section is mostly to list plugins I used and potentially interesting plugins. 
+Plugins are mentioned in diverse section of this document. See also the Neovim
+plugin section lazy.nvim. This section is mostly to list plugins I used in vim
+and potentially interesting plugins. 
 
 Display plugins I currently use with vundle: 
 
@@ -2638,6 +3160,41 @@ ongoing rebase from the fugitive window with:
     rr
 
 
+### Split size issue with Avante
+
+When using Avante, the fugitive split size gets very small.
+
+- https://vi.stackexchange.com/questions/47277/how-to-keep-a-correct-fugitive-horizontal-split-height-when-using-avante-in-a-ve
+
+I created another command `Gpaul` as a temporary fix:
+
+    vim.api.nvim_create_user_command('Gpaul', function()
+        vim.cmd('belowright Git')
+    end, {})
+
+Then moved to a leader key g command by adding this to the lua configuration of
+fugitive:
+
+    {
+      "tpope/vim-fugitive",
+      cmd = { "Git", "G", "Gwrite", "Gread", "Gdiffsplit" },
+      config = function()
+        vim.keymap.set('n', '<leader>g', '<cmd>belowright Git<cr>', { desc = 'Git status (below)' })
+      end
+    },
+
+But it was not always loading. Later learned that specifying it in config is
+not always the best place if the package is lazy loaded. Better to define in
+the keys argument as follows:
+
+    {
+      "tpope/vim-fugitive",
+      cmd = { "Git", "G", "Gwrite", "Gread", "Gdiffsplit" },
+      keys = {
+          { "<leader>g", "<cmd>belowright Git<cr>", desc = "Git status (below)" },
+      },
+    },
+
 
 ## Navigate code with tags 
 
@@ -3085,18 +3642,35 @@ I tried slime.
 > others. And in the end seeing the children grow up, finish their studies and
 > find a job is wonderful. "
 
-* [Vi](https://en.wikipedia.org/wiki/Vi)
+* [Vi](https://en.wikipedia.org/wiki/Vi_(text_editor))
+       >
+    > ">The original code for vi was written by Bill Joy in 1976, as the visual 
+    > m>ode for a line editor called ex that Joy had written with Chuck 
+    > H>aley.[3] Bill Joy's ex 1.1 was released as part of the first Berkeley 
+    > S>oftware Distribution (BSD) Unix release in March 1978. It was not until 
+    > v>ersion 2.0 of ex, released as part of Second BSD in May 1979 that the 
+    > editor was installed under the name "vi" (which took users straight into 
+    > ex's visual mode),[4] and the name by which it is known today. [...] On 
+    > the free software process
 
-> "The original code for vi was written by Bill Joy in 1976, as the visual mode
-> for a line editor called ex that Joy had written with Chuck Haley.[3] Bill
-> Joy's ex 1.1 was released as part of the first Berkeley Software Distribution
-> (BSD) Unix release in March 1978. It was not until version 2.0 of ex,
-> released as part of Second BSD in May 1979 that the editor was installed
-> under the name "vi" (which took users straight into ex's visual mode),[4] and
-> the name by which it is known today. 
-[...]
-On the free software process
+    > vi and ex share their code; vi is the ex binary launching with the 
+    > capability to render the text being edited onto a computer terminal—it is 
+    > ex's visual mode.[11] The name vi comes from the abbreviated ex command 
+    > (vi) to enter the visual mode from within it. The longform command to do 
+    > the same was visual,[11][12] and the name vi is explained as a 
+    > contraction of visual in later literature. vi is also the shell command 
+    > to launch ex/vi in the visual mode directly, from within a shell.[11]
 
+    > According to Joy, many of the ideas in this visual mode were taken from 
+    > Bravo—the bimodal text editor developed at Xerox PARC for the Alto. In an 
+    > interview about vi's origins, Joy said:[3]
+
+    > A lot of the ideas for the screen editing mode were stolen from a Bravo 
+    > manual I surreptitiously looked at and copied. Dot is really the 
+    > double-escape from Bravo, the redo command. Most of the stuff was stolen. 
+    > There were some things stolen from ed—we got a manual page for the 
+    > Toronto version of ed, which I think Rob Pike had something to do with. 
+    > We took some of the regular expression extensions out of that.
 
 * Vim is based on vi, itself based on the [ex
   editor](https://en.wikipedia.org/wiki/Ex_(text_editor))

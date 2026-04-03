@@ -100,6 +100,9 @@ require("lazy").setup({
     -- Python methods table of contents
     {
       'stevearc/aerial.nvim',
+      -- Replace tag by branch when https://github.com/stevearc/aerial.nvim/issues/502 has been fixed
+      -- branch = "nvim-0.10", 
+      tag = "v2.7.0",
       opts = {
           -- Determines where the aerial window will be opened
           --   edge   - open aerial at the far right/left of the editor

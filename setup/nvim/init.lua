@@ -8,6 +8,8 @@
 -- Source your ~/.vimrc file (Vimscript)
 vim.cmd("source ~/.vimrc")
 
+-- TODO figure out the error
+vim.g.python3_host_prog = "/home/paul/rp/penv/bin/python3"
 
 require("config.lazy")
 
@@ -16,4 +18,5 @@ require'nvim-treesitter.configs'.setup {
   highlight = { enable = true },
   auto_install = true,
 }
+
 
