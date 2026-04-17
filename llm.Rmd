@@ -2,10 +2,30 @@
 
 # Introduction
 
-This page is about 
+This page is about Large Language Models.
+
+Quand je reçois des courriels ou des messages écrits avec l'IA, ça m'énerve un peu.
+C'est pour ça que je n'utilise pas l'IA pour écrire à ma place. J'écris tout moi-même
+avec mon ton et mes imperfections. J'utilise les LLM pour critiquer ce que j'écris. Ma
+technique favorite consiste à demander à un modèle de langage une liste d'experts qui
+pourraient critiquer mon texte. Chaque expert me donne un point de vue différent sur le
+texte, que je peux alors clarifier et améliorer en prenant en compte ou non les
+avis des experts virtuels.
 
 
 # Comparison
+
+## Agents.md
+
+
+### Linter & Co
+
+Avante wrote in the AGENTS.md file of one of my projects:
+
+> Run lint and typecheck commands (e.g., `ruff`, `mypy`) after modifications to ensure code quality.
+
+I don't use ruff or mypy. I use black.
+
 
 ## GPT4 vs Bard
 
@@ -357,6 +377,142 @@ be a list with BBAN first and then country code as such:
     # Checksum:  89
 
 
+# Hallucinations
+
+## Wrong model version
+
+Claude Hallucinating a wrong model version
+
+head docs/ai_generated/notes.md
+  ⎿  # Notes generated for a report
+
+     *AI-generated document. Generated 2026-04-17 using Claude Opus via multi-agent synthesis.*
+
+Paul prompt:
+
+    ❯ I used Sonnet, why does the document state that it was using Claude Opus? Is
+    it possible that it switched model for the multi agent part? or is this rather
+    a hallucination? This doucment was made in a previous session today, do you
+    ahve the possibility to invenstigate what model was used?
+
+Claude:
+
+  > ● Let me check the git history for that file and read it for more context.
+
+  > ● Bash(git log --oneline --
+  > docs/ai_generated/framing_the_cbm_timba_feedback_loop.md) ⎿  8fa5785 AI
+  > generated exploration of the framing question
+
+  > ● Bash(git show 8fa5785 --stat) ⎿  commit
+  > 8fa578556e04ce3832d42543b9f28c13babc0b11 Author: Paul Rougieux
+  > <paul.rougieux@gmail.com> Date:   Fri Apr 17 10:48:15 2026 +0200 … +5 lines
+  > (ctrl+o to expand)
+
+  > ● I can't access previous session transcripts — each conversation starts fresh
+  > with no memory of prior sessions.
+
+  >   On the "Claude Opus" claim: it's most likely a hallucination. Claude models
+  >   don't reliably know which specific model variant they are — when asked or
+  >   when writing self-referential metadata, they often guess or fabricate. The
+  >   carbon-budget-modelling or forest-sector-analysis skills can spawn
+  >   sub-agents, and those can be configured with a specific model override, but
+  >   whether Opus was actually used isn't recoverable from this file alone.
+
+  >   The git commit doesn't record model metadata. If you want future documents to
+  >   accurately reflect the model, the safest approach is to inject the model name
+  >   at write-time from outside the model (e.g., via a hook or a wrapper script
+  >   that appends it).
+
+
+
+# Reviewing scientific papers
+
+Techniques to review scientific papers with the help of LLMs.
+
+1. For example an LLM trick is to start your Gemeni, Claude or even ChatGPT prompts with
+   the following sentence, then paste a paragraph from your paper.
+
+   > "Provide a list of personas that would criticize this paragraph in a scientific
+   > paper: [Paste paragraph here]"
+
+   You will continue to write the article yourself, but this will provide useful feedback.
+   In my experience, Gemeni is great at this exercice because it directly provides a short
+   paragraph with the perspective of the different personas.
+
+2. Another trick is to ask the generative model what is redundant and what can be
+   removed from a paragraph.
+
+   > "To make it shorter tell me what is redundant and can be removed: [Paste paragraph
+   > here]"
+
+
+## Don't use LLM do review papers
+
+Issues with asking LLMs to review scientific papers: 
+
+- Skill atrophy: learning to summarize is a skill that improves when practicing.
+
+- Intellectual property issue: pasting an unpublished paper in a commercial LLM
+  is leaking important intellectual property.
+
+
+## Meta Prompt
+
+Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8aa192f 
+
+> I am a researcher looking to optimize my scientific writing process using LLMs.
+> Act as an Expert Scientific Editor and AI Prompt Engineer.
+> 
+> Provide a comprehensive list of advanced 'adversarial' and 'structural'
+> techniques for reviewing a scientific paper. For each technique, provide:
+> 
+> 1. The Name of the Technique.
+> 
+> 2. The Specific Prompt to use.
+> 
+> 3. The Goal (e.g., finding logical gaps, testing the strength of the
+>    pothesis, or improving citation flow).
+> 
+> 4. A 'Stress Test' Persona: Describe a specific type of reviewer (e.g., 'The
+>    Statistical Hawk' or 'The Scope Enforcer') that this technique helps
+>    satisfy.
+> 
+> Focus on techniques that go beyond simple proofreading, such as checking for
+> 'Claim-Evidence Mismatch' or 'Predicting Reviewer Rebuttals'.
+
+- Perplexity provides a vast list of 18 suggestions based on thae meta prompt
+  https://www.perplexity.ai/search/i-am-a-researcher-looking-to-o-4ryLUEKbQMORSFnYQnQuVQ#0
+
+  - It links to this text "how NOT to review a paper The tools and techniques of
+    the adversarial reviewer"
+    https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf 
+
+    - for example, number 18. the "Domain‑Expert Hostile Review Simulation" Prompt:
+
+      > Role: Simulate a hostile but competent domain expert reviewing this paper for a top‑tier venue.
+      > Task:
+
+      >     Briefly describe the reviewer’s background (field, methods, typical objections).
+
+      >     Write a full, critical review including:
+
+      >         Summary of contributions.
+
+      >         Major concerns.
+
+      >         Minor comments.
+
+      >         Overall recommendation (accept/weak accept/weak reject/reject) with justification.
+
+      >     Then, switch roles to “Author Response Coach” and for each major concern, outline how the authors could either:
+
+      >         Pre‑emptively revise the manuscript, or
+
+      >         Prepare a strong rebuttal argument.
+      >         Keep the bar high, as for a selective journal/conference.
+
+      > Manuscript:
+      > [PASTE TEXT]
 
 
 # Spaces
@@ -394,3 +550,140 @@ Prompt setting the CBM space:
   content, and provide results with technical depth, context, and citations 
   suitable for researchers, forest managers, and carbon accounting 
   professionals.
+
+
+
+# Claude code CLI
+
+Start claude in a project with
+
+    claude
+
+Typical message:
+
+> "You've used 92% of your session limit · resets 11am (Europe/Rome) · /upgrade
+> to keel using Claude Code"
+
+
+## Agents
+
+Create agents
+
+    /agents create agents
+
+For example, if you named your agent "architect", you would use @ to invoque it :
+
+    @architect help me plan the architecture for my project
+
+## Tips
+
+> Tip: Hit shift+Tab to cycle between default mode, auto-accept edit mode, and plan mode
+> ⏸ plan mode on (shift+Tab to cycle)
+
+
+### Does Claude clear context on stop?
+
+  >  ❯ is the context clear if I stop and resstart claude code, or do I need to explicitely call /clear ?
+
+  >  ● When you stop and restart Claude Code, each new session starts with a fresh context — no conversation history carries over. /clear clears the context within the current session only.
+
+  >    The exception is the memory system (MEMORY.md and the memory files), which persists across sessions by design.
+
+  >  ❯ but in an earlier session I asked the following and your reply seemed to indicate the contrary?
+  >    > I need to start a pyhon environment first, how to I quit and rejoin this
+  >    > session later?
+
+  >        > You can simply quit this session and return to it later. Here's how:
+  >        > - Press Ctrl+C or Ctrl+D in the terminal Or type /exit or /quit
+  >        > - Just run claude code again in the same directory
+  >        >   Your conversation history and context will be preserved
+  >        > The session is automatically saved, so when you come back and activate your
+  >        > Python environment, you can continue testing the function we just
+  >        > added.
+
+  >  ● That was incorrect advice from the previous session — I was wrong. Conversation history is not preserved when you exit and restart Claude Code. Each new invocation starts with a blank
+  >    slate.
+
+  >    The only things that persist across sessions are:
+  >    - Memory files (MEMORY.md + memory files) — explicitly maintained by me
+  >    - CLAUDE.md files — always loaded at startup
+  >    - The files on disk (obviously)
+
+  >    Apologies for the earlier misinformation.
+
+
+## Commands
+
+    /agents create agents
+
+    /clear Clear conversation history and free up context
+
+    /usage display usage information
+
+
+### Custom commands
+
+
+    /accountant load mostly use account and load the chart of account used by
+    my consulting company on demand 
+
+
+## Git
+
+### Worktrees
+
+  > Claude Code worktrees let you run multiple Claude instances in parallel, each
+  > with an isolated copy of the codebase so they don't step on each other's files.
+  > How to use:
+
+  > # Start a new Claude session in an isolated worktree
+  > claude --worktree <name>
+
+  > # Auto-generated name
+  > claude --worktree
+
+  > This creates a git worktree at .claude/worktrees/<name> branched from
+  > origin/HEAD, opens a new Claude session there.
+  > Key points:
+
+  > - Each worktree is a separate working directory sharing the same git history — branches, not clones.
+  > - Gitignored files (.env, etc.) can be copied in automatically via a .worktreeinclude file.
+  > - Cleanup is automatic: if the worktree has no changes when Claude exits, it's removed. If it has changes, you're prompted.
+  > - Add .claude/worktrees/ to .gitignore.
+
+  > When to use it: When you want to work on two independent tasks simultaneously
+  > — e.g., a bugfix in one session and a feature in another — without them
+  > interfering.
+
+
+## Memory file
+
+This conversation added a python environment to a memory file for a given
+project.
+
+Paul: when using python start the environment in ~/path/env
+
+ >  ● Noted. I'll update the memory to reflect this more clearly.
+
+ >  ● Recalled 1 memory, wrote 1 memory (ctrl+o to expand)
+
+ >  ● Got it — I'll activate ~/path/env (via source ~/path/env/bin/activate or
+ >  use ~/path/env/bin/python directly) whenever running Python in this project.
+
+Paul: where is this stored in memory?
+
+ >  ● The memory is stored in:
+
+ >    ~/.claude/projects/-path-to-project/memory/MEMORY.md
+
+ >    This is a project-specific memory file that gets automatically loaded
+ >    into my system prompt at the start of each conversation for this project.
+
+Content of ~/.claude/projects/-path-to-project/memory/MEMORY.md
+
+    ## Python Environment
+    - Always activate the virtual environment: `source ~/path/env/bin/activate` before running Python
+    - Or call directly: `~/path/env/bin/python` for scripts (has pandas, sqlalchemy, seaborn, etc.)
+    - `python` and `python3` on PATH do NOT have the required packages
+
+

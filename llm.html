@@ -474,6 +474,18 @@ div.tocify {
 </div>
 <div id="comparison" class="section level1">
 <h1>Comparison</h1>
+<div id="agents.md" class="section level2">
+<h2>Agents.md</h2>
+<div id="linter-co" class="section level3">
+<h3>Linter &amp; Co</h3>
+<p>Avante wrote in the AGENTS.md file of one of my projects:</p>
+<blockquote>
+<p>Run lint and typecheck commands (e.g., <code>ruff</code>,
+<code>mypy</code>) after modifications to ensure code quality.</p>
+</blockquote>
+<p>I don’t use ruff or mypy. I use black.</p>
+</div>
+</div>
 <div id="gpt4-vs-bard" class="section level2">
 <h2>GPT4 vs Bard</h2>
 <div id="drop-unique-values-or-reset-index" class="section level3">
@@ -799,6 +811,225 @@ print(&quot;Checksum: &quot;, ISO7064_mod97_10().compute([&quot;3704004405320130
 &quot;DE&quot;]))
 # Checksum:  89</code></pre>
 </div>
+</div>
+</div>
+<div id="reviewing-scientific-papers" class="section level1">
+<h1>Reviewing scientific papers</h1>
+<p>Techniques to review scientific papers with the help of LLMs.</p>
+<ol style="list-style-type: decimal">
+<li><p>For example an LLM trick is to start your Gemeni, Claude or even
+ChatGPT prompts with the following sentence, then paste a paragraph from
+your paper.</p>
+<blockquote>
+<p>“Provide a list of personas that would criticize this paragraph in a
+scientific paper: [Paste paragraph here]”</p>
+</blockquote>
+<p>You will continue to write the article yourself, but this will
+provide useful feedback. In my experience, Gemeni is great at this
+exercice because it directly provides a short paragraph with the
+perspective of the different personas.</p></li>
+<li><p>Another trick is to ask the generative model what is redundant
+and what can be removed from a paragraph.</p>
+<blockquote>
+<p>“To make it shorter tell me what is redundant and can be removed:
+[Paste paragraph here]”</p>
+</blockquote></li>
+</ol>
+<div id="dont-use-llm-do-review-papers" class="section level2">
+<h2>Don’t use LLM do review papers</h2>
+<p>Issues with asking LLMs to review scientific papers:</p>
+<ul>
+<li><p>Skill atrophy: learning to summarize is a skill that improves
+when practicing.</p></li>
+<li><p>Intellectual property issue: pasting an unpublished paper in a
+commercial LLM is leaking important intellectual property.</p></li>
+</ul>
+</div>
+<div id="meta-prompt" class="section level2">
+<h2>Meta Prompt</h2>
+<p>Prompt to generate reviewing techniques: <a
+href="https://gemini.google.com/share/0a0ce8aa192f"
+class="uri">https://gemini.google.com/share/0a0ce8aa192f</a></p>
+<blockquote>
+<p>I am a researcher looking to optimize my scientific writing process
+using LLMs. Act as an Expert Scientific Editor and AI Prompt
+Engineer.</p>
+<p>Provide a comprehensive list of advanced ‘adversarial’ and
+‘structural’ techniques for reviewing a scientific paper. For each
+technique, provide:</p>
+<ol style="list-style-type: decimal">
+<li><p>The Name of the Technique.</p></li>
+<li><p>The Specific Prompt to use.</p></li>
+<li><p>The Goal (e.g., finding logical gaps, testing the strength of the
+pothesis, or improving citation flow).</p></li>
+<li><p>A ‘Stress Test’ Persona: Describe a specific type of reviewer
+(e.g., ‘The Statistical Hawk’ or ‘The Scope Enforcer’) that this
+technique helps satisfy.</p></li>
+</ol>
+<p>Focus on techniques that go beyond simple proofreading, such as
+checking for ‘Claim-Evidence Mismatch’ or ‘Predicting Reviewer
+Rebuttals’.</p>
+</blockquote>
+<ul>
+<li><p>Perplexity provides a vast list of 18 suggestions based on thae
+meta prompt <a
+href="https://www.perplexity.ai/search/i-am-a-researcher-looking-to-o-4ryLUEKbQMORSFnYQnQuVQ#0"
+class="uri">https://www.perplexity.ai/search/i-am-a-researcher-looking-to-o-4ryLUEKbQMORSFnYQnQuVQ#0</a></p>
+<ul>
+<li><p>It links to this text “how NOT to review a paper The tools and
+techniques of the adversarial reviewer” <a
+href="https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf"
+class="uri">https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf</a></p>
+<ul>
+<li><p>for example, number 18. the “Domain‑Expert Hostile Review
+Simulation” Prompt:</p>
+<blockquote>
+<p>Role: Simulate a hostile but competent domain expert reviewing this
+paper for a top‑tier venue. Task:</p>
+</blockquote>
+<blockquote>
+<pre><code>Briefly describe the reviewer’s background (field, methods, typical objections).</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>Write a full, critical review including:</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>    Summary of contributions.</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>    Major concerns.</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>    Minor comments.</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>    Overall recommendation (accept/weak accept/weak reject/reject) with justification.</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>Then, switch roles to “Author Response Coach” and for each major concern, outline how the authors could either:</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>    Pre‑emptively revise the manuscript, or</code></pre>
+</blockquote>
+<blockquote>
+<pre><code>    Prepare a strong rebuttal argument.
+    Keep the bar high, as for a selective journal/conference.</code></pre>
+</blockquote>
+<blockquote>
+<p>Manuscript: [PASTE TEXT]</p>
+</blockquote></li>
+</ul></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="spaces" class="section level1">
+<h1>Spaces</h1>
+<div id="perplexity" class="section level2">
+<h2>Perplexity</h2>
+<div id="python-space" class="section level3">
+<h3>Python space</h3>
+<p>Prompt setting for the python space:</p>
+<ul>
+<li>This space is about data science applications for economic and
+biophysical modelling in python. Please provide executable Python code
+that is efficient and well-commented. The code should include
+documentation in NumPy Style, as well as type hints. Responses should
+combine technical code and explanations. Prefer answers that explain the
+rationale for choosing certain models or statistical approaches. Provide
+references to documentation or relevant academic literature when
+possible.</li>
+</ul>
+</div>
+<div id="cbm-space" class="section level3">
+<h3>CBM space</h3>
+<p>Prompt setting the CBM space:</p>
+<ul>
+<li>Focus all searches on the Carbon Budget Model of the Canadian Forest
+Sector (CBM) and its use in IPCC Tier 3 LULUCF carbon accounting.
+Prioritize authoritative sources such as peer-reviewed articles,
+technical report by research organisations such as the Canadian Forest
+Service and Natural Resources Canada reports or such as the Joint
+Research Centre of the European Commission, IPCC guidelines. Emphasize
+retrieval of information on model structure, algorithms, data
+requirements, disturbance simulation (fire, insects, harvest), biomass
+and soil carbon estimation, and national/international applications.
+Exclude non-academic or marketing content, and provide results with
+technical depth, context, and citations suitable for researchers, forest
+managers, and carbon accounting professionals.</li>
+</ul>
+</div>
+</div>
+</div>
+<div id="claude-code" class="section level1">
+<h1>Claude code</h1>
+<p>Start claude in a project with</p>
+<pre><code>claude</code></pre>
+<div id="tips" class="section level2">
+<h2>Tips</h2>
+<blockquote>
+<p>⎿  Tip: Hit shift+Tab to cycle between default mode, auto-accept edit
+mode, and plan mode ⏸ plan mode on (shift+Tab to cycle)</p>
+</blockquote>
+<blockquote>
+<p>I need to start a pyhon environment first, how to I quit and rejoin
+this session later?</p>
+</blockquote>
+<pre><code>&gt; You can simply quit this session and return to it later. Here&#39;s how:
+&gt; - Press Ctrl+C or Ctrl+D in the terminal Or type /exit or /quit
+&gt; - Just run claude code again in the same directory
+&gt;   Your conversation history and context will be preserved
+&gt; The session is automatically saved, so when you come back and activate your
+&gt; Python environment, you can continue testing the function we just
+&gt; added.</code></pre>
+</div>
+<div id="commands" class="section level2">
+<h2>Commands</h2>
+<pre><code>/clear Clear conversation history and free up context
+
+/agents create agents</code></pre>
+</div>
+<div id="agents" class="section level2">
+<h2>Agents</h2>
+<p>Create agents</p>
+<pre><code>/agents create agents</code></pre>
+<p>For example, if you named your agent “architect”, you would use @ to
+invoque it :</p>
+<pre><code>@architect help me plan the architecture for my project</code></pre>
+</div>
+<div id="memory-file" class="section level2">
+<h2>Memory file</h2>
+<p>This conversation added a python environment to a memory file for a
+given project.</p>
+<p>Paul: when using python start the environment in ~/path/env</p>
+<blockquote>
+<p>● Noted. I’ll update the memory to reflect this more clearly.</p>
+</blockquote>
+<blockquote>
+<p>● Recalled 1 memory, wrote 1 memory (ctrl+o to expand)</p>
+</blockquote>
+<blockquote>
+<p>● Got it — I’ll activate ~/path/env (via source
+~/path/env/bin/activate or use ~/path/env/bin/python directly) whenever
+running Python in this project.</p>
+</blockquote>
+<p>Paul: where is this stored in memory?</p>
+<blockquote>
+<p>● The memory is stored in:</p>
+</blockquote>
+<blockquote>
+<p>~/.claude/projects/-path-to-project/memory/MEMORY.md</p>
+</blockquote>
+<blockquote>
+<p>This is a project-specific memory file that gets automatically loaded
+into my system prompt at the start of each conversation for this
+project.</p>
+</blockquote>
+<p>Content of ~/.claude/projects/-path-to-project/memory/MEMORY.md</p>
+<pre><code>## Python Environment
+- Always activate the virtual environment: `source ~/path/env/bin/activate` before running Python
+- Or call directly: `~/path/env/bin/python` for scripts (has pandas, sqlalchemy, seaborn, etc.)
+- `python` and `python3` on PATH do NOT have the required packages</code></pre>
 </div>
 </div>
 
