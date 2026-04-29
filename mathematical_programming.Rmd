@@ -1,0 +1,57 @@
+---
+title: "Mathematical Programming"
+author: "Paul Rougieux"
+output: 
+  html_document: 
+    toc: yes
+---
+
+
+# GAMS
+
+See also
+
+- ~/repos/statisticallearning/projects/forest_sector_gams
+
+
+- GAMS wikipedia https://en.wikipedia.org/wiki/General_algebraic_modeling_system
+
+    > "Although the group produced impressive research, initial success was
+    > difficult to reproduce outside their well functioning research environment.
+    > The existing techniques to construct, manipulate, and solve such models
+    > required several manual, time-consuming, and error-prone translations into
+    > different, problem-specific representations required by each solution method.
+    > During seminar presentations, modelers had to defend the existing versions of
+    > their models, sometimes quite irrationally, because of time and money
+    > considerations. Their models just could not be moved to other environments,
+    > because special programming knowledge was needed, and data formats and
+    > solution methods were not portable.
+
+
+## GAMPSPy
+
+https://www.gams.com/blog/2023/11/introducing-gamspy/
+
+
+### Installation
+
+- Instructions https://gamspy.readthedocs.io/en/latest/user/installation.html
+
+- GAMPSPy is available on the Python package index
+  https://pypi.org/project/gamspy/
+
+    pip install gamspy
+
+
+## Licenses
+
+https://www.gams.com/sales/licensing/
+
+
+
+### SAAS API
+
+- https://www.gams.com/blog/2022/01/introducing-engine-saas/
+
+    > "model deployment solution GAMS Engine One, which allows scheduling and
+    > running jobs on a central compute server via a REST API ."
