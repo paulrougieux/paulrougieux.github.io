@@ -108,6 +108,7 @@ Convert one or more images to pdf
 Convert a directory of JPG images into a printable A4 pdf:
 
     img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG
+    img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.png
 
 Place the images in a landscape A5 document for printing 2 pages on one page. 
 The `^T` argument is to flip to landscape:
@@ -420,6 +421,30 @@ file name from the URL as explained in the curl man page.
 
 
 ## Download videos and audio
+
+### yt-dlp
+
+An updated fork of youtube-dl.
+
+Install on Debian: 
+     
+     sudo apt install yt-dlp
+
+Download a video
+
+     yt-dlp <url>
+
+
+List available format before download
+
+    yt-dlp -F <URL>
+
+Use a format for the download
+
+    yt-dlp -f <format_name> <URL>
+
+
+### youtube-dl
 
 Install youtube-dl using pip:
 
@@ -1060,7 +1085,7 @@ For example
     grep -RL "runner_type" .
 
 
-## List files
+## List files and directories
 
 List all files in a directory
 
@@ -1098,15 +1123,27 @@ path](https://unix.stackexchange.com/questions/268474/how-to-list-all-files-in-a
 List contents of a directories in a tree like format
 
     tree
-    tree -d # List directories only, no files
+
+Show only 1 or 2 level of directory depth
+
+    tree -L1
+    tree -L2
+
+Show markdown files only
+
+    tree -P *.md
+
+Show only python file matching the `"*.py"` pattern with the `-P` option
+
+    tree -P "*.py"
 
 Ignore files that contain compiled python bytecode with the `-I` option
 
     tree -I "*.pyc"
 
-Show only python file matching the `"*.py"` pattern with the `-P` option
+List directories only, no files
 
-    tree -P "*.py"
+    tree -d
 
 
 ## Look at lines of a text file with less
@@ -2038,6 +2075,8 @@ Tunnel to a jupyter notebook on a server
 ### Passwordless access for root user
 
 [How to set up passwordless SSH access for root user](https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-access-for-root-user)
+
+See the section on load SSH key into the server above.
 
 
 ## Two factor authentication

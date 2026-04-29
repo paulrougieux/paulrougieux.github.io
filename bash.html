@@ -1037,6 +1037,16 @@ anyway.</p></li>
 </ul>
 <p>Based on this quick assessment, <code>ebook</code> seems to be a good
 compromise in terms of file size and image resolution.</p>
+<pre><code>mkdir /tmp/scan
+cd /tmp/scan
+gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf</code></pre>
+<div id="loop-on-all-pdf-files-in-the-directory" class="section level4">
+<h4>Loop on all pdf files in the directory</h4>
+<pre><code>for file in *.pdf; do
+    ll &quot;$file&quot;
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=&quot;${file%.pdf}-small.pdf&quot; &quot;$file&quot;
+done</code></pre>
+</div>
 </div>
 <div id="split-pages" class="section level3">
 <h3>Split pages</h3>
@@ -1173,6 +1183,26 @@ POSTGRES_PASS=password</code></pre>
 <p>To remove an environment variable (without the <code>$</code> sign)
 in bash</p>
 <pre><code>unset VAR_NAME</code></pre>
+<div id="direnv" class="section level2">
+<h2>Direnv</h2>
+<ul>
+<li><a
+href="https://manpages.debian.org/testing/direnv/direnv.1.en.html"
+class="uri">https://manpages.debian.org/testing/direnv/direnv.1.en.html</a></li>
+</ul>
+<blockquote>
+<p>“direnv is an environment variable manager for your shell. It knows
+how to hook into bash, zsh and fish shell to load or unload environment
+variables depending on your current directory. This allows you to have
+project-specific environment variables and not clutter the”~/.profile”
+file.”</p>
+</blockquote>
+<p>Setup for Bash</p>
+<blockquote>
+<p>Add the following line at the end of the ~/.bashrc file:</p>
+</blockquote>
+<pre><code>eval &quot;$(direnv hook bash)&quot;</code></pre>
+</div>
 </div>
 <div id="find-and-check-files" class="section level1">
 <h1>Find and check files</h1>
@@ -2194,6 +2224,7 @@ class="section level3">
 <p><a
 href="https://askubuntu.com/questions/115151/how-to-set-up-passwordless-ssh-access-for-root-user">How
 to set up passwordless SSH access for root user</a></p>
+<p>See the section on load SSH key into the server above.</p>
 </div>
 </div>
 <div id="two-factor-authentication" class="section level2">
