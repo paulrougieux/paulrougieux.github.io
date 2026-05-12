@@ -100,9 +100,6 @@ require("lazy").setup({
     -- Python methods table of contents
     {
       'stevearc/aerial.nvim',
-      -- Replace tag by branch when https://github.com/stevearc/aerial.nvim/issues/502 has been fixed
-      -- branch = "nvim-0.10", 
-      tag = "v2.7.0",
       opts = {
           -- Determines where the aerial window will be opened
           --   edge   - open aerial at the far right/left of the editor
@@ -117,19 +114,27 @@ require("lazy").setup({
          "nvim-tree/nvim-web-devicons"
       },
       config = function()
-          require('aerial').setup({})
+          require('aerial').setup({
+              backends = { "lsp", "treesitter", "markdown", "asciidoc", "man" },
+          })
           -- Map F8 to toggle Aerial
           vim.keymap.set('n', '<F8>', '<cmd>AerialToggle left<CR>', { noremap = true, silent = true })
       end,
     },
 
     -- Python linter
-  },
-  -- Configure any other settings here. See the documentation for more details.
-  -- colorscheme that will be used when installing plugins.
-  install = { colorscheme = { "habamax" } },
-  -- automatically check for plugin updates
-  checker = { enabled = true },
-})
+    },
+    -- Configure any other settings here. See the documentation for more details.
+    -- colorscheme that will be used when installing plugins.
+    install = { colorscheme = { "habamax" } },
+    -- automatically check for plugin updates
+    checker = { enabled = true },
+    },
+
+    -- Tabular Line up test in tables
+    {
+      "godlygeek/tabular",
+    }
+)
 
 
