@@ -135,7 +135,7 @@ rtagsall() {
 
 
 # add local bin to the path
-export PATH=$PATH:~/.local/bin
+export PATH=~/.local/bin:$PATH
 
 # Enable git autocompletion
 source /usr/share/bash-completion/completions/git
