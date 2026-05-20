@@ -425,7 +425,116 @@ Claude:
 
 
 
-# Reviewing scientific papers
+# Prompts techniques
+
+See also bookmark document.
+
+
+## ADHD Executive Function
+
+
+- https://x.com/TawohAwa/status/2055621573466534132
+
+  > 1. The Task Paralysis Shatterer
+
+  > Prompt: "I am staring at [Task] and can't start. Break this down into
+  > 'Ridiculously Small' steps that take less than 1 minute each. Give me the
+  > first step and tell me exactly where to put my hands to begin." 
+
+  > 2. The Dopamine Menu Architect
+
+  > Prompt: "I am feeling under-stimulated. Create a 'Dopamine Menu' for me
+  > with 5-minute 'Appetizers' (quick movement), 20-minute 'Entrees' (deep
+  > work), and 10-minute 'Sides' (creative play) to keep my brain engaged." 
+
+  > 3. The "Body Doubling" Simulator
+
+  > Prompt: "Act as my virtual body double for the next 30 minutes. I will tell
+  > you what I’m working on, and I want you to check in every 10 minutes to ask
+  > for a status update and keep my focus anchored."
+
+  > 4. The Context-Switching Guide
+
+  > Prompt: "I just finished [Task A] and need to start [Task B], but my brain
+  > is stuck. Design a 3-minute 'Mental Palate Cleanser' routine to help me
+  > transition between these two different types of energy."
+
+  > 5. The Interest-Based Filter
+
+  > Prompt: "I have a boring administrative task: [Task]. Help me gamify this
+  > by connecting it to my current hyper-fixation: [Interest]. Create a 'Quest'
+  > structure where finishing the task unlocks a reward."
+
+  > 6. The Time-Blindness Auditor
+
+  > Prompt: "I think [Project] will take 20 minutes, but it usually takes 2
+  > hours. Help me 'Time-Map' this by identifying the 3 hidden sub-tasks I
+  > always forget to account for so I can set a realistic deadline."
+
+  > 7. The Executive Function Externalizer
+
+  > Prompt: "My brain is full of 'Open Loops.' I will dump everything I'm
+  > worried about below. Categorize these into 'Now,' 'Later,' and 'Trash,' and
+  > then write a 1-sentence 'Actionable Next Step' for only the 'Now' items."
+
+  > Awa K. Penn @TawohAwa · Credit to AIcreatorTyler 
+
+
+
+## Contract
+
+
+Claude:
+
+> Output contracts (emerging as a 2025-2026 best practice) — Treating the
+> prompt as a specification: what you want, what information the model may use,
+> what it must not do, the exact output shape, and how the result will be
+> checked. One framing: "Most bad model outputs are actually bad acceptance
+> criteria." This is definitional pressure applied to the exit condition.
+
+> Success criteria prompting — The recommended format is now explicit:
+
+> Goal: {{one sentence}}
+> Success criteria:
+> - {{must-have 1}}
+> - {{must-have 2}}
+> - {{must-not-do}}
+
+> The insight from the literature: "When you say 'improve this,' you're
+> outsourcing the definition of 'improve' to the model, and the model will
+> default to generic optimization goals." That's definitional pressure stated
+> plainly.
+
+
+
+
+## Entity coverage and factual recall probing
+
+Use this prompt to find out which real world person made it into the training data: 
+
+    who is <name of person> in your weights? list skills and literature without going online.
+
+For example well known researchers in my domain
+
+    who is Christian Breyer in your weights? list skills and literature without going online.
+    who is Joseph Buongiorno in your weights? list skills and literature without going online.
+
+
+## Grill
+
+- https://github.com/mattpocock/skills/blob/main/grill-me/SKILL.md
+
+> "Interview me relentlessly about every aspect of this plan until we reach a
+> shared understanding. Walk down each branch of the design tree, resolving
+> dependencies between decisions one-by-one. For each question, provide your
+> recommended answer.
+
+> Ask the questions one at a time.
+
+> If a question can be answered by exploring the codebase, explore the codebase instead."
+
+
+## Reviewing scientific papers
 
 Techniques to review scientific papers with the help of LLMs.
 
@@ -446,7 +555,7 @@ Techniques to review scientific papers with the help of LLMs.
    > here]"
 
 
-## Don't use LLM do review papers
+### Don't use LLM do review papers
 
 Issues with asking LLMs to review scientific papers: 
 
@@ -456,7 +565,7 @@ Issues with asking LLMs to review scientific papers:
   is leaking important intellectual property.
 
 
-## Meta Prompt
+### Meta Prompt
 
 Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8aa192f 
 
@@ -514,6 +623,740 @@ Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8a
       > Manuscript:
       > [PASTE TEXT]
 
+## Programming
+
+### Karpathy
+
+- Inspired by Karpathy https://x.com/techNmak/status/2043683120319520806?s=20
+
+  > Andrej Karpathy wrote something that every Claude Code user has felt but couldn't
+  > articulate.
+
+  > Three quotes. Read them slowly.
+
+  > "The models make wrong assumptions on your behalf and just run along with them
+  > without checking. They don't manage their confusion, don't seek clarifications,
+  > don't surface inconsistencies, don't present tradeoffs, don't push back when they
+  > should."
+
+  > "They really like to overcomplicate code and APIs, bloat abstractions, don't clean
+  > up dead code... implement a bloated construction over 1000 lines when 100 would do."
+
+  > "They still sometimes change/remove comments and code they don't sufficiently
+  > understand as side effects, even if orthogonal to the task."
+
+  > You've seen all three. Probably this week.
+
+  > Someone turned these three observations into a single CLAUDE[.]md file. Four
+  > principles, one install, directly addresses each quote:
+
+  > 1./ Think before coding
+  > Don't assume. Don't hide confusion. State ambiguity explicitly. Present multiple
+  > interpretations rather than silently picking one. Push back if a simpler approach
+  > exists. Stop and ask rather than guess.
+
+  > 2./ Simplicity first
+  > No features beyond what was asked. No abstractions for single-use code. No
+  > "flexibility" that wasn't requested. No error handling for impossible scenarios. The
+  > test: would a senior engineer say this is overcomplicated? If yes, rewrite it.
+
+  > 3./ Surgical changes
+  > Don't "improve" adjacent code. Don't refactor things that aren't broken. Match the
+  > existing style even if you'd do it differently. If you notice unrelated dead code,
+  > mention it, don't delete it. Every changed line should trace directly to the
+  > request.
+
+  > 4./ Goal-driven execution
+  > Transform "fix the bug" into "write a test that reproduces it, then make it pass."
+  > Transform "add validation" into "write tests for invalid inputs, then make them
+  > pass." Give it success criteria and watch it loop until done.
+
+  > This last one is Karpathy's key insight captured directly: "LLMs are exceptionally
+  > good at looping until they meet specific goals... Don't tell it what to do, give it
+  > success criteria and watch it go."
+
+
+### Test Driven Development TDD
+
+- https://github.com/mattpocock/skills/blob/main/tdd/SKILL.md
+
+> Philosophy
+
+> Core principle: Tests should verify behavior through public interfaces, not
+> implementation details. Code can change entirely; tests shouldn't.
+
+> Good tests are integration-style: they exercise real code paths through
+> public APIs. They describe what the system does, not how it does it. A good
+> test reads like a specification - "user can checkout with valid cart" tells
+> you exactly what capability exists. These tests survive refactors because
+> they don't care about internal structure.
+
+> Bad tests are coupled to implementation. They mock internal collaborators,
+> test private methods, or verify through external means (like querying a
+> database directly instead of using the interface). The warning sign: your
+> test breaks when you refactor, but behavior hasn't changed. If you rename an
+> internal function and tests fail, those tests were testing implementation,
+> not behavior.
+
+> Anti-Pattern: Horizontal Slices
+> 
+> DO NOT write all tests first, then all implementation. This is "horizontal
+> slicing" - treating RED as "write all tests" and GREEN as "write all code."
+> 
+> This produces crap tests:
+> 
+>     Tests written in bulk test imagined behavior, not actual behavior You end
+>     up testing the shape of things (data structures, function signatures)
+>     rather than user-facing behavior Tests become insensitive to real changes -
+>     they pass when behavior breaks, fail when behavior is fine You outrun your
+>     headlights, committing to test structure before understanding the
+>     implementation
+> 
+> Correct approach: Vertical slices via tracer bullets. One test → one
+> implementation → repeat. Each test responds to what you learned from the
+> previous cycle. Because you just wrote the code, you know exactly what behavior
+> matters and how to verify it.
+
+
+## TODO list
+
+Claude:
+
+    > "Tip: Ask Claude to create a todo list when working on complex tasks to
+    > track progress and remain on track"
+
+
+## ZZ lists of prompts to be cleaned
+
+### 10 Prompts day to day
+
+- 10 prompts that have transformed my day-to-day life and that could do the 
+  same for https://x.com/oliviscusAI/status/2037118654811156781?s=20
+
+  > 1. The Brain Dump Synthesizer
+
+  > "I am feeling completely overwhelmed by everything I need to do. I am going to
+  > brain-dump every thought, task, and anxiety I have below. Please act as a highly
+  > organized executive assistant. Read my dump and categorize it into:
+
+  > 1. Urgent & Important (Do today),
+  > 2. Important but not Urgent (Schedule),
+  > 3. Quick wins (Takes <5 mins), and
+  > 4. Things I need to let go of or delegate.
+
+  > Here is my brain dump: [Insert messy thoughts]"
+
+
+  > 2. The Bias-Breaking Decision Engine
+
+  > "I am trying to make a difficult decision about [insert decision]. My current
+  > leanings are [insert current thoughts], but I am worried I have blind spots. Please
+  > act as a rational, objective advisor.
+
+  > Do not just agree with me. Build a 'steel man' argument for the opposite choice,
+  > outline the secondary and tertiary consequences of my current leaning, and ask me 3
+  > tough questions I haven't considered."
+
+  > 3. The Feynman Technique Learner
+
+  > "I need to understand [insert complex topic] but I have zero background in it. Break
+  > it down for me using the Feynman Technique. Explain it as if I am a smart high
+  > schooler. Use a highly relatable, everyday analogy to explain the core mechanism.
+
+  > Then, test my understanding by asking me to explain the most difficult part back to
+  > you."
+
+  > 4. The High-Stakes Communication Coach
+
+  > "I need to send an email to [Boss/Client/Partner] regarding [difficult topic/bad
+  > news]. I want to sound firm but empathetic, and I want to avoid sounding defensive.
+  > Here is my rough, emotional draft: [Insert draft].
+
+  > Please rewrite this to be professional, emotionally intelligent, and
+  > solution-oriented. Tell me exactly what tone changes you made and why."
+
+  > 5. The "80/20" Action Planner
+
+  > "I want to achieve [insert goal] in the next [timeframe]. Apply the Pareto Principle
+  > (80/20 rule) to this goal. Identify the 20% of actions that will drive 80% of the
+  > results.
+
+  > Create a step-by-step execution plan focusing only on those highest-leverage
+  > activities, and tell me which common traps I should completely ignore."
+
+  > 6. The Habit Friction Finder
+
+  > "I have been trying to build the habit of [insert habit] but I keep failing after a
+  > few days. Walk me through a 'friction analysis'. Ask me questions one by one about
+  > my environment, routine, and triggers to help me identify the hidden friction points
+  > preventing me from doing this.
+
+  > Then, help me design an environment where failing is harder than succeeding."
+
+  > 7. The Personal "Red Team" for Ideas
+
+  > "I have an idea for a [business/project/strategy]. The core concept is [explain
+  > concept]. Act as a 'Red Team' whose only goal is to find the fatal flaws in this
+  > idea. Critique the market viability, potential execution bottlenecks, and financial
+  > assumptions. Be ruthlessly honest. Don't sugarcoat it.
+
+  > Then, suggest one pivot that might solve your biggest critique."
+
+  > 8. The Perspective Shifter
+
+  > "I am having a conflict with [person/role] about [topic]. I feel [your
+  > emotions/stance]. I need you to roleplay as the other person. Based on the context
+  > provided, explain to me what their underlying fears, motivations, and logical
+  > justifications might be.
+
+  > Help me see the situation entirely from their side."
+
+  > 9. The Non-Fiction Book Distiller
+
+  > "Act as a world-class book summarizer. I want to understand the core thesis of [Book
+  > Title] by [Author]. Do not just give me a generic summary.
+
+  > Give me:
+
+  > 1. The core thesis in one sentence.
+  > 2. The 3 most counter-intuitive insights from the book. 3. Three actionable
+  >    frameworks I
+  >    can apply to my [Work/Life] immediately based on the book."
+
+  > 10. The Weekly Review Architect
+
+  > "I want to conduct a weekly review to prepare for Monday. Ask me 5 reflective
+  > questions, one at a time, to help me analyze what went well last week, what drained
+  > my energy, and what my single 'frog' (hardest task) is for the upcoming week.
+
+  > Wait for my answer to each question before asking the next, and finally summarize my
+  > plan for the week."
+
+
+
+### 25 Claude Prompts That Will Save You 15 Hours Every Week
+
+
+- https://x.com/eng_khairallah1/status/2043980058378002592
+
+  > I spent 6 months testing prompts daily. These 25 are the only ones I still use.
+  > Save this :)
+  > Most prompt lists are full of gimmicks. "Act as a pirate and explain quantum physics." Cool party trick. Zero practical value.
+  > These are different. Every prompt on this list solves a real problem that costs you real time every single week. Copy them. Paste them. Get your hours back.
+  > Writing & Content (1-7)
+  > 01. The First Draft Killer
+  > I need a first draft of [TYPE: blog post / newsletter / article] about [TOPIC].
+
+  > Audience: [WHO THEY ARE]
+  > Tone: [SPECIFIC TONE — e.g., direct and slightly irreverent]
+  > Length: [WORD COUNT]
+  > Does NOT sound like: generic AI, corporate jargon, LinkedIn influencer
+  > Does NOT include: filler phrases, unnecessary caveats, "in today's fast-paced world"
+
+  > Here is an example of my writing style:
+  > [PASTE YOUR BEST PREVIOUS PIECE]
+
+  > Match the voice and energy of the example. Write a complete first draft.
+  > Why it works: The negative constraints kill the AI smell. The example teaches Claude your voice better than any description ever could. This single prompt replaced 90 minutes of staring at a blank page.
+  > 02. The Thread Expander
+  > Turn this idea into a 10-post X/Twitter thread:
+
+  > [PASTE YOUR IDEA OR HOT TAKE]
+
+  > Rules:
+  > - Post 1 must be a hook that creates curiosity or makes a bold claim
+  > - Each post should be 1-3 sentences max
+  > - Include specific examples and numbers, not vague claims
+  > - Post 10 must include a clear call to action
+  > - No hashtags. No emojis unless absolutely necessary
+  > - Does NOT sound like: a motivational speaker or LinkedIn guru
+  > Why it works: The structure constraint forces a logical narrative. The negative constraints keep it from sounding like every other AI thread on the timeline.
+  > 03. The Content Repurposer
+  > I have one piece of long-form content. Repurpose it into multiple formats.
+
+  > Original content:
+  > [PASTE YOUR ARTICLE / NEWSLETTER / TRANSCRIPT]
+
+  > Create:
+  > 1. 5 standalone tweets (each should work on its own, not just be a quote from the article)
+  > 2. 2 LinkedIn posts (professional but not boring, max 200 words each)
+  > 3. 3 Instagram caption options (casual, conversational, under 150 words)
+  > 4. 1 email teaser to drive traffic to the original piece (under 100 words, curiosity-driven subject line)
+
+  > Keep my voice consistent across all formats. Adapt length and tone to each platform but the core message stays the same.
+  > Why it works: One hour of writing becomes an entire week of content across 4 platforms. The "standalone" instruction prevents lazy extraction where every tweet is just a sentence ripped from the article.
+  > 04. The Headline Machine
+  > Generate 20 headline variations for this topic: [TOPIC]
+
+  > Use these frameworks (at least 2 headlines per framework):
+  > - Curiosity gap: "Why X does Y (and what it means for Z)"
+  > - Specific numbers: "7 ways to..." or "I tested 200 tools and..."
+  > - How-to: "How to X without Y"
+  > - Contrarian: "X is wrong. Here's why."
+  > - Social proof: "How I / we achieved X"
+  > - "I want to" format: "I want to [aspirational goal] (full course)"
+
+  > Rank your top 5 picks and explain why each one would stop someone mid-scroll.
+  > Why it works: Most people write one headline and hope for the best. This generates 20 options across proven frameworks and forces Claude to evaluate which ones are actually scroll-stopping.
+  > 05. The Email Sequence Writer
+  > Write a 5-email welcome sequence for [PRODUCT/SERVICE].
+
+  > Target audience: [WHO]
+  > Main pain point: [THEIR BIGGEST PROBLEM]
+  > Goal of the sequence: [WHAT YOU WANT THEM TO DO BY EMAIL 5]
+
+  > For each email provide:
+  > - Subject line (under 50 characters, curiosity-driven)
+  > - Preview text (under 90 characters)
+  > - Body (under 200 words, conversational, one clear CTA)
+  > - Send timing (days after signup)
+  > - A/B subject line variation
+
+  > Rules:
+  > - Email 1 delivers immediate value, no selling
+  > - Email 2 tells a story that connects to their pain point
+  > - Email 3 introduces the solution subtly
+  > - Email 4 provides social proof or a case study
+  > - Email 5 makes the direct ask with urgency
+
+      > Each email should feel like it came from a person, not a marketing
+      > department. Why it works: This single prompt replaces what a copywriter
+      > charges \$500 to \$2,000 to produce. The structure ensures each email serves
+      > a strategic purpose rather than just filling an inbox.
+      > 06. The SEO Content Brief Create a complete content brief for a blog post
+      >     targeting the keyword: [KEYWORD]
+
+  > Include:
+  > 1. Recommended title (include target keyword naturally)
+  > 2. Meta description (under 155 characters, includes keyword)
+  > 3. Suggested URL slug
+  > 4. Target word count
+  > 5. Article outline with H2 and H3 headings
+  > 6. 5 related keywords to include naturally throughout
+  > 7. 3 internal linking opportunities (suggest anchor text and where to link)
+  > 8. 2 external source suggestions for credibility
+  > 9. Featured snippet opportunity (format the section most likely to win a snippet)
+
+  > The brief should be detailed enough that any writer could produce the article without additional research.
+  > Why it works: This turns a 2-hour research and planning session into a 2-minute prompt. The featured snippet section alone is worth the effort because most writers never optimize for it.
+  > 07. The Voice Cloner
+  > Analyze the following writing samples and extract my writing voice:
+
+  > [PASTE 2-3 OF YOUR BEST PIECES]
+
+  > Create a "Voice Profile" that includes:
+  > - Sentence length patterns (short, medium, long, or mixed)
+  > - Vocabulary level (simple, technical, academic)
+  > - Tone qualities (list 5 adjectives)
+  > - Structural habits (paragraph length, use of subheadings, lists vs prose)
+  > - Phrases or patterns I use frequently
+  > - Things I never do (formal vs casual markers)
+  > - Energy level (calm, intense, urgent, conversational)
+
+  > Then write a 200-word sample paragraph about [ANY TOPIC] using this exact voice profile. I will compare it to my actual writing to verify accuracy.
+  > Why it works: Run this once and save the output as a context file. Every future prompt gets your voice right the first time instead of sounding like every other AI output on the internet.
+  > Research & Analysis (8-14) 🔍
+  > 08. The Meeting Prep Brief
+  > I have a meeting with [PERSON NAME] from [COMPANY] in [TIME].
+
+  > Research and create a one-page brief covering:
+  > 1. Their background (role, career highlights, relevant experience)
+  > 2. Their company (what they do, recent news, current challenges)
+  > 3. Any recent public statements, articles, or social posts from them
+  > 4. 3 talking points that would be relevant to our meeting topic: [TOPIC]
+  > 5. 3 smart questions to ask them
+  > 6. 1 potential common ground or shared interest to build rapport
+
+  > Format as a scannable document I can read in 5 minutes before the call.
+  > Why it works: This replaced 30 minutes of LinkedIn stalking and Google searching before every meeting. The "common ground" section alone has opened more doors than any other prep step.
+  > 09. The Decision Matrix
+  > I need to make a decision about [DECISION].
+
+  > My options are:
+  > 1. [OPTION A]
+  > 2. [OPTION B]
+  > 3. [OPTION C — optional]
+
+  > My priorities (ranked):
+  > 1. [MOST IMPORTANT FACTOR]
+  > 2. [SECOND MOST IMPORTANT]
+  > 3. [THIRD MOST IMPORTANT]
+
+  > For each option:
+  > - Score it 1-10 on each priority factor
+  > - List the top 2 risks
+  > - List the top 2 advantages
+  > - Identify what I would need to be true for this option to be the best choice
+
+  > Then give me your recommended option with reasoning in 3 sentences.
+
+  > Do NOT hedge. Pick one and defend it.
+  > Why it works: The "do not hedge" instruction is everything. Without it, Claude gives you a balanced analysis that helps nobody. With it, you get a clear recommendation you can either follow or argue against.
+  > 10. The Competitor Breakdown
+  > Analyze [COMPETITOR NAME / URL] as if you were a competitive intelligence analyst.
+
+  > Cover:
+  > 1. What they sell and to whom (be specific about segments)
+  > 2. Their pricing model and approximate price points
+  > 3. Their positioning (how they describe themselves vs how the market sees them)
+  > 4. Their strongest feature or differentiator
+  > 5. Their biggest weakness or gap
+  > 6. Recent moves (product launches, hires, partnerships, funding)
+  > 7. What they do better than us: [YOUR COMPANY/PRODUCT]
+  > 8. What we do better than them
+
+  > End with: 3 strategic opportunities we could exploit based on their weaknesses.
+
+  > Use only factual information. If you are not confident about a claim, flag it as unverified.
+  > Why it works: This replaces a full afternoon of competitive research. The "flag as unverified" instruction prevents Claude from confidently making things up about your competitors, which is the default failure mode.
+  > 11. The Book Processor
+  > I just read [BOOK TITLE] by [AUTHOR].
+
+  > Create a structured summary with these sections:
+
+  > 1. Core thesis (3 sentences max)
+  > 2. The 5 most important ideas (2-3 sentences each, in my own words not the author's)
+  > 3. The strongest argument the author makes (and why it is strong)
+  > 4. The weakest argument the author makes (and why it is weak)
+  > 5. 3 specific ways I can apply this to [MY WORK / MY BUSINESS / MY LIFE]
+  > 6. Key quotes worth saving (max 5)
+  > 7. Who should read this and who should skip it
+
+  > Write as if you are briefing a busy executive who wants the signal, not the story.
+  > Why it works: This turns a 6-hour book into a 10-minute actionable brief. The "apply this to my specific situation" section makes it practical instead of theoretical.
+  > 12. The Data Explainer
+  > Here is a dataset:
+
+  > [PASTE YOUR DATA OR DESCRIBE IT]
+
+  > Analyze it and give me:
+  > 1. The 3 most important trends (with specific numbers)
+  > 2. Any anomalies or outliers that are worth investigating
+  > 3. Correlations between variables (if any exist)
+  > 4. What this data suggests we should do next (2-3 recommendations)
+  > 5. What this data does NOT tell us (limitations and blind spots)
+
+  > Present the findings in two formats:
+  > - A 3-sentence executive summary for someone who has 30 seconds
+  > - A detailed breakdown for someone who has 5 minutes
+
+  > If the data is insufficient to draw any conclusion, say so rather than speculating.
+  > Why it works: The two-format output is the secret. You get the quick answer for yourself and the detailed version for the stakeholder who asks follow-up questions. The "what this data does NOT tell us" section prevents overconfident decisions.
+  > 13. The Process Documenter
+  > I am going to describe a process I do regularly. Turn it into a structured Standard Operating Procedure.
+
+  > My process:
+  > [DESCRIBE WHAT YOU DO IN CASUAL LANGUAGE — e.g., "Every Monday I check our analytics, pull the numbers into a spreadsheet, compare week over week, flag anything weird, and write a summary for the team"]
+
+  > Create an SOP with:
+  > 1. Purpose (one sentence — why this process exists)
+  > 2. Frequency (how often it runs)
+  > 3. Prerequisites (what needs to be in place before starting)
+  > 4. Step-by-step procedure (numbered, specific, no ambiguity)
+  > 5. Quality checks (how to verify each step was done correctly)
+  > 6. Common mistakes to avoid
+  > 7. Time estimate for completion
+
+  > Format it so that a new hire could follow it on their first day without asking any questions.
+  > Why it works: Everyone has processes living in their head that they have never documented. This prompt extracts them in a format that can be delegated to a human or automated with an AI agent.
+  > 14. The Assumption Destroyer
+  > I am planning to [PROJECT / DECISION / STRATEGY].
+
+  > Here are my assumptions:
+  > 1. [ASSUMPTION 1]
+  > 2. [ASSUMPTION 2]
+  > 3. [ASSUMPTION 3]
+
+  > For each assumption:
+  > - Rate how confident I should be (high / medium / low) and why
+  > - Identify what would need to be true for this assumption to hold
+  > - Describe the worst case scenario if this assumption is wrong
+  > - Suggest one quick way to validate or invalidate it before committing
+
+  > Then identify 2 assumptions I am probably making that I did NOT list. Explain each one.
+
+  > Be honest and direct. Do not soften bad news.
+  > Why it works: This is the most underrated prompt on the list. The hidden assumptions section has single-handedly prevented bad decisions for me more than once. We are all blind to our own blind spots.
+  > Productivity & Business (15-21) ⚡
+  > 15. The Weekly Review Engine
+  > Here is what happened this week:
+
+  > Completed: [LIST WHAT YOU FINISHED]
+  > In progress: [LIST WHAT IS ONGOING]
+  > Blocked: [LIST WHAT IS STUCK AND WHY]
+  > Wins: [LIST ANY WINS OR MILESTONES]
+
+  > Based on this:
+  > 1. What was my highest-impact activity this week?
+  > 2. What activity consumed time but produced no meaningful result?
+  > 3. What pattern do you see in my blockers?
+  > 4. What should I prioritize next week (top 3 only)?
+  > 5. What should I stop doing or delegate?
+
+  > Be direct. If something I spent time on was a waste, say so.
+  > Why it works: Friday review in 5 minutes instead of 30. The "be direct" instruction prevents Claude from praising everything you did and actually forces useful self-assessment.
+  > 16. The Client Proposal Generator
+  > Draft a project proposal for [CLIENT NAME].
+
+  > Project: [WHAT YOU ARE BUILDING / PROVIDING]
+  > Client's main problem: [WHAT THEY TOLD YOU THEY NEED]
+  > Timeline: [ESTIMATED TIMELINE]
+  > Budget range: [YOUR PRICE RANGE]
+
+  > Structure:
+  > 1. Understanding of the problem (show them you listened — 3 sentences)
+  > 2. Proposed solution (what you will build / deliver)
+  > 3. Scope (what is included and explicitly what is NOT included)
+  > 4. Timeline with milestones
+  > 5. Investment (pricing with payment schedule)
+  > 6. What happens next (clear next step and CTA)
+
+  > Tone: professional and confident but not stiff. The client should feel like they are hiring a competent partner, not a robot.
+
+  > Keep the entire proposal under 800 words. Brevity signals confidence.
+  > Why it works: Most proposals are either too long or too vague. The "explicitly what is NOT included" section prevents scope creep from day one. "Brevity signals confidence" keeps Claude from padding.
+  > 17. The Cold Outreach Personalizer
+  > I want to reach out to [PERSON] at [COMPANY] about [WHAT YOU OFFER].
+
+  > Their role: [TITLE]
+  > Their company does: [BRIEF DESCRIPTION]
+  > Something relevant about them: [RECENT POST, ARTICLE, ACHIEVEMENT, OR COMPANY NEWS]
+
+  > Write a cold email that:
+  > - Opens with something specific to THEM (not "I hope this finds you well")
+  > - Gets to the point in under 3 sentences
+  > - Clearly states what I do and why it matters to their specific situation
+  > - Includes a low-friction CTA (not "let's schedule a 30-minute call")
+  > - Total length: under 100 words
+
+  > Does NOT sound like: a template, a sales pitch, or a LinkedIn connection message.
+  > Sounds like: a smart person who noticed something relevant and reached out.
+  > Why it works: The 100-word limit is the magic constraint. It forces Claude to cut everything that is not essential. The "sounds like" vs "does not sound like" instruction eliminates every bad habit of AI-generated outreach.
+  > 18. The Feedback Translator
+  > I received this feedback:
+
+  > [PASTE THE FEEDBACK — from a client, boss, colleague, review, etc.]
+
+  > Help me:
+  > 1. Strip the emotion and extract the 3 most important actionable points
+  > 2. Identify what they are actually asking for vs what they said (these are often different)
+  > 3. Rate severity: which points are deal-breakers and which are preferences?
+  > 4. Draft a response that acknowledges the feedback, addresses each point, and sets expectations for next steps
+
+  > Tone of my response: [professional / grateful / firm — pick one]
+  > Length: under 150 words
+  > Why it works: Emotional feedback is hard to process in the moment. This creates a cooling-off filter that translates feelings into actions. The "what they are actually asking for vs what they said" distinction is worth the entire prompt.
+  > 19. The Meeting Killer
+  > Here is the agenda and context for an upcoming meeting:
+
+  > [PASTE MEETING INVITE, AGENDA, OR DESCRIBE THE PURPOSE]
+
+  > Determine:
+  > 1. Can this meeting be replaced by an async document? If yes, draft that document.
+  > 2. If the meeting IS necessary, what is the single decision that needs to be made?
+  > 3. Who actually needs to be in the room? (Remove anyone who is there "just to be informed" — send them the notes instead)
+  > 4. What is the minimum time needed? (Default to 25 minutes, justify if longer)
+  > 5. Draft a 3-line pre-read that all attendees should review before the meeting so you do not waste the first 10 minutes on context
+
+  > The goal is either killing this meeting or making it half as long.
+  > Why it works: The average professional spends 31 hours per month in unnecessary meetings. This prompt alone is worth an hour saved per week just by running it on your calendar once.
+  > 20. The Pricing Strategy Advisor
+  > I sell [PRODUCT/SERVICE] to [TARGET AUDIENCE].
+
+  > Current price: [PRICE]
+  > Current conversion rate: [IF KNOWN]
+  > Top competitors and their pricing: [LIST 2-3]
+  > My main differentiator: [WHAT MAKES ME DIFFERENT]
+
+  > Analyze my pricing and give me:
+  > 1. Am I underpriced, overpriced, or correctly priced? Why?
+  > 2. What pricing model would maximize revenue? (one-time, subscription, tiered, usage-based)
+  > 3. If I raised my price by 50%, what would likely happen? What about 100%?
+  > 4. What is the specific objection buyers probably have about my price right now?
+  > 5. Write one sentence I can use to justify my price when asked "why so expensive?"
+
+  > Be direct. Most people underprice out of fear. If that is me, say so.
+  > Why it works: Pricing is the single highest-leverage decision in any business. A 20% price increase goes straight to profit. Most people never analyze this because it feels uncomfortable. Let Claude do the uncomfortable analysis.
+  > 21. The Delegation Formatter
+  > I need to delegate this task:
+
+  > [DESCRIBE THE TASK IN YOUR OWN WORDS]
+
+  > Convert my description into a delegation brief with:
+  > 1. Task summary (one sentence — what and why)
+  > 2. Definition of done (what the finished result looks like, specifically)
+  > 3. Constraints (budget, timeline, tools to use, things to avoid)
+  > 4. Decision authority (what decisions they can make alone vs what needs my approval)
+  > 5. Check-in points (when they should update me)
+  > 6. Common mistakes to avoid (based on what typically goes wrong with this type of task)
+
+  > Format it so I can paste it directly into a Slack message or email.
+  > Length: under 200 words.
+  > Why it works: Bad delegation creates more work than doing it yourself. This prompt forces clarity on the two things most people skip: "definition of done" and "decision authority." Those two sections eliminate 80% of back-and-forth.
+  > Thinking & Strategy (22-25)
+  > 22. The Reverse Brainstorm
+  > I want to [GOAL].
+
+  > First, brainstorm 10 ways I could guarantee FAILURE at this goal. Be creative and specific.
+
+  > Then invert each failure mode into a success strategy.
+
+  > Finally, rank the 3 inverted strategies that are:
+  > - Most counterintuitive (things I would not have thought of)
+  > - Most actionable (I could start this week)
+  > - Most impactful (would move the needle most)
+
+  > For each of the top 3, give me a specific first step I can take tomorrow.
+  > Why it works: Direct brainstorming produces predictable ideas. Inverting failure modes produces genuinely surprising strategies. This is one of my favourite Claude techniques and it consistently generates ideas I would never have arrived at through normal thinking.
+  > 23. The Pre-Mortem
+  > I am about to [DECISION / LAUNCH / PROJECT].
+
+  > Imagine it is 6 months from now and this has completely failed.
+
+  > Write the post-mortem:
+  > 1. What went wrong? (5 specific failure points, not vague "bad execution")
+  > 2. What warning signs did I ignore?
+  > 3. What did I assume that turned out to be wrong?
+  > 4. Who was affected and how?
+  > 5. What would I do differently if I could go back?
+
+  > Then return to the present. Based on this pre-mortem:
+  > - Which 2 failure points are most likely to actually happen?
+  > - What can I do THIS WEEK to prevent or mitigate each one?
+
+  > Be brutally honest. I would rather hear hard truths now than learn them the expensive way.
+  > Why it works: Pre-mortems are one of the most powerful strategic tools that almost nobody uses. Having Claude write the failure story from the future surfaces risks that optimism blinds you to in the present.
+  > 24. The Second Brain Synthesizer
+  > Here are notes I have collected over the past [TIMEFRAME]:
+
+  > [PASTE YOUR RAW NOTES, IDEAS, HIGHLIGHTS, OBSERVATIONS]
+
+  > Synthesize these into:
+  > 1. The 3 biggest themes or patterns across all notes
+  > 2. Connections between ideas that I probably did not notice (ideas from different contexts that relate to each other)
+  > 3. The single most important insight hiding in these notes
+  > 4. 2 action items that emerge from the patterns
+  > 5. 3 questions I should be asking based on what I have been tracking
+
+  > Do not just summarize each note. Find the signal across all of them. I want emergence, not repetition.
+  > Why it works: We all capture notes and never revisit them. This prompt turns a messy collection of fragments into synthesized insight. The "connections between ideas I did not notice" instruction is where the real value lives.
+  > 25. The Personal Board of Advisors
+  > I am facing this situation:
+
+  > [DESCRIBE YOUR SITUATION, PROBLEM, OR DECISION]
+
+  > Analyze this from 5 perspectives:
+
+  > 1. The pragmatic operator — cares only about what works, ignores theory
+  > 2. The skeptical investor — sees every risk, questions every assumption
+  > 3. The creative strategist — finds unconventional angles everyone else misses
+  > 4. The customer/user — does not care about my problems, only about their experience
+  > 5. The long-term thinker — ignores short-term pain, focuses on where this leads in 3 years
+
+  > Each advisor gives their take in 2-3 sentences.
+
+  > Then synthesize their advice into one recommended action with reasoning.
+
+  > If the advisors disagree on something fundamental, highlight that tension. Do not resolve it artificially.
+  > Why it works: This is the most powerful prompt on the entire list. Five perspectives produce dramatically richer analysis than one. The "do not resolve the tension artificially" instruction is critical because real decisions involve real tradeoffs that cannot be smoothed over.
+  > TL;DR
+  > 25 prompts. All tested daily. Zero gimmicks.
+  > Copy the ones relevant to your work. Paste them. Customize the brackets. Use them.
+  > The difference between someone who spends 50 hours a week working and someone who gets the same results in 40 is not talent. It is systems.
+  > These prompts are systems.
+  > This list took weeks to build and refine. If it saved you time, you know what to do.
+  > I post stuff like this regularly - AI tools, workflows, prompts, and things I actually use. No fluff, no hype, just what works.
+  > Follow me @eng_khairallah1
+  >  for more tools, workflows, and systems. No fluff. Just what works.
+  > hope this was useful for you, Khairallah
+
+# Skills
+
+
+
+## Sycophancy
+
+
+Paul:
+
+    ❯ please avoid sycophancy
+
+Claude: 
+
+  > ● 
+  > Read(/home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/MEMORY.md)
+  >   ⎿  Read 5 lines
+
+  > ● Write(/home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/feedback_no_sycophancy.md)
+  >   ⎿  Wrote 14 lines to /home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/feedback_no_sycophancy.md
+  >        1 ---
+  >        2 name: feedback-no-sycophancy
+  >        3 description: User wants direct responses without flattery or excessive affirmation
+  >        4 metadata:
+  >        5   node_type: memory
+  >        6   type: feedback
+  >        7   originSessionId: 3e45b353-c57e-4d74-8f51-35fe80f4e96d
+  >        8 ---
+  >        9
+  >       10 No sycophantic language. Don't use phrases like "Great question!", 
+  >       "That's a smart approach", "Bottom line:", or add rhetorical emphasis 
+  >       just to make a response feel warmer.
+  >          State things directly.
+  >       11
+  >       12 **Why:** User explicitly asked to avoid it.
+  >       13
+  >       14 **How to apply:** Skip affirmations, filler praise, and motivational closers. Just answer.
+
+  > ● Update(/home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/MEMORY.md)
+  >   ⎿  Added 3 lines
+  >       1  # Memory index
+  >       2
+  >       3 +## Feedback
+  >       4 +- [No sycophancy](feedback_no_sycophancy.md) — respond directly, no flattery or motivational closers
+  >       5 +
+
+Paul:
+
+    ❯ I meant in this conversation only and in your previous reply.
+
+Claude 10:42 AM claude-sonnet-4-6
+
+  > ● Understood. Let me remove that memory — it wasn't warranted as a 
+  > permanent note.
+
+## Run integration tests
+
+### Cheaper model to run integration tests
+
+- Paul
+
+    ❯ how to use a cheaper model for skills I saw:
+
+       > 20% of your usage came from /run-integration-tests
+       > Heavy skills can be scoped down or run with a cheaper model via skill
+       > frontmatter.
+
+- Claude
+
+    > ● You can set a model: field in the skill's frontmatter. Skills live as
+    > markdown files with YAML frontmatter — adding model: claude-haiku-4-5 (or
+    > claude-sonnet-4-6) at the top makes invocations of that skill use the cheaper
+    > model.
+
+    >   For your run-integration-tests skill, find the file (likely
+    >   ~/.claude/skills/run-integration-tests.md or under .claude/skills/ in this
+    >   project) and edit the frontmatter:
+
+        --- 
+        name: run-integration-tests 
+        description: Run pytest integration tests for coillte_cbm... 
+        model: claude-haiku-4-5 
+        ---
+
+    >   Valid values are claude-haiku-4-5, claude-sonnet-4-6, or claude-opus-4-7.
+    >   Haiku is the cheapest and usually fine for mechanical "run this command,
+    >   report results" skills like running tests.
+
 
 # Spaces
 
@@ -565,7 +1408,7 @@ Typical message:
 > to keel using Claude Code"
 
 
-## Agents
+## Agents and skills
 
 Create agents
 
@@ -574,6 +1417,83 @@ Create agents
 For example, if you named your agent "architect", you would use @ to invoque it :
 
     @architect help me plan the architecture for my project
+
+
+Skills live in ~/.claude/commands/ and can be called with a slash such as
+/spell.
+
+
+### Accountant
+
+Content of ~/.claude/commands/accountant.md
+
+  > You are an accounting assistant for a German freelance consultant using Odoo
+  > with the SKR03 chart of accounts.
+
+  > When looking up account numbers, always refer to the chart of accounts at:
+  > Chart_of_Accounts.csv
+
+  > ...
+
+
+### Python test driven development
+
+
+  > You are a Python testing agent. Your job is to find, run, and analyze Python tests in the current project.
+
+  > ## Workflow
+
+  > 1. **Discover the test framework**: Look for `pytest.ini`, `pyproject.toml`, `setup.cfg`, `tox.ini`, or `conftest.py` to determine the test runner (pytest, unittest, nose2, etc.). Default to pytest if unclear.
+
+  > 2. **Discover tests**: Find test files matching common patterns (`test_*.py`, `*_test.py`, files in `tests/` directories).
+
+  > 3. **Run the tests**: Execute the test suite using the detected framework. Pass through any arguments the user provided: \$ARGUMENTS
+
+  >    - If no arguments are given, run the full test suite.
+  >    - If a file path or test name is given, run only those tests.
+  >    - Use verbose output (`-v`) so individual test results are visible.
+
+  > 4. **Analyze failures**: For any failing tests:
+  >    - Read the relevant test code and the source code under test.
+  >    - Identify the root cause of each failure.
+  >    - Provide a clear explanation of why the test failed and suggest a fix.
+
+  > 5. **Report results**: Summarize the test run with:
+  >    - Total passed / failed / skipped / errors count.
+  >    - A brief explanation for each failure.
+  >    - Suggested next steps if there are failures.
+
+  > ## Guidelines
+
+  > - Prefer `python -m pytest` over bare `pytest` to ensure the project root is on `sys.path`.
+  > - Respect virtual environments: check for `.venv/`, `venv/`, or `env/` directories and activate if present.
+  > - If dependencies are missing, inform the user rather than installing them automatically.
+  > - Do not modify test files or source code unless the user explicitly asks you to fix something.
+
+
+### Spell check in any language
+
+Definition of the /spell skill:
+
+  > Spell-check and proofread the text provided by the user. Detect the language automatically and apply language-specific instructions.
+
+  > **For German text:**
+  > Bitte das Deutsch in meinem Text verbessern: nur Verbesserungsvorschläge als Liste — ich werde selber schreiben.
+
+  > **For French text:**
+  > Merci de corriger le français dans mon texte : uniquement des suggestions d'amélioration sous forme de liste — j'écrirai moi-même.
+
+  > **For English text:**
+  > Please proofread the English in my text: provide only suggested improvements as a list — I will do the writing myself.
+
+  > **For any other language:**
+  > Detect the language, then provide a numbered list of spelling, grammar, and style suggestions only. Do not rewrite the text.
+
+  > **Format:**
+  > - Number each suggestion
+  > - Quote the original phrase, then show the correction
+  > - One line per issue, no explanations unless the rule is non-obvious
+
 
 ## Tips
 
@@ -610,6 +1530,15 @@ For example, if you named your agent "architect", you would use @ to invoque it 
   >    - The files on disk (obviously)
 
   >    Apologies for the earlier misinformation.
+
+
+## Docker container & skip permissions
+
+Prompt
+
+    Set up a dev container for this project so I can run Claude Code with
+    --dangerously-skip-permissions safely. Also show me the docker build and
+    docker run commands to start it from the terminal.
 
 
 ## Commands
@@ -655,8 +1584,51 @@ For example, if you named your agent "architect", you would use @ to invoque it 
   > — e.g., a bugfix in one session and a feature in another — without them
   > interfering.
 
+### Code repository and data repository
 
-## Memory file
+I have a modelling pattern where I have a code repository and a data repository. 
+
+- Current practice I start Claude in the code directory and allow the data directory 
+
+  {
+      "permissions": {
+          "allow": [
+          "Bash(xargs -I{} sh -c 'echo \"=== {} ===\"; head -3 {}')",
+          "Bash(xargs -I{} sh -c 'echo \"=== {} ===\"; head -5 {}')",
+          "Bash(.venv/bin/python *)"
+          ],
+          "additionalDirectories": ["../coillte_cbm_data"]
+      }
+  }
+
+- Old practice, I used to start claude code at the parent directory level 
+
+
+## Settings
+
+### CLAUDE.md
+
+There can be project specific CLAUDE.md within a project's directory, generally
+at the root of the git repository. There is a general CLAUDE.md at
+
+    ~/.claude/CLAUDE.md
+
+Content of my general CLAUDE.md file
+
+    Markdown Style
+
+    - Wrap prose at 88 characters per line.
+    - Markdown table rows may exceed 88 characters.
+    - Do not use `---` horizontal rules as section separators; use `##` headings instead
+    - These rules apply to all projects unless a project-level CLAUDE.md overrides them
+
+    Docstrings
+
+    - Always use NumPy-style docstrings 
+    - Run pdoc with `--docformat numpy` so sections render correctly
+
+
+### Memory file
 
 This conversation added a python environment to a memory file for a given
 project.
@@ -685,5 +1657,18 @@ Content of ~/.claude/projects/-path-to-project/memory/MEMORY.md
     - Always activate the virtual environment: `source ~/path/env/bin/activate` before running Python
     - Or call directly: `~/path/env/bin/python` for scripts (has pandas, sqlalchemy, seaborn, etc.)
     - `python` and `python3` on PATH do NOT have the required packages
+
+
+### Setup plugin
+
+A plugin that recommends skills for your project.
+
+Call it with:
+
+    /claude-automation-recommender
+
+Installation:
+
+    /plugin install claude-code-setup@claude-plugins-official
 
 
