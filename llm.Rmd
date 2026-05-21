@@ -1272,6 +1272,40 @@ Claude:
 
 # Skills
 
+## Git
+
+
+### Run model before and after commit
+
+
+For example this before-after model run check happened in a session, related to
+an issue with the eu_cbm_hat model  https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat/-/work_items/144 
+
+  > ● I see the setup. The CI error happens because eu_cbm_hat imports
+  > eu_cbm_hat.info.harvest.combined which transitively reads country_codes.csv
+  > from EU_CBM_DATA. Locally you have that env var pointing to actual data, so
+  > import works. The fix in 5323da0 removed that import from
+  > natural_disturbances.py.
+
+  >   Let me reproduce by:
+  >   1. Setting EU_CBM_DATA to a non-existent path (simulating CI's missing
+  >      /root/eu_cbm/eu_cbm_data/)
+  >   2. Installing eu_cbm_hat from local checkout at commit 5cb2f5f (one before
+  >      the fix)
+  >   3. Running the test → expect failure
+  >   4. Reinstalling at 5323da0 → expect success
+
+  > ...
+
+  > ● Bash(env -i HOME=/tmp/fake_ci_home PATH=/usr/bin:/bin \
+  > ...
+  >   ⎿    File "/tmp/eu_cbm_hat_before_144/eu_cbm_hat/post_processor/natural_disturbances.py", line 8, in <module>
+  >          from eu_cbm_hat.info.harvest import combined
+  >        File "/tmp/eu_cbm_hat_before_144/eu_cbm_hat/info/harvest.py", line 48, in <module>
+  >      … +27 lines (ctrl+o to expand)
+
+  > ● CI failure reproduced exactly. Now running the full pytest command at the pre-fix commit:
+
 
 
 ## Sycophancy
@@ -1349,7 +1383,7 @@ Claude 10:42 AM claude-sonnet-4-6
 
         --- 
         name: run-integration-tests 
-        description: Run pytest integration tests for coillte_cbm... 
+        description: Run pytest integration tests for 
         model: claude-haiku-4-5 
         ---
 
@@ -1597,7 +1631,7 @@ I have a modelling pattern where I have a code repository and a data repository.
           "Bash(xargs -I{} sh -c 'echo \"=== {} ===\"; head -5 {}')",
           "Bash(.venv/bin/python *)"
           ],
-          "additionalDirectories": ["../coillte_cbm_data"]
+          "additionalDirectories": ["../cbm_data"]
       }
   }
 
