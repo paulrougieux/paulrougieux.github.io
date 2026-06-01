@@ -565,6 +565,44 @@ Issues with asking LLMs to review scientific papers:
   is leaking important intellectual property.
 
 
+### Hostile but competent reviewer
+
+Paul simple prompt:
+
+%>% Suggest a hostile but competent reviewer to critique paper/paper.md. Then provide a review.
+
+- Inspired by a more complex prompt seen at "how NOT to review a paper The
+  tools and techniques of the adversarial reviewer"
+  https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf 
+
+    - Number 18. the "Domain‑Expert Hostile Review Simulation" Prompt 
+
+      > Role: Simulate a hostile but competent domain expert reviewing this paper for a top‑tier venue.
+      > Task:
+
+      >     Briefly describe the reviewer’s background (field, methods, typical objections).
+
+      >     Write a full, critical review including:
+
+      >         Summary of contributions.
+
+      >         Major concerns.
+
+      >         Minor comments.
+
+      >         Overall recommendation (accept/weak accept/weak reject/reject) with justification.
+
+      >     Then, switch roles to “Author Response Coach” and for each major concern, outline how the authors could either:
+
+      >         Pre‑emptively revise the manuscript, or
+
+      >         Prepare a strong rebuttal argument.
+      >         Keep the bar high, as for a selective journal/conference.
+
+      > Manuscript:
+      > [PASTE TEXT]
+
+
 ### Meta Prompt
 
 Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8aa192f 
@@ -596,32 +634,9 @@ Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8a
     the adversarial reviewer"
     https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf 
 
-    - for example, number 18. the "Domain‑Expert Hostile Review Simulation" Prompt:
+    - for example, number 18. the "Domain‑Expert Hostile Review Simulation"
+      Prompt pasted in another section of this document.
 
-      > Role: Simulate a hostile but competent domain expert reviewing this paper for a top‑tier venue.
-      > Task:
-
-      >     Briefly describe the reviewer’s background (field, methods, typical objections).
-
-      >     Write a full, critical review including:
-
-      >         Summary of contributions.
-
-      >         Major concerns.
-
-      >         Minor comments.
-
-      >         Overall recommendation (accept/weak accept/weak reject/reject) with justification.
-
-      >     Then, switch roles to “Author Response Coach” and for each major concern, outline how the authors could either:
-
-      >         Pre‑emptively revise the manuscript, or
-
-      >         Prepare a strong rebuttal argument.
-      >         Keep the bar high, as for a selective journal/conference.
-
-      > Manuscript:
-      > [PASTE TEXT]
 
 ## Programming
 
@@ -1277,9 +1292,11 @@ Claude:
 
 ### Run model before and after commit
 
-
 For example this before-after model run check happened in a session, related to
-an issue with the eu_cbm_hat model  https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat/-/work_items/144 
+an issue with the eu_cbm_hat model
+https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat/-/work_items/144 The LLM
+checked out an earlier commit to see if the integration test error was the same
+before and after the code changes. 
 
   > ● I see the setup. The CI error happens because eu_cbm_hat imports
   > eu_cbm_hat.info.harvest.combined which transitively reads country_codes.csv
@@ -1306,6 +1323,24 @@ an issue with the eu_cbm_hat model  https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_
 
   > ● CI failure reproduced exactly. Now running the full pytest command at the pre-fix commit:
 
+  > ...
+
+  > ● Fix confirmed. All 5 tests pass with commit 5323da0. Cleaning up:
+
+  > ● Bash(git -C /home/paul/rp/eu_cbm/eu_cbm_hat worktree remove /tmp/eu_cbm_hat_before_144 && git -C /home/paul/rp/eu_cbm/eu_cbm_hat worktree remove /tmp/eu_cbm_hat_afte…)
+  >   ⎿  /home/paul/rp/eu_cbm/eu_cbm_hat  5323da0 [main]
+
+  > ● Summary
+
+  >   CI failure reproduced and fix confirmed.
+
+  >   Reproduction recipe (simulates GitLab CI by hiding all of your local eu_cbm_data references):
+
+  >   [...] 
+
+  >   So the CI failure is fixed by 5323da0. The pip-published eu-cbm-hat==2.1.6 on
+  >   CI predates this commit — bumping the pinned version (or letting CI install
+  >   latest from git) will unblock the CI job.
 
 
 ## Sycophancy
@@ -1579,7 +1614,10 @@ Prompt
 
     /agents create agents
 
-    /clear Clear conversation history and free up context
+    /clear clear conversation history and free up context
+
+    /context display context usage in percent for system prompt, skills, tools
+    and messages.
 
     /usage display usage information
 
