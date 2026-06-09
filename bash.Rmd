@@ -98,6 +98,12 @@ images](https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image)
     cd ~/downloads
     convert -density 150 input.pdf -quality 90 output.png
 
+### Rasterize text to images as in scanned document
+
+Rasterize pdf text to images as in a scanned document
+
+    gs -sDEVICE=pdfimage24 -r200 -o scanned.pdf input.pdf
+
 
 ## Images to pdf
 
@@ -183,7 +189,7 @@ image sizes to 2000 pixel wide and generate a pdf.
 
 ## Images to other formats
 
-See also the resize section.
+See also the edit and resize sections for many more image conversion commands.
 
 Convert a png image to a jpgeg image
 
@@ -392,6 +398,18 @@ Debian Dotfiles
 In .bashrc a user can set environment variables, define alias (see above).
 
 
+## Copy dot files to a server
+
+Synchronize the dot files from a laptop to the server
+
+    rsync -av ~/rp/paulrougieux.github.io/setup/.tmux.conf paul@flower:.tmux.conf
+    rsync -av --delete ~/rp/paulrougieux.github.io/setup/nvim_server/ paul@flower:.config/nvim/
+
+You can also download the dot files from the public repository
+
+    curl -O https://gitlab.com/paulrougieux/paulrougieux/-/raw/master/setup/.tmux.conf
+
+
 ## Turn off system beep
 
 Enter the following in .bash_profile or .bashrc to turn of the system BEEP :
@@ -555,7 +573,7 @@ Batch processing, resize all jpg images and place the resized images in a new fo
     mogrify -resize 2000 -path ./small -format jpg *.HEIC
 
 
-### Convert
+### Convert between image formats
 
 Convert to different color scheme, other file format or rotate images.
 
@@ -582,6 +600,23 @@ images](https://superuser.com/questions/75373/convert-color-photos-of-documents-
 
 Note this doesn't result in smaller images. To get smaller files, set the
 `-quality` parameter to a value between 1 and 100.
+
+### Convert to transparent background
+
+Convert a jpg or png image with black text on beige paper to a
+png image with a transparent background
+
+      convert image.jpg \
+        \( +clone -colorspace gray -threshold 55% -negate \) \
+        -alpha off -compose CopyOpacity -composite \
+        -fill black -colorize 100 \
+        image_threshold.png
+
+      convert date_2026.png \
+        \( +clone -colorspace gray -threshold 55% -negate \) \
+        -alpha off -compose CopyOpacity -composite \
+        -fill black -colorize 100 \
+        date_2026_threshold.png
 
 
 ### Rotate
@@ -724,6 +759,11 @@ answer](https://unix.stackexchange.com/a/394068):
 
 ### Reduce pdf size (lower image resolution)
 
+Based on a quick assessment below, `ebook` seems to be a good compromise in terms
+of file size and image resolution.
+
+    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
+
 Resize all images in input.pdf for screen viewing `screen` (low resolution),
 `ebook` (slightly higher resolution) or printing `printer` (higher resolution):
 
@@ -744,12 +784,7 @@ unusually large size (12Mb). File size of the output files with comments:
   at this resolution and the map from the ebook format. Probably because the
   original map in the paper was pixelized anyway.
 
-Based on this quick assessment, `ebook` seems to be a good compromise in terms
-of file size and image resolution.
 
-    mkdir /tmp/scan
-    cd /tmp/scan
-    gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf
 
 #### Loop on all pdf files in the directory
 
@@ -1133,6 +1168,25 @@ Show markdown files only
 
     tree -P *.md
 
+Remove directories that don't contain markdown files from the output and ignore
+the docs sub directory
+
+    tree -P '*.md' --prune -I docs
+    .
+    ├── backend
+    │   └── README.md
+    ├── client
+    │   └── README.md
+    ├── deploy
+    │   └── README.md
+    ├── landing
+    │   └── README.md
+    ├── network
+    │   └── README.md
+    ├── provision
+    │   └── README.md
+    └── README.md
+
 Show only python file matching the `"*.py"` pattern with the `-P` option
 
     tree -P "*.py"
@@ -1144,6 +1198,8 @@ Ignore files that contain compiled python bytecode with the `-I` option
 List directories only, no files
 
     tree -d
+
+
 
 
 ## Look at lines of a text file with less
@@ -1860,6 +1916,15 @@ Alias to refactor, use single quotes for the patterns:
         git grep -lz "$1"| xargs -0 perl -i'' -pE "s/$1/$2/g"
     }
 
+Note: if you are not at the top level of the git repository, this will refactor
+only in the current directory. 
+
+- In general you want to call refactor from the root of the git repository to
+  make sure all code, notebooks and documentation are refactored.
+
+- Calling from a subdir might be good when you only want to update python code
+  and related docstrings, but not update notes, or notebooks or previous
+  experiments.
 
 When there are slashes in the patterns, use another separator
 
@@ -2867,6 +2932,21 @@ Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/com
 Reload the tmux configuration file
 
     source-file ~/.tmux.conf
+
+
+### Tmux within tmux
+
+When connected to a server I have tmux running within tmux.
+
+Move, open a new split or a new window
+
+    Ctrl B Ctrl B up down left right
+    Ctrl B Ctrl B "
+    Ctrl B Ctrl B c
+
+Enter copy mode in the server, to scroll up the pane
+
+    Ctrl B Ctrl B [
 
 
 ### VIM and TMUX Navigation
