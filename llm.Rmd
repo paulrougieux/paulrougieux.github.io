@@ -1,5 +1,4 @@
 
-
 # Introduction
 
 This page is about Large Language Models.
@@ -1343,8 +1342,33 @@ before and after the code changes.
   >   latest from git) will unblock the CI job.
 
 
-## Sycophancy
+## Markdown
 
+### Blogpaste
+
+Emit a fenced `markdown` block (so Paul copies the raw source), containing, for
+each exchange:
+
+Paul:
+
+    ❯ <question, wrapped at 88 columns, every line indented 4 spaces;
+    only the first line carries the ❯ prompt marker>
+
+Claude:
+
+  > ● <answer rendered as a blockquote: every line is 2 spaces then "> ";
+  >   the first content line starts with the ● bullet>
+
+- Wrap prose at 88 columns, counting the indent/prefix.
+- **Paul's block**: header line `Paul:`, one blank line, then the question as a
+  4-space-indented block. The first line begins with `❯ `; continuation lines are
+  just indented 4 spaces (no `❯`).
+- **Claude's block**: header line `Claude:`, one blank line, then the answer as a
+  blockquote — each line is 2 spaces + `> `. The first content line starts with `● `.
+  Separate paragraphs, list groups, and sections with a blank `>` or blank line.
+
+
+## Sycophancy
 
 Paul:
 
@@ -1393,7 +1417,7 @@ Claude 10:42 AM claude-sonnet-4-6
   > ● Understood. Let me remove that memory — it wasn't warranted as a 
   > permanent note.
 
-## Run integration tests
+## Tests
 
 ### Cheaper model to run integration tests
 
@@ -1463,6 +1487,73 @@ Prompt setting the CBM space:
   suitable for researchers, forest managers, and carbon accounting 
   professionals.
 
+
+
+# Tokens
+
+
+## Token costs of hard wrapping
+
+Paul:
+
+    ❯ how much does markdown prose wrapping at 88 character cost me in terms of
+    token when generating output?
+
+Claude
+
+  > ● Good question — it's a real, measurable cost. Let me reason about the
+  > mechanism and then measure it.
+
+  >   The cost comes entirely from the extra newline characters. When prose is
+  >   hard-wrapped, a space that would join two words (word word) becomes a line
+  >   break (word\nword). In a BPE tokenizer, word (space + word) usually merges
+  >   into a single token, but \n is its own token and the following word loses its
+  >   leading-space merge — so each wrap point costs roughly +1 token.
+
+  >   Let me measure it empirically with a tokenizer.
+
+  >   Ran 5 shell commands
+
+  > ● Answer
+
+  >   Hard-wrapping prose at 88 chars costs about 1.1–1.25 extra tokens per wrapped
+  >   line, which works out to roughly 6–8% more tokens on pure-prose paragraphs
+  >   (measured above with a cl100k BPE tokenizer as a proxy for Claude's — the
+  >   structural cost is essentially the same).
+
+  >   Why
+
+  >   The only thing wrapping adds is newlines. Unwrapped, the join between two
+  >   words is a space that merges into the next token (" word" = 1 token).
+  >   Wrapped, that join becomes \n + a space-less word — which tokenizes as ~2
+  >   tokens. So each wrap point costs ≈ +1 token, and an 88-char line holds ~18–20
+  >   tokens, hence ~6%.
+
+  >   Putting it in perspective
+
+  >   The 6–8% figure is a worst case — it only applies to running prose. It's zero
+  >   for everything that's already short-lined:
+
+  >   - code blocks, tables, bulleted/numbered lists
+  >   - headings, short sentences, anything under 88 chars anyway
+
+  >   A realistic mixed answer (prose + code + lists) pays maybe 2–4% blended. In
+  >   absolute terms, a typical response with 10–30 wrapped prose lines spends an
+  >   extra ~11–33 output tokens — fractions of a cent even at Opus output rates.
+
+  >   The honest caveat on the baseline
+
+  >   The 6–8% is measured against one logical line per paragraph (soft-wrap),
+  >   which is the only alternative that renders identically in a Markdown viewer.
+  >   If instead you compared against text with the same number of line breaks but
+  >   placed elsewhere, the cost is ~0 — the breaks themselves are the cost, not
+  >   where they fall. So the real question isn't "88 vs no-wrap," it's "do I want
+  >   hard line breaks at all." Given you read these files in a terminal and diff
+  >   them in git, the readability/clean-diff payoff almost certainly outweighs a
+  >   few tokens.
+
+  >   Want me to save this finding to memory, or measure it against Claude's actual
+  >   tokenizer via the token-counting API for a precise number?
 
 
 # Claude code CLI
@@ -1564,6 +1655,118 @@ Definition of the /spell skill:
   > - One line per issue, no explanations unless the rule is non-obvious
 
 
+## Browser command
+
+### Chrome extension
+
+Claude can navigate to websites and drive browser tabs with the chrome extension
+
+    https://claude.com/claude-for-chrome
+
+
+## Commands
+
+    /agents create agents
+
+    /clear clear conversation history and free up context
+
+    /context display context usage in percent for system prompt, skills, tools
+    and messages.
+
+    /remote-control to control a claude code CLI session from the claude phone
+    app see also the remote control section.
+
+    /usage display usage information
+
+
+### Custom commands
+
+
+    /accountant load mostly use account and load the chart of account used by
+    my consulting company on demand 
+
+
+## Docker container & skip permissions
+
+Prompt
+
+    Set up a dev container for this project so I can run Claude Code with
+    --dangerously-skip-permissions safely. Also show me the docker build and
+    docker run commands to start it from the terminal.
+
+
+## Terminal rendering
+
+
+### 2026 change
+
+Claude: 
+
+  > ✻ Try the new fullscreen renderer · /tui fullscreen
+  >   · Flicker-free output
+  >   · Lower memory usage in long conversations
+  >   · Mouse support — click to move your cursor or expand results
+  >   · Selected text auto-copies to your clipboard
+
+Paul:
+
+    ❯ why is the the new fullscreen renderer · /tui called fullscreen? The old one
+    is also fullscreen for me? What changes in terms of rendering technology? Is it
+    rerendering the screen at each stroke of the keyboard?
+
+Claude: 
+
+  > ● Good question — the name is about how it draws, not how much screen it
+  > covers. Both modes can fill your terminal window; the difference is the
+  > rendering technique underneath.
+
+  >   The two renderers
+
+  >   Old (inline / streaming) renderer
+
+  >   - Writes into your terminal's normal buffer, appending lines the same way any
+  >     CLI program does (echo, git log, etc.).
+
+  >   - Output becomes part of your scrollback history. When you scroll up in your
+  >     terminal, it's all still there, and it stays after Claude Code exits.
+
+  >   - The terminal itself owns scrolling and layout. Claude Code mostly just
+  >     emits text and lets the terminal flow it.
+
+  >   New fullscreen renderer (/tui)
+
+  >   - Switches the terminal into its alternate screen buffer — the same mechanism
+  >     vim, less, htop, and tmux use. That's the technical meaning of
+  >     "fullscreen": it takes exclusive ownership of the viewport.
+
+  >   - Claude Code now manages its own layout: it positions the cursor, draws
+  >     regions (input box, transcript, status line), and handles its own scrolling
+  >     rather than deferring to the terminal.
+
+  >   - When you exit, the alternate buffer is torn down and your original shell
+  >     screen returns untouched — your scrollback isn't polluted with the session.
+
+  >   So "the old one is also fullscreen for me" is fair — visually both fill the
+  >   window. The label refers to the alt-screen / managed-viewport approach, not
+  >   the pixel coverage.
+
+
+On scroll up inside tmux
+
+  >   The thing you specifically value — "output becomes part of scrollback
+  >   history" — is a property of the inline renderer and is lost under fullscreen,
+  >   because the alternate screen buffer is by design excluded from tmux pane
+  >   history. The fullscreen renderer trades that away for a fixed input box and
+  >   steadier in-place redraws.
+
+  >   Since you scroll up inside tmux often, I'd stick with the inline renderer
+  >   (don't switch via /tui, or switch back if you did). The fullscreen mode's
+  >   wins are mostly cosmetic/ergonomic for the live session; they don't help —
+  >   and the scrollback loss directly hurts — the way you work.
+
+Later 
+
+
 ## Tips
 
 > Tip: Hit shift+Tab to cycle between default mode, auto-accept edit mode, and plan mode
@@ -1599,34 +1802,6 @@ Definition of the /spell skill:
   >    - The files on disk (obviously)
 
   >    Apologies for the earlier misinformation.
-
-
-## Docker container & skip permissions
-
-Prompt
-
-    Set up a dev container for this project so I can run Claude Code with
-    --dangerously-skip-permissions safely. Also show me the docker build and
-    docker run commands to start it from the terminal.
-
-
-## Commands
-
-    /agents create agents
-
-    /clear clear conversation history and free up context
-
-    /context display context usage in percent for system prompt, skills, tools
-    and messages.
-
-    /usage display usage information
-
-
-### Custom commands
-
-
-    /accountant load mostly use account and load the chart of account used by
-    my consulting company on demand 
 
 
 ## Git
@@ -1674,6 +1849,22 @@ I have a modelling pattern where I have a code repository and a data repository.
   }
 
 - Old practice, I used to start claude code at the parent directory level 
+
+
+## Permissions
+
+To auto allo permissions
+
+    claude --permission-mode auto
+
+
+
+## Remote control
+
+- https://code.claude.com/docs/en/remote-control
+
+    > "By default, Remote Control only activates when you explicitly run claude
+    > remote-control, claude --remote-control, or /remote-control"
 
 
 ## Settings
@@ -1742,5 +1933,14 @@ Call it with:
 Installation:
 
     /plugin install claude-code-setup@claude-plugins-official
+
+
+## Vim key bindings in Claude CLI
+
+  - `j` / `k` — line down / up
+  - `Ctrl-d` / `Ctrl-u` — half-page down / up
+  - `Ctrl-f` / `Ctrl-b` — full-page down / up
+  - `g` / `G` — jump to top / bottom
+  - `space` — page down
 
 
