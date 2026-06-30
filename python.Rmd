@@ -423,6 +423,7 @@ major version numbers. This is required before uploading to pypi.
 
     cd package_dir
     # Use bumpversion for packages still using setup.py
+    # eu_cbm_hat is still using setup.py
     # Use git tag for packages using pyproject.toml
     git tag
     git tag v0.0.2  -m "Version 0.0.2"  
@@ -433,6 +434,9 @@ major version numbers. This is required before uploading to pypi.
     twine upload dist/*
     twine upload --skip-existing dist/*
 
+Bumpversion
+
+    bumpversion patch
 
 Test upload
 
@@ -805,6 +809,31 @@ https://www.datacamp.com/tutorial/docstrings-python :
   >   extension, which can parse both Google and NumPy styles and output 
   >   structured documentation.
 
+- Paul
+  
+    ❯ pros and cons of google vs numpy docstring format
+
+- Claude:
+
+  > ● Google
+
+  >   - Pros: cleaner, less visual noise, easier to write and read inline
+  >   - Cons: type info lives in the signature or in Args: inline — can feel
+  >     cramped for complex types; less common in scientific Python
+
+  >   NumPy
+
+  >   - Pros: better for functions with many parameters or complex types — each
+  >     param gets its own block with room to breathe; dominant convention in
+  >     scientific Python (numpy, scipy, pandas, sklearn)
+  >   - Cons: verbose, more boilerplate for simple functions; >>> in examples is
+  >     noise
+
+  >   Rule of thumb: if your codebase is data/science-heavy with rich parameter
+  >   docs, NumPy wins. For application code with simple APIs, Google is cleaner.
+  >   Since this project (coillte_cbm) is scientific Python, NumPy is the right
+  >   call — which matches your global CLAUDE.md.
+
 
 #### Google style
 
@@ -868,6 +897,19 @@ def add(a, b):
 
 > "This section should be used judiciously, i.e., only for errors that are 
 > non-obvious or have a large chance of getting raised."
+
+
+Paul:
+
+    Do we need the ">" in the example section when documenting in numpy docstring format?
+
+Claude: 
+
+  > "● Yes, the >>> is required. NumPy docstring examples use Python's standard
+  > doctest format — each line of code is prefixed with >>> (and ... for
+  > continuation lines). Without them, the example is treated as plain text and
+  > won't be recognized by doctest runners or rendered as interactive code by
+  > tools like pdoc."
 
 
 #### Type hints
@@ -1024,6 +1066,11 @@ path can be deduced from
   different packages with pip.
 
 - Illustration of the complementarity between pyenv and pipenv.
+
+
+### Create a virtual environment for a project
+
+
 
 
 ### Location of virtual environment directories
@@ -2233,6 +2280,27 @@ Print the size of the output layer
     print(model(x).shape)
 
 
+## Jax
+
+High performance array computing
+
+- https://docs.jax.dev/en/latest/
+
+    > "JAX provides a familiar NumPy-style API for ease of adoption by
+    > researchers and engineers."
+
+    > "JAX includes composable function transformations for compilation,
+    > batching, automatic differentiation, and parallelization."
+
+    > "The same code executes on multiple backends, including CPU, GPU, & TPU"
+
+
+### Automatic vectorization
+
+- https://docs.jax.dev/en/latest/automatic-vectorization.html#id2
+
+
+
 
 # Objects
 
@@ -2778,6 +2846,26 @@ Checkout a branch if the repository is clean (no changes)
 
     #Usage
     checkout_branch(repo_libcbm_py, "2.x")
+
+
+
+# Graph
+
+This section is about graph data structures. See also the plot section.
+
+
+## Graphify
+
+- https://pypi.org/project/graphifyy/
+
+
+## Networkx
+
+Create a multi digraph
+
+    import networkx as nx
+    nx.MultiDiGraph()
+
 
 
 
@@ -3940,6 +4028,19 @@ https://www.sympy.org/en/index.html
 > full-featured computer algebra system (CAS) while keeping the code as simple
 > as possible in order to be comprehensible and easily extensible. SymPy is
 > written entirely in Python."
+
+
+## Logistic curve
+
+Plot a standard logistic function with python
+
+    import numpy as np
+    import pandas
+    import matplotlib.pyplot as plt
+    df = pandas.DataFrame({"x":np.arange(-6, 6, 0.1)})
+    df["standard logistic function"] = 1 / (1 + np.exp(-df["x"]))
+    df.set_index("x").plot()
+    plt.show()
 
 
 # Modelling and statistics
@@ -6695,7 +6796,9 @@ libraries: pandas, plotnine, plotly, altair and R ggplot2. There is also one
 seaborn example.
 
 
-## Image composition
+## PIL image processing
+
+### Image composition
 
 For some complex plots, I directly pasted images of plots together as follows:
 
@@ -6731,6 +6834,10 @@ For some complex plots, I directly pasted images of plots together as follows:
     # Save the combined image
     combined_image.save(composite_plot_dir / "hexprov_sink.png")
 
+
+### Enhance black and white image for laser printing
+
+See script in scripts/enhance_for_bw_laser.py
 
 
 ## Matplotlib
@@ -9931,6 +10038,15 @@ updated to a more recent version of xmlrpc
     rpc = server.evatrRPC(UstId_1, UstId_2, Firmenname, Ort, PLZ, Strasse)
 
     print(rpc)
+
+
+
+## Snakemake
+
+Monitor ongoing run at the command line
+
+    snakemake --summary
+
 
 
 
