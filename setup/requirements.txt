@@ -12,6 +12,7 @@ pyarrow
 pymarktex
 pystache
 pytest
+pytest-cov
 pyyaml
 seaborn
 simplejson

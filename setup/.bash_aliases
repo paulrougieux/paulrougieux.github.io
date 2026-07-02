@@ -37,7 +37,7 @@ alias poiu="pkill -f pomodoro_buzzer.py"
 alias ll='ls -lah'
 alias tree2='tree -L 2'
 # A symlink work -> /home/paul/repos/paulrougieux.github.io/setup/work.tmux
-alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work"'
+alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work.tmux"'
 # Copy pipe output to the standard clipboard
 alias clip="xclip -selection clipboard"
 # disk usage sorted

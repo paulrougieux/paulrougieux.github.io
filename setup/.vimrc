@@ -90,6 +90,10 @@ set smartcase
 " Spelling
 set spell spelllang=en_gb,fr
 
+" Optional: per-buffer auf Deutsch umschalten; Default bleibt en_gb,fr
+nnoremap <leader>sd :setlocal spelllang=de spell<CR>
+nnoremap <leader>se :setlocal spelllang=en_gb,fr spell<CR>
+
 " Split settings
 " Commented out because I use tmux-navigator in normal mode
 "nnoremap <C-J> <C-W><C-J>
@@ -261,7 +265,7 @@ command! Nowrap set formatoptions=cq
 set nojoinspaces
 " Disable folding of vim-pandoc plugin
 let g:pandoc#modules#disabled = ["folding"]
-let g:pandoc#formatting#mode = "ha"
+let g:pandoc#formatting#mode = "h"
 
 " Voom plugin 
 let voom_ft_modes = {'markdown': 'pandoc', 'pandoc': 'pandoc', 'rmd': 'pandoc', 'tex': 'latex', 'rnoweb' : 'latex', 'quarto' : 'pandoc'}

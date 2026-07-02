@@ -2,13 +2,13 @@
 -- Only sets up vim-slime for now. Does NOT source ~/.vimrc.
 --
 -- Run it without touching your main config:
---   nvim -u ~/rp/paulrougieux.github.io/setup/nvim_server/init.lua
+--   nvim -u ~/rp/paulrougieux.github.io/setup/server/nvim_server/init.lua
 -- or point XDG at this directory:
 --   XDG_CONFIG_HOME=~/rp/paulrougieux.github.io/setup nvim   (dir named "nvim")
 --
 -- Upload this config to the server "flower" (user paul) with rsync, so it lives
 -- at ~/.config/nvim on the server:
---   rsync -av --delete ~/rp/paulrougieux.github.io/setup/nvim_server/ paul@flower:~/.config/nvim/
+--   rsync -av --delete ~/rp/paulrougieux.github.io/setup/server/nvim_server/ paul@flower:~/.config/nvim/
 -- The trailing slash on the source copies the directory contents (not the dir
 -- itself). --delete removes server files no longer present locally.
 --

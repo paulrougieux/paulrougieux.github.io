@@ -13,10 +13,4 @@ vim.g.python3_host_prog = "/home/paul/rp/penv/bin/python3"
 
 require("config.lazy")
 
-require'nvim-treesitter.configs'.setup {
-  ensure_installed = { "lua", "vim", "vimdoc", "query" },  -- add vimdoc here
-  highlight = { enable = true },
-  auto_install = true,
-}
-
 
