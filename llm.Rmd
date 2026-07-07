@@ -424,6 +424,35 @@ Claude:
 
 
 
+# Harness
+
+## Pi harness
+
+- https://pi.dev/
+
+    > "Tree-structured, shareable history Sessions are stored as trees. Use /tree to
+    > navigate to any previous point and continue from there. All branches live in
+    > a single file. Filter by message type, label entries as bookmarks. Export to
+    > HTML with /export, or upload to a GitHub gist with /share and get a shareable
+    > URL that renders it."
+
+- Install
+
+    curl -fsSL https://pi.dev/install.sh | sh
+
+
+### Eden AI
+
+Claude 
+
+> Eden AI isn't a built-in Pi provider
+
+> There's no /login entry or EDEN_AI_API_KEY variable for it. But Eden AI
+> exposes an OpenAI-compatible chat-completions endpoint, and Pi supports
+> exactly that case through a custom provider in ~/.pi/agent/models.json (using
+> api: "openai-completions").
+
+
 # Prompts techniques
 
 See also bookmark document.
@@ -504,6 +533,17 @@ Claude:
 > default to generic optimization goals." That's definitional pressure stated
 > plainly.
 
+
+
+
+## Expert panel
+
+Given a paragraph of text describing a topic or issue. Ask the LLM what experts
+could comment on that topic. Then ask for parallel agents to comment on that
+topic in separate markdown files. The comment task could be simply commenting
+on an idea, it could reviewing a draft document, or it could be analysing the
+feasibility of a project proposal from multiple discipline: technical
+feasibility, legal issues, time constraints etc. 
 
 
 
@@ -730,6 +770,115 @@ Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8a
 > implementation → repeat. Each test responds to what you learned from the
 > previous cycle. Because you just wrote the code, you know exactly what behavior
 > matters and how to verify it.
+
+
+## Storm
+
+It is similar to the expert panel technique that I have been using before. You
+ask the LLM to expand the description of a topic from multiple experts taking
+different perspectives in a detailed document. That helps surface
+contradictions, then you have a coordinating agent summarise the output.
+
+
+Here is what I added on top as Claude prompt
+
+    In the ai_generated sub directory create a new subdirectory called storm.
+    We will use the storm stanford method with parallel experts to analyse the
+    following issue: [pasted text] 
+
+    A coordinating agent should run the following 4 prompts to sub agents the
+    first prompt should also itself spawn sub agents.
+
+
+> the practitioner: what do they know that academics miss?
+> the skeptic: what's the strongest counterargument?
+> the economist: who profits from the current narrative?
+> the historian: what pattern has played out before?
+> the academic: what does the evidence actually say?
+
+
+Prompt 1, The Multi Perspective Scan
+
+    I need to research [YOUR TOPIC].
+    Simulate 5 different expert perspectives on this topic:
+    1. THE PRACTITIONER: works with this daily.
+    What do they know that academics miss?
+    What practical realities are usually ignored?
+    2. THE ACADEMIC: has studied this for years.
+    What does the peer reviewed evidence actually say?
+    Where does the evidence contradict popular belief?
+    3. THE SKEPTIC: thinks the mainstream view is wrong.
+    What is the strongest counterargument?
+    What evidence do proponents conveniently ignore?
+    4. THE ECONOMIST: follows the money.
+    Who profits from the current narrative?
+    What financial incentives shape the research?
+    5. THE HISTORIAN: has seen similar patterns before.
+    What historical parallels exist?
+    What can we learn from how those played out?
+    For each perspective give me:
+    - Their core position in 2 sentences
+    - The strongest evidence supporting their view
+    - The one thing they would tell me that no other perspective would
+
+
+Prompt 2, The Contradiction Map
+
+    Based on the 5 perspectives above, map the contradictions:
+    1. Where do two or more perspectives directly contradict
+    each other? List each conflict with the specific claims
+    that clash.
+    2. Which perspective has the strongest evidence?
+    Which has the weakest? Why?
+    3. What is the one question that, if answered, would
+    resolve the biggest contradiction?
+    4. What does EVERY perspective agree on?
+    (This is likely true. Even opponents confirm it.)
+    5. What topic did NONE of the perspectives address?
+    (This is the blind spot in the whole field.
+    Often the most valuable finding.)
+
+The is an illustration which says: "The fights are where insights live"
+
+Prompt 3, The Synthesis
+
+    Synthesize everything from the 5 perspectives and the
+    contradiction map into a research briefing:
+    1. THE ONE PARAGRAPH SUMMARY: explain this topic as if
+    briefing a CEO who has 60 seconds and needs nuance,
+    not just the headline.
+    2. THE 5 KEY FINDINGS: most important things I now know,
+    ranked by reliability. For each, note which perspectives
+    support it and which challenge it.
+    3. THE HIDDEN CONNECTION: one non obvious link between
+    findings that only shows up when you look at all 5
+    perspectives together.
+    4. THE ACTIONABLE INSIGHT: based on all the evidence,
+    what should someone in [YOUR ROLE] actually DO
+    differently? Be specific.
+    5. THE FRONTIER QUESTION: the one question that, if
+    answered, would change everything about how we
+    understand this topic.
+
+Prompt 4, The Peer Review
+
+> "STORM has one known weakness. Stanford's own researchers flagged it. The
+> system does not self critique. Source bias and fact misassociation sneak in.
+> This prompt fixes that by making Claude grade its own work."
+
+    Now peer review your own research briefing:
+    1. CONFIDENCE SCORES: rate each of the 5 key findings
+    on a 1 to 10 scale for reliability. Explain each score.
+    2. WEAKEST LINK: which claim are you least confident in?
+    What specific info would you need to verify it?
+    3. BIAS CHECK: which perspective might be overrepresented
+    in your synthesis? Did one voice dominate?
+    4. MISSING PERSPECTIVE: is there a 6th angle I should
+    have included that would change the conclusions?
+    5. OVERALL GRADE: if a Stanford professor reviewed this
+    briefing, what grade would they give and why?
+    What would they tell me to fix?
+
 
 
 ## TODO list
@@ -1342,6 +1491,15 @@ before and after the code changes.
   >   latest from git) will unblock the CI job.
 
 
+## Graphify
+
+- https://github.com/safishamsi/graphify
+
+    > "Type /graphify in your AI coding assistant and it maps your entire project —
+    > code, docs, PDFs, images, videos — into a knowledge graph you can query
+    > instead of grepping through files."
+
+
 ## Markdown
 
 ### Blogpaste
@@ -1488,6 +1646,174 @@ Prompt setting the CBM space:
   professionals.
 
 
+# Steering coding agents 
+
+## Human gates 
+
+- Talks about Human gates towards 31 min
+  https://www.cnbc.com/video/2026/06/03/mistral-ceo-on-ai-infrastructure-sovereignty-and-europes-ai-future.html
+
+    "as employees we need to give as much context as possible to the agents
+    who are going to be the orchestrator of processes."
+
+
+## Issues tracker as the steering layer for coding agents 
+
+- Triage loop
+- Implementer agent
+- Verifier agent
+- Gates on tests and linting
+
+
+### Triage bot
+
+I created a bot gitlab account so that the LLM can comment on issues and triage
+them with a different user name than mine. That makes it more transparent for
+the readers.
+
+
+#### Service account for triage bots
+
+Group service account
+https://docs.gitlab.com/user/profile/service_accounts/?tab=Group+service+accounts
+
+   > - " Service accounts have the following characteristics:
+
+   >     - They do not use a seat.
+   >     - They are not billable users or internal users.
+   >     - They are always marked as external users.
+   >     - They cannot sign in to GitLab through the UI. [...]"
+
+
+Bootstrap with Personal Access Token only needed once
+
+
+> "Type this — the read -s prompts you to paste the token, and because it goes
+> in via stdin it never appears in your shell history or in the process list
+> (ps):
+
+    read -rs OWNER_PAT              # paste the glpat-… , press Enter
+    glab auth login --hostname gitlab.com --stdin <<<"$OWNER_PAT"
+    unset OWNER_PAT
+
+Check token validity
+
+    glab auth status
+
+Bootstrap sequence using my gitlab Personal Access Token to create a service
+account authorized for a gitlab group.
+
+1. Create the service account (returns its user id + actual username)
+
+
+        glab api --method POST groups/--------/service_accounts -f name="triage-bot" -f username="org_triage_bot"
+
+2. Mint an api-scoped token for it. Use the return service account id here in
+   place of SA_ID
+
+      glab api --method POST groups/---------/service_accounts/SA_ID/personal_access_tokens \
+        -f name="triage" -f "scopes[]=api" -f expires_at="2027-07-03"
+
+> "This returns "token":"glpat-…" once — that's the credential the bot uses.
+> Capture it now; you can't retrieve it again."
+
+3. Add the service account to the project as Reporter (20)
+
+      glab api --method POST projects/org%2Forg_cbm/members \
+        -f user_id=SA_ID -f access_level=20
+
+Then upload the token to the server 
+
+      read -rs SA_TOKEN                                              # paste the glpat-… , Enter
+      ssh SERVER 'glab auth login --hostname gitlab.com --stdin' <<<"$SA_TOKEN"
+      unset SA_TOKEN
+
+Then check that the service account works on the server
+
+    ssh SERVER 'glab api user'
+
+
+### Simple Control Plane
+
+Paul's 2026 setup with only one controlling agent firing sub agents for
+implementation and verification, with model runs in integration tests as
+automated gates. 
+
+- The controlling agents prioritises issues to work on, based on tags
+- Implementer agent
+- The verifier agent uses a python code review skill if available (investigate or suggest)
+- Integration tests as gates
+
+
+### Elaborate Control Plane
+
+Elaborate setup with triage loop, implementer agent, verifier agents and more.
+
+
+#### Peter Steinberger's triage and implementation
+
+Claude code on Peter Steinberger's use of Gtihub issues :
+
+  > "His replies are remarkably formulaic and commit-anchored — they read like an agent's
+  > structured status update written by the maintainer:
+
+  > - Closing a fix: *"Fixed on `main` by #94148, merge commit `8625b8a9…`. Proof: focused
+  >   doctor tests passed; live systemd run …"*
+  > - Keeping something open: *"Codex review: keeping this open for maintainer follow-up …
+  >   Current main still has …"*
+  > - Triage/narrowing: *"Deep-review update: still open on current `main`, but some
+  >   building blocks now exist …"*
+
+  > So the issue tracker functions as the steering layer for the coding agents: bots and
+  > users surface and reproduce problems, agents propose and review, and Steinberger's
+  > comments are the authoritative signal — merge confirmation, scope decisions, "keep
+  > open" — that the agents and contributors act on. The AI work shows up in the commits
+  > too (AI-generated PRs referenced by hash), so the loop is report → agent review →
+  > maintainer decision → AI-assisted commit, all transacted inside the issue thread."
+
+See for example 
+
+- This open issue where Peter Steinberger comments
+  https://github.com/openclaw/openclaw/issues/92201 in a mix of user reports
+  and AI agents commenting in the same thread + AI related commits as well of
+  course
+
+- This is a closed issue https://github.com/openclaw/openclaw/issues/78217 with
+  a comment by AI agent clawsweeper followed by a comment confirming the merge
+  by Peter Steinberger 
+
+
+##### Skills used by Peter Steinberger
+
+- Maintainer Orchestrator
+  https://github.com/steipete/agent-scripts/blob/main/skills/maintainer-orchestrator/SKILL.md
+
+    > "Coordinate repository work through completion. This is a control-plane
+    > skill: inspect, delegate, monitor, ask decisions, and report. Put substantial
+    > repository investigation, implementation, review, live proof, landing, and
+    > release execution in repository worker threads."
+
+- GitHub Project Triage
+  https://github.com/steipete/agent-scripts/blob/main/skills/github-project-triage/SKILL.md
+
+    > "Always use this skill when the user types triage, unless the request
+    > explicitly targets a non-GitHub domain. From inside a repo, use the
+    > current GitHub project by default. Triage means maintainer-facing item
+    > cards: URL, what each issue/PR is about, why it matters, author trust,
+    > fit, risk, proof/test state, blockers, and next action. Never return only
+    > queue numbers or opaque refs."
+
+
+# Tests
+
+## Javascript UI tests with playwrite
+
+- https://github.com/microsoft/playwright
+
+    > "Playwright is a framework for web automation and testing. It drives
+    > Chromium, Firefox, and WebKit with a single API — in your tests, in your
+    > scripts, and as a tool for AI agents.
+
 
 # Tokens
 
@@ -1556,7 +1882,9 @@ Claude
   >   tokenizer via the token-counting API for a precise number?
 
 
-# Claude code CLI
+# Providers
+
+## Claude code CLI
 
 Start claude in a project with
 
@@ -1568,7 +1896,7 @@ Typical message:
 > to keel using Claude Code"
 
 
-## Agents and skills
+### Agents and skills
 
 Create agents
 
@@ -1583,7 +1911,7 @@ Skills live in ~/.claude/commands/ and can be called with a slash such as
 /spell.
 
 
-### Accountant
+#### Accountant
 
 Content of ~/.claude/commands/accountant.md
 
@@ -1596,7 +1924,7 @@ Content of ~/.claude/commands/accountant.md
   > ...
 
 
-### Python test driven development
+#### Python test driven development
 
 
   > You are a Python testing agent. Your job is to find, run, and analyze Python tests in the current project.
@@ -1631,7 +1959,7 @@ Content of ~/.claude/commands/accountant.md
   > - Do not modify test files or source code unless the user explicitly asks you to fix something.
 
 
-### Spell check in any language
+#### Spell check in any language
 
 Definition of the /spell skill:
 
@@ -1655,16 +1983,30 @@ Definition of the /spell skill:
   > - One line per issue, no explanations unless the rule is non-obvious
 
 
-## Browser command
+### Authentication
 
-### Chrome extension
+Authenticate with the URL sign in process. 
+
+To disconnect all connected sessions under
+https://claude.ai/settings/claude-code revoke the Authorization tokens. Those
+tokens were "Created when you sign in to Claude Code. Revoke a token to sign
+out from that device." Note that this claude code token deletion is different
+thant the sign out of all device menu from claude settings, which doesn't
+actually sign out the Claude code sessions.
+
+
+### Browser command
+
+#### Chrome extension
 
 Claude can navigate to websites and drive browser tabs with the chrome extension
 
     https://claude.com/claude-for-chrome
 
 
-## Commands
+### Commands and Claude specific skills
+
+Commands
 
     /agents create agents
 
@@ -1679,14 +2021,22 @@ Claude can navigate to websites and drive browser tabs with the chrome extension
     /usage display usage information
 
 
-### Custom commands
-
+#### Custom commands
 
     /accountant load mostly use account and load the chart of account used by
     my consulting company on demand 
 
 
-## Docker container & skip permissions
+#### Claude specific skills
+
+For general skills see the main skill section.
+
+    /fewer-permission-prompts is a skill that scans your recent transcripts for
+    common read-only bash calls and proposes a tailored allowlist for this
+    project.
+
+
+### Docker container & skip permissions
 
 Prompt
 
@@ -1695,10 +2045,40 @@ Prompt
     docker run commands to start it from the terminal.
 
 
-## Terminal rendering
+### Resume a conversation
+
+Ask the model to search for a specific topic in a previous conversation, it
+might give you the resume command such as:
 
 
-### 2026 change
+    claude --resume ____________________________________
+
+
+### Safety measures
+
+#### Refusing to write through symlink
+
+When it was trying to update my vimrc which is stored in my blog
+
+ >  ● Update(~/.vimrc)
+ >    ⎿  Error: Refusing to write through symlink: /home/paul/.vimrc. Resolve the symlink and pass the real target path explicitly.
+
+#### Development container
+
+- https://github.com/anthropics/devcontainer-features/tree/main/src/claude-code
+
+> "For most setups, we recommend explicitly adding both features:"
+
+    "features": {
+        "ghcr.io/devcontainers/features/node:1": {},
+        "ghcr.io/anthropics/devcontainer-features/claude-code:1": {}
+    }
+
+
+### Terminal User Interface TUI
+
+
+#### 2026 change
 
 Claude: 
 
@@ -1767,13 +2147,84 @@ On scroll up inside tmux
 Later 
 
 
-## Tips
+##### Search in TUI
+
+Paul:
+
+    ❯ Is there a way to search with slash in the conversation history? I used to do
+    this with tmux copy mode in the old terminal mode, but it's not possible now
+    with the new view port interface. How do I search the conversation text above?
+
+Claude:
+
+      > ● Here's the situation, and the workaround I'd use.
+      >
+      > ## Why your old trick stopped working
+      >
+      > The new viewport interface draws into the terminal's alternate screen and
+      > repaints in place, so the conversation isn't sitting in your terminal/tmux
+      > scrollback buffer anymore. That's why tmux copy-mode search (and your terminal's
+      > native find) can't see the text above — there's effectively nothing in the
+      > scrollback to search.
+      >
+      > ## What the TUI itself gives you
+      >
+      > - **Ctrl+R** — reverse-search, but only over **your own past prompts** (command
+      >   history), not the assistant's replies or tool output.
+      > - **Up/Down** — step through previous prompts.
+      > - There is **no built-in full-text "find in conversation"** across the rendered
+      >   transcript in the current viewport.
+      >
+      > ## The reliable workaround: grep the transcript JSONL
+      >
+      > Every session is logged as JSONL under ~/.claude/projects/<encoded-cwd>/. For
+      > this project that's:
+      >
+      > 
+      > ~/.claude/projects/-projectd/
+      > 
+      >
+      > Search the **current** session (most-recently-modified file) for, say, "Esel":
+      >
+      > bash
+      > grep -i "esel" "$(ls -t ~/.claude/projects/-projectd/*.jsonl | head -1)"
+      > 
+      >
+      > For readable output (strips the JSON, shows just the text) if you have jq:
+      >
+      > bash
+      > jq -r '.message.content[]?|.text//empty' \
+      >   "$(ls -t ~/.claude/projects/-projectd/*.jsonl | head -1)" \
+      >   | grep -i "esel"
+      > 
+      >
+      > Drop the | head -1 and use *.jsonl to search **all** sessions in this project
+      > at once.
+      >
+      > ## Nice bonus: you can do it without leaving Claude Code
+      >
+      > Type the command in the prompt with a leading ! and the output lands right in
+      > this conversation:
+      >
+      > 
+      > ! grep -i "esel" ~/.claude/projects/-projectd/*.jsonl
+      > 
+      >
+      > Or just ask me — "search the conversation for X" — and I'll grep it for you.
+      >
+      > One caveat: I'm confident about the JSONL-grep method (I just confirmed your
+      > transcript files exist), but Claude Code's in-TUI keybindings change between
+      > releases. If you want, I can check your installed version's keybindings to see
+      > whether a newer build added an in-viewport find — want me to look?
+
+
+### Tips
 
 > Tip: Hit shift+Tab to cycle between default mode, auto-accept edit mode, and plan mode
 > ⏸ plan mode on (shift+Tab to cycle)
 
 
-### Does Claude clear context on stop?
+#### Does Claude clear context on stop?
 
   >  ❯ is the context clear if I stop and resstart claude code, or do I need to explicitely call /clear ?
 
@@ -1804,9 +2255,9 @@ Later
   >    Apologies for the earlier misinformation.
 
 
-## Git
+### Git
 
-### Worktrees
+#### Worktrees
 
   > Claude Code worktrees let you run multiple Claude instances in parallel, each
   > with an isolated copy of the codebase so they don't step on each other's files.
@@ -1831,7 +2282,7 @@ Later
   > — e.g., a bugfix in one session and a feature in another — without them
   > interfering.
 
-### Code repository and data repository
+#### Code repository and data repository
 
 I have a modelling pattern where I have a code repository and a data repository. 
 
@@ -1851,7 +2302,7 @@ I have a modelling pattern where I have a code repository and a data repository.
 - Old practice, I used to start claude code at the parent directory level 
 
 
-## Permissions
+### Permissions
 
 To auto allo permissions
 
@@ -1859,7 +2310,7 @@ To auto allo permissions
 
 
 
-## Remote control
+### Remote control
 
 - https://code.claude.com/docs/en/remote-control
 
@@ -1867,9 +2318,9 @@ To auto allo permissions
     > remote-control, claude --remote-control, or /remote-control"
 
 
-## Settings
+### Settings
 
-### CLAUDE.md
+#### CLAUDE.md
 
 There can be project specific CLAUDE.md within a project's directory, generally
 at the root of the git repository. There is a general CLAUDE.md at
@@ -1891,7 +2342,7 @@ Content of my general CLAUDE.md file
     - Run pdoc with `--docformat numpy` so sections render correctly
 
 
-### Memory file
+#### Memory file
 
 This conversation added a python environment to a memory file for a given
 project.
@@ -1922,7 +2373,7 @@ Content of ~/.claude/projects/-path-to-project/memory/MEMORY.md
     - `python` and `python3` on PATH do NOT have the required packages
 
 
-### Setup plugin
+#### Setup plugin
 
 A plugin that recommends skills for your project.
 
@@ -1935,7 +2386,7 @@ Installation:
     /plugin install claude-code-setup@claude-plugins-official
 
 
-## Vim key bindings in Claude CLI
+### Vim key bindings in Claude CLI
 
   - `j` / `k` — line down / up
   - `Ctrl-d` / `Ctrl-u` — half-page down / up
@@ -1943,4 +2394,22 @@ Installation:
   - `g` / `G` — jump to top / bottom
   - `space` — page down
 
+
+## Mistral
+
+### Devstral
+
+- Introducing: Devstral 2 and Mistral Vibe CLI. December 9, 2025 By Mistral AI
+  https://mistral.ai/news/devstral-2-vibe-cli/
+
+- Devstral 2 on open router https://openrouter.ai/mistralai/devstral-2512
+
+
+## Open Router
+
+- https://www.reddit.com/r/AI_Agents/comments/1negv04/is_there_really_a_lot_of_value_on_using_open/
+
+    > "I think the big draw is pricing flexibility. Some tasks don't need a \$15/1M
+    > token model. You can offload to a cheaper model and save a ton at scale.
+    > OpenRouter makes that swap easy"
 
