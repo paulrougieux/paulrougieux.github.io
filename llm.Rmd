@@ -546,6 +546,18 @@ feasibility of a project proposal from multiple discipline: technical
 feasibility, legal issues, time constraints etc. 
 
 
+### Expert data visualisation
+
+Given this dataset suggest a list of experts which would provide data
+visualisation.
+
+For each expert start a parallel agent and generate python script that create
+the visualization. Place the scripts and plots in a plots directory, ignore the
+plot images in gitignore, only the script will be saved in git.
+
+Option: add a reference publication or report to help explore potential experts
+relevant to the topic.
+
 
 ## Entity coverage and factual recall probing
 
