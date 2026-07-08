@@ -1,3 +1,5 @@
+# Server Setup
+
 # rsync
 
 Copy dot files to the `paul@flower` server.
@@ -27,3 +29,12 @@ rsync -av --delete server/nvim_server/ paul@flower:~/.config/nvim/
   additive copy.
 - Trailing slash on `server/nvim_server/`: copies the directory's *contents* into
   `~/.config/nvim/`, rather than nesting a `nvim_server/` folder inside it.
+
+## Neovim Configuration
+
+The `nvim_server` configuration is a partial transfer of the laptop's Neovim config,
+adapted for server environments. It includes the core editor settings and keybindings
+but may not contain all plugins or features from the main config.
+
+When syncing or updating, maintain both the server-specific tweaks and any changes
+from the laptop config.
