@@ -534,16 +534,22 @@ Claude:
 > plainly.
 
 
-
-
 ## Expert panel
 
-Given a paragraph of text describing a topic or issue. Ask the LLM what experts
-could comment on that topic. Then ask for parallel agents to comment on that
-topic in separate markdown files. The comment task could be simply commenting
-on an idea, it could reviewing a draft document, or it could be analysing the
-feasibility of a project proposal from multiple discipline: technical
-feasibility, legal issues, time constraints etc. 
+The comment task could be simply commenting on an idea, it could reviewing a
+draft document, or it could be analysing the feasibility of a project proposal
+from multiple discipline: technical feasibility, legal issues, time constraints
+etc. 
+
+1. Given a paragraph of text describing a topic or issue. Ask the LLM:
+
+    what experts could comment on that topic.
+
+
+2. Review the list of suggest experts, remove some or ask for more experts if you want. Then ask :
+
+   For each expert create a parallel agent that will comment on that topic in
+   separate markdown files. 
 
 
 ### Expert data visualisation
@@ -691,6 +697,25 @@ Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8a
 
 ## Programming
 
+
+### Blind spot pass
+
+- https://x.com/alex_prompter/status/2074584979057868901?s=20
+
+    > Before writing a single line in a new code base, Thariq asks Fable to
+    > surface what he doesn't know. "I'm working on a new auth provider that I
+    > know nothing about in this code base. Can you do a blind spot pass to help
+    > me figure out my relevant unknown unknowns and help me prompt better?"
+    > That single technique eliminates hours of debugging from bad assumptions.
+
+
+### Interview, ask questions
+
+- https://x.com/alex_prompter/status/2074584979057868901?s=20
+
+    > "Prioritize questions that would change the architecture"
+
+
 ### Karpathy
 
 - Inspired by Karpathy https://x.com/techNmak/status/2043683120319520806?s=20
@@ -744,44 +769,45 @@ Prompt to generate reviewing techniques: https://gemini.google.com/share/0a0ce8a
 
 ### Test Driven Development TDD
 
-- https://github.com/mattpocock/skills/blob/main/tdd/SKILL.md
+- Good tests are integration-style
+  https://github.com/mattpocock/skills/blob/main/tdd/SKILL.md
 
-> Philosophy
+    > Philosophy
 
-> Core principle: Tests should verify behavior through public interfaces, not
-> implementation details. Code can change entirely; tests shouldn't.
+    > Core principle: Tests should verify behavior through public interfaces, not
+    > implementation details. Code can change entirely; tests shouldn't.
 
-> Good tests are integration-style: they exercise real code paths through
-> public APIs. They describe what the system does, not how it does it. A good
-> test reads like a specification - "user can checkout with valid cart" tells
-> you exactly what capability exists. These tests survive refactors because
-> they don't care about internal structure.
+    > Good tests are integration-style: they exercise real code paths through
+    > public APIs. They describe what the system does, not how it does it. A good
+    > test reads like a specification - "user can checkout with valid cart" tells
+    > you exactly what capability exists. These tests survive refactors because
+    > they don't care about internal structure.
 
-> Bad tests are coupled to implementation. They mock internal collaborators,
-> test private methods, or verify through external means (like querying a
-> database directly instead of using the interface). The warning sign: your
-> test breaks when you refactor, but behavior hasn't changed. If you rename an
-> internal function and tests fail, those tests were testing implementation,
-> not behavior.
+    > Bad tests are coupled to implementation. They mock internal collaborators,
+    > test private methods, or verify through external means (like querying a
+    > database directly instead of using the interface). The warning sign: your
+    > test breaks when you refactor, but behavior hasn't changed. If you rename an
+    > internal function and tests fail, those tests were testing implementation,
+    > not behavior.
 
-> Anti-Pattern: Horizontal Slices
-> 
-> DO NOT write all tests first, then all implementation. This is "horizontal
-> slicing" - treating RED as "write all tests" and GREEN as "write all code."
-> 
-> This produces crap tests:
-> 
->     Tests written in bulk test imagined behavior, not actual behavior You end
->     up testing the shape of things (data structures, function signatures)
->     rather than user-facing behavior Tests become insensitive to real changes -
->     they pass when behavior breaks, fail when behavior is fine You outrun your
->     headlights, committing to test structure before understanding the
->     implementation
-> 
-> Correct approach: Vertical slices via tracer bullets. One test → one
-> implementation → repeat. Each test responds to what you learned from the
-> previous cycle. Because you just wrote the code, you know exactly what behavior
-> matters and how to verify it.
+    > Anti-Pattern: Horizontal Slices
+    > 
+    > DO NOT write all tests first, then all implementation. This is "horizontal
+    > slicing" - treating RED as "write all tests" and GREEN as "write all code."
+    > 
+    > This produces crap tests:
+    > 
+    >     Tests written in bulk test imagined behavior, not actual behavior You end
+    >     up testing the shape of things (data structures, function signatures)
+    >     rather than user-facing behavior Tests become insensitive to real changes -
+    >     they pass when behavior breaks, fail when behavior is fine You outrun your
+    >     headlights, committing to test structure before understanding the
+    >     implementation
+    > 
+    > Correct approach: Vertical slices via tracer bullets. One test → one
+    > implementation → repeat. Each test responds to what you learned from the
+    > previous cycle. Because you just wrote the code, you know exactly what behavior
+    > matters and how to verify it.
 
 
 ## Storm

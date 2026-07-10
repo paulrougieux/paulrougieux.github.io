@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -549,13 +552,20 @@ href="https://askubuntu.com/questions/50170/how-to-convert-pdf-to-image">How
 to convert pdf to images</a></p>
 <pre><code>cd ~/downloads
 convert -density 150 input.pdf -quality 90 output.png</code></pre>
+<div id="rasterize-text-to-images-as-in-scanned-document"
+class="section level3">
+<h3>Rasterize text to images as in scanned document</h3>
+<p>Rasterize pdf text to images as in a scanned document</p>
+<pre><code>gs -sDEVICE=pdfimage24 -r200 -o scanned.pdf input.pdf</code></pre>
+</div>
 </div>
 <div id="images-to-pdf" class="section level2">
 <h2>Images to pdf</h2>
 <p>Convert one or more images to pdf</p>
 <pre><code>img2pdf img.jpg -o output.pdf </code></pre>
 <p>Convert a directory of JPG images into a printable A4 pdf:</p>
-<pre><code>img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG</code></pre>
+<pre><code>img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.JPG
+img2pdf --output out.pdf --pagesize A4 --border 0cm:0cm *.png</code></pre>
 <p>Place the images in a landscape A5 document for printing 2 pages on
 one page. The <code>^T</code> argument is to flip to landscape:</p>
 <pre><code>img2pdf --output out.pdf --pagesize A5^T --border 0cm:0cm *.jpg</code></pre>
@@ -620,7 +630,8 @@ echo &quot;The pdf document containing all images is located at: /tmp/bli/output
 </div>
 <div id="images-to-other-formats" class="section level2">
 <h2>Images to other formats</h2>
-<p>See also the resize section.</p>
+<p>See also the edit and resize sections for many more image conversion
+commands.</p>
 <p>Convert a png image to a jpgeg image</p>
 <pre><code>convert canto_dei_sanfedisti.png canto_dei_sanfedisti.jpg</code></pre>
 <p>Convert a png image with an alpha layer to an image without alpha
@@ -777,6 +788,14 @@ fi</code></pre>
 <p>In .bashrc a user can set environment variables, define alias (see
 above).</p>
 </div>
+<div id="copy-dot-files-to-a-server" class="section level2">
+<h2>Copy dot files to a server</h2>
+<p>Synchronize the dot files from a laptop to the server</p>
+<pre><code>rsync -av ~/rp/paulrougieux.github.io/setup/.tmux.conf paul@flower:.tmux.conf
+rsync -av --delete ~/rp/paulrougieux.github.io/setup/nvim_server/ paul@flower:.config/nvim/</code></pre>
+<p>You can also download the dot files from the public repository</p>
+<pre><code>curl -O https://gitlab.com/paulrougieux/paulrougieux/-/raw/master/setup/.tmux.conf</code></pre>
+</div>
 <div id="turn-off-system-beep" class="section level2">
 <h2>Turn off system beep</h2>
 <p>Enter the following in .bash_profile or .bashrc to turn of the system
@@ -807,6 +826,27 @@ cut off.)”</p>
 </div>
 <div id="download-videos-and-audio" class="section level2">
 <h2>Download videos and audio</h2>
+<div id="yt-dlp" class="section level3">
+<h3>yt-dlp</h3>
+<p>An updated fork of youtube-dl.</p>
+<p>Install with</p>
+<pre><code>pipx install yt-dlp</code></pre>
+<p>Note that you can install yt-dlp from apt on Debian. I removed it
+because the apt package on Debian stable had gotten outdated and was not
+compatible with the Youtube API any more.</p>
+<pre><code> sudo apt install yt-dlp</code></pre>
+<p>Download a video</p>
+<pre><code> yt-dlp &lt;url&gt;</code></pre>
+<p>List available format before download</p>
+<pre><code>yt-dlp -F &lt;URL&gt;</code></pre>
+<p>Use a format for the download</p>
+<pre><code>yt-dlp -f &lt;format_name&gt; &lt;URL&gt;</code></pre>
+<p>Download only the audio in an .mp3 format</p>
+<pre><code>yt-dlp --extract-audio --audio-format mp3 video_url</code></pre>
+</div>
+<div id="youtube-dl-legacy-use-yt-dlp-fork-instead"
+class="section level3">
+<h3>youtube-dl (legacy use yt-dlp fork instead)</h3>
 <p>Install youtube-dl using pip:</p>
 <pre><code> pip install --upgrade youtube_dl</code></pre>
 <p>Install from the compressed <code>tar.gz</code> version of a
@@ -841,6 +881,7 @@ href="https://stackoverflow.com/questions/32104702/youtube-dl-library-and-error-
 Lines starting with ‘#’, ‘;’ or ‘]’ are considered as comments and
 ignored.</p>
 </blockquote>
+</div>
 <div id="lower-resolution" class="section level3">
 <h3>Lower resolution</h3>
 <p>See the man page “FORMAT SELECTION”. Download in a lower resolution
@@ -890,8 +931,8 @@ mogrify -resize 2000 -type Grayscale -path ./small *.jpg
 # Convert iphone HEIC pictures to jpg in smaller format
 mogrify -resize 2000 -path ./small -format jpg *.HEIC</code></pre>
 </div>
-<div id="convert-1" class="section level3">
-<h3>Convert</h3>
+<div id="convert-between-image-formats" class="section level3">
+<h3>Convert between image formats</h3>
 <p>Convert to different color scheme, other file format or rotate
 images.</p>
 <p>For example to convert from png to jpg and change size</p>
@@ -911,6 +952,22 @@ black and white bimodal images</a>:</p>
 <pre><code>convert -monochrome in.png out.png</code></pre>
 <p>Note this doesn’t result in smaller images. To get smaller files, set
 the <code>-quality</code> parameter to a value between 1 and 100.</p>
+</div>
+<div id="convert-to-transparent-background" class="section level3">
+<h3>Convert to transparent background</h3>
+<p>Convert a jpg or png image with black text on beige paper to a png
+image with a transparent background</p>
+<pre><code>  convert image.jpg \
+    \( +clone -colorspace gray -threshold 55% -negate \) \
+    -alpha off -compose CopyOpacity -composite \
+    -fill black -colorize 100 \
+    image_threshold.png
+
+  convert date_2026.png \
+    \( +clone -colorspace gray -threshold 55% -negate \) \
+    -alpha off -compose CopyOpacity -composite \
+    -fill black -colorize 100 \
+    date_2026_threshold.png</code></pre>
 </div>
 <div id="rotate" class="section level3">
 <h3>Rotate</h3>
@@ -1015,6 +1072,9 @@ pdftk input.pdf cat 1-endwest output output.pdf</code></pre>
 </div>
 <div id="reduce-pdf-size-lower-image-resolution" class="section level3">
 <h3>Reduce pdf size (lower image resolution)</h3>
+<p>Based on a quick assessment below, <code>ebook</code> seems to be a
+good compromise in terms of file size and image resolution.</p>
+<pre><code>gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf</code></pre>
 <p>Resize all images in input.pdf for screen viewing <code>screen</code>
 (low resolution), <code>ebook</code> (slightly higher resolution) or
 printing <code>printer</code> (higher resolution):</p>
@@ -1035,11 +1095,6 @@ between the map at this resolution and the map from the ebook format.
 Probably because the original map in the paper was pixelized
 anyway.</p></li>
 </ul>
-<p>Based on this quick assessment, <code>ebook</code> seems to be a good
-compromise in terms of file size and image resolution.</p>
-<pre><code>mkdir /tmp/scan
-cd /tmp/scan
-gs -sDEVICE=pdfwrite -dCompatibilityLevel=1.4 -dPDFSETTINGS=/ebook -dNOPAUSE -dQUIET -dBATCH -sOutputFile=output.pdf input.pdf</code></pre>
 <div id="loop-on-all-pdf-files-in-the-directory" class="section level4">
 <h4>Loop on all pdf files in the directory</h4>
 <pre><code>for file in *.pdf; do
@@ -1165,7 +1220,8 @@ href="https://taskwarrior.org/docs/best-practices.html">Taskwarrior</a></p>
 </div>
 <div id="environment-variables" class="section level1">
 <h1>Environment variables</h1>
-<p>Environment variables are the way the tell processes where resources
+<p>Environment variables defined for examples in
+<code>.bash_aliases</code> are a way to tell processes where resources
 are located.</p>
 <p>For example</p>
 <pre><code>export PYTHONPATH=&quot;$HOME/repos/biotrade/&quot;:$PYTHONPATH</code></pre>
@@ -1185,6 +1241,13 @@ in bash</p>
 <pre><code>unset VAR_NAME</code></pre>
 <div id="direnv" class="section level2">
 <h2>Direnv</h2>
+<p>Create project specific environment variables in a directory by
+creating a file called <code>.envrc</code> which defines the environment
+variables as such:</p>
+<pre><code>export DATA_DIR=&quot;$HOME/path_to_data/&quot;
+export DB_PATH=&quot;$HOME/path_to_db&quot;</code></pre>
+<p>Then allow bash to load these environment variables:</p>
+<pre><code>direnv allow</code></pre>
 <ul>
 <li><a
 href="https://manpages.debian.org/testing/direnv/direnv.1.en.html"
@@ -1317,8 +1380,8 @@ Kōans</a>)</p>
 <pre><code>grep -RL &quot;runner_type&quot; .</code></pre>
 </div>
 </div>
-<div id="list-files" class="section level2">
-<h2>List files</h2>
+<div id="list-files-and-directories" class="section level2">
+<h2>List files and directories</h2>
 <p>List all files in a directory</p>
 <pre><code>ls</code></pre>
 <p>List a file with its full directory path</p>
@@ -1344,14 +1407,37 @@ on how to list all files in a directory with absolute path</a>.</p>
 <div id="tree" class="section level3">
 <h3>Tree</h3>
 <p>List contents of a directories in a tree like format</p>
-<pre><code>tree
-tree -d # List directories only, no files</code></pre>
-<p>Ignore files that contain compiled python bytecode with the
-<code>-I</code> option</p>
-<pre><code>tree -I &quot;*.pyc&quot;</code></pre>
+<pre><code>tree</code></pre>
+<p>Show only 1 or 2 level of directory depth</p>
+<pre><code>tree -L1
+tree -L2</code></pre>
+<p>Show markdown files only</p>
+<pre><code>tree -P *.md</code></pre>
+<p>Remove directories that don’t contain markdown files from the output
+and ignore the docs sub directory</p>
+<pre><code>tree -P &#39;*.md&#39; --prune -I docs
+.
+├── backend
+│   └── README.md
+├── client
+│   └── README.md
+├── deploy
+│   └── README.md
+├── landing
+│   └── README.md
+├── network
+│   └── README.md
+├── provision
+│   └── README.md
+└── README.md</code></pre>
 <p>Show only python file matching the <code>"*.py"</code> pattern with
 the <code>-P</code> option</p>
 <pre><code>tree -P &quot;*.py&quot;</code></pre>
+<p>Ignore files that contain compiled python bytecode with the
+<code>-I</code> option</p>
+<pre><code>tree -I &quot;*.pyc&quot;</code></pre>
+<p>List directories only, no files</p>
+<pre><code>tree -d</code></pre>
 </div>
 </div>
 <div id="look-at-lines-of-a-text-file-with-less" class="section level2">
@@ -1521,6 +1607,12 @@ files <code>--exclude="*"</code>, include all directories
 </blockquote>
 <p>Sync only <code>.mdb</code> files that are the output of a model</p>
 <pre><code>rsync -zav --include=&quot;*/&quot; --include=&quot;*.mdb&quot; --exclude=&quot;*&quot;  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/</code></pre>
+<div id="rsync-except-.git-or-other-dot-files" class="section level3">
+<h3>Rsync except .git or other dot files</h3>
+<p>When pulling changed made on the server to the laptop</p>
+<pre><code>cd ~/eu_cbm/eu_cbm_hat/
+rsync -azv --exclude=&#39;.git/&#39; paul@flower:~/eu_cbm/eu_cbm_hat/ ~/eu_cbm/eu_cbm_hat/</code></pre>
+</div>
 <div id="slash-or-no-slash" class="section level3">
 <h3>Slash or no slash</h3>
 <p><a href="https://stackoverflow.com/a/31278462/2641825">SO slashes and
@@ -2038,6 +2130,16 @@ git grep -lz &#39;RMySQL::&#39;| xargs -0 perl -i&#39;&#39; -pE &quot;s/RMySQL::
     echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
     git grep -lz &quot;$1&quot;| xargs -0 perl -i&#39;&#39; -pE &quot;s/$1/$2/g&quot;
 }</code></pre>
+<p>Note: if you are not at the top level of the git repository, this
+will refactor only in the current directory.</p>
+<ul>
+<li><p>In general you want to call refactor from the root of the git
+repository to make sure all code, notebooks and documentation are
+refactored.</p></li>
+<li><p>Calling from a subdir might be good when you only want to update
+python code and related docstrings, but not update notes, or notebooks
+or previous experiments.</p></li>
+</ul>
 <p>When there are slashes in the patterns, use another separator</p>
 <pre><code>refactor() {
     echo &quot;Replacing $1 by $2 in all files in this git repository.&quot;
@@ -2051,12 +2153,6 @@ git diff</code></pre>
 <h1>Security and authentication</h1>
 <div id="generate-passwords" class="section level2">
 <h2>Generate passwords</h2>
-<p><a href="https://packages.debian.org/buster/apg">apg</a> is an
-automated password generator. According to the Debian maintainers, it is
-not updated upstream and it might be replaced by another tool as soon as
-“a maintained software with a comparable feature set becomes available”.
-Usage:</p>
-<pre><code>apg</code></pre>
 <p>A post on Unix &amp; Linux Stack Exchange recommends using
 <code>/dev/urandom</code> as such</p>
 <pre><code>cat /dev/urandom | tr -dc &#39;a-zA-Z0-9&#39; | head -c 20</code></pre>
@@ -2066,6 +2162,13 @@ strip</a>. It explains how password entropy rises faster with the number
 of characters than with the character set weirdness.</p>
 <p>When possible, it’s better to authenticate with private and public
 key cryptography.</p>
+<p><a
+href="https://manpages.debian.org/unstable/apg/apg.1.en.html">apg</a> is
+an automated password generator. According to the Debian maintainers, it
+is not updated upstream and it might be replaced by another tool as soon
+as “a maintained software with a comparable feature set becomes
+available”. Usage:</p>
+<pre><code>apg</code></pre>
 </div>
 <div id="sftp-connections" class="section level2">
 <h2>SFTP connections</h2>
@@ -2115,6 +2218,13 @@ lftp -e “con-cme”</p>
 <div id="makefile-to-push-static-site-to-an-sftp-host"
 class="section level3">
 <h3>Makefile to push static site to an SFTP host</h3>
+</div>
+<div id="upload-a-file-or-a-directory-with-lftp" class="section level3">
+<h3>Upload a file or a directory with lftp</h3>
+<p>For a single file, upload with put:</p>
+<pre><code>lftp -c &quot;con-connection_name; put directory/_site/your_file.html directory/your_file.html ;&quot;</code></pre>
+<p>To upload a whole directory use mirror</p>
+<pre><code>lftp -c &quot;con-connection_name; mirror -R directory/_site directory ;&quot;</code></pre>
 </div>
 </div>
 <div id="ssh-secure-shell" class="section level2">
@@ -2791,6 +2901,93 @@ course</a></li>
 <li><a href="https://gist.github.com/MohamedAlaa/2961058">shortcuts and
 cheat sheet</a></li>
 </ul>
+<div id="copy-paste" class="section level3">
+<h3>Copy &amp; Paste</h3>
+<p>Enter copy mode with ctrl + shift + C.</p>
+<ul>
+<li><p>Copy mode makes it possible to scroll up the buffer as
+well.</p></li>
+<li><p>Hold shift to bypass tmux and directly copy with the mouse if
+needed. This might be useful for example in SSH or a in a nested
+tmux.</p></li>
+</ul>
+<p>To paste, use CTRL + Shift + V .</p>
+<div id="copy-paste-through-ssh-on-a-server" class="section level4">
+<h4>Copy &amp; Paste through SSH on a server</h4>
+<p>Problem description:</p>
+<pre><code>- When I am logged into a server through SSH, I can&#39;t use CTRL + SHIFT +
+  C to copy inside a tmux pane. But CTRL + SHIFT + C does active tmux copy
+  mode, because I can see an orange [0/0] in the top right cornet and I can
+  scroll up the pane. The problem is that it doesn&#39;t copy anything inside
+  my laptop&#39;s copy buffer. When I paste, I get old clipboard content.</code></pre>
+<p>Claude answer:</p>
+<pre><code>&gt; &quot;The server tmux config is not the problem — it&#39;s correctly sending OSC
+&gt; 52. Your GNOME Terminal on the laptop is silently dropping the OSC 52
+&gt; clipboard write. No change on the server can fix that. Let me confirm the
+&gt; current state of GNOME Terminal&#39;s OSC 52 support so I give you accurate
+&gt; laptop-side options rather than guessing from memory.
+
+&gt; ● Now test your laptop clipboard: click into any local app (browser address
+&gt; bar, a text editor — anywhere on your laptop, not in the SSH session) and paste
+&gt; with CTRL+SHIFT+V (or CTRL+V).
+
+&gt;   - If you get OSC52_WORKS_ac3f9 → OSC 52 works end-to-end. Then the problem is
+&gt;     only in how you yank: in copy mode you must press v to start selection,
+&gt;     move to select, then y (your config binds y to copy-selection-and-cancel).
+&gt;     Just entering copy mode and scrolling copies nothing — you have to select
+&gt;     with v+motion+y. Mouse won&#39;t select in copy mode because mouse is off.
+
+&gt;   - If you get nothing / old clipboard content → your GNOME Terminal is
+&gt;     not honoring OSC 52 clipboard writes. That&#39;s a laptop-side setting,
+&gt;     and no change to the server tmux config can fix it. The fixes then
+&gt;     live on your laptop (enable OSC 52 write in your terminal, or switch
+&gt;     to a terminal that supports it like kitty/wezterm/foot/alacritty).</code></pre>
+<p>Which one happened when you pasted?</p>
+<p>Paul:</p>
+<pre><code>❯ I get old clipboard content</code></pre>
+<p>Claude:</p>
+<pre><code>&gt; &quot;That&#39;s the definitive answer: the server tmux config is not the problem —
+&gt; it&#39;s correctly sending OSC 52. Your GNOME Terminal on the laptop is
+&gt; silently dropping the OSC 52 clipboard write. No change on the server can
+&gt; fix that. Let me confirm the current state of GNOME Terminal&#39;s OSC 52
+&gt; support so I give you accurate laptop-side options rather than guessing
+&gt; from memory.
+
+&gt;  Web Search(&quot;GNOME Terminal VTE OSC 52 clipboard write support enable
+&gt; 025&quot;) ⎿  Did 1 search in 6s
+
+&gt;  Confirmed. This is a known, long-standing limitation:
+
+&gt; VTE-based terminals — GNOME Terminal, XFCE Terminal, Terminator — do not
+&gt; honor OSC 52 clipboard writes. It&#39;s tracked as an open issue in VTE (issue
+&gt; #2495) and still isn&#39;t shipped/enabled by default. So your server tmux config
+&gt; is correct and there is nothing to change on the server — the escape sequence
+&gt; is being sent, GNOME Terminal just discards it.
+&gt; 
+&gt; Where that leaves you
+&gt; 
+&gt; The fix has to be on your laptop. Options, most reliable first:
+&gt; 
+&gt; 1. Switch to a terminal that supports OSC 52 writes by default (one-time
+&gt;    change, and your existing tmux config then &quot;just works&quot; for remote copy):
+&gt;   - kitty, wezterm, foot (Wayland), or alacritty — all honor OSC 52 out of
+&gt;     the box. This is the cleanest fix given how your whole tmux config is
+&gt;     built around OSC 52.
+&gt; 2. Stay on GNOME Terminal, and accept that remote-to-laptop clipboard won&#39;t
+&gt;    work via tmux. Your practical copy options then become:
+&gt;   - Native single-pane selection: with mouse off (your current setting),
+&gt;     drag-select inside one pane and use GNOME&#39;s CTRL+SHIFT+C. Works, but
+&gt;     breaks across split panes. mosh-style / SSH clipboard bridges — more
+&gt;     setup, not worth it vs. option 1.
+&gt; 3. Xterm also does OSC 52 writes if you set XTerm*disallowedWindowOps:
+&gt;    20,21,SetXprop (allowing SetSelection) in your X resources — viable if you
+&gt;    like xterm, but fiddly.
+&gt; 
+&gt; My recommendation: option 1 — try kitty or wezterm on the laptop. With
+&gt; either, your prefix [ → v → y workflow will land straight in your laptop
+&gt; clipboard, no config changes on the server at all.&quot;</code></pre>
+</div>
+</div>
 <div id="sessions" class="section level3">
 <h3>Sessions</h3>
 <p>To start a session</p>
@@ -2880,6 +3077,16 @@ href="https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/">d
 on vim splits and tmux tabs</a></p>
 <p>Reload the tmux configuration file</p>
 <pre><code>source-file ~/.tmux.conf</code></pre>
+</div>
+<div id="tmux-within-tmux" class="section level3">
+<h3>Tmux within tmux</h3>
+<p>When connected to a server I have tmux running within tmux.</p>
+<p>Move, open a new split or a new window</p>
+<pre><code>Ctrl B Ctrl B up down left right
+Ctrl B Ctrl B &quot;
+Ctrl B Ctrl B c</code></pre>
+<p>Enter copy mode in the server, to scroll up the pane</p>
+<pre><code>Ctrl B Ctrl B [</code></pre>
 </div>
 <div id="vim-and-tmux-navigation" class="section level3">
 <h3>VIM and TMUX Navigation</h3>

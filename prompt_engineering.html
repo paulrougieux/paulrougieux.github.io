@@ -11,7 +11,7 @@
 
 
 
-<title>prompt_engineering.knit</title>
+<title>Prompt engineering</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -464,10 +467,97 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Prompt engineering</h1>
 
 </div>
 
 
+<p>See also the following pages:</p>
+<ul>
+<li>learning</li>
+</ul>
+<div id="agent" class="section level1">
+<h1>Agent</h1>
+<div id="log-of-agent-operations" class="section level2">
+<h2>Log of agent operations</h2>
+<p>Prompt to create a lot of agent operations:</p>
+<pre><code>This section logs the operations, changes, and commits made by the agent during this
+session. The agent should append the description of most recent operation at the end of
+this list.</code></pre>
+</div>
+</div>
+<div id="meta-prompts" class="section level1">
+<h1>Meta prompts</h1>
+<div id="roles" class="section level2">
+<h2>Roles</h2>
+<div
+id="prepare-a-meta-prompt-that-would-list-roles-to-criticize-this-report"
+class="section level3">
+<h3>Prepare a meta prompt that would list roles to criticize this
+report</h3>
+<p>Use this query with any report.</p>
+<pre><code>Prepare a meta prompt that would list roles to criticize this report.</code></pre>
+<p>Here is for example the output for a draft report I uploaded into
+Antrhopic Claude:</p>
+<pre class="txt"><code>Meta Prompt: Expert Review of JRC AIDB Harmonization Report
+
+You are assembling a review panel to critically evaluate the technical report &quot;D05.01 Single EU AIDB&quot; (Archive Index Database harmonization for the EU Carbon Budget Model). Please adopt each of the following expert roles sequentially and provide constructive criticism from that perspective:
+
+## 1. **Senior Forest Carbon Modeler**
+
+- Evaluate the scientific soundness of the AIDB harmonization approach
+- Assess whether the distinction between static (AIDB) and dynamic (CSV) parameters is clearly explained
+- Review if the biological/ecological implications of merging 25 country databases are adequately addressed
+- Check if potential risks to model accuracy from harmonization are discussed
+
+## 2. **Database Architect / Software Engineer**
+- Critique the technical implementation and code structure
+- Assess the function design patterns and their reusability
+- Evaluate error handling, data validation, and robustness of the proposed methods
+- Review whether the solution truly addresses &quot;overloading of storages&quot; mentioned in the contract
+- Examine if there are performance considerations for handling large-scale data operations
+
+## 3. **Data Quality Assurance Specialist**
+- Review the comparison methodology for identifying differences across AIDBs
+- Assess whether the QA/QC functions are comprehensive enough
+- Evaluate if the heatmap visualization adequately communicates data differences
+- Critique whether data validation steps are missing
+- Check if there&#39;s guidance on resolving conflicts when tables differ
+
+## 4. **Technical Documentation Reviewer**
+- Assess clarity and completeness of function documentation
+- Evaluate whether examples are sufficient for reproduction
+- Check if the report structure supports its stated purpose
+- Review whether prerequisites, dependencies, and limitations are clearly stated
+- Assess if the conclusion adequately summarizes deliverables versus objectives
+
+## 5. **Project Stakeholder / End User**
+- Evaluate whether the deliverable meets the stated contract requirements
+- Assess practical usability for JRC staff who will maintain this system
+- Review if there&#39;s adequate guidance for the &quot;written protocol/guide&quot; mentioned in the contract
+- Check if the path forward for actual implementation of a single EU-wide AIDB is clear
+- Assess whether maintenance and updating concerns are addressed
+
+## 6. **Scientific Editor**
+- Review clarity of technical writing and terminology consistency
+- Assess logical flow and structure of the document
+- Check if figures and references are properly formatted and cited
+- Evaluate whether the introduction adequately motivates the problem
+- Review if conclusions match what was actually delivered
+
+## Review Instructions
+
+For each role, provide:
+1. **Strengths**: What this report does well from this perspective
+2. **Critical Issues**: Major concerns or gaps that need addressing
+3. **Suggestions**: Specific, actionable recommendations for improvement
+4. **Questions**: Unresolved questions that the report should answer
+
+Focus on constructive, specific feedback that would improve the report&#39;s technical quality, usability, and completeness.
+</code></pre>
+</div>
+</div>
+</div>
 <div id="refactor" class="section level1">
 <h1>Refactor</h1>
 <div id="functional-programming" class="section level2">

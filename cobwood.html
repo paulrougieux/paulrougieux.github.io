@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -469,7 +472,32 @@ div.tocify {
 </div>
 
 
-
+<p>Cobwood is a Python package designed to analyse global forest
+products markets. The first model programmed inside cobwood is a
+reimplementation of a simple forest sector model, the main value of this
+python package doesn’t lie in the model itself, but in the panel data
+structure that can be used to implement many models.</p>
+<ul>
+<li><p><a href="https://pypi.org/project/cobwood/"
+class="uri">https://pypi.org/project/cobwood/</a></p></li>
+<li><p><a href="https://gitlab.com/bioeconomy/cobwood/cobwood"
+class="uri">https://gitlab.com/bioeconomy/cobwood/cobwood</a></p></li>
+</ul>
+<p>Key Features:</p>
+<ul>
+<li><p><strong>Panel Data Structure</strong>: The package represents
+international forest products market data through 2 dimensional arrays
+with multiple years and countries, enabling time-series and
+cross-sectional analysis.</p></li>
+<li><p><strong>Data Handling with Xarray</strong>: Cobwood utilizes
+Xarray datasets to efficiently manipulate multi-dimensional data
+structures. X array is tightly integrated with pandas. Conversion to and
+from pandas data frames is very straightforward. Xarray datasets are
+saved on disk using the NetCDF format. This format has the advantage of
+providing good metadata descriptors. NetCDF is a standard data format
+used in earth systems modelling, that will just help this model become a
+component of a greater modelling tool chain.</p></li>
+</ul>
 
 
 

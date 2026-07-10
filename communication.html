@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -501,6 +504,135 @@ platform. The internet protocols were conceived with neutrality at the
 core.</p>
 </div>
 </div>
+<div id="authentication" class="section level1">
+<h1>Authentication</h1>
+<div id="auth0" class="section level2">
+<h2>Auth0</h2>
+<ul>
+<li>Device Authorization Flow <a
+href="https://auth0.com/docs/get-started/authentication-and-authorization-flow/device-authorization-flow"
+class="uri">https://auth0.com/docs/get-started/authentication-and-authorization-flow/device-authorization-flow</a></li>
+</ul>
+</div>
+<div id="authenticator" class="section level2">
+<h2>Authenticator</h2>
+<ul>
+<li>Authenticator on the app store <a
+href="https://apps.apple.com/us/app/authenticator/id766157276"
+class="uri">https://apps.apple.com/us/app/authenticator/id766157276</a></li>
+</ul>
+<p>Matt Rubin made the source code available under <a
+href="https://github.com/mattrubin/Authenticator"
+class="uri">https://github.com/mattrubin/Authenticator</a> but it has
+not been updated for the last 2 years. It is probably further developed
+in private.</p>
+</div>
+</div>
+<div id="internet-connection" class="section level1">
+<h1>Internet Connection</h1>
+<div id="ethernet-cable" class="section level2">
+<h2>Ethernet cable</h2>
+<p>Paul:</p>
+<pre><code>❯ Another colleague also doesn&#39;t have internet connection, so there is a
+problem at the hardware level on the university cable conneciton this
+morning. The issue is that the ethernet cable is prefered over my phone&#39;s
+USB, that&#39;s why I had to disable the connection in the OS. It&#39;s plugged in
+tough as you correctly noted. In general it&#39;s nice that the cable link is
+prefered over the usb phone connection, but today the cable link doesn&#39;t
+work. Out of curiosity would there be a mechanism to check that the cable
+connection is failing and use the phone connection in that case? If I just
+unplug the cable, the usb phone connection works, so I already have a
+solution. It&#39;s more out of curiosity how such a dynamic detection of the
+availability of the cable connection could work.</code></pre>
+<p>Claude:</p>
+<blockquote>
+<p>● Great question — this is a classic problem, and the short answer
+is: yes, the mechanism exists, it’s called active health-check failover,
+and the whole trick is that “link up” ≠ “internet up.”</p>
+</blockquote>
+<blockquote>
+<p>Your setup today is the textbook failure case: the cable has carrier
+(the switch port is alive), so by every signal NetworkManager can see
+locally, the metric-50 route is “valid” — even though the upstream is
+dead. Static metrics are passive: they pick a winner once, based on link
+state, and never re-check whether traffic actually flows. To get
+failover you need something that actively probes reachability and
+adjusts routing when the probe fails.</p>
+</blockquote>
+<blockquote>
+<p>Why the pieces you already have aren’t enough</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Route metrics (your metric 50 vs 101): purely passive. As long as
+the cable has carrier, it wins. No traffic test.</li>
+<li>NetworkManager’s built-in connectivity check
+(/etc/NetworkManager/conf.d/*.conf, the [connectivity] section with uri=
+/ interval=): NM will periodically fetch a URL and label the connection
+FULL / LIMITED / NONE. Useful for detecting captive portals — but NM
+does not automatically demote a default route or fail over based on that
+state. It reports; it doesn’t reroute. So on its own it wouldn’t have
+saved you this morning.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>The working design (a watchdog loop)</p>
+</blockquote>
+<blockquote>
+<p>The reliable pattern is a small daemon/timer that does this:</p>
+</blockquote>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>Probe the internet over the cable specifically. While the cable is
+the default route, this is easy — just ping -c1 -W2 1.1.1.1 (it goes out
+the cable).</li>
+<li>On N consecutive failures, demote the cable: either raise its route
+metric above the phone’s, or nmcli dev disconnect enp0s25 — exactly the
+manual step you did. The phone (metric 101) instantly takes over.</li>
+<li>Keep probing the cable to detect recovery — and this is the subtle
+part. Once the phone is the default route, a plain ping no longer
+travels over the cable, so you can’t see it come back. You need a
+dedicated probe path that always exits the cable regardless of the
+default route, e.g. a pinned host route: ip route add 1.1.1.1/32 via
+144.41.253.1 dev enp0s25 table 100 # or just a host route ping -c1 -W2
+1.1.1.1 # now this specifically tests the cable</li>
+<li>(policy routing, or simply ping -I <cable-source-ip> combined with a
+host route for the probe target).</li>
+<li>When the probe succeeds again, restore the cable (lower metric /
+reconnect), and the phone drops back to standby.</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>That loop is the entire mechanism. Everything else is packaging.</p>
+</blockquote>
+<blockquote>
+<p>Off-the-shelf ways to package it</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>A systemd timer + a ~30-line bash script using ping + nmcli/ifmetric
+— the simplest and most fitting for your Debian + NetworkManager box.
+Run every 5–10 s.</li>
+<li>NetworkManager dispatcher scripts
+(/etc/NetworkManager/dispatcher.d/) — event-driven (fire on up/down),
+good for the restore side, but you still need a timer for continuous
+probing. keepalived with a vrrp_script / track_script — its
+health-check-and-act machinery does exactly this, though it’s heavier
+than you need for one host. mwan3 — the gold-standard multi-WAN failover
+with per-link health checks, but it lives on OpenWrt routers, not
+desktops. It’s what a router would use to do this properly.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>The honest engineering take: for a single laptop where unplugging the
+cable is a 2-second fix, a watchdog is over-engineering — but it’s a
+genuinely fun ~30-line script. If you’d like, I can write you a
+self-contained systemd timer + script tailored to enp0s25 / your phone
+interface that does the demote-on-failure / restore-on-recovery dance,
+including the pinned probe route. Want me to drop it in?</p>
+</blockquote>
+</div>
+</div>
 <div id="mail" class="section level1">
 <h1>Mail</h1>
 <div id="email" class="section level2">
@@ -512,6 +644,9 @@ the security aspect of email exchanges is fundamentally broken.</p>
 <p>Most <a href="https://en.wikipedia.org/wiki/Email_encryption">emails
 are encrypted</a> at the transport layer. End-to-end encryption would be
 better, but it’s usage is rare.</p>
+</div>
+<div id="companies-that-provide-email-servers" class="section level2">
+<h2>Companies that provide email servers</h2>
 <div id="gmail" class="section level3">
 <h3>Gmail</h3>
 <ul>
@@ -523,6 +658,185 @@ class="uri">https://one.google.com/storage/management/gmail/large</a></li>
 <h3>Posteo</h3>
 <p><a href="https://posteo.de/en"
 class="uri">https://posteo.de/en</a></p>
+<ul>
+<li>Forward spam email to <a href="mailto:spamreport@posteo.de"
+class="email">spamreport@posteo.de</a> <a
+href="https://posteo.de/en/help/what-should-i-do-with-a-spam-email"
+class="uri">https://posteo.de/en/help/what-should-i-do-with-a-spam-email</a></li>
+</ul>
+</div>
+</div>
+<div id="client-software-for-email" class="section level2">
+<h2>Client software for email</h2>
+<ul>
+<li><p>You can use mbsync to synchronize emails locally (including
+deletions). Then read local emails with Neomutt.</p></li>
+<li><p>Neomutt can fetch emails directly from the IMAP server.</p></li>
+<li><p>Notmuch is an email client with a vim plugin</p></li>
+</ul>
+<div id="command-line-style-email-setup" class="section level3">
+<h3>Command line-style email setup</h3>
+<ul>
+<li>Fetch/archive from Gmail over IMAP, handled by mbsync</li>
+<li>Index/search/read on the local Maildir, handled by notmuch with a
+vim plugin</li>
+<li>Write replies with the notmuch-vim plugin</li>
+<li>Send over SMTP, handled by msmtp</li>
+</ul>
+</div>
+<div id="mbsyncisync-to-synchronize-emails-locally"
+class="section level3">
+<h3>mbsync/isync to synchronize emails locally</h3>
+<p>Synchronize emails</p>
+<pre><code># Sync all accounts
+mbsync -a
+# Sync the gmail account, in verbose mode
+mbsync -V gmail</code></pre>
+<p>The data is stored in the ~/Mail</p>
+<p>Installation</p>
+<pre><code>sudo apt install pass # To store the password
+sudo apt install isync</code></pre>
+<p>Configuration in</p>
+<p>~/.mbsyncrc</p>
+<p>Configure the pass store</p>
+<pre><code>gpg --list-secret-keys --keyid-format LONG
+# Initialize with the key id without the rsa3072/ part
+pass init ................  
+pass insert gmail</code></pre>
+<p>See <code>.mbsyncrc</code> in the setup directory</p>
+<pre><code>IMAPAccount gmail
+Host imap.gmail.com
+User ___.___@gmail.com
+PassCmd &quot;pass gmail&quot;
+TLSType IMAPS  # Updated from SSLType
+AuthMechs LOGIN
+
+IMAPStore gmail-remote
+Account gmail
+
+MaildirStore gmail-local
+Path ~/Mail/
+Inbox ~/Mail/INBOX
+SubFolders Verbatim
+
+Channel gmail
+Far :gmail-remote:
+Near :gmail-local:
+Patterns *
+Create Both
+Expunge Both
+SyncState *</code></pre>
+<ul>
+<li>Blog post on how to synchronize your 2FA Gmail with mbsync <a
+href="https://frostyx.cz/posts/synchronize-your-2fa-gmail-with-mbsync"
+class="uri">https://frostyx.cz/posts/synchronize-your-2fa-gmail-with-mbsync</a></li>
+</ul>
+</div>
+<div id="msmtp" class="section level3">
+<h3>msmtp</h3>
+<p>Can reuse the mbsync credentials.</p>
+</div>
+<div id="neomutt" class="section level3">
+<h3>Neomutt</h3>
+<p>Neomutt to visualize emails in the local directory</p>
+<p>Setup bidirectional deletion with Expunge Both</p>
+</div>
+<div id="notmuch-vim" class="section level3">
+<h3>Notmuch Vim</h3>
+<p>Commands for the NotMuch Vim plugin.</p>
+<pre><code>:NotMuch</code></pre>
+<p>Commands in the search list view</p>
+<pre><code>s search
+c compose
+t tag
+d tag as deleted (added by Paul)</code></pre>
+<p>Show for example the list of emails tagged as deleted</p>
+<pre><code>:NotMuch tag:deleted</code></pre>
+<p>Notmuch can be used for fzf style grep search on emails.</p>
+<p>Install notmuch and the vim plugin with</p>
+<pre><code>sudo apt-get install -y notmuch notmuch-vim afew</code></pre>
+<p>This installs</p>
+<ul>
+<li>notmuch CLI client</li>
+<li>notmuch-vim Vim plugin</li>
+<li>afew optional tagging rules</li>
+</ul>
+<p>Configure notmuch with</p>
+<pre><code>notmuch config</code></pre>
+<p>After mbsync has synchronized email, ypdate email Notmuch’s index
+with</p>
+<pre><code>notmuch new</code></pre>
+<p>Install ruby is necessary for the vim plugins</p>
+<pre><code>sudo apt-get install -y ruby-dev
+sudo gem install neovim</code></pre>
+<div id="aa-sync" class="section level4">
+<h4>AA Sync</h4>
+<p>Sync with mbsync and update the notmuch index</p>
+<pre><code>mbsync -a &amp;&amp; notmuch new</code></pre>
+<p>A script that performs the same but also moves emails tagged
+“deleted” to the Gmail trash</p>
+<pre><code>~/bin/mail-sync.sh</code></pre>
+<p>Calls another script inside.</p>
+</div>
+<div id="alternative-vim-plugins-for-notmuch" class="section level4">
+<h4>Alternative vim plugins for NotMuch</h4>
+<ul>
+<li>felipec’s notmuch-vim (requires ruby): <a
+href="https://github.com/felipec/notmuch-vim"
+class="uri">https://github.com/felipec/notmuch-vim</a></li>
+<li>A Lua/Neovim rewrite of the plugin: <a
+href="https://github.com/yousefakbar/notmuch.nvim"
+class="uri">https://github.com/yousefakbar/notmuch.nvim</a></li>
+</ul>
+</div>
+<div id="delete-emails-from-neovim-notmuch" class="section level4">
+<h4>Delete emails from Neovim NotMuch</h4>
+<ol style="list-style-type: decimal">
+<li>In NotMuch tag emails as “deleted”
+<ul>
+<li>I created a “d” shortcut to tag as deleted</li>
+</ul></li>
+<li>Move every message tagged <code>deleted</code> into Gmail’s Bin,
+then let mbsync push the delete to the mail server.</li>
+</ol>
+<p>There is a script that trashes <code>deleted</code> mail, pull/push
+with Gmail, re-index:</p>
+<p>~/bin/mail-sync.sh</p>
+</div>
+<div id="search-emails" class="section level4">
+<h4>Search Emails</h4>
+<p>In the notmuch list view :NotMuch press “s” to search, then you can
+use the following keywords:</p>
+<pre><code>invoice                          # word anywhere in headers or body
+&quot;quarterly report&quot;               # exact phrase (quote it)
+from:alice                       # from-header contains &quot;alice&quot;
+to:paul.rougieux@gmail.com
+subject:meeting
+subject:&quot;travel reimbursement&quot;   # quote multi-word values
+from:bank and subject:statement  # explicit boolean (and/or/not, xor)
+tag:inbox and not tag:unread     # read mail still in inbox</code></pre>
+<p>Date ranges work with a double point separator
+<code>LOW..HIGH</code>. Either side can be empty for open-ended. Single
+values and bounds round to their precision (e.g. ..2024-12 includes all
+of December). Date ranges examples</p>
+<pre><code>date:2024-01-01..2024-12-31      # explicit day
+date:2024-01..2024-03            # month precision
+date:2020..2024                  # whole years</code></pre>
+<p>By default it’s not possible to search based on attachement size.</p>
+<p>TODO: add a post-notmuch new hook that stats each attachement file
+and runs notmuch tag 1mb, 10mb to tag files that are larger than 1MB and
+larger than 10MB.</p>
+</div>
+</div>
+<div id="mpack-to-view-attachements" class="section level3">
+<h3>mpack to view attachements</h3>
+<p>Dump all attachements of a search directory</p>
+<pre><code>mkdir -p ~/tmp/contracts
+cd ~/tmp/contracts
+for id in $(notmuch search --output=messages \
+    &#39;date:2009..2018 and tag:attachment and (contrat OR embauche OR CDI OR CDD OR avenant OR engagement)&#39;); do
+  notmuch show --format=mbox &quot;$id&quot; | munpack -t -C ~/tmp/contracts
+done</code></pre>
 </div>
 <div id="thunderbird" class="section level3">
 <h3>Thunderbird</h3>
@@ -732,6 +1046,19 @@ on Linux desktop.</p>
 href="https://answers.microsoft.com/en-us/skype/forum/all/linking-old-skype-with-current-hotmailms-account/9f6c21e4-c074-466c-9606-d50ad651662b">How
 to transfer credits and contacts to another skype account</a></p>
 </div>
+<div id="slack" class="section level2">
+<h2>Slack</h2>
+<ul>
+<li><p><a href="https://slack.com/pricing"
+class="uri">https://slack.com/pricing</a></p>
+<ul>
+<li>In November 2025, I decided not to recommend the free chat version
+of Slack in favour of Matrix Element. If someone else wants me to use
+Slack I might use it, but I’m not going to recommend it to other
+persons.</li>
+</ul></li>
+</ul>
+</div>
 <div id="teams" class="section level2">
 <h2>Teams</h2>
 <p>Teams is a Microsoft product based on Skype. It has a development
@@ -746,10 +1073,14 @@ the heavy requirements of Windows, leads to planed obsolescence.</p>
 <h3>Technical issues</h3>
 <p>See also the Teams section in the <a href="debian.html">debian
 page</a>.</p>
-<p>Issue when loging in teams in Firefox. Adding the following to your
-browser security settings - Adding <a
+<ul>
+<li><p>Issue when logging in teams in Firefox. Adding the following to
+your browser security settings <a
 href="https://learn.microsoft.com/en-us/microsoftteams/troubleshoot/teams-sign-in/sign-in-loop#resolution"
-class="uri">https://learn.microsoft.com/en-us/microsoftteams/troubleshoot/teams-sign-in/sign-in-loop#resolution</a></p>
+class="uri">https://learn.microsoft.com/en-us/microsoftteams/troubleshoot/teams-sign-in/sign-in-loop#resolution</a></p></li>
+<li><p>Issue when logging in teams from an external organization, if you
+have an account at that organization, then it requires a login.</p></li>
+</ul>
 </div>
 </div>
 <div id="telegram" class="section level2">
@@ -1028,6 +1359,15 @@ the implications of what they are doing, and better review processes to
 stop bad actors from exploiting users’ ignorance on an ongoing basis. I
 despise Meta, but come on. Don’t throw the baby (interoperability) out
 with the bathwater (interoperability can enable exploitation).”</p>
+</blockquote></li>
+<li><p>Meta tolerates rampant ad fraud from China to safeguard billions
+in revenue<br />
+<a
+href="https://www.reddit.com/r/technology/comments/1pn6yg5/meta_tolerates_rampant_ad_fraud_from_china_to/"
+class="uri">https://www.reddit.com/r/technology/comments/1pn6yg5/meta_tolerates_rampant_ad_fraud_from_china_to/</a></p>
+<blockquote>
+<p>“Their algorithm naturally identifies people vulnerable to fraud and
+feeds them more and more.”</p>
 </blockquote></li>
 </ul>
 </div>

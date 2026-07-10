@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -476,11 +479,89 @@ mistakes.</p>
 </div>
 <div id="neural-networks" class="section level1">
 <h1>Neural Networks</h1>
+<p>See also the prompt engineering document.</p>
 <ul>
 <li><a
 href="https://ml4a.github.io/ml4a/how_neural_networks_are_trained/">How
 neural networks are trained</a></li>
 </ul>
+<div id="definitions-of-learning" class="section level2">
+<h2>Definitions of learning</h2>
+<div id="homography" class="section level3">
+<h3>Homography</h3>
+<ul>
+<li><p>Ilya Sutskever presents an Observation on Generalization <a
+href="https://www.youtube.com/watch?v=AKMuA_TVz3A&amp;t=4s"
+class="uri">https://www.youtube.com/watch?v=AKMuA_TVz3A&amp;t=4s</a></p>
+<blockquote>
+<p>“Why would data have regularities that our machine learning models
+can capture?”</p>
+</blockquote>
+<ul>
+<li><p>Perplexity explaining an analogy between homography and the way
+transformers simulate alternative architecture internally <a
+href="https://www.perplexity.ai/search/what-is-sgd-in-this-context-yo-rLzyIfSWRE27gHO4eut_WA#1"
+class="uri">https://www.perplexity.ai/search/what-is-sgd-in-this-context-yo-rLzyIfSWRE27gHO4eut_WA#1</a></p>
+<blockquote>
+<p>“Ilya Sutskever views deep neural networks, including transformers,
+as universal parallel computers capable of universal computation given
+enough scale. These models execute sequential operations (like attention
+layers) in parallel across massive hardware, simulating arbitrary
+programs during training via optimization like Stochastic Gradient
+Descent (SGD).</p>
+</blockquote>
+<blockquote>
+<p>Homography refers to a projective transformation in computer vision
+and geometry that maps points from one plane (or image) to another while
+preserving lines and incidence relations, typically via a 3x3 matrix.
+It’s like a “micro” version because neural networks, especially
+transformers, can efficiently simulate one architecture inside another
+through such transformations, much as computers emulate each other.</p>
+</blockquote>
+<blockquote>
+<p>The “micro homography” idea emphasizes robustness: just as a
+homography seamlessly warps one planar view into another without losing
+structural fidelity (e.g., in image stitching), transformers can “warp”
+or simulate alternative architectures internally. This makes them
+interchangeable in capability—depth vs. width, dense vs. sparse
+attention—when optimization is strong, as minor changes are absorbed
+like viewpoint shifts in projective geometry. Architectural tweaks
+matter mainly for bottlenecks or efficiency, not core expressivity.</p>
+</blockquote></li>
+</ul></li>
+</ul>
+</div>
+</div>
+<div id="agi-doesnt-exist" class="section level2">
+<h2>AGI doesn’t exist</h2>
+<ul>
+<li><p><a
+href="https://www.perplexity.ai/search/what-does-sergey-s-return-mean-jVvbrHr2T3Ck51YQu4jOSQ#2"
+class="uri">https://www.perplexity.ai/search/what-does-sergey-s-return-mean-jVvbrHr2T3Ck51YQu4jOSQ#2</a></p>
+<blockquote>
+<p>“Yann LeCun, argues that AGI often defined as human-level or
+superhuman intelligence across all domains is a flawed, overhyped
+concept because intelligence is inherently relative and
+context-specific. Humans excel in narrow, evolved skills like social
+reasoning, tool use, and survival in physical environments, but lag in
+raw pattern recognition or data processing compared to animals or
+machines; for instance, cats outperform humans in visuomotor tasks.”</p>
+</blockquote>
+<blockquote>
+<p>“Why It Still Matters”</p>
+</blockquote>
+<blockquote>
+<p>“LeCun’s view doesn’t negate practical AI progress; it reframes”AGI”
+as unnecessary hype, emphasizing “human-level AI” for specific, valuable
+capabilities like world modeling or robotics, where Google (under Brin’s
+push) and others compete. In the poster’s context, Brin’s return signals
+Google’s execution on these frontiers—Gemini advancements in multimodal
+models—not chasing an ill-defined AGI finish line. Real-world dominance
+in video/images (YouTube data) and chips (TPUs) drives usage wins,
+regardless of terminology.”</p>
+</blockquote></li>
+</ul>
+</div>
 </div>
 <div id="resources" class="section level1">
 <h1>Resources</h1>

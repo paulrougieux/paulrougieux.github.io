@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -644,6 +647,22 @@ class="uri">https://quarto.org/docs/authoring/footnotes-and-citations.html</a></
 <h2>Code chunks</h2>
 <div id="python-and-jupyter" class="section level3">
 <h3>Python and Jupyter</h3>
+<p>Python code block with eval=False</p>
+<pre><code>
+      &gt; 
+      &gt; ``` python
+      &gt; # Your Python code here
+      &gt; print(&quot;This won&#39;t run&quot;)
+      &gt; ```
+</code></pre>
+<p>Set for all chunks in the document</p>
+<pre><code>    ---
+    title: &quot;My Document&quot;
+    format: html
+    execute:
+      echo: true
+      eval: false
+    ---</code></pre>
 <ul>
 <li><p>Need to set the extension as <code>.qmd</code> to enable
 execution of code chunks</p></li>
@@ -680,6 +699,8 @@ class="uri">https://quarto.org/docs/authoring/figures.html</a></p>
 <p>Here is how to add a figure with caption and cross reference in
 quarto:</p>
 <pre><code>![An Elephant](elephant.png){#fig-elephant}</code></pre>
+<div id="figures-generated-from-python-code" class="section level3">
+<h3>Figures generated from python code</h3>
 <p>Example of a figure with caption and label, generated from python
 code. Note you would have to use single curly braces in the code chunk,
 these are only here so that this code chunk is not interpreted.</p>
@@ -696,6 +717,7 @@ these are only here so that this code chunk is not interpreted.</p>
 <p>Refer to the figures with an <code>@</code> label:</p>
 <pre><code>see @fig-plot and @fig-elephant</code></pre>
 </div>
+</div>
 <div id="render" class="section level2">
 <h2>Render</h2>
 <p>Render a document as explained in
@@ -703,6 +725,14 @@ these are only here so that this code chunk is not interpreted.</p>
 <pre><code>quarto render document.qmd
 quarto render document.qmd --to html
 quarto render document.qmd --to pdf --toc</code></pre>
+<div id="line-break-and-margin" class="section level3">
+<h3>Line break and margin</h3>
+<p>Use to force a line break. This was necessary to avoid inline code
+chunk to overflow in the margin of the pdf file:</p>
+<pre><code>To explore available variables, users can access the `variables` property  \newline
+(e.g., `model[&quot;sawn&quot;].variables`). Array properties are
+used to store metadata, the example below displays the roundwood production unit :</code></pre>
+</div>
 </div>
 <div id="tables" class="section level2">
 <h2>Tables</h2>

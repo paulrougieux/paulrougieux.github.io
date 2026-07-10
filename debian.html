@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -565,6 +568,35 @@ laptop.</p>
 <pre><code>sensor:modalias:*
   ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1</code></pre>
 </div>
+</div>
+</div>
+<div id="architecture" class="section level1">
+<h1>Architecture</h1>
+<div id="i386" class="section level2">
+<h2>i386</h2>
+<p>I added the i386 architecture for a project, but it turned out it was
+not needed, here is how to removme it from Claude</p>
+<ol style="list-style-type: decimal">
+<li><p>Remove the 32-bit Wine packages</p>
+<p>sudo apt purge wine32:i386 libwine:i386</p></li>
+<li><p>Drop the ~270 orphaned i386 libraries (review the list before
+confirming)</p>
+<p>sudo apt autoremove –purge</p></li>
+<li><p>Confirm nothing i386 remains (should print nothing)</p>
+<p>dpkg -l | awk ‘$1==“ii” &amp;&amp; <span class="math inline">\(2 ~
+/:i386\)</span>/’</p></li>
+<li><p>Remove the i386 architecture (fails safely if step 3 wasn’t
+empty)</p>
+<p>sudo dpkg –remove-architecture i386</p></li>
+<li><p>Refresh apt metadata</p>
+<p>sudo apt update</p></li>
+</ol>
+<p>Verify afterward:</p>
+<pre><code>dpkg --print-foreign-architectures   # → empty, no i386
+wine64 --version                      # → 64-bit Wine still works</code></pre>
+</div>
+<div id="amd-64" class="section level2">
+<h2>AMD 64</h2>
 </div>
 </div>
 <div id="debian-development" class="section level1">
@@ -881,8 +913,82 @@ dotfile</a> with connection to posteo and vim editor.</p>
 <p>Example of Mutt setup for professional email coming from an Exchange
 server.</p>
 </div>
+<div id="okular" class="section level2">
+<h2>Okular</h2>
+<div id="signature" class="section level3">
+<h3>Signature</h3>
+<p>See also how to use Image Magick to transform a jpg image into a png
+with a transparent background so that the signature’s background is not
+visible on the inserted pdf.</p>
+<p>Add a signature as a stamp, by using.</p>
+<ul>
+<li>Go to Settings → Configure Okular → Annotations.</li>
+<li>Click Add</li>
+<li>Give it a name such as Insert Signature.</li>
+</ul>
+<p>Then use the signature later from the annotation tool bar</p>
+<ul>
+<li>Open the menu Tools / Annotations F6</li>
+<li>There is a drop down menu near text selection which defaults to
+yellow highlighter, this is where you can find the stamp signature you
+created.</li>
+<li>pick your signature PNG, then OK / Apply.</li>
+</ul>
+<p>Then flatten the pdf using print to file:</p>
+<ul>
+<li>The signature was added as an annotation. Open the pdf in Firefox or
+a pdf viewer and print to pdf to remove the annotation and merge it into
+the page content.</li>
+</ul>
+<p>Sometimes there is an issue with the print to file option, where the
+square corresponding to the signature is black. This is because the
+transparency layer is not recognised by some pdf engine. In that case,
+first use Poppler to flatten the pages, by rasterizing the transparent
+signature onto the image background to jpeg files. Then reassemble the
+jpeg files into a pdf file as follows:</p>
+<pre><code>pdftoppm -r 200 -jpeg -jpegopt quality=90 Arbeitsvertrag_APO_signed.pdf /tmp/pg
+img2pdf /tmp/pg-*.jpg -o Arbeitsvertrag_APO_signed_flat.pdf</code></pre>
+</div>
+</div>
 <div id="python" class="section level2">
 <h2>Python</h2>
+<p>See also the <a href="python.html">python page</a> on this blog.</p>
+<div id="anaconda" class="section level3">
+<h3>Anaconda</h3>
+<ul>
+<li><p>2026 instructions <a
+href="https://www.anaconda.com/docs/getting-started/anaconda/install/linux-install#using-anaconda-distribution-in-a-commercial-setting"
+class="uri">https://www.anaconda.com/docs/getting-started/anaconda/install/linux-install#using-anaconda-distribution-in-a-commercial-setting</a></p>
+<p>cd ~/downloads curl -O <a
+href="https://repo.anaconda.com/archive/Anaconda3-2025.12-2-Linux-x86_64.sh"
+class="uri">https://repo.anaconda.com/archive/Anaconda3-2025.12-2-Linux-x86_64.sh</a>
+sha256sum <PATH_TO_INSTALLER_FILE> bash
+./Anaconda3-2025.12-2-Linux-x86_64.sh</p></li>
+</ul>
+<blockquote>
+<p>“Test the installation”</p>
+</blockquote>
+<pre><code>source /opt/conda/etc/profile.d/conda.sh
+conda -V</code></pre>
+<blockquote>
+<p>“Installing conda packages with the system package manager makes it
+very easy to distribute conda across a cluster of machines running Linux
+without having to worry about any non-privileged user modifying the
+installation.”</p>
+</blockquote>
+<blockquote>
+<p>“Any non-privileged user simply needs to run source
+/opt/conda/etc/profile.d/conda.sh to use conda.”</p>
+</blockquote>
+<p>Make conda available by adding the following to
+<code>.bash_aliases</code>. I place it in <code>.bash_aliases</code>
+sourced by <code>.bash_profile</code>, because tmux doesn’t load
+<code>.bashrc</code>.</p>
+<pre><code># Make conda available
+if [ -f /opt/conda/etc/profile.d/conda.sh ]; then
+    source /opt/conda/etc/profile.d/conda.sh
+fi</code></pre>
+</div>
 <div id="pip-pipx-and-virtual-enviroments" class="section level3">
 <h3>Pip, pipx and virtual enviroments</h3>
 <ul>
@@ -993,6 +1099,21 @@ rstudio</a></p>
 <pre><code>sudo apt remove rstudio</code></pre>
 </div>
 </div>
+<div id="terminal-emulators" class="section level2">
+<h2>Terminal emulators</h2>
+<ul>
+<li><p>Alacritty</p>
+<ul>
+<li><p>Debian package <a
+href="https://packages.debian.org/trixie/alacritty"
+class="uri">https://packages.debian.org/trixie/alacritty</a></p></li>
+<li><p>Website <a href="https://alacritty.org/"
+class="uri">https://alacritty.org/</a></p></li>
+</ul></li>
+<li><p>Gnome terminal</p></li>
+<li><p>Konsole</p></li>
+</ul>
+</div>
 <div id="remmina" class="section level2">
 <h2>Remmina</h2>
 <p>Installing from the backports (see above section on how to add the
@@ -1013,6 +1134,14 @@ echo “deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg]
 class="uri">https://packages.element.io/debian/</a> default main” | sudo
 tee /etc/apt/sources.list.d/element-io.list sudo apt update sudo apt
 install element-desktop</p></li>
+</ul>
+<p>To get older messages you can either:</p>
+<ul>
+<li>either identify with another device</li>
+<li>or use recovery keys</li>
+</ul>
+<p>To save recovery keys for later use:</p>
+<ul>
 <li><p>Riot (former version) <a
 href="https://riot.im/download/desktop/">Desktop Riot
 installation</a></p>
@@ -1154,7 +1283,11 @@ not working in the official MS Teams for Linux</a></p></li>
 website. It’s possible to share your screen on Linux, from the Firefox
 web browser or from Chromium.</p></li>
 </ul></li>
+<li><p>Remove teams from Debian</p>
+<p>sudo rm /etc/apt/sources.list.d/teams.list &amp;&amp; echo “Removed
+teams.list”</p></li>
 </ul>
+<p>I use the web version on Firefox or Chromium instead.</p>
 </div>
 </div>
 <div id="vim" class="section level2">
@@ -1200,6 +1333,14 @@ Your decision? 3</code></pre>
 <h2>Wajig</h2>
 <p>Debian and ubuntu system administration <a
 href="https://wajig.readthedocs.io/en/latest/">wajig docs</a></p>
+</div>
+<div id="wine" class="section level2">
+<h2>Wine</h2>
+<p>Install 32-bit Wine :</p>
+<p>sudo dpkg –add-architecture i386 sudo apt-get update sudo apt-get
+install wine32:i386 # (package name may be wine32 / libwine:i386
+depending on your wine source)</p>
+<p>Install 64 bit wine</p>
 </div>
 <div id="zathura" class="section level2">
 <h2>Zathura</h2>
@@ -1385,6 +1526,23 @@ keyboard. It usually has two icons - a window key and a lock.”</p>
 </blockquote>
 <p>There is indeed a lock on my mechanical keyboard if I unlock it, the
 super key works again.</p>
+<div id="gnome-keyring" class="section level2">
+<h2>Gnome Keyring</h2>
+<p>Login keyring issue. Claude:</p>
+<blockquote>
+<ul>
+<li>“The Passwords section vanished because your login keyring had one
+orphaned item (73) — a leftover from an interrupted write. Seahorse
+aborts the entire section if a single item fails to load.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>We forced a keyring rewrite to drop the orphan, then restarted the
+daemon so it re-read the clean file.”</li>
+</ul>
+</blockquote>
+</div>
 </div>
 <div id="keyboard" class="section level1">
 <h1>Keyboard</h1>
@@ -1526,6 +1684,38 @@ off under the mouse and the touchpad sections.</p>
 href="https://askubuntu.com/questions/345083/how-do-i-disable-automatic-remote-printer-installation">Disable
 automatic remote printer installation</a></p>
 </div>
+<div id="terminal-emulator" class="section level1">
+<h1>Terminal Emulator</h1>
+<p><a href="https://wiki.debian.org/TerminalEmulator"
+class="uri">https://wiki.debian.org/TerminalEmulator</a></p>
+<div id="gnome-terminal" class="section level2">
+<h2>Gnome terminal</h2>
+<p>Great, use it all the time on my laptop.</p>
+<p>There is an issue when copying from a server’s tmux session with CTRL
+Alt C, because Gnome terminal doesn’t support OSC 52, a feature that
+enables sending a copy signal to the terminal through an SSH
+session.</p>
+<ul>
+<li>2018 Gnome Terminal issue “Add support for OSC 52” <a
+href="https://gitlab.gnome.org/GNOME/vte/-/work_items/2495"
+class="uri">https://gitlab.gnome.org/GNOME/vte/-/work_items/2495</a>
+still open as of 2026</li>
+</ul>
+</div>
+<div id="kitty" class="section level2">
+<h2>Kitty</h2>
+<p>Copy paste works with CTRL Alt C with within Tmux when connected
+through SSH on a server because Kitty supports OSC 52.</p>
+<ul>
+<li><p><a href="https://sw.kovidgoyal.net/kitty/conf/"
+class="uri">https://sw.kovidgoyal.net/kitty/conf/</a></p>
+<blockquote>
+<p>“You can open the config file within kitty by pressing
+ctrl+shift+f2”</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
 <div id="screen-display" class="section level1">
 <h1>Screen display</h1>
 <p>The issue is that sometimes the display menu doesn’t provide all
@@ -1603,6 +1793,23 @@ settings” or following command</p>
 <pre><code>xrandr --output XWAYLAND1 --mode &quot;1920x1200_60.00&quot;</code></pre>
 </div>
 </div>
+<div id="server" class="section level1">
+<h1>Server</h1>
+<p>A section to gather server installation summary.</p>
+<div id="data-science-server" class="section level2">
+<h2>Data science server</h2>
+<p>Server to load data from UN Comtrade using the biotrade python
+package.</p>
+<p>Copy config files such as bash aliases from public repository</p>
+<p>curl</p>
+<p>Create a virtual environment</p>
+<pre><code>mkdir ~/rp/penv
+python3 -m venv ~/rp/penv
+source ~/rp/penv/bin/activate
+# Upgrade pip
+python -m pip install --upgrade pip</code></pre>
+</div>
+</div>
 <div id="system-information-and-version" class="section level1">
 <h1>System information and version</h1>
 <p>Find out which Debian version is running</p>
@@ -1637,6 +1844,14 @@ of Gimp Shortcuts</a></p>
 </div>
 <div id="upgrade-debian-version" class="section level1">
 <h1>Upgrade Debian version</h1>
+<div id="backup" class="section level2">
+<h2>Backup</h2>
+<p>Backup to a drive that doesn’t support symbolic links
+<code>--no-links</code> (maybe not a good idea?) the other flags mean
+<code>-a</code> archive and <code>-v</code> verbose.</p>
+<pre><code>rsync -av --no-links /home/paul/ /media/paul/PortableSSD/backup/paul_20251007
+rsync -av --no-links /home/paul/rp /media/paul/PortableSSD/backup/paul_20251007/rp</code></pre>
+</div>
 <div id="from-jessie-8-to-stretch-9" class="section level2">
 <h2>From Jessie 8 to Stretch 9</h2>
 <p>I followed the documentation on <a
@@ -1779,6 +1994,92 @@ class="uri">https://unix.stackexchange.com/questions/556946/possible-missing-fir
 <pre><code>  sudo apt-get install firmware-linux</code></pre></li>
 <li><p>Purging removed packages</p>
 <p>apt list ‘~c’ sudo apt purge ‘~c’</p></li>
+</ul>
+</div>
+<div id="from-bookworm-12-to-trixie-13" class="section level2">
+<h2>From Bookworm 12 to Trixie 13</h2>
+<p>I updated bookworm one last time:</p>
+<pre><code>sudo apt update
+sudo apt upgrade</code></pre>
+<p>Inspect the state of all packages:</p>
+<pre><code>apt list --installed &gt; ~/curr-pkgs.txt</code></pre>
+<ul>
+<li><p><a
+href="https://www.debian.org/releases/trixie/release-notes/upgrading.html"
+class="uri">https://www.debian.org/releases/trixie/release-notes/upgrading.html</a></p>
+<blockquote>
+<p>As mentioned in Start from “pure” Debian, we recommend that you use
+the new deb822-style format, so you would have to replace
+/etc/apt/sources.list and any *.list files in /etc/apt/sources.list.d/
+by only one file named debian.sources in /etc/apt/sources.list.d/ (if
+you haven’t done so already). An example is given below of how this file
+should typically look.</p>
+</blockquote></li>
+</ul>
+<p>Previously content of /etc/apt/sources.list, I have now removed this
+file</p>
+<pre><code>deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb-src  https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+deb https://deb.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware</code></pre>
+<p>Modify sources</p>
+<pre><code>sudo vim /etc/apt/sources.list.d/debian.sources</code></pre>
+<p>Added</p>
+<pre><code>Types: deb
+URIs: https://deb.debian.org/debian
+Suites: trixie trixie-updates
+Components: main contrib non-free non-free-firmware
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+Types: deb
+URIs: https://security.debian.org/debian-security
+Suites: trixie-security
+Components: main contrib non-free non-free-firmware
+Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg</code></pre>
+<p>Note: Types: deb-src can be used to download source packages for
+inspection.</p>
+<ul>
+<li><p>Recording the session</p>
+<blockquote>
+<p>“apt will log the changed package states in /var/log/apt/history.log
+and the terminal output in /var/log/apt/term.log.”</p>
+</blockquote></li>
+<li><p>Minimal upgrade</p>
+<p>sudo apt upgrade –without-new-pkgs</p></li>
+<li><p>Upgrading the system</p>
+<p>sudo apt full-upgrade</p></li>
+</ul>
+<div id="issues-after-the-upgrade" class="section level3">
+<h3>Issues after the upgrade</h3>
+<ul>
+<li><p>After the upgrade, python plots wouldn’t display with this
+message:</p>
+<pre><code>UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+plt.show()</code></pre>
+<ul>
+<li><p>Fixed by installing the QtAgg backend:</p>
+<pre><code>sudo apt install python3-pyqt6</code></pre></li>
+</ul></li>
+<li><p>After the upgrade LibreOffice switched to dark mode, the system
+default. To switch it back to light mode go to
+<code>Tools-&gt;Options-&gt;Appearance</code> <a
+href="https://ask.libreoffice.org/t/how-to-force-light-mode/87859/6"
+class="uri">https://ask.libreoffice.org/t/how-to-force-light-mode/87859/6</a></p></li>
+<li><p>After the upgrade from Bookworm to Trixie, Microsoft teams calls
+inside Firefox or Chromium had frequent interruption of the voice. The
+voice of my colleague would return after approximately half minute. Not
+sure if this a memory issue on my laptop with 16Gb RAM.</p></li>
+</ul>
+</div>
+</div>
+<div id="from-trixie-13-to" class="section level2">
+<h2>From Trixie 13 to</h2>
+<ul>
+<li><p>Future versions of nvim-lspconfig are compatible with neovim
+verison 11. Now that neovim version 11 is available in Debian. you can
+remove the version argument in
+setup/nvim/lua/plugins/nvim-lspconfig.lua</p>
+<p># Remove version = ‘v2.5.0’, – Last version with full Nvim 0.10
+support</p></li>
 </ul>
 </div>
 </div>

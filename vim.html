@@ -358,6 +358,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -2074,6 +2077,18 @@ explains how to use the .vimrc from Neovim</p></li>
 <li><p><a href="https://nvchad.com/" class="uri">https://nvchad.com/</a>
 Neovim config</p></li>
 </ul>
+<div id="config" class="section level2">
+<h2>Config</h2>
+<p>Neovim is configured in ~/.config/nvim This file is a symbolic link
+to my setup directory</p>
+<pre><code>ll ~/.config/nvim
+/home/paul/.config/nvim -&gt; /home/paul/rp/paulrougieux.github.io/setup/nvim/</code></pre>
+<div id="server-config" class="section level3">
+<h3>Server config</h3>
+<p>I also have a server config, which is has less packages than on the
+laptop.</p>
+</div>
+</div>
 <div id="fonts-for-neovim-plugins" class="section level2">
 <h2>Fonts for neovim plugins</h2>
 <p>Neovim plugins such as avante and aerial require nerd fonts.
@@ -3224,7 +3239,7 @@ the commit state of the edit commit, then you will be able to edit files
 in that commit state. Then amend the commit with</p>
 <pre><code>:G commit --amend</code></pre>
 <p>After amending the commit of interest, Then you will be able to
-continue the ongoing rebase from the fugitive window with:</p>
+continue the ongoing rebase with “rr” from the fugitive window with:</p>
 <pre><code>:G
 rr</code></pre>
 </div>
@@ -3388,6 +3403,90 @@ to prevent vim from hiding symbols in Markdown and JSON</a></p>
 <p>Or set the file type to text</p>
 <pre><code>:set ft=text</code></pre>
 </div>
+</div>
+<div id="tree-sitter" class="section level3">
+<h3>Tree sitter</h3>
+<p>Tree sitter manages syntax parsers for python, R, markdown and other
+files. These syntax parsers are necessary to understand the nature of
+each language’s keywords so that the source code can be highlighted.
+Tree sitter requires a command line tool to download parsers.</p>
+<p>Install with npm</p>
+<pre><code>npm install -g tree-sitter-cli</code></pre>
+<p>I had to install with npm, because, in 2026, the Debian version of
+tree-sitter was outdated:</p>
+<pre><code>sudo apt install tree-sitter-cli</code></pre>
+<p>Problem</p>
+<blockquote>
+<p>This version of Tree-sitter can only generate parsers with ABI
+version 13 - 14, not 15 The error means your installed tree-sitter CLI
+is too old: it only emits ABI 13–14, but the latex grammar’s grammar.js
+now requires ABI 15.</p>
+</blockquote>
+<p>Uninstall</p>
+<pre><code>sudo apt remove tree-sitter-cli</code></pre>
+<p>Install with npm</p>
+<pre><code>npm install -g tree-sitter-cli</code></pre>
+<p>My tree sitter configuration explained by Claude:</p>
+<pre><code>return {
+    {
+      -- Plugin repo on GitHub
+      &#39;nvim-treesitter/nvim-treesitter&#39;,
+      branch = &#39;main&#39;,
+      -- Load at startup instead of lazily. Treesitter is needed early so
+      -- highlighting kicks in as soon as the first buffer opens.
+      lazy = false,
+      -- After install/update, run :TSUpdate to (re)compile parser binaries.
+      build = &quot;:TSUpdate&quot;,
+      config = function()
+        -- Handle to the plugin&#39;s Lua API.
+        local nts = require(&#39;nvim-treesitter&#39;)
+        -- Parsers available.
+        local wanted = {
+          &quot;lua&quot;, &quot;vim&quot;, &quot;vimdoc&quot;, &quot;query&quot;,          -- editing Neovim itself
+          &quot;r&quot;, &quot;python&quot;, &quot;bash&quot;,                    -- scripting languages I use
+          &quot;javascript&quot;, &quot;typescript&quot;, &quot;html&quot;, &quot;css&quot;,-- web
+          &quot;json&quot;, &quot;yaml&quot;, &quot;toml&quot;,                   -- config / data formats
+          &quot;markdown&quot;, &quot;markdown_inline&quot;,            -- prose (inline = code spans, links…)
+          &quot;latex&quot;, &quot;bibtex&quot;,                        -- academic writing
+          &quot;sql&quot;, &quot;dockerfile&quot;,                      -- misc tooling
+          &quot;gitcommit&quot;, &quot;gitignore&quot;, &quot;git_rebase&quot;, &quot;diff&quot;, -- git buffers
+          &quot;regex&quot;,                                  -- highlights regexes inside other langs
+        }
+        -- Ask the plugin which parsers are already installed.
+        -- Guarded with `and ... or {}` in case the API isn&#39;t present yet
+        -- (older revisions of the &#39;main&#39; branch lacked get_installed).
+        local installed = nts.get_installed and nts.get_installed(&quot;parsers&quot;) or {}
+        -- Build a list of parsers from `wanted` that aren&#39;t installed yet.
+        local missing = {}
+        for _, p in ipairs(wanted) do
+          if not vim.tbl_contains(installed, p) then
+            table.insert(missing, p)
+          end
+        end
+        -- Only call install when something is actually missing. This matters
+        -- for parsers like `latex` whose grammar ships only as grammar.js —
+        -- calling install() unconditionally would regenerate parser.c on
+        -- every Neovim startup and print a noisy &quot;Generating parser.c…&quot; line.
+        if #missing &gt; 0 then nts.install(missing) end
+        -- On the &#39;main&#39; branch, opening a file does NOT automatically enable
+        -- tree-sitter highlighting. This autocmd does it for every buffer.
+        vim.api.nvim_create_autocmd(&#39;FileType&#39;, {
+          callback = function(args)
+            -- Map the buffer&#39;s filetype (e.g. &quot;sh&quot;) to a parser name
+            -- (e.g. &quot;bash&quot;). Returns nil if no parser is associated.
+            local lang = vim.treesitter.language.get_lang(args.match)
+            -- Try to load the parser. pcall() swallows errors so that
+            -- filetypes without an installed parser don&#39;t spam messages —
+            -- they just fall back to Vim&#39;s classic regex syntax highlighting.
+            if lang and pcall(vim.treesitter.language.add, lang) then
+              -- Activate tree-sitter highlighting for this buffer.
+              pcall(vim.treesitter.start)
+            end
+          end,
+        })
+      end,
+    },
+  }</code></pre>
 </div>
 </div>
 <div id="tests" class="section level2">
@@ -3558,6 +3657,17 @@ creates a spell file under /home/user/.vim/spell:</p>
 <p>View differences between <code>file1</code> and <code>file2</code>
 (vim documentation)</p>
 <pre><code>vimdiff file1 file2</code></pre>
+</div>
+<div id="visual-studio-code" class="section level2">
+<h2>Visual Studio Code</h2>
+<p>Because colleagues use it</p>
+<ul>
+<li>Markdown Table of content Built-in Outline view (no extension
+needed)
+<ul>
+<li>View → Open View… → Outline,</li>
+</ul></li>
+</ul>
 </div>
 </div>
 <div id="blogs-and-resources" class="section level1">

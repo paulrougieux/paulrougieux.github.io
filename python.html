@@ -358,6 +358,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -851,6 +854,7 @@ increment minor and major version numbers. This is required before
 uploading to pypi.</p>
 <pre><code>cd package_dir
 # Use bumpversion for packages still using setup.py
+# eu_cbm_hat is still using setup.py
 # Use git tag for packages using pyproject.toml
 git tag
 git tag v0.0.2  -m &quot;Version 0.0.2&quot;  
@@ -860,6 +864,8 @@ python3 -m build
 # Upload all builds or only the latest version
 twine upload dist/*
 twine upload --skip-existing dist/*</code></pre>
+<p>Bumpversion</p>
+<pre><code>bumpversion patch</code></pre>
 <p>Test upload</p>
 <pre><code>python3 -m twine upload --repository testpypi dist/*</code></pre>
 <p><code>twine</code> uses kde wallet to store the password, press
@@ -1216,6 +1222,39 @@ extension, which can parse both Google and NumPy styles and output
 structured documentation.</li>
 </ul>
 </blockquote></li>
+<li><p>Paul</p>
+<p>❯ pros and cons of google vs numpy docstring format</p></li>
+<li><p>Claude:</p>
+<blockquote>
+<p>● Google</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Pros: cleaner, less visual noise, easier to write and read
+inline</li>
+<li>Cons: type info lives in the signature or in Args: inline — can feel
+cramped for complex types; less common in scientific Python</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>NumPy</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Pros: better for functions with many parameters or complex types —
+each param gets its own block with room to breathe; dominant convention
+in scientific Python (numpy, scipy, pandas, sklearn)</li>
+<li>Cons: verbose, more boilerplate for simple functions; &gt;&gt;&gt;
+in examples is noise</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Rule of thumb: if your codebase is data/science-heavy with rich
+parameter docs, NumPy wins. For application code with simple APIs,
+Google is cleaner. Since this project (coillte_cbm) is scientific
+Python, NumPy is the right call — which matches your global
+CLAUDE.md.</p>
+</blockquote></li>
 </ul>
 </div>
 <div id="google-style" class="section level4">
@@ -1283,6 +1322,16 @@ LinAlgException
 <blockquote>
 <p>“This section should be used judiciously, i.e., only for errors that
 are non-obvious or have a large chance of getting raised.”</p>
+</blockquote>
+<p>Paul:</p>
+<pre><code>Do we need the &quot;&gt;&quot; in the example section when documenting in numpy docstring format?</code></pre>
+<p>Claude:</p>
+<blockquote>
+<p>“● Yes, the &gt;&gt;&gt; is required. NumPy docstring examples use
+Python’s standard doctest format — each line of code is prefixed with
+&gt;&gt;&gt; (and … for continuation lines). Without them, the example
+is treated as plain text and won’t be recognized by doctest runners or
+rendered as interactive code by tools like pdoc.”</p>
 </blockquote>
 </div>
 <div id="type-hints" class="section level4">
@@ -1454,6 +1503,10 @@ environment you can also install different packages with pip.</p></li>
 <li><p>Illustration of the complementarity between pyenv and
 pipenv.</p></li>
 </ul>
+<div id="create-a-virtual-environment-for-a-project"
+class="section level3">
+<h3>Create a virtual environment for a project</h3>
+</div>
 <div id="location-of-virtual-environment-directories"
 class="section level3">
 <h3>Location of virtual environment directories</h3>
@@ -2578,6 +2631,34 @@ model = nn.Sequential(
 )
 print(model(x).shape)</code></pre>
 </div>
+<div id="jax" class="section level2">
+<h2>Jax</h2>
+<p>High performance array computing</p>
+<ul>
+<li><p><a href="https://docs.jax.dev/en/latest/"
+class="uri">https://docs.jax.dev/en/latest/</a></p>
+<blockquote>
+<p>“JAX provides a familiar NumPy-style API for ease of adoption by
+researchers and engineers.”</p>
+</blockquote>
+<blockquote>
+<p>“JAX includes composable function transformations for compilation,
+batching, automatic differentiation, and parallelization.”</p>
+</blockquote>
+<blockquote>
+<p>“The same code executes on multiple backends, including CPU, GPU,
+&amp; TPU”</p>
+</blockquote></li>
+</ul>
+<div id="automatic-vectorization" class="section level3">
+<h3>Automatic vectorization</h3>
+<ul>
+<li><a
+href="https://docs.jax.dev/en/latest/automatic-vectorization.html#id2"
+class="uri">https://docs.jax.dev/en/latest/automatic-vectorization.html#id2</a></li>
+</ul>
+</div>
+</div>
 </div>
 <div id="objects" class="section level1">
 <h1>Objects</h1>
@@ -3075,6 +3156,24 @@ repo_eu_cbm_hat = git.Repo(find_sys_path(&quot;eu_cbm_hat&quot;))</code></pre>
 
 #Usage
 checkout_branch(repo_libcbm_py, &quot;2.x&quot;)</code></pre>
+</div>
+</div>
+<div id="graph" class="section level1">
+<h1>Graph</h1>
+<p>This section is about graph data structures. See also the plot
+section.</p>
+<div id="graphify" class="section level2">
+<h2>Graphify</h2>
+<ul>
+<li><a href="https://pypi.org/project/graphifyy/"
+class="uri">https://pypi.org/project/graphifyy/</a></li>
+</ul>
+</div>
+<div id="networkx" class="section level2">
+<h2>Networkx</h2>
+<p>Create a multi digraph</p>
+<pre><code>import networkx as nx
+nx.MultiDiGraph()</code></pre>
 </div>
 </div>
 <div id="http" class="section level1">
@@ -4148,6 +4247,17 @@ become a full-featured computer algebra system (CAS) while keeping the
 code as simple as possible in order to be comprehensible and easily
 extensible. SymPy is written entirely in Python.”</p>
 </blockquote>
+</div>
+<div id="logistic-curve" class="section level2">
+<h2>Logistic curve</h2>
+<p>Plot a standard logistic function with python</p>
+<pre><code>import numpy as np
+import pandas
+import matplotlib.pyplot as plt
+df = pandas.DataFrame({&quot;x&quot;:np.arange(-6, 6, 0.1)})
+df[&quot;standard logistic function&quot;] = 1 / (1 + np.exp(-df[&quot;x&quot;]))
+df.set_index(&quot;x&quot;).plot()
+plt.show()</code></pre>
 </div>
 </div>
 <div id="modelling-and-statistics" class="section level1">
@@ -6548,8 +6658,10 @@ print(file_name, file_name.exists())
 analysis</a> is a great gallery of plot examples, each example is
 written in 5 different plotting libraries: pandas, plotnine, plotly,
 altair and R ggplot2. There is also one seaborn example.</p>
-<div id="image-composition" class="section level2">
-<h2>Image composition</h2>
+<div id="pil-image-processing" class="section level2">
+<h2>PIL image processing</h2>
+<div id="image-composition" class="section level3">
+<h3>Image composition</h3>
 <p>For some complex plots, I directly pasted images of plots together as
 follows:</p>
 <pre><code>from PIL import Image
@@ -6583,6 +6695,12 @@ combined_image.paste(p_hexprov_eu, (x_offset, 0))
 combined_image.paste(p_sink_eu, (0, hexprov_height))
 # Save the combined image
 combined_image.save(composite_plot_dir / &quot;hexprov_sink.png&quot;)</code></pre>
+</div>
+<div id="enhance-black-and-white-image-for-laser-printing"
+class="section level3">
+<h3>Enhance black and white image for laser printing</h3>
+<p>See script in scripts/enhance_for_bw_laser.py</p>
+</div>
 </div>
 <div id="matplotlib" class="section level2">
 <h2>Matplotlib</h2>
@@ -9754,6 +9872,11 @@ rpc = server.evatrRPC(UstId_1, UstId_2, Firmenname, Ort, PLZ, Strasse)
 
 print(rpc)</code></pre>
 </div>
+</div>
+<div id="snakemake" class="section level2">
+<h2>Snakemake</h2>
+<p>Monitor ongoing run at the command line</p>
+<pre><code>snakemake --summary</code></pre>
 </div>
 </div>
 <div id="xarray" class="section level1">

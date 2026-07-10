@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Paul Rougieux" />
 
+<meta name="date" content="2025-01-01" />
 
-<title>Paul’s Workbench</title>
+<title>Javascripts Commands</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -29,6 +31,9 @@
        h6 {font-size: 12px;}
        code {color: inherit; background-color: rgba(0, 0, 0, 0.04);}
        pre:not([class]) { background-color: white }</style>
+<script src="site_libs/jqueryui-1.13.2/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
@@ -222,6 +227,69 @@ $(document).ready(function () {
 
 
 
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+
+</style>
+
+
 
 </head>
 
@@ -229,6 +297,16 @@ $(document).ready(function () {
 
 
 <div class="container-fluid main-container">
+
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
 
 
 
@@ -391,23 +469,79 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">Paul’s Workbench</h1>
+<h1 class="title toc-ignore">Javascripts Commands</h1>
+<h4 class="author">Paul Rougieux</h4>
+<h4 class="date">2025</h4>
 
 </div>
 
 
-<p><img src="figures/paul_bellinzona.png" alt="Profile picture" class="profilepicture" style="width: 200px;"/></p>
-<p>My name is Paul Rougieux, I am a wood products engineer and forest
-economist.</p>
-<p>This site contains useful tools and data to analyse the forest
-sector.</p>
-<p>This website was created using <a
-href="http://rmarkdown.rstudio.com/rmarkdown_websites.html">Rmarkdown</a>
-and the <a href="https://gitlab.com/paulrougieux/paulrougieux">source
-code</a> is available.</p>
+<div id="input-output" class="section level1">
+<h1>Input output</h1>
+<div id="parquet-files" class="section level2">
+<h2>Parquet files</h2>
+<ul>
+<li><p>hyparquet <a href="https://github.com/hyparam/hyparquet"
+class="uri">https://github.com/hyparam/hyparquet</a> is a
+“dependency-free, pure JavaScript library for parsing Apache Parquet
+files”.</p>
+<ul>
+<li>Demo website at <a href="https://hyperparam.app/"
+class="uri">https://hyperparam.app/</a></li>
+</ul></li>
+</ul>
+</div>
+<div id="csv-files" class="section level2">
+<h2>CSV files</h2>
+<div id="compression" class="section level3">
+<h3>Compression</h3>
+<ul>
+<li><p><a
+href="https://www.perplexity.ai/search/please-provide-a-short-descrip-7PlVT6OlTMqCquc7J8vWBg#1"
+class="uri">https://www.perplexity.ai/search/please-provide-a-short-descrip-7PlVT6OlTMqCquc7J8vWBg#1</a></p>
+<blockquote>
+<p>“You don’t need to manually compress CSV files. Servers and browsers
+handle it automatically. When a user requests your file, the server
+applies HTTP compression (e.g. gzip or Brotli), the browser decompresses
+it, and your javascript libraries just receives plain CSV data without
+noticing.”</p>
+</blockquote></li>
+</ul>
+<p><strong>References:</strong></p>
+<ul>
+<li>MDN: <a
+href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Compression">HTTP
+compression</a></li>
+<li>RFC 9110: <a
+href="https://www.rfc-editor.org/rfc/rfc9110.html#name-content-encoding">Content-Encoding</a></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="visualization" class="section level1">
+<h1>Visualization</h1>
+<div id="altair" class="section level2">
+<h2>Altair</h2>
+<p>Altair visualizations can be exported from python as JSON files, then
+rendered in the browser as Javascript.</p>
+<p>Pros and cons <a
+href="https://claude.ai/share/6800f20a-e068-450e-bca4-f3e3db45c71b"
+class="uri">https://claude.ai/share/6800f20a-e068-450e-bca4-f3e3db45c71b</a></p>
+<ul>
+<li>Part of the broader Vega visualization ecosystem</li>
+<li>Benefits from academic research in visualization grammar</li>
+<li>More principled approach to visualization design</li>
+</ul>
+</div>
+<div id="plotly" class="section level2">
+<h2>Plotly</h2>
+</div>
+</div>
 
 
 
+</div>
+</div>
 
 </div>
 
@@ -440,6 +574,35 @@ $(document).ready(function () {
 
 <!-- code folding -->
 
+<script>
+$(document).ready(function ()  {
+
+    // temporarily add toc-ignore selector to headers for the consistency with Pandoc
+    $('.unlisted.unnumbered').addClass('toc-ignore')
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_');
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = true;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->
 <script>

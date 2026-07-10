@@ -9,9 +9,11 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
+<meta name="author" content="Paul Rougieux" />
 
+<meta name="date" content="2025-01-01" />
 
-<title>procrastination.knit</title>
+<title>Setup</title>
 
 <script src="site_libs/header-attrs-2.29/header-attrs.js"></script>
 <script src="site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
@@ -467,37 +469,211 @@ div.tocify {
 
 
 
+<h1 class="title toc-ignore">Setup</h1>
+<h4 class="author">Paul Rougieux</h4>
+<h4 class="date">2025</h4>
 
 </div>
 
 
-<div id="hyperfocus" class="section level1">
-<h1>Hyperfocus</h1>
-<p>• The Pomodoro Technique for ADHD: Does It Really Work? <a
-href="https://www.audhdpsychiatry.co.uk/does-pomodoro-really-work-for-adhd/"
-class="uri">https://www.audhdpsychiatry.co.uk/does-pomodoro-really-work-for-adhd/</a>
-&gt; “Switching Tasks Feels Impossible Some people with ADHD experience
-&gt; <strong>hyperfocus</strong>, which makes switching away from a task
-difficult. When &gt; this occurs, try setting a visible break timer to
-signal transitions. &gt; Building in a short transition activity between
-tasks, such as standing, &gt; stretching, or walking, can ease the shift
-between focus modes and reduce &gt; cognitive friction. It may also help
-to use auditory cues or gentle &gt; alarms that fade in, rather than
-loud timers that cause stress or &gt; confusion. Creating a consistent
-environment for work and rest also &gt; supports smoother transitions.”
-&gt; <strong>The Urge to Extend Work Periods</strong> One of the common
-pitfalls when using &gt; the Pomodoro Technique is the temptation to
-keep working past the &gt; 25-minute limit. While it may feel productive
-in the moment, extending &gt; work sessions can lead to burnout and
-reduce long-term efficiency. For &gt; individuals with ADHD, adhering to
-the set work intervals is vital for &gt; maintaining consistent energy
-levels and supporting the brain’s natural &gt; need for regular
-stimulation and rest. Longer stretches of unbroken &gt; concentration
-can also increase the risk of hyperfocus, making it harder &gt; to shift
-attention when necessary. By sticking to shorter, defined &gt; sessions,
-users allow their brains to reset and return with renewed &gt; focus.
-This supports better attention regulation and reduces the build-up &gt;
-of mental fatigue over time.”</p>
+<p>This is a description of how I edit text files for persons looking at
+my screen and wondering what editor I use to move so fast. Does a text
+editor still matter in the age of AI?</p>
+<p>Let me describe my text editing setup. This text was written by a
+human with his fingers on a keyboard in Vim.</p>
+<div id="text-editing" class="section level1">
+<h1>Text editing</h1>
+<p>I use Vim or Neovim to edit markdown files and source code. Mostly
+python code as of 2025, occasionally R code or other programming
+languages as well.</p>
+<p>When editing python code, the most used shortcut is
+<code>&lt;leaderkey&gt;p</code> which sends a paragraph to the ipython
+read–eval–print loop (REPL). This shortcut uses <a
+href="https://github.com/jpalardy/vim-slime">vim-slime</a> to “grab some
+text and send it to a target” tmux pane.</p>
+</div>
+<div id="server-setup" class="section level1">
+<h1>Server setup</h1>
+<div id="manual-setup-of-a-modelling-server" class="section level2">
+<h2>Manual setup of a modelling server</h2>
+<p>A server setup to run mostly python models.</p>
+<div id="connect-with-alias-in-ssh-config" class="section level3">
+<h3>Connect with alias in ssh config</h3>
+<p>See config in ~/.ssh/config The password can be saved in a storage
+file.</p>
+</div>
+<div id="create-users" class="section level3">
+<h3>Create users</h3>
+<p><strong>On the server</strong></p>
+<p>Log in as root and run these:</p>
+<p>Create user:</p>
+<pre><code>adduser modeluser</code></pre>
+<p>Grant sudo:</p>
+<pre><code>usermod -aG sudo modeluser</code></pre>
+<p>Set password:</p>
+<pre><code>passwd modeluser.</code></pre>
+<p>Disable root SSH: Edit /etc/ssh/sshd_config, set PermitRootLogin no,
+then systemctl restart ssh.</p>
+<p><strong>On the laptop</strong></p>
+<p>Update your ~/.ssh/config alias to use User modeluser.</p>
+<p>Copy the public key in remote server as authorized keys First check
+which public key is the most recent.</p>
+<pre><code>scp $HOME/.ssh/id_rsa.pub user@server:~/.ssh/authorized_keys</code></pre>
+<p><strong>On the server</strong></p>
+<ul>
+<li><p>disable password authentication</p>
+<p>vi /etc/ssh/sshd_config</p>
+<p>PasswordAuthentication no ChallengeResponseAuthentication no
+PubkeyAuthentication yes</p></li>
+</ul>
+</div>
+<div id="install-tools" class="section level3">
+<h3>Install tools</h3>
+<p>Install</p>
+<pre><code>sudo apt install git
+sudo apt install tree
+sudo apt install tmux
+sudo apt install htop
+sudo apt install python-is-python3
+sudo apt install python3-pip
+sudo apt install ipython3
+sudo apt install python3.13-venv
+sudo apt install neovim
+sudo apt install gdu</code></pre>
+</div>
+<div id="clone-repositories" class="section level3">
+<h3>Clone repositories</h3>
+<p>Use authentication tokens to clone private repos</p>
+<pre><code>git config --global credential.helper store
+git clone git@gitlab.com:bioeconomy/eu_cbm/eu_cbm_data.git
+git clone https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_data.git
+git clone https://gitlab.com/forest-modellers/cbm-timba-coupling.git</code></pre>
+<p>Create directories and symbolic links to accommodate pre-defined
+legacy python paths from the bash aliases dot files downloaded with curl
+below. These aliases are partly a workaround that shouldn’t be needed
+once we have a better way to set up the python path and model related
+environment variables.</p>
+<pre><code>cd ~
+mkdir repos
+ln -s repos rp
+cd repos
+ln -s ../eu_cbm eu_cbm
+mkdir eu_cbm/.venv
+ln -s eu_cbm/.venv penv</code></pre>
+</div>
+<div id="dot-files" class="section level3">
+<h3>Dot files</h3>
+<p>Get bash alias file from Paul’s blog setup repository</p>
+<pre><code>curl -O https://gitlab.com/paulrougieux/paulrougieux/-/raw/master/setup/.bash_aliases?ref_type=heads&amp;inline=false</code></pre>
+</div>
+<div id="setup-python-models" class="section level3">
+<h3>Setup python models</h3>
+<p>Create a virtual environment and install the model and its
+dependencies inside</p>
+<pre><code>cd ~
+mkdir eu_cbm/.venv
+python3 -m venv eu_cbm/.venv
+source eu_cbm/.venv/bin/activate
+cd ~/eu_cbm/eu_cbm_hat/
+pip install -e .
+pip install ipython # Inside the environment
+pip install libcbm # Why is this not a dependency of eu_cbm_hat? </code></pre>
+<p>See ~/eu_cbm/eu_cbm_hat/docs/setup_on_jrc_bdap.md For AIDB
+initialization and model run instructions.</p>
+</div>
+<div id="synchronize-to-and-from-the-server" class="section level3">
+<h3>Synchronize to and from the server</h3>
+<div id="rsync" class="section level4">
+<h4>rsync</h4>
+<p>Send laptop data to the server</p>
+<pre><code>rsync -avz ~/eu_cbm/TiMBA_Data/ paul@flower:eu_cbm/TiMBA_Data/</code></pre>
+<p>Send server data to the laptop</p>
+<pre><code>rsync -avz paul@flower:eu_cbm/cbm-timba-coupling/scripts ~/eu_cbm/cbm-timba-coupling/scripts</code></pre>
+</div>
+<div id="git-with-the-server-as-a-remote" class="section level4">
+<h4>git with the server as a remote</h4>
+<p>Add the server as a remote</p>
+<pre><code>git remote add flower paul@flower:eu_cbm/cbm-timba-coupling</code></pre>
+<p>Fetch changes the server made</p>
+<pre><code>git fetch flower</code></pre>
+<p>See what’s different</p>
+<pre><code>git log HEAD..flower/main --oneline</code></pre>
+<p>Merge or cherry-pick as needed</p>
+<pre><code>git merge flower/main</code></pre>
+</div>
+</div>
+</div>
+<div id="nix-automated-setup" class="section level2">
+<h2>Nix automated setup</h2>
+<p>My plan is to use nixos-infect to recreated my system on a Debian
+pre-created by the hosting provider.</p>
+<div id="auto-generated-nixos-config-for-a-vm" class="section level3">
+<h3>Auto generated NixOS config for a VM</h3>
+<p>Declarative recreation of a Debian 13 server. These files describe
+the machine; getting NixOS <em>onto</em> the box is a separate,
+destructive step.</p>
+<p>Files - <code>configuration.nix</code> — services, users, networking,
+packages. - <code>hardware-configuration.nix</code> — disk/boot
+scaffold. <strong>Regenerate on install</strong> with
+<code>nixos-generate-config --root /mnt</code>.</p>
+<p>What was captured from the live Debian server</p>
+<ul>
+<li>Host <code>vmd....</code>, BIOS/GRUB boot, ext4 root on
+<code>/dev/sda1</code>.</li>
+<li>User <code>paul</code> (sudo via <code>wheel</code>), SSH key-only,
+no root login, no passwords.</li>
+<li>Static IPv4 <code>....</code> gw <code>...</code>, IPv6
+<code>…:..........</code>.</li>
+<li>Local mail (exim4 → opensmtpd), cron, timesyncd, resolved.</li>
+<li>Tools: curl, git, htop, gdu, ipython3, ethtool.</li>
+<li>Timezone <code>Europe/Berlin</code>, locale
+<code>C.UTF-8</code>.</li>
+</ul>
+<p>Verify before trusting blindly - <strong>Interface name</strong>:
+NixOS may name the NIC <code>ens3</code>/<code>enp1s0</code> rather than
+<code>eth0</code>. Check <code>ip link</code> and update
+<code>systemd.network.networks</code> (or match on MAC). - <strong>IPv6
+gateway</strong>: set to <code>fe80::1</code> as a guess — confirm with
+Netcup / <code>ip -6 route</code>. -
+<strong><code>hardware-configuration.nix</code></strong>: replace with
+the generated one.</p>
+<p>Getting NixOS onto the machine (pick one) 1.
+<strong>nixos-anywhere</strong> (recommended, fully reproducible) —
+needs a <code>disko</code> disk spec; kexecs an installer over SSH and
+reinstalls from scratch. Wipes the disk. <a
+href="https://github.com/nix-community/nixos-anywhere"
+class="uri">https://github.com/nix-community/nixos-anywhere</a> 2.
+<strong>nixos-infect</strong> — converts the running Debian to NixOS in
+place. Faster, no console needed, but riskier. <a
+href="https://github.com/elitak/nixos-infect"
+class="uri">https://github.com/elitak/nixos-infect</a> 3.
+<strong>Manual</strong> — boot Netcup rescue/NixOS ISO, partition,
+<code>nixos-install</code>.</p>
+<p>After install, deploy changes with <code>nixos-rebuild switch</code>
+(or build remotely with
+<code>nixos-rebuild switch --target-host root@212.90.121.218 --flake .#...</code>
+if you migrate to a flake).</p>
+<div id="content" class="section level4">
+<h4>Content</h4>
+<p>Only kept the packages from the auto generated configuration.nix</p>
+<pre><code>  ##########################################################################
+  # System packages (the manually-installed Debian tools worth keeping)
+  ##########################################################################
+  environment.systemPackages = with pkgs; [
+    curl
+    git
+    htop
+    gdu
+    ethtool
+    bash-completion
+    python3
+    python3Packages.ipython
+  ];
+
+  programs.bash.completion.enable = true;</code></pre>
+</div>
+</div>
+</div>
 </div>
 
 

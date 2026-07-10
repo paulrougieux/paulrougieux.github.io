@@ -356,6 +356,9 @@ div.tocify {
       <a href="latex_and_lyx.html">Latex and Lyx</a>
     </li>
     <li>
+      <a href="llm.html">Large Language Models</a>
+    </li>
+    <li>
       <a href="markdown.html">Markdown</a>
     </li>
     <li>
@@ -470,7 +473,15 @@ div.tocify {
 
 <div id="introduction" class="section level1">
 <h1>Introduction</h1>
-<p>This page is about</p>
+<p>This page is about Large Language Models.</p>
+<p>Quand je reçois des courriels ou des messages écrits avec l’IA, ça
+m’énerve un peu. C’est pour ça que je n’utilise pas l’IA pour écrire à
+ma place. J’écris tout moi-même avec mon ton et mes imperfections.
+J’utilise les LLM pour critiquer ce que j’écris. Ma technique favorite
+consiste à demander à un modèle de langage une liste d’experts qui
+pourraient critiquer mon texte. Chaque expert me donne un point de vue
+différent sur le texte, que je peux alors clarifier et améliorer en
+prenant en compte ou non les avis des experts virtuels.</p>
 </div>
 <div id="comparison" class="section level1">
 <h1>Comparison</h1>
@@ -813,8 +824,260 @@ print(&quot;Checksum: &quot;, ISO7064_mod97_10().compute([&quot;3704004405320130
 </div>
 </div>
 </div>
-<div id="reviewing-scientific-papers" class="section level1">
-<h1>Reviewing scientific papers</h1>
+<div id="hallucinations" class="section level1">
+<h1>Hallucinations</h1>
+<div id="wrong-model-version" class="section level2">
+<h2>Wrong model version</h2>
+<p>Claude Hallucinating a wrong model version</p>
+<p>head docs/ai_generated/notes.md ⎿  # Notes generated for a report</p>
+<pre><code> *AI-generated document. Generated 2026-04-17 using Claude Opus via multi-agent synthesis.*</code></pre>
+<p>Paul prompt:</p>
+<pre><code>❯ I used Sonnet, why does the document state that it was using Claude Opus? Is
+it possible that it switched model for the multi agent part? or is this rather
+a hallucination? This doucment was made in a previous session today, do you
+ahve the possibility to invenstigate what model was used?</code></pre>
+<p>Claude:</p>
+<blockquote>
+<p>● Let me check the git history for that file and read it for more
+context.</p>
+</blockquote>
+<blockquote>
+<p>● Bash(git log –oneline –
+docs/ai_generated/framing_the_cbm_timba_feedback_loop.md) ⎿  8fa5785 AI
+generated exploration of the framing question</p>
+</blockquote>
+<blockquote>
+<p>● Bash(git show 8fa5785 –stat) ⎿  commit
+8fa578556e04ce3832d42543b9f28c13babc0b11 Author: Paul Rougieux <a
+href="mailto:paul.rougieux@gmail.com"
+class="email">paul.rougieux@gmail.com</a> Date: Fri Apr 17 10:48:15 2026
++0200 … +5 lines (ctrl+o to expand)</p>
+</blockquote>
+<blockquote>
+<p>● I can’t access previous session transcripts — each conversation
+starts fresh with no memory of prior sessions.</p>
+</blockquote>
+<blockquote>
+<p>On the “Claude Opus” claim: it’s most likely a hallucination. Claude
+models don’t reliably know which specific model variant they are — when
+asked or when writing self-referential metadata, they often guess or
+fabricate. The carbon-budget-modelling or forest-sector-analysis skills
+can spawn sub-agents, and those can be configured with a specific model
+override, but whether Opus was actually used isn’t recoverable from this
+file alone.</p>
+</blockquote>
+<blockquote>
+<p>The git commit doesn’t record model metadata. If you want future
+documents to accurately reflect the model, the safest approach is to
+inject the model name at write-time from outside the model (e.g., via a
+hook or a wrapper script that appends it).</p>
+</blockquote>
+</div>
+</div>
+<div id="harness" class="section level1">
+<h1>Harness</h1>
+<div id="pi-harness" class="section level2">
+<h2>Pi harness</h2>
+<ul>
+<li><p><a href="https://pi.dev/" class="uri">https://pi.dev/</a></p>
+<blockquote>
+<p>“Tree-structured, shareable history Sessions are stored as trees. Use
+/tree to navigate to any previous point and continue from there. All
+branches live in a single file. Filter by message type, label entries as
+bookmarks. Export to HTML with /export, or upload to a GitHub gist with
+/share and get a shareable URL that renders it.”</p>
+</blockquote></li>
+<li><p>Install</p>
+<p>curl -fsSL <a href="https://pi.dev/install.sh"
+class="uri">https://pi.dev/install.sh</a> | sh</p></li>
+</ul>
+<div id="eden-ai" class="section level3">
+<h3>Eden AI</h3>
+<p>Claude</p>
+<blockquote>
+<p>Eden AI isn’t a built-in Pi provider</p>
+</blockquote>
+<blockquote>
+<p>There’s no /login entry or EDEN_AI_API_KEY variable for it. But Eden
+AI exposes an OpenAI-compatible chat-completions endpoint, and Pi
+supports exactly that case through a custom provider in
+~/.pi/agent/models.json (using api: “openai-completions”).</p>
+</blockquote>
+</div>
+</div>
+</div>
+<div id="prompts-techniques" class="section level1">
+<h1>Prompts techniques</h1>
+<p>See also bookmark document.</p>
+<div id="adhd-executive-function" class="section level2">
+<h2>ADHD Executive Function</h2>
+<ul>
+<li><p><a href="https://x.com/TawohAwa/status/2055621573466534132"
+class="uri">https://x.com/TawohAwa/status/2055621573466534132</a></p>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>The Task Paralysis Shatterer</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Prompt: “I am staring at [Task] and can’t start. Break this down into
+‘Ridiculously Small’ steps that take less than 1 minute each. Give me
+the first step and tell me exactly where to put my hands to begin.”</p>
+</blockquote>
+<blockquote>
+<ol start="2" style="list-style-type: decimal">
+<li>The Dopamine Menu Architect</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Prompt: “I am feeling under-stimulated. Create a ‘Dopamine Menu’ for
+me with 5-minute ‘Appetizers’ (quick movement), 20-minute ‘Entrees’
+(deep work), and 10-minute ‘Sides’ (creative play) to keep my brain
+engaged.”</p>
+</blockquote>
+<blockquote>
+<ol start="3" style="list-style-type: decimal">
+<li>The “Body Doubling” Simulator</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Prompt: “Act as my virtual body double for the next 30 minutes. I
+will tell you what I’m working on, and I want you to check in every 10
+minutes to ask for a status update and keep my focus anchored.”</p>
+</blockquote>
+<blockquote>
+<ol start="4" style="list-style-type: decimal">
+<li>The Context-Switching Guide</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Prompt: “I just finished [Task A] and need to start [Task B], but my
+brain is stuck. Design a 3-minute ‘Mental Palate Cleanser’ routine to
+help me transition between these two different types of energy.”</p>
+</blockquote>
+<blockquote>
+<ol start="5" style="list-style-type: decimal">
+<li>The Interest-Based Filter</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Prompt: “I have a boring administrative task: [Task]. Help me gamify
+this by connecting it to my current hyper-fixation: [Interest]. Create a
+‘Quest’ structure where finishing the task unlocks a reward.”</p>
+</blockquote>
+<blockquote>
+<ol start="6" style="list-style-type: decimal">
+<li>The Time-Blindness Auditor</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Prompt: “I think [Project] will take 20 minutes, but it usually takes
+2 hours. Help me ‘Time-Map’ this by identifying the 3 hidden sub-tasks I
+always forget to account for so I can set a realistic deadline.”</p>
+</blockquote>
+<blockquote>
+<ol start="7" style="list-style-type: decimal">
+<li>The Executive Function Externalizer</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Prompt: “My brain is full of ‘Open Loops.’ I will dump everything I’m
+worried about below. Categorize these into ‘Now,’ ‘Later,’ and ‘Trash,’
+and then write a 1-sentence ‘Actionable Next Step’ for only the ‘Now’
+items.”</p>
+</blockquote>
+<blockquote>
+<p>Awa K. Penn <span class="citation">@TawohAwa</span> · Credit to
+AIcreatorTyler</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="contract" class="section level2">
+<h2>Contract</h2>
+<p>Claude:</p>
+<blockquote>
+<p>Output contracts (emerging as a 2025-2026 best practice) — Treating
+the prompt as a specification: what you want, what information the model
+may use, what it must not do, the exact output shape, and how the result
+will be checked. One framing: “Most bad model outputs are actually bad
+acceptance criteria.” This is definitional pressure applied to the exit
+condition.</p>
+</blockquote>
+<blockquote>
+<p>Success criteria prompting — The recommended format is now
+explicit:</p>
+</blockquote>
+<blockquote>
+<p>Goal: {{one sentence}} Success criteria: - {{must-have 1}} -
+{{must-have 2}} - {{must-not-do}}</p>
+</blockquote>
+<blockquote>
+<p>The insight from the literature: “When you say ‘improve this,’ you’re
+outsourcing the definition of ‘improve’ to the model, and the model will
+default to generic optimization goals.” That’s definitional pressure
+stated plainly.</p>
+</blockquote>
+</div>
+<div id="expert-panel" class="section level2">
+<h2>Expert panel</h2>
+<p>The comment task could be simply commenting on an idea, it could
+reviewing a draft document, or it could be analysing the feasibility of
+a project proposal from multiple discipline: technical feasibility,
+legal issues, time constraints etc.</p>
+<ol style="list-style-type: decimal">
+<li><p>Given a paragraph of text describing a topic or issue. Ask the
+LLM:</p>
+<p>what experts could comment on that topic.</p></li>
+<li><p>Review the list of suggest experts, remove some or ask for more
+experts if you want. Then ask :</p>
+<p>For each expert create a parallel agent that will comment on that
+topic in separate markdown files.</p></li>
+</ol>
+<div id="expert-data-visualisation" class="section level3">
+<h3>Expert data visualisation</h3>
+<p>Given this dataset suggest a list of experts which would provide data
+visualisation.</p>
+<p>For each expert start a parallel agent and generate python script
+that create the visualization. Place the scripts and plots in a plots
+directory, ignore the plot images in gitignore, only the script will be
+saved in git.</p>
+<p>Option: add a reference publication or report to help explore
+potential experts relevant to the topic.</p>
+</div>
+</div>
+<div id="entity-coverage-and-factual-recall-probing"
+class="section level2">
+<h2>Entity coverage and factual recall probing</h2>
+<p>Use this prompt to find out which real world person made it into the
+training data:</p>
+<pre><code>who is &lt;name of person&gt; in your weights? list skills and literature without going online.</code></pre>
+<p>For example well known researchers in my domain</p>
+<pre><code>who is Christian Breyer in your weights? list skills and literature without going online.
+who is Joseph Buongiorno in your weights? list skills and literature without going online.</code></pre>
+</div>
+<div id="grill" class="section level2">
+<h2>Grill</h2>
+<ul>
+<li><a
+href="https://github.com/mattpocock/skills/blob/main/grill-me/SKILL.md"
+class="uri">https://github.com/mattpocock/skills/blob/main/grill-me/SKILL.md</a></li>
+</ul>
+<blockquote>
+<p>“Interview me relentlessly about every aspect of this plan until we
+reach a shared understanding. Walk down each branch of the design tree,
+resolving dependencies between decisions one-by-one. For each question,
+provide your recommended answer.</p>
+</blockquote>
+<blockquote>
+<p>Ask the questions one at a time.</p>
+</blockquote>
+<blockquote>
+<p>If a question can be answered by exploring the codebase, explore the
+codebase instead.”</p>
+</blockquote>
+</div>
+<div id="reviewing-scientific-papers" class="section level2">
+<h2>Reviewing scientific papers</h2>
 <p>Techniques to review scientific papers with the help of LLMs.</p>
 <ol style="list-style-type: decimal">
 <li><p>For example an LLM trick is to start your Gemeni, Claude or even
@@ -835,8 +1098,8 @@ and what can be removed from a paragraph.</p>
 [Paste paragraph here]”</p>
 </blockquote></li>
 </ol>
-<div id="dont-use-llm-do-review-papers" class="section level2">
-<h2>Don’t use LLM do review papers</h2>
+<div id="dont-use-llm-do-review-papers" class="section level3">
+<h3>Don’t use LLM do review papers</h3>
 <p>Issues with asking LLMs to review scientific papers:</p>
 <ul>
 <li><p>Skill atrophy: learning to summarize is a skill that improves
@@ -845,44 +1108,19 @@ when practicing.</p></li>
 commercial LLM is leaking important intellectual property.</p></li>
 </ul>
 </div>
-<div id="meta-prompt" class="section level2">
-<h2>Meta Prompt</h2>
-<p>Prompt to generate reviewing techniques: <a
-href="https://gemini.google.com/share/0a0ce8aa192f"
-class="uri">https://gemini.google.com/share/0a0ce8aa192f</a></p>
-<blockquote>
-<p>I am a researcher looking to optimize my scientific writing process
-using LLMs. Act as an Expert Scientific Editor and AI Prompt
-Engineer.</p>
-<p>Provide a comprehensive list of advanced ‘adversarial’ and
-‘structural’ techniques for reviewing a scientific paper. For each
-technique, provide:</p>
-<ol style="list-style-type: decimal">
-<li><p>The Name of the Technique.</p></li>
-<li><p>The Specific Prompt to use.</p></li>
-<li><p>The Goal (e.g., finding logical gaps, testing the strength of the
-pothesis, or improving citation flow).</p></li>
-<li><p>A ‘Stress Test’ Persona: Describe a specific type of reviewer
-(e.g., ‘The Statistical Hawk’ or ‘The Scope Enforcer’) that this
-technique helps satisfy.</p></li>
-</ol>
-<p>Focus on techniques that go beyond simple proofreading, such as
-checking for ‘Claim-Evidence Mismatch’ or ‘Predicting Reviewer
-Rebuttals’.</p>
-</blockquote>
+<div id="hostile-but-competent-reviewer" class="section level3">
+<h3>Hostile but competent reviewer</h3>
+<p>Paul simple prompt:</p>
+<p>%&gt;% Suggest a hostile but competent reviewer to critique
+paper/paper.md. Then provide a review.</p>
 <ul>
-<li><p>Perplexity provides a vast list of 18 suggestions based on thae
-meta prompt <a
-href="https://www.perplexity.ai/search/i-am-a-researcher-looking-to-o-4ryLUEKbQMORSFnYQnQuVQ#0"
-class="uri">https://www.perplexity.ai/search/i-am-a-researcher-looking-to-o-4ryLUEKbQMORSFnYQnQuVQ#0</a></p>
-<ul>
-<li><p>It links to this text “how NOT to review a paper The tools and
-techniques of the adversarial reviewer” <a
+<li><p>Inspired by a more complex prompt seen at “how NOT to review a
+paper The tools and techniques of the adversarial reviewer” <a
 href="https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf"
 class="uri">https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf</a></p>
 <ul>
-<li><p>for example, number 18. the “Domain‑Expert Hostile Review
-Simulation” Prompt:</p>
+<li><p>Number 18. the “Domain‑Expert Hostile Review Simulation”
+Prompt</p>
 <blockquote>
 <p>Role: Simulate a hostile but competent domain expert reviewing this
 paper for a top‑tier venue. Task:</p>
@@ -919,8 +1157,1391 @@ paper for a top‑tier venue. Task:</p>
 <p>Manuscript: [PASTE TEXT]</p>
 </blockquote></li>
 </ul></li>
+</ul>
+</div>
+<div id="meta-prompt" class="section level3">
+<h3>Meta Prompt</h3>
+<p>Prompt to generate reviewing techniques: <a
+href="https://gemini.google.com/share/0a0ce8aa192f"
+class="uri">https://gemini.google.com/share/0a0ce8aa192f</a></p>
+<blockquote>
+<p>I am a researcher looking to optimize my scientific writing process
+using LLMs. Act as an Expert Scientific Editor and AI Prompt
+Engineer.</p>
+<p>Provide a comprehensive list of advanced ‘adversarial’ and
+‘structural’ techniques for reviewing a scientific paper. For each
+technique, provide:</p>
+<ol style="list-style-type: decimal">
+<li><p>The Name of the Technique.</p></li>
+<li><p>The Specific Prompt to use.</p></li>
+<li><p>The Goal (e.g., finding logical gaps, testing the strength of the
+pothesis, or improving citation flow).</p></li>
+<li><p>A ‘Stress Test’ Persona: Describe a specific type of reviewer
+(e.g., ‘The Statistical Hawk’ or ‘The Scope Enforcer’) that this
+technique helps satisfy.</p></li>
+</ol>
+<p>Focus on techniques that go beyond simple proofreading, such as
+checking for ‘Claim-Evidence Mismatch’ or ‘Predicting Reviewer
+Rebuttals’.</p>
+</blockquote>
+<ul>
+<li><p>Perplexity provides a vast list of 18 suggestions based on thae
+meta prompt <a
+href="https://www.perplexity.ai/search/i-am-a-researcher-looking-to-o-4ryLUEKbQMORSFnYQnQuVQ#0"
+class="uri">https://www.perplexity.ai/search/i-am-a-researcher-looking-to-o-4ryLUEKbQMORSFnYQnQuVQ#0</a></p>
+<ul>
+<li><p>It links to this text “how NOT to review a paper The tools and
+techniques of the adversarial reviewer” <a
+href="https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf"
+class="uri">https://sigmodrecord.org/publications/sigmodRecord/0812/p100.open.cormode.pdf</a></p>
+<ul>
+<li>for example, number 18. the “Domain‑Expert Hostile Review
+Simulation” Prompt pasted in another section of this document.</li>
+</ul></li>
 </ul></li>
 </ul>
+</div>
+</div>
+<div id="programming" class="section level2">
+<h2>Programming</h2>
+<div id="blind-spot-pass" class="section level3">
+<h3>Blind spot pass</h3>
+<ul>
+<li><p><a
+href="https://x.com/alex_prompter/status/2074584979057868901?s=20"
+class="uri">https://x.com/alex_prompter/status/2074584979057868901?s=20</a></p>
+<blockquote>
+<p>Before writing a single line in a new code base, Thariq asks Fable to
+surface what he doesn’t know. “I’m working on a new auth provider that I
+know nothing about in this code base. Can you do a blind spot pass to
+help me figure out my relevant unknown unknowns and help me prompt
+better?” That single technique eliminates hours of debugging from bad
+assumptions.</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="interview-ask-questions" class="section level3">
+<h3>Interview, ask questions</h3>
+<ul>
+<li><p><a
+href="https://x.com/alex_prompter/status/2074584979057868901?s=20"
+class="uri">https://x.com/alex_prompter/status/2074584979057868901?s=20</a></p>
+<blockquote>
+<p>“Prioritize questions that would change the architecture”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="karpathy" class="section level3">
+<h3>Karpathy</h3>
+<ul>
+<li><p>Inspired by Karpathy <a
+href="https://x.com/techNmak/status/2043683120319520806?s=20"
+class="uri">https://x.com/techNmak/status/2043683120319520806?s=20</a></p>
+<blockquote>
+<p>Andrej Karpathy wrote something that every Claude Code user has felt
+but couldn’t articulate.</p>
+</blockquote>
+<blockquote>
+<p>Three quotes. Read them slowly.</p>
+</blockquote>
+<blockquote>
+<p>“The models make wrong assumptions on your behalf and just run along
+with them without checking. They don’t manage their confusion, don’t
+seek clarifications, don’t surface inconsistencies, don’t present
+tradeoffs, don’t push back when they should.”</p>
+</blockquote>
+<blockquote>
+<p>“They really like to overcomplicate code and APIs, bloat
+abstractions, don’t clean up dead code… implement a bloated construction
+over 1000 lines when 100 would do.”</p>
+</blockquote>
+<blockquote>
+<p>“They still sometimes change/remove comments and code they don’t
+sufficiently understand as side effects, even if orthogonal to the
+task.”</p>
+</blockquote>
+<blockquote>
+<p>You’ve seen all three. Probably this week.</p>
+</blockquote>
+<blockquote>
+<p>Someone turned these three observations into a single CLAUDE[.]md
+file. Four principles, one install, directly addresses each quote:</p>
+</blockquote>
+<blockquote>
+<p>1./ Think before coding Don’t assume. Don’t hide confusion. State
+ambiguity explicitly. Present multiple interpretations rather than
+silently picking one. Push back if a simpler approach exists. Stop and
+ask rather than guess.</p>
+</blockquote>
+<blockquote>
+<p>2./ Simplicity first No features beyond what was asked. No
+abstractions for single-use code. No “flexibility” that wasn’t
+requested. No error handling for impossible scenarios. The test: would a
+senior engineer say this is overcomplicated? If yes, rewrite it.</p>
+</blockquote>
+<blockquote>
+<p>3./ Surgical changes Don’t “improve” adjacent code. Don’t refactor
+things that aren’t broken. Match the existing style even if you’d do it
+differently. If you notice unrelated dead code, mention it, don’t delete
+it. Every changed line should trace directly to the request.</p>
+</blockquote>
+<blockquote>
+<p>4./ Goal-driven execution Transform “fix the bug” into “write a test
+that reproduces it, then make it pass.” Transform “add validation” into
+“write tests for invalid inputs, then make them pass.” Give it success
+criteria and watch it loop until done.</p>
+</blockquote>
+<blockquote>
+<p>This last one is Karpathy’s key insight captured directly: “LLMs are
+exceptionally good at looping until they meet specific goals… Don’t tell
+it what to do, give it success criteria and watch it go.”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="test-driven-development-tdd" class="section level3">
+<h3>Test Driven Development TDD</h3>
+<ul>
+<li><p>Good tests are integration-style <a
+href="https://github.com/mattpocock/skills/blob/main/tdd/SKILL.md"
+class="uri">https://github.com/mattpocock/skills/blob/main/tdd/SKILL.md</a></p>
+<blockquote>
+<p>Philosophy</p>
+</blockquote>
+<blockquote>
+<p>Core principle: Tests should verify behavior through public
+interfaces, not implementation details. Code can change entirely; tests
+shouldn’t.</p>
+</blockquote>
+<blockquote>
+<p>Good tests are integration-style: they exercise real code paths
+through public APIs. They describe what the system does, not how it does
+it. A good test reads like a specification - “user can checkout with
+valid cart” tells you exactly what capability exists. These tests
+survive refactors because they don’t care about internal structure.</p>
+</blockquote>
+<blockquote>
+<p>Bad tests are coupled to implementation. They mock internal
+collaborators, test private methods, or verify through external means
+(like querying a database directly instead of using the interface). The
+warning sign: your test breaks when you refactor, but behavior hasn’t
+changed. If you rename an internal function and tests fail, those tests
+were testing implementation, not behavior.</p>
+</blockquote>
+<blockquote>
+<p>Anti-Pattern: Horizontal Slices</p>
+<p>DO NOT write all tests first, then all implementation. This is
+“horizontal slicing” - treating RED as “write all tests” and GREEN as
+“write all code.”</p>
+<p>This produces crap tests:</p>
+<pre><code>Tests written in bulk test imagined behavior, not actual behavior You end
+up testing the shape of things (data structures, function signatures)
+rather than user-facing behavior Tests become insensitive to real changes -
+they pass when behavior breaks, fail when behavior is fine You outrun your
+headlights, committing to test structure before understanding the
+implementation</code></pre>
+<p>Correct approach: Vertical slices via tracer bullets. One test → one
+implementation → repeat. Each test responds to what you learned from the
+previous cycle. Because you just wrote the code, you know exactly what
+behavior matters and how to verify it.</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="storm" class="section level2">
+<h2>Storm</h2>
+<p>It is similar to the expert panel technique that I have been using
+before. You ask the LLM to expand the description of a topic from
+multiple experts taking different perspectives in a detailed document.
+That helps surface contradictions, then you have a coordinating agent
+summarise the output.</p>
+<p>Here is what I added on top as Claude prompt</p>
+<pre><code>In the ai_generated sub directory create a new subdirectory called storm.
+We will use the storm stanford method with parallel experts to analyse the
+following issue: [pasted text] 
+
+A coordinating agent should run the following 4 prompts to sub agents the
+first prompt should also itself spawn sub agents.</code></pre>
+<blockquote>
+<p>the practitioner: what do they know that academics miss? the skeptic:
+what’s the strongest counterargument? the economist: who profits from
+the current narrative? the historian: what pattern has played out
+before? the academic: what does the evidence actually say?</p>
+</blockquote>
+<p>Prompt 1, The Multi Perspective Scan</p>
+<pre><code>I need to research [YOUR TOPIC].
+Simulate 5 different expert perspectives on this topic:
+1. THE PRACTITIONER: works with this daily.
+What do they know that academics miss?
+What practical realities are usually ignored?
+2. THE ACADEMIC: has studied this for years.
+What does the peer reviewed evidence actually say?
+Where does the evidence contradict popular belief?
+3. THE SKEPTIC: thinks the mainstream view is wrong.
+What is the strongest counterargument?
+What evidence do proponents conveniently ignore?
+4. THE ECONOMIST: follows the money.
+Who profits from the current narrative?
+What financial incentives shape the research?
+5. THE HISTORIAN: has seen similar patterns before.
+What historical parallels exist?
+What can we learn from how those played out?
+For each perspective give me:
+- Their core position in 2 sentences
+- The strongest evidence supporting their view
+- The one thing they would tell me that no other perspective would</code></pre>
+<p>Prompt 2, The Contradiction Map</p>
+<pre><code>Based on the 5 perspectives above, map the contradictions:
+1. Where do two or more perspectives directly contradict
+each other? List each conflict with the specific claims
+that clash.
+2. Which perspective has the strongest evidence?
+Which has the weakest? Why?
+3. What is the one question that, if answered, would
+resolve the biggest contradiction?
+4. What does EVERY perspective agree on?
+(This is likely true. Even opponents confirm it.)
+5. What topic did NONE of the perspectives address?
+(This is the blind spot in the whole field.
+Often the most valuable finding.)</code></pre>
+<p>The is an illustration which says: “The fights are where insights
+live”</p>
+<p>Prompt 3, The Synthesis</p>
+<pre><code>Synthesize everything from the 5 perspectives and the
+contradiction map into a research briefing:
+1. THE ONE PARAGRAPH SUMMARY: explain this topic as if
+briefing a CEO who has 60 seconds and needs nuance,
+not just the headline.
+2. THE 5 KEY FINDINGS: most important things I now know,
+ranked by reliability. For each, note which perspectives
+support it and which challenge it.
+3. THE HIDDEN CONNECTION: one non obvious link between
+findings that only shows up when you look at all 5
+perspectives together.
+4. THE ACTIONABLE INSIGHT: based on all the evidence,
+what should someone in [YOUR ROLE] actually DO
+differently? Be specific.
+5. THE FRONTIER QUESTION: the one question that, if
+answered, would change everything about how we
+understand this topic.</code></pre>
+<p>Prompt 4, The Peer Review</p>
+<blockquote>
+<p>“STORM has one known weakness. Stanford’s own researchers flagged it.
+The system does not self critique. Source bias and fact misassociation
+sneak in. This prompt fixes that by making Claude grade its own
+work.”</p>
+</blockquote>
+<pre><code>Now peer review your own research briefing:
+1. CONFIDENCE SCORES: rate each of the 5 key findings
+on a 1 to 10 scale for reliability. Explain each score.
+2. WEAKEST LINK: which claim are you least confident in?
+What specific info would you need to verify it?
+3. BIAS CHECK: which perspective might be overrepresented
+in your synthesis? Did one voice dominate?
+4. MISSING PERSPECTIVE: is there a 6th angle I should
+have included that would change the conclusions?
+5. OVERALL GRADE: if a Stanford professor reviewed this
+briefing, what grade would they give and why?
+What would they tell me to fix?</code></pre>
+</div>
+<div id="todo-list" class="section level2">
+<h2>TODO list</h2>
+<p>Claude:</p>
+<pre><code>&gt; &quot;Tip: Ask Claude to create a todo list when working on complex tasks to
+&gt; track progress and remain on track&quot;</code></pre>
+</div>
+<div id="zz-lists-of-prompts-to-be-cleaned" class="section level2">
+<h2>ZZ lists of prompts to be cleaned</h2>
+<div id="prompts-day-to-day" class="section level3">
+<h3>10 Prompts day to day</h3>
+<ul>
+<li><p>10 prompts that have transformed my day-to-day life and that
+could do the same for <a
+href="https://x.com/oliviscusAI/status/2037118654811156781?s=20"
+class="uri">https://x.com/oliviscusAI/status/2037118654811156781?s=20</a></p>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>The Brain Dump Synthesizer</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I am feeling completely overwhelmed by everything I need to do. I am
+going to brain-dump every thought, task, and anxiety I have below.
+Please act as a highly organized executive assistant. Read my dump and
+categorize it into:</p>
+</blockquote>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>Urgent &amp; Important (Do today),</li>
+<li>Important but not Urgent (Schedule),</li>
+<li>Quick wins (Takes &lt;5 mins), and</li>
+<li>Things I need to let go of or delegate.</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Here is my brain dump: [Insert messy thoughts]”</p>
+</blockquote>
+<blockquote>
+<ol start="2" style="list-style-type: decimal">
+<li>The Bias-Breaking Decision Engine</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I am trying to make a difficult decision about [insert decision]. My
+current leanings are [insert current thoughts], but I am worried I have
+blind spots. Please act as a rational, objective advisor.</p>
+</blockquote>
+<blockquote>
+<p>Do not just agree with me. Build a ‘steel man’ argument for the
+opposite choice, outline the secondary and tertiary consequences of my
+current leaning, and ask me 3 tough questions I haven’t considered.”</p>
+</blockquote>
+<blockquote>
+<ol start="3" style="list-style-type: decimal">
+<li>The Feynman Technique Learner</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I need to understand [insert complex topic] but I have zero
+background in it. Break it down for me using the Feynman Technique.
+Explain it as if I am a smart high schooler. Use a highly relatable,
+everyday analogy to explain the core mechanism.</p>
+</blockquote>
+<blockquote>
+<p>Then, test my understanding by asking me to explain the most
+difficult part back to you.”</p>
+</blockquote>
+<blockquote>
+<ol start="4" style="list-style-type: decimal">
+<li>The High-Stakes Communication Coach</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I need to send an email to [Boss/Client/Partner] regarding
+[difficult topic/bad news]. I want to sound firm but empathetic, and I
+want to avoid sounding defensive. Here is my rough, emotional draft:
+[Insert draft].</p>
+</blockquote>
+<blockquote>
+<p>Please rewrite this to be professional, emotionally intelligent, and
+solution-oriented. Tell me exactly what tone changes you made and
+why.”</p>
+</blockquote>
+<blockquote>
+<ol start="5" style="list-style-type: decimal">
+<li>The “80/20” Action Planner</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I want to achieve [insert goal] in the next [timeframe]. Apply the
+Pareto Principle (80/20 rule) to this goal. Identify the 20% of actions
+that will drive 80% of the results.</p>
+</blockquote>
+<blockquote>
+<p>Create a step-by-step execution plan focusing only on those
+highest-leverage activities, and tell me which common traps I should
+completely ignore.”</p>
+</blockquote>
+<blockquote>
+<ol start="6" style="list-style-type: decimal">
+<li>The Habit Friction Finder</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I have been trying to build the habit of [insert habit] but I keep
+failing after a few days. Walk me through a ‘friction analysis’. Ask me
+questions one by one about my environment, routine, and triggers to help
+me identify the hidden friction points preventing me from doing
+this.</p>
+</blockquote>
+<blockquote>
+<p>Then, help me design an environment where failing is harder than
+succeeding.”</p>
+</blockquote>
+<blockquote>
+<ol start="7" style="list-style-type: decimal">
+<li>The Personal “Red Team” for Ideas</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I have an idea for a [business/project/strategy]. The core concept
+is [explain concept]. Act as a ‘Red Team’ whose only goal is to find the
+fatal flaws in this idea. Critique the market viability, potential
+execution bottlenecks, and financial assumptions. Be ruthlessly honest.
+Don’t sugarcoat it.</p>
+</blockquote>
+<blockquote>
+<p>Then, suggest one pivot that might solve your biggest critique.”</p>
+</blockquote>
+<blockquote>
+<ol start="8" style="list-style-type: decimal">
+<li>The Perspective Shifter</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I am having a conflict with [person/role] about [topic]. I feel
+[your emotions/stance]. I need you to roleplay as the other person.
+Based on the context provided, explain to me what their underlying
+fears, motivations, and logical justifications might be.</p>
+</blockquote>
+<blockquote>
+<p>Help me see the situation entirely from their side.”</p>
+</blockquote>
+<blockquote>
+<ol start="9" style="list-style-type: decimal">
+<li>The Non-Fiction Book Distiller</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“Act as a world-class book summarizer. I want to understand the core
+thesis of [Book Title] by [Author]. Do not just give me a generic
+summary.</p>
+</blockquote>
+<blockquote>
+<p>Give me:</p>
+</blockquote>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>The core thesis in one sentence.</li>
+<li>The 3 most counter-intuitive insights from the book. 3. Three
+actionable frameworks I can apply to my [Work/Life] immediately based on
+the book.”</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="10" style="list-style-type: decimal">
+<li>The Weekly Review Architect</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>“I want to conduct a weekly review to prepare for Monday. Ask me 5
+reflective questions, one at a time, to help me analyze what went well
+last week, what drained my energy, and what my single ‘frog’ (hardest
+task) is for the upcoming week.</p>
+</blockquote>
+<blockquote>
+<p>Wait for my answer to each question before asking the next, and
+finally summarize my plan for the week.”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="claude-prompts-that-will-save-you-15-hours-every-week"
+class="section level3">
+<h3>25 Claude Prompts That Will Save You 15 Hours Every Week</h3>
+<ul>
+<li><p><a
+href="https://x.com/eng_khairallah1/status/2043980058378002592"
+class="uri">https://x.com/eng_khairallah1/status/2043980058378002592</a></p>
+<blockquote>
+I spent 6 months testing prompts daily. These 25 are the only ones I
+still use. Save this :) Most prompt lists are full of gimmicks. “Act as
+a pirate and explain quantum physics.” Cool party trick. Zero practical
+value. These are different. Every prompt on this list solves a real
+problem that costs you real time every single week. Copy them. Paste
+them. Get your hours back. Writing &amp; Content (1-7)
+<ol style="list-style-type: decimal">
+<li>The First Draft Killer I need a first draft of [TYPE: blog post /
+newsletter / article] about [TOPIC].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Audience: [WHO THEY ARE] Tone: [SPECIFIC TONE — e.g., direct and
+slightly irreverent] Length: [WORD COUNT] Does NOT sound like: generic
+AI, corporate jargon, LinkedIn influencer Does NOT include: filler
+phrases, unnecessary caveats, “in today’s fast-paced world”</p>
+</blockquote>
+<blockquote>
+<p>Here is an example of my writing style: [PASTE YOUR BEST PREVIOUS
+PIECE]</p>
+</blockquote>
+<blockquote>
+Match the voice and energy of the example. Write a complete first draft.
+Why it works: The negative constraints kill the AI smell. The example
+teaches Claude your voice better than any description ever could. This
+single prompt replaced 90 minutes of staring at a blank page.
+<ol start="2" style="list-style-type: decimal">
+<li>The Thread Expander Turn this idea into a 10-post X/Twitter
+thread:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[PASTE YOUR IDEA OR HOT TAKE]</p>
+</blockquote>
+<blockquote>
+Rules:
+<ul>
+<li>Post 1 must be a hook that creates curiosity or makes a bold
+claim</li>
+<li>Each post should be 1-3 sentences max</li>
+<li>Include specific examples and numbers, not vague claims</li>
+<li>Post 10 must include a clear call to action</li>
+<li>No hashtags. No emojis unless absolutely necessary</li>
+<li>Does NOT sound like: a motivational speaker or LinkedIn guru Why it
+works: The structure constraint forces a logical narrative. The negative
+constraints keep it from sounding like every other AI thread on the
+timeline.</li>
+</ul>
+<ol start="3" style="list-style-type: decimal">
+<li>The Content Repurposer I have one piece of long-form content.
+Repurpose it into multiple formats.</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Original content: [PASTE YOUR ARTICLE / NEWSLETTER / TRANSCRIPT]</p>
+</blockquote>
+<blockquote>
+Create:
+<ol style="list-style-type: decimal">
+<li>5 standalone tweets (each should work on its own, not just be a
+quote from the article)</li>
+<li>2 LinkedIn posts (professional but not boring, max 200 words
+each)</li>
+<li>3 Instagram caption options (casual, conversational, under 150
+words)</li>
+<li>1 email teaser to drive traffic to the original piece (under 100
+words, curiosity-driven subject line)</li>
+</ol>
+</blockquote>
+<blockquote>
+Keep my voice consistent across all formats. Adapt length and tone to
+each platform but the core message stays the same. Why it works: One
+hour of writing becomes an entire week of content across 4 platforms.
+The “standalone” instruction prevents lazy extraction where every tweet
+is just a sentence ripped from the article.
+<ol start="4" style="list-style-type: decimal">
+<li>The Headline Machine Generate 20 headline variations for this topic:
+[TOPIC]</li>
+</ol>
+</blockquote>
+<blockquote>
+Use these frameworks (at least 2 headlines per framework):
+<ul>
+<li>Curiosity gap: “Why X does Y (and what it means for Z)”</li>
+<li>Specific numbers: “7 ways to…” or “I tested 200 tools and…”</li>
+<li>How-to: “How to X without Y”</li>
+<li>Contrarian: “X is wrong. Here’s why.”</li>
+<li>Social proof: “How I / we achieved X”</li>
+<li>“I want to” format: “I want to [aspirational goal] (full
+course)”</li>
+</ul>
+</blockquote>
+<blockquote>
+Rank your top 5 picks and explain why each one would stop someone
+mid-scroll. Why it works: Most people write one headline and hope for
+the best. This generates 20 options across proven frameworks and forces
+Claude to evaluate which ones are actually scroll-stopping.
+<ol start="5" style="list-style-type: decimal">
+<li>The Email Sequence Writer Write a 5-email welcome sequence for
+[PRODUCT/SERVICE].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Target audience: [WHO] Main pain point: [THEIR BIGGEST PROBLEM] Goal
+of the sequence: [WHAT YOU WANT THEM TO DO BY EMAIL 5]</p>
+</blockquote>
+<blockquote>
+For each email provide:
+<ul>
+<li>Subject line (under 50 characters, curiosity-driven)</li>
+<li>Preview text (under 90 characters)</li>
+<li>Body (under 200 words, conversational, one clear CTA)</li>
+<li>Send timing (days after signup)</li>
+<li>A/B subject line variation</li>
+</ul>
+</blockquote>
+<blockquote>
+Rules:
+<ul>
+<li>Email 1 delivers immediate value, no selling</li>
+<li>Email 2 tells a story that connects to their pain point</li>
+<li>Email 3 introduces the solution subtly</li>
+<li>Email 4 provides social proof or a case study</li>
+<li>Email 5 makes the direct ask with urgency</li>
+</ul>
+</blockquote>
+<pre><code>&gt; Each email should feel like it came from a person, not a marketing
+&gt; department. Why it works: This single prompt replaces what a copywriter
+&gt; charges \$500 to \$2,000 to produce. The structure ensures each email serves
+&gt; a strategic purpose rather than just filling an inbox.
+&gt; 06. The SEO Content Brief Create a complete content brief for a blog post
+&gt;     targeting the keyword: [KEYWORD]</code></pre>
+<blockquote>
+Include:
+<ol style="list-style-type: decimal">
+<li>Recommended title (include target keyword naturally)</li>
+<li>Meta description (under 155 characters, includes keyword)</li>
+<li>Suggested URL slug</li>
+<li>Target word count</li>
+<li>Article outline with H2 and H3 headings</li>
+<li>5 related keywords to include naturally throughout</li>
+<li>3 internal linking opportunities (suggest anchor text and where to
+link)</li>
+<li>2 external source suggestions for credibility</li>
+<li>Featured snippet opportunity (format the section most likely to win
+a snippet)</li>
+</ol>
+</blockquote>
+<blockquote>
+The brief should be detailed enough that any writer could produce the
+article without additional research. Why it works: This turns a 2-hour
+research and planning session into a 2-minute prompt. The featured
+snippet section alone is worth the effort because most writers never
+optimize for it.
+<ol start="7" style="list-style-type: decimal">
+<li>The Voice Cloner Analyze the following writing samples and extract
+my writing voice:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[PASTE 2-3 OF YOUR BEST PIECES]</p>
+</blockquote>
+<blockquote>
+Create a “Voice Profile” that includes:
+<ul>
+<li>Sentence length patterns (short, medium, long, or mixed)</li>
+<li>Vocabulary level (simple, technical, academic)</li>
+<li>Tone qualities (list 5 adjectives)</li>
+<li>Structural habits (paragraph length, use of subheadings, lists vs
+prose)</li>
+<li>Phrases or patterns I use frequently</li>
+<li>Things I never do (formal vs casual markers)</li>
+<li>Energy level (calm, intense, urgent, conversational)</li>
+</ul>
+</blockquote>
+<blockquote>
+Then write a 200-word sample paragraph about [ANY TOPIC] using this
+exact voice profile. I will compare it to my actual writing to verify
+accuracy. Why it works: Run this once and save the output as a context
+file. Every future prompt gets your voice right the first time instead
+of sounding like every other AI output on the internet. Research &amp;
+Analysis (8-14) 🔍
+<ol start="8" style="list-style-type: decimal">
+<li>The Meeting Prep Brief I have a meeting with [PERSON NAME] from
+[COMPANY] in [TIME].</li>
+</ol>
+</blockquote>
+<blockquote>
+Research and create a one-page brief covering:
+<ol style="list-style-type: decimal">
+<li>Their background (role, career highlights, relevant experience)</li>
+<li>Their company (what they do, recent news, current challenges)</li>
+<li>Any recent public statements, articles, or social posts from
+them</li>
+<li>3 talking points that would be relevant to our meeting topic:
+[TOPIC]</li>
+<li>3 smart questions to ask them</li>
+<li>1 potential common ground or shared interest to build rapport</li>
+</ol>
+</blockquote>
+<blockquote>
+Format as a scannable document I can read in 5 minutes before the call.
+Why it works: This replaced 30 minutes of LinkedIn stalking and Google
+searching before every meeting. The “common ground” section alone has
+opened more doors than any other prep step.
+<ol start="9" style="list-style-type: decimal">
+<li>The Decision Matrix I need to make a decision about [DECISION].</li>
+</ol>
+</blockquote>
+<blockquote>
+My options are:
+<ol style="list-style-type: decimal">
+<li>[OPTION A]</li>
+<li>[OPTION B]</li>
+<li>[OPTION C — optional]</li>
+</ol>
+</blockquote>
+<blockquote>
+My priorities (ranked):
+<ol style="list-style-type: decimal">
+<li>[MOST IMPORTANT FACTOR]</li>
+<li>[SECOND MOST IMPORTANT]</li>
+<li>[THIRD MOST IMPORTANT]</li>
+</ol>
+</blockquote>
+<blockquote>
+For each option:
+<ul>
+<li>Score it 1-10 on each priority factor</li>
+<li>List the top 2 risks</li>
+<li>List the top 2 advantages</li>
+<li>Identify what I would need to be true for this option to be the best
+choice</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Then give me your recommended option with reasoning in 3
+sentences.</p>
+</blockquote>
+<blockquote>
+Do NOT hedge. Pick one and defend it. Why it works: The “do not hedge”
+instruction is everything. Without it, Claude gives you a balanced
+analysis that helps nobody. With it, you get a clear recommendation you
+can either follow or argue against.
+<ol start="10" style="list-style-type: decimal">
+<li>The Competitor Breakdown Analyze [COMPETITOR NAME / URL] as if you
+were a competitive intelligence analyst.</li>
+</ol>
+</blockquote>
+<blockquote>
+Cover:
+<ol style="list-style-type: decimal">
+<li>What they sell and to whom (be specific about segments)</li>
+<li>Their pricing model and approximate price points</li>
+<li>Their positioning (how they describe themselves vs how the market
+sees them)</li>
+<li>Their strongest feature or differentiator</li>
+<li>Their biggest weakness or gap</li>
+<li>Recent moves (product launches, hires, partnerships, funding)</li>
+<li>What they do better than us: [YOUR COMPANY/PRODUCT]</li>
+<li>What we do better than them</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>End with: 3 strategic opportunities we could exploit based on their
+weaknesses.</p>
+</blockquote>
+<blockquote>
+Use only factual information. If you are not confident about a claim,
+flag it as unverified. Why it works: This replaces a full afternoon of
+competitive research. The “flag as unverified” instruction prevents
+Claude from confidently making things up about your competitors, which
+is the default failure mode.
+<ol start="11" style="list-style-type: decimal">
+<li>The Book Processor I just read [BOOK TITLE] by [AUTHOR].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Create a structured summary with these sections:</p>
+</blockquote>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>Core thesis (3 sentences max)</li>
+<li>The 5 most important ideas (2-3 sentences each, in my own words not
+the author’s)</li>
+<li>The strongest argument the author makes (and why it is strong)</li>
+<li>The weakest argument the author makes (and why it is weak)</li>
+<li>3 specific ways I can apply this to [MY WORK / MY BUSINESS / MY
+LIFE]</li>
+<li>Key quotes worth saving (max 5)</li>
+<li>Who should read this and who should skip it</li>
+</ol>
+</blockquote>
+<blockquote>
+Write as if you are briefing a busy executive who wants the signal, not
+the story. Why it works: This turns a 6-hour book into a 10-minute
+actionable brief. The “apply this to my specific situation” section
+makes it practical instead of theoretical.
+<ol start="12" style="list-style-type: decimal">
+<li>The Data Explainer Here is a dataset:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[PASTE YOUR DATA OR DESCRIBE IT]</p>
+</blockquote>
+<blockquote>
+Analyze it and give me:
+<ol style="list-style-type: decimal">
+<li>The 3 most important trends (with specific numbers)</li>
+<li>Any anomalies or outliers that are worth investigating</li>
+<li>Correlations between variables (if any exist)</li>
+<li>What this data suggests we should do next (2-3 recommendations)</li>
+<li>What this data does NOT tell us (limitations and blind spots)</li>
+</ol>
+</blockquote>
+<blockquote>
+Present the findings in two formats:
+<ul>
+<li>A 3-sentence executive summary for someone who has 30 seconds</li>
+<li>A detailed breakdown for someone who has 5 minutes</li>
+</ul>
+</blockquote>
+<blockquote>
+If the data is insufficient to draw any conclusion, say so rather than
+speculating. Why it works: The two-format output is the secret. You get
+the quick answer for yourself and the detailed version for the
+stakeholder who asks follow-up questions. The “what this data does NOT
+tell us” section prevents overconfident decisions.
+<ol start="13" style="list-style-type: decimal">
+<li>The Process Documenter I am going to describe a process I do
+regularly. Turn it into a structured Standard Operating Procedure.</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>My process: [DESCRIBE WHAT YOU DO IN CASUAL LANGUAGE — e.g., “Every
+Monday I check our analytics, pull the numbers into a spreadsheet,
+compare week over week, flag anything weird, and write a summary for the
+team”]</p>
+</blockquote>
+<blockquote>
+Create an SOP with:
+<ol style="list-style-type: decimal">
+<li>Purpose (one sentence — why this process exists)</li>
+<li>Frequency (how often it runs)</li>
+<li>Prerequisites (what needs to be in place before starting)</li>
+<li>Step-by-step procedure (numbered, specific, no ambiguity)</li>
+<li>Quality checks (how to verify each step was done correctly)</li>
+<li>Common mistakes to avoid</li>
+<li>Time estimate for completion</li>
+</ol>
+</blockquote>
+<blockquote>
+Format it so that a new hire could follow it on their first day without
+asking any questions. Why it works: Everyone has processes living in
+their head that they have never documented. This prompt extracts them in
+a format that can be delegated to a human or automated with an AI agent.
+<ol start="14" style="list-style-type: decimal">
+<li>The Assumption Destroyer I am planning to [PROJECT / DECISION /
+STRATEGY].</li>
+</ol>
+</blockquote>
+<blockquote>
+Here are my assumptions:
+<ol style="list-style-type: decimal">
+<li>[ASSUMPTION 1]</li>
+<li>[ASSUMPTION 2]</li>
+<li>[ASSUMPTION 3]</li>
+</ol>
+</blockquote>
+<blockquote>
+For each assumption:
+<ul>
+<li>Rate how confident I should be (high / medium / low) and why</li>
+<li>Identify what would need to be true for this assumption to hold</li>
+<li>Describe the worst case scenario if this assumption is wrong</li>
+<li>Suggest one quick way to validate or invalidate it before
+committing</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>Then identify 2 assumptions I am probably making that I did NOT list.
+Explain each one.</p>
+</blockquote>
+<blockquote>
+Be honest and direct. Do not soften bad news. Why it works: This is the
+most underrated prompt on the list. The hidden assumptions section has
+single-handedly prevented bad decisions for me more than once. We are
+all blind to our own blind spots. Productivity &amp; Business (15-21) ⚡
+<ol start="15" style="list-style-type: decimal">
+<li>The Weekly Review Engine Here is what happened this week:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Completed: [LIST WHAT YOU FINISHED] In progress: [LIST WHAT IS
+ONGOING] Blocked: [LIST WHAT IS STUCK AND WHY] Wins: [LIST ANY WINS OR
+MILESTONES]</p>
+</blockquote>
+<blockquote>
+Based on this:
+<ol style="list-style-type: decimal">
+<li>What was my highest-impact activity this week?</li>
+<li>What activity consumed time but produced no meaningful result?</li>
+<li>What pattern do you see in my blockers?</li>
+<li>What should I prioritize next week (top 3 only)?</li>
+<li>What should I stop doing or delegate?</li>
+</ol>
+</blockquote>
+<blockquote>
+Be direct. If something I spent time on was a waste, say so. Why it
+works: Friday review in 5 minutes instead of 30. The “be direct”
+instruction prevents Claude from praising everything you did and
+actually forces useful self-assessment.
+<ol start="16" style="list-style-type: decimal">
+<li>The Client Proposal Generator Draft a project proposal for [CLIENT
+NAME].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Project: [WHAT YOU ARE BUILDING / PROVIDING] Client’s main problem:
+[WHAT THEY TOLD YOU THEY NEED] Timeline: [ESTIMATED TIMELINE] Budget
+range: [YOUR PRICE RANGE]</p>
+</blockquote>
+<blockquote>
+Structure:
+<ol style="list-style-type: decimal">
+<li>Understanding of the problem (show them you listened — 3
+sentences)</li>
+<li>Proposed solution (what you will build / deliver)</li>
+<li>Scope (what is included and explicitly what is NOT included)</li>
+<li>Timeline with milestones</li>
+<li>Investment (pricing with payment schedule)</li>
+<li>What happens next (clear next step and CTA)</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Tone: professional and confident but not stiff. The client should
+feel like they are hiring a competent partner, not a robot.</p>
+</blockquote>
+<blockquote>
+Keep the entire proposal under 800 words. Brevity signals confidence.
+Why it works: Most proposals are either too long or too vague. The
+“explicitly what is NOT included” section prevents scope creep from day
+one. “Brevity signals confidence” keeps Claude from padding.
+<ol start="17" style="list-style-type: decimal">
+<li>The Cold Outreach Personalizer I want to reach out to [PERSON] at
+[COMPANY] about [WHAT YOU OFFER].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Their role: [TITLE] Their company does: [BRIEF DESCRIPTION] Something
+relevant about them: [RECENT POST, ARTICLE, ACHIEVEMENT, OR COMPANY
+NEWS]</p>
+</blockquote>
+<blockquote>
+Write a cold email that:
+<ul>
+<li>Opens with something specific to THEM (not “I hope this finds you
+well”)</li>
+<li>Gets to the point in under 3 sentences</li>
+<li>Clearly states what I do and why it matters to their specific
+situation</li>
+<li>Includes a low-friction CTA (not “let’s schedule a 30-minute
+call”)</li>
+<li>Total length: under 100 words</li>
+</ul>
+</blockquote>
+<blockquote>
+Does NOT sound like: a template, a sales pitch, or a LinkedIn connection
+message. Sounds like: a smart person who noticed something relevant and
+reached out. Why it works: The 100-word limit is the magic constraint.
+It forces Claude to cut everything that is not essential. The “sounds
+like” vs “does not sound like” instruction eliminates every bad habit of
+AI-generated outreach.
+<ol start="18" style="list-style-type: decimal">
+<li>The Feedback Translator I received this feedback:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[PASTE THE FEEDBACK — from a client, boss, colleague, review,
+etc.]</p>
+</blockquote>
+<blockquote>
+Help me:
+<ol style="list-style-type: decimal">
+<li>Strip the emotion and extract the 3 most important actionable
+points</li>
+<li>Identify what they are actually asking for vs what they said (these
+are often different)</li>
+<li>Rate severity: which points are deal-breakers and which are
+preferences?</li>
+<li>Draft a response that acknowledges the feedback, addresses each
+point, and sets expectations for next steps</li>
+</ol>
+</blockquote>
+<blockquote>
+Tone of my response: [professional / grateful / firm — pick one] Length:
+under 150 words Why it works: Emotional feedback is hard to process in
+the moment. This creates a cooling-off filter that translates feelings
+into actions. The “what they are actually asking for vs what they said”
+distinction is worth the entire prompt.
+<ol start="19" style="list-style-type: decimal">
+<li>The Meeting Killer Here is the agenda and context for an upcoming
+meeting:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[PASTE MEETING INVITE, AGENDA, OR DESCRIBE THE PURPOSE]</p>
+</blockquote>
+<blockquote>
+Determine:
+<ol style="list-style-type: decimal">
+<li>Can this meeting be replaced by an async document? If yes, draft
+that document.</li>
+<li>If the meeting IS necessary, what is the single decision that needs
+to be made?</li>
+<li>Who actually needs to be in the room? (Remove anyone who is there
+“just to be informed” — send them the notes instead)</li>
+<li>What is the minimum time needed? (Default to 25 minutes, justify if
+longer)</li>
+<li>Draft a 3-line pre-read that all attendees should review before the
+meeting so you do not waste the first 10 minutes on context</li>
+</ol>
+</blockquote>
+<blockquote>
+The goal is either killing this meeting or making it half as long. Why
+it works: The average professional spends 31 hours per month in
+unnecessary meetings. This prompt alone is worth an hour saved per week
+just by running it on your calendar once.
+<ol start="20" style="list-style-type: decimal">
+<li>The Pricing Strategy Advisor I sell [PRODUCT/SERVICE] to [TARGET
+AUDIENCE].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Current price: [PRICE] Current conversion rate: [IF KNOWN] Top
+competitors and their pricing: [LIST 2-3] My main differentiator: [WHAT
+MAKES ME DIFFERENT]</p>
+</blockquote>
+<blockquote>
+Analyze my pricing and give me:
+<ol style="list-style-type: decimal">
+<li>Am I underpriced, overpriced, or correctly priced? Why?</li>
+<li>What pricing model would maximize revenue? (one-time, subscription,
+tiered, usage-based)</li>
+<li>If I raised my price by 50%, what would likely happen? What about
+100%?</li>
+<li>What is the specific objection buyers probably have about my price
+right now?</li>
+<li>Write one sentence I can use to justify my price when asked “why so
+expensive?”</li>
+</ol>
+</blockquote>
+<blockquote>
+Be direct. Most people underprice out of fear. If that is me, say so.
+Why it works: Pricing is the single highest-leverage decision in any
+business. A 20% price increase goes straight to profit. Most people
+never analyze this because it feels uncomfortable. Let Claude do the
+uncomfortable analysis.
+<ol start="21" style="list-style-type: decimal">
+<li>The Delegation Formatter I need to delegate this task:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[DESCRIBE THE TASK IN YOUR OWN WORDS]</p>
+</blockquote>
+<blockquote>
+Convert my description into a delegation brief with:
+<ol style="list-style-type: decimal">
+<li>Task summary (one sentence — what and why)</li>
+<li>Definition of done (what the finished result looks like,
+specifically)</li>
+<li>Constraints (budget, timeline, tools to use, things to avoid)</li>
+<li>Decision authority (what decisions they can make alone vs what needs
+my approval)</li>
+<li>Check-in points (when they should update me)</li>
+<li>Common mistakes to avoid (based on what typically goes wrong with
+this type of task)</li>
+</ol>
+</blockquote>
+<blockquote>
+Format it so I can paste it directly into a Slack message or email.
+Length: under 200 words. Why it works: Bad delegation creates more work
+than doing it yourself. This prompt forces clarity on the two things
+most people skip: “definition of done” and “decision authority.” Those
+two sections eliminate 80% of back-and-forth. Thinking &amp; Strategy
+(22-25)
+<ol start="22" style="list-style-type: decimal">
+<li>The Reverse Brainstorm I want to [GOAL].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>First, brainstorm 10 ways I could guarantee FAILURE at this goal. Be
+creative and specific.</p>
+</blockquote>
+<blockquote>
+<p>Then invert each failure mode into a success strategy.</p>
+</blockquote>
+<blockquote>
+Finally, rank the 3 inverted strategies that are:
+<ul>
+<li>Most counterintuitive (things I would not have thought of)</li>
+<li>Most actionable (I could start this week)</li>
+<li>Most impactful (would move the needle most)</li>
+</ul>
+</blockquote>
+<blockquote>
+For each of the top 3, give me a specific first step I can take
+tomorrow. Why it works: Direct brainstorming produces predictable ideas.
+Inverting failure modes produces genuinely surprising strategies. This
+is one of my favourite Claude techniques and it consistently generates
+ideas I would never have arrived at through normal thinking.
+<ol start="23" style="list-style-type: decimal">
+<li>The Pre-Mortem I am about to [DECISION / LAUNCH / PROJECT].</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Imagine it is 6 months from now and this has completely failed.</p>
+</blockquote>
+<blockquote>
+Write the post-mortem:
+<ol style="list-style-type: decimal">
+<li>What went wrong? (5 specific failure points, not vague “bad
+execution”)</li>
+<li>What warning signs did I ignore?</li>
+<li>What did I assume that turned out to be wrong?</li>
+<li>Who was affected and how?</li>
+<li>What would I do differently if I could go back?</li>
+</ol>
+</blockquote>
+<blockquote>
+Then return to the present. Based on this pre-mortem:
+<ul>
+<li>Which 2 failure points are most likely to actually happen?</li>
+<li>What can I do THIS WEEK to prevent or mitigate each one?</li>
+</ul>
+</blockquote>
+<blockquote>
+Be brutally honest. I would rather hear hard truths now than learn them
+the expensive way. Why it works: Pre-mortems are one of the most
+powerful strategic tools that almost nobody uses. Having Claude write
+the failure story from the future surfaces risks that optimism blinds
+you to in the present.
+<ol start="24" style="list-style-type: decimal">
+<li>The Second Brain Synthesizer Here are notes I have collected over
+the past [TIMEFRAME]:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[PASTE YOUR RAW NOTES, IDEAS, HIGHLIGHTS, OBSERVATIONS]</p>
+</blockquote>
+<blockquote>
+Synthesize these into:
+<ol style="list-style-type: decimal">
+<li>The 3 biggest themes or patterns across all notes</li>
+<li>Connections between ideas that I probably did not notice (ideas from
+different contexts that relate to each other)</li>
+<li>The single most important insight hiding in these notes</li>
+<li>2 action items that emerge from the patterns</li>
+<li>3 questions I should be asking based on what I have been
+tracking</li>
+</ol>
+</blockquote>
+<blockquote>
+Do not just summarize each note. Find the signal across all of them. I
+want emergence, not repetition. Why it works: We all capture notes and
+never revisit them. This prompt turns a messy collection of fragments
+into synthesized insight. The “connections between ideas I did not
+notice” instruction is where the real value lives.
+<ol start="25" style="list-style-type: decimal">
+<li>The Personal Board of Advisors I am facing this situation:</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>[DESCRIBE YOUR SITUATION, PROBLEM, OR DECISION]</p>
+</blockquote>
+<blockquote>
+<p>Analyze this from 5 perspectives:</p>
+</blockquote>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li>The pragmatic operator — cares only about what works, ignores
+theory</li>
+<li>The skeptical investor — sees every risk, questions every
+assumption</li>
+<li>The creative strategist — finds unconventional angles everyone else
+misses</li>
+<li>The customer/user — does not care about my problems, only about
+their experience</li>
+<li>The long-term thinker — ignores short-term pain, focuses on where
+this leads in 3 years</li>
+</ol>
+</blockquote>
+<blockquote>
+<p>Each advisor gives their take in 2-3 sentences.</p>
+</blockquote>
+<blockquote>
+<p>Then synthesize their advice into one recommended action with
+reasoning.</p>
+</blockquote>
+<blockquote>
+<p>If the advisors disagree on something fundamental, highlight that
+tension. Do not resolve it artificially. Why it works: This is the most
+powerful prompt on the entire list. Five perspectives produce
+dramatically richer analysis than one. The “do not resolve the tension
+artificially” instruction is critical because real decisions involve
+real tradeoffs that cannot be smoothed over. TL;DR 25 prompts. All
+tested daily. Zero gimmicks. Copy the ones relevant to your work. Paste
+them. Customize the brackets. Use them. The difference between someone
+who spends 50 hours a week working and someone who gets the same results
+in 40 is not talent. It is systems. These prompts are systems. This list
+took weeks to build and refine. If it saved you time, you know what to
+do. I post stuff like this regularly - AI tools, workflows, prompts, and
+things I actually use. No fluff, no hype, just what works. Follow me
+<span class="citation">@eng_khairallah1</span> for more tools,
+workflows, and systems. No fluff. Just what works. hope this was useful
+for you, Khairallah</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+</div>
+<div id="skills" class="section level1">
+<h1>Skills</h1>
+<div id="git" class="section level2">
+<h2>Git</h2>
+<div id="run-model-before-and-after-commit" class="section level3">
+<h3>Run model before and after commit</h3>
+<p>For example this before-after model run check happened in a session,
+related to an issue with the eu_cbm_hat model <a
+href="https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat/-/work_items/144"
+class="uri">https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat/-/work_items/144</a>
+The LLM checked out an earlier commit to see if the integration test
+error was the same before and after the code changes.</p>
+<blockquote>
+<p>● I see the setup. The CI error happens because eu_cbm_hat imports
+eu_cbm_hat.info.harvest.combined which transitively reads
+country_codes.csv from EU_CBM_DATA. Locally you have that env var
+pointing to actual data, so import works. The fix in 5323da0 removed
+that import from natural_disturbances.py.</p>
+</blockquote>
+<blockquote>
+<p>Let me reproduce by: 1. Setting EU_CBM_DATA to a non-existent path
+(simulating CI’s missing /root/eu_cbm/eu_cbm_data/) 2. Installing
+eu_cbm_hat from local checkout at commit 5cb2f5f (one before the fix) 3.
+Running the test → expect failure 4. Reinstalling at 5323da0 → expect
+success</p>
+</blockquote>
+<blockquote>
+<p>…</p>
+</blockquote>
+<blockquote>
+<p>● Bash(env -i HOME=/tmp/fake_ci_home PATH=/usr/bin:/bin<br />
+… ⎿   File
+“/tmp/eu_cbm_hat_before_144/eu_cbm_hat/post_processor/natural_disturbances.py”,
+line 8, in <module> from eu_cbm_hat.info.harvest import combined File
+“/tmp/eu_cbm_hat_before_144/eu_cbm_hat/info/harvest.py”, line 48, in
+<module> … +27 lines (ctrl+o to expand)</p>
+</blockquote>
+<blockquote>
+<p>● CI failure reproduced exactly. Now running the full pytest command
+at the pre-fix commit:</p>
+</blockquote>
+<blockquote>
+<p>…</p>
+</blockquote>
+<blockquote>
+<p>● Fix confirmed. All 5 tests pass with commit 5323da0. Cleaning
+up:</p>
+</blockquote>
+<blockquote>
+<p>● Bash(git -C /home/paul/rp/eu_cbm/eu_cbm_hat worktree remove
+/tmp/eu_cbm_hat_before_144 &amp;&amp; git -C
+/home/paul/rp/eu_cbm/eu_cbm_hat worktree remove /tmp/eu_cbm_hat_afte…) ⎿
+ /home/paul/rp/eu_cbm/eu_cbm_hat 5323da0 [main]</p>
+</blockquote>
+<blockquote>
+<p>● Summary</p>
+</blockquote>
+<blockquote>
+<p>CI failure reproduced and fix confirmed.</p>
+</blockquote>
+<blockquote>
+<p>Reproduction recipe (simulates GitLab CI by hiding all of your local
+eu_cbm_data references):</p>
+</blockquote>
+<blockquote>
+<p>[…]</p>
+</blockquote>
+<blockquote>
+<p>So the CI failure is fixed by 5323da0. The pip-published
+eu-cbm-hat==2.1.6 on CI predates this commit — bumping the pinned
+version (or letting CI install latest from git) will unblock the CI
+job.</p>
+</blockquote>
+</div>
+</div>
+<div id="graphify" class="section level2">
+<h2>Graphify</h2>
+<ul>
+<li><p><a href="https://github.com/safishamsi/graphify"
+class="uri">https://github.com/safishamsi/graphify</a></p>
+<blockquote>
+<p>“Type /graphify in your AI coding assistant and it maps your entire
+project — code, docs, PDFs, images, videos — into a knowledge graph you
+can query instead of grepping through files.”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="markdown" class="section level2">
+<h2>Markdown</h2>
+<div id="blogpaste" class="section level3">
+<h3>Blogpaste</h3>
+<p>Emit a fenced <code>markdown</code> block (so Paul copies the raw
+source), containing, for each exchange:</p>
+<p>Paul:</p>
+<pre><code>❯ &lt;question, wrapped at 88 columns, every line indented 4 spaces;
+only the first line carries the ❯ prompt marker&gt;</code></pre>
+<p>Claude:</p>
+<blockquote>
+<p>● &lt;answer rendered as a blockquote: every line is 2 spaces then
+“&gt;”; the first content line starts with the ● bullet&gt;</p>
+</blockquote>
+<ul>
+<li>Wrap prose at 88 columns, counting the indent/prefix.</li>
+<li><strong>Paul’s block</strong>: header line <code>Paul:</code>, one
+blank line, then the question as a 4-space-indented block. The first
+line begins with <code>❯</code>; continuation lines are just indented 4
+spaces (no <code>❯</code>).</li>
+<li><strong>Claude’s block</strong>: header line <code>Claude:</code>,
+one blank line, then the answer as a blockquote — each line is 2 spaces
++ <code>&gt;</code>. The first content line starts with <code>●</code>.
+Separate paragraphs, list groups, and sections with a blank
+<code>&gt;</code> or blank line.</li>
+</ul>
+</div>
+</div>
+<div id="sycophancy" class="section level2">
+<h2>Sycophancy</h2>
+<p>Paul:</p>
+<pre><code>❯ please avoid sycophancy</code></pre>
+<p>Claude:</p>
+<blockquote>
+<p>●
+Read(/home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/MEMORY.md)
+⎿  Read 5 lines</p>
+</blockquote>
+<blockquote>
+<p>●
+Write(/home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/feedback_no_sycophancy.md)
+⎿  Wrote 14 lines to
+/home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/feedback_no_sycophancy.md
+1 — 2 name: feedback-no-sycophancy 3 description: User wants direct
+responses without flattery or excessive affirmation 4 metadata: 5
+node_type: memory 6 type: feedback 7 originSessionId:
+3e45b353-c57e-4d74-8f51-35fe80f4e96d 8 — 9 10 No sycophantic language.
+Don’t use phrases like “Great question!”, “That’s a smart approach”,
+“Bottom line:”, or add rhetorical emphasis just to make a response feel
+warmer. State things directly. 11 12 <strong>Why:</strong> User
+explicitly asked to avoid it. 13 14 <strong>How to apply:</strong> Skip
+affirmations, filler praise, and motivational closers. Just answer.</p>
+</blockquote>
+<blockquote>
+<p>●
+Update(/home/paul/.claude/projects/-home-paul-rp-bookmarkdown/memory/MEMORY.md)
+⎿  Added 3 lines 1 # Memory index 2 3 +## Feedback 4 +- <a
+href="feedback_no_sycophancy.md">No sycophancy</a> — respond directly,
+no flattery or motivational closers 5 +</p>
+</blockquote>
+<p>Paul:</p>
+<pre><code>❯ I meant in this conversation only and in your previous reply.</code></pre>
+<p>Claude 10:42 AM claude-sonnet-4-6</p>
+<blockquote>
+<p>● Understood. Let me remove that memory — it wasn’t warranted as a
+permanent note.</p>
+</blockquote>
+</div>
+<div id="tests" class="section level2">
+<h2>Tests</h2>
+<div id="cheaper-model-to-run-integration-tests" class="section level3">
+<h3>Cheaper model to run integration tests</h3>
+<ul>
+<li><p>Paul</p>
+<p>❯ how to use a cheaper model for skills I saw:</p>
+<pre><code> &gt; 20% of your usage came from /run-integration-tests
+ &gt; Heavy skills can be scoped down or run with a cheaper model via skill
+ &gt; frontmatter.</code></pre></li>
+<li><p>Claude</p>
+<blockquote>
+<p>● You can set a model: field in the skill’s frontmatter. Skills live
+as markdown files with YAML frontmatter — adding model: claude-haiku-4-5
+(or claude-sonnet-4-6) at the top makes invocations of that skill use
+the cheaper model.</p>
+</blockquote>
+<blockquote>
+<p>For your run-integration-tests skill, find the file (likely
+~/.claude/skills/run-integration-tests.md or under .claude/skills/ in
+this project) and edit the frontmatter:</p>
+</blockquote>
+<pre><code>  --- 
+  name: run-integration-tests 
+  description: Run pytest integration tests for 
+  model: claude-haiku-4-5 
+  ---</code></pre>
+<blockquote>
+<p>Valid values are claude-haiku-4-5, claude-sonnet-4-6, or
+claude-opus-4-7. Haiku is the cheapest and usually fine for mechanical
+“run this command, report results” skills like running tests.</p>
+</blockquote></li>
+</ul>
+</div>
 </div>
 </div>
 <div id="spaces" class="section level1">
@@ -961,44 +2582,817 @@ managers, and carbon accounting professionals.</li>
 </div>
 </div>
 </div>
-<div id="claude-code" class="section level1">
-<h1>Claude code</h1>
+<div id="steering-coding-agents" class="section level1">
+<h1>Steering coding agents</h1>
+<div id="human-gates" class="section level2">
+<h2>Human gates</h2>
+<ul>
+<li><p>Talks about Human gates towards 31 min <a
+href="https://www.cnbc.com/video/2026/06/03/mistral-ceo-on-ai-infrastructure-sovereignty-and-europes-ai-future.html"
+class="uri">https://www.cnbc.com/video/2026/06/03/mistral-ceo-on-ai-infrastructure-sovereignty-and-europes-ai-future.html</a></p>
+<p>“as employees we need to give as much context as possible to the
+agents who are going to be the orchestrator of processes.”</p></li>
+</ul>
+</div>
+<div id="issues-tracker-as-the-steering-layer-for-coding-agents"
+class="section level2">
+<h2>Issues tracker as the steering layer for coding agents</h2>
+<ul>
+<li>Triage loop</li>
+<li>Implementer agent</li>
+<li>Verifier agent</li>
+<li>Gates on tests and linting</li>
+</ul>
+<div id="triage-bot" class="section level3">
+<h3>Triage bot</h3>
+<p>I created a bot gitlab account so that the LLM can comment on issues
+and triage them with a different user name than mine. That makes it more
+transparent for the readers.</p>
+<div id="service-account-for-triage-bots" class="section level4">
+<h4>Service account for triage bots</h4>
+<p>Group service account <a
+href="https://docs.gitlab.com/user/profile/service_accounts/?tab=Group+service+accounts"
+class="uri">https://docs.gitlab.com/user/profile/service_accounts/?tab=Group+service+accounts</a></p>
+<blockquote>
+<ul>
+<li>” Service accounts have the following characteristics:</li>
+</ul>
+</blockquote>
+<blockquote>
+<pre><code>- They do not use a seat.
+- They are not billable users or internal users.
+- They are always marked as external users.
+- They cannot sign in to GitLab through the UI. [...]&quot;</code></pre>
+</blockquote>
+<p>Bootstrap with Personal Access Token only needed once</p>
+<blockquote>
+<p>“Type this — the read -s prompts you to paste the token, and because
+it goes in via stdin it never appears in your shell history or in the
+process list (ps):</p>
+</blockquote>
+<pre><code>read -rs OWNER_PAT              # paste the glpat-… , press Enter
+glab auth login --hostname gitlab.com --stdin &lt;&lt;&lt;&quot;$OWNER_PAT&quot;
+unset OWNER_PAT</code></pre>
+<p>Check token validity</p>
+<pre><code>glab auth status</code></pre>
+<p>Bootstrap sequence using my gitlab Personal Access Token to create a
+service account authorized for a gitlab group.</p>
+<ol style="list-style-type: decimal">
+<li><p>Create the service account (returns its user id + actual
+username)</p>
+<pre><code> glab api --method POST groups/--------/service_accounts -f name=&quot;triage-bot&quot; -f username=&quot;org_triage_bot&quot;</code></pre></li>
+<li><p>Mint an api-scoped token for it. Use the return service account
+id here in place of SA_ID</p>
+<p>glab api –method POST
+groups/———/service_accounts/SA_ID/personal_access_tokens<br />
+-f name=“triage” -f “scopes[]=api” -f expires_at=“2027-07-03”</p></li>
+</ol>
+<blockquote>
+<p>“This returns”token”:“glpat-…” once — that’s the credential the bot
+uses. Capture it now; you can’t retrieve it again.”</p>
+</blockquote>
+<ol start="3" style="list-style-type: decimal">
+<li><p>Add the service account to the project as Reporter (20)</p>
+<p>glab api –method POST projects/org%2Forg_cbm/members<br />
+-f user_id=SA_ID -f access_level=20</p></li>
+</ol>
+<p>Then upload the token to the server</p>
+<pre><code>  read -rs SA_TOKEN                                              # paste the glpat-… , Enter
+  ssh SERVER &#39;glab auth login --hostname gitlab.com --stdin&#39; &lt;&lt;&lt;&quot;$SA_TOKEN&quot;
+  unset SA_TOKEN</code></pre>
+<p>Then check that the service account works on the server</p>
+<pre><code>ssh SERVER &#39;glab api user&#39;</code></pre>
+</div>
+</div>
+<div id="simple-control-plane" class="section level3">
+<h3>Simple Control Plane</h3>
+<p>Paul’s 2026 setup with only one controlling agent firing sub agents
+for implementation and verification, with model runs in integration
+tests as automated gates.</p>
+<ul>
+<li>The controlling agents prioritises issues to work on, based on
+tags</li>
+<li>Implementer agent</li>
+<li>The verifier agent uses a python code review skill if available
+(investigate or suggest)</li>
+<li>Integration tests as gates</li>
+</ul>
+</div>
+<div id="elaborate-control-plane" class="section level3">
+<h3>Elaborate Control Plane</h3>
+<p>Elaborate setup with triage loop, implementer agent, verifier agents
+and more.</p>
+<div id="peter-steinbergers-triage-and-implementation"
+class="section level4">
+<h4>Peter Steinberger’s triage and implementation</h4>
+<p>Claude code on Peter Steinberger’s use of Gtihub issues :</p>
+<blockquote>
+<p>“His replies are remarkably formulaic and commit-anchored — they read
+like an agent’s structured status update written by the maintainer:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Closing a fix: <em>“Fixed on <code>main</code> by #94148, merge
+commit <code>8625b8a9…</code>. Proof: focused doctor tests passed; live
+systemd run …”</em></li>
+<li>Keeping something open: <em>“Codex review: keeping this open for
+maintainer follow-up … Current main still has …”</em></li>
+<li>Triage/narrowing: <em>“Deep-review update: still open on current
+<code>main</code>, but some building blocks now exist …”</em></li>
+</ul>
+</blockquote>
+<blockquote>
+<p>So the issue tracker functions as the steering layer for the coding
+agents: bots and users surface and reproduce problems, agents propose
+and review, and Steinberger’s comments are the authoritative signal —
+merge confirmation, scope decisions, “keep open” — that the agents and
+contributors act on. The AI work shows up in the commits too
+(AI-generated PRs referenced by hash), so the loop is report → agent
+review → maintainer decision → AI-assisted commit, all transacted inside
+the issue thread.”</p>
+</blockquote>
+<p>See for example</p>
+<ul>
+<li><p>This open issue where Peter Steinberger comments <a
+href="https://github.com/openclaw/openclaw/issues/92201"
+class="uri">https://github.com/openclaw/openclaw/issues/92201</a> in a
+mix of user reports and AI agents commenting in the same thread + AI
+related commits as well of course</p></li>
+<li><p>This is a closed issue <a
+href="https://github.com/openclaw/openclaw/issues/78217"
+class="uri">https://github.com/openclaw/openclaw/issues/78217</a> with a
+comment by AI agent clawsweeper followed by a comment confirming the
+merge by Peter Steinberger</p></li>
+</ul>
+<div id="skills-used-by-peter-steinberger" class="section level5">
+<h5>Skills used by Peter Steinberger</h5>
+<ul>
+<li><p>Maintainer Orchestrator <a
+href="https://github.com/steipete/agent-scripts/blob/main/skills/maintainer-orchestrator/SKILL.md"
+class="uri">https://github.com/steipete/agent-scripts/blob/main/skills/maintainer-orchestrator/SKILL.md</a></p>
+<blockquote>
+<p>“Coordinate repository work through completion. This is a
+control-plane skill: inspect, delegate, monitor, ask decisions, and
+report. Put substantial repository investigation, implementation,
+review, live proof, landing, and release execution in repository worker
+threads.”</p>
+</blockquote></li>
+<li><p>GitHub Project Triage <a
+href="https://github.com/steipete/agent-scripts/blob/main/skills/github-project-triage/SKILL.md"
+class="uri">https://github.com/steipete/agent-scripts/blob/main/skills/github-project-triage/SKILL.md</a></p>
+<blockquote>
+<p>“Always use this skill when the user types triage, unless the request
+explicitly targets a non-GitHub domain. From inside a repo, use the
+current GitHub project by default. Triage means maintainer-facing item
+cards: URL, what each issue/PR is about, why it matters, author trust,
+fit, risk, proof/test state, blockers, and next action. Never return
+only queue numbers or opaque refs.”</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="tests-1" class="section level1">
+<h1>Tests</h1>
+<div id="javascript-ui-tests-with-playwrite" class="section level2">
+<h2>Javascript UI tests with playwrite</h2>
+<ul>
+<li><p><a href="https://github.com/microsoft/playwright"
+class="uri">https://github.com/microsoft/playwright</a></p>
+<blockquote>
+<p>“Playwright is a framework for web automation and testing. It drives
+Chromium, Firefox, and WebKit with a single API — in your tests, in your
+scripts, and as a tool for AI agents.</p>
+</blockquote></li>
+</ul>
+</div>
+</div>
+<div id="tokens" class="section level1">
+<h1>Tokens</h1>
+<div id="token-costs-of-hard-wrapping" class="section level2">
+<h2>Token costs of hard wrapping</h2>
+<p>Paul:</p>
+<pre><code>❯ how much does markdown prose wrapping at 88 character cost me in terms of
+token when generating output?</code></pre>
+<p>Claude</p>
+<blockquote>
+<p>● Good question — it’s a real, measurable cost. Let me reason about
+the mechanism and then measure it.</p>
+</blockquote>
+<blockquote>
+<p>The cost comes entirely from the extra newline characters. When prose
+is hard-wrapped, a space that would join two words (word word) becomes a
+line break (word). In a BPE tokenizer, word (space + word) usually
+merges into a single token, but is its own token and the following word
+loses its leading-space merge — so each wrap point costs roughly +1
+token.</p>
+</blockquote>
+<blockquote>
+<p>Let me measure it empirically with a tokenizer.</p>
+</blockquote>
+<blockquote>
+<p>Ran 5 shell commands</p>
+</blockquote>
+<blockquote>
+<p>● Answer</p>
+</blockquote>
+<blockquote>
+<p>Hard-wrapping prose at 88 chars costs about 1.1–1.25 extra tokens per
+wrapped line, which works out to roughly 6–8% more tokens on pure-prose
+paragraphs (measured above with a cl100k BPE tokenizer as a proxy for
+Claude’s — the structural cost is essentially the same).</p>
+</blockquote>
+<blockquote>
+<p>Why</p>
+</blockquote>
+<blockquote>
+<p>The only thing wrapping adds is newlines. Unwrapped, the join between
+two words is a space that merges into the next token (” word” = 1
+token). Wrapped, that join becomes + a space-less word — which tokenizes
+as ~2 tokens. So each wrap point costs ≈ +1 token, and an 88-char line
+holds ~18–20 tokens, hence ~6%.</p>
+</blockquote>
+<blockquote>
+<p>Putting it in perspective</p>
+</blockquote>
+<blockquote>
+<p>The 6–8% figure is a worst case — it only applies to running prose.
+It’s zero for everything that’s already short-lined:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>code blocks, tables, bulleted/numbered lists</li>
+<li>headings, short sentences, anything under 88 chars anyway</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>A realistic mixed answer (prose + code + lists) pays maybe 2–4%
+blended. In absolute terms, a typical response with 10–30 wrapped prose
+lines spends an extra ~11–33 output tokens — fractions of a cent even at
+Opus output rates.</p>
+</blockquote>
+<blockquote>
+<p>The honest caveat on the baseline</p>
+</blockquote>
+<blockquote>
+<p>The 6–8% is measured against one logical line per paragraph
+(soft-wrap), which is the only alternative that renders identically in a
+Markdown viewer. If instead you compared against text with the same
+number of line breaks but placed elsewhere, the cost is ~0 — the breaks
+themselves are the cost, not where they fall. So the real question isn’t
+“88 vs no-wrap,” it’s “do I want hard line breaks at all.” Given you
+read these files in a terminal and diff them in git, the
+readability/clean-diff payoff almost certainly outweighs a few
+tokens.</p>
+</blockquote>
+<blockquote>
+<p>Want me to save this finding to memory, or measure it against
+Claude’s actual tokenizer via the token-counting API for a precise
+number?</p>
+</blockquote>
+</div>
+</div>
+<div id="providers" class="section level1">
+<h1>Providers</h1>
+<div id="claude-code-cli" class="section level2">
+<h2>Claude code CLI</h2>
 <p>Start claude in a project with</p>
 <pre><code>claude</code></pre>
-<div id="tips" class="section level2">
-<h2>Tips</h2>
+<p>Typical message:</p>
 <blockquote>
-<p>⎿  Tip: Hit shift+Tab to cycle between default mode, auto-accept edit
-mode, and plan mode ⏸ plan mode on (shift+Tab to cycle)</p>
+<p>“You’ve used 92% of your session limit · resets 11am (Europe/Rome) ·
+/upgrade to keel using Claude Code”</p>
 </blockquote>
-<blockquote>
-<p>I need to start a pyhon environment first, how to I quit and rejoin
-this session later?</p>
-</blockquote>
-<pre><code>&gt; You can simply quit this session and return to it later. Here&#39;s how:
-&gt; - Press Ctrl+C or Ctrl+D in the terminal Or type /exit or /quit
-&gt; - Just run claude code again in the same directory
-&gt;   Your conversation history and context will be preserved
-&gt; The session is automatically saved, so when you come back and activate your
-&gt; Python environment, you can continue testing the function we just
-&gt; added.</code></pre>
-</div>
-<div id="commands" class="section level2">
-<h2>Commands</h2>
-<pre><code>/clear Clear conversation history and free up context
-
-/agents create agents</code></pre>
-</div>
-<div id="agents" class="section level2">
-<h2>Agents</h2>
+<div id="agents-and-skills" class="section level3">
+<h3>Agents and skills</h3>
 <p>Create agents</p>
 <pre><code>/agents create agents</code></pre>
 <p>For example, if you named your agent “architect”, you would use @ to
 invoque it :</p>
 <pre><code>@architect help me plan the architecture for my project</code></pre>
+<p>Skills live in ~/.claude/commands/ and can be called with a slash
+such as /spell.</p>
+<div id="accountant" class="section level4">
+<h4>Accountant</h4>
+<p>Content of ~/.claude/commands/accountant.md</p>
+<blockquote>
+<p>You are an accounting assistant for a German freelance consultant
+using Odoo with the SKR03 chart of accounts.</p>
+</blockquote>
+<blockquote>
+<p>When looking up account numbers, always refer to the chart of
+accounts at: Chart_of_Accounts.csv</p>
+</blockquote>
+<blockquote>
+<p>…</p>
+</blockquote>
 </div>
-<div id="memory-file" class="section level2">
-<h2>Memory file</h2>
+<div id="python-test-driven-development" class="section level4">
+<h4>Python test driven development</h4>
+<blockquote>
+<p>You are a Python testing agent. Your job is to find, run, and analyze
+Python tests in the current project.</p>
+</blockquote>
+<blockquote>
+<h2 id="workflow">Workflow</h2>
+</blockquote>
+<blockquote>
+<ol style="list-style-type: decimal">
+<li><strong>Discover the test framework</strong>: Look for
+<code>pytest.ini</code>, <code>pyproject.toml</code>,
+<code>setup.cfg</code>, <code>tox.ini</code>, or
+<code>conftest.py</code> to determine the test runner (pytest, unittest,
+nose2, etc.). Default to pytest if unclear.</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="2" style="list-style-type: decimal">
+<li><strong>Discover tests</strong>: Find test files matching common
+patterns (<code>test_*.py</code>, <code>*_test.py</code>, files in
+<code>tests/</code> directories).</li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="3" style="list-style-type: decimal">
+<li><strong>Run the tests</strong>: Execute the test suite using the
+detected framework. Pass through any arguments the user provided:
+$ARGUMENTS</li>
+</ol>
+</blockquote>
+<blockquote>
+<ul>
+<li>If no arguments are given, run the full test suite.</li>
+<li>If a file path or test name is given, run only those tests.</li>
+<li>Use verbose output (<code>-v</code>) so individual test results are
+visible.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ol start="4" style="list-style-type: decimal">
+<li><strong>Analyze failures</strong>: For any failing tests:
+<ul>
+<li>Read the relevant test code and the source code under test.</li>
+<li>Identify the root cause of each failure.</li>
+<li>Provide a clear explanation of why the test failed and suggest a
+fix.</li>
+</ul></li>
+</ol>
+</blockquote>
+<blockquote>
+<ol start="5" style="list-style-type: decimal">
+<li><strong>Report results</strong>: Summarize the test run with:
+<ul>
+<li>Total passed / failed / skipped / errors count.</li>
+<li>A brief explanation for each failure.</li>
+<li>Suggested next steps if there are failures.</li>
+</ul></li>
+</ol>
+</blockquote>
+<blockquote>
+<h2 id="guidelines">Guidelines</h2>
+</blockquote>
+<blockquote>
+<ul>
+<li>Prefer <code>python -m pytest</code> over bare <code>pytest</code>
+to ensure the project root is on <code>sys.path</code>.</li>
+<li>Respect virtual environments: check for <code>.venv/</code>,
+<code>venv/</code>, or <code>env/</code> directories and activate if
+present.</li>
+<li>If dependencies are missing, inform the user rather than installing
+them automatically.</li>
+<li>Do not modify test files or source code unless the user explicitly
+asks you to fix something.</li>
+</ul>
+</blockquote>
+</div>
+<div id="spell-check-in-any-language" class="section level4">
+<h4>Spell check in any language</h4>
+<p>Definition of the /spell skill:</p>
+<blockquote>
+<p>Spell-check and proofread the text provided by the user. Detect the
+language automatically and apply language-specific instructions.</p>
+</blockquote>
+<blockquote>
+<p><strong>For German text:</strong> Bitte das Deutsch in meinem Text
+verbessern: nur Verbesserungsvorschläge als Liste — ich werde selber
+schreiben.</p>
+</blockquote>
+<blockquote>
+<p><strong>For French text:</strong> Merci de corriger le français dans
+mon texte : uniquement des suggestions d’amélioration sous forme de
+liste — j’écrirai moi-même.</p>
+</blockquote>
+<blockquote>
+<p><strong>For English text:</strong> Please proofread the English in my
+text: provide only suggested improvements as a list — I will do the
+writing myself.</p>
+</blockquote>
+<blockquote>
+<p><strong>For any other language:</strong> Detect the language, then
+provide a numbered list of spelling, grammar, and style suggestions
+only. Do not rewrite the text.</p>
+</blockquote>
+<blockquote>
+<p><strong>Format:</strong> - Number each suggestion - Quote the
+original phrase, then show the correction - One line per issue, no
+explanations unless the rule is non-obvious</p>
+</blockquote>
+</div>
+</div>
+<div id="authentication" class="section level3">
+<h3>Authentication</h3>
+<p>Authenticate with the URL sign in process.</p>
+<p>To disconnect all connected sessions under <a
+href="https://claude.ai/settings/claude-code"
+class="uri">https://claude.ai/settings/claude-code</a> revoke the
+Authorization tokens. Those tokens were “Created when you sign in to
+Claude Code. Revoke a token to sign out from that device.” Note that
+this claude code token deletion is different thant the sign out of all
+device menu from claude settings, which doesn’t actually sign out the
+Claude code sessions.</p>
+</div>
+<div id="browser-command" class="section level3">
+<h3>Browser command</h3>
+<div id="chrome-extension" class="section level4">
+<h4>Chrome extension</h4>
+<p>Claude can navigate to websites and drive browser tabs with the
+chrome extension</p>
+<pre><code>https://claude.com/claude-for-chrome</code></pre>
+</div>
+</div>
+<div id="commands-and-claude-specific-skills" class="section level3">
+<h3>Commands and Claude specific skills</h3>
+<p>Commands</p>
+<pre><code>/agents create agents
+
+/clear clear conversation history and free up context
+
+/context display context usage in percent for system prompt, skills, tools
+and messages.
+
+/remote-control to control a claude code CLI session from the claude phone
+app see also the remote control section.
+
+/usage display usage information</code></pre>
+<div id="custom-commands" class="section level4">
+<h4>Custom commands</h4>
+<pre><code>/accountant load mostly use account and load the chart of account used by
+my consulting company on demand </code></pre>
+</div>
+<div id="claude-specific-skills" class="section level4">
+<h4>Claude specific skills</h4>
+<p>For general skills see the main skill section.</p>
+<pre><code>/fewer-permission-prompts is a skill that scans your recent transcripts for
+common read-only bash calls and proposes a tailored allowlist for this
+project.</code></pre>
+</div>
+</div>
+<div id="docker-container-skip-permissions" class="section level3">
+<h3>Docker container &amp; skip permissions</h3>
+<p>Prompt</p>
+<pre><code>Set up a dev container for this project so I can run Claude Code with
+--dangerously-skip-permissions safely. Also show me the docker build and
+docker run commands to start it from the terminal.</code></pre>
+</div>
+<div id="resume-a-conversation" class="section level3">
+<h3>Resume a conversation</h3>
+<p>Ask the model to search for a specific topic in a previous
+conversation, it might give you the resume command such as:</p>
+<pre><code>claude --resume ____________________________________</code></pre>
+</div>
+<div id="safety-measures" class="section level3">
+<h3>Safety measures</h3>
+<div id="refusing-to-write-through-symlink" class="section level4">
+<h4>Refusing to write through symlink</h4>
+<p>When it was trying to update my vimrc which is stored in my blog</p>
+<blockquote>
+<p>● Update(~/.vimrc) ⎿  Error: Refusing to write through symlink:
+/home/paul/.vimrc. Resolve the symlink and pass the real target path
+explicitly.</p>
+</blockquote>
+</div>
+<div id="development-container" class="section level4">
+<h4>Development container</h4>
+<ul>
+<li><a
+href="https://github.com/anthropics/devcontainer-features/tree/main/src/claude-code"
+class="uri">https://github.com/anthropics/devcontainer-features/tree/main/src/claude-code</a></li>
+</ul>
+<blockquote>
+<p>“For most setups, we recommend explicitly adding both features:”</p>
+</blockquote>
+<pre><code>&quot;features&quot;: {
+    &quot;ghcr.io/devcontainers/features/node:1&quot;: {},
+    &quot;ghcr.io/anthropics/devcontainer-features/claude-code:1&quot;: {}
+}</code></pre>
+</div>
+</div>
+<div id="terminal-user-interface-tui" class="section level3">
+<h3>Terminal User Interface TUI</h3>
+<div id="change" class="section level4">
+<h4>2026 change</h4>
+<p>Claude:</p>
+<blockquote>
+<p>✻ Try the new fullscreen renderer · /tui fullscreen · Flicker-free
+output · Lower memory usage in long conversations · Mouse support —
+click to move your cursor or expand results · Selected text auto-copies
+to your clipboard</p>
+</blockquote>
+<p>Paul:</p>
+<pre><code>❯ why is the the new fullscreen renderer · /tui called fullscreen? The old one
+is also fullscreen for me? What changes in terms of rendering technology? Is it
+rerendering the screen at each stroke of the keyboard?</code></pre>
+<p>Claude:</p>
+<blockquote>
+<p>● Good question — the name is about how it draws, not how much screen
+it covers. Both modes can fill your terminal window; the difference is
+the rendering technique underneath.</p>
+</blockquote>
+<blockquote>
+<p>The two renderers</p>
+</blockquote>
+<blockquote>
+<p>Old (inline / streaming) renderer</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Writes into your terminal’s normal buffer, appending lines the same
+way any CLI program does (echo, git log, etc.).</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>Output becomes part of your scrollback history. When you scroll up
+in your terminal, it’s all still there, and it stays after Claude Code
+exits.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>The terminal itself owns scrolling and layout. Claude Code mostly
+just emits text and lets the terminal flow it.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>New fullscreen renderer (/tui)</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Switches the terminal into its alternate screen buffer — the same
+mechanism vim, less, htop, and tmux use. That’s the technical meaning of
+“fullscreen”: it takes exclusive ownership of the viewport.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>Claude Code now manages its own layout: it positions the cursor,
+draws regions (input box, transcript, status line), and handles its own
+scrolling rather than deferring to the terminal.</li>
+</ul>
+</blockquote>
+<blockquote>
+<ul>
+<li>When you exit, the alternate buffer is torn down and your original
+shell screen returns untouched — your scrollback isn’t polluted with the
+session.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>So “the old one is also fullscreen for me” is fair — visually both
+fill the window. The label refers to the alt-screen / managed-viewport
+approach, not the pixel coverage.</p>
+</blockquote>
+<p>On scroll up inside tmux</p>
+<blockquote>
+<p>The thing you specifically value — “output becomes part of scrollback
+history” — is a property of the inline renderer and is lost under
+fullscreen, because the alternate screen buffer is by design excluded
+from tmux pane history. The fullscreen renderer trades that away for a
+fixed input box and steadier in-place redraws.</p>
+</blockquote>
+<blockquote>
+<p>Since you scroll up inside tmux often, I’d stick with the inline
+renderer (don’t switch via /tui, or switch back if you did). The
+fullscreen mode’s wins are mostly cosmetic/ergonomic for the live
+session; they don’t help — and the scrollback loss directly hurts — the
+way you work.</p>
+</blockquote>
+<p>Later</p>
+<div id="search-in-tui" class="section level5">
+<h5>Search in TUI</h5>
+<p>Paul:</p>
+<pre><code>❯ Is there a way to search with slash in the conversation history? I used to do
+this with tmux copy mode in the old terminal mode, but it&#39;s not possible now
+with the new view port interface. How do I search the conversation text above?</code></pre>
+<p>Claude:</p>
+<pre><code>  &gt; ● Here&#39;s the situation, and the workaround I&#39;d use.
+  &gt;
+  &gt; ## Why your old trick stopped working
+  &gt;
+  &gt; The new viewport interface draws into the terminal&#39;s alternate screen and
+  &gt; repaints in place, so the conversation isn&#39;t sitting in your terminal/tmux
+  &gt; scrollback buffer anymore. That&#39;s why tmux copy-mode search (and your terminal&#39;s
+  &gt; native find) can&#39;t see the text above — there&#39;s effectively nothing in the
+  &gt; scrollback to search.
+  &gt;
+  &gt; ## What the TUI itself gives you
+  &gt;
+  &gt; - **Ctrl+R** — reverse-search, but only over **your own past prompts** (command
+  &gt;   history), not the assistant&#39;s replies or tool output.
+  &gt; - **Up/Down** — step through previous prompts.
+  &gt; - There is **no built-in full-text &quot;find in conversation&quot;** across the rendered
+  &gt;   transcript in the current viewport.
+  &gt;
+  &gt; ## The reliable workaround: grep the transcript JSONL
+  &gt;
+  &gt; Every session is logged as JSONL under ~/.claude/projects/&lt;encoded-cwd&gt;/. For
+  &gt; this project that&#39;s:
+  &gt;
+  &gt; 
+  &gt; ~/.claude/projects/-projectd/
+  &gt; 
+  &gt;
+  &gt; Search the **current** session (most-recently-modified file) for, say, &quot;Esel&quot;:
+  &gt;
+  &gt; bash
+  &gt; grep -i &quot;esel&quot; &quot;$(ls -t ~/.claude/projects/-projectd/*.jsonl | head -1)&quot;
+  &gt; 
+  &gt;
+  &gt; For readable output (strips the JSON, shows just the text) if you have jq:
+  &gt;
+  &gt; bash
+  &gt; jq -r &#39;.message.content[]?|.text//empty&#39; \
+  &gt;   &quot;$(ls -t ~/.claude/projects/-projectd/*.jsonl | head -1)&quot; \
+  &gt;   | grep -i &quot;esel&quot;
+  &gt; 
+  &gt;
+  &gt; Drop the | head -1 and use *.jsonl to search **all** sessions in this project
+  &gt; at once.
+  &gt;
+  &gt; ## Nice bonus: you can do it without leaving Claude Code
+  &gt;
+  &gt; Type the command in the prompt with a leading ! and the output lands right in
+  &gt; this conversation:
+  &gt;
+  &gt; 
+  &gt; ! grep -i &quot;esel&quot; ~/.claude/projects/-projectd/*.jsonl
+  &gt; 
+  &gt;
+  &gt; Or just ask me — &quot;search the conversation for X&quot; — and I&#39;ll grep it for you.
+  &gt;
+  &gt; One caveat: I&#39;m confident about the JSONL-grep method (I just confirmed your
+  &gt; transcript files exist), but Claude Code&#39;s in-TUI keybindings change between
+  &gt; releases. If you want, I can check your installed version&#39;s keybindings to see
+  &gt; whether a newer build added an in-viewport find — want me to look?</code></pre>
+</div>
+</div>
+</div>
+<div id="tips" class="section level3">
+<h3>Tips</h3>
+<blockquote>
+<p>Tip: Hit shift+Tab to cycle between default mode, auto-accept edit
+mode, and plan mode ⏸ plan mode on (shift+Tab to cycle)</p>
+</blockquote>
+<div id="does-claude-clear-context-on-stop" class="section level4">
+<h4>Does Claude clear context on stop?</h4>
+<blockquote>
+<p>❯ is the context clear if I stop and resstart claude code, or do I
+need to explicitely call /clear ?</p>
+</blockquote>
+<blockquote>
+<p>● When you stop and restart Claude Code, each new session starts with
+a fresh context — no conversation history carries over. /clear clears
+the context within the current session only.</p>
+</blockquote>
+<blockquote>
+<p>The exception is the memory system (MEMORY.md and the memory files),
+which persists across sessions by design.</p>
+</blockquote>
+<blockquote>
+<p>❯ but in an earlier session I asked the following and your reply
+seemed to indicate the contrary? &gt; I need to start a pyhon
+environment first, how to I quit and rejoin this &gt; session later?</p>
+</blockquote>
+<blockquote>
+<pre><code>   &gt; You can simply quit this session and return to it later. Here&#39;s how:
+   &gt; - Press Ctrl+C or Ctrl+D in the terminal Or type /exit or /quit
+   &gt; - Just run claude code again in the same directory
+   &gt;   Your conversation history and context will be preserved
+   &gt; The session is automatically saved, so when you come back and activate your
+   &gt; Python environment, you can continue testing the function we just
+   &gt; added.</code></pre>
+</blockquote>
+<blockquote>
+<p>● That was incorrect advice from the previous session — I was wrong.
+Conversation history is not preserved when you exit and restart Claude
+Code. Each new invocation starts with a blank slate.</p>
+</blockquote>
+<blockquote>
+<p>The only things that persist across sessions are: - Memory files
+(MEMORY.md + memory files) — explicitly maintained by me - CLAUDE.md
+files — always loaded at startup - The files on disk (obviously)</p>
+</blockquote>
+<blockquote>
+<p>Apologies for the earlier misinformation.</p>
+</blockquote>
+</div>
+</div>
+<div id="git-1" class="section level3">
+<h3>Git</h3>
+<div id="worktrees" class="section level4">
+<h4>Worktrees</h4>
+<blockquote>
+<p>Claude Code worktrees let you run multiple Claude instances in
+parallel, each with an isolated copy of the codebase so they don’t step
+on each other’s files. How to use:</p>
+</blockquote>
+<blockquote>
+<h1 id="start-a-new-claude-session-in-an-isolated-worktree">Start a new
+Claude session in an isolated worktree</h1>
+<p>claude –worktree <name></p>
+</blockquote>
+<blockquote>
+<h1 id="auto-generated-name">Auto-generated name</h1>
+<p>claude –worktree</p>
+</blockquote>
+<blockquote>
+<p>This creates a git worktree at .claude/worktrees/<name> branched from
+origin/HEAD, opens a new Claude session there. Key points:</p>
+</blockquote>
+<blockquote>
+<ul>
+<li>Each worktree is a separate working directory sharing the same git
+history — branches, not clones.</li>
+<li>Gitignored files (.env, etc.) can be copied in automatically via a
+.worktreeinclude file.</li>
+<li>Cleanup is automatic: if the worktree has no changes when Claude
+exits, it’s removed. If it has changes, you’re prompted.</li>
+<li>Add .claude/worktrees/ to .gitignore.</li>
+</ul>
+</blockquote>
+<blockquote>
+<p>When to use it: When you want to work on two independent tasks
+simultaneously — e.g., a bugfix in one session and a feature in another
+— without them interfering.</p>
+</blockquote>
+</div>
+<div id="code-repository-and-data-repository" class="section level4">
+<h4>Code repository and data repository</h4>
+<p>I have a modelling pattern where I have a code repository and a data
+repository.</p>
+<ul>
+<li><p>Current practice I start Claude in the code directory and allow
+the data directory</p>
+<p>{ “permissions”: { “allow”: [ “Bash(xargs -I{} sh -c ‘echo "=== {}
+==="; head -3 {}’)”, “Bash(xargs -I{} sh -c ‘echo "=== {} ==="; head -5
+{}’)”, “Bash(.venv/bin/python *)” ], “additionalDirectories”:
+[“../cbm_data”] } }</p></li>
+<li><p>Old practice, I used to start claude code at the parent directory
+level</p></li>
+</ul>
+</div>
+</div>
+<div id="permissions" class="section level3">
+<h3>Permissions</h3>
+<p>To auto allo permissions</p>
+<pre><code>claude --permission-mode auto</code></pre>
+</div>
+<div id="remote-control" class="section level3">
+<h3>Remote control</h3>
+<ul>
+<li><p><a href="https://code.claude.com/docs/en/remote-control"
+class="uri">https://code.claude.com/docs/en/remote-control</a></p>
+<blockquote>
+<p>“By default, Remote Control only activates when you explicitly run
+claude remote-control, claude –remote-control, or /remote-control”</p>
+</blockquote></li>
+</ul>
+</div>
+<div id="settings" class="section level3">
+<h3>Settings</h3>
+<div id="claude.md" class="section level4">
+<h4>CLAUDE.md</h4>
+<p>There can be project specific CLAUDE.md within a project’s directory,
+generally at the root of the git repository. There is a general
+CLAUDE.md at</p>
+<pre><code>~/.claude/CLAUDE.md</code></pre>
+<p>Content of my general CLAUDE.md file</p>
+<pre><code>Markdown Style
+
+- Wrap prose at 88 characters per line.
+- Markdown table rows may exceed 88 characters.
+- Do not use `---` horizontal rules as section separators; use `##` headings instead
+- These rules apply to all projects unless a project-level CLAUDE.md overrides them
+
+Docstrings
+
+- Always use NumPy-style docstrings 
+- Run pdoc with `--docformat numpy` so sections render correctly</code></pre>
+</div>
+<div id="memory-file" class="section level4">
+<h4>Memory file</h4>
 <p>This conversation added a python environment to a memory file for a
 given project.</p>
 <p>Paul: when using python start the environment in ~/path/env</p>
@@ -1030,6 +3424,53 @@ project.</p>
 - Always activate the virtual environment: `source ~/path/env/bin/activate` before running Python
 - Or call directly: `~/path/env/bin/python` for scripts (has pandas, sqlalchemy, seaborn, etc.)
 - `python` and `python3` on PATH do NOT have the required packages</code></pre>
+</div>
+<div id="setup-plugin" class="section level4">
+<h4>Setup plugin</h4>
+<p>A plugin that recommends skills for your project.</p>
+<p>Call it with:</p>
+<pre><code>/claude-automation-recommender</code></pre>
+<p>Installation:</p>
+<pre><code>/plugin install claude-code-setup@claude-plugins-official</code></pre>
+</div>
+</div>
+<div id="vim-key-bindings-in-claude-cli" class="section level3">
+<h3>Vim key bindings in Claude CLI</h3>
+<ul>
+<li><code>j</code> / <code>k</code> — line down / up</li>
+<li><code>Ctrl-d</code> / <code>Ctrl-u</code> — half-page down / up</li>
+<li><code>Ctrl-f</code> / <code>Ctrl-b</code> — full-page down / up</li>
+<li><code>g</code> / <code>G</code> — jump to top / bottom</li>
+<li><code>space</code> — page down</li>
+</ul>
+</div>
+</div>
+<div id="mistral" class="section level2">
+<h2>Mistral</h2>
+<div id="devstral" class="section level3">
+<h3>Devstral</h3>
+<ul>
+<li><p>Introducing: Devstral 2 and Mistral Vibe CLI. December 9, 2025 By
+Mistral AI <a href="https://mistral.ai/news/devstral-2-vibe-cli/"
+class="uri">https://mistral.ai/news/devstral-2-vibe-cli/</a></p></li>
+<li><p>Devstral 2 on open router <a
+href="https://openrouter.ai/mistralai/devstral-2512"
+class="uri">https://openrouter.ai/mistralai/devstral-2512</a></p></li>
+</ul>
+</div>
+</div>
+<div id="open-router" class="section level2">
+<h2>Open Router</h2>
+<ul>
+<li><p><a
+href="https://www.reddit.com/r/AI_Agents/comments/1negv04/is_there_really_a_lot_of_value_on_using_open/"
+class="uri">https://www.reddit.com/r/AI_Agents/comments/1negv04/is_there_really_a_lot_of_value_on_using_open/</a></p>
+<blockquote>
+<p>“I think the big draw is pricing flexibility. Some tasks don’t need a
+$15/1M token model. You can offload to a cheaper model and save a ton at
+scale. OpenRouter makes that swap easy”</p>
+</blockquote></li>
+</ul>
 </div>
 </div>
 
