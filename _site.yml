@@ -21,6 +21,8 @@ navbar:
           href: git.html
         - text: "Latex and Lyx"
           href: latex_and_lyx.html
+        - text: "Large Language Models"
+          href: llm.html
         - text: "Markdown"
           href: markdown.html
         - text: "MySQL"
