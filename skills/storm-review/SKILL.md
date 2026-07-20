@@ -34,9 +34,8 @@ briefing to catch source bias and fact misassociation.
 
 ## Procedure
 
-Create a new subdirectory `ai_generated/storm/` (make `ai_generated/` if it does not
-exist). Write the assembled result to a dated markdown file there, e.g.
-`ai_generated/storm/<slug>-<YYYY-MM-DD>.md`, with the four sections below as top-level
+Write the assembled result to a dated markdown file there, e.g.
+`<slug>-<YYYY-MM-DD>.md`, with the four sections below as top-level
 (`#`) titles.
 
 Orchestration:
