@@ -9,7 +9,7 @@ alias consulting="cd ~/rp/bookmarkdown/work/freelance && nvim consulting_company
 alias matrix="cd ~/rp/bookmarkdown/work && nvim matrix.Rmd"
 alias overflow="nvim ~/rp/bookmarkdown/work/overflow.md"
 alias partners="cd ~/rp/bookmarkdown/work/freelance && nvim partners.md"
-alias reading_jrc="cd ~/rp/bioeconomy_papers/notes/ && nvim -c 'syn off' readings_jrc.md"
+alias readings="cd ~/rp/bioeconomy_papers/notes/ && nvim -c 'syn off' readings.md"
 alias pom="$HOME/rp/bookmarkdown/work/pomodori/pomodoro.sh 25"
 
 
