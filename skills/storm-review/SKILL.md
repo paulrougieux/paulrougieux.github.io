@@ -42,8 +42,9 @@ Orchestration:
 
 - **Spawn parallel agents** for Prompt 1 (the five-perspective scan — one agent per
   perspective, or one agent producing all five) and for Prompt 4 (the peer review).
-- **You, the coordinating agent, run** Prompt 2 (contradiction map) and Prompt 3
-  (synthesis) yourself, since they depend on having all perspectives in hand.
+- **You, the coordinating agent, run** Prompt 2 (contradiction map), Prompt 3
+  (synthesis) and Prompt 5 (correction after review) yourself, since they depend on
+  having all perspectives in hand.
 - Assemble every contribution into the single markdown document.
 
 If a PDF/file was provided, pass its key claims and any extracted quotes/numbers to the
@@ -127,3 +128,11 @@ that by making the model grade its own work.
     5. OVERALL GRADE: if a Stanford professor reviewed this
     briefing, what grade would they give and why?
     What would they tell me to fix?
+
+
+### Prompt 5 — Corrected Synthesis After Review
+
+In a new separate section at the end of the document, correct the synthesis based on the
+review.
+
+
