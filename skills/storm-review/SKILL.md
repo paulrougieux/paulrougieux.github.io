@@ -32,7 +32,7 @@ briefing to catch source bias and fact misassociation.
   Replaces `[YOUR ROLE]`. Defaults to the user's role as a forest-bioeconomy researcher
   if unset.
 
-## Procedure
+## Markdown Report
 
 Write the assembled result to a dated markdown file there, use snake case for the slug
 e.g. `storm_review_<slug>_<YYYYMMDD>.md`, with the four sections below as top-level
@@ -60,7 +60,7 @@ pandoc file_name.md --pdf-engine=xelatex -o file_name.pdf
 -->
 ```
 
-Orchestration:
+## Orchestration
 
 - **Spawn parallel agents** for Prompt 1 (the five-perspective scan — one agent per
   perspective, or one agent producing all five) and for Prompt 4 (the peer review).
