@@ -35,7 +35,7 @@ briefing to catch source bias and fact misassociation.
 ## Procedure
 
 Write the assembled result to a dated markdown file there, e.g.
-`<slug>-<YYYY-MM-DD>.md`, with the four sections below as top-level
+`storm_review_<slug>_<YYYY-MM-DD>.md`, with the four sections below as top-level
 (`#`) titles.
 
 Orchestration:
