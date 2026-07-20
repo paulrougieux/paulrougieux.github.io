@@ -38,6 +38,28 @@ Write the assembled result to a dated markdown file there, use snake case for th
 e.g. `storm_review_<slug>_<YYYYMMDD>.md`, with the four sections below as top-level
 (`#`) titles.
 
+Use this yaml front matter in the markdown
+
+```
+---
+title:
+date:
+mainfont: "STIXGeneral"
+toc: true
+toc-depth: 2
+---
+```
+
+Explain how to render to pdf in a comment
+```
+<!-- Render to pdf with
+
+cd working_directory
+pandoc file_name.md --pdf-engine=xelatex -o file_name.pdf
+
+-->
+```
+
 Orchestration:
 
 - **Spawn parallel agents** for Prompt 1 (the five-perspective scan — one agent per
@@ -134,5 +156,6 @@ that by making the model grade its own work.
 
 In a new separate section at the end of the document, correct the synthesis based on the
 review.
+
 
 
