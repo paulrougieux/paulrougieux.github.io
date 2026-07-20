@@ -34,8 +34,8 @@ briefing to catch source bias and fact misassociation.
 
 ## Procedure
 
-Write the assembled result to a dated markdown file there, e.g.
-`storm_review_<slug>_<YYYY-MM-DD>.md`, with the four sections below as top-level
+Write the assembled result to a dated markdown file there, use snake case for the slug
+e.g. `storm_review_<slug>_<YYYYMMDD>.md`, with the four sections below as top-level
 (`#`) titles.
 
 Orchestration:
