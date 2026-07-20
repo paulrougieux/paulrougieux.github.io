@@ -134,10 +134,11 @@ review.
 
 ## Markdown Report
 
-- Write the assembled result to a dated markdown file there, use snake case for the slug
-  e.g. `storm_review_<slug>_<YYYYMMDD>.md`.
+- Write the assembled result to a dated markdown file e.g.
+  `storm_review_<slug>_<YYYYMMDD>.md`. Use snake case for the slug
 
-- Each prompt from the orchestration section should become a top-level (`#`) title.
+- Each prompt from the orchestration section generates a corresponding top-level (`#`)
+  section title.
 
 - Use this yaml front matter in the markdown:
 
