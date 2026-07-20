@@ -32,33 +32,6 @@ briefing to catch source bias and fact misassociation.
   Replaces `[YOUR ROLE]`. Defaults to the user's role as a forest-bioeconomy researcher
   if unset.
 
-## Markdown Report
-
-Write the assembled result to a dated markdown file there, use snake case for the slug
-e.g. `storm_review_<slug>_<YYYYMMDD>.md`, with the four sections below as top-level
-(`#`) titles.
-
-Use this yaml front matter in the markdown
-
-```
----
-title:
-date:
-mainfont: "STIXGeneral"
-toc: true
-toc-depth: 2
----
-```
-
-Explain how to render to pdf in a comment
-```
-<!-- Render to pdf with
-
-cd working_directory
-pandoc file_name.md --pdf-engine=xelatex -o file_name.pdf
-
--->
-```
 
 ## Orchestration
 
@@ -159,3 +132,32 @@ review.
 
 
 
+## Markdown Report
+
+- Write the assembled result to a dated markdown file there, use snake case for the slug
+  e.g. `storm_review_<slug>_<YYYYMMDD>.md`.
+
+- Each prompt from the orchestration section should become a top-level (`#`) title.
+
+- Use this yaml front matter in the markdown:
+
+```
+---
+title:
+date:
+mainfont: "STIXGeneral"
+toc: true
+toc-depth: 2
+---
+```
+
+- Explain how to render to pdf in a comment
+
+```
+<!-- Render to pdf with
+
+cd working_directory
+pandoc file_name.md --pdf-engine=xelatex -o file_name.pdf
+
+-->
+```
