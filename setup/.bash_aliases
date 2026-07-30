@@ -151,3 +151,35 @@ alias spyder='QT_X11_NO_MITSHM=1 spyder'
 
 
 
+
+# Compile a markdown file to /tmp, named after the input file, for sending to
+# people by email, then open it in the default viewer. xelatex handles Unicode
+# (Greek letters, arrows, superscripts) which the default pdflatex engine
+# cannot; gfm_auto_identifiers keeps leading numbers in heading anchors so
+# [§5](#5-...) links resolve. The first argument is the output format, so the
+# thin aliases below only differ by that word.
+_pandoctmp() {
+    if [ -z "$2" ]; then
+        echo "Usage: pandoctmp{pdf,html} <file.md> [extra pandoc args]"
+        return 1
+    fi
+    local format="$1"; shift
+    local input="$1"; shift
+    local output="/tmp/$(basename "${input%.*}").$format"
+    local -a format_args
+    case "$format" in
+        pdf)  format_args=(--pdf-engine=xelatex) ;;
+        # Inline the CSS and images so the file can be mailed on its own
+        html) format_args=(--standalone --embed-resources) ;;
+    esac
+    pandoc "$input" -f markdown+gfm_auto_identifiers \
+        --toc --toc-depth=3 "${format_args[@]}" \
+        -o "$output" "$@" || return 1
+    echo "$output"
+    # The subshell keeps bash from printing a "[1] 1234" job notification
+    ( xdg-open "$output" >/dev/null 2>&1 & )
+}
+# Alias expansion is a textual prefix substitution, so `pandoctmppdf a.md`
+# becomes `_pandoctmp pdf a.md` and the remaining arguments are kept.
+alias pandoctmppdf='_pandoctmp pdf'
+alias pandoctmphtml='_pandoctmp html'
