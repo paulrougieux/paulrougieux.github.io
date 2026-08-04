@@ -10,12 +10,14 @@ output:
 
 My name is Paul Rougieux, I am a wood products engineer and forest economist.
 
-This site contains useful tools and data to analyse the forest sector.
-
-
-
+This site contains useful tools and data to analyse the forest sector. In case
+you are curious about my setup, my favorite text editor is [Vim](vim.html) (now
+Neovim). Inside tmux, I use vim slime to send commands to [bash](bash.html),
+[ipython](python.html) and other interactive languages (such as [R](R.html) and
+[SQL](postgresql.html)). I keep track of text, code and more thanks to Fugitive
+and [git](git.html) version control. I love fzf. What about [agents](llm.html)?
 
 This website was created using
 [Rmarkdown](http://rmarkdown.rstudio.com/rmarkdown_websites.html) and the
-[source code](https://gitlab.com/paulrougieux/paulrougieux) is
-available.
+[source code](https://gitlab.com/paulrougieux/paulrougieux) is available.
+
