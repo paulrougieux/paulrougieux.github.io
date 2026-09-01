@@ -1,0 +1,45 @@
+#!/bin/bash
+# Compile a markdown file to /tmp, named after the input file, for sending to
+# people by email, then open it in the default viewer. xelatex handles Unicode
+# (Greek letters, arrows, superscripts) which the default pdflatex engine
+# cannot; gfm_auto_identifiers keeps leading numbers in heading anchors so
+# [§5](#5-...) links resolve.
+#
+# The output format comes from the name it is called under, so the symlinks
+# pandocpdf and pandochtml both point here:
+#     ln -s ~/rp/paulrougieux.github.io/scripts/pandoctmp ~/.local/bin/pandocpdf
+#     ln -s ~/rp/paulrougieux.github.io/scripts/pandoctmp ~/.local/bin/pandochtml
+# Being a script rather than a shell function, it also works from vim (:!pandochtml %),
+# makefiles and cron, which run a non-interactive shell that ignores .bash_aliases.
+set -o pipefail
+
+case "$(basename "$0")" in
+    pandocpdf)  format=pdf ;;
+    pandochtml) format=html ;;
+    *)
+        echo "Call this script through its pandocpdf or pandochtml symlink." >&2
+        exit 1
+        ;;
+esac
+
+if [ -z "$1" ]; then
+    echo "Usage: $(basename "$0") <file.md> [extra pandoc args]" >&2
+    exit 1
+fi
+
+input="$1"; shift
+output="/tmp/$(basename "${input%.*}").$format"
+
+case "$format" in
+    pdf)  format_args=(--pdf-engine=xelatex) ;;
+    # Inline the CSS and images so the file can be mailed on its own
+    html) format_args=(--standalone --embed-resources) ;;
+esac
+
+pandoc "$input" -f markdown+gfm_auto_identifiers \
+    --toc --toc-depth=3 "${format_args[@]}" \
+    -o "$output" "$@" || exit 1
+
+echo "$output"
+# The subshell keeps bash from printing a "[1] 1234" job notification
+( xdg-open "$output" >/dev/null 2>&1 & )
