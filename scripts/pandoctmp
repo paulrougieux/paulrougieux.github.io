@@ -3,7 +3,8 @@
 # people by email, then open it in the default viewer. xelatex handles Unicode
 # (Greek letters, arrows, superscripts) which the default pdflatex engine
 # cannot; gfm_auto_identifiers keeps leading numbers in heading anchors so
-# [§5](#5-...) links resolve.
+# [§5](#5-...) links resolve and autolink_bare_uris turns bare http(s) URLs
+# into clickable links, as GitHub and GitLab do.
 #
 # The output format comes from the name it is called under, so the symlinks
 # pandocpdf and pandochtml both point here:
@@ -31,12 +32,14 @@ input="$1"; shift
 output="/tmp/$(basename "${input%.*}").$format"
 
 case "$format" in
-    pdf)  format_args=(--pdf-engine=xelatex) ;;
+    # colorlinks makes hyperref draw links in colour instead of a box, which
+    # otherwise shows up as an ugly red rectangle when printed
+    pdf)  format_args=(--pdf-engine=xelatex -V colorlinks=true) ;;
     # Inline the CSS and images so the file can be mailed on its own
     html) format_args=(--standalone --embed-resources) ;;
 esac
 
-pandoc "$input" -f markdown+gfm_auto_identifiers \
+pandoc "$input" -f markdown+gfm_auto_identifiers+autolink_bare_uris \
     --toc --toc-depth=3 "${format_args[@]}" \
     -o "$output" "$@" || exit 1
 
