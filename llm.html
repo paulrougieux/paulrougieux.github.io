@@ -1238,6 +1238,13 @@ class="uri">https://x.com/alex_prompter/status/2074584979057868901?s=20</a></p>
 href="https://x.com/techNmak/status/2043683120319520806?s=20"
 class="uri">https://x.com/techNmak/status/2043683120319520806?s=20</a></p>
 <blockquote>
+<p>“LLMs are exceptionally good at looping until they meet specific
+goals… Don’t tell it what to do, give it success criteria and watch it
+go.”</p>
+</blockquote>
+<ul>
+<li><p>Detailed post</p>
+<blockquote>
 <p>Andrej Karpathy wrote something that every Claude Code user has felt
 but couldn’t articulate.</p>
 </blockquote>
@@ -1296,6 +1303,7 @@ criteria and watch it loop until done.</p>
 exceptionally good at looping until they meet specific goals… Don’t tell
 it what to do, give it success criteria and watch it go.”</p>
 </blockquote></li>
+</ul></li>
 </ul>
 </div>
 <div id="test-driven-development-tdd" class="section level3">
@@ -1349,24 +1357,30 @@ behavior matters and how to verify it.</p>
 </div>
 <div id="storm" class="section level2">
 <h2>Storm</h2>
-<p>It is similar to the expert panel technique that I have been using
-before. You ask the LLM to expand the description of a topic from
-multiple experts taking different perspectives in a detailed document.
-That helps surface contradictions, then you have a coordinating agent
-summarise the output.</p>
-<p>Here is what I added on top as Claude prompt</p>
-<pre><code>In the ai_generated sub directory create a new subdirectory called storm.
-We will use the storm stanford method with parallel experts to analyse the
-following issue: [pasted text] 
-
-A coordinating agent should run the following 4 prompts to sub agents the
-first prompt should also itself spawn sub agents.</code></pre>
+<p>The Storm technique is similar to the expert panel technique that I
+have been using many times before. You ask a LLM to expand the
+description of a topic from multiple experts taking different
+perspectives in a detailed document. The perspective scan helps surface
+contradictions, then you have a coordinating agent summarise the output.
+On social media there was an illustration which said: “The fights are
+where insights live”.</p>
 <blockquote>
 <p>the practitioner: what do they know that academics miss? the skeptic:
 what’s the strongest counterargument? the economist: who profits from
 the current narrative? the historian: what pattern has played out
 before? the academic: what does the evidence actually say?</p>
 </blockquote>
+<p>Here is what Paul added as a coordinating prompt:</p>
+<pre><code>In the ai_generated directory create a new subdirectory called storm. We
+will use the storm stanford method with parallel experts to analyse the
+following issue: 
+
+[pasted text] 
+
+Spawn parallel agents for the expert perspective scan in prompt 1 and for
+the peer review in prompt 4. You as coordinating agent will run the prompt
+2 contradiction map and prompt 3 synthesis. Assemble every contribution in
+one markdown document with the main sections as top level titles.</code></pre>
 <p>Prompt 1, The Multi Perspective Scan</p>
 <pre><code>I need to research [YOUR TOPIC].
 Simulate 5 different expert perspectives on this topic:
@@ -1403,8 +1417,6 @@ resolve the biggest contradiction?
 5. What topic did NONE of the perspectives address?
 (This is the blind spot in the whole field.
 Often the most valuable finding.)</code></pre>
-<p>The is an illustration which says: “The fights are where insights
-live”</p>
 <p>Prompt 3, The Synthesis</p>
 <pre><code>Synthesize everything from the 5 perspectives and the
 contradiction map into a research briefing:
@@ -2355,6 +2367,13 @@ for you, Khairallah</p>
 </div>
 <div id="skills" class="section level1">
 <h1>Skills</h1>
+<div id="aa-skills-defined-by-paul" class="section level2">
+<h2>AA skills defined by Paul</h2>
+<p>See the skills sub directory:</p>
+<ul>
+<li>storm-review</li>
+</ul>
+</div>
 <div id="git" class="section level2">
 <h2>Git</h2>
 <div id="run-model-before-and-after-commit" class="section level3">
@@ -2753,6 +2772,35 @@ only queue numbers or opaque refs.”</p>
 </div>
 </div>
 </div>
+<div id="open-claw" class="section level2">
+<h2>Open Claw</h2>
+<p>API keys</p>
+<ul>
+<li><p>Open Router</p>
+<ul>
+<li>Open Claw doc on open router <a
+href="https://docs.openclaw.ai/providers/openrouter"
+class="uri">https://docs.openclaw.ai/providers/openrouter</a></li>
+<li>Open Router doc <a
+href="https://openrouter.ai/docs/guides/coding-agents/openclaw-integration"
+class="uri">https://openrouter.ai/docs/guides/coding-agents/openclaw-integration</a></li>
+</ul></li>
+<li><p>Models</p>
+<ul>
+<li>Claude Opus 4.6 high output token costs 25$ / MTok</li>
+<li>Claude Sonnet 4.6 the default 15$ / MTok</li>
+<li>Claude Haiku 4.5 5$ / MTok</li>
+</ul></li>
+<li><p>Chats</p></li>
+<li><p>Signal <a href="https://docs.openclaw.ai/channels/signal"
+class="uri">https://docs.openclaw.ai/channels/signal</a></p>
+<ul>
+<li>A separate phone is recommended for the bot.</li>
+</ul></li>
+<li><p>Matrix <a href="https://docs.openclaw.ai/channels/matrix"
+class="uri">https://docs.openclaw.ai/channels/matrix</a></p></li>
+</ul>
+</div>
 </div>
 <div id="tests-1" class="section level1">
 <h1>Tests</h1>
@@ -3031,6 +3079,13 @@ chrome extension</p>
 
 /context display context usage in percent for system prompt, skills, tools
 and messages.
+
+/exit quit claude
+
+/loop repeat prompts regularly as a cron job. For example to check the
+progress of a long model run every 8 hours: 
+
+    /loop 8 hours check run status.
 
 /remote-control to control a claude code CLI session from the claude phone
 app see also the remote control section.
