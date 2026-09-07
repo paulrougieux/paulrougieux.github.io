@@ -512,6 +512,8 @@ another. For example converting a text file into a pdf file and
 vice-versa.</p>
 <div id="audio" class="section level2">
 <h2>Audio</h2>
+<p>See also the download section to download and convert YouTube video
+to audio files such as mp3 and ogg.</p>
 <p>Convert from Wav to mp3 <a
 href="https://gist.github.com/championofblocks/3982727">seen in this
 gist</a></p>
@@ -842,7 +844,9 @@ compatible with the Youtube API any more.</p>
 <p>Use a format for the download</p>
 <pre><code>yt-dlp -f &lt;format_name&gt; &lt;URL&gt;</code></pre>
 <p>Download only the audio in an .mp3 format</p>
-<pre><code>yt-dlp --extract-audio --audio-format mp3 video_url</code></pre>
+<pre><code>yt-dlp --extract-audio --audio-format mp3 video_url
+# For vim slime
+yt-dlp --extract-audio --audio-format mp3 </code></pre>
 </div>
 <div id="youtube-dl-legacy-use-yt-dlp-fork-instead"
 class="section level3">
@@ -2378,9 +2382,10 @@ GPG getting too old?</a></li>
 <h3>Generate a PGP signing key</h3>
 <p>Generate a PGP key</p>
 <pre><code>gpg --gen-key</code></pre>
-<p>List the keys</p>
+<p>Display what keys are available, the id is the very big number</p>
 <pre><code>gpg --list-keys</code></pre>
-<p>Export the key to a file</p>
+<p>Paste the id in place of keyid in the command below to export the key
+to a file</p>
 <pre><code>gpg -a --export keyid &gt; file.txt</code></pre>
 </div>
 <div id="public-key-servers" class="section level3">

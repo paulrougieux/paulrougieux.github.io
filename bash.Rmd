@@ -50,18 +50,30 @@ example converting a text file into a pdf file and vice-versa.
 
 ## Audio
 
+See also the download section to download and convert YouTube video to audio
+files such as mp3 and ogg.
+
 Convert from Wav to mp3 [seen in this
 gist](https://gist.github.com/championofblocks/3982727)
 
     for i in *.WAV; do test -f "${i%.WAV}.mp3" || lame -b 320 -h "${i}" "${i%.WAV}.mp3"; done
 
-- [Convert audio from ogg to
-  mp3](https://askubuntu.com/questions/442997/how-can-i-convert-audio-from-ogg-to-mp3)
+- Convert from OGG to MP3 
 
-    ffmpeg -i "file name with spaces".{ogg,mp3}
-    # Convert all files from ogg to mp3
-    for i in *.ogg; do ffmpeg -i "${i%.ogg}".{ogg,mp3}; done
-    for i in *.ogg; do echo "${i%.ogg}"; done
+    - Place the converted file in a new location such as /tmp
+
+```{bash}
+f="/home/paul/music/tzigane/Csárdás - Vittorio Monti (Violin & Piano)-IPYHy8k9Z34.ogg"
+ffmpeg -i "$f" -codec:a libmp3lame -q:a 2 "/tmp/$(basename "${f%.ogg}").mp3"
+``` 
+
+    - Convert in the same directory from [convert audio from ogg to
+      mp3](https://askubuntu.com/questions/442997/how-can-i-convert-audio-from-ogg-to-mp3)
+
+        ffmpeg -i "file name with spaces".{ogg,mp3}
+        # Convert all files from ogg to mp3
+        for i in *.ogg; do ffmpeg -i "${i%.ogg}".{ogg,mp3}; done
+        for i in *.ogg; do echo "${i%.ogg}"; done
 
 
 Cut an audio file at the given start time in seconds
@@ -444,14 +456,19 @@ file name from the URL as explained in the curl man page.
 
 An updated fork of youtube-dl.
 
-Install on Debian: 
+Install with 
+
+    pipx install yt-dlp
+
+Note that you can install yt-dlp from apt on Debian. I removed it because the
+apt package on Debian stable had gotten outdated and was not compatible with
+the Youtube API any more.
      
      sudo apt install yt-dlp
 
 Download a video
 
      yt-dlp <url>
-
 
 List available format before download
 
@@ -461,8 +478,14 @@ Use a format for the download
 
     yt-dlp -f <format_name> <URL>
 
+Download only the audio in an .mp3 format
 
-### youtube-dl
+    yt-dlp --extract-audio --audio-format mp3 video_url
+    # For vim slime
+    yt-dlp --extract-audio --audio-format mp3 
+
+
+### youtube-dl (legacy use yt-dlp fork instead)
 
 Install youtube-dl using pip:
 
@@ -922,7 +945,8 @@ To add a small unit of work in the Kitchen project:
 
 # Environment variables
 
-Environment variables are the way the tell processes where resources are located.
+Environment variables defined for examples in `.bash_aliases` are a way to tell
+processes where resources are located.
 
 For example 
 
@@ -949,7 +973,18 @@ To remove an environment variable (without the `$` sign) in bash
 
     unset VAR_NAME
 
+
 ## Direnv
+
+Create project specific environment variables in a directory by creating a file
+called `.envrc` which defines the environment variables as such:
+
+    export DATA_DIR="$HOME/path_to_data/"
+    export DB_PATH="$HOME/path_to_db"
+
+Then allow bash to load these environment variables:
+
+    direnv allow
 
 - https://manpages.debian.org/testing/direnv/direnv.1.en.html
 
@@ -1421,6 +1456,15 @@ extensions](https://stackoverflow.com/a/11111793/2641825)
 Sync only `.mdb` files that are the output of a model
 
     rsync -zav --include="*/" --include="*.mdb" --exclude="*"  /home/paul/rp/cbmcfs3_data/scenarios/static_demand/ edartrade:static_demand/
+
+
+### Rsync except .git or other dot files
+
+When pulling changed made on the server to the laptop
+
+
+    cd ~/eu_cbm/eu_cbm_hat/
+    rsync -azv --exclude='.git/' paul@flower:~/eu_cbm/eu_cbm_hat/ ~/eu_cbm/eu_cbm_hat/
 
 
 ### Slash or no slash
@@ -1943,10 +1987,6 @@ Usage, for example replace 'word' with 'sword':
 
 ## Generate passwords
 
-[apg](https://packages.debian.org/buster/apg) is an automated password generator. According to the Debian maintainers, it is not updated upstream and it might be replaced by another tool as soon as "a maintained software with a comparable feature set becomes available". Usage:
-
-    apg
-
 A post on Unix & Linux Stack Exchange recommends using `/dev/urandom` as such
 
     cat /dev/urandom | tr -dc 'a-zA-Z0-9' | head -c 20
@@ -1958,6 +1998,13 @@ character set weirdness.
 
 When possible, it's better to authenticate with private and public key
 cryptography.
+
+[apg](https://manpages.debian.org/unstable/apg/apg.1.en.html) is an automated
+password generator. According to the Debian maintainers, it is not updated
+upstream and it might be replaced by another tool as soon as "a maintained
+software with a comparable feature set becomes available". Usage:
+
+    apg
 
 
 ## SFTP connections
@@ -2013,6 +2060,15 @@ when completed:
 
 
 
+### Upload a file or a directory with lftp
+
+For a single file, upload with put:
+
+    lftp -c "con-connection_name; put directory/_site/your_file.html directory/your_file.html ;"
+
+To upload a whole directory use mirror
+
+    lftp -c "con-connection_name; mirror -R directory/_site directory ;"
 
 
 ## SSH Secure Shell
@@ -2187,11 +2243,11 @@ Generate a PGP key
 
     gpg --gen-key
 
-List the keys
+Display what keys are available, the id is the very big number
 
     gpg --list-keys
 
-Export the key to a file
+Paste the id in place of keyid in the command below to export the key to a file
 
     gpg -a --export keyid > file.txt
 
@@ -2798,6 +2854,102 @@ Tmux is under more active development than Screen.
  * [Crash course](https://robots.thoughtbot.com/a-tmux-crash-course)
  * [shortcuts and cheat sheet](https://gist.github.com/MohamedAlaa/2961058)
 
+### Copy & Paste
+
+Enter copy mode with ctrl + shift + C. 
+
+- Copy mode makes it possible to scroll up the buffer as well.
+
+- Hold shift to bypass tmux and directly copy with the mouse if needed. This
+  might be useful for example in SSH or a in a nested tmux.
+
+To paste, use CTRL + Shift + V .
+
+
+#### Copy & Paste through SSH on a server
+
+Problem description:
+ 
+    - When I am logged into a server through SSH, I can't use CTRL + SHIFT +
+      C to copy inside a tmux pane. But CTRL + SHIFT + C does active tmux copy
+      mode, because I can see an orange [0/0] in the top right cornet and I can
+      scroll up the pane. The problem is that it doesn't copy anything inside
+      my laptop's copy buffer. When I paste, I get old clipboard content.
+
+Claude answer:
+
+    > "The server tmux config is not the problem — it's correctly sending OSC
+    > 52. Your GNOME Terminal on the laptop is silently dropping the OSC 52
+    > clipboard write. No change on the server can fix that. Let me confirm the
+    > current state of GNOME Terminal's OSC 52 support so I give you accurate
+    > laptop-side options rather than guessing from memory.
+
+    > ● Now test your laptop clipboard: click into any local app (browser address
+    > bar, a text editor — anywhere on your laptop, not in the SSH session) and paste
+    > with CTRL+SHIFT+V (or CTRL+V).
+
+    >   - If you get OSC52_WORKS_ac3f9 → OSC 52 works end-to-end. Then the problem is
+    >     only in how you yank: in copy mode you must press v to start selection,
+    >     move to select, then y (your config binds y to copy-selection-and-cancel).
+    >     Just entering copy mode and scrolling copies nothing — you have to select
+    >     with v+motion+y. Mouse won't select in copy mode because mouse is off.
+
+    >   - If you get nothing / old clipboard content → your GNOME Terminal is
+    >     not honoring OSC 52 clipboard writes. That's a laptop-side setting,
+    >     and no change to the server tmux config can fix it. The fixes then
+    >     live on your laptop (enable OSC 52 write in your terminal, or switch
+    >     to a terminal that supports it like kitty/wezterm/foot/alacritty).
+
+  Which one happened when you pasted?
+
+Paul:
+
+    ❯ I get old clipboard content
+
+Claude:
+
+    > "That's the definitive answer: the server tmux config is not the problem —
+    > it's correctly sending OSC 52. Your GNOME Terminal on the laptop is
+    > silently dropping the OSC 52 clipboard write. No change on the server can
+    > fix that. Let me confirm the current state of GNOME Terminal's OSC 52
+    > support so I give you accurate laptop-side options rather than guessing
+    > from memory.
+
+    >  Web Search("GNOME Terminal VTE OSC 52 clipboard write support enable
+    > 025") ⎿  Did 1 search in 6s
+
+    >  Confirmed. This is a known, long-standing limitation:
+  
+    > VTE-based terminals — GNOME Terminal, XFCE Terminal, Terminator — do not
+    > honor OSC 52 clipboard writes. It's tracked as an open issue in VTE (issue
+    > #2495) and still isn't shipped/enabled by default. So your server tmux config
+    > is correct and there is nothing to change on the server — the escape sequence
+    > is being sent, GNOME Terminal just discards it.
+    > 
+    > Where that leaves you
+    > 
+    > The fix has to be on your laptop. Options, most reliable first:
+    > 
+    > 1. Switch to a terminal that supports OSC 52 writes by default (one-time
+    >    change, and your existing tmux config then "just works" for remote copy):
+    >   - kitty, wezterm, foot (Wayland), or alacritty — all honor OSC 52 out of
+    >     the box. This is the cleanest fix given how your whole tmux config is
+    >     built around OSC 52.
+    > 2. Stay on GNOME Terminal, and accept that remote-to-laptop clipboard won't
+    >    work via tmux. Your practical copy options then become:
+    >   - Native single-pane selection: with mouse off (your current setting),
+    >     drag-select inside one pane and use GNOME's CTRL+SHIFT+C. Works, but
+    >     breaks across split panes. mosh-style / SSH clipboard bridges — more
+    >     setup, not worth it vs. option 1.
+    > 3. Xterm also does OSC 52 writes if you set XTerm*disallowedWindowOps:
+    >    20,21,SetXprop (allowing SetSelection) in your X resources — viable if you
+    >    like xterm, but fiddly.
+    > 
+    > My recommendation: option 1 — try kitty or wezterm on the laptop. With
+    > either, your prefix [ → v → y workflow will land straight in your laptop
+    > clipboard, no config changes on the server at all."
+
+
 ### Sessions
 
 To start a session
@@ -2925,7 +3077,14 @@ Start tmux with this configuration file:
 
 Make it a bash alias, by adding the following line to ~/.bashrc:
 
+    # Old simpler alias
     alias tmuxw='tmux new-session -s work "tmux source-file ~/.tmux/work"'
+    # New alias which creates or attached if a session already exists
+    alias tmuxw='tmux new-session -A -s work -c ~/rp "tmux source-file ~/.tmux/work.tmux"'
+
+`-A` attaches to the "work" session if it exists, creates it from work.tmux otherwise
+`-s` is the session name
+`-c` changes the working directory of the tmux session
 
 Reddit [discussion on vim splits and tmux tabs](https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/)
 
