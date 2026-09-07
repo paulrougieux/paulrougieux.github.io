@@ -12,7 +12,6 @@ alias partners="cd ~/rp/bookmarkdown/work/freelance && nvim partners.md"
 alias readings="cd ~/rp/bioeconomy_papers/notes/ && nvim -c 'syn off' readings.md"
 alias pom="$HOME/rp/bookmarkdown/work/pomodori/pomodoro.sh 25"
 
-
 # Opening files
 alias open="xdg-open"
 alias openallpdf="find -iname '*.pdf' -print0 | xargs -0 -n 1 xdg-open"
@@ -40,7 +39,8 @@ alias poiu="pkill -f pomodoro_buzzer.py"
 alias ll='ls -lah'
 alias tree2='tree -L 2'
 # A symlink work -> /home/paul/repos/paulrougieux.github.io/setup/work.tmux
-alias tmuxw='cd ~/rp && tmux new-session -s work "tmux source-file ~/.tmux/work.tmux"'
+# -A attaches to the "work" session if it exists, creates it from work.tmux otherwise
+alias tmuxw='tmux new-session -A -s work -c ~/rp "tmux source-file ~/.tmux/work.tmux"'
 # Copy pipe output to the standard clipboard
 alias clip="xclip -selection clipboard"
 # disk usage sorted
