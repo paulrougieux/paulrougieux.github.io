@@ -166,6 +166,19 @@ Add minor changes to the previous commit (git commit --amend):
     git commit --amend
 
 
+## File types
+
+### CSV or Excel?
+
+- Explanation for example at https://csvjson.tools/csv-vs-excel
+
+    > "Version control and git
+
+    > "CSV diffs are human-readable in a pull request. You can see exactly which
+    > rows changed, which were added, and which were deleted. An Excel file in git
+    > shows only "binary file changed"."
+
+
 # Autocompletion
 
 git has an [auto complete](https://git-scm.com/book/en/v1/Git-Basics-Tips-and-Tricks#Auto-Completion) 
@@ -258,6 +271,28 @@ Move to a commit in history and create a branch at that commit
     git checkout <commit-sha>
     git switch -c new-branch-name
 
+### In detached head state
+
+
+    ❯ how to start the outlook_v2 branch at this stage?
+      paul@castanea:~/rp/eu_cbm/TiMBA/TiMBA$ git branch outlook_v2
+      paul@castanea:~/rp/eu_cbm/TiMBA/TiMBA$ git status
+      HEAD detached at e79a018
+      Untracked files:
+        (use "git add <file>..." to include in what will be committed)
+              data/
+              ../venv
+
+      nothing added to commit but untracked files present (use "git add" to track)
+      paul@castanea:~/rp/eu_cbm/TiMBA/TiMBA$
+
+
+    You're in a detached HEAD state. Since you just created outlook_v2 pointing at the current commit (e79a018), just check it out:
+
+      git checkout outlook_v2
+
+      That attaches HEAD to the branch so future commits land on it.
+
 
 ## Delete a branch
 
@@ -270,11 +305,23 @@ Delete a remote branch
     git push --delete origin branch_name
     git push --d origin branch_name
 
+Also remote the local copy of the remote tracking branch. This removes all
+stale remote-tracking references (including origin/main) that no longer exist
+on the remote.
+
+    git remote prune origin
+
 Check if a branch has been merged before deleting it
 
    git merge-base main compare
  
 Will return the latest common commit between the 2 branches.
+
+
+
+
+## Fetch a branch
+
 
 
 ## Merge branches
@@ -334,7 +381,27 @@ To create a local branch that tracks the remote branch. You'll be able to make
 changes to that local branch and push them to the remote branch later.
 
 
-## Branch naming convention
+## List available branches
+
+List local branches
+
+    git branch
+
+List branches available on the remote
+
+    git branch -r
+
+git help branch: 
+
+    > "Option -r causes the remote-tracking branches to be listed, and option -a
+    > shows both local and remote branches."
+
+Fetch all available remote branches
+
+    git fetch --all
+
+
+## Naming a branch
 
 - https://medium.com/@nitanshu1991/git-branching-conventions-102041e9bb71
 
@@ -343,7 +410,7 @@ changes to that local branch and push them to the remote branch later.
     > branch."
 
 
-## Rename a branch
+## Renaming a branch
 
 Create and push under a new branch name to the remote repository
 
@@ -362,10 +429,52 @@ Display which upstream branch a branch is tracking:
 
     git branch -vv 
 
-Change the upstream branch of the current branch
+Change the upstream branch of the current branch directly while pushing
 
+    git branch --set-upstream-to=origin/main main
+    # Directly in push
     git push --set-upstream origin new-branch-name
     git push -u origin new-branch-name
+
+Change the upstream branch to an existing branch on the remote repository
+
+    git branch -u origin/main main
+
+Pull from an upstream branch
+
+    git pull origin main
+
+## Worktree
+
+Create a worktree from the main repository
+
+    git worktree add ../new_draft_directory feature-branch
+    cd ../new_draft_directory
+
+Remove the work tree and remove the branch
+
+    cd /path/to/main/repo
+    git worktree list
+    git worktree remove ../new_draft_directory
+    git worktree prune
+    git branch -d feature-branch
+
+
+# Clone
+
+
+## Shallow copy
+
+Copy only the most recent version of files in a directory:
+
+    git clone --depth 1 https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_aidb.git
+
+
+## Clone to a different directory than current
+
+This might be useful when configuring machines on clusters.
+
+    git clone --depth 1 https://gitlab.com/bioeconomy/eu_cbm/eu_cbm_hat.git /tmp/eu_cbm_hat
 
 
 # Configuring git 
@@ -399,13 +508,30 @@ Edit the global configuration file
     git config --global --edit
 
 
-## Remembering passwords
+## Remember passwords with credential helper store
 
 [How to save user name and password in git](https://stackoverflow.com/questions/35942754/how-to-save-username-and-password-in-git)
 
+    git config --global credential.helper store
     git config credential.helper store
 
 Alternativelly, it's better to use ssh keys to connect to git repositories.
+
+## Compression
+
+- Is this necessary? isn't git compressing by default? 
+
+         Enable compression: git config core.compression 9
+
+    - https://www.perplexity.ai/search/what-is-a-bare-git-repository-ToYLG3bGRz26eaRKf.RpEg#1
+
+    > Git does compress objects by default, so setting core.compression 9 is not
+    > strictly necessary for basic functionality. Git's default core.compression
+    > value is typically -1 or around 1-6 (zlib's "best speed" or standard level),
+    > which provides automatic compression for loose objects and packfiles during
+    > operations like commit, push, and gc. This balances speed and size without
+    > manual tweaks. Existing objects aren't automatically recompressed when you
+    > change this setting—you'd need git repack -a -d -f for that.
 
 
 # Debug git with trace
@@ -531,6 +657,24 @@ To ignore all files in a folder but not the folder itself. Put this .gitignore i
     !/foo
     /foo/*
     !/foo/bar
+
+
+## .git/info/exclude local ignore file
+
+Claude:
+
+> "Can the symlinks appear as directories? Not as symlinks — git classifies
+> working-tree entries by type, and a symlink is always a symlink (mode
+> 120000), never a directory, so the trailing-slash patterns TiMBA/data/input/
+> can't ever match them. The only ways to make git see a real directory there
+> are a bind mount (sudo mount --bind ~/eu_cbm/TiMBA_Data/input
+> TiMBA/data/input — needs root and an fstab entry to survive reboots) or
+> making input/output real directories that contain symlinks to the subfolders.
+> Neither is worth it, because there's a purpose-built mechanism:
+> .git/info/exclude. It's a per-clone ignore file inside .git/ — never
+> committed, never pushed, invisible to upstream, zero merge surface. I've
+> added the two paths there, so git status is now clean without modifying any
+> tracked file."
 
 
 # .gitkeep
@@ -712,9 +856,13 @@ Show all commits affecting one file including dangling commits
 https://stackoverflow.com/questions/17195604/how-can-i-see-the-list-of-all-commits-that-affect-a-specific-file-with-git-incl
 
 
-### Reference log
+### Reference log reflog
 
-git help reflog
+Call:
+
+    git reflog
+
+- git help reflog
 
     > Reference logs, or "reflogs", record when the tips of branches and other 
     > references were updated in the local repository. Reflogs are useful in 
@@ -870,10 +1018,15 @@ where the project was not made available publicly yet.
 - or use `git filter-branch`
 
 
-## Clean
+## Git Clean
+
+Show what will be deleted with the dry run -n option:
+
+    git clean -n
 
 Remove all files also those not tracked by git because they are in .gitignore.
-For example output pdf files and auxiliary files generated from latex or from pandoc.
+For example output pdf files and auxiliary files generated from latex or from
+pandoc.
 
     git clean -xf
 
@@ -883,7 +1036,7 @@ Remove all files including directories
 
 Remove local (untracked) files from my current Git branch
 
-Show what will be deleted with the -n option:
+Show what will be deleted with the dry run -n option:
 
     git clean -f -n
 
@@ -894,6 +1047,7 @@ Then - beware: this will delete files - run:
 Alternatively clean in interactive mode:
 
     git clean -i
+
 
 
 ## Reset whole folder
@@ -911,7 +1065,11 @@ those changes as well:
     git revert -m 1 HEAD~
     git revert commit_sha
 
-See https://stackoverflow.com/questions/9804211/can-not-push-changes-after-using-git-reset-hard
+See also:
+
+- The revert sub section below
+
+- https://stackoverflow.com/questions/9804211/can-not-push-changes-after-using-git-reset-hard
 
 Use the begining of a `commit_sha` copied from the log.
 
@@ -924,19 +1082,40 @@ I used [how to remove a too large file in a commit](https://stackoverflow.com/a/
 Then added the large file to .gitignore and committed again. 
 
 
-## Restore only one file
+## Restore
 
-Git `restore` can be used to "restore working tree files". The `git checkout` 
-command can also be used for this and many other things. Git restore was 
-created to simplify and have a dedicated command that only focuses on restoring 
-files.
+### Discard changes to uncommitted files
 
-To go back to this state for only one file, see git checkout
+Discard changes to all files that have not been committed yet:
 
+    git restore .
+
+Note this used to be performed by `git checkout .`, but `checkout` was also used for
+switching branches and this could led to confusion in some cases. `checkout` was
+therefore split in two commands `restore` to restore files to their last commit
+state and `switch` to switch branch. 
+
+- What is the difference between "git checkout" vs. "git restore" for reverting
+  uncommitted file changes?
+  https://stackoverflow.com/questions/61130412/what-is-the-difference-between-git-checkout-vs-git-restore-for-reverting-un
+
+
+### Restore only one file
+
+Bring a file back to a particular commit:
+
+    git restore commit_hash  path_to_file/file_name
+    # Old command
     git checkout commit_hash  path_to_file/file_name
 
-No need to enter the commit hash to get to get the file from the latest commit
+Git `restore` can be used to "restore working tree files". The `git checkout`
+command used to be used for this (see explanation in the discard section
+above). Git restore was created to simplify and have a dedicated command that
+only focuses on restoring files. No need to enter the commit hash to get the
+file from the latest commit
 
+    git restore path_to_file/file_name
+    # Old command
     git checkout path_to_file/file_name
 
 Checkout the older revision of a file under a new name
@@ -1036,7 +1215,7 @@ changed the README file and put it in the main branch I did:
     > commits to cherry pick."
 
 
-# GUI Graphical User Interface
+# GUI Graphical User Interfaces and other editors
 
 For colleagues who need a GUI: 
 
@@ -1063,6 +1242,28 @@ client and in particular it's "sync" feature:
 > style, so squashing them into one command saves a lot of time. "
 
 
+## Github Desktop
+
+For colleagues using Github Desktop.
+
+- To perform a `git restore .` in Github Desktop, right click on the "changes"
+  text in the top left menu, then click on "Discard all changes".
+  https://stackoverflow.com/questions/24975043/rollback-uncommitted-changes-in-github-desktop-or-github-for-windows
+
+
+## Pycharm
+
+Clone in PyCharm
+
+> From the Welcome screen (no project open):
+
+>   1. Click Get from VCS (top-right).
+>   2. Choose Git as the version control.
+>   3. Paste the URL into the URL field.
+>   4. Set the Directory where it should land locally.
+>   5. Click Clone.
+
+
 # Help
 
 Get help on a command (will start a web browser):
@@ -1079,8 +1280,316 @@ Press `y` to get a permalink  to the current file on Gitlab. The URL will
 include the hash number of the latest commit.
 https://docs.github.com/en/repositories/working-with-files/using-files/getting-permanent-links-to-files
 
+### Personal access tokens
+
+- https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic
+
+ >   -  In the upper-right corner of any page on GitHub, click your profile
+ >      picture, then click Settings.
+
+ >  - In the left sidebar, click Developer settings.
+
+ >  - In the left sidebar, under Personal access tokens, click Tokens (classic).
+
+
+#### Fine grained token
+
+When creating a fine grained token to read a repo in an organisation. 
+
+1. choose the resource owner as the organisation
+
+2. Add the Contents permission — you have the "Select repository permissions" dropdown open. In that search box, type:
+
+  Contents
+
 
 ## Gitlab
+
+### API
+
+- SSH to push and pull
+- HTTPS-API to create and comment on issues with token authentication
+
+
+#### API on self hosted gitlab instance
+
+Claude
+
+      > glab mit einer GitLab-Instanz unter Unterpfad verbinden
+
+      > Unsere selbst-gehostete GitLab-Instanz („Idaho", aidaho-edu.uni-hohenheim.de)
+      > läuft nicht im Domain-Root, sondern unter dem Unterpfad /gitlab — und Git-SSH auf
+      > dem ungewöhnlichen Port 30022. Das führt zu einer Stolperfalle: glab auth login
+      > scheitert mit 404 Not Found, obwohl der Token gültig ist. Ursache ist ein Bug —
+      > der Verifizierungs-Schritt des Logins ignoriert den /gitlab-Pfad und prüft gegen
+      > …/api/v4 statt …/gitlab/api/v4, und speichert den Token deshalb nicht.
+
+      > Der Workaround: api_host explizit auf …/gitlab setzen und den Token direkt in
+      > die Config schreiben (am Login-Bug vorbei):
+
+      > glab config set -h aidaho-edu.uni-hohenheim.de api_host aidaho-edu.uni-hohenheim.de/gitlab
+      > read -rs GLTOKEN && glab config set -h aidaho-edu.uni-hohenheim.de token "$GLTOKEN" && unset GLTOKEN
+
+      > Danach funktionieren glab api-Befehle.
+
+Paul
+
+    ❯ Ist es ein bug oder eine einstellung das Hohenheim absichtlich gewählt hat?
+
+Claude:
+
+      > 1. Der /gitlab-Unterpfad = bewusste Hohenheim-Entscheidung (kein Bug)
+
+      > Dass GitLab unter …/gitlab statt im Domain-Root liegt (und SSH auf Port 30022), ist
+      > eine absichtliche Deployment-Wahl des Hohenheimer Betreibers. Das nennt sich
+      > „relative URL installation" und ist völlig legitim — man macht das typischerweise,
+      > wenn mehrere Dienste hinter einem Reverse-Proxy / einer Domain laufen und sich den
+      > Hostnamen teilen. GitLab unterstützt das offiziell. Daran ist nichts falsch
+      > konfiguriert.
+
+      > 2. Dass glab damit nicht klarkommt = Limitierung/Bug auf glab-Seite
+
+      > Der eigentliche Fehler liegt im Client glab, nicht an Hohenheim:
+
+      > - glab api baut die URL aus dem konfigurierten api_host (mit Pfad) → funktioniert.
+      > - Die High-Level-Unterbefehle (glab issue, glab mr, auth login) leiten den
+      > API-Host aus dem Git-Remote ab und hängen /api/v4 an den blanken Hostnamen
+      > → der /gitlab-Pfad fällt weg → 404.
+
+      > Das ist also eine unvollständige Unterstützung von relative-URL-Installationen in
+      > glab — die Instanz verhält sich korrekt, der Client zieht nur die falsche Basis-URL
+      > zusammen. Auf einer „normalen" Instanz (GitLab im Root, z. B. gitlab.com) träte das
+      > Problem nicht auf.
+                                                                                          1 new message (ctrl+End) ↓
+
+
+
+
+### Authentication 
+
+
+#### Personal access tokens
+
+To pull private repositories on servers
+
+
+To update an outdated token:
+
+1. Either try editing ~/.git-credentials and place the new token there
+
+2. Or revoke the token with
+
+      git credential reject <<EOF
+      protocol=https
+      host=gitlab.com
+      EOF
+ 
+    - Then git pull — it will prompt for username and password (token), and save the new one.
+
+
+#### Project token
+
+Project tokens are not available on the gitlab free tier. You need the premium
+plan for that.
+
+
+#### Service accounts for bots
+
+See also the LLM section where I learn how to use gitlab issues as the control plane for agentic loops.
+
+Group service account
+https://docs.gitlab.com/user/profile/service_accounts/?tab=Group+service+accounts
+
+Bootstrap sequence using my gitlab Personal Access Token to create a service
+account authorized for a gitlab group.
+
+1. Create the service account (returns its user id + actual username)
+
+        glab api --method POST groups/--------/service_accounts -f name="cbm-bot" -f username="cbm_bot"
+
+2. Mint an api-scoped token for it. Use the return service account id here in
+   place of SA_ID
+
+      glab api --method POST groups/---------/service_accounts/SA_ID/personal_access_tokens \
+        -f name="triage" -f "scopes[]=api" -f expires_at="2027-07-03"
+
+> "This returns "token":"glpat-…" once — that's the credential the bot uses.
+> Capture it now; you can't retrieve it again."
+
+3. Add the service account to the project as Reporter (20)
+
+      glab api --method POST projects/org%2Forg_cbm/members \
+        -f user_id=SA_ID -f access_level=20
+
+Then upload the token to the server 
+
+      read -rs SA_TOKEN                                              # paste the glpat-… , Enter
+      ssh SERVER 'glab auth login --hostname gitlab.com --stdin' <<<"$SA_TOKEN"
+      unset SA_TOKEN
+
+Then check that the service account works on the server
+
+    ssh SERVER 'glab api user'
+
+
+##### Server with two GitLab service accounts on one host
+
+Claude:
+
+      Handoff: two GitLab service accounts on one host
+
+      Goal
+
+      Two GitLab service accounts, both on gitlab.com:
+      - org2_bot → the default account (used everywhere unless overridden).
+      - org1_triage_bot → only the org1/* repositories.
+
+      An agent should be able to create/update issues as the right account automatically, based on which repo it's working in — including from non-interactive automated shells.
+
+      Why this is non-trivial
+
+      - Both repo sets live on the same host (gitlab.com). glab's config file (~/.config/glab-cli/config.yml) stores one token per host, so you can't hold both there — one context must override.
+      - Repo namespaces:
+        - org1: gitlab.com/org1/* (single group).
+        - org2: spans multiple namespaces, e.g. gitlab.com/org2-group-a/<subgroup>/* and gitlab.com/org2-group-b/*.
+
+      Key findings / gotchas (verified)
+
+      1. GITLAB_TOKEN env var outranks the config-file token. This is the override lever.
+      2. direnv is a trap here — do not use it for the agent. It's installed but (a) not hooked into any shell profile, and (b) it fires via PROMPT_COMMAND, which only runs in interactive shells.
+      Automated/non-interactive agent shells never trigger it, so .envrc would silently not load. (direnv does search parent dirs, so that part wasn't the blocker.)
+      3. glab auth status prints a false ! Invalid token provided warning. Ignore it; verify real auth with glab api user instead.
+      4. ~/rp is a symlink to ~/repos/, so ~/rp/org1 == ~/repos/org1. Prefer logic that doesn't depend on the path spelling.
+      5. Access already confirmed: org1_triage_bot has Developer (level 30) on both org1 repos, issues enabled — enough to create/update/close issues.
+
+      Recommended implementation: a path-aware glab wrapper
+
+      Keys off the repo's origin remote, so it works from any cwd, in interactive and non-interactive shells, and ignores the symlink.
+
+      #!/usr/bin/env bash
+      # ~/.local/bin/glab   (must precede /usr/bin/glab on PATH)
+      url="$(git remote get-url origin 2>/dev/null)"
+      case "$url" in
+        *gitlab.com[:/]org1/*)  export GITLAB_TOKEN="$(cat ~/.config/glab-cli/org1.token)" ;;
+        *)                      unset GITLAB_TOKEN ;;   # fall through to config-file default = org2_bot
+      esac                                                                                       Jump to bottom (ctrl+End) ↓
+
+
+      - Both repo sets live on the same host (gitlab.com). glab's config file (~/.config/glab-cli/config.yml) stores one token per host, so you can't hold both there — one context must override.
+      - Repo namespaces:
+        - org1: gitlab.com/org1/* (single group).
+        - org2: spans multiple namespaces, e.g. gitlab.com/org2-group-a/<subgroup>/* and gitlab.com/org2-group-b/*.
+
+      Key findings / gotchas (verified)
+
+      1. GITLAB_TOKEN env var outranks the config-file token. This is the override lever.
+      2. direnv is a trap here — do not use it for the agent. It's installed but (a) not hooked into any shell profile, and (b) it fires via PROMPT_COMMAND, which only runs in interactive shells.
+      Automated/non-interactive agent shells never trigger it, so .envrc would silently not load. (direnv does search parent dirs, so that part wasn't the blocker.)
+      3. glab auth status prints a false ! Invalid token provided warning. Ignore it; verify real auth with glab api user instead.
+      4. ~/rp is a symlink to ~/repos/, so ~/rp/org1 == ~/repos/org1. Prefer logic that doesn't depend on the path spelling.
+      5. Access already confirmed: org1_triage_bot has Developer (level 30) on both org1 repos, issues enabled — enough to create/update/close issues.
+
+      Recommended implementation: a path-aware glab wrapper
+
+      Keys off the repo's origin remote, so it works from any cwd, in interactive and non-interactive shells, and ignores the symlink.
+
+      #!/usr/bin/env bash
+      # ~/.local/bin/glab   (must precede /usr/bin/glab on PATH)
+      url="$(git remote get-url origin 2>/dev/null)"
+      case "$url" in
+        *gitlab.com[:/]org1/*)  export GITLAB_TOKEN="$(cat ~/.config/glab-cli/org1.token)" ;;
+        *)                      unset GITLAB_TOKEN ;;   # fall through to config-file default = org2_bot
+      esac
+      exec /usr/bin/glab "$@"
+
+      Config-file default token = org2_bot; the wrapper swaps in the org1 token only for org1/* remotes.
+
+      Steps for the agent
+
+      1. Create org2_bot service account + token (scopes api, write_repository; Developer/Maintainer on the org2 namespaces). (Prerequisite — must be done in the GitLab UI; agent cannot mint it.)
+      2. Store tokens outside any repo, chmod 600:
+        - ~/.config/glab-cli/org2.token (org2_bot)
+        - ~/.config/glab-cli/org1.token (org1_triage_bot — currently this token lives inside config.yml)
+      3. Make org2_bot the config default: glab auth login --hostname gitlab.com --stdin < ~/.config/glab-cli/org2.token (or edit the token: field under hosts.gitlab.com).
+      4. Install the wrapper at ~/.local/bin/glab, chmod +x, and confirm ~/.local/bin precedes /usr/bin in PATH (type -a glab).
+      5. Verify:
+      cd <an org1 repo>  && glab api user | python3 -c 'import sys,json;print(json.load(sys.stdin)["username"])'  # → org1_triage_bot
+      cd <an org2 repo>  && glab api user | python3 -c 'import sys,json;print(json.load(sys.stdin)["username"])'  # → org2_bot
+
+      Known limitation
+
+      The wrapper resolves the account from origin, so it only works inside a
+      checkout. For bare glab api … calls run outside any repo, pass the
+      token/config explicitly (GITLAB_TOKEN=… or GLAB_CONFIG_DIR=…).
+
+
+#### Deploy token
+
+Cannot be used to push!
+
+Create a deploy token on the Settings / Repository page. 
+
+Deploy tokens also works at the group level for several repos together. When at
+the group level, press Settings / Repository / Deploy tokens.
+
+A deploy token makes it possible to clone in an unauthenticated way. 
+
+[SO answer](git clone https://username:token@gitlab.com/user/repo.git)
+
+    git clone https://username:token@gitlab.com/user/repo.git
+
+To update the remote URL of an existing repository
+
+    git remote set-url origin https://<deploy-token-username>:<deploy-token>@gitlab.com/group/repository.git
+
+But it may be better not to store the token inside the git remote URL.
+
+Note: deploy tokens cannot be used to push to the repository, you will get an error similar to
+
+    git push -u origin main
+    remote: You are not allowed to upload code.
+    fatal: unable to access 'https://gitlab.com/group/repository.git/': The requested URL returned error: 403
+
+
+##### Usage quotas
+
+Check usage quotas for a group at (replace group_name by the actual group name): 
+
+    https://gitlab.com/groups/group_name/-/usage_quotas
+
+For a user at (link works as is):
+
+    https://gitlab.com/-/profile/usage_quotas#pipelines-quota-tab
+
+
+#### Deploy key
+
+Create an SSH key on the server and add it as an authorized project deploy key
+with write access to the repository, under:
+
+    - Under the repository Settings / Repository / Deploy Keys
+    - Then click on "privately accessible deploy keys" and enable the key
+    - Then edit an grant write permissions to the key
+
+With deploy keys, git can push and pull to the repository. 
+
+In addition tokens are still necessary to use the gitlab CLI to create and
+comment on issues also called work items.
+
+
+### Branches
+
+- Define the default branch in the GItlab UI
+  Settings / Repository / Branch defaults
+
+- Protect, unprotect branches on the Gitlab UI
+  under Settings / Repository /  Branch rules
+
+- Delete branches on the Gitlab UI
+  Under code / branches
+
+    - Documentation https://docs.gitlab.com/user/project/repository/branches/#delete-merged-
+
 
 ### Issues
 
@@ -1148,28 +1657,16 @@ The public folder also needs to be published as an artifact.
 See the `.gitlab-ci.yml` file in this repository.
 
 
-### Deploy token
+### Merge requests on gitlab
 
-Create a deploy token on the repository page. It also works at the project
-level for several repos. 
+GitLab exposes all MRs at refs/merge-requests/<id>/head. The following fetch
+command brings that down as a local branch mr/2.
 
-A deploy token makes it possible to clone in an unauthenticated way. 
+    git fetch origin merge-requests/2/head:mr/2
 
-[SO answer](git clone https://username:token@gitlab.com/user/repo.git)
+Then check it out:
 
-    git clone https://username:token@gitlab.com/user/repo.git
-
-
-#### Usage quotas
-
-Check usage quotas for a group at (replace group_name by the actual group name): 
-
-    https://gitlab.com/groups/group_name/-/usage_quotas
-
-For a user at (link works as is):
-
-    https://gitlab.com/-/profile/usage_quotas#pipelines-quota-tab
-
+    git checkout mr/2
 
 
 # Line endings
@@ -1309,8 +1806,11 @@ Using the push to multiple remote should be combined with a command that pulls
 first before any push.
 
 To solve issues when someone updated a remote and you didn't have the changes, 
-then the push pussed only to gitlab and not to github, you can merge the 2 
-branches as such: 
+then the push pushed only to gitlab and not to github, you can either
+
+    git push --force-with-lease gitlab main
+
+Or merge the 2 branches as such: 
 
     git merge github/main origin/main
 
@@ -1346,6 +1846,57 @@ Pull a newly created branch from  the remote repository
 
     git fetch
 
+
+## Set URL change the remote URL
+
+- https://stackoverflow.com/a/2432799
+
+    git remote set-url origin <NEW_GIT_URL_HERE>
+
+
+## SSH server as a remote
+
+Sometimes I develop on a server that has read only access to the repository and
+I want to pull the change to my laptop first. 
+   
+    git pull server_name:/home/paul/repository
+
+If you want to be cautious:
+
+    # Fetch the server's main into a temporary ref without touching your working tree
+    git fetch flower:/home/paul/repository
+    # See what's coming
+    git log --oneline HEAD..FETCH_HEAD
+    git diff --stat HEAD FETCH_HEAD
+    # If it looks clean, merge (fast-forward if possible)
+    git merge FETCH_HEAD
+ 
+
+
+## ZZ Backup to object storage
+
+
+Using Object Storage (S3-compatible). 
+
+
+- Install git-annex https://git-annex.branchable.com/special_remotes/S3/
+
+- Or use a bare repository with S3 backend:
+
+    # Create a bare repository locally first
+    git clone --bare /path/to/your/repo repo.git
+
+    # Install s3cmd or aws cli
+    sudo apt install s3cmd  # or: pip install awscli
+
+    # Configure s3cmd with credentials
+    s3cmd --configure
+    # Enter your S3 endpoint, keys when prompted
+
+    # Upload the bare repository
+    s3cmd put -r repo.git s3://your-bucket-name/
+
+
 # Rename and delete files
 
 Rename a file
@@ -1372,6 +1923,7 @@ If a file or folder has been renamed outside of git, I get this warning:
 
 Therefore I think I should always run "git add --all" after I have removed or
 renamed files.
+
 
 
 # Replace and search text
@@ -1467,10 +2019,15 @@ Generate a pgp key
 
     gpg --gen-key
 
-More information on gpg key publishing in the [bash page](bash.html).
-Display what keys are available
+Display what keys are available, the id is the very big number
 
     gpg --list-keys
+
+Paste the id in place of keyid in the command below to export the key to a file
+
+    gpg -a --export keyid > file.txt
+
+More information on gpg key publishing in the [bash page](bash.html).
 
 
 ## Automatically sign tags and commits
@@ -1524,15 +2081,19 @@ Show signatures in the log:
 
 - Gitlab [sign commits with
   GPG](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html)
+  
+    - Find out which key git is usingn with 
+      
+        git config --get user.signingkey
 
     - Export the text of the public key to a text file with:
 
+        gpg --armor --export <key-id-from-above>
+        # Or export it to a file
+        gpg --armor --export <key-id-from-above>  > ~/downloads/gpg_pubkey_paul.asc
+        # You can also list keys and export with the email instead
         gpg --list-keys
         gpg --armor --export paul.rougieux@gmail.com
-        # Or export it to a file
-        gpg --armor --export paul.rougieux@gmail.com > ~/downloads/gpg_pubkey_paul.asc
-
-
 
 - Once GPG is configured in git, you need to [add a GPG key to your
   account](https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/index.html#add-a-gpg-key-to-your-account)
@@ -1569,10 +2130,14 @@ Usage
 
 # Tagging
 
-Creating an annotated tag
+Creating a tag
+
+    git tag v0.0.2  -m "Version 0.0.2"
+
+Creating an annotated tag with -a. Note Git automatically creates an annotated
+tag if you provide the -m (message) flag.
 
     git tag -a v1.4 -m 'my version 1.4'
-    git tag v0.0.2  -m "Version 0.0.2"
 
 A regular push command won't push a tag (bitbucket), to push all your tags :
 
@@ -1641,15 +2206,18 @@ But it's even more usefull when code can be back-up online.
    [Gitlab](https://gitlab.com/).
 
 Commands I've used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:
+
 ```
-    git remote add origin https://github.com/paul4forest/forestproductsdemand
-    git pull origin master
-    git add
-    git commit -m "Explanatory message"
-    git push origin master
+git remote add origin https://github.com/paul4forest/forestproductsdemand
+git pull origin master
+git add
+git commit -m "Explanatory message"
+git push origin master
+
 ```
 
 Commands to upload content to a fresh repository from bitbucket :
+
 ```
     mkdir /path/to/your/project
     cd /path/to/your/project
@@ -1658,6 +2226,7 @@ Commands to upload content to a fresh repository from bitbucket :
     # Upload and set the local changes as upstream
     git push -u origin master
 ```
+
 See also this discussion on [why do I need to set upstream](http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time)?
 
 Commands to copy an existing repository from bitbucket :
@@ -1708,11 +2277,12 @@ Get back to the develop branch and reload uncommited changes
     git stash pop
 
 
-# Subversion
+# SVN Subversion
 
 Subversion is another version control system. 
 It is different than git and should be on another page, but since I don't expect to use it very much,
 it probably makes sense to keep a Subversion section under the git page here.
+
 See also wiki.debian.org [small SVN tutorial](https://wiki.debian.org/SmallSVNTutorial).
 
 Install subversion from the Debian repository
@@ -1746,6 +2316,13 @@ show the status
 show differences
 
     svn diff
+
+
+## SVN for git users
+
+- https://softwareengineering.stackexchange.com/questions/237579/where-can-i-find-svn-for-git-users-resources
+
+    - Comment: "svn up = git pull, c) svn commit = git commit && git push"
 
 
 # References
