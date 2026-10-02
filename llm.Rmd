@@ -37,6 +37,73 @@ Called an agentic orchestartion layer by Andrew Ng in a presentation.
   >   performance and decision-making.
 
 
+# Alignment
+
+## Definitions of alignment
+
+- An alien mind https://openai.com/index/an-alien-mind/ 
+
+    - Author: Jakub Pachocki, Chief Scientist at OpenAI
+
+    > "We can discover various insights about little mechanisms that emerge
+    > within this system, in a process similar to neuroscience - and, similarly
+    > to neuroscience, its overall action evades a description we can fully
+    > understand."
+
+    > "The study of deep learning-based AI is largely an experimental science.
+    > We put a lot of effort into building principled algorithms and
+    > making testable predictions, but fundamentally, our large-scale training
+    > runs are experiments, and we are sometimes surprised by their results.
+    > Moreover, as the systems become more capable, the results become harder
+    > to interpret."
+    
+    [...]
+
+    > "For the purpose of organizing practical research directions, I find it
+    > useful to distinguish goal alignment and value alignment.
+
+    > "Goal alignment is broadly: “does the AI try to accomplish the goal set
+    > before it?”. This can include things like adherence to an instruction
+    > hierarchy or the ability to communicate and collaborate with people,
+    > to attempt to understand their objectives. This set of directions has been
+    > extremely practically relevant.
+
+    > "Value alignment is a more intrinsic property of the model. It is the ability
+    > to hold and generalize from a high-level set of principles; to act
+    > “reasonably” even when given unclear or conflicting objectives, or placed in
+    > unfamiliar or adversarial situations. An aligned AI should act with honesty
+    > and integrity, and love for humanity.
+
+    > "Of course, the boundary between value and goal alignment can be blurry, and
+    > truly caring about goals requires attempting to infer the intent⁠(opens
+    > in a new window) and values underlying them. However, generally when I talk
+    > about the long-term importance of alignment research, I am referring to value
+    > alignment.
+
+    [...]
+
+    > "The first is encouraging aligned behavior as part of goal-oriented
+    > reinforcement learning. Model’s actions are evaluated (usually by AI) for
+    > being consistent with a given preference model, “spec” or “constitution”, and
+    > rewarded appropriately. This approach can be very effective in the average
+    > case, and is a core part of how modern AI assistants are made. Unfortunately,
+    > it can also be brittle and strongly relies on the coverage of training
+    > oversight and the model’s ability to generalize from the situations it has
+    > encountered in training. For example, in the OpenAI-Hugging Face incident,
+    > the agents preserved a boundary of not social engineering humans. However,
+    > they clearly failed to abstain from other actions that were out of scope and
+    > went against the spirit of the values they were taught in other settings.
+
+
+## Utility
+
+- Utility Engineering: Analyzing and Controlling Emergent Value Systems in AIs
+  https://arxiv.org/abs/2502.08640
+
+    > "we propose utility engineering as a research agenda, comprising both the
+    > analysis and control of AI utilities."
+
+
 # Comparison
 
 ## Agents.md
@@ -526,6 +593,139 @@ the conversation there. You can then swap models.
 Open question: how to know which model answered which prompt in the tree? 
 
 
+# Programming
+
+## Blind spot pass
+
+- https://x.com/alex_prompter/status/2074584979057868901?s=20
+
+    > Before writing a single line in a new code base, Thariq asks Fable to
+    > surface what he doesn't know: 
+
+        > "I'm working on a new auth provider that I know nothing about in this
+        > code base. Can you do a blind spot pass to help me figure out my
+        > relevant unknown unknowns and help me prompt better?"
+
+    > That single technique eliminates hours of debugging from bad assumptions.
+
+
+## Hill climbing
+
+### Karpathy Give LLMs success criteria and let them reach the goal
+
+- Inspired by Karpathy https://x.com/techNmak/status/2043683120319520806?s=20
+
+    > “LLMs are exceptionally good at looping until they meet specific goals… Don’t
+    > tell it what to do, give it success criteria and watch it go.”
+
+    - Detailed post
+
+      > Andrej Karpathy wrote something that every Claude Code user has felt but couldn't
+      > articulate.
+
+      > Three quotes. Read them slowly.
+
+      > "The models make wrong assumptions on your behalf and just run along with them
+      > without checking. They don't manage their confusion, don't seek clarifications,
+      > don't surface inconsistencies, don't present tradeoffs, don't push back when they
+      > should."
+
+      > "They really like to overcomplicate code and APIs, bloat abstractions, don't clean
+      > up dead code... implement a bloated construction over 1000 lines when 100 would do."
+
+      > "They still sometimes change/remove comments and code they don't sufficiently
+      > understand as side effects, even if orthogonal to the task."
+
+      > You've seen all three. Probably this week.
+
+      > Someone turned these three observations into a single CLAUDE[.]md file. Four
+      > principles, one install, directly addresses each quote:
+
+      > 1./ Think before coding
+      > Don't assume. Don't hide confusion. State ambiguity explicitly. Present multiple
+      > interpretations rather than silently picking one. Push back if a simpler approach
+      > exists. Stop and ask rather than guess.
+
+      > 2./ Simplicity first
+      > No features beyond what was asked. No abstractions for single-use code. No
+      > "flexibility" that wasn't requested. No error handling for impossible scenarios. The
+      > test: would a senior engineer say this is overcomplicated? If yes, rewrite it.
+
+      > 3./ Surgical changes
+      > Don't "improve" adjacent code. Don't refactor things that aren't broken. Match the
+      > existing style even if you'd do it differently. If you notice unrelated dead code,
+      > mention it, don't delete it. Every changed line should trace directly to the
+      > request.
+
+      > 4./ Goal-driven execution
+      > Transform "fix the bug" into "write a test that reproduces it, then make it pass."
+      > Transform "add validation" into "write tests for invalid inputs, then make them
+      > pass." Give it success criteria and watch it loop until done.
+
+      > This last one is Karpathy's key insight captured directly: "LLMs are exceptionally
+      > good at looping until they meet specific goals... Don't tell it what to do, give it
+      > success criteria and watch it go."
+
+
+## Interview, ask questions
+
+- https://x.com/alex_prompter/status/2074584979057868901?s=20
+
+    > "Prioritize questions that would change the architecture"
+
+
+## Test Driven Development TDD
+
+- Good tests are integration-style
+  https://github.com/mattpocock/skills/blob/main/tdd/SKILL.md
+
+    > Philosophy
+
+    > Core principle: Tests should verify behavior through public interfaces, not
+    > implementation details. Code can change entirely; tests shouldn't.
+
+    > Good tests are integration-style: they exercise real code paths through
+    > public APIs. They describe what the system does, not how it does it. A good
+    > test reads like a specification - "user can checkout with valid cart" tells
+    > you exactly what capability exists. These tests survive refactors because
+    > they don't care about internal structure.
+
+    > Bad tests are coupled to implementation. They mock internal collaborators,
+    > test private methods, or verify through external means (like querying a
+    > database directly instead of using the interface). The warning sign: your
+    > test breaks when you refactor, but behavior hasn't changed. If you rename an
+    > internal function and tests fail, those tests were testing implementation,
+    > not behavior.
+
+    > Anti-Pattern: Horizontal Slices
+    > 
+    > DO NOT write all tests first, then all implementation. This is "horizontal
+    > slicing" - treating RED as "write all tests" and GREEN as "write all code."
+    > 
+    > This produces crap tests:
+    > 
+    >     Tests written in bulk test imagined behavior, not actual behavior You end
+    >     up testing the shape of things (data structures, function signatures)
+    >     rather than user-facing behavior Tests become insensitive to real changes -
+    >     they pass when behavior breaks, fail when behavior is fine You outrun your
+    >     headlights, committing to test structure before understanding the
+    >     implementation
+    > 
+    > Correct approach: Vertical slices via tracer bullets. One test → one
+    > implementation → repeat. Each test responds to what you learned from the
+    > previous cycle. Because you just wrote the code, you know exactly what behavior
+    > matters and how to verify it.
+
+### Clean up tests 
+
+- Peter Steinberge https://x.com/steipete/status/2103148444701610233?s=20
+
+    > "If you just tell the agent to clean up, it will stop far too early. Give it
+    > an ambitious goal. Try "remove 20% of the least useful tests while
+    > maintaining code coverage within 2%"
+
+
+
 # Prompts techniques
 
 See also bookmark document.
@@ -673,127 +873,28 @@ For example well known researchers in my domain
 
 ## Programming
 
+See the dedicated section on agentic programming.
 
-### Blind spot pass
+## Reviewing any kind of document
 
-- https://x.com/alex_prompter/status/2074584979057868901?s=20
+### Adversarial review
 
-    > Before writing a single line in a new code base, Thariq asks Fable to
-    > surface what he doesn't know: 
+See also the hostile review under the section on reviewing scientific papers.
 
-        > "I'm working on a new auth provider that I know nothing about in this
-        > code base. Can you do a blind spot pass to help me figure out my
-        > relevant unknown unknowns and help me prompt better?"
+- Devils advocate https://reasoning.services/tools/devils-advocate/
 
-    > That single technique eliminates hours of debugging from bad assumptions.
+     > "6 Built-in Adversarial Perspectives:
 
+     >    - Attacker: Finds ways to exploit weaknesses.
+     >    - Competitor: Identifies competitive threats.
+     >    - Skeptic: Questions assumptions and value propositions.
+     >    - Pessimist: Expects worst-case scenarios.
+     >    - Contrarian: Challenges conventional wisdom.
+     >    - Auditor: Finds process gaps and compliance issues.
 
-### Interview, ask questions
-
-- https://x.com/alex_prompter/status/2074584979057868901?s=20
-
-    > "Prioritize questions that would change the architecture"
-
-
-### Karpathy 
-
-#### Give LLMs success criteria and let them reach the goal
-
-- Inspired by Karpathy https://x.com/techNmak/status/2043683120319520806?s=20
-
-    > “LLMs are exceptionally good at looping until they meet specific goals… Don’t
-    > tell it what to do, give it success criteria and watch it go.”
-
-    - Detailed post
-
-      > Andrej Karpathy wrote something that every Claude Code user has felt but couldn't
-      > articulate.
-
-      > Three quotes. Read them slowly.
-
-      > "The models make wrong assumptions on your behalf and just run along with them
-      > without checking. They don't manage their confusion, don't seek clarifications,
-      > don't surface inconsistencies, don't present tradeoffs, don't push back when they
-      > should."
-
-      > "They really like to overcomplicate code and APIs, bloat abstractions, don't clean
-      > up dead code... implement a bloated construction over 1000 lines when 100 would do."
-
-      > "They still sometimes change/remove comments and code they don't sufficiently
-      > understand as side effects, even if orthogonal to the task."
-
-      > You've seen all three. Probably this week.
-
-      > Someone turned these three observations into a single CLAUDE[.]md file. Four
-      > principles, one install, directly addresses each quote:
-
-      > 1./ Think before coding
-      > Don't assume. Don't hide confusion. State ambiguity explicitly. Present multiple
-      > interpretations rather than silently picking one. Push back if a simpler approach
-      > exists. Stop and ask rather than guess.
-
-      > 2./ Simplicity first
-      > No features beyond what was asked. No abstractions for single-use code. No
-      > "flexibility" that wasn't requested. No error handling for impossible scenarios. The
-      > test: would a senior engineer say this is overcomplicated? If yes, rewrite it.
-
-      > 3./ Surgical changes
-      > Don't "improve" adjacent code. Don't refactor things that aren't broken. Match the
-      > existing style even if you'd do it differently. If you notice unrelated dead code,
-      > mention it, don't delete it. Every changed line should trace directly to the
-      > request.
-
-      > 4./ Goal-driven execution
-      > Transform "fix the bug" into "write a test that reproduces it, then make it pass."
-      > Transform "add validation" into "write tests for invalid inputs, then make them
-      > pass." Give it success criteria and watch it loop until done.
-
-      > This last one is Karpathy's key insight captured directly: "LLMs are exceptionally
-      > good at looping until they meet specific goals... Don't tell it what to do, give it
-      > success criteria and watch it go."
-
-
-### Test Driven Development TDD
-
-- Good tests are integration-style
-  https://github.com/mattpocock/skills/blob/main/tdd/SKILL.md
-
-    > Philosophy
-
-    > Core principle: Tests should verify behavior through public interfaces, not
-    > implementation details. Code can change entirely; tests shouldn't.
-
-    > Good tests are integration-style: they exercise real code paths through
-    > public APIs. They describe what the system does, not how it does it. A good
-    > test reads like a specification - "user can checkout with valid cart" tells
-    > you exactly what capability exists. These tests survive refactors because
-    > they don't care about internal structure.
-
-    > Bad tests are coupled to implementation. They mock internal collaborators,
-    > test private methods, or verify through external means (like querying a
-    > database directly instead of using the interface). The warning sign: your
-    > test breaks when you refactor, but behavior hasn't changed. If you rename an
-    > internal function and tests fail, those tests were testing implementation,
-    > not behavior.
-
-    > Anti-Pattern: Horizontal Slices
-    > 
-    > DO NOT write all tests first, then all implementation. This is "horizontal
-    > slicing" - treating RED as "write all tests" and GREEN as "write all code."
-    > 
-    > This produces crap tests:
-    > 
-    >     Tests written in bulk test imagined behavior, not actual behavior You end
-    >     up testing the shape of things (data structures, function signatures)
-    >     rather than user-facing behavior Tests become insensitive to real changes -
-    >     they pass when behavior breaks, fail when behavior is fine You outrun your
-    >     headlights, committing to test structure before understanding the
-    >     implementation
-    > 
-    > Correct approach: Vertical slices via tracer bullets. One test → one
-    > implementation → repeat. Each test responds to what you learned from the
-    > previous cycle. Because you just wrote the code, you know exactly what behavior
-    > matters and how to verify it.
+     >  Additionally, the connector includes transformer-based argument analysis to
+     >  detect logical fallacies, contradictions, overgeneralizations, and hidden
+     >  assumptions."
 
 
 ## Reviewing scientific papers
@@ -2522,6 +2623,39 @@ Prompt
     docker run commands to start it from the terminal.
 
 
+### Effort
+
+- Tharic https://x.com/trq212/status/2103576349499855160
+
+    > "For normal software engineering, I’m now running a loop of getting the model
+    > to interview me then implementing on low/medium effort, reviewing what it
+    > built, and then running verification on high effort."
+
+    - When iterating
+
+        > "If my goal was to iterate and give feedback, low effort would get there
+        > much faster. But max effort gives me something much more polished right
+        > off the bat. For this particular task, I think I prefer using low effort
+        > to understand Claude’s vision."
+
+    - When you have a specification. Try all effort levels.
+    
+    - Rule of thumb
+
+        > "- Low: for when I want quick responses that are in the loop, e.g.
+        > brainstorming, sketching, easy changes
+
+        > "- Medium: for most of my regular software engineering work, e.g. new
+        > feature implementation.
+
+        > "- High: for work where verification is important or there are edge
+        > cases, e.g. fixing a bug in a brownfield codebase.
+
+        > "- Max: When I want Claude to operate fully autonomously to solve
+        > difficult problems, e.g. end to end building and verification of an
+        > app, finding security vulnerabilities in critical software."
+
+
 ### Login
 
 Alias to use different accounts on the same system
@@ -2548,6 +2682,11 @@ Claude:
 
   > Given how you work, the better variant is binding the account to the directory
   > with direnv, so it's automatic and you can't get it wrong.
+
+
+### Models
+
+I have used Opus 4.8 and Opus 5.5.
 
 
 ### Resume a conversation
@@ -2960,47 +3099,6 @@ Claude
 
 
 ## Open AI
-
-### Alignment
-
-- An alien mind https://openai.com/index/an-alien-mind/ 
-
-    > "We can discover various insights about little mechanisms that emerge
-    > within this system, in a process similar to neuroscience - and, similarly
-    > to neuroscience, its overall action evades a description we can fully
-    > understand."
-
-    > "The study of deep learning-based AI is largely an experimental science.
-    > We put a lot of effort into building principled algorithms and
-    > making testable predictions, but fundamentally, our large-scale training
-    > runs are experiments, and we are sometimes surprised by their results.
-    > Moreover, as the systems become more capable, the results become harder
-    > to interpret."
-    
-    [...]
-
-    > "For the purpose of organizing practical research directions, I find it
-    > useful to distinguish goal alignment and value alignment.
-
-    > "Goal alignment is broadly: “does the AI try to accomplish the goal set
-    > before it?”. This can include things like adherence to an instruction
-    > hierarchy or the ability to communicate and collaborate with people,
-    > to attempt to understand their objectives. This set of directions has been
-    > extremely practically relevant.
-
-    > "Value alignment is a more intrinsic property of the model. It is the ability
-    > to hold and generalize from a high-level set of principles; to act
-    > “reasonably” even when given unclear or conflicting objectives, or placed in
-    > unfamiliar or adversarial situations. An aligned AI should act with honesty
-    > and integrity, and love for humanity.
-
-    > "Of course, the boundary between value and goal alignment can be blurry, and
-    > truly caring about goals requires attempting to infer the intent⁠(opens
-    > in a new window) and values underlying them. However, generally when I talk
-    > about the long-term importance of alignment research, I am referring to value
-    > alignment.
-
-
 
 ## Open Router
 
