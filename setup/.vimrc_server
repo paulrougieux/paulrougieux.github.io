@@ -15,7 +15,7 @@ filetype indent on
 
 " change leader key from \ (the default) to ,
 let mapleader = ","
-let maplocalleader = ";"
+let maplocalleader = " "
 
 " Case insensitive search
 set ignorecase
@@ -57,8 +57,9 @@ nmap <LocalLeader>m $4b
 " AZERTY keyboard "
 """"""""""""""""""
 " Shared on https://stackoverflow.com/a/62195253/2641825
-" Move to the end of the line
-noremap m $
+" Jump to a mark, since the backtick is a dead key on AZERTY: ,ma jumps to
+" mark a. noremap keeps it usable as a motion, so d,ma deletes up to the mark.
+noremap <leader>m `
 " Search backward for the word under the cursor
 noremap µ #
 " Navigate to the help tag under the cursor with ctrl-ù

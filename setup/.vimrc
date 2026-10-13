@@ -81,7 +81,7 @@ set wildmode=list:longest
 
 " change leader key from \ (the default) to ,
 let mapleader = ","
-let maplocalleader = ";"
+let maplocalleader = " "
 
 " Case insensitive search
 set ignorecase
@@ -140,8 +140,10 @@ command! -range=% Snake s/[^a-zA-Z0-9]\+/_/g | normal Vu
 " # AZERTY keyboard "
 """"""""""""""""""""
 " Shared on https://stackoverflow.com/a/62195253/2641825
-" Move to the end of the line
-noremap m $
+" Jump to a mark. The backtick is AltGr+7 (a dead key) on AZERTY, hence this
+" mapping: ,ma jumps to mark a, exact line and column. noremap (not nnoremap)
+" keeps it usable as a motion, so d,ma deletes up to the mark.
+noremap <leader>m `
 " Search backward for the word under the cursor
 noremap µ #
 " Navigate to the help tag under the cursor with ctrl-ù
@@ -292,9 +294,14 @@ au BufRead,BufNewFile *.qmd inoremap <C-Space> <C-x><C-o> | inoremap <C-@> <C-x>
 
 command! -range=% Hyphen <line1>,<line2>s/\(\i\)- /\1/g
 
-" Render markdown documents with Pandoc
-command! Ppdf execute '!pandoc % -o %:r.pdf'
-command! Phtml execute '!pandoc % -o %:r.html'
+" Render markdown documents with Pandoc to /tmp with a table of contents and
+" open the result, for sending documents by email. See scripts/pandoctmp,
+" symlinked into ~/.local/bin. :update writes the buffer first when modified,
+" since the script compiles the file on disk rather than the buffer.
+command! Ppdf update | execute '!pandocpdf %'
+command! Phtml update | execute '!pandochtml %'
+nnoremap <leader>pp :Ppdf<CR>
+nnoremap <leader>ph :Phtml<CR>
 
 " Render quarto documents with quarto
 command! Qpdf execute '!quarto render % --to pdf'
@@ -358,7 +365,7 @@ let g:jedi#show_call_signatures = "0"
 
 " Pytest TODO: delete if not used
 autocmd FileType python nmap <silent><Leader>f <Esc>:Pytest file<CR>
-autocmd FileType python nmap <silent><Leader>m <Esc>:Pytest method<CR>
+autocmd FileType python nmap <silent><buffer><Leader>m <Esc>:Pytest method<CR>
 
 " Remove all trailing whitespace by pressing F5
 nnoremap <F5> :let _s=@/<Bar>:%s/\s\+$//e<Bar>:let @/=_s<Bar><CR>
@@ -460,6 +467,11 @@ autocmd FileType markdown xmap <buffer> <LocalLeader>m <Plug>SlimeRegionSend
 " Send the current word under the cursor to the last active tmux buffer with slime
 autocmd FileType python nmap <buffer> <LocalLeader>w viw<Plug>SlimeRegionSend
 autocmd Filetype markdown nmap <buffer> <LocalLeader>w viw<Plug>SlimeRegionSend
+
+" Send `cd <vim working directory>` to the last active tmux pane with slime,
+" so that the shell below follows vim's :pwd instead of copy pasting it by hand.
+command! CDpwd call slime#send('cd ' . shellescape(getcwd()) . "\n")
+nnoremap <LocalLeader>cd :CDpwd<CR>
 
 
 " # TODO

@@ -122,6 +122,38 @@ require("lazy").setup({
       end,
     },
 
+    -- Tabular, line up text in tables, :TT on a markdown table
+    {
+      "godlygeek/tabular",
+      -- Load at startup, the command below is defined in config
+      lazy = false,
+      keys = {
+        -- Align the table under the cursor, no need to select it first
+        { "<leader>ta", "<cmd>TT<cr>", desc = "Align markdown table" },
+        -- Align the visual selection
+        { "<leader>ta", ":TT<cr>", mode = "v", desc = "Align markdown table" },
+      },
+      config = function()
+        -- :TT tabularizes tables made with a pipe. It is :Tabularize /|
+        -- without the space Tabular adds in front of the leading pipe.
+        -- Without a range, Tabular extends the current line to the adjacent
+        -- lines containing a pipe, extend the same way to remove the spaces.
+        vim.api.nvim_create_user_command("TT", function(args)
+          local first, last = args.line1, args.line2
+          vim.cmd(first .. "," .. last .. "Tabularize /|")
+          if args.range == 0 then
+            local has_pipe = function(lnum)
+              return vim.fn.getline(lnum):find("|", 1, true) ~= nil
+            end
+            while first > 1 and has_pipe(first - 1) do first = first - 1 end
+            while last < vim.fn.line("$") and has_pipe(last + 1) do last = last + 1 end
+          end
+          vim.cmd(first .. "," .. last .. [[substitute/^\s\+|/|/e]])
+          vim.cmd("nohlsearch")
+        end, { range = true, desc = "Align a markdown table" })
+      end,
+    },
+
     -- Python linter
     },
     -- Configure any other settings here. See the documentation for more details.
@@ -129,12 +161,7 @@ require("lazy").setup({
     install = { colorscheme = { "habamax" } },
     -- automatically check for plugin updates
     checker = { enabled = true },
-    },
-
-    -- Tabular Line up test in tables
-    {
-      "godlygeek/tabular",
-    }
+  }
 )
 
 

@@ -18,7 +18,13 @@
 -- Leader keys must be set before lazy.nvim loads so mappings are correct.
 -- These match ~/.vimrc.
 vim.g.mapleader = ","
-vim.g.maplocalleader = ";"
+vim.g.maplocalleader = " "
+
+-- Jump to a mark, since the backtick is a dead key on AZERTY: ",ma" jumps to
+-- mark a (matches the mapping in ~/.vimrc). The empty mode string is the Lua
+-- equivalent of :noremap, which keeps it usable as a motion: "d,ma" deletes up
+-- to the mark.
+vim.keymap.set("", "<leader>m", "`", { desc = "Jump to a mark" })
 
 -- New splits open below and to the right (matches ~/.vimrc).
 vim.opt.splitbelow = true
