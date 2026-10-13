@@ -148,9 +148,8 @@ resize >/dev/null
 # Time zone
 export TZ='Europe/Rome'
 
-# Lyx QT issue https://dticket.jrc.it/ticket.php?track=WML-7ML-MNT9&Refresh=12674 
-alias lyx='QT_X11_NO_MITSHM=1 lyx'
-alias spyder='QT_X11_NO_MITSHM=1 spyder'
+# Hohenheim
+export HOH_USERNAME=illel78
 
 
 
