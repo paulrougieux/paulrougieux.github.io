@@ -5,6 +5,7 @@
 
 • The Pomodoro Technique for ADHD: Does It Really Work?
   https://www.audhdpsychiatry.co.uk/does-pomodoro-really-work-for-adhd/
+
     > "Switching Tasks Feels Impossible Some people with ADHD experience 
     > **hyperfocus**, which makes switching away from a task difficult. When 
     > this occurs, try setting a visible break timer to signal transitions. 
@@ -14,6 +15,7 @@
     > alarms that fade in, rather than loud timers that cause stress or 
     > confusion. Creating a consistent environment for work and rest also 
     > supports smoother transitions."
+
     > **The Urge to Extend Work Periods** One of the common pitfalls when using 
     > the Pomodoro Technique is the temptation to keep working past the 
     > 25-minute limit. While it may feel productive in the moment, extending 
