@@ -150,9 +150,7 @@ export TZ='Europe/Rome'
 
 # Hohenheim
 export HOH_USERNAME=illel78
-
-
-
+alias teamdir='~/rp/uhoh/bioeconomy_projects/tools/projektverzeichnis/mount_cifs.sh team && ls -la ~/cifs_520m | head -30'
 
 # pandocpdf and pandochtml compile a markdown file to /tmp and open it. They
 # used to be a function plus two aliases here, but aliases do not exist in the
