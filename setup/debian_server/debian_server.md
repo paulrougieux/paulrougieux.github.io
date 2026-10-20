@@ -37,7 +37,9 @@ clone the repository (details in section 2):
 
 ```bash
 sudo apt install git
-mkdir -p ~/rp && git clone https://gitlab.com/paulrougieux/paulrougieux.git ~/rp/paulrougieux
+mkdir -p ~/rp
+cd ~/rp
+git clone https://gitlab.com/paulrougieux/paulrougieux.git
 ```
 
 Alternatively, copy this directory from the laptop:
@@ -232,8 +234,17 @@ mkdir -p ~/.local/bin
 
 ## 5. tmux
 
-`~/.tmux.conf` is linked from `setup/server/.tmux.conf`. To open the usual
-window layout (utils, blog, here, todo, llm) inside a new session:
+`~/.tmux.conf` is linked from `setup/server/.tmux.conf`. tmux reads it only
+when its server starts, so if tmux was already running before the link was
+created, the custom bindings (`prefix v`, Ctrl+Alt+C for copy mode) are
+missing until you reload it:
+
+```bash
+tmux source-file ~/.tmux.conf
+```
+
+To open the usual window layout (utils, blog, here, todo, llm) inside a new
+session:
 
 ```bash
 tmux new -s work
