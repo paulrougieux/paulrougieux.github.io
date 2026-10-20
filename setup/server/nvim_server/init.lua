@@ -30,6 +30,11 @@ vim.keymap.set("", "<leader>m", "`", { desc = "Jump to a mark" })
 vim.opt.splitbelow = true
 vim.opt.splitright = true
 
+-- Case insensitive search, unless the pattern contains a capital letter:
+-- "/ssh" also finds "SSH", "/SSH" only finds "SSH" (matches ~/.vimrc).
+vim.opt.ignorecase = true
+vim.opt.smartcase = true
+
 -- Window navigation from inside a :terminal buffer, similar to tmux-navigator.
 vim.keymap.set("t", "<C-J>", "<C-W><C-J>")
 vim.keymap.set("t", "<C-K>", "<C-W><C-K>")
