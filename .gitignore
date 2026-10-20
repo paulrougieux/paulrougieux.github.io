@@ -14,4 +14,4 @@ todo.html
 !figures/paul_bellinzona.png
 
 # Ignore temporary config files
-setup/nvim/lazy-lock.json
+lazy-lock.json
