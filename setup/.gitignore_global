@@ -8,3 +8,7 @@
 .envrc
 
 **/.claude/settings.local.json
+# Local settings
+.claude/settings.local.json
+# Claude worktrees
+.claude/worktrees/

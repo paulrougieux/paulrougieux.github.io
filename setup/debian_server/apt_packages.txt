@@ -1,0 +1,42 @@
+# Apt packages for a Debian 13 (trixie) modelling server.
+# One package per line; "#" starts a comment. Read by install_apt_packages.sh.
+# See debian_server.md for why each group is here.
+
+# --- Base system (missing from the university Debian image) ------------------
+sudo                # must be installed as root first, see debian_server.md
+curl                # download installers (uv, Claude Code)
+
+# --- Terminal workflow -------------------------------------------------------
+tmux               # persistent sessions: model runs survive ssh disconnects
+neovim              # editor, configured from ~/rp/paulrougieux/setup/server/nvim_server
+fzf                 # fuzzy finder, used by the `viz` alias and the nvim fzf plugin
+tree                # directory listing, used by the `tree2` alias
+htop                # interactive process / memory monitor
+gdu                 # fast disk usage analyser (find what fills the disk)
+direnv              # per-project environment variables via .envrc
+kitty-terminfo      # terminfo for the kitty terminal on the laptop (lighter than full kitty)
+
+# --- Version control and file transfer --------------------------------------
+git
+tig                 # text-mode git history browser
+glab                # GitLab CLI (issues, merge requests, CI pipelines)
+subversion          # occasional svn checkouts of older data/model repos
+rsync               # copy data and outputs to/from the laptop
+gpg                 # signing, verifying downloads, apt repository keys
+unzip
+
+# --- Python ------------------------------------------------------------------
+python3-pip
+python3-venv        # virtual environments (pulls python3.13-venv on trixie)
+python-is-python3   # `python` points to python3
+ipython3            # REPL that vim-slime sends code to
+pipx                # isolated installs of Python command line tools
+
+# --- Build tools -------------------------------------------------------------
+build-essential     # gcc + make: nvim-treesitter compiles parsers, some pip wheels build from source
+
+# --- Containers --------------------------------------------------------------
+docker.io           # Debian's docker package, used by containers/pi-container.sh
+
+# --- Documents ---------------------------------------------------------------
+poppler-utils       # pdftotext, pdfinfo: read PDFs from the command line and from agents
