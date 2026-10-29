@@ -11,9 +11,185 @@ output:
 The more mistakes you make, the more you learn. 
 Let them make mistakes.
 
+
+# Cognitive research
+
+In the subsection below, I cite passages from 
+
+- "Weinstein, Y., Sumeracki, M. A., & Caviglioli, O. (2018). Teaching the
+  science of learning. Cognitive Research: Principles and Implication"
+  https://link.springer.com/article/10.1186/s41235-017-0087-y
+
+  > "we focus on six specific cognitive strategies that have received robust support
+  > from decades of research: spaced practice, interleaving, retrieval practice,
+  > elaboration, concrete examples, and dual coding. "
+
+Claude: (TODO: replace by real citations from the articles)
+
+  > "**No retrieval, therefore weak retention.** The testing effect is one of
+  > the most robust results in the field (Roediger and Karpicke, 2006):
+  > retrieving information strengthens memory far more than re-studying it. A
+  > frontal hour contains close to zero retrieval attempts by the student. The
+  > material is encoded once, passively, and then decays. This is arguably the
+  > single largest missed opportunity of the format, and also the cheapest to
+  > fix.
+
+  > "**Fluency creates an illusion of learning, for both parties.** A
+  > well-delivered lecture is easy to follow, and ease of processing is misread
+  > as mastery — Bjork's (1994) work on metacognitive illusions and desirable
+  > difficulties. Students then report learning more from a polished lecture
+  > than from a harder active format, *while actually learning less* on the
+  > test: Deslauriers et al. (2019) randomly assigned students in introductory
+  > physics to active and passive versions of the same content and found actual
+  > learning and feeling of learning strongly anticorrelated. The lecturer,
+  > seeing nodding faces, receives the same false signal. The format
+  > systematically misinforms everyone about whether it is working.
+
+
+## Spacing vs craming
+
+Weinstein et al 2018
+
+> It is important to note that students may feel less confident when they space
+> their learning (Bjork, 1999) than when they cram. This is because spaced
+> learning is harder – but it is this “desirable difficulty” that helps
+> learning in the long term (Bjork, 1994).
+
+
+### Desirable difficulties
+
+Bjork 1994:
+
+> "A trainer, in effect, is vulnerable to a type of operant conditioning, where
+> the reinforcing events are improvements in the performance and/or happiness
+> of trainees. Such a conditioning process, over time, can act to shift the
+> trainer toward manipulations that increase the rate of correct responding —
+> that make the trainee’s life easier, so to speak. Doing that, of course, will
+> move the trainer away from introducing the types of desirable difficulties
+> summarized in the preceding section. The tendency for instructors to be
+> pushed toward training programs that maximize the performance or evaluative
+> reaction of their trainees during is exacerbated by certain institutional
+> characteristics that are common in real-world organizations. First, those
+> responsible for training are often themselves evaluated in terms of the
+> performance and satisfaction of their trainees during training, or at the
+> end of training. Second,individuals with the day-to-day responsibility for
+> training often do not get a chance to observe the post training performance of
+> the people they have trained; a trainee’s later successes and failures tend
+> to occur in settings that are far removed from the original training
+> environment, and from the trainer himself or herself. It is also rarely the
+> case that systematic measurements of post training on-the-job performance
+> are even collected, let alone provided to a trainer as a guide to what
+> manipulations do and do not achieve the post training goals of training. And,
+> finally, where refresher or retraining programs exist, they are typically
+> the concern of individuals other than those responsible for the original
+> training."
+
+
+## Retrieval vs restudy
+
+Weinstein et al 2018:
+
+> "The benefit of retrieval practice depends to a certain extent on successful
+> retrieval (see Karpicke, Lehman, et al., 2014). For example, in Experiment 4
+> of Smith et al. (2013), students successfully retrieved 72% of the
+> information dur- ing retrieval practice. Of course, retrieving 72% of the
+> information was compared to a restudy control group, during which students
+> were re-exposed to 100% of the information, creating a bias in favor of the
+> restudy condi- tion. Yet retrieval led to superior memory later compared to
+> the restudy control. However, if retrieval success is extremely low, then it
+> is unlikely to improve memory (e.g., Karpicke, Blunt, et al., 2014),
+> particularly in the absence of feedback."
+
+Weinstein et al 2018 on testing:
+
+> "Retrieval practice has received a lot of attention in teacher blogs (see
+> “Learning Scientists” (2016b) for a collection). A common theme seems to be
+> an emphasis on low-stakes (Young, 2016) and even no-stakes (Cox, 2015)
+> testing, the goal of which is to increase learning rather than assess
+> performance"
+
+
+
 # Neural Networks
 
+See also [LLM](llm.html).
+
 * [How neural networks are trained](https://ml4a.github.io/ml4a/how_neural_networks_are_trained/)
+
+
+## Integrating AI into education
+
+- Effort is the algorithm
+
+
+## Definitions of learning
+
+### Homography
+
+-  Ilya Sutskever presents an Observation on Generalization  https://www.youtube.com/watch?v=AKMuA_TVz3A&t=4s
+
+    > "Why would data have regularities that our machine learning models can
+    > capture?"
+
+    - Perplexity explaining an analogy between homography and the way transformers
+      simulate alternative architecture internally 
+      https://www.perplexity.ai/search/what-is-sgd-in-this-context-yo-rLzyIfSWRE27gHO4eut_WA#1
+
+      > "Ilya Sutskever views deep neural networks, including transformers, as
+      > universal parallel computers capable of universal computation given
+      > enough scale. These models execute sequential operations (like
+      > attention layers) in parallel across massive hardware, simulating
+      > arbitrary programs during training via optimization like Stochastic
+      > Gradient Descent (SGD). 
+
+      > Homography refers to a projective transformation in computer vision and
+      > geometry that maps points from one plane (or image) to another while
+      > preserving lines and incidence relations, typically via a 3x3 matrix. It's
+      > like a "micro" version because neural networks, especially transformers, can
+      > efficiently simulate one architecture inside another through such
+      > transformations, much as computers emulate each other.
+  
+      > The "micro homography" idea emphasizes robustness: just as a homography
+      > seamlessly warps one planar view into another without losing structural
+      > fidelity (e.g., in image stitching), transformers can "warp" or
+      > simulate alternative architectures internally. This makes them
+      > interchangeable in capability—depth vs. width, dense vs. sparse
+      > attention—when optimization is strong, as minor changes are absorbed
+      > like viewpoint shifts in projective geometry. Architectural tweaks
+      > matter mainly for bottlenecks or efficiency, not core expressivity.
+
+
+## AGI doesn't exist
+
+- https://www.perplexity.ai/search/what-does-sergey-s-return-mean-jVvbrHr2T3Ck51YQu4jOSQ#2
+
+    > "Yann LeCun, argues that AGI often defined as human-level or superhuman
+    > intelligence across all domains is a flawed, overhyped concept because
+    > intelligence is inherently relative and context-specific. Humans excel in
+    > narrow, evolved skills like social reasoning, tool use, and survival in
+    > physical environments, but lag in raw pattern recognition or data
+    > processing compared to animals or machines; for instance, cats outperform
+    > humans in visuomotor tasks."
+
+    > "Why It Still Matters"
+
+    > "LeCun's view doesn't negate practical AI progress; it reframes "AGI" as
+    > unnecessary hype, emphasizing "human-level AI" for specific, valuable
+    > capabilities like world modeling or robotics, where Google (under Brin's
+    > push) and others compete. In the poster's context, Brin's return signals
+    > Google's execution on these frontiers—Gemini advancements in multimodal
+    > models—not chasing an ill-defined AGI finish line. Real-world dominance
+    > in video/images (YouTube data) and chips (TPUs) drives usage wins,
+    > regardless of terminology."
+
+## Writing
+
+
+### Will writing become like knapping in the paleolithic?
+
+
+If writing become like knapping in the paleolithic, then we will have history
+museum where people teach antique writing techniques on vintage keyboards.
 
 
 # Resources
