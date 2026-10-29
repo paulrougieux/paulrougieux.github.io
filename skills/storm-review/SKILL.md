@@ -36,7 +36,13 @@ briefing to catch source bias and fact misassociation.
 ## Orchestration
 
 - **Spawn parallel agents** for Prompt 1 (the five-perspective scan — one agent per
-  perspective, or one agent producing all five) and for Prompt 4 (the peer review).
+  perspective, or one agent producing all five), for Prompt 4 (the peer review) and for
+  Prompt 6 (the perspectives' response).
+
+    - If it is running on a computer with file access, authorize agents to download a
+      few scientific papers or grey literature each. The coordinating agent should
+      confirm with the user where the literature pdf files will be stored.
+
 - **You, the coordinating agent, run** Prompt 2 (contradiction map), Prompt 3
   (synthesis) and Prompt 5 (correction after review) yourself, since they depend on
   having all perspectives in hand.
@@ -44,6 +50,7 @@ briefing to catch source bias and fact misassociation.
 
 If a PDF/file was provided, pass its key claims and any extracted quotes/numbers to the
 spawned perspective agents so they argue from the actual source, not from memory.
+
 
 ### Prompt 1 — The Multi-Perspective Scan (parallel agents)
 
@@ -69,6 +76,7 @@ spawned perspective agents so they argue from the actual source, not from memory
     - The strongest evidence supporting their view
     - The one thing they would tell me that no other perspective would
 
+
 ### Prompt 2 — The Contradiction Map (coordinating agent)
 
     Based on the 5 perspectives above, map the contradictions:
@@ -84,6 +92,7 @@ spawned perspective agents so they argue from the actual source, not from memory
     5. What topic did NONE of the perspectives address?
     (This is the blind spot in the whole field.
     Often the most valuable finding.)
+
 
 ### Prompt 3 — The Synthesis (coordinating agent)
 
@@ -104,6 +113,7 @@ spawned perspective agents so they argue from the actual source, not from memory
     5. THE FRONTIER QUESTION: the one question that, if
     answered, would change everything about how we
     understand this topic.
+
 
 ### Prompt 4 — The Peer Review (parallel agent)
 
@@ -131,6 +141,11 @@ In a new separate section at the end of the document, correct the synthesis base
 review.
 
 
+### Prompt 6 — The Perspectives Respond (parallel agents)
+
+At the end of the review ask each sub agent to comment the Corrected Synthesis
+After Review from their perspective, if possible citing relevant literature.
+
 
 ## Markdown Report
 
@@ -149,6 +164,9 @@ date:
 mainfont: "STIXGeneral"
 toc: true
 toc-depth: 2
+bibliography: file_name.bib
+csl: apa.csl
+link-citations: true
 ---
 ```
 
@@ -158,7 +176,18 @@ toc-depth: 2
 <!-- Render to pdf with
 
 cd working_directory
-pandoc file_name.md --pdf-engine=xelatex -o file_name.pdf
+pandoc file_name.md --citeproc --pdf-engine=xelatex -o file_name.pdf
 
 -->
 ```
+
+## Bibliography
+
+- Keep sources in a `.bib` file next to the markdown (JOSS `paper.md` + `paper.bib`
+  pattern), cite with `@key`, and end the document with `# References` + `::: {#refs}`.
+- Copy `apa.csl` into the same directory so the render is reproducible; fetch from
+  `https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl`.
+- Verify author metadata against the PDF itself, not against what an agent reported.
+- Never let a line start with `@key.` — pandoc parses it as an example list and renders
+  a stray number instead of the citation.
+- STIXGeneral has no subscript glyphs: write CO2, CH4, N2O, not CO₂, CH₄, N₂O.
