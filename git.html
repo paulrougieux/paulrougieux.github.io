@@ -448,6 +448,9 @@ div.tocify {
       <a href="communication.html">Communication</a>
     </li>
     <li>
+      <a href="learning.html">Learning</a>
+    </li>
+    <li>
       <a href="procrastination.html">Procrastination</a>
     </li>
     <li>
@@ -712,8 +715,8 @@ You&#39;re in a detached HEAD state. Since you just created outlook_v2 pointing 
 <p>I might need to delete a branch at some point:</p>
 <pre><code>git branch -d branch_name </code></pre>
 <p>Delete a remote branch</p>
-<pre><code>git push --delete origin branch_name
-git push --d origin branch_name</code></pre>
+<pre><code>git push --d origin branch_name
+git push --delete origin branch_name</code></pre>
 <p>Also remote the local copy of the remote tracking branch. This
 removes all stale remote-tracking references (including origin/main)
 that no longer exist on the remote.</p>
@@ -2099,6 +2102,13 @@ either</p>
 <pre><code>git push --force-with-lease gitlab main</code></pre>
 <p>Or merge the 2 branches as such:</p>
 <pre><code>git merge github/main origin/main</code></pre>
+<p>In case you need to rename one of the push remotes, you might get an
+error</p>
+<pre><code>warning: remote.origin.pushurl has multiple values
+fatal: could not set &#39;remote.origin.pushurl&#39; to &#39;...&#39;</code></pre>
+<p>In that case unset the push URLs first</p>
+<pre><code>git config --unset-all remote.origin.pushurl</code></pre>
+<p>Then set them again as explained at the top of this section.</p>
 </div>
 <div id="pull-rebase-versus-merge" class="section level2">
 <h2>Pull rebase versus merge</h2>
@@ -2413,15 +2423,14 @@ github.com/paul4forest/forestproductsdemand are:</p>
 git pull origin master
 git add
 git commit -m &quot;Explanatory message&quot;
-git push origin master
-</code></pre>
+git push origin master</code></pre>
 <p>Commands to upload content to a fresh repository from bitbucket :</p>
-<pre><code>    mkdir /path/to/your/project
-    cd /path/to/your/project
-    git init
-    git remote add origin ssh://git@bitbucket.org/username/bbreponame.git
-    # Upload and set the local changes as upstream
-    git push -u origin master</code></pre>
+<pre><code>mkdir /path/to/your/project
+cd /path/to/your/project
+git init
+git remote add origin ssh://git@bitbucket.org/username/bbreponame.git
+# Upload and set the local changes as upstream
+git push -u origin master</code></pre>
 <p>See also this discussion on <a
 href="http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time">why
 do I need to set upstream</a>?</p>
@@ -2467,6 +2476,24 @@ git stash pop</code></pre>
 </div>
 <div id="svn-subversion" class="section level1">
 <h1>SVN Subversion</h1>
+<p>Load the latest version of some repository</p>
+<pre><code>svn checkout --username yourusername http://repositoryurl</code></pre>
+<p>Bring changes from the repository HEAD into the working copy,
+equivalent to git pull</p>
+<pre><code>svn up
+svn update</code></pre>
+<p>Get help on a command</p>
+<pre><code>svn help log</code></pre>
+<p>See the last 4 log entries</p>
+<pre><code>svn log -l 4</code></pre>
+<p>synchronize working copy to revision given by -r.</p>
+<pre><code>svn up -r10860</code></pre>
+<p>show the status</p>
+<pre><code>svn status</code></pre>
+<p>show differences</p>
+<pre><code>svn diff</code></pre>
+<div id="install" class="section level2">
+<h2>Install</h2>
 <p>Subversion is another version control system. It is different than
 git and should be on another page, but since I don’t expect to use it
 very much, it probably makes sense to keep a Subversion section under
@@ -2476,20 +2503,7 @@ href="https://wiki.debian.org/SmallSVNTutorial">small SVN
 tutorial</a>.</p>
 <p>Install subversion from the Debian repository</p>
 <pre><code>sudo apt install subversion</code></pre>
-<p>Load the latest version of some repository</p>
-<pre><code>svn checkout --username yourusername http://repositoryurl</code></pre>
-<p>Get help on a command</p>
-<pre><code>svn help log</code></pre>
-<p>See the last 4 log entries</p>
-<pre><code>svn log -l 4</code></pre>
-<p>Bring changes from the repository HEAD into the working copy</p>
-<pre><code>svn up</code></pre>
-<p>synchronize working copy to revision given by -r.</p>
-<pre><code>svn up -r10860</code></pre>
-<p>show the status</p>
-<pre><code>svn status</code></pre>
-<p>show differences</p>
-<pre><code>svn diff</code></pre>
+</div>
 <div id="svn-for-git-users" class="section level2">
 <h2>SVN for git users</h2>
 <ul>

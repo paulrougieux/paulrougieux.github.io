@@ -302,8 +302,8 @@ I might need to delete a branch at some point:
 
 Delete a remote branch
 
-    git push --delete origin branch_name
     git push --d origin branch_name
+    git push --delete origin branch_name
 
 Also remote the local copy of the remote tracking branch. This removes all
 stale remote-tracking references (including origin/main) that no longer exist
@@ -318,10 +318,20 @@ Check if a branch has been merged before deleting it
 Will return the latest common commit between the 2 branches.
 
 
-
-
 ## Fetch a branch
 
+Fetch a branch into origin/branch_name
+
+    git fetch origin branch_name
+
+That updates origin/branch_name but doesn't create a local branch. To also
+check it out as a local branch that tracks the remote:
+
+    git switch branch_name
+
+To create the local branch without switching to it:
+
+    git fetch origin branch_name:branch_name
 
 
 ## Merge branches
@@ -1795,6 +1805,8 @@ The output of git push -v shows that it is now pushing to both repositories
     updating local tracking ref 'refs/remotes/origin/master'
     Everything up-to-date
 
+### Pull with rebase issue when there are changes on one remote
+
 The problem with pushing to multiple remotes and doing rebase commits at the 
 same time is that this might lead to a situation where the push on remote A 
 fails because there are new changes in that remote repository, while the push 
@@ -1813,6 +1825,26 @@ then the push pushed only to gitlab and not to github, you can either
 Or merge the 2 branches as such: 
 
     git merge github/main origin/main
+
+In case you need to rename one of the push remotes, you might get an error 
+
+    warning: remote.origin.pushurl has multiple values
+    fatal: could not set 'remote.origin.pushurl' to '...'
+
+In that case unset the push URLs first
+
+    git config --unset-all remote.origin.pushurl
+
+Then set them again as explained at the top of this section. 
+
+
+#### Fix with an alias
+
+Make origin push only to one remote and add an alias that pushes to the other
+remote only after that succeeds:
+
+  git config --unset remote.origin.pushurl 'gitlab\.com'
+  git config alias.pushall '!git push origin "$@" && git push gitlab "$@"'
 
 
 ## Pull rebase versus merge
@@ -2205,33 +2237,30 @@ But it's even more usefull when code can be back-up online.
  * Free public and private git storage are available on 
    [Gitlab](https://gitlab.com/).
 
-Commands I've used to upload content to an existing repository github.com/paul4forest/forestproductsdemand are:
+Commands I've used to upload content to an existing repository
+github.com/paul4forest/forestproductsdemand are:
 
-```
-git remote add origin https://github.com/paul4forest/forestproductsdemand
-git pull origin master
-git add
-git commit -m "Explanatory message"
-git push origin master
-
-```
+    git remote add origin https://github.com/paul4forest/forestproductsdemand
+    git pull origin master
+    git add
+    git commit -m "Explanatory message"
+    git push origin master
 
 Commands to upload content to a fresh repository from bitbucket :
 
-```
     mkdir /path/to/your/project
     cd /path/to/your/project
     git init
     git remote add origin ssh://git@bitbucket.org/username/bbreponame.git
     # Upload and set the local changes as upstream
     git push -u origin master
-```
 
 See also this discussion on [why do I need to set upstream](http://stackoverflow.com/questions/6089294/why-do-i-need-to-do-set-upstream-all-the-time)?
 
 Commands to copy an existing repository from bitbucket :
 
      git clone git@bitbucket.org/username/bbreponame.git
+
 
 ## Setting up SSH keys 
 
@@ -2279,19 +2308,14 @@ Get back to the develop branch and reload uncommited changes
 
 # SVN Subversion
 
-Subversion is another version control system. 
-It is different than git and should be on another page, but since I don't expect to use it very much,
-it probably makes sense to keep a Subversion section under the git page here.
-
-See also wiki.debian.org [small SVN tutorial](https://wiki.debian.org/SmallSVNTutorial).
-
-Install subversion from the Debian repository
-
-    sudo apt install subversion
-
 Load the latest version of some repository
 
     svn checkout --username yourusername http://repositoryurl
+
+Bring changes from the repository HEAD into the working copy, equivalent to git pull
+
+    svn up
+    svn update
 
 Get help on a command
 
@@ -2301,11 +2325,7 @@ See the last 4 log entries
 
     svn log -l 4
 
-Bring changes from the repository HEAD into the working copy
-
-    svn up
-
-synchronize working copy to revision given by -r.    
+synchronize working copy to revision given by -r.
     
     svn up -r10860
 
@@ -2316,6 +2336,19 @@ show the status
 show differences
 
     svn diff
+
+
+## Install
+
+Subversion is another version control system. It is different than git and
+should be on another page, but since I don't expect to use it very much, it
+probably makes sense to keep a Subversion section under the git page here.
+
+See also wiki.debian.org [small SVN tutorial](https://wiki.debian.org/SmallSVNTutorial).
+
+Install subversion from the Debian repository
+
+    sudo apt install subversion
 
 
 ## SVN for git users
