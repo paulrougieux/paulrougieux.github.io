@@ -18,6 +18,14 @@ alias openallpdf="find -iname '*.pdf' -print0 | xargs -0 -n 1 xdg-open"
 f() {
   selected="$(fzf)" && xdg-open "$selected"
 }
+# cd into the folder of a file picked with fzf. Arguments pre-fill the search,
+# e.g. "fcd historical". It is a function because an alias cannot cd with arguments.
+# --walker without "hidden" skips dot folders such as .git and .venv (fzf >= 0.48);
+# dot files still show up. Add e.g. --walker-skip=node_modules,__pycache__ to skip more.
+fcd() {
+  local file
+  file="$(fzf +m --walker=file,follow --query="$*")" && cd "$(dirname "$file")"
+}
 
 # Music
 alias youtubevorbis="youtube-dl --extract-audio --audio-format vorbis"
