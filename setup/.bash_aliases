@@ -159,9 +159,43 @@ export TZ='Europe/Rome'
 # Hohenheim
 export HOH_USERNAME=illel78
 alias teamdir='~/rp/uhoh/bioeconomy_projects/tools/projektverzeichnis/mount_cifs.sh team && ls -la ~/cifs_520m | head -30'
+alias cds='cd ~/rp/uhoh/bioeconomy_courses/courses/ws26_27/' # Current semester
 
 # pandocpdf and pandochtml compile a markdown file to /tmp and open it. They
 # used to be a function plus two aliases here, but aliases do not exist in the
 # non-interactive shell that vim's :! uses, so they now live in
 # ~/rp/paulrougieux.github.io/scripts/pandoctmp with two symlinks from
 # ~/.local/bin (already added to PATH above).
+#
+
+
+# psync: pull <server>:<path> to the same path on this laptop.
+# Usage: psync <server>:~/level_1/level_2/level_3[/...] [extra rsync options]
+psync() {
+    if [[ "$1" != ?*:* ]]; then
+        echo "usage: psync <server>:<path> [rsync options]" >&2
+        return 1
+    fi
+    local host="${1%%:*}" path="${1#*:}"
+    shift
+    path="${path/#\~/$HOME}"   # flower:~/x → /home/paul/x
+    path="${path%/}"           # plot/ → plot, so the files don't land one level up
+    # Only sync deep in the tree, at least /home/paul/level_1/level_2/level_3
+    case "$path" in
+        "$HOME"/?*/?*/?*) ;;
+        *) echo "psync: '$path' is not at least ~/level_1/level_2/level_3" >&2
+           return 1 ;;
+    esac
+    rsync -avzu --mkpath --info=skip1 \
+        --exclude='.git/' --exclude='.snakemake/' \
+        --exclude='.venv/' --exclude='venv/' --exclude='__pycache__/' \
+        "$@" \
+        "$host:$path" "$(dirname -- "$path")/" || return
+    # Go to the synced directory, or to the directory that holds the synced file
+    [ -d "$path" ] || path="$(dirname -- "$path")"
+    if [ -d "$path" ]; then cd -- "$path"; fi
+}
+
+# Shortcuts: fsync <path> = psync flower:<path>, usync <path> = psync uhoh:<path>
+fsync() { psync "flower:$1" "${@:2}"; }
+usync() { psync "uhoh:$1" "${@:2}"; }
