@@ -40,3 +40,4 @@ docker.io           # Debian's docker package, used by containers/pi-container.s
 
 # --- Documents ---------------------------------------------------------------
 poppler-utils       # pdftotext, pdfinfo: read PDFs from the command line and from agents
+ghostscript         # gs: shrink large PDFs (images at /ebook resolution) before committing
