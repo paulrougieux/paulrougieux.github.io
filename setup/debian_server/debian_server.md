@@ -54,6 +54,7 @@ rsync -av ~/rp/paulrougieux.github.io/setup/debian_server/ newserver:~/debian_se
 ```bash
 cd ~/rp/paulrougieux/setup/debian_server
 ./install_apt_packages.sh
+./install_apt_packages.sh --latex
 ```
 
 ### How the list was built
