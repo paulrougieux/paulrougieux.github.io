@@ -1,5 +1,7 @@
 # Apt packages for a Debian 13 (trixie) modelling server.
 # One package per line; "#" starts a comment. Read by install_apt_packages.sh.
+# A "[group]" tag after the package name marks it as optional: it is only
+# installed when the script is called with --group (e.g. [latex] -> --latex).
 # See debian_server.md for why each group is here.
 
 # --- Base system (missing from the university Debian image) ------------------
@@ -41,3 +43,9 @@ docker.io           # Debian's docker package, used by containers/pi-container.s
 # --- Documents ---------------------------------------------------------------
 poppler-utils       # pdftotext, pdfinfo: read PDFs from the command line and from agents
 ghostscript         # gs: shrink large PDFs (images at /ebook resolution) before committing
+pandoc              # convert markdown to PDF, docx and html
+texlive-xetex               [latex]  # xelatex PDF engine for pandoc (unicode fonts)
+texlive-latex-recommended   [latex]  # standard LaTeX packages used by the pandoc template
+texlive-latex-extra         [latex]  # additional LaTeX packages (large, several hundred MB)
+fonts-liberation    # metric-compatible Times/Arial/Courier fonts for PDFs
+fontconfig          # fc-list, font discovery for xelatex

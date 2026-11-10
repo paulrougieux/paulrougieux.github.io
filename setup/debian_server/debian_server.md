@@ -88,6 +88,14 @@ keeps the packages that were installed on purpose with `apt install`.
   Chromium of Playwright can run (for agents that browse or render web
   pages). They are only installed with
   `./install_apt_packages.sh --playwright`.
+- **TeX Live is optional.** `texlive-xetex`, `texlive-latex-recommended`
+  and `texlive-latex-extra` take several hundred MB together. They are only
+  needed to make PDFs with `pandoc --pdf-engine=xelatex`, so they carry a
+  `[latex]` tag in `apt_packages.txt` and are only installed with
+  `./install_apt_packages.sh --latex`. `pandoc` itself stays in the core
+  list, since converting to docx or html does not need LaTeX. Any package
+  can be made optional the same way: add a `[group]` tag after its name and
+  a matching `--group` case in the script.
 - **`sudo` and `curl` listed explicitly.** Both come with the Debian cloud
   image of the old VPS but are missing from the university image.
 - **Left out.** `cron`, `vim`, `openssh-server`, `unattended-upgrades` and
