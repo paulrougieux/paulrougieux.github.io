@@ -186,11 +186,22 @@ psync() {
         *) echo "psync: '$path' is not at least ~/level_1/level_2/level_3" >&2
            return 1 ;;
     esac
+    local parent; parent="$(dirname -- "$path")"
+    # Skip the files git tracks on this laptop: code comes through git, not rsync.
+    # Only outputs (untracked or git-ignored files) are pulled. PSYNC_ALL=1 pulls all.
+    local tracked=""
+    if [ -z "$PSYNC_ALL" ]; then
+        tracked="$(git -C "$parent" ls-files -z -- "${path##*/}" 2>/dev/null | tr '\0' '\n')"
+    fi
+    if [ -n "$tracked" ]; then
+        echo "psync: skipping $(wc -l <<< "$tracked") files tracked by git on this laptop" >&2
+    fi
     rsync -avzu --mkpath --info=skip1 \
         --exclude='.git/' --exclude='.snakemake/' \
         --exclude='.venv/' --exclude='venv/' --exclude='__pycache__/' \
+        --exclude-from=<(printf '%s\n' "$tracked" | sed '/^$/d; s/[[*?\\]/\\&/g; s|^|/|') \
         "$@" \
-        "$host:$path" "$(dirname -- "$path")/" || return
+        "$host:$path" "$parent/" || return
     # Go to the synced directory, or to the directory that holds the synced file
     [ -d "$path" ] || path="$(dirname -- "$path")"
     if [ -d "$path" ]; then cd -- "$path"; fi
