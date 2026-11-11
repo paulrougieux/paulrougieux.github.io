@@ -64,6 +64,10 @@ return {
             embed_image_as_base64 = false,
             prompt_for_file_name = false,
             drag_and_drop = {
+              -- Disabled: on paste, img-clip sends a blocking `curl -I` (no timeout)
+              -- to any URL without a file extension, which freezes nvim when the
+              -- host is unreachable (e.g. youtube.com blocked in /etc/hosts).
+              enabled = false,
               insert_mode = true,
             },
             -- required for Windows users

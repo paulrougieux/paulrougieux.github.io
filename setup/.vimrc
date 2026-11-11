@@ -341,6 +341,9 @@ function! PasteQuoted()
   call delete(l:tmpfile)
 endfunction
 
+" Reading notes from scientific papers
+command! Readings e /home/paul/rp/bioeconomy_papers/notes/readings.md
+
 """"""""""""""""""""""""""
 " # Python configuration "
 """"""""""""""""""""""""""
