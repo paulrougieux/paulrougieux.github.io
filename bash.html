@@ -448,6 +448,9 @@ div.tocify {
       <a href="communication.html">Communication</a>
     </li>
     <li>
+      <a href="learning.html">Learning</a>
+    </li>
+    <li>
       <a href="procrastination.html">Procrastination</a>
     </li>
     <li>
@@ -519,14 +522,20 @@ href="https://gist.github.com/championofblocks/3982727">seen in this
 gist</a></p>
 <pre><code>for i in *.WAV; do test -f &quot;${i%.WAV}.mp3&quot; || lame -b 320 -h &quot;${i}&quot; &quot;${i%.WAV}.mp3&quot;; done</code></pre>
 <ul>
-<li><p><a
-href="https://askubuntu.com/questions/442997/how-can-i-convert-audio-from-ogg-to-mp3">Convert
-audio from ogg to mp3</a></p>
-<p>ffmpeg -i “file name with spaces”.{ogg,mp3} # Convert all files from
-ogg to mp3 for i in *.ogg; do ffmpeg -i “<span
-class="math inline">\({i%.ogg}&quot;.{ogg,mp3}; done
-  for i in *.ogg; do echo &quot;\)</span>{i%.ogg}”; done</p></li>
+<li><p>Convert from OGG to MP3</p>
+<ul>
+<li>Place the converted file in a new location such as /tmp</li>
+</ul></li>
 </ul>
+<pre class="bash"><code>f=&quot;/home/paul/music/tzigane/Csárdás - Vittorio Monti (Violin &amp; Piano)-IPYHy8k9Z34.ogg&quot;
+ffmpeg -i &quot;$f&quot; -codec:a libmp3lame -q:a 2 &quot;/tmp/$(basename &quot;${f%.ogg}&quot;).mp3&quot;</code></pre>
+<pre><code>- Convert in the same directory from [convert audio from ogg to
+  mp3](https://askubuntu.com/questions/442997/how-can-i-convert-audio-from-ogg-to-mp3)
+
+    ffmpeg -i &quot;file name with spaces&quot;.{ogg,mp3}
+    # Convert all files from ogg to mp3
+    for i in *.ogg; do ffmpeg -i &quot;${i%.ogg}&quot;.{ogg,mp3}; done
+    for i in *.ogg; do echo &quot;${i%.ogg}&quot;; done</code></pre>
 <p>Cut an audio file at the given start time in seconds</p>
 <pre><code>ffmpeg -ss 132 -i input.mp3 output.mp3
 ffmpeg -ss 621 -i &#39;Sharon Shannon Band-Tnbqwx3KRXU.ogg&#39; &#39;Sharon Shannon Band.ogg&#39;</code></pre>
@@ -2233,6 +2242,14 @@ class="section level3">
 </div>
 <div id="ssh-secure-shell" class="section level2">
 <h2>SSH Secure Shell</h2>
+<div id="disable-password-authentication-in-ssh" class="section level3">
+<h3>Disable password authentication in ssh</h3>
+<pre><code>sudo vi /etc/ssh/sshd_config.d/10-key-only.conf
+# or use su
+PasswordAuthentication no
+KbdInteractiveAuthentication no
+PermitRootLogin no</code></pre>
+</div>
 <div id="generate-ssh-keys-and-add-them-to-the-agent"
 class="section level3">
 <h3>Generate SSH keys and add them to the agent</h3>
@@ -3076,7 +3093,13 @@ new-window</code></pre>
 <p>Start tmux with this configuration file:</p>
 <pre><code>tmux new-session -s work &quot;tmux source-file ~/.tmux/work&quot;      </code></pre>
 <p>Make it a bash alias, by adding the following line to ~/.bashrc:</p>
-<pre><code>alias tmuxw=&#39;tmux new-session -s work &quot;tmux source-file ~/.tmux/work&quot;&#39;</code></pre>
+<pre><code># Old simpler alias
+alias tmuxw=&#39;tmux new-session -s work &quot;tmux source-file ~/.tmux/work&quot;&#39;
+# New alias which creates or attached if a session already exists
+alias tmuxw=&#39;tmux new-session -A -s work -c ~/rp &quot;tmux source-file ~/.tmux/work.tmux&quot;&#39;</code></pre>
+<p><code>-A</code> attaches to the “work” session if it exists, creates
+it from work.tmux otherwise <code>-s</code> is the session name
+<code>-c</code> changes the working directory of the tmux session</p>
 <p>Reddit <a
 href="https://www.reddit.com/r/vim/comments/600frr/tmux_tabs_splits_workflow/">discussion
 on vim splits and tmux tabs</a></p>
@@ -3154,9 +3177,14 @@ echo $USER</code></pre>
 <p>Temporary log in as a given user</p>
 <pre><code>su username</code></pre>
 <p>Add a user to the super users</p>
-<pre><code>adduser username sudo</code></pre>
-<p>That user needs to re-log into the shell for the change to take
-effect.</p>
+<pre><code>adduser username sudo
+# While you are root install the sudo program as it might not be installed by default
+apt install sudo</code></pre>
+<p>If bash returns “adduser: command not” it’s because su made root, but
+you are still in the user directory. su - with the dash starts a shell
+with root’s PATH.</p>
+<p>After adding a user to sudo, the user needs to re-log into the shell
+for the change to take effect.</p>
 <p>Show all users</p>
 <pre><code>getent passwd</code></pre>
 <p>Show all groups</p>

@@ -456,9 +456,10 @@ file name from the URL as explained in the curl man page.
 
 An updated fork of youtube-dl.
 
-Install with 
+Install and upgrade with 
 
     pipx install yt-dlp
+    pipx upgrade yt-dlp
 
 Note that you can install yt-dlp from apt on Debian. I removed it because the
 apt package on Debian stable had gotten outdated and was not compatible with
@@ -2073,6 +2074,15 @@ To upload a whole directory use mirror
 
 ## SSH Secure Shell
 
+### Disable password authentication in ssh
+
+    sudo vi /etc/ssh/sshd_config.d/10-key-only.conf
+    # or use su
+    PasswordAuthentication no
+    KbdInteractiveAuthentication no
+    PermitRootLogin no
+
+
 ### Generate SSH keys and add them to the agent
 
 Mon Sep 28 09:36:26 CEST 2020
@@ -3167,11 +3177,20 @@ What group do you belong to as a user
 
 Add a new user
 
+    adduser username # Friendly user command that also creates a home dir
+    useradd username # useradd only creates a home directory with -m, or when
+                     # CREATE_HOME yes is set in /etc/login.defs (some server images set it)."
+
+Note in case you are logged in as root with `su`, make sure to use `-` so that
+`/usr/sbin` is included, otherwise the useradd command is not available:
+
+    su -
     useradd username
+
 
 Set a password for the new user
 
-    passwd username 
+    passwd username
 
 Delete a user
 
@@ -3184,8 +3203,15 @@ Temporary log in as a given user
 Add a user to the super users
 
     adduser username sudo
+    # While you are root install the sudo program as it might not be installed by default
+    apt install sudo
 
-That user needs to re-log into the shell for the change to take effect.
+If bash returns "adduser: command not" it's because su made root, but you are
+still in the user directory. su - with the dash starts a shell with root's
+PATH.
+
+After adding a user to sudo, the user needs to re-log into the shell for the
+change to take effect.
 
 Show all users
 
