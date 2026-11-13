@@ -3178,14 +3178,14 @@ What group do you belong to as a user
 Add a new user
 
     adduser username # Friendly user command that also creates a home dir
-    useradd username # useradd only creates a home directory with -m, or when
-                     # CREATE_HOME yes is set in /etc/login.defs (some server images set it)."
+    useradd -m username # useradd only creates a home directory with -m, or when
+                        # CREATE_HOME yes is set in /etc/login.defs (some server images set it)."
 
 Note in case you are logged in as root with `su`, make sure to use `-` so that
-`/usr/sbin` is included, otherwise the useradd command is not available:
+`/usr/sbin` is included, otherwise the adduser command is not available:
 
     su -
-    useradd username
+    adduser username
 
 
 Set a password for the new user
