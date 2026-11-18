@@ -1,0 +1,53 @@
+
+# Immune system
+
+## Voluntary activation
+
+- https://www.pnas.org/doi/10.1073/pnas.1322174111
+
+    > “Subjects in the intervention group were trained for 10 d in meditation
+    > (third eye meditation), breathing techniques (i.a., cyclic hyperventilation
+    > followed by breath retention), and exposure to cold (i.a., immersions in ice
+    > cold water). The control group was not trained.”
+
+- https://www.youtube.com/watch?v=tybOi4hjZFQ at 7m and 13m
+
+    > “ In the intervention group, plasma levels of the anti-inflammatory cytokine
+    > IL-10 increased more rapidly after endotoxin administration, correlated
+    > strongly with preceding epinephrine levels, and were higher. Levels of
+    > proinflammatory mediators TNF-α, IL-6, and IL-8 were lower in the
+    > intervention group and correlated negatively with IL-10 levels. Finally,
+    > flu-like symptoms were lower in the intervention group. In conclusion, we
+    > demonstrate that voluntary activation of the sympathetic nervous system
+    > results in epinephrine release and subsequent suppression of the innate
+    > immune response in humans in vivo.” 
+
+
+# Hyperfocus
+
+• The Pomodoro Technique for ADHD: Does It Really Work?
+  https://www.audhdpsychiatry.co.uk/does-pomodoro-really-work-for-adhd/
+
+    > "Switching Tasks Feels Impossible Some people with ADHD experience 
+    > **hyperfocus**, which makes switching away from a task difficult. When 
+    > this occurs, try setting a visible break timer to signal transitions. 
+    > Building in a short transition activity between tasks, such as standing, 
+    > stretching, or walking, can ease the shift between focus modes and reduce 
+    > cognitive friction. It may also help to use auditory cues or gentle 
+    > alarms that fade in, rather than loud timers that cause stress or 
+    > confusion. Creating a consistent environment for work and rest also 
+    > supports smoother transitions."
+
+    > **The Urge to Extend Work Periods** One of the common pitfalls when using 
+    > the Pomodoro Technique is the temptation to keep working past the 
+    > 25-minute limit. While it may feel productive in the moment, extending 
+    > work sessions can lead to burnout and reduce long-term efficiency. For 
+    > individuals with ADHD, adhering to the set work intervals is vital for 
+    > maintaining consistent energy levels and supporting the brain’s natural 
+    > need for regular stimulation and rest. Longer stretches of unbroken 
+    > concentration can also increase the risk of hyperfocus, making it harder 
+    > to shift attention when necessary. By sticking to shorter, defined 
+    > sessions, users allow their brains to reset and return with renewed 
+    > focus. This supports better attention regulation and reduces the build-up 
+    > of mental fatigue over time."
+
