@@ -2568,7 +2568,39 @@ Keys
     o open a file in an external editor
     d delete a file
     space to select files for deletion
+    b     Spawn shell in current directory                   
     ? help
+
+Help content
+                                                                             
+          up/down, k/j    Move cursor up/down                                
+       pgup/pgdn, g/G     Move cursor top/bottom                             
+      enter, right, l     Go to directory/device                             
+              left, h     Go to parent directory                             
+                                                                         
+                    r     Rescan current directory                           
+                    /     Search items by name                               
+                    a     Toggle between showing disk usage and apparent size
+                    B     Toggle bar alignment to biggest file or directory  
+                    c     Show/hide file count                               
+                    m     Show/hide latest mtime                             
+                    b     Spawn shell in current directory                   
+                    q     Quit gdu                                           
+                    Q     Quit gdu and print current directory path          
+                                                                             
+     Item under cursor:                                                      
+                    d     Delete file or directory                           
+                    e     Empty file or directory                            
+                    space Mark file or directory for deletion                
+                    v     Show content of file                               
+                    o     Open file or directory in external program         
+                    i     Show info about item                               
+                                                                         
+     Sort by (twice toggles asc/desc):                                       
+                    n     Sort by name (asc/desc)                            
+                    s     Sort by size (asc/desc)                            
+                    C     Sort by file count (asc/desc)                      
+                    M     Sort by mtime (asc/desc)                           
 
 Installation 
 
