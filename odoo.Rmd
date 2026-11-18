@@ -1,0 +1,33 @@
+
+
+
+# Developer mode
+
+
+Necessary to change output layout of quotes and invoices for example
+
+Activate with:
+
+      1. Settings App
+      2. General Settings
+      3. Activate the developer mode
+
+
+
+
+# Unit of measure
+
+Activate one time
+
+> So do this first:
+> 1. Sales → Configuration → Settings.
+> 2. Under Product Catalog, tick Units of Measure → Save.
+> 3. Come back to this product page → the Unit of Measure field will now appear → set it to Days.
+
+- Unit
+
+  > Tip — set it once on the product instead: Since this is a service you bill
+  > per day, open the product  → General Information tab → set Unit of Measure
+  > = Days. Then every new quote line defaults to Days and you won't have to
+  > change it each time.
+
