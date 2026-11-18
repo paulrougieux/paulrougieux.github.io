@@ -27,27 +27,3 @@ https://paulrougieux.gitlab.io/paulrougieux/
 To create the gitub version, I build the static site locally on my laptop and simply push all
 html files to github. The github site is visible at: https://paulrougieux.github.io/
 
-## Formatting rules for pasted terminal output
-
-Pasted output often contains characters that markdown treats as markup. An unmatched
-one opens a region that runs until the next matching character, swallowing every
-heading in between.
-
-- Wrap globs, tags and dollar amounts in backticks: `` `*.md` ``, `` `<json>` ``,
-  `` `$5-$25` ``. A bare `*` opens emphasis, `<tag>` is dropped as raw HTML, and a
-  `$` opens inline math (pandoc will not close it on a `$` followed by a digit).
-- Do not use bare ```` ``` ```` fences in `.Rmd`. The vim `rmd` syntax only knows
-  knitr chunks (```` ```{r} ````); a plain fence, even with an info string like
-  ```` ```text ````, is parsed as an inline code span and leaks into the rest of the
-  file. Use a knitr chunk or a 4-space indented block instead.
-- Inside a 4-space indented block nothing needs escaping, and backslash escapes such
-  as `\$` would be printed literally.
-
-To find leaks, check whether every heading still highlights as a heading:
-
-    vim -c 'syntax on' -c 'set ft=rmd' file.Rmd
-    " then on a heading line:
-    :echo synIDattr(synID(line('.'), 3, 1), 'name')
-
-Anything other than `pandocAtxStart` / `pandocAtxHeader` means a region above is still
-open.

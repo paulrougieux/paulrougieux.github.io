@@ -114,6 +114,33 @@ You can also create template files as explained in super user [markdown to latex
 See also the makefile for pandoc in the programming with bash / makefile
 section below.
 
+
+## Formatting rules for pasted terminal output
+
+Pasted output often contains characters that markdown treats as markup. An unmatched
+one opens a region that runs until the next matching character, swallowing every
+heading in between.
+
+- Wrap globs, tags and dollar amounts in backticks: `` `*.md` ``, `` `<json>` ``,
+  `` `$5-$25` ``. A bare `*` opens emphasis, `<tag>` is dropped as raw HTML, and a
+  `$` opens inline math (pandoc will not close it on a `$` followed by a digit).
+- Do not use bare ```` ``` ```` fences in `.Rmd`. The vim `rmd` syntax only knows
+  knitr chunks (```` ```{r} ````); a plain fence, even with an info string like
+  ```` ```text ````, is parsed as an inline code span and leaks into the rest of the
+  file. Use a knitr chunk or a 4-space indented block instead.
+- Inside a 4-space indented block nothing needs escaping, and backslash escapes such
+  as `\$` would be printed literally.
+
+To find leaks, check whether every heading still highlights as a heading:
+
+    vim -c 'syntax on' -c 'set ft=rmd' file.Rmd
+    " then on a heading line:
+    :echo synIDattr(synID(line('.'), 3, 1), 'name')
+
+Anything other than `pandocAtxStart` / `pandocAtxHeader` means a region above is still
+open.
+
+
 ## Pandoc for research papers
 
 
@@ -207,6 +234,35 @@ https://quarto.org/docs/authoring/footnotes-and-citations.html
 
 ### Python and Jupyter
 
+
+Python code block with eval=False
+
+````
+
+      > ```{python}
+      > #| eval: false
+      > #| echo: true
+      > # Your Python code here
+      > print("This won't run")
+      > ```
+
+````
+
+Set for all chunks in the document
+
+````
+    ---
+    title: "My Document"
+    format: html
+    execute:
+      echo: true
+      eval: false
+    ---
+````
+
+
+
+
 - Need to set the extension as `.qmd` to enable execution of code chunks
 
 - Virtual environments 
@@ -240,6 +296,8 @@ Here is how to add a figure with caption and cross reference in quarto:
 
     ![An Elephant](elephant.png){#fig-elephant}
 
+### Figures generated from python code
+
 Example of a figure with caption and label, generated from python code. Note 
 you would have to use single curly braces in the code chunk, these are only 
 here so that this code chunk is not interpreted.
@@ -269,6 +327,17 @@ Render a document as explained in `quarto help renderi`:
     quarto render document.qmd
     quarto render document.qmd --to html
     quarto render document.qmd --to pdf --toc
+
+
+### Line break and margin
+
+Use \newline to force a line break. This was necessary to avoid inline code
+chunk to overflow in the margin of the pdf file:
+
+    To explore available variables, users can access the `variables` property  \newline
+    (e.g., `model["sawn"].variables`). Array properties are
+    used to store metadata, the example below displays the roundwood production unit :
+
 
 ## Tables
 
