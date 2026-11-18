@@ -448,6 +448,9 @@ div.tocify {
       <a href="communication.html">Communication</a>
     </li>
     <li>
+      <a href="learning.html">Learning</a>
+    </li>
+    <li>
       <a href="procrastination.html">Procrastination</a>
     </li>
     <li>
@@ -1008,6 +1011,11 @@ jupyter lab,</p>
 - Or use pipx to install them, so that the command becomes available
 
     pipx install jupyterlab</code></pre>
+<div id="install-pipx" class="section level4">
+<h4>Install pipx</h4>
+<p>Install pipx</p>
+<pre><code>sudo apt install pipx</code></pre>
+</div>
 </div>
 <div id="virtual-environment-compulsory-in-debian-12"
 class="section level3">
@@ -1364,12 +1372,16 @@ to clipboard</a> (instead of middle mouse button clipboard)</p>
 <p><a
 href="https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Linux#h_adcc0b66-b2f4-468b-bc7a-12c182f354b7">Zoom
 install on Linux</a></p>
-<pre><code>cd ~/downloads/
+<p>curl -L -o /tmp/zoom_amd64.deb <a
+href="https://zoom.us/client/latest/zoom_amd64.deb"
+class="uri">https://zoom.us/client/latest/zoom_amd64.deb</a> sudo apt
+install /tmp/zoom_amd64.deb</p>
+<pre><code>cd ~/tmp/
 rm zoom_amd64.deb
 wget https://zoom.us/client/latest/zoom_amd64.deb
 
 # Check public key fingerprint
-rm ~/downloads/pubkey
+rm ~/tmp/pubkey
 wget https://zoom.us/linux/download/pubkey
 cat pubkey | gpg --import-options show-only --import
 # Add the public key to the keyring
@@ -1377,7 +1389,7 @@ gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 59C86188E22ABB19BD5540477
 gpg --verify zoom_amd64.deb
 
 # Install
-sudo apt install ./zoom_amd64.deb </code></pre>
+sudo apt install /tmp/zoom_amd64.deb </code></pre>
 </div>
 <div id="webex" class="section level2">
 <h2>Webex</h2>

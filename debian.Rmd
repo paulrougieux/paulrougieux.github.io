@@ -9,6 +9,7 @@ output:
 This page is the continuation of 
 [several blog posts related to Debian](https://paulremote.blogspot.fr/search/label/Debian)
 
+
 # Installing Debian 
 
 The Debian GNU Linux operating system is available as a torrent download or a
@@ -127,6 +128,43 @@ I used this setting to fix the orientation of an HP Elitebook laptop.
 
     sensor:modalias:*
       ACCEL_MOUNT_MATRIX=0, 1, 0; 1, 0, 0; 0, 0, 1
+
+
+# Architecture
+
+## i386
+
+I added the i386 architecture for a project, but it turned out it was not
+needed, here is how to removme it from Claude
+
+1. Remove the 32-bit Wine packages
+
+    sudo apt purge wine32:i386 libwine:i386
+
+2. Drop the ~270 orphaned i386 libraries (review the list before confirming)
+
+    sudo apt autoremove --purge
+
+3. Confirm nothing i386 remains (should print nothing)
+
+    dpkg -l | awk '$1=="ii" && $2 ~ /:i386$/'
+
+
+4. Remove the i386 architecture (fails safely if step 3 wasn't empty)
+
+    sudo dpkg --remove-architecture i386
+
+5. Refresh apt metadata
+
+    sudo apt update
+
+Verify afterward:
+
+    dpkg --print-foreign-architectures   # → empty, no i386
+    wine64 --version                      # → 64-bit Wine still works
+
+
+## AMD 64
 
 
 # Debian Development
@@ -250,6 +288,22 @@ Remove a package with:
     sudo dpkg -r packagename
 
 
+#### Clean old apt package from the cache
+
+Claude Opus 5.5 recommended putting this in apt conf.
+
+File:
+
+    sudo vi /etc/apt/apt.conf.d/99clean-cache
+
+File content:
+
+    // Stop apt-get etc. from keeping .debs after install
+    APT::Keep-Downloaded-Packages "false";
+    // Run 'apt-get clean' every 7 days via apt-daily-upgrade.timer
+    APT::Periodic::CleanInterval "7";
+
+
 ### NIX
 
 - NIX manual https://nixos.org/manual/nix/stable/
@@ -297,6 +351,11 @@ Remove a package with:
 
 
 #### Nix on Debian
+
+I wanted to investigate Nix to automate the configuration of a debian server.
+In the end I am not using Nix. Instead, I chose to use a script
+`install_apt_packages.sh` that installs packages listed in a text file
+`setup/debian_server/apt_packages.txt`. See `setup/debian_server/`
 
 - Debian Package for NIX https://packages.debian.org/sid/nix-setup-systemd
 
@@ -453,7 +512,78 @@ connection to posteo and vim editor.
 Example of Mutt setup for professional email coming from an Exchange server. 
 
 
+## Okular
+
+### Signature 
+
+See also how to use Image Magick to transform a jpg image into a png with a
+transparent background so that the signature's background is not visible on the
+inserted pdf. 
+
+Add a signature as a stamp, by using.
+
+- Go to Settings → Configure Okular → Annotations.
+- Click Add
+- Give it a name such as Insert Signature.
+
+Then use the signature later from the annotation tool bar
+
+- Open the menu Tools / Annotations F6 
+- There is a drop down menu near text selection which defaults to yellow
+  highlighter, this is where you can find the stamp signature you created.
+- pick your signature PNG, then OK / Apply.
+
+Then flatten the pdf using print to file:
+
+- The signature was added as an annotation. Open the pdf in Firefox or a pdf
+  viewer and print to pdf to remove the annotation and merge it into the page
+  content. 
+
+Sometimes there is an issue with the print to file option, where the square
+corresponding to the signature is black. This is because the transparency layer
+is not recognised by some pdf engine. In that case, first use Poppler to flatten the
+pages, by rasterizing the transparent signature onto the image background
+to jpeg files. Then reassemble the jpeg files into a pdf file as follows:
+
+    pdftoppm -r 200 -jpeg -jpegopt quality=90 Arbeitsvertrag_APO_signed.pdf /tmp/pg
+    img2pdf /tmp/pg-*.jpg -o Arbeitsvertrag_APO_signed_flat.pdf
+
+
 ## Python
+
+See also the [python page](python.html) on this blog.
+
+
+### Anaconda
+
+- 2026 instructions 
+  https://www.anaconda.com/docs/getting-started/anaconda/install/linux-install#using-anaconda-distribution-in-a-commercial-setting
+
+    cd ~/downloads
+    curl -O https://repo.anaconda.com/archive/Anaconda3-2025.12-2-Linux-x86_64.sh
+    sha256sum <PATH_TO_INSTALLER_FILE>
+    bash ./Anaconda3-2025.12-2-Linux-x86_64.sh
+
+> "Test the installation"
+
+    source /opt/conda/etc/profile.d/conda.sh
+    conda -V
+
+> "Installing conda packages with the system package manager makes it very easy
+> to distribute conda across a cluster of machines running Linux without having
+> to worry about any non-privileged user modifying the installation."
+
+> "Any non-privileged user simply needs to run source
+> /opt/conda/etc/profile.d/conda.sh to use conda."
+
+Make conda available by adding the following to `.bash_aliases`. I place it in
+`.bash_aliases` sourced by `.bash_profile`, because tmux doesn't load `.bashrc`.
+
+    # Make conda available
+    if [ -f /opt/conda/etc/profile.d/conda.sh ]; then
+        source /opt/conda/etc/profile.d/conda.sh
+    fi
+
 
 ### Pip, pipx and virtual enviroments
 
@@ -475,6 +605,13 @@ If you need tools that can be started at the command line such as jupyter lab,
     - Or use pipx to install them, so that the command becomes available
 
         pipx install jupyterlab
+
+
+#### Install pipx
+
+Install pipx
+
+    sudo apt install pipx
 
 
 ### Virtual environment compulsory in Debian 12
@@ -573,6 +710,21 @@ Install it
 
     sudo apt remove rstudio
 
+
+## Terminal emulators
+
+- Alacritty 
+
+    - Debian package https://packages.debian.org/trixie/alacritty
+
+    - Website https://alacritty.org/
+
+- Gnome terminal
+
+- Konsole
+
+
+
 ## Remmina
 
 Installing from the backports (see above section on how to add the backports in sources.list)
@@ -589,6 +741,17 @@ Installing from the backports (see above section on how to add the backports in 
     echo "deb [signed-by=/usr/share/keyrings/element-io-archive-keyring.gpg] https://packages.element.io/debian/ default main" | sudo tee /etc/apt/sources.list.d/element-io.list
     sudo apt update
     sudo apt install element-desktop
+
+
+
+To get older messages you can either:
+
+- either identify with another device
+- or use recovery keys
+
+To save recovery keys for later use:
+
+
 
 - Riot (former version) [Desktop Riot
   installation](https://riot.im/download/desktop/)
@@ -749,6 +912,12 @@ visit teams.microsoft.com
       possible to share your screen on Linux, from the Firefox web browser or 
       from Chromium.
 
+- Remove teams from Debian
+
+    sudo rm /etc/apt/sources.list.d/teams.list && echo "Removed teams.list"
+
+I use the web version on Firefox or Chromium instead.
+
 
 ## Vim 
 
@@ -802,6 +971,18 @@ Install
 Debian and ubuntu system administration [wajig docs](https://wajig.readthedocs.io/en/latest/)
 
 
+## Wine
+
+Install 32-bit Wine :
+
+  sudo dpkg --add-architecture i386
+  sudo apt-get update
+  sudo apt-get install wine32:i386      # (package name may be wine32 / libwine:i386 depending on your wine source)
+
+
+Install 64 bit wine
+
+
 ## Zathura
 
 Usage
@@ -833,20 +1014,27 @@ Scroll
 [Zoom install on
 Linux](https://support.zoom.us/hc/en-us/articles/204206269-Installing-Zoom-on-Linux#h_adcc0b66-b2f4-468b-bc7a-12c182f354b7)
 
-    cd ~/downloads/
-    rm zoom_amd64.deb
-    wget https://zoom.us/client/latest/zoom_amd64.deb
 
-    # Check public key fingerprint
-    rm ~/downloads/pubkey
-    wget https://zoom.us/linux/download/pubkey
-    cat pubkey | gpg --import-options show-only --import
-    # Add the public key to the keyring
-    gpg --keyserver hkp://keyserver.ubuntu.com --recv-keys 59C86188E22ABB19BD5540477B04A1B8DD79B481
-    gpg --verify zoom_amd64.deb
+  curl -L -o /tmp/zoom_amd64.deb https://zoom.us/client/latest/zoom_amd64.deb
+  sudo apt install /tmp/zoom_amd64.deb
 
-    # Install
-    sudo apt install ./zoom_amd64.deb 
+
+
+      cd ~/tmp/
+      rm -f zoom_amd64.deb pubkey
+      wget https://zoom.us/client/latest/zoom_amd64.deb
+
+      # Download the public key and check its fingerprint against the one
+      # published on Zoom's Linux install page (key rotated in January 2026:
+      # 84C3 65D6 CC9A 4886 CA92 6BCC 4F21 9739 9706 AC24)
+      wget https://zoom.us/linux/download/pubkey
+      gpg --show-keys --with-fingerprint pubkey
+      # Add the public key to the keyring
+      gpg --import pubkey
+      gpg --verify zoom_amd64.deb
+
+      # Install
+      sudo apt install ~/tmp/zoom_amd64.deb
 
 
 ## Webex
@@ -973,6 +1161,18 @@ work](https://askubuntu.com/questions/69648/gnome-shell-pressing-the-super-key-d
 
 There is indeed a lock on my mechanical keyboard if I unlock it, the super
 key works again.
+
+## Gnome Keyring
+
+Login keyring issue.
+Claude:
+
+  > - "The Passwords section vanished because your login keyring had one
+  >   orphaned item (73) — a leftover from an interrupted write. Seahorse
+  >   aborts the entire section if a single item fails to load.
+
+  > - We forced a keyring rewrite to drop the orphan, then restarted the daemon
+  >   so it re-read the clean file."
 
 
 # Keyboard
@@ -1132,6 +1332,35 @@ the mouse and the touchpad sections.
 
 [Disable automatic remote printer installation](https://askubuntu.com/questions/345083/how-do-i-disable-automatic-remote-printer-installation)
 
+
+# Terminal Emulator
+
+https://wiki.debian.org/TerminalEmulator
+
+
+## Gnome terminal
+
+Great, use it all the time on my laptop. 
+
+There is an issue when copying from a server's tmux session with CTRL Alt C,
+because Gnome terminal doesn't support OSC 52, a feature that enables sending a
+copy signal to the terminal through an SSH session. 
+
+- 2018 Gnome Terminal issue "Add support for OSC 52"
+  https://gitlab.gnome.org/GNOME/vte/-/work_items/2495
+  still open as of 2026
+
+
+## Kitty
+
+Copy paste works with CTRL Alt C with within Tmux when connected through SSH on
+a server because Kitty supports OSC 52.
+
+- https://sw.kovidgoyal.net/kitty/conf/
+
+    > "You can open the config file within kitty by pressing ctrl+shift+f2"
+
+
 # Screen display
 
 The issue is that sometimes the display menu doesn't provide all resolutions
@@ -1222,6 +1451,33 @@ or following command
 
     xrandr --output XWAYLAND1 --mode "1920x1200_60.00"
 
+# Server
+
+A section to gather server installation summary.
+
+## Data science server
+
+Server to load data from UN Comtrade using the biotrade python package.
+
+
+
+
+Copy config files such as bash aliases from public repository
+
+
+curl 
+
+
+Create a virtual environment
+
+    mkdir ~/rp/penv
+    python3 -m venv ~/rp/penv
+    source ~/rp/penv/bin/activate
+    # Upgrade pip
+    python -m pip install --upgrade pip
+
+
+
 # System information and version
 
 Find out which Debian version is running
@@ -1264,7 +1520,17 @@ The most important Gimp shortcuts are:
 
 A [list of Gimp Shortcuts](http://gimptips.com/articles/gimp-keyboard-shortcuts)
 
+
 # Upgrade Debian version
+
+## Backup
+
+Backup to a drive that doesn't support symbolic links `--no-links` (maybe not a 
+good idea?) the other flags mean `-a` archive and `-v` verbose.
+
+    rsync -av --no-links /home/paul/ /media/paul/PortableSSD/backup/paul_20251007
+    rsync -av --no-links /home/paul/rp /media/paul/PortableSSD/backup/paul_20251007/rp
+
 
 ## From Jessie 8 to Stretch 9
 
@@ -1444,6 +1710,98 @@ Then ran
     apt list '~c'
     sudo apt purge '~c'
     
+
+## From Bookworm 12 to Trixie 13
+
+I updated bookworm one last time:
+
+    sudo apt update
+    sudo apt upgrade
+
+Inspect the state of all packages:
+
+    apt list --installed > ~/curr-pkgs.txt
+
+- https://www.debian.org/releases/trixie/release-notes/upgrading.html
+
+    > As mentioned in Start from “pure” Debian, we recommend that you use the 
+    > new deb822-style format, so you would have to replace 
+    > /etc/apt/sources.list and any *.list files in /etc/apt/sources.list.d/ by 
+    > only one file named debian.sources in /etc/apt/sources.list.d/ (if you 
+    > haven’t done so already). An example is given below of how this file 
+    > should typically look.
+
+Previously content of /etc/apt/sources.list, I have now removed this file
+
+    deb https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+    deb-src  https://deb.debian.org/debian bookworm main contrib non-free non-free-firmware
+    deb https://deb.debian.org/debian-security bookworm-security main contrib non-free non-free-firmware
+
+Modify sources 
+
+    sudo vim /etc/apt/sources.list.d/debian.sources
+
+Added 
+
+    Types: deb
+    URIs: https://deb.debian.org/debian
+    Suites: trixie trixie-updates
+    Components: main contrib non-free non-free-firmware
+    Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+    Types: deb
+    URIs: https://security.debian.org/debian-security
+    Suites: trixie-security
+    Components: main contrib non-free non-free-firmware
+    Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
+
+Note: Types: deb-src can be used  to download source packages for inspection.
+
+- Recording the session
+
+    > "apt will log the changed package states in /var/log/apt/history.log and 
+    > the terminal output in /var/log/apt/term.log."
+
+- Minimal upgrade
+
+    sudo apt upgrade --without-new-pkgs
+
+- Upgrading the system
+
+    sudo apt full-upgrade
+
+
+### Issues after the upgrade
+
+- After the upgrade, python plots wouldn't display with this message: 
+
+      UserWarning: FigureCanvasAgg is non-interactive, and thus cannot be shown
+      plt.show()
+
+  - Fixed by installing the QtAgg backend:
+
+        sudo apt install python3-pyqt6
+
+- After the upgrade LibreOffice switched to dark mode, the system default. To
+  switch it back to light mode go to `Tools->Options->Appearance`
+  https://ask.libreoffice.org/t/how-to-force-light-mode/87859/6
+
+- After the upgrade from Bookworm to Trixie, Microsoft teams calls inside
+  Firefox or Chromium had frequent interruption of the voice. The voice of my
+  colleague would return after approximately half minute. Not sure if this a
+  memory issue on my laptop with 16Gb RAM.
+
+
+## From Trixie 13 to 
+
+- Future versions of nvim-lspconfig are compatible with neovim verison 11. Now
+  that neovim version 11 is available in Debian. you can remove the version
+  argument in setup/nvim/lua/plugins/nvim-lspconfig.lua
+
+    # Remove
+    version = 'v2.5.0',  -- Last version with full Nvim 0.10 support
+  
+
 
 # Blogs
 
