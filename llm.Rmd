@@ -1691,11 +1691,25 @@ Claude:
 
 ## AA skills defined by Paul
 
-See the skills sub directory in this repository: 
+Install skills from the skills sub directory in this repository: 
+
+    REPO=~/rp/paulrougieux.github.io   # change to the repo path
+    mkdir -p ~/.claude/skills
+
+    ln -sni "$REPO/skills/best-part-no-part"        ~/.claude/skills/best-part-no-part
+    ln -sni "$REPO/skills/blogpaste"                ~/.claude/skills/blogpaste
+    ln -sni "$REPO/skills/html-workbench"           ~/.claude/skills/html-workbench
+    ln -sni "$REPO/skills/html-workbench-papers"    ~/.claude/skills/html-workbench-papers
+    ln -sni "$REPO/skills/html-workbench-scenarios" ~/.claude/skills/html-workbench-scenarios
+    ln -sni "$REPO/skills/spell"                    ~/.claude/skills/spell
+    ln -sni "$REPO/skills/storm-review"             ~/.claude/skills/storm-review
+
+
 
 - skills/storm-review review a topic using experts as parallel agents
 
     - Maybe check deep research
+
 
 
 ## Citations
