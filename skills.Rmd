@@ -1,0 +1,58 @@
+---
+title: "Skills"
+---
+
+Skills for Claude Code and other coding agents. Each skill is a directory with a
+`SKILL.md` file. The source is in the
+[skills directory](https://github.com/paulrougieux/paulrougieux.github.io/tree/master/skills)
+of this site's repository.
+
+# Install
+
+Download one skill into your personal skills directory, for example `spell`:
+
+    mkdir -p ~/.claude/skills/spell
+    curl -o ~/.claude/skills/spell/SKILL.md \
+        https://paulrougieux.github.io/skills/spell/SKILL.md
+
+Or clone the repository and link the skill directories, see the
+[skills section](llm.html#skills) of the LLM page.
+
+# List of skills
+
+```{r skills, echo=FALSE, results='asis'}
+# Read the description field from the YAML front matter of a SKILL.md file.
+# Descriptions can continue on indented lines.
+skill_description <- function(lines) {
+    delims <- which(lines == "---")
+    if (length(delims) < 2) return("")
+    front <- lines[(delims[1] + 1):(delims[2] - 1)]
+    start <- grep("^description:", front)
+    if (length(start) == 0) return("")
+    end <- start
+    while (end < length(front) && grepl("^\\s", front[end + 1])) end <- end + 1
+    desc <- paste(trimws(front[start:end]), collapse = " ")
+    desc <- sub("^description:\\s*", "", desc)
+    gsub('^"|"$', "", desc)
+}
+
+for (dir in sort(list.dirs("skills", recursive = FALSE))) {
+    skill_file <- file.path(dir, "SKILL.md")
+    if (!file.exists(skill_file)) next
+    lines <- readLines(skill_file, warn = FALSE)
+    cat("\n## ", basename(dir), "\n\n", sep = "")
+    cat(skill_description(lines), "\n\n", sep = "")
+    files <- list.files(dir, recursive = TRUE)
+    links <- sprintf("[%s](%s/%s){download=\"%s\"}", files, dir, files, basename(files))
+    cat("Download: ", paste(links, collapse = ", "), "\n\n", sep = "")
+    cat("<details><summary>Show SKILL.md</summary>\n\n")
+    cat("`````markdown\n", paste(lines, collapse = "\n"), "\n`````\n\n", sep = "")
+    cat("</details>\n\n")
+}
+```
+
+# Other files
+
+- [claude_code_status_line.sh](skills/claude_code_status_line.sh){download="claude_code_status_line.sh"}
+  installs a Claude Code status line showing the directory, git branch, model and
+  context usage.

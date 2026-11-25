@@ -6,6 +6,7 @@
 # Ignore cache folders
 *_cache/*
 todo.html
+__pycache__
 
 # Ignore generated images
 *.png

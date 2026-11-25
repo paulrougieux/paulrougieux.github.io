@@ -66,6 +66,8 @@ navbar:
           href: biography.html
         - text: "Communication"
           href: communication.html
+        - text: "Learning"
+          href: learning.html
         - text: "Procrastination"
           href: procrastination.html
         - text: "Maximalist Degrowth - Space Earth"

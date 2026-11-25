@@ -2631,7 +2631,19 @@ for you, Khairallah</p>
 <h1>Skills</h1>
 <div id="aa-skills-defined-by-paul" class="section level2">
 <h2>AA skills defined by Paul</h2>
-<p>See the skills sub directory in this repository:</p>
+<p>The <a href="skills.html">skills page</a> lists my skills, with their
+descriptions and download links.</p>
+<p>Install skills from the skills sub directory in this repository:</p>
+<pre><code>REPO=~/rp/paulrougieux.github.io   # change to the repo path
+mkdir -p ~/.claude/skills
+
+ln -sni &quot;$REPO/skills/best-part-no-part&quot;        ~/.claude/skills/best-part-no-part
+ln -sni &quot;$REPO/skills/blogpaste&quot;                ~/.claude/skills/blogpaste
+ln -sni &quot;$REPO/skills/html-workbench&quot;           ~/.claude/skills/html-workbench
+ln -sni &quot;$REPO/skills/html-workbench-papers&quot;    ~/.claude/skills/html-workbench-papers
+ln -sni &quot;$REPO/skills/html-workbench-scenarios&quot; ~/.claude/skills/html-workbench-scenarios
+ln -sni &quot;$REPO/skills/spell&quot;                    ~/.claude/skills/spell
+ln -sni &quot;$REPO/skills/storm-review&quot;             ~/.claude/skills/storm-review</code></pre>
 <ul>
 <li><p>skills/storm-review review a topic using experts as parallel
 agents</p>

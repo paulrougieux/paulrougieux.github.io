@@ -9,6 +9,7 @@ pages:
   - mkdir public
   - cp *.html public/
   - cp -r  site_libs/ public/
+  - cp -r  skills/ public/
   artifacts:
     paths:
     - public

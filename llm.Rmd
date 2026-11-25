@@ -1691,6 +1691,9 @@ Claude:
 
 ## AA skills defined by Paul
 
+The [skills page](skills.html) lists my skills, with their descriptions and download
+links.
+
 Install skills from the skills sub directory in this repository: 
 
     REPO=~/rp/paulrougieux.github.io   # change to the repo path
